@@ -63,7 +63,8 @@ Release: November 19, 2024
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -235,213 +236,93 @@ Release: November 19, 2024
 
 2 / 48
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 FSSAGENT_SHARE_MAPPING_1](#2211-fssagentsharemapping1)
+    - [2.2.2 Constants](#222-constants)
+      - [2.2.2.1 SHADOW_COPY_ATTRIBUTES](#2221-shadowcopyattributes)
+      - [2.2.2.2 CONTEXT_VALUES](#2222-contextvalues)
+      - [2.2.2.3 SHADOW_COPY_COMPATIBILITY_VALUES](#2223-shadowcopycompatibilityvalues)
+      - [2.2.2.4 FSRVP_VERSION_VALUES](#2224-fsrvpversionvalues)
+    - [2.2.3 Unions](#223-unions)
+      - [2.2.3.1 FSSAGENT_SHARE_MAPPING](#2231-fssagentsharemapping)
+    - [2.2.4 Error Codes](#224-error-codes)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 FileServerVssAgent Server Details](#31-fileservervssagent-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+      - [3.1.1.2 Per ShadowCopySet](#3112-per-shadowcopyset)
+      - [3.1.1.3 Per ShadowCopy](#3113-per-shadowcopy)
+      - [3.1.1.4 Per MappedShare](#3114-per-mappedshare)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 GetSupportedVersion (Opnum 0)](#3141-getsupportedversion-opnum-0)
+      - [3.1.4.2 SetContext (Opnum 1)](#3142-setcontext-opnum-1)
+      - [3.1.4.3 StartShadowCopySet (Opnum 2)](#3143-startshadowcopyset-opnum-2)
+      - [3.1.4.4 AddToShadowCopySet (Opnum 3)](#3144-addtoshadowcopyset-opnum-3)
+      - [3.1.4.5 CommitShadowCopySet (Opnum 4)](#3145-commitshadowcopyset-opnum-4)
+      - [3.1.4.6 ExposeShadowCopySet (Opnum 5)](#3146-exposeshadowcopyset-opnum-5)
+      - [3.1.4.7 RecoveryCompleteShadowCopySet (Opnum 6)](#3147-recoverycompleteshadowcopyset-opnum-6)
+      - [3.1.4.8 AbortShadowCopySet (Opnum 7)](#3148-abortshadowcopyset-opnum-7)
+      - [3.1.4.9 IsPathSupported (Opnum 8)](#3149-ispathsupported-opnum-8)
+      - [3.1.4.10 IsPathShadowCopied (Opnum 9)](#31410-ispathshadowcopied-opnum-9)
+      - [3.1.4.11 GetShareMapping (Opnum 10)](#31411-getsharemapping-opnum-10)
+      - [3.1.4.12 DeleteShareMapping (Opnum 11)](#31412-deletesharemapping-opnum-11)
+      - [3.1.4.13 PrepareShadowCopySet (Opnum 12)](#31413-prepareshadowcopyset-opnum-12)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 FileServerVssAgent Client Details](#32-fileservervssagent-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per ShadowCopySet](#3212-per-shadowcopyset)
+      - [3.2.1.3 Per ShadowCopy](#3213-per-shadowcopy)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Application Queries Shadow Copy Support for a Share](#3241-application-queries-shadow-copy-support-for-a-share)
+      - [3.2.4.2 Application Requests Shadow Copy Preparation For a Share](#3242-application-requests-shadow-copy-preparation-for-a-share)
+        - [3.2.4.2.1 Starting a Shadow Copy Set](#32421-starting-a-shadow-copy-set)
+        - [3.2.4.2.2 Adding Shadow Copies to the Shadow Copy Set](#32422-adding-shadow-copies-to-the-shadow-copy-set)
+      - [3.2.4.3 Application Requests Committing a Shadow Copy Set](#3243-application-requests-committing-a-shadow-copy-set)
+      - [3.2.4.4 Application Requests Exposing a Shadow Copy Set](#3244-application-requests-exposing-a-shadow-copy-set)
+      - [3.2.4.5 Application Updates Recovery Status of a Shadow Copy Set](#3245-application-updates-recovery-status-of-a-shadow-copy-set)
+      - [3.2.4.6 Application Aborts a Shadow Copy Set](#3246-application-aborts-a-shadow-copy-set)
+      - [3.2.4.7 Application Queries Shadow Copy Information of a Share](#3247-application-queries-shadow-copy-information-of-a-share)
+      - [3.2.4.8 Application Requests Deleting Shadow Copy Of a Share](#3248-application-requests-deleting-shadow-copy-of-a-share)
+      - [3.2.4.9 Application Requests Shutdown of Client](#3249-application-requests-shutdown-of-client)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Shadow Copy Preparation](#41-shadow-copy-preparation)
+  - [4.2 Shadow Copy Creation](#42-shadow-copy-creation)
+  - [4.3 Shadow Copy Deletion](#43-shadow-copy-deletion)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.2.2
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Common Data Types .......................................................................................... 8
-Structures ................................................................................................... 8
-FSSAGENT_SHARE_MAPPING_1 ................................................................ 8
-Constants .................................................................................................... 9
-SHADOW_COPY_ATTRIBUTES ................................................................... 9
-CONTEXT_VALUES .................................................................................. 9
-SHADOW_COPY_COMPATIBILITY_VALUES ............................................... 10
-FSRVP_VERSION_VALUES ...................................................................... 10
-Unions....................................................................................................... 10
-FSSAGENT_SHARE_MAPPING ................................................................. 10
-Error Codes................................................................................................ 11
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.3.1
-
-2.2.3
-
-2.2.4
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-
-3  Protocol Details ..................................................................................................... 12
-FileServerVssAgent Server Details ...................................................................... 12
-Abstract Data Model .................................................................................... 12
-Global.................................................................................................. 13
-Per ShadowCopySet .............................................................................. 13
-Per ShadowCopy ................................................................................... 13
-Per MappedShare .................................................................................. 13
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-GetSupportedVersion (Opnum 0) ............................................................ 15
-3.1.4.1
-SetContext (Opnum 1) .......................................................................... 16
-3.1.4.2
-StartShadowCopySet (Opnum 2) ............................................................ 17
-3.1.4.3
-AddToShadowCopySet (Opnum 3) .......................................................... 18
-3.1.4.4
-CommitShadowCopySet (Opnum 4) ........................................................ 19
-3.1.4.5
-ExposeShadowCopySet (Opnum 5) ......................................................... 21
-3.1.4.6
-RecoveryCompleteShadowCopySet (Opnum 6) ......................................... 22
-3.1.4.7
-AbortShadowCopySet (Opnum 7) ............................................................ 23
-3.1.4.8
-IsPathSupported (Opnum 8) ................................................................... 24
-3.1.4.9
-3.1.4.10
-IsPathShadowCopied (Opnum 9) ............................................................. 24
-3.1.4.11  GetShareMapping (Opnum 10) ............................................................... 26
-3.1.4.12  DeleteShareMapping (Opnum 11) ........................................................... 27
-PrepareShadowCopySet (Opnum 12) ....................................................... 28
-3.1.4.13
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-FileServerVssAgent Client Details ....................................................................... 30
-Abstract Data Model .................................................................................... 30
-Global.................................................................................................. 30
-
-3.1.5
-3.1.6
-
-3.2.1.1
-
-3.2.1
-
-3.2
-
-[MS-FSRVP] - v20241119
-File Server Remote VSS Protocol
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-3 / 48
-
-3.2.1.2
-3.2.1.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-
-3.2.4.2.1
-3.2.4.2.2
-
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-3.2.4.7
-3.2.4.8
-3.2.4.9
-
-3.2.5
-3.2.6
-
-Per ShadowCopySet .............................................................................. 30
-Per ShadowCopy ................................................................................... 30
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-Application Queries Shadow Copy Support for a Share ............................... 31
-Application Requests Shadow Copy Preparation For a Share ....................... 31
-Starting a Shadow Copy Set ............................................................. 32
-Adding Shadow Copies to the Shadow Copy Set .................................. 33
-Application Requests Committing a Shadow Copy Set ................................ 33
-Application Requests Exposing a Shadow Copy Set .................................... 34
-Application Updates Recovery Status of a Shadow Copy Set ....................... 34
-Application Aborts a Shadow Copy Set ..................................................... 34
-Application Queries Shadow Copy Information of a Share ........................... 35
-Application Requests Deleting Shadow Copy Of a Share ............................. 35
-Application Requests Shutdown of Client .................................................. 36
-Timer Events .............................................................................................. 36
-Other Local Events ...................................................................................... 36
-
-4  Protocol Examples ................................................................................................. 37
-Shadow Copy Preparation ................................................................................. 37
-Shadow Copy Creation ...................................................................................... 38
-Shadow Copy Deletion ...................................................................................... 39
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 40
-Security Considerations for Implementers ........................................................... 40
-Index of Security Parameters ............................................................................ 40
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 41
-
-7  Appendix B: Product Behavior ............................................................................... 43
-
-8  Change Tracking .................................................................................................... 45
-
-9  Index ..................................................................................................................... 46
-
-[MS-FSRVP] - v20241119
-File Server Remote VSS Protocol
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-4 / 48
-
-1  Introduction
+## 1 Introduction
 
 The File Server Remote VSS Protocol (FSRVP) is a remote procedure call (RPC)-based protocol that is
 used for creating shadow copies of file shares on a remote computer. This protocol facilitates the
@@ -451,7 +332,7 @@ applications storing data on network file shares.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -511,7 +392,8 @@ Release: November 19, 2024
 
 5 / 48
 
-volume shadow copy service (VSS): A service that coordinates the actions required to create a
+
+volume shadow copy service (VSS): A service that coordinates the actions required to create a
 consistent snapshot of backup data without affecting the running of the application that is using
 the data.
 
@@ -520,14 +402,14 @@ VSS writer: A component of an application that guarantees a consistent data to b
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -555,12 +437,12 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-SHADOW] Microsoft Corporation, "Volume Shadow Copy Service",
 http://msdn.microsoft.com/en-us/library/bb968832(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The File Server Remote VSS Protocol is designed to remotely create shadow copies of file shares
 hosted on a file server. This facilitates applications hosting their data on a file server to back up and
@@ -576,23 +458,24 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on RPC and SMB for its transport. This protocol uses RPC over named pipes, as
 specified in section 2.1. Named pipes use the SMB protocols, as specified in [MS-CIFS], [MS-SMB],
 and [MS-SMB2].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The File Server Remote VSS Protocol is an RPC interface and, as a result, has the prerequisites that
 are described in [MS-RPCE] section 1.5 as being common to RPC interfaces.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The File Server Remote VSS Protocol is applicable in environments in which shadow-copy-aware
 applications store or manage data on remote file shares.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning in the following areas:
 
@@ -603,11 +486,11 @@ Protocol Versions: This protocol currently supports one version. The operations 
 the minimum and maximum versions supported by server through the RPC method
 GetSupportedVersion (Opnum 0).
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -632,9 +515,10 @@ Release: November 19, 2024
 
 7 / 48
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The RPC methods that the File Server Remote VSS Protocol exposes are available on one endpoint:
 
@@ -649,7 +533,7 @@ underlying RPC protocol to retrieve the identity of the caller that made the met
 [MS-RPCE] section 3.3.3.4.3. The server SHOULD use this identity to perform method-specific access
 checks as specified in section 3.1.4.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types defined in [C706] and [MS-RPCE], the data types that follow are defined
 in the Microsoft Interface Definition Language (MIDL) specification for this RPC interface.
@@ -678,7 +562,7 @@ LPWSTR
 
 [MS-DTYP] section 2.2.36
 
-2.2.1  Structures
+#### 2.2.1 Structures
 
 Structure name
 
@@ -689,7 +573,7 @@ FSSAGENT_SHARE_MAPPING_1  2.2.1.1
 The structure used to represent the mapping of a file share to its
 shadow copy in protocol version 1.
 
-2.2.1.1  FSSAGENT_SHARE_MAPPING_1
+##### 2.2.1.1 FSSAGENT_SHARE_MAPPING_1
 
 This structure contains the mapping information for a file share to its shadow copy.
 
@@ -708,7 +592,8 @@ Release: November 19, 2024
 
 8 / 48
 
-ShadowCopySetId:  The GUID of the shadow copy set.
+
+ShadowCopySetId:  The GUID of the shadow copy set.
 
 ShadowCopyId:  The GUID of the shadow copy.
 
@@ -720,9 +605,9 @@ identified by ShareNameUNC, in UNC format.
 CreationTimestamp:  The time at which the shadow copy of the share is created. This MUST be a
 64-bit integer value containing the number of 100-nanosecond intervals since January 1, 1601 (UTC).
 
-2.2.2  Constants
+#### 2.2.2 Constants
 
-2.2.2.1  SHADOW_COPY_ATTRIBUTES
+##### 2.2.2.1 SHADOW_COPY_ATTRIBUTES
 
 The following table lists the valid values for the attributes of a shadow copy.
 
@@ -765,7 +650,7 @@ contents between the ExposeShadowCopySet and
 RecoveryCompleteShadowCopySet operations, after which the shadow copy
 becomes and remains read-only.
 
-2.2.2.2  CONTEXT_VALUES
+##### 2.2.2.2 CONTEXT_VALUES
 
 The context of a shadow copy is a combination of zero or more attribute values, as defined in section
 2.2.2.1. The following table lists the valid context values for the shadow copy operations. The client
@@ -796,7 +681,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -826,7 +712,7 @@ ATTR_PERSISTENT
 
 ATTR_NO_AUTO_RELEASE
 
-2.2.2.3  SHADOW_COPY_COMPATIBILITY_VALUES
+##### 2.2.2.3 SHADOW_COPY_COMPATIBILITY_VALUES
 
 The following table lists the valid values for shadow copy compatibility.
 
@@ -848,7 +734,7 @@ DISABLE_CONTENTINDEX
 The provider managing the shadow copies for the specified path does not support
 indexing on the file store containing the path.
 
-2.2.2.4  FSRVP_VERSION_VALUES
+##### 2.2.2.4 FSRVP_VERSION_VALUES
 
 The following table lists the valid values for the protocol versions supported by a server.
 
@@ -862,7 +748,7 @@ Version 1 of the FSRVP protocol.
 
 (0x00000001)
 
-2.2.3  Unions
+#### 2.2.3 Unions
 
 Union name
 
@@ -873,7 +759,7 @@ FSSAGENT_SHARE_MAPPING  2.2.3.1
 This union contains information mapping a share to its shadow copy
 based on the level value.
 
-2.2.3.1  FSSAGENT_SHARE_MAPPING
+##### 2.2.3.1 FSSAGENT_SHARE_MAPPING
 
 The FSSAGENT_SHARE_MAPPING union contains mapping information for a share to its shadow
 copy based on the level value.
@@ -885,7 +771,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- typedef [switch_type(unsigned long)] union _FSSAGENT_SHARE_MAPPING {
+
+ typedef [switch_type(unsigned long)] union _FSSAGENT_SHARE_MAPPING {
      [case(1)]
          PFSSAGENT_SHARE_MAPPING_1 ShareMapping1;
      [default]
@@ -895,7 +782,7 @@ Release: November 19, 2024
 ShareMapping1:  A pointer to an FSSAGENT_SHARE_MAPPING_1 structure, as specified in
 section 2.2.1.1.
 
-2.2.4  Error Codes
+#### 2.2.4 Error Codes
 
 The following error codes are specific to File Server Remote VSS Protocol (FSRVP) in addition to the
 HRESULT values as defined in [MS-ERREF] section 2.1.
@@ -971,11 +858,12 @@ Release: November 19, 2024
 
 11 / 48
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-FSRVP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The methods in this RPC interface MUST return ZERO (0x00000000) or a nonerror HRESULT (as
 specified in [MS-ERREF] section 2.1) to indicate success or a nonzero error code as specified in section
@@ -998,13 +886,13 @@ file server and interacts with the local shadow copy utility to respond to clien
 processing behavior is outlined in section 3.1 and the client's processing behavior is outlined in section
 3.2.<1>
 
-3.1  FileServerVssAgent Server Details
+### 3.1 FileServerVssAgent Server Details
 
 The server implementing this interface responds to the client's requests as specified in section 3.1.4.
 Upon the client's request, the server initiates a shadow copy set (see section 3.1.1.2) and performs
 shadow copy operations on that set.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to facilitate the explanation of
@@ -1018,7 +906,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-3.1.1.1  Global
+
+##### 3.1.1.1 Global
 
 The server implements the following properties:
 
@@ -1044,7 +933,7 @@ for shadow copy operation.
 ShadowCopyClientRetryCount: A numeric value that indicates the count of SetContext retry
 attempts.
 
-3.1.1.2  Per ShadowCopySet
+##### 3.1.1.2 Per ShadowCopySet
 
 The ShadowCopySet element consists of the following properties:
 
@@ -1058,7 +947,7 @@ values defined in section 2.2.2.2.
 
 ShadowCopyList: A list of ShadowCopy objects, as specified in section 3.1.1.3.
 
-3.1.1.3  Per ShadowCopy
+##### 3.1.1.3 Per ShadowCopy
 
 The ShadowCopy element consists of the following properties:
 
@@ -1073,7 +962,7 @@ shadow copy.
 ShareMappingList: A list of ShareMapping objects, as specified in section 3.1.1.4. Each entry in
 the list is for a share mapped to this shadow copy.
 
-3.1.1.4  Per MappedShare
+##### 3.1.1.4 Per MappedShare
 
 The MappedShare element consists of the following properties:
 
@@ -1084,20 +973,21 @@ Release: November 19, 2024
 
 13 / 48
 
-ShareName: The UNC name of the file share.
+
+ShareName: The UNC name of the file share.
 
 ShadowCopyShareName: The name of the share exposing the shadow copy of the base share
 (identified by ShareName).
 
 IsExposed: A Boolean value indicating whether the shadow copy is exposed.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Message Sequence Timer: This timer controls the amount of time the server waits between
 successive messages received from the client. The values taken by this timer for individual messages
 are specified in section 3.1.4.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST initialize ContextSet to FALSE.
 
@@ -1114,7 +1004,7 @@ on a local configuration policy.<2>
 The server MUST initialize MaxServerVersion to one of the values specified in section 2.2.2.4, based
 on a local configuration policy.<3>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This interface defines the following methods:
 
@@ -1172,7 +1062,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Method
+
+Method
 
 Description
 
@@ -1245,7 +1136,7 @@ call with E_INVALIDARG.
 For all methods, when the server returns ZERO to the client, the server MUST persist all state
 information into an implementation-specific configuration store.
 
-3.1.4.1  GetSupportedVersion (Opnum 0)
+##### 3.1.4.1 GetSupportedVersion (Opnum 0)
 
 The GetSupportedVersion method is invoked by the client to get the minimum and maximum
 versions of the protocol that the server supports.
@@ -1261,7 +1152,8 @@ Release: November 19, 2024
 
 15 / 48
 
-MinVersion:  The minimum version of the protocol that the server supports.
+
+MinVersion:  The minimum version of the protocol that the server supports.
 
 MaxVersion:  The maximum version of the protocol that the server supports.
 
@@ -1283,7 +1175,7 @@ E_ACCESSDENIED
 The server MUST set MinVersion to the global MinServerVersion, MaxVersion to the global
 MaxServerVersion, and MUST return ZERO to the caller.
 
-3.1.4.2  SetContext (Opnum 1)
+##### 3.1.4.2 SetContext (Opnum 1)
 
 The SetContext method sets the context for the current shadow copy creation process.
 
@@ -1348,7 +1240,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-  Remove the ShadowCopySet if a ShadowCopySet exists in the
+
+  Remove the ShadowCopySet if a ShadowCopySet exists in the
 
 GlobalShadowCopySetTable where ShadowCopySet.Status is not equal to "Recovered".
 
@@ -1373,7 +1266,7 @@ The server MUST update CurrentContext to Context, set ContextSet to TRUE, start 
 Sequence Timer (as specified in section 3.1.2) with a timeout value of 180 seconds, and return ZERO
 to the caller.
 
-3.1.4.3  StartShadowCopySet (Opnum 2)
+##### 3.1.4.3 StartShadowCopySet (Opnum 2)
 
 The StartShadowCopySet method is called by the client to initiate a new shadow copy set for
 shadow copy creation.<6>
@@ -1432,7 +1325,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The server MUST create a new ShadowCopySet, as specified in section 3.1.1.2, with the following
+
+The server MUST create a new ShadowCopySet, as specified in section 3.1.1.2, with the following
 values, and insert it into GlobalShadowCopySetTable:
 
   ShadowCopySetId is set to a unique GUID generated by the server.
@@ -1446,7 +1340,7 @@ values, and insert it into GlobalShadowCopySetTable:
 The server MUST set pShadowCopySetId to ShadowCopySetId, start the Message Sequence Timer
 specified in section 3.1.2 with a timeout value of 180 seconds, and return ZERO to the caller.
 
-3.1.4.4  AddToShadowCopySet (Opnum 3)
+##### 3.1.4.4 AddToShadowCopySet (Opnum 3)
 
 The AddToShadowCopySet method adds a share to an existing shadow copy set.
 
@@ -1521,7 +1415,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The server MUST verify that the share identified by ShareName exists on the server, in an
+
+The server MUST verify that the share identified by ShareName exists on the server, in an
 implementation-specific manner. If the share does not exist, the server MUST fail the call with
 FSRVP_E_OBJECT_NOT_FOUND.
 
@@ -1574,7 +1469,7 @@ The server MUST set pShadowCopyId to ShadowCopy.ShadowCopyId, start the Message 
 Timer (as specified in section 3.1.2) with a time-out value of 1800 seconds, and return ZERO to the
 caller.
 
-3.1.4.5  CommitShadowCopySet (Opnum 4)
+##### 3.1.4.5 CommitShadowCopySet (Opnum 4)
 
 The CommitShadowCopySet method is invoked by the client to commit a given shadow copy set.
 
@@ -1590,7 +1485,8 @@ Release: November 19, 2024
 
 19 / 48
 
-hBinding: An RPC binding handle (as defined in [C706]).
+
+hBinding: An RPC binding handle (as defined in [C706]).
 
 ShadowCopySetId: The GUID of the shadow copy set, assigned by the server.
 
@@ -1681,7 +1577,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-3.1.4.6  ExposeShadowCopySet (Opnum 5)
+
+##### 3.1.4.6 ExposeShadowCopySet (Opnum 5)
 
 The ExposeShadowCopySet method exposes all the shadow copies in a shadow copy set as file
 shares on the file server.
@@ -1771,7 +1668,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 If the ATTR_AUTO_RECOVERY bit is set in ShadowCopySet.Context, enable read-write mode for
 the exposed shadow copy share until a RecoveryCompleteShadowCopySet message is
@@ -1799,7 +1697,7 @@ If the expose operation returns an error within TimeOutInMilliseconds, the serve
 Message Sequence Timer as specified in section 3.1.2 with a timeout value of 180 seconds, and fail
 the call with the same error code.
 
-3.1.4.7  RecoveryCompleteShadowCopySet (Opnum 6)
+##### 3.1.4.7 RecoveryCompleteShadowCopySet (Opnum 6)
 
 The RecoveryCompleteShadowCopySet method is invoked by the client to indicate to the server
 that the data associated with the file shares in a shadow copy set have been recovered by the VSS
@@ -1857,7 +1755,8 @@ Release: November 19, 2024
 
 22 / 48
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1878,7 +1777,7 @@ ShadowCopy.ShadowCopyId to read-only.
 The server MUST update ShadowCopySet.Status to "Recovered", set ContextSet to FALSE, set
 ShadowCopyClientAddress to NULL, and return ZERO to the caller.
 
-3.1.4.8  AbortShadowCopySet (Opnum 7)
+##### 3.1.4.8 AbortShadowCopySet (Opnum 7)
 
 The AbortShadowCopySet method is invoked by the client to delete a given shadow copy set on
 the server.
@@ -1940,11 +1839,12 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The server MUST delete ShadowCopySet from GlobalShadowCopySetTable and free the
+
+The server MUST delete ShadowCopySet from GlobalShadowCopySetTable and free the
 ShadowCopySet object. The server MUST set ContextSet to FALSE, set
 ShadowCopyClientAddress to NULL, and return ZERO to the caller.
 
-3.1.4.9  IsPathSupported (Opnum 8)
+##### 3.1.4.9 IsPathSupported (Opnum 8)
 
 The IsPathSupported method is invoked by the client to query if a given share is supported by the
 server for shadow copy operations.
@@ -2007,9 +1907,9 @@ The server MUST set OwnerMachineName to the name of the server which it requires
 connect to create shadow copies for the specified ShareName. The server MUST set
 SupportedByThisProvider to TRUE and return ZERO to the caller.
 
-3.1.4.10
+##### 3.1.4.10 IsPathShadowCopied (Opnum 9)
 
-IsPathShadowCopied (Opnum 9)
+
 
 The IsPathShadowCopied method is invoked by the client to query if any shadow copy for a share
 already exists.
@@ -2021,7 +1921,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- DWORD IsPathShadowCopied(
+
+ DWORD IsPathShadowCopied(
          [in] handle_t hBinding,
          [in] [string] LPWSTR ShareName,
          [out] BOOL* ShadowCopyPresent,
@@ -2103,9 +2004,10 @@ Release: November 19, 2024
 
 25 / 48
 
-3.1.4.11
 
-GetShareMapping (Opnum 10)
+##### 3.1.4.11 GetShareMapping (Opnum 10)
+
+
 
 The GetShareMapping method is invoked by the client to get the shadow copy information on a
 given file share on the server after the shadow copy of the share has been exposed.
@@ -2185,7 +2087,8 @@ Release: November 19, 2024
 
 26 / 48
 
-The server MUST look up the ShadowCopy in ShadowCopySet.ShadowCopyList where
+
+The server MUST look up the ShadowCopy in ShadowCopySet.ShadowCopyList where
 ShadowCopy.ShadowCopyId matches ShadowCopyId. If no entry is found, the server MUST fail the
 call with E_INVALIDARG.
 
@@ -2213,9 +2116,9 @@ ShareMapping1.ShadowCopyShareName is set to NULL.
 The server MUST start the Message Sequence Timer as specified in section 3.1.2 with a timeout value
 of 1800 seconds, and return ZERO to the caller.
 
-3.1.4.12
+##### 3.1.4.12 DeleteShareMapping (Opnum 11)
 
-DeleteShareMapping (Opnum 11)
+
 
 The DeleteShareMapping method deletes the mapping of a share's shadow copy from a shadow
 copy set.
@@ -2268,7 +2171,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2310,9 +2214,9 @@ ShadowCopySet from GlobalShadowCopySetTable and free the ShadowCopySet object.
 
 The server MUST return ZERO to the caller.
 
-3.1.4.13
+##### 3.1.4.13 PrepareShadowCopySet (Opnum 12)
 
-PrepareShadowCopySet (Opnum 12)
+
 
 The PrepareShadowCopySet method is invoked by the client to ensure that the server has
 completed preparation for creating the shadow copy set.
@@ -2341,7 +2245,8 @@ Release: November 19, 2024
 
 28 / 48
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -2409,14 +2314,14 @@ If the shadow copy preparation operation completes within TimeOutInMilliseconds,
 start the Message Sequence Timer as specified in section 3.1.2 with a timeout value of 1800 seconds,
 and return ZERO to the caller.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 Message Sequence Timer elapses: When the Message Sequence Timer elapses, the server MUST
 delete the ShadowCopySet in the GlobalShadowCopySetTable where ShadowCopySet.Status is
 not equal to "Recovered", ContextSet MUST be set to FALSE, ShadowCopyClientAddress MUST be
 set to NULL, and the ShadowCopySet object MUST be freed.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -2427,16 +2332,17 @@ Release: November 19, 2024
 
 29 / 48
 
-3.2  FileServerVssAgent Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 FileServerVssAgent Client Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to facilitate the explanation of
 how the protocol behaves. This specification does not mandate that implementations adhere to this
 model as long as their external behaviors are consistent with that described in this specification.
 
-3.2.1.1  Global
+##### 3.2.1.1 Global
 
 The client implements the following properties:
 
@@ -2457,7 +2363,7 @@ expose operation on the server.
 
 ClientVersion: The maximum protocol version supported by the client.
 
-3.2.1.2  Per ShadowCopySet
+##### 3.2.1.2 Per ShadowCopySet
 
 The ShadowCopySet element consists of the following properties:
 
@@ -2475,7 +2381,7 @@ defined in section 2.2.2.2.
 
 ShadowCopyList: A list of ShadowCopy objects, as specified in section 3.2.1.3.
 
-3.2.1.3  Per ShadowCopy
+##### 3.2.1.3 Per ShadowCopy
 
 The ShadowCopy element consists of the following properties:
 
@@ -2492,20 +2398,21 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-ShareName: The name of the share in UNC format.
+
+ShareName: The name of the share in UNC format.
 
 ExposedName: The exposed name of the shadow copy associated with this share.
 
 CreationTimeStamp: The timestamp containing the time that the client initiated the creation of this
 shadow copy.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The FSRVP client uses non-default behavior for the RPC Call Timeout timer defined in [MS-RPCE]
 section 3.3.2.2.2. The timer value that the client uses is 180,000 milliseconds; this value applies to all
 the method calls.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST set CurrentContext to zero.
 
@@ -2523,12 +2430,12 @@ The client MUST set ExposeTimeout to an implementation-specific value.<13>
 The client MUST set ClientVersion to one of the values specified in section 2.2.2.4, based on a local
 configuration policy.<14>
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 After the FSRVP client is initialized, it is subsequently driven by the higher-layer events described in
 the following sections.
 
-3.2.4.1  Application Queries Shadow Copy Support for a Share
+##### 3.2.4.1 Application Queries Shadow Copy Support for a Share
 
 The caller provides the following:
 
@@ -2546,7 +2453,7 @@ by the caller.
 The client MUST return the value of the parameters SupportedByThisProvider and
 OwnerMachineName, which are returned by the server, to the calling application.
 
-3.2.4.2  Application Requests Shadow Copy Preparation For a Share
+##### 3.2.4.2 Application Requests Shadow Copy Preparation For a Share
 
 The caller provides the following:
 
@@ -2557,7 +2464,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-  ShareName in UNC format.
+
+  ShareName in UNC format.
 
   Context: The set of context values as specified in section 2.2.2.2.
 
@@ -2582,7 +2490,7 @@ ShareName and ShadowCopySet.ShadowCopySetId matches the caller-supplied
 ShadowCopySetId. If an entry is found, the client processing MUST be continued from section
 3.2.4.2.2. If no entry is found, the client processing MUST be continued from section 3.2.4.2.1.
 
-3.2.4.2.1 Starting a Shadow Copy Set
+###### 3.2.4.2.1 Starting a Shadow Copy Set
 
 The client MUST call the RPC IsPathSupported method, with ShareName set to the ShareName
 supplied by the caller. If the server returns FALSE in the SupportedByThisProvider parameter, the
@@ -2627,7 +2535,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-3.2.4.2.2 Adding Shadow Copies to the Shadow Copy Set
+
+###### 3.2.4.2.2 Adding Shadow Copies to the Shadow Copy Set
 
 If ShadowCopySet.Status is not "Started" or "Added", the client MUST return an implementation-
 defined error code to the caller.
@@ -2671,7 +2580,7 @@ If the server returns an error, the client MUST return the same error code to th
 
 The client MUST return ZERO to the caller.
 
-3.2.4.3  Application Requests Committing a Shadow Copy Set
+##### 3.2.4.3 Application Requests Committing a Shadow Copy Set
 
 The caller provides the following:
 
@@ -2696,7 +2605,8 @@ Release: November 19, 2024
 
 33 / 48
 
-3.2.4.4  Application Requests Exposing a Shadow Copy Set
+
+##### 3.2.4.4 Application Requests Exposing a Shadow Copy Set
 
 The caller provides the following:
 
@@ -2724,7 +2634,7 @@ code to the caller. If the server returns ZERO, the client MUST do the following
 
   Set ShadowCopy.CreationTimeStamp to ShareMapping.CreationTimestamp.
 
-3.2.4.5  Application Updates Recovery Status of a Shadow Copy Set
+##### 3.2.4.5 Application Updates Recovery Status of a Shadow Copy Set
 
 The caller provides the following:
 
@@ -2742,7 +2652,7 @@ set to ShadowCopySet.ServerShadowCopySetId. If the server returns an error, the 
 return the same error code to the caller. If the server returns ZERO, the client MUST set
 ShadowCopySet.Status to "Recovered" and return ZERO to the caller.
 
-3.2.4.6  Application Aborts a Shadow Copy Set
+##### 3.2.4.6 Application Aborts a Shadow Copy Set
 
 The caller provides the following:
 
@@ -2763,10 +2673,11 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-ShadowCopySet from GlobalShadowCopySetTable, free the ShadowCopySet object, and return
+
+ShadowCopySet from GlobalShadowCopySetTable, free the ShadowCopySet object, and return
 ZERO to the caller.
 
-3.2.4.7  Application Queries Shadow Copy Information of a Share
+##### 3.2.4.7 Application Queries Shadow Copy Information of a Share
 
 The caller provides the following:
 
@@ -2787,7 +2698,7 @@ MUST return an implementation-defined error to the caller.
 The client MUST generate a handle to the ShadowCopy object in an implementation-specific manner
 and then return the handle to the caller.
 
-3.2.4.8  Application Requests Deleting Shadow Copy Of a Share
+##### 3.2.4.8 Application Requests Deleting Shadow Copy Of a Share
 
 The caller provides the following:
 
@@ -2835,7 +2746,8 @@ Release: November 19, 2024
 
 35 / 48
 
-ShadowCopy.ShadowCopyId matches the caller-supplied Identifier. If no entry is found, the
+
+ShadowCopy.ShadowCopyId matches the caller-supplied Identifier. If no entry is found, the
 client MUST return an implementation-defined error to the caller.
 
 
@@ -2847,7 +2759,7 @@ server returns an error, the client MUST return the same error code to the calle
 returns ZERO, the client MUST remove ShadowCopy from ShadowCopySet.ShadowCopyList,
 free ShadowCopy object and return ZERO to the caller.
 
-3.2.4.9  Application Requests Shutdown of Client
+##### 3.2.4.9 Application Requests Shutdown of Client
 
 For each ShadowCopySet in GlobalShadowCopySetTable where the ShadowCopySet.Status is
 not "Recovered", the client MUST call the RPC AbortShadowCopySet method, with
@@ -2855,12 +2767,12 @@ ShadowCopySetId set to ShadowCopySet.ServerShadowCopySetId.
 
 The client MUST close the RPC connection to the server and release the binding handle.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 Upon the expiration of RPC Call Timeout Timer, as specified in section 3.2.2, the client MUST close the
 RPC connection to the server and release the binding handle.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -2871,13 +2783,14 @@ Release: November 19, 2024
 
 36 / 48
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-FSRVP].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Shadow Copy Preparation
+### 4.1 Shadow Copy Preparation
 
 The following diagram illustrates the protocol message sequence for preparing a shadow copy set on
 the server.
@@ -2907,7 +2820,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-FSRVP].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2927,7 +2841,7 @@ server.
 
 12. The server processes the method and returns ZERO.
 
-4.2  Shadow Copy Creation
+### 4.2 Shadow Copy Creation
 
 The following diagram illustrates the protocol message sequence for committing a shadow copy set
 on the server.
@@ -2951,7 +2865,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-FSRVP].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2970,7 +2885,7 @@ associated with the file shares in a shadow copy set has been recovered by the V
 
 complete and the shadow copy is sealed as read-only.
 
-4.3  Shadow Copy Deletion
+### 4.3 Shadow Copy Deletion
 
 The following diagram illustrates the protocol message sequence for deleting a shadow copy on the
 server.
@@ -2996,15 +2911,16 @@ Release: November 19, 2024
 
 39 / 48
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol allows any user to connect to the server; therefore, any security weakness in the server
 implementation could be exploitable. It is recommended that the server implementation enforce
 security on each method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol allows any user to establish a connection to the RPC server as specified in section 2.1.
 
@@ -3015,7 +2931,8 @@ Release: November 19, 2024
 
 40 / 48
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL
 found in [MS-DTYP] section 5. The syntax uses the IDL syntax extensions defined in [MS-RPCE]
@@ -3089,7 +3006,8 @@ Release: November 19, 2024
 
 41 / 48
 
-     DWORD AbortShadowCopySet (
+
+     DWORD AbortShadowCopySet (
      [in] handle_t hBinding,
      [in] GUID ShadowCopySetId);
 
@@ -3132,7 +3050,8 @@ Release: November 19, 2024
 
 42 / 48
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3201,7 +3120,8 @@ File Server Remote VSS Protocol
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-
+
+
 
 
 
@@ -3257,7 +3177,8 @@ Release: November 19, 2024
 
 44 / 48
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -3269,7 +3190,8 @@ Release: November 19, 2024
 
 45 / 48
 
-9  Index
+
+## 9 Index
 A
 
 AbortShadowCopySet (Opnum 7) method 23
@@ -3449,7 +3371,8 @@ Release: November 19, 2024
 
 46 / 48
 
-   shadow copy creation 38
+
+   shadow copy creation 38
    shadow copy deletion 39
    shadow copy preparation 37
 ExposeShadowCopySet (Opnum 5) method 21
@@ -3602,7 +3525,8 @@ Sequencing rules
 
 47 / 48
 
-   client 36
+
+   client 36
       FileServerVssAgent 36
    server 29
       FileServerVssAgent 29

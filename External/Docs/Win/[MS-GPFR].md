@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 34
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 34
 
-Date
+
+Date
 
 Revision
 History
@@ -528,7 +530,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -569,181 +572,77 @@ Release: April 23, 2024
 
 4 / 34
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Folder Redirection Protocol Overview](#132-folder-redirection-protocol-overview)
+    - [1.3.3 Folder Redirection Administrative-Side Plug-In](#133-folder-redirection-administrative-side-plug-in)
+    - [1.3.4 Folder Redirection Client-Side Plug-In](#134-folder-redirection-client-side-plug-in)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Folder Redirection Protocol Version Zero Configuration Data](#221-folder-redirection-protocol-version-zero-configuration-data)
+      - [2.2.1.1 Interpreting the Redirection Options Value](#2211-interpreting-the-redirection-options-value)
+      - [2.2.1.2 Per-Profile Sections](#2212-per-profile-sections)
+    - [2.2.2 Folder Redirection Protocol Version One Configuration Data](#222-folder-redirection-protocol-version-one-configuration-data)
+      - [2.2.2.1 Folder Redirection Section](#2221-folder-redirection-section)
+        - [2.2.2.1.1 Single-SID Value for the GUID-Groups Pair](#22211-single-sid-value-for-the-guid-groups-pair)
+        - [2.2.2.1.2 List-of-SID Values for the GUID-Groups Pair](#22212-list-of-sid-values-for-the-guid-groups-pair)
+      - [2.2.2.2 Per-GUID Section](#2222-per-guid-section)
+        - [2.2.2.2.1 Flags Key](#22221-flags-key)
+        - [2.2.2.2.2 FullPath Key](#22222-fullpath-key)
+        - [2.2.2.2.3 ParentFolder Key](#22223-parentfolder-key)
+        - [2.2.2.2.4 RelativePath Key](#22224-relativepath-key)
+        - [2.2.2.2.5 ExcludeFolders Key](#22225-excludefolders-key)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Folder Redirection Administrative-Side Plug-In Details](#31-folder-redirection-administrative-side-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Extraneous Data Ignored](#3141-extraneous-data-ignored)
+      - [3.1.4.2 Using the Protocol Versions](#3142-using-the-protocol-versions)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Folder Redirection Client-Side Plug-in Details](#32-folder-redirection-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Ignoring Extraneous Data](#3251-ignoring-extraneous-data)
+      - [3.2.5.2 Using the Protocol Versions](#3252-using-the-protocol-versions)
+      - [3.2.5.3 Using Redirection Values](#3253-using-redirection-values)
+      - [3.2.5.4 Unspecified Redirection](#3254-unspecified-redirection)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Folder Redirection Protocol Version Zero Configuration Data](#41-folder-redirection-protocol-version-zero-configuration-data)
+  - [4.2 Folder Redirection Protocol Version One Configuration Data](#42-folder-redirection-protocol-version-one-configuration-data)
+  - [4.3 Version One Configuration File Example](#43-version-one-configuration-file-example)
+  - [4.4 Version Zero Configuration File Example](#44-version-zero-configuration-file-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Background ................................................................................................. 9
-Folder Redirection Protocol Overview............................................................. 10
-Folder Redirection Administrative-Side Plug-In ............................................... 11
-Folder Redirection Client-Side Plug-In ........................................................... 11
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Folder Redirection Protocol Version Zero Configuration Data ............................ 14
-Interpreting the Redirection Options Value ............................................... 15
-Per-Profile Sections ............................................................................... 15
-Folder Redirection Protocol Version One Configuration Data ............................. 16
-Folder Redirection Section ...................................................................... 16
-Single-SID Value for the GUID-Groups Pair ......................................... 16
-List-of-SID Values for the GUID-Groups Pair ....................................... 16
-Per-GUID Section .................................................................................. 16
-Flags Key ....................................................................................... 17
-FullPath Key ................................................................................... 19
-ParentFolder Key ............................................................................. 19
-RelativePath Key ............................................................................. 19
-ExcludeFolders Key .......................................................................... 19
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-
-2.2.2.1.1
-2.2.2.1.2
-
-2.2.2.2
-
-3.1
-
-3.1.5
-3.1.6
-
-3.1.4.1
-3.1.4.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 20
-Folder Redirection Administrative-Side Plug-In Details .......................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Extraneous Data Ignored ....................................................................... 21
-Using the Protocol Versions .................................................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Folder Redirection Client-Side Plug-in Details ....................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Process Group Policy ............................................................................. 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Ignoring Extraneous Data ...................................................................... 23
-Using the Protocol Versions .................................................................... 23
-Using Redirection Values ........................................................................ 24
-Unspecified Redirection .......................................................................... 24
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.5
-
-3.2
-
-[MS-GPFR] - v20240423
-Group Policy: Folder Redirection Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 34
-
-3.2.6
-3.2.7
-
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-4  Protocol Examples ................................................................................................. 25
-Folder Redirection Protocol Version Zero Configuration Data .................................. 25
-Folder Redirection Protocol Version One Configuration Data ................................... 26
-Version One Configuration File Example .............................................................. 26
-Version Zero Configuration File Example ............................................................. 27
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 29
-
-7  Change Tracking .................................................................................................... 32
-
-8  Index ..................................................................................................................... 33
-
-[MS-GPFR] - v20240423
-Group Policy: Folder Redirection Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 34
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: Folder Redirection Protocol Extension allows an administrator to relocate certain file
 system folders, called user profile folders, to different paths such as a shared network location.
@@ -751,7 +650,7 @@ system folders, called user profile folders, to different paths such as a shared
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -813,7 +712,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-these terms does not imply or require a specific algorithm or mechanism to generate the value.
+
+these terms does not imply or require a specific algorithm or mechanism to generate the value.
 Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
@@ -880,14 +780,15 @@ Release: April 23, 2024
 
 8 / 34
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -907,16 +808,16 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [HOWARD] Howard, M., "Writing Secure Code", Microsoft Press, 2002, ISBN: 0735617228.
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the Group Policy: Folder Redirection Protocol Extension, which conveys an
 administrator's policy for redirecting user profile folders.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy Protocol, as specified in [MS-GPOL], allows clients to discover and retrieve policy
 settings created by domain administrators. These settings are persisted within Group Policy
@@ -943,11 +844,12 @@ Release: April 23, 2024
 
 9 / 34
 
-A client-side plug-in uses the contents of the GPO to retrieve settings specific to its class in a manner
+
+A client-side plug-in uses the contents of the GPO to retrieve settings specific to its class in a manner
 specific to the class. Once its class-specific settings are retrieved, the client-side plug-in uses those
 settings to perform class-specific processing.
 
-1.3.2  Folder Redirection Protocol Overview
+#### 1.3.2 Folder Redirection Protocol Overview
 
 The Group Policy: Folder Redirection Protocol Extension enables an administrator to redirect the
 location of certain file system folders, called user profile folders, to different paths such as a
@@ -1009,11 +911,12 @@ Release: April 23, 2024
 
 10 / 34
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GPFR].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-1.3.3  Folder Redirection Administrative-Side Plug-In
+#### 1.3.3 Folder Redirection Administrative-Side Plug-In
 
 The Folder Redirection Administrative-Side Plug-in determines (through the Group Policy Protocol, as
 specified in [MS-GPOL]) the path of a file containing the Folder Redirection protocol data. Given the
@@ -1026,7 +929,7 @@ way of the user interface of the plug-in. If the administrator modifies any data
 Administrative-Side Plug-in writes the modified folder redirection protocol configuration data to the
 remote storage location, using SMB as a transport.
 
-1.3.4  Folder Redirection Client-Side Plug-In
+#### 1.3.4 Folder Redirection Client-Side Plug-In
 
 The Folder Redirection Client-Side Plug-in determines (by way of the Group Policy Protocol, as
 specified in [MS-GPOL]) the path of a file containing the folder redirection protocol data. Given the
@@ -1034,7 +937,7 @@ path name, the client-side plug-in retrieves the contents of the file using SMB 
 client-side plug-in parses the configuration data and configures the operating system folder redirection
 subsystem with the directives in the protocol data.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Group Policy: Core Protocol specified in [MS-GPOL] to provide a list of
 applicable GPOs. It also depends on the SMB Protocol, as specified in [MS-SMB], for transmitting
@@ -1042,7 +945,7 @@ Group Policy settings and instructions between the client and the GP server.
 
 Figure 1: Group Policy: Folder Redirection Protocol Extension relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol include those for the Group Policy Protocol as specified in [MS-
 GPOL].
@@ -1059,7 +962,8 @@ Release: April 23, 2024
 
 11 / 34
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The folder redirection protocol is only applicable within the Group Policy Protocol as specified in
 [MS-GPOL].
@@ -1070,7 +974,7 @@ Technology File System (NTFS)-compatible security operations such as testing own
 directory and modifying directory access control lists (ACL). The client folder redirection subsystem
 will fail if the policy uses these flags and the destination server does not provide these operations.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Group Policy: Folder Redirection Protocol Extension does not provide for capability negotiations.
 
@@ -1089,14 +993,14 @@ The Version One format specifies a VersionNumber field designed to allow future 
 protocol, but only a single value of that field is presently defined, and thus Version One of the protocol
 is required to set that field to a constant value.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Folder Redirection Protocol Extension defines a vendor-extensible GUID (as
 specified in [MS-DTYP] section 2.3.4.3)   field for well-known user profile folders. Vendors can
 obtain a value by generating one, according to the standard GUID algorithm, as specified in [C706].
 The current assigned values are shown in section 1.9.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol defines CSE GUID and tool extension GUID values using the assignment algorithm (as
 specified in section 1.8) that refers to the GUID generation algorithm, as specified in [C706]. This
@@ -1128,7 +1032,8 @@ Release: April 23, 2024
 
 12 / 34
 
- Well-known user profile folder GUIDs
+
+ Well-known user profile folder GUIDs
 
 Desktop
 
@@ -1181,9 +1086,10 @@ Release: April 23, 2024
 
 13 / 34
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Folder Redirection Protocol Extension requires the SMB transport with mutual
 authentication, as specified in [MS-GPOL] section 2.1. All messages are exchanged as files, as
@@ -1193,7 +1099,7 @@ administrative-side plug-in MUST use the tool extension GUID.
 The Group Policy Protocol uses this protocol protocol's CSE GUID and tool extension GUID values to
 invoke this protocol only to access GPOs from which messages of this protocol can be generated.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages exchanged in this protocol allow the client to discover settings in the GPOs that instruct
 clients to configure their operating system folder redirection subsystems according to administrator
@@ -1211,7 +1117,7 @@ Augmented Backus-Naur Form (ABNF) non-terminal IniFile, as specified in [MS-GPOL
 The following sections use the terminology sections, keys, and values of that document to specify
 concrete syntax of each message.
 
-2.2.1  Folder Redirection Protocol Version Zero Configuration Data
+#### 2.2.1 Folder Redirection Protocol Version Zero Configuration Data
 
 Version Zero of the protocol uses the SMB transport to copy a file that MUST be named <gpo
 path>\User\Documents & Settings\fdeploy.ini, where <gpo path> is a scoped GPO path. The
@@ -1249,7 +1155,8 @@ Release: April 23, 2024
 
 14 / 34
 
-2.2.1.1  Interpreting the Redirection Options Value
+
+##### 2.2.1.1 Interpreting the Redirection Options Value
 
 The client-side plug-in passes the flags to the underlying operating system folder redirection
 subsystem. Other than the exceptions indicated in the following table with the prescriptive words
@@ -1310,7 +1217,7 @@ redirection had been specified for this user profile folder.<3>
 This flag indicates that if the policy is ever deleted in the future, the folder redirection MUST be
 undone.
 
-2.2.1.2  Per-Profile Sections
+##### 2.2.1.2 Per-Profile Sections
 
 For each redirection options key-value pair present in the Folder Status section with neither the Follow
 Parent Folder nor the Redirection Not Specified flags set, the file MUST contain an additional section,
@@ -1326,7 +1233,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Each Per-Profile Folder section MUST contain zero or more key-value pairs called security group
+
+Each Per-Profile Folder section MUST contain zero or more key-value pairs called security group
 mappings. Each key MUST be the string representation of a security group security identifier (SID)
 (as specified in [MS-DTYP] section 2.4.2.1), and each value MUST be a Universal Naming
 Convention (UNC) path indicating the destination path to which the indicated user profile folder is
@@ -1338,7 +1246,7 @@ mapping that appears in the section.
 Note  The security group SID MUST begin with either a lowercase or uppercase S and MUST be
 treated as case-insensitive by the client-side and administrative-side plug-ins.
 
-2.2.2  Folder Redirection Protocol Version One Configuration Data
+#### 2.2.2 Folder Redirection Protocol Version One Configuration Data
 
 Version One of the protocol uses the SMB transport to copy a file that MUST be named <gpo
 path>\User\Documents & Settings\fdeploy1.ini, where <gpo path> is a scoped GPO path. The
@@ -1355,7 +1263,7 @@ fdeploy1.ini file that contains a version number in the range 100 to 199.
 
 To see an example of a version one configuration file example, please see section 4.3.
 
-2.2.2.1  Folder Redirection Section
+##### 2.2.2.1 Folder Redirection Section
 
 The file MUST contain another section with the SectionID folder redirection. This section MUST
 contain zero or more key-value pairs, called GUID-Groups, in the following format: The key is a string
@@ -1368,17 +1276,17 @@ redirection subsystem, by determining what security group the user belongs to. I
 more than one security group, the client-side plug-in MUST use the first matching GUID-Group that
 appears in the section.
 
-2.2.2.1.1 Single-SID Value for the GUID-Groups Pair
+###### 2.2.2.1.1 Single-SID Value for the GUID-Groups Pair
 
 In this form, the value of the GUID-Groups pair MUST be the string representation of the security
 descriptor SID of a security group.
 
-2.2.2.1.2 List-of-SID Values for the GUID-Groups Pair
+###### 2.2.2.1.2 List-of-SID Values for the GUID-Groups Pair
 
 In this form, the value MUST be a semicolon-delimited, whitespace-free list of n security descriptor
 SIDs. The meaning of this form MUST be interpreted exactly as n separate GUID-Groups pairs.
 
-2.2.2.2  Per-GUID Section
+##### 2.2.2.2 Per-GUID Section
 
 For each GUID-Groups pair present in the Folder Redirection section, the file MUST contain an
 additional Per-GUID section. The SectionID of the Per-GUID section MUST be the string formed by
@@ -1390,7 +1298,8 @@ Release: April 23, 2024
 
 16 / 34
 
-concatenating the key of the GUID-Groups pair, an underscore "_", and the value of the Per-GUID
+
+concatenating the key of the GUID-Groups pair, an underscore "_", and the value of the Per-GUID
 pair.
 
 Note  If a list of SID values is defined for the GUID-Groups pair, the SectionID of the Per-GUID
@@ -1419,7 +1328,7 @@ Exclude Folders
 
 The values for each of the keys are explained in the following sections.
 
-2.2.2.2.1 Flags Key
+###### 2.2.2.2.1 Flags Key
 
 The section MUST contain exactly one key with the constant string Flags. The value MUST be a string
 representation of a hexadecimal value representing the binary OR of a collection of flags. The client-
@@ -1475,7 +1384,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Flag value
+
+ Flag value
 
  Behavior
 
@@ -1560,7 +1470,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.2.2 FullPath Key
+
+###### 2.2.2.2.2 FullPath Key
 
 The section MUST contain one key with the constant string FullPath if the flag 0x00001000 is set, as
 defined in section 2.2.2.2.1. The value MUST be a UNC path identifying the destination path to which
@@ -1568,7 +1479,7 @@ the folder redirection subsystem redirects the user profile folder that is ident
 the SectionID for this section. The value of this pair communicates the same information as the value
 part of the security group mapping in the Version Zero file format.
 
-2.2.2.2.3 ParentFolder Key
+###### 2.2.2.2.3 ParentFolder Key
 
 The section MUST contain one key with the constant string ParentFolder if the flag 0x00000002 is set,
 as defined in section 2.2.2.2.1. The value MUST be a curly braced GUID string. If this key is
@@ -1577,7 +1488,7 @@ a child directory of the redirection destination for the user profile folder tha
 GUID. The name of the child directory MUST be the string value associated with the RelativePath key
 defined in section 2.2.2.2.4.
 
-2.2.2.2.4 RelativePath Key
+###### 2.2.2.2.4 RelativePath Key
 
 The section MUST contain at most one key with the constant string RelativePath if the flag
 0x00000002 is set, as defined in section 2.2.2.2.1. This key indicates to the folder redirection
@@ -1587,7 +1498,7 @@ concatenation of the destination path of the parent folder (as specified by the 
 the relative path indicated by the value of this key. The RelativePath key value MUST NOT start with a
 backslash character "\".
 
-2.2.2.2.5 ExcludeFolders Key
+###### 2.2.2.2.5 ExcludeFolders Key
 
 The section MUST contain one key with the constant string ExcludeFolders if the flag 0x00004000 is
 set, as defined in section 2.2.2.2.1. This pair has a key with the constant string ExcludeFolders. The
@@ -1602,11 +1513,12 @@ Release: April 23, 2024
 
 19 / 34
 
-3  Protocol Details
 
-3.1  Folder Redirection Administrative-Side Plug-In Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Folder Redirection Administrative-Side Plug-In Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a model of possible data organization that an implementation maintains to
 participate in this protocol. The described organization is provided to explain how the protocol
@@ -1628,11 +1540,11 @@ Unicode configuration file whose format is defined in section 2.2.1.1.
 Note  The preceding conceptual data can be implemented using a variety of techniques. Any data
 structure that stores the preceding conceptual data can be used in the implementation.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization occurs upon initiation of the administrative-side plug-in by an administrator using the
 Group Policy Protocol, as specified in [MS-GPOL]. The plug-in then relies on the Group Policy Protocol
@@ -1643,7 +1555,7 @@ MUST be <gpo path>\User\Documents & Settings\fdeploy.ini; and for Version One of
 file name used MUST be <gpo path>\User\Documents & Settings\fdeploy1.ini, where <gpo path> is
 the GPO path. File reads MUST be performed, as specified in [MS-GPOL].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 When initiated by an administrator, the Folder Redirection Administrative-Side Plug-in MUST read the
 protocol configuration data from the remote storage location and pass that information to a user
@@ -1664,11 +1576,12 @@ Release: April 23, 2024
 
 20 / 34
 
-After every creation, modification or deletion that affects a Folder Redirection Protocol Configuration
+
+After every creation, modification or deletion that affects a Folder Redirection Protocol Configuration
 Data file on SYSVOL, the administrative tool MUST invoke the Group Policy Extension Update event as
 specified in [MS-GPOL] 3.3.4.4.
 
-3.1.4.1  Extraneous Data Ignored
+##### 3.1.4.1 Extraneous Data Ignored
 
 Any sections or keys in the configuration file that do not conform to the configuration format, as
 specified in sections 2.2.1 and 2.2.2, MUST be ignored by the administrative-side plug-in. When the
@@ -1676,23 +1589,23 @@ administrative-side plug-in modifies a configuration file, the new file it store
 unrecognized sections and any unrecognized keys in sections that the plug-in has not deleted or
 replaced entirely.
 
-3.1.4.2  Using the Protocol Versions
+##### 3.1.4.2 Using the Protocol Versions
 
 The administrative-side plug-in SHOULD<10>  store both a Version One and a Version Zero file to
 ensure that heterogeneous clients can make maximum use of the protocol. That is, the administrative-
 side plug-in MUST store a Version Zero file and SHOULD store a Version One file in addition.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Folder Redirection Client-Side Plug-in Details
+### 3.2 Folder Redirection Client-Side Plug-in Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -1729,7 +1642,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Redirection Destination: For each GPO contained in the New or Changed GPO list and for each
+
+Redirection Destination: For each GPO contained in the New or Changed GPO list and for each
 
 security descriptor SID, the UNC path identifying the destination path.
 
@@ -1742,20 +1656,20 @@ Excluded Folders List: For each GPO contained in the New or Changed GPO list and
 security descriptor SID, the list of folders, in the form of binary GUIDs, whose subfolders are
 excluded from the redirection options being applied.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When the client-side plug-in is initialized by the Group Policy Protocol, as specified in [MS-GPOL], it
 MUST read in the configuration data from the remote storage location, as specified in section 3.1.3. If
 AlwaysWaitForNetworkAtStartupAndLogon is TRUE, the client-side plug-in MUST wait for network
 connectivity before attempting to read the configuration data from the remote storage location.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 When a user logs on to a computer that implements Group Policy, the Group Policy: Core Protocol
 invokes this Process Group Policy event, whose abstract interface is specified in [MS-GPOL] section
@@ -1765,7 +1679,7 @@ When this event is triggered, the Folder Redirection Client-Side Plug-in ignores
 and takes action on the New or Changed GPO list, SessionFlags, and SecurityToken, as specified
 in section 3.2.5.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 If SessionFlags, as specified in [MS-GPOL] section 3.2.4.1, has the Computer Policy Application Mode
 flag (0x00000001) set, the Folder Redirection Client-Side Plug-in MUST NOT attempt to process the
@@ -1795,7 +1709,8 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The steps to read the "fdeploy1.ini" file and store the folder redirection information are described as
+
+The steps to read the "fdeploy1.ini" file and store the folder redirection information are described as
 follows.
 
 For each GPO in "New or Changed GPO list"
@@ -1859,12 +1774,12 @@ For each curly braced GUID string
 
   Append the binary GUID to abstract element Excluded Folders List
 
-3.2.5.1  Ignoring Extraneous Data
+##### 3.2.5.1 Ignoring Extraneous Data
 
 Any sections or keys in the configuration file that do not conform to the configuration format, as
 specified in sections 2.2.1 and 2.2.2, MUST be ignored by the client-side plug-in.
 
-3.2.5.2  Using the Protocol Versions
+##### 3.2.5.2 Using the Protocol Versions
 
 When Group Policy provides a GPO path, the client SHOULD<13> try Version One of the protocol; the
 client attempts to retrieve fdeploy1.ini using the GPO path, as specified in section 3.1.3, and parse it
@@ -1882,12 +1797,13 @@ Group Policy: Folder Redirection Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5.3  Using Redirection Values
+
+##### 3.2.5.3 Using Redirection Values
 
 The client-side plug-in MUST pass the value of each key present in the User Profile Folder section to
 the operating system folder redirection subsystem.<14>
 
-3.2.5.4  Unspecified Redirection
+##### 3.2.5.4 Unspecified Redirection
 
 If the protocol does not specify redirection for a particular user profile folder, or if it does specify
 redirection but sets the flag Redirection Not Specified, the client-side plug-in MUST configure the
@@ -1895,11 +1811,11 @@ folder redirection subsystem to allow the user to explicitly redirect that user 
 Otherwise, if a policy with the Redirection Not Specified flag not set is provided, the folder redirection
 subsystem MUST prevent the user from explicitly redirecting that user profile folder.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1910,7 +1826,8 @@ Release: April 23, 2024
 
 24 / 34
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following example, consider two user profile folders, Documents and My Pictures, that an
 operating system makes available for redirection. Suppose that, due to security and backup concerns,
@@ -1964,7 +1881,7 @@ Folder redirection allows users to access their data from any authenticated mach
 the domain. It also enables the IT department to back up all the user's data from a centralized
 location.
 
-4.1  Folder Redirection Protocol Version Zero Configuration Data
+### 4.1 Folder Redirection Protocol Version Zero Configuration Data
 
 The following example is a Version Zero folder redirection configuration file implementing the
 example policy:
@@ -1987,7 +1904,8 @@ Release: April 23, 2024
 
 25 / 34
 
-4.2  Folder Redirection Protocol Version One Configuration Data
+
+### 4.2 Folder Redirection Protocol Version One Configuration Data
 
 The following example is a Version One folder redirection configuration file implementing the
 example policy:
@@ -2011,7 +1929,7 @@ example policy:
  Flags=1001
  FullPath=\\FileServer2\%USERNAME%\Documents
 
-4.3  Version One Configuration File Example
+### 4.3 Version One Configuration File Example
 
 The following is an example of a Version One configuration file. This example illustrates only some of
 the redirection options, as specified in section 2.2.1.
@@ -2052,7 +1970,8 @@ Release: April 23, 2024
 
 26 / 34
 
-4.4  Version Zero Configuration File Example
+
+### 4.4 Version Zero Configuration File Example
 
 An example of a Version Zero configuration file follows. This example illustrates only some of the
 redirection options specified in section 2.2.1.
@@ -2074,9 +1993,10 @@ Release: April 23, 2024
 
 27 / 34
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Group Policy: Folder Redirection Protocol Extension has security considerations in common with
 the ones specified in [MS-GPOL], section 5.1 for the Group Policy Protocol.
@@ -2090,7 +2010,7 @@ overflows, denial-of-service attacks, escalation of privilege attacks, and infor
 For an introduction to these concepts, secure development best practices, and common errors, see
 [HOWARD].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2101,7 +2021,8 @@ Release: April 23, 2024
 
 28 / 34
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2168,7 +2089,8 @@ Release: April 23, 2024
 
 29 / 34
 
-<3> Section 2.2.1.1: If the destination folder does not exist, the folder redirection subsystem
+
+<3> Section 2.2.1.1: If the destination folder does not exist, the folder redirection subsystem
 creates the folder and modifies the file system ACL on the destination folder to ensure that only the
 user has access to the contents of the destination folder. A destination folder implemented over a
 Windows FAT32 File System will not provide the requisite operations.
@@ -2238,7 +2160,8 @@ Release: April 23, 2024
 
 30 / 34
 
-Data:
+
+Data:
 
   Wait for network: 0x1
 
@@ -2259,7 +2182,8 @@ Release: April 23, 2024
 
 31 / 34
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2303,7 +2227,8 @@ Release: April 23, 2024
 
 32 / 34
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2437,7 +2362,8 @@ Release: April 23, 2024
 
 33 / 34
 
-R
+
+R
 
 Redirection options value 15
 Redirection values 24

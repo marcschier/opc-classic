@@ -66,7 +66,8 @@ Release: April 23, 2024
 
 1 / 17
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 17
 
-Date
+
+Date
 
 Revision
 History
@@ -522,7 +524,8 @@ Release: April 23, 2024
 
 3 / 17
 
-Date
+
+Date
 
 Revision
 History
@@ -572,96 +575,46 @@ Release: April 23, 2024
 
 4 / 17
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Handling the MAC Field While Digesting DNS Messages](#3151-handling-the-mac-field-while-digesting-dns-messages)
+      - [3.1.5.2 Support for the HDAC-MD5 Algorithm](#3152-support-for-the-hdac-md5-algorithm)
+      - [3.1.5.3 Signing DNS Update Response Messages](#3153-signing-dns-update-response-messages)
+      - [3.1.5.4 Domain Name Compression](#3154-domain-name-compression)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-
-2.1
-2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ....................................................................................................... 9
-Common Details ................................................................................................ 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Handling the MAC Field While Digesting DNS Messages ................................ 9
-Support for the HDAC-MD5 Algorithm ........................................................ 9
-Signing DNS Update Response Messages ................................................. 10
-Domain Name Compression .................................................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 11
-
-5  Security ................................................................................................................. 14
-Security Considerations for Implementers ........................................................... 14
-Index of Security Parameters ............................................................................ 14
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 15
-
-7  Change Tracking .................................................................................................... 16
-
-8  Index ..................................................................................................................... 17
-
-[MS-GSSA] - v20240423
-Generic Security Service Algorithm for Secret Key Transaction Authentication for DNS (GSS-TSIG) Protocol
-Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 17
-
-1  Introduction
+## 1 Introduction
 
 Secret Key Transaction Authentication for DNS (TSIG), as specified in [RFC2845], provides extensible
 transaction level authentication for DNS. The Generic Security Service Algorithm for Secret Key
@@ -674,7 +627,7 @@ This document specifies an extension to GSS-TSIG.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -692,14 +645,14 @@ as Kerberos authentication and NTLM.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -725,7 +678,8 @@ Release: April 23, 2024
 
 6 / 17
 
-[RFC2845] Vixie, P., Gudmundsson, O., Eastlake III, D., and Wellington, B., "Secret Key Transaction
+
+[RFC2845] Vixie, P., Gudmundsson, O., Eastlake III, D., and Wellington, B., "Secret Key Transaction
 Authentication for DNS (TSIG)", RFC 2845, May 2000, https://www.rfc-editor.org/info/rfc2845
 
 [RFC2930] Eastlake III, D., "Secret Key Establishment for DNS (TKEY RR)", RFC 2930, September
@@ -735,11 +689,11 @@ Authentication for DNS (TSIG)", RFC 2845, May 2000, https://www.rfc-editor.org/i
 Service Algorithm for Secret Key Transaction Authentication for DNS (GSS-TSIG)", RFC 3645, October
 2003, https://www.rfc-editor.org/info/rfc3645
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 Secret Key Transaction Authentication for DNS (TSIG), as specified in [RFC2845], is an extensible
 protocol by which DNS messages can be authenticated and validated. The Generic Security Service
@@ -753,30 +707,30 @@ digested when generating or verifying the contents of a TSIG record. This protoc
 an alternate method of building the digest that is used to sign the last message in the GSS-TSIG TKEY
 negotiation.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This specification defines an extension to GSS-TSIG, as specified in [RFC3645]. The relationship of
 GSS-TSIG to other protocols is not changed by this protocol extension.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 All prerequisites and preconditions applicable to GSS-TSIG, as specified in [RFC3645], apply to this
 protocol extension.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol extension does not change the way in which GSS-TSIG, as specified in [RFC3645], is
 used.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -788,18 +742,19 @@ Release: April 23, 2024
 
 7 / 17
 
-2  Messages
+
+## 2 Messages
 
 This protocol extension does not change the format of messages defined by GSS-TSIG, as specified in
 [RFC3645]. The format of messages remains the same, although the contents of the TSIG record
 attached to the final TKEY response in the negotiation are changed.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol extension does not change the base transport used by GSS-TSIG, as specified in
 [RFC3645].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This document does not specify any new messages.
 
@@ -811,34 +766,35 @@ Release: April 23, 2024
 
 8 / 17
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
+
+None.
+
+#### 3.1.3 Initialization
 
 This protocol extension does not require any initialization that is not already required by GSS-TSIG, as
 specified in [RFC3645].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 This protocol extension does not change message processing events or sequencing rules of messages
 defined by GSS-TSIG, as specified in [RFC3645], beyond the changes described in the following
 sections.
 
-3.1.5.1  Handling the MAC Field While Digesting DNS Messages
+##### 3.1.5.1 Handling the MAC Field While Digesting DNS Messages
 
 GSS-TSIG, as specified in [RFC3645], specifies how the client and server exchange tokens obtained
 from GSS-API calls (as specified in [RFC2743]). The tokens are contained in DNS TKEY records, as
@@ -860,7 +816,7 @@ be the DNS response message and TSIG response variables.
 After GSS-TSIG negotiation is complete, the digesting of further DNS messages MUST include the
 request MAC, as specified in [RFC2845] section 3.4.
 
-3.1.5.2  Support for the HDAC-MD5 Algorithm
+##### 3.1.5.2 Support for the HDAC-MD5 Algorithm
 
 [RFC2845] section 2.2 specifies that TSIG MUST support the "HMAC-MD5" algorithm. GSS-API does
 not explicitly define the MAC formats supported. Instead it relies on the security support provider
@@ -873,27 +829,28 @@ Release: April 23, 2024
 
 9 / 17
 
-(SSP) that is exposed by the operating system. Implementations of this protocol extension MUST NOT
+
+(SSP) that is exposed by the operating system. Implementations of this protocol extension MUST NOT
 support the "HMAC-MD5.SIG-ALG.REG.INT" algorithm in [RFC2845] section 7. Implementations of this
 protocol extension MUST support the "gss-tsig" algorithm, as specified in [RFC3645] section 3.1.2.
 
-3.1.5.3  Signing DNS Update Response Messages
+##### 3.1.5.3 Signing DNS Update Response Messages
 
 As described in [RFC2136] section 3.8, the DNS server MUST send a DNS update response back to the
 DNS client after processing a DNS update request. If the DNS update request is signed and includes a
 TSIG record, as specified in [RFC3645] and [RFC2845] section 4, then the DNS server SHOULD<1>
 sign the DNS update response and include the resulting TSIG record as described in [RFC3645].
 
-3.1.5.4  Domain Name Compression
+##### 3.1.5.4 Domain Name Compression
 
 As described in [RFC1123] section 6.1.2.4, name servers MUST use compression in responses. For the
 TSIG resource record in DNS response messages, compression is not supported.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -905,11 +862,12 @@ Release: April 23, 2024
 
 10 / 17
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GSSA].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 Examples that clarify the difference between a strict interpretation of the relevant RFCs and the
 Microsoft implementation are included in the figures in this section.
@@ -924,7 +882,8 @@ Release: April 23, 2024
 
 11 / 17
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GSSA].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -938,7 +897,8 @@ Release: April 23, 2024
 
 12 / 17
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GSSA].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -952,13 +912,14 @@ Release: April 23, 2024
 
 13 / 17
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -970,7 +931,8 @@ Release: April 23, 2024
 
 14 / 17
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1039,7 +1001,8 @@ Release: April 23, 2024
 
 15 / 17
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1084,7 +1047,8 @@ Release: April 23, 2024
 
 16 / 17
 
-   common details 9
+
+   common details 9
    main 7
 Overview (synopsis) 7
 
@@ -1128,7 +1092,7 @@ V
 Vendor-extensible fields 7
 Versioning 7
 
-8  Index
+## 8 Index
 A
 
 Abstract data model 9

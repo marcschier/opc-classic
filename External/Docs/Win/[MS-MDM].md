@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -216,248 +217,108 @@ Release: April 23, 2024
 
 2 / 48
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Server requirements for the OMA Device Management Protocol](#131-server-requirements-for-the-oma-device-management-protocol)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 SyncML Message](#222-syncml-message)
+    - [2.2.3 Common Use Elements](#223-common-use-elements)
+      - [2.2.3.1 Cmd](#2231-cmd)
+      - [2.2.3.2 CmdID](#2232-cmdid)
+      - [2.2.3.3 CmdRef](#2233-cmdref)
+      - [2.2.3.4 Final](#2234-final)
+      - [2.2.3.5 LocURI](#2235-locuri)
+      - [2.2.3.6 MsgID](#2236-msgid)
+      - [2.2.3.7 MsgRef](#2237-msgref)
+      - [2.2.3.8 SessionID](#2238-sessionid)
+      - [2.2.3.9 Source](#2239-source)
+      - [2.2.3.10 SourceRef](#22310-sourceref)
+      - [2.2.3.11 Target](#22311-target)
+      - [2.2.3.12 TargetRef](#22312-targetref)
+      - [2.2.3.13 VerDTD](#22313-verdtd)
+      - [2.2.3.14 VerProto](#22314-verproto)
+    - [2.2.4 Message Container Elements](#224-message-container-elements)
+      - [2.2.4.1 SyncML](#2241-syncml)
+      - [2.2.4.2 SyncHdr](#2242-synchdr)
+      - [2.2.4.3 SyncBody](#2243-syncbody)
+    - [2.2.5 Data Description Elements](#225-data-description-elements)
+      - [2.2.5.1 Data](#2251-data)
+      - [2.2.5.2 Item](#2252-item)
+      - [2.2.5.3 Meta](#2253-meta)
+    - [2.2.6 Protocol Management Elements](#226-protocol-management-elements)
+      - [2.2.6.1 Status](#2261-status)
+    - [2.2.7 Protocol Command Elements](#227-protocol-command-elements)
+      - [2.2.7.1 Add](#2271-add)
+      - [2.2.7.2 Alert](#2272-alert)
+      - [2.2.7.3 Atomic](#2273-atomic)
+      - [2.2.7.4 Delete](#2274-delete)
+      - [2.2.7.5 Exec](#2275-exec)
+      - [2.2.7.6 Get](#2276-get)
+      - [2.2.7.7 Replace](#2277-replace)
+      - [2.2.7.8 Results](#2278-results)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 SyncML Request Commands](#3151-syncml-request-commands)
+        - [3.1.5.1.1 Add](#31511-add)
+        - [3.1.5.1.2 Alert](#31512-alert)
+        - [3.1.5.1.3 Atomic](#31513-atomic)
+        - [3.1.5.1.4 Delete](#31514-delete)
+        - [3.1.5.1.5 Exec](#31515-exec)
+        - [3.1.5.1.6 Get](#31516-get)
+        - [3.1.5.1.7 Replace](#31517-replace)
+      - [3.1.5.2 SyncML Response Commands](#3152-syncml-response-commands)
+        - [3.1.5.2.1 Status](#31521-status)
+        - [3.1.5.2.2 Results](#31522-results)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Access Control Lists](#3171-access-control-lists)
+      - [3.1.7.2 UserAgentOrigin](#3172-useragentorigin)
+  - [3.2 Azure Details](#32-azure-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Windows Azure Virtual Desktop for Multi-users' User Setting Configuration](#3251-windows-azure-virtual-desktop-for-multi-users-user-setting-configuration)
+        - [3.2.5.1.1 Device Session vs. User Session](#32511-device-session-vs-user-session)
+        - [3.2.5.1.2 Azure AD Join](#32512-azure-ad-join)
+        - [3.2.5.1.3 SyncApplicationVersion](#32513-syncapplicationversion)
+        - [3.2.5.1.4 MultipleSession Poll Interval](#32514-multiplesession-poll-interval)
+        - [3.2.5.1.5 SyncType Alert](#32515-synctype-alert)
+        - [3.2.5.1.6 DevicePrepSync Alert](#32516-deviceprepsync-alert)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: MSI Application Install](#6-appendix-a-msi-application-install)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Server requirements for the OMA Device Management Protocol .......................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-2.2.3.12
-2.2.3.13
-2.2.3.14
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 14
-Namespaces .............................................................................................. 14
-SyncML Message ........................................................................................ 14
-Common Use Elements ................................................................................ 15
-Cmd .................................................................................................... 15
-CmdID ................................................................................................. 15
-CmdRef ............................................................................................... 15
-Final .................................................................................................... 16
-LocURI ................................................................................................ 16
-MsgID ................................................................................................. 16
-MsgRef ................................................................................................ 17
-SessionID ............................................................................................ 17
-Source ................................................................................................. 17
-SourceRef ............................................................................................ 18
-Target ................................................................................................. 18
-TargetRef ............................................................................................. 18
-VerDTD ................................................................................................ 19
-VerProto .............................................................................................. 19
-Message Container Elements ........................................................................ 19
-SyncML ................................................................................................ 20
-SyncHdr ............................................................................................... 20
-SyncBody ............................................................................................. 20
-Data Description Elements ........................................................................... 21
-Data .................................................................................................... 21
-Item .................................................................................................... 21
-Meta .................................................................................................... 22
-Protocol Management Elements .................................................................... 22
-Status ................................................................................................. 23
-Protocol Command Elements ........................................................................ 24
-Add ..................................................................................................... 24
-Alert .................................................................................................... 24
-Atomic ................................................................................................. 25
-Delete ................................................................................................. 26
-Exec .................................................................................................... 26
-Get ..................................................................................................... 26
-Replace ............................................................................................... 27
-Results ................................................................................................ 27
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-2.2.7.4
-2.2.7.5
-2.2.7.6
-2.2.7.7
-2.2.7.8
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-
-2.2.6.1
-
-2.2.6
-
-2.2.7
-
-2.2.4
-
-2.2.5
-
-3  Protocol Details ..................................................................................................... 29
-
-3 / 48
-
-[MS-MDM] - v20240423
-Mobile Device Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-3.1.5.2.1
-3.1.5.2.2
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-3.1.5.1.5
-3.1.5.1.6
-3.1.5.1.7
-
-Common Details .............................................................................................. 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 31
-SyncML Request Commands ................................................................... 31
-Add ............................................................................................... 31
-Alert .............................................................................................. 31
-Atomic ........................................................................................... 32
-Delete ............................................................................................ 32
-Exec .............................................................................................. 33
-Get ................................................................................................ 33
-Replace .......................................................................................... 34
-SyncML Response Commands ................................................................. 34
-Status ............................................................................................ 34
-Results ........................................................................................... 34
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-Access Control Lists ............................................................................... 35
-UserAgentOrigin ................................................................................... 35
-Azure Details ................................................................................................... 36
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 36
-Windows Azure Virtual Desktop for Multi-users' User Setting Configuration .. 36
-Device Session vs. User Session ........................................................ 36
-Azure AD Join ................................................................................. 36
-SyncApplicationVersion .................................................................... 37
-MultipleSession Poll Interval ............................................................. 37
-SyncType Alert ................................................................................ 37
-DevicePrepSync Alert ....................................................................... 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-
-3.1.5.2
-
-3.1.6
-3.1.7
-
-3.1.7.1
-3.1.7.2
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 39
-
-5  Security ................................................................................................................. 42
-Security Considerations for Implementers ........................................................... 42
-Index of Security Parameters ............................................................................ 42
-
-5.1
-5.2
-
-6  Appendix A: MSI Application Install ...................................................................... 43
-
-7  Appendix B: Product Behavior ............................................................................... 44
-
-8  Change Tracking .................................................................................................... 46
-
-9  Index ..................................................................................................................... 47
-
-[MS-MDM] - v20240423
-Mobile Device Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 48
-
-1  Introduction
+## 1 Introduction
 
 The Mobile Device Management Protocol (MDM) is used for managing devices that  have previously
 enrolled into a management system through the Mobile Device Enrollment Protocol (MDE) [MS-MDE].
@@ -468,7 +329,7 @@ version 1.2.1 (OMA-TS-DM_Protocol-V1_2_1-20080617-A) [OMA-DMP1.2.1].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -531,7 +392,8 @@ Release: April 23, 2024
 
 5 / 48
 
-mutual authentication: A mode in which each party verifies the identity of the other party, as
+
+mutual authentication: A mode in which each party verifies the identity of the other party, as
 
 described in [RFC3748] section 7.2.1.
 
@@ -606,7 +468,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Windows Notification Service (WNS): A Microsoft-provided cloud service that is responsible for
+
+Windows Notification Service (WNS): A Microsoft-provided cloud service that is responsible for
 
 sending out notifications to targeted clients.
 
@@ -618,14 +481,14 @@ names but come from different sources. For more information, see [XMLNS-2ED].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -671,7 +534,8 @@ Release: April 23, 2024
 
 7 / 48
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC2315] Kaliski, B., "PKCS #7: Cryptographic Message Syntax Version 1.5", RFC 2315, March 1998,
@@ -683,7 +547,7 @@ https://www.rfc-editor.org/info/rfc2315
 [XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-ADDToken] Microsoft Corporation, "Supported Token and Claim Types",
 https://azure.microsoft.com/en-us/documentation/articles/active-directory-token-and-claims/
@@ -720,7 +584,7 @@ https://www.openmobilealliance.org/release/DM/V1_2_1-20080617-A/OMA-TS-DM_Securi
 [RFC5023] Gregorio, J., and de hOra, B., Eds., "The Atom Publishing Protocol", RFC 5023, October
 2007, https://www.rfc-editor.org/info/rfc5023
 
-1.3  Overview
+### 1.3 Overview
 
 The Mobile Device Management Protocol is a client/server protocol that is used to manage mobile
 devices that have previously been enrolled into a management service by using the Mobile Device
@@ -737,7 +601,8 @@ Release: April 23, 2024
 
 8 / 48
 
-  Client and resource configurations
+
+  Client and resource configurations
 
   Company policy management
 
@@ -819,7 +684,7 @@ sends another command.
 
 The session ends, or step 4 is repeated.
 
-1.3.1  Server requirements for the OMA Device Management Protocol
+#### 1.3.1 Server requirements for the OMA Device Management Protocol
 
 The following are the general server requirements for using the OMA Device Management (DM)
 Protocol (OMA-DM), as specified in [OMA-DMP1.2.1], to manage the client:
@@ -833,7 +698,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-MDM].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -857,13 +723,13 @@ For more information about Basic or MD5 client authentication, MD5 hash generati
 nonce, see the OMA Device Management Security specification ([OMA-DMS1.2.1]) and OMA Device
 Management Protocol specification ([OMA-DMP1.2.1]).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 MDM depends on HTTP for the transfer of all protocol messages [RFC2616].
 
 Figure 1: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Mobile Device Enrollment Protocol (MDE) is a prerequisite to using this protocol. Before a device
 can be managed by using MDM, the device has to already be enrolled in a management service by
@@ -882,24 +748,25 @@ Release: April 23, 2024
 
 10 / 48
 
-
+
+
 
 Identity certificate for TLS HTTPS mutual authentication
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 A device has to be enrolled in a management service through the use of MDE before the device can
 then be managed by using MDM.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter  Value  Reference
 
@@ -916,13 +783,14 @@ Release: April 23, 2024
 
 11 / 48
 
-2  Messages
+
+## 2 Messages
 
 MDM is based on the OMA-DM protocol [OMA-DMP1.2.1]. Messages are issued by a requester and
 results and status are returned by a responder as defined in [OMA-SyncMLRP1.2.2]. MDM does not
 modify or extend these messages in any manner.
 
-2.1  Transport
+### 2.1 Transport
 
 MDM, both as defined in this document and the OMA-DM protocol [OMA-DMP1.2.1], uses HTTP (as
 specified in [RFC2616]) as the transport layer. MDM, in compliance with [OMA-SyncML-HTTPBnd],
@@ -985,7 +853,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-client certificate's related HTTP header in a DM package. The MDM server can identify a connecting
+
+client certificate's related HTTP header in a DM package. The MDM server can identify a connecting
 device by examining the device client identity certificate issued earlier at MDM enrollment time. The
 device client identity certificate is used to establish the SSL/TLS connection to the MDM server.
 
@@ -1061,7 +930,8 @@ Release: April 23, 2024
 
 13 / 48
 
-Note 7: The client will add an additional header, MS-CV, to the request for the server to use as a
+
+Note 7: The client will add an additional header, MS-CV, to the request for the server to use as a
 correlation ID. The value is generated according to the procedure described in [MSFT-
 CorrelationVector].<8>
 
@@ -1077,9 +947,9 @@ DeviceToken: CI6MTQxmCF5xgu6yYcmV9ng6vhQfaJYw…
 
 See [MSDOCS-DMClient-CSP] for more information.<10>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This document defines and references various XML namespaces that use the mechanisms specified
 in [XMLNS]. Although this document associates a specific XML namespace prefix with each XML
@@ -1092,7 +962,7 @@ Reference
 
 SyncML  xmlns=‘SYNCML:SYNCML1.2’  Section [OMA-SyncMLRP1.2.2]
 
-2.2.2  SyncML Message
+#### 2.2.2 SyncML Message
 
 A SyncML message is a well-formed XML document that adheres to the document type definition
 (DTD), but which does not require validation. While a SyncML message does not require validation,
@@ -1125,7 +995,8 @@ Release: April 23, 2024
 
 14 / 48
 
-     <SessionID>1</SessionID>
+
+     <SessionID>1</SessionID>
      <MsgID>1</MsgID>
      <Target>
        <LocURI>{unique device ID}</LocURI>
@@ -1137,11 +1008,11 @@ Release: April 23, 2024
    <SyncBody>{Command}</SyncBody>
  </SyncML>
 
-2.2.3  Common Use Elements
+#### 2.2.3 Common Use Elements
 
 The following sections identify common element types used by other SyncML element types.
 
-2.2.3.1  Cmd
+##### 2.2.3.1 Cmd
 
 The Cmd element type specifies the name of the SyncML command that is referenced by a
 Status (section 2.2.6.1) element type. The element type has the following syntax.
@@ -1157,7 +1028,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.2  CmdID
+##### 2.2.3.2 CmdID
 
 The CmdID element type specifies a unique command identifier for the SyncML message. The
 element type has the following syntax.
@@ -1175,7 +1046,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.3  CmdRef
+##### 2.2.3.3 CmdRef
 
 The CmdRef element type specifies a reference to a CmdID that is used by the
 Status (section 2.2.6.1) element type. The element type has the following syntax.
@@ -1187,7 +1058,8 @@ Release: April 23, 2024
 
 15 / 48
 
- <CmdRef>(#PCDATA)</CmdRef>
+
+ <CmdRef>(#PCDATA)</CmdRef>
 
 Parent Elements: Results (section 2.2.7.8), Status
 
@@ -1201,7 +1073,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.4  Final
+##### 2.2.3.4 Final
 
 The Final element type indicates that a SyncML message is the last message in the current SyncML
 package. The element type has the following syntax.
@@ -1219,7 +1091,7 @@ Content Model: (EMPTY)
 
 Attributes: None.
 
-2.2.3.5  LocURI
+##### 2.2.3.5 LocURI
 
 The LocURI element type specifies the target or source-specific address. The element type has the
 following syntax.
@@ -1235,7 +1107,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.6  MsgID
+##### 2.2.3.6 MsgID
 
 The MsgID element type specifies a unique SyncML session identifier for the SyncML message. The
 element type has the following syntax.
@@ -1249,7 +1121,8 @@ Release: April 23, 2024
 
 16 / 48
 
-Parent Element: SyncHdr (section 2.2.4.2)
+
+Parent Element: SyncHdr (section 2.2.4.2)
 
 Restrictions: MsgID MUST be specified in the SyncHdr and MUST be unique to the device within the
 SyncML session. The value is a monotonically increasing numeric value that starts at one (1) for the
@@ -1261,7 +1134,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.7  MsgRef
+##### 2.2.3.7 MsgRef
 
 The MsgRef element type specifies a reference to a MsgID (section 2.2.3.6) that is used by a
 SyncML Results (section 2.2.7.8) or response Status (section 2.2.6.1). The element type has the
@@ -1278,7 +1151,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.8  SessionID
+##### 2.2.3.8 SessionID
 
 The SessionID element type specifies the identifier of the SyncML session that is associated with the
 SyncML message. The SessionID can remain valid across the exchange of many SyncML messages
@@ -1299,7 +1172,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.9  Source
+##### 2.2.3.9 Source
 
 The Source element type specifies source routing or mapping information. The element type has the
 following syntax.
@@ -1311,7 +1184,8 @@ Release: April 23, 2024
 
 17 / 48
 
- <Source>(LocURI)</Source>
+
+ <Source>(LocURI)</Source>
 
 Parent Elements: Item (section 2.2.5.2), SyncHdr (section 2.2.4.2)
 
@@ -1323,9 +1197,9 @@ Content Model: (LocURI (section 2.2.3.5))
 
 Attributes: None.
 
-2.2.3.10
+##### 2.2.3.10 SourceRef
 
-SourceRef
+
 
 The SourceRef element type specifies the Source (section 2.2.3.9) referenced by a
 Status (section 2.2.6.1) element type. The element type has the following syntax.
@@ -1344,9 +1218,9 @@ Content Model: (LocURI (section 2.2.3.5))
 
 Attributes: None.
 
-2.2.3.11
+##### 2.2.3.11 Target
 
-Target
+
 
 The Target element type specifies target routing information. The element type has the following
 syntax.
@@ -1363,9 +1237,9 @@ Content Model: (LocURI (section 2.2.3.5))
 
 Attributes: None.
 
-2.2.3.12
+##### 2.2.3.12 TargetRef
 
-TargetRef
+
 
 The TargetRef element type specifies the Target (section 2.2.3.11) referenced by a
 Status (section 2.2.6.1) element type. The element type has the following syntax.
@@ -1379,7 +1253,8 @@ Release: April 23, 2024
 
 18 / 48
 
-Parent Elements: Status
+
+Parent Elements: Status
 
 Restrictions: When specified in the Status element type, TargetRef identifies the target address
 specified in the command associated with the response status.
@@ -1391,9 +1266,9 @@ Content Model: (LocURI (section 2.2.3.5))
 
 Attributes: None.
 
-2.2.3.13
+##### 2.2.3.13 VerDTD
 
-VerDTD
+
 
 The VerDTD element type specifies the major and minor version identifier of the SyncML
 representation protocol specification that is used to represent the SyncML message. The element type
@@ -1412,9 +1287,9 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.3.14
+##### 2.2.3.14 VerProto
 
-VerProto
+
 
 The VerProto element type specifies the major and minor version identifier of the Device
 Management representation protocol specification that is used to represent the SyncML message. The
@@ -1436,7 +1311,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.4  Message Container Elements
+#### 2.2.4 Message Container Elements
 
 Message container elements provide basic container support for the SyncML message.
 
@@ -1447,7 +1322,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.4.1  SyncML
+
+##### 2.2.4.1 SyncML
 
 The SyncML element type serves as the container for a SyncML Message. The element type has the
 following syntax.
@@ -1463,7 +1339,7 @@ Content Model: (SyncHdr (section 2.2.4.2), SyncBody (section 2.2.4.3))
 Attributes: SyncML requires the xmlns attribute. The attribute type is CDATA and the value MUST
 be the string "SYNCML:SYNCML1.2".
 
-2.2.4.2  SyncHdr
+##### 2.2.4.2 SyncHdr
 
 The SyncHdr element type serves as the container for the revisioning routing information in the
 SyncML message. The element type has the following syntax.
@@ -1480,7 +1356,7 @@ MsgID (section 2.2.3.6), Target (section 2.2.3.11), Source (section 2.2.3.9), Me
 
 Attributes: None.
 
-2.2.4.3  SyncBody
+##### 2.2.4.3 SyncBody
 
 The SyncBody element type serves as the container for the body or contents of the SyncML message.
 The element type has the following syntax.
@@ -1507,7 +1383,8 @@ Release: April 23, 2024
 
 20 / 48
 
-Parent Element: SyncML (section 2.2.4.1)
+
+Parent Element: SyncML (section 2.2.4.1)
 
 Restrictions: None.
 
@@ -1517,11 +1394,11 @@ Results (section 2.2.7.8) | Status (section 2.2.6.1) | Add (section 2.2.7.1) | R
 
 Attributes: None.
 
-2.2.5  Data Description Elements
+#### 2.2.5 Data Description Elements
 
 Data description elements are used as container elements for data exchanged in a SyncML message.
 
-2.2.5.1  Data
+##### 2.2.5.1 Data
 
 The Data element type provides a container for discrete SyncML data. The element type has the
 following syntax.
@@ -1548,7 +1425,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.5.2  Item
+##### 2.2.5.2 Item
 
 The Item element type provides a container for item data. The element type has the following syntax.
 
@@ -1568,7 +1445,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The LocURI (section 2.2.3.5) element type can be a relative URL when used in the
+
+The LocURI (section 2.2.3.5) element type can be a relative URL when used in the
 Target (section 2.2.3.12) or Source (section 2.2.3.9) element types for any of the SyncML commands.
 Note that this restriction is not captured by the SyncML DTD.
 
@@ -1581,7 +1459,7 @@ Content Model: (#PCDATA)
 
 Attributes: None
 
-2.2.5.3  Meta
+##### 2.2.5.3 Meta
 
 The Meta element type provides a container for meta-information about the parent element type. The
 element type has the following syntax.
@@ -1629,7 +1507,7 @@ Content Model: (#PCDATA)
 
 Attributes: None.
 
-2.2.6  Protocol Management Elements
+#### 2.2.6 Protocol Management Elements
 
 The Status element provides protocol management support for the SyncML message.
 
@@ -1640,7 +1518,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.6.1  Status
+
+##### 2.2.6.1 Status
 
 The Status element type specifies the request status code for a corresponding SyncML command.
 Status codes are specified in [OMA-SyncMLRP1.2.2] section 10. The element type has the following
@@ -1718,7 +1597,8 @@ Release: April 23, 2024
 
 23 / 48
 
-  SourceRef is an optional element that specifies the source address from the corresponding
+
+  SourceRef is an optional element that specifies the source address from the corresponding
 
 command. When the Item element of the corresponding command includes a
 Source (section 2.2.3.9) element, the value of Item. Source MAY be copied into the Status
@@ -1744,11 +1624,11 @@ Content Model: (CmdID, MsgRef, CmdRef, Cmd, Data, Item?+, SourceRef, TargetRef)
 
 Attributes: None.
 
-2.2.7  Protocol Command Elements
+#### 2.2.7 Protocol Command Elements
 
 Protocol command element types supply the SyncML commands implemented in MDM.
 
-2.2.7.1  Add
+##### 2.2.7.1 Add
 
 The Add element specifies the SyncML command to add data items to a data collection. The element
 has the following syntax.
@@ -1773,7 +1653,7 @@ Content Model: (CmdID, Meta?, Item+)
 
 Attributes: None.
 
-2.2.7.2  Alert
+##### 2.2.7.2 Alert
 
 The Alert element specifies the SyncML command to send custom content information to the
 recipient. Alert provides a mechanism for communicating content information, such as state
@@ -1788,7 +1668,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following alert types are supported:
+
+The following alert types are supported:
 
   1200 - SERVER-INITIATED MGMT - Server-initiated device management session.
 
@@ -1830,7 +1711,7 @@ Content Model: (CmdID, Data, Item)
 
 Attributes: None.
 
-2.2.7.3  Atomic
+##### 2.2.7.3 Atomic
 
 The Atomic element specifies the SyncML command to request that subordinate commands be
 executed as a set or not at all. The element has the following syntax.
@@ -1862,13 +1743,14 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <Atomic>(CmdID, Meta,(Add,Get),(Delete,Replace),(Add,Exec))</Atomic>
+
+ <Atomic>(CmdID, Meta,(Add,Get),(Delete,Replace),(Add,Exec))</Atomic>
 
 Content Model: (CmdID, Meta?, (Add| Delete | Atomic | Replace | Get | Exec)+)
 
 Attributes: None.
 
-2.2.7.4  Delete
+##### 2.2.7.4 Delete
 
 The Delete element specifies the SyncML command to delete data items from a data collection. The
 element has the following syntax.
@@ -1893,7 +1775,7 @@ Content Model: (CmdID, Meta?, Item+)
 
 Attributes: None.
 
-2.2.7.5  Exec
+##### 2.2.7.5 Exec
 
 The Exec element specifies the WMI class method to execute on the recipient’s device. The element
 has the following syntax.
@@ -1919,7 +1801,7 @@ Content Model: (CmdID, Meta?, Item)
 
 Attributes: None.
 
-2.2.7.6  Get
+##### 2.2.7.6 Get
 
 The Get element specifies the SyncML command to retrieve data from the recipient. The element has
 the following syntax.
@@ -1931,7 +1813,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <Get>(CmdID, Meta?, Item+)</Get>
+
+ <Get>(CmdID, Meta?, Item+)</Get>
 
 Parent Elements: SyncBody (section 2.2.4.3), Atomic (section 2.2.7.3)
 
@@ -1951,7 +1834,7 @@ Content Model: (CmdID, Meta?, Item+)
 
 Attributes: None.
 
-2.2.7.7  Replace
+##### 2.2.7.7 Replace
 
 The Replace element specifies the SyncML command to replace data items. The element has the
 following syntax.
@@ -1976,7 +1859,7 @@ Content Model: (CmdID, Meta?, Item+)
 
 Attributes: None.
 
-2.2.7.8  Results
+##### 2.2.7.8 Results
 
 The Results element specifies the SyncML command to return the results of a Get (section 2.2.7.6)
 command. The element has the following syntax:
@@ -2001,7 +1884,8 @@ Release: April 23, 2024
 
 27 / 48
 
-
+
+
 
 
 
@@ -2046,11 +1930,12 @@ Release: April 23, 2024
 
 28 / 48
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MDM].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 MDM is based on a subset of the OMA-DM protocol (OMA-TS-DM_Protocol-V1_2_1-20080617-A)
 [OMA-DMP1.2.1]. SyncML messages issued by the client to the server and from the server to the
@@ -2090,7 +1975,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The structure and content of a SyncML message is defined in section 2.2.2 and is a subset of the
+
+The structure and content of a SyncML message is defined in section 2.2.2 and is a subset of the
 SyncML message definition specified in [OMA-SyncMLRP1.2.2]. Each message is composed of a header
 specified by the SyncHdr (section 2.2.4.2) element, and a message body specified by the
 SyncBody (section 2.2.4.3) element.
@@ -2129,22 +2015,22 @@ The commands that MAY be issued by a requester are specified in section 3.1.5.1.
 
 The commands that MAY be issued in response to a request are specified in section 3.1.5.2.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Retry Timer: A timer that sets the delay for resending requests when the server responds that it has
 received too many requests in a given time window.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The DMClient CSP ([MSDOCS-DMClient-CSP]) supports the ability to configure push-initiated device
 management sessions. Using the Windows Notification Service (WNS), a management server can
@@ -2157,7 +2043,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-device is configured to support push by the management server by providing the device with a
+
+device is configured to support push by the management server by providing the device with a
 Package Family Name(PFN). Once the device is configured, it registers a persistent connection with
 the WNS. For more information on the Windows Notification Service, see [MSDN-WPNS].
 
@@ -2170,13 +2057,13 @@ ChannelURI and begin communicating with the device.
 For more details about DMClient CSP, push notifications, WNS, and PFNs, see [MS-MDE2] section
 2.2.9.3.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  SyncML Request Commands
+##### 3.1.5.1 SyncML Request Commands
 
 The following sections specify the request commands for the SyncML message.
 
-3.1.5.1.1 Add
+###### 3.1.5.1.1 Add
 
 The Add command is used by the originator to request that data elements supplied by the originator
 be added to data items that are accessible to the recipient.
@@ -2201,7 +2088,7 @@ element type is specified in section 2.2.7.1.
      ...
    </SyncBody>
 
-3.1.5.1.2 Alert
+###### 3.1.5.1.2 Alert
 
 The Alert command is used by the originator to send custom content information to the recipient. The
 client or originator MUST send the Alert command as part of the SyncML device management session
@@ -2224,11 +2111,12 @@ Release: April 23, 2024
 
 31 / 48
 
-   </SyncBody>
+
+   </SyncBody>
 
 No classes are specified for the Alert command.
 
-3.1.5.1.3 Atomic
+###### 3.1.5.1.3 Atomic
 
 The Atomic command is used by the client to start initialization of a session. If execution fails for any
 of the commands contained within the atomic unit, all previously executed commands within the unit
@@ -2271,7 +2159,7 @@ atomic unit are specified in the definition for each command in this section. Fo
 classes for the Delete command are as specified in the definition for the Delete command in section
 3.1.5.1.4.
 
-3.1.5.1.4 Delete
+###### 3.1.5.1.4 Delete
 
 The Delete command is used by the originator to request that data elements accessible to the
 recipient be deleted. The target location URI contains the resource to delete.
@@ -2292,7 +2180,8 @@ Release: April 23, 2024
 
 32 / 48
 
-           <LocURI>./Vendor/MSFT/WiFi/Profile/MyNetwork/ProxyVendor/MSFT/WiFi/Profile/
+
+           <LocURI>./Vendor/MSFT/WiFi/Profile/MyNetwork/ProxyVendor/MSFT/WiFi/Profile/
               MyNetwork/Proxy</LocURI>
          </Target>
        </Item>
@@ -2300,7 +2189,7 @@ Release: April 23, 2024
      ...
    </SyncBody>
 
-3.1.5.1.5 Exec
+###### 3.1.5.1.5 Exec
 
 The Exec command is used by the originator to target a remote action. The target
 LocURI (section 2.2.3.5) element contains the node to invoke.
@@ -2330,7 +2219,7 @@ parameter to a value of 8. The syntax for the Exec element type is specified in 
      ...
    </SyncBody>
 
-3.1.5.1.6 Get
+###### 3.1.5.1.6 Get
 
 The Get command is used by the originator to request data elements from the recipient. The Get
 command can include the resetting of any meta-information that the recipient maintains about the
@@ -2361,13 +2250,14 @@ Release: April 23, 2024
 
 33 / 48
 
-         </Target>
+
+         </Target>
        </Item>
      </Get>
      ...
    </SyncBody>
 
-3.1.5.1.7 Replace
+###### 3.1.5.1.7 Replace
 
 The Replace command is used by the originator to request that data elements accessible to the
 recipient be replaced. The Replace command makes a complete replacement of the specified data
@@ -2391,11 +2281,11 @@ Replace element type is specified in section 2.2.7.8.
      ...
    </SyncBody>
 
-3.1.5.2  SyncML Response Commands
+##### 3.1.5.2 SyncML Response Commands
 
 The following sections specify the response commands for the SyncML message.
 
-3.1.5.2.1 Status
+###### 3.1.5.2.1 Status
 
 The Status response command MUST be returned by the client in response to any command issued
 by the server. Multiple Status response commands, each with a unique CmdID (section 2.2.3.2), MAY
@@ -2415,7 +2305,7 @@ Status element type is specified in section 2.2.6.1.
      ...
    </SyncBody>
 
-3.1.5.2.2 Results
+###### 3.1.5.2.2 Results
 
 The Results response command MUST be returned by the recipient in response to each successful
 Get (section 3.1.5.1.6) command issued by the originator. Multiple Results response commands, each
@@ -2428,7 +2318,8 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following XML snippet shows example usage of the Results response command. The syntax for
+
+The following XML snippet shows example usage of the Results response command. The syntax for
 the Results element type is specified in section 2.2.7.8.
 
    <SyncBody>
@@ -2451,7 +2342,7 @@ the Results element type is specified in section 2.2.7.8.
      ...
    </SyncBody>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 Retry Timer Event: If the client receives an HTTP 429 (Too Many Requests) response code from the
 Device Management Service (DMS), the retry timer (section 3.1.2 Timers) SHOULD<15> use the
@@ -2459,14 +2350,14 @@ Device Management Service (DMS), the retry timer (section 3.1.2 Timers) SHOULD<1
 resubmitting a request. The HTTP 429 response code indicates the user has sent too many requests in
 a given amount of time to the device management service.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  Access Control Lists
+##### 3.1.7.1 Access Control Lists
 
 Access Control List (ACL), a mandatory requirement specified in OMA Device Management Tree and
 Description [OMA-TSDM], is not supported in MDM.
 
-3.1.7.2  UserAgentOrigin
+##### 3.1.7.2 UserAgentOrigin
 
 The UserAgentOrigin field indicates which client component triggered the session. The value can be
 either a comma-separated list of integers or a single integer.
@@ -2500,7 +2391,8 @@ Release: April 23, 2024
 
 35 / 48
 
-Value  Meaning
+
+Value  Meaning
 
 4
 
@@ -2518,36 +2410,36 @@ CSP-triggered session.
 
 Public API session.
 
-3.2  Azure Details
+### 3.2 Azure Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Retry Timer: A timer that sets the delay for resending requests when the server responds that it has
 received too many requests in a given time window, as defined in section 3.1.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events are push-initiated device management sessions as defined in section
 3.1.4. The push event triggers a device session when OMA DM client is in "multi-user AVD" mode.
 There is no event for user session.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Windows Azure Virtual Desktop for Multi-users' User Setting Configuration
+##### 3.2.5.1 Windows Azure Virtual Desktop for Multi-users' User Setting Configuration
 
 Windows Azure Virtual Desktop (AVD) supports multiple users that can log on simultaneously.<16> To
 allow configuration of user settings, the MDM server must support "multi-user AVD" mode. In this
 mode, the OMA DM client can run in device session or a user session on Windows AVD edition on AVD.
 
-3.2.5.1.1 Device Session vs. User Session
+###### 3.2.5.1.1 Device Session vs. User Session
 
 Generally, the OMA DM client runs in "mixed" session. The MDM server can send both device settings
 and user settings to the OMA DM client. In AVD, the OMA DM client can run in "device" session or
@@ -2556,7 +2448,7 @@ settings. Each user session is associated with one user’s AAD user token. When
 users, there could be multiple user sessions running in parallel. There is always a single device session
 which has an AAD device token, but no AAD user token associated with it.
 
-3.2.5.1.2 Azure AD Join
+###### 3.2.5.1.2 Azure AD Join
 
 MDM supports only Azure AD Join (AADJ) enrollment in AVD. The user token is returned in
 "com.microsoft/MDM/AADUserToken" alert; see [MSDOCS-AAD-MDM] for more details.
@@ -2568,11 +2460,12 @@ Mobile Device Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The MDM server can identify AVD by OSEdition ([MS-MDE2] section 2.2.9.6) in the client’s
+
+The MDM server can identify AVD by OSEdition ([MS-MDE2] section 2.2.9.6) in the client’s
 DiscoveryRequest ([MS-MDE2] section 3.1.4.1.3.1) during MDM enrollment; see [MS-MDE2] for
 more details, when OSEdition is 175 (0xAF).
 
-3.2.5.1.3 SyncApplicationVersion
+###### 3.2.5.1.3 SyncApplicationVersion
 
 When OSEdition is 175 (0xAF), if the MDM server supports the "multi-user AVD" mode, and it can
 configure any user settings, the MDM server should query
@@ -2581,7 +2474,7 @@ or later, the MDM server should set DMCLIENT/ProviderID/SyncApplicationVersion t
 later.<17> The OMA DM client will run in "multi-users AVD" mode, with device session and user
 session.
 
-3.2.5.1.4 MultipleSession Poll Interval
+###### 3.2.5.1.4 MultipleSession Poll Interval
 
 The Poll intervals set by the MDM server are used as specified in the DM client Configuration Service
 Provider (CSP) for the device session’s poll intervals. See [MSDOCS-DMClient-CSP] for more
@@ -2602,7 +2495,7 @@ configured/enrolled to communicate with the server. The default value is 0. If t
 IntervalForScheduledRetriesForUserSession is not 0, then the schedule will be set to repeat for
 an infinite number of times. Supported operations are Get and Replace.
 
-3.2.5.1.5 SyncType Alert
+###### 3.2.5.1.5 SyncType Alert
 
 A device Alert 1224 (CLIENT EVENT) is sent to the MDM server in MD package#1.
 
@@ -2641,9 +2534,10 @@ Release: April 23, 2024
 
 37 / 48
 
-   </SyncBody>
 
-3.2.5.1.6 DevicePrepSync Alert
+   </SyncBody>
+
+###### 3.2.5.1.6 DevicePrepSync Alert
 
 A device Alert 1224 (CLIENT EVENT) is sent to the MDM server in MD package#1. The data part of
 this alert could be one of the following strings:
@@ -2681,12 +2575,12 @@ continue provisioning.<21>
      ...
   </SyncBody>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The Retry Timer Event defined in section 3.1.6 is per OMA DM client session. It applies the same
 way to both device session and user session.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 The UserAgentOrigin field applies to AVD, and ACL is not supported as defined in section 3.1.7.
 
@@ -2697,7 +2591,8 @@ Release: April 23, 2024
 
 38 / 48
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example is a complete message exchange between a client and server.
 
@@ -2771,7 +2666,8 @@ Release: April 23, 2024
 
 39 / 48
 
-           <LocURI>./DevInfo/Lang</LocURI>
+
+           <LocURI>./DevInfo/Lang</LocURI>
          </Source>
          <Data>en-US</Data>
        </Item>
@@ -2848,7 +2744,8 @@ Release: April 23, 2024
 
 40 / 48
 
-     <Target>
+
+     <Target>
        <LocURI>https://contoso.com/management-server</LocURI>
      </Target>
      <Source>
@@ -2917,13 +2814,14 @@ Release: April 23, 2024
 
 41 / 48
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2934,7 +2832,8 @@ Release: April 23, 2024
 
 42 / 48
 
-6  Appendix A: MSI Application Install
+
+## 6 Appendix A: MSI Application Install
 
 The OMA DM client contains two hooks: one that can be used to enable an MDM server to initiate an
 MSI install (Windows Installer) on a device, and another that can be used to query whether an MSI-
@@ -2959,7 +2858,8 @@ Release: April 23, 2024
 
 43 / 48
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3026,7 +2926,8 @@ Release: April 23, 2024
 
 44 / 48
 
-<16> Section 3.2.5.1: Servicing May 2022, support for user sessions on Windows 11, version 22H2
+
+<16> Section 3.2.5.1: Servicing May 2022, support for user sessions on Windows 11, version 22H2
 operating system (version 2) multi-session Edition only in Windows Virtual Desktop was backported to
 Windows 11 (version 1). Servicing March 2023, the previous servicing update was backported to
 Windows 10 v2004 (v20H1) and later.
@@ -3052,7 +2953,8 @@ Release: April 23, 2024
 
 45 / 48
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3124,7 +3026,8 @@ Release: April 23, 2024
 
 46 / 48
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 30
@@ -3254,7 +3157,8 @@ Transport 12
 
 47 / 48
 
-V
+
+V
 
 Vendor-extensible fields 11
 Versioning 11

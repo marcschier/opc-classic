@@ -64,7 +64,8 @@ Release: September 16, 2024
 
 1 / 89
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -83,343 +84,146 @@ Release: September 16, 2024
 
 2 / 89
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Startup Sequence ......................................................................................... 7
-Hello Stage .................................................................................................. 8
-Metadata Stage ............................................................................................ 8
-Gamepad Input Report .................................................................................. 9
-Audio .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.4.3.1
-
-2.2.2.4.1
-2.2.2.4.2
-2.2.2.4.3
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Device Hello Enumeration ............................................................................ 11
-Vendor ID ............................................................................................ 11
-Product ID ........................................................................................... 11
-Device ID ............................................................................................. 12
-Secondary Device ID ............................................................................. 12
-GIP Metadata Exchange ............................................................................... 13
-GIP Metadata ....................................................................................... 16
-Metadata JSON Object ........................................................................... 17
-Metadata Header Object ........................................................................ 17
-Device Metadata Object ......................................................................... 17
-SupportedInSystemCommands ......................................................... 17
-SupportedOutSystemCommands ....................................................... 18
-SupportedAudioFormats ................................................................... 19
-Supported Frequencies ............................................................... 19
-SupportedDeviceFirmareVersions ...................................................... 20
-PreferredTypes ................................................................................ 20
-SupportedInterfaces ........................................................................ 22
-SupportedHidDescriptor ................................................................... 23
-Messages Array .................................................................................... 23
-Message Example ............................................................................ 24
-USB Configuration ...................................................................................... 24
-USB Device Initialization ........................................................................ 24
-USB Remote Wakeup ............................................................................. 25
-USB Control Endpoints ........................................................................... 25
-USB String Descriptors ................................................................................ 27
-USB Device Qualifier Descriptor .................................................................... 28
-Microsoft OS and Extended Compatible ID Descriptors .................................... 28
-USB Device Descriptor................................................................................. 29
-USB Configuration Descriptor ....................................................................... 29
-USB Interface Descriptors ............................................................................ 30
-GIP Data Interface ................................................................................ 30
-GIP Data Interrupt OUT Endpoint Descriptor ....................................... 30
-GIP Data Interrupt IN Endpoint Descriptor .......................................... 31
-2.2.10  Message Header ......................................................................................... 32
-
-2.2.2.4.4
-2.2.2.4.5
-2.2.2.4.6
-2.2.2.4.7
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.9.1.1
-2.2.9.1.2
-
-2.2.2.5.1
-
-2.2.9.1
-
-2.2.2.5
-
-2.2.3
-
-[MS-GIPUSB] - v20240916
-Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-3 / 89
-
-2.2.11
-
-2.2.10.1  Message Type ....................................................................................... 32
-2.2.10.2
-Flags ................................................................................................... 33
-Sequence ID ........................................................................................ 34
-2.2.10.3
-2.2.10.4  GIP Payload Length MTUs ...................................................................... 34
-Audio Initialization ...................................................................................... 35
-Starting Audio Capture .......................................................................... 36
-Lost Initialization Packets ....................................................................... 37
-Audio Reconfiguration ............................................................................ 37
-2.2.12  GIP Audio Interface Descriptors .................................................................... 37
-2.2.12.1  GIP Audio Interface Descriptor Alternate .................................................. 38
-2.2.12.2  GIP Audio Isochronous OUT Endpoint Descriptor ....................................... 38
-2.2.12.3  GIP Audio Isochronous IN Endpoint Descriptor .......................................... 39
-
-2.2.11.1
-2.2.11.2
-2.2.11.3
-
-3.1
-
-3.1.5.5.2.3
-
-3.1.5.5.2.3.1
-
-3.1.5.5.3
-3.1.5.5.4
-
-3.1.5.5.1
-3.1.5.5.2
-
-3.1.5.5.2.1
-3.1.5.5.2.2
-
-3.1.5.5.2.2.1
-3.1.5.5.2.2.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-
-3  Protocol Details ..................................................................................................... 40
-GIP Accessory Details ....................................................................................... 40
-Abstract Data Model .................................................................................... 40
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 42
-Higher-Layer Triggered Events ..................................................................... 42
-Message Processing Events and Sequencing Rules .......................................... 42
-Reliable Message Acknowledgement ........................................................ 42
-Reliable Large Message Transmission ...................................................... 44
-Coalescing Messages ............................................................................. 48
-Message Summary ................................................................................ 49
-Core System Messages .......................................................................... 51
-Hello Device Command .................................................................... 51
-Status Device Command .................................................................. 52
-Legacy Status Device Message .................................................... 52
-Extended Status Device Message ................................................. 53
-Status Field ......................................................................... 54
-Extended Status Field ........................................................... 56
-Extended Status Events .............................................................. 56
-Fault Event .......................................................................... 56
-Metadata Request Command ............................................................ 57
-Metadata Response Command .......................................................... 57
-Initial Metadata Response Command ............................................ 57
-Middle Metadata Response Command ........................................... 58
-Final Metadata Response Command ............................................. 58
-Metadata Complete Command ..................................................... 59
-Set Device State Command .............................................................. 59
-Guide Button Status ........................................................................ 60
-LED eButton Command .................................................................... 60
-LED IR Command ............................................................................ 61
-Debug Commands ........................................................................... 62
-Debug Large Message Request .................................................... 62
-Debug Test Command ................................................................ 63
-Extended Commands ....................................................................... 64
-3.1.5.5.10.1  Get Capabilities Command .......................................................... 65
-3.1.5.5.10.2  Get Serial Number Command ...................................................... 66
-Telemetry Extended Commands................................................... 67
-3.1.5.5.10.3
-3.1.5.5.10.3.1  Get Telemetry Data Command ............................................... 67
-Gamepad Vendor Messages .................................................................... 69
-Direct Motor Command .................................................................... 69
-Gamepad Input Report ............................................................... 70
-Custom Vendor Data .................................................................. 72
-Extensions ................................................................................ 72
-Console Function Map ........................................................... 73
-Share button ....................................................................... 74
-
-3.1.5.5.5
-3.1.5.5.6
-3.1.5.5.7
-3.1.5.5.8
-3.1.5.5.9
-
-3.1.5.5.4.1
-3.1.5.5.4.2
-3.1.5.5.4.3
-3.1.5.5.4.4
-
-3.1.5.6.1.1
-3.1.5.6.1.2
-3.1.5.6.1.3
-
-3.1.5.6.1.3.1
-3.1.5.6.1.3.2
-
-3.1.5.5.9.1
-3.1.5.5.9.2
-
-3.1.5.5.10
-
-3.1.5.6.1
-
-3.1.5.6
-
-[MS-GIPUSB] - v20240916
-Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4 / 89
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.5.6.1.4
-3.1.5.6.1.5
-
-Overflow Message ...................................................................... 75
-Preventing Host from Entering Power Save Mode ........................... 78
-Timer Events .............................................................................................. 78
-Other Local Events ...................................................................................... 78
-Audio Details ................................................................................................... 78
-Abstract Data Model .................................................................................... 78
-Timers ...................................................................................................... 78
-Initialization ............................................................................................... 78
-Higher-Layer Triggered Events ..................................................................... 78
-Message Processing Events and Sequencing Rules .......................................... 79
-Audio System Messages ......................................................................... 79
-Audio Control Volume Extended ........................................................ 79
-Audio Control Configuration .............................................................. 81
-Audio Render Data Message.............................................................. 81
-Audio Capture Data Message ............................................................ 82
-Audio Data Message Size and Flow Control ......................................... 82
-Timer Events .............................................................................................. 83
-Other Local Events ...................................................................................... 83
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-
-3.2.5.1
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 84
-
-5  Security ................................................................................................................. 85
-Security Considerations for Implementers ........................................................... 85
-Index of Security Parameters ............................................................................ 85
-
-5.1
-5.2
-
-6  Appendix A: Software Development Kits ............................................................... 86
-
-7  Appendix B: Product Behavior ............................................................................... 87
-
-8  Change Tracking .................................................................................................... 89
-
-9  Index ..................................................................................................................... 90
-
-[MS-GIPUSB] - v20240916
-Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 89
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Startup Sequence](#131-startup-sequence)
+    - [1.3.2 Hello Stage](#132-hello-stage)
+    - [1.3.3 Metadata Stage](#133-metadata-stage)
+    - [1.3.4 Gamepad Input Report](#134-gamepad-input-report)
+    - [1.3.5 Audio](#135-audio)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Device Hello Enumeration](#221-device-hello-enumeration)
+      - [2.2.1.1 Vendor ID](#2211-vendor-id)
+      - [2.2.1.2 Product ID](#2212-product-id)
+      - [2.2.1.3 Device ID](#2213-device-id)
+      - [2.2.1.4 Secondary Device ID](#2214-secondary-device-id)
+    - [2.2.2 GIP Metadata Exchange](#222-gip-metadata-exchange)
+      - [2.2.2.1 GIP Metadata](#2221-gip-metadata)
+      - [2.2.2.2 Metadata JSON Object](#2222-metadata-json-object)
+      - [2.2.2.3 Metadata Header Object](#2223-metadata-header-object)
+      - [2.2.2.4 Device Metadata Object](#2224-device-metadata-object)
+        - [2.2.2.4.1 SupportedInSystemCommands](#22241-supportedinsystemcommands)
+        - [2.2.2.4.2 SupportedOutSystemCommands](#22242-supportedoutsystemcommands)
+        - [2.2.2.4.3 SupportedAudioFormats](#22243-supportedaudioformats)
+          - [2.2.2.4.3.1 Supported Frequencies](#222431-supported-frequencies)
+        - [2.2.2.4.4 SupportedDeviceFirmareVersions](#22244-supporteddevicefirmareversions)
+        - [2.2.2.4.5 PreferredTypes](#22245-preferredtypes)
+        - [2.2.2.4.6 SupportedInterfaces](#22246-supportedinterfaces)
+        - [2.2.2.4.7 SupportedHidDescriptor](#22247-supportedhiddescriptor)
+      - [2.2.2.5 Messages Array](#2225-messages-array)
+        - [2.2.2.5.1 Message Example](#22251-message-example)
+    - [2.2.3 USB Configuration](#223-usb-configuration)
+      - [2.2.3.1 USB Device Initialization](#2231-usb-device-initialization)
+      - [2.2.3.2 USB Remote Wakeup](#2232-usb-remote-wakeup)
+      - [2.2.3.3 USB Control Endpoints](#2233-usb-control-endpoints)
+    - [2.2.4 USB String Descriptors](#224-usb-string-descriptors)
+    - [2.2.5 USB Device Qualifier Descriptor](#225-usb-device-qualifier-descriptor)
+    - [2.2.6 Microsoft OS and Extended Compatible ID Descriptors](#226-microsoft-os-and-extended-compatible-id-descriptors)
+    - [2.2.7 USB Device Descriptor](#227-usb-device-descriptor)
+    - [2.2.8 USB Configuration Descriptor](#228-usb-configuration-descriptor)
+    - [2.2.9 USB Interface Descriptors](#229-usb-interface-descriptors)
+      - [2.2.9.1 GIP Data Interface](#2291-gip-data-interface)
+        - [2.2.9.1.1 GIP Data Interrupt OUT Endpoint Descriptor](#22911-gip-data-interrupt-out-endpoint-descriptor)
+        - [2.2.9.1.2 GIP Data Interrupt IN Endpoint Descriptor](#22912-gip-data-interrupt-in-endpoint-descriptor)
+    - [2.2.10 Message Header](#2210-message-header)
+      - [2.2.10.1 Message Type](#22101-message-type)
+      - [2.2.10.2 Flags](#22102-flags)
+      - [2.2.10.3 Sequence ID](#22103-sequence-id)
+      - [2.2.10.4 GIP Payload Length MTUs](#22104-gip-payload-length-mtus)
+    - [2.2.11 Audio Initialization](#2211-audio-initialization)
+      - [2.2.11.1 Starting Audio Capture](#22111-starting-audio-capture)
+      - [2.2.11.2 Lost Initialization Packets](#22112-lost-initialization-packets)
+      - [2.2.11.3 Audio Reconfiguration](#22113-audio-reconfiguration)
+    - [2.2.12 GIP Audio Interface Descriptors](#2212-gip-audio-interface-descriptors)
+      - [2.2.12.1 GIP Audio Interface Descriptor Alternate](#22121-gip-audio-interface-descriptor-alternate)
+      - [2.2.12.2 GIP Audio Isochronous OUT Endpoint Descriptor](#22122-gip-audio-isochronous-out-endpoint-descriptor)
+      - [2.2.12.3 GIP Audio Isochronous IN Endpoint Descriptor](#22123-gip-audio-isochronous-in-endpoint-descriptor)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 GIP Accessory Details](#31-gip-accessory-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Reliable Message Acknowledgement](#3151-reliable-message-acknowledgement)
+      - [3.1.5.2 Reliable Large Message Transmission](#3152-reliable-large-message-transmission)
+      - [3.1.5.3 Coalescing Messages](#3153-coalescing-messages)
+      - [3.1.5.4 Message Summary](#3154-message-summary)
+      - [3.1.5.5 Core System Messages](#3155-core-system-messages)
+        - [3.1.5.5.1 Hello Device Command](#31551-hello-device-command)
+        - [3.1.5.5.2 Status Device Command](#31552-status-device-command)
+          - [3.1.5.5.2.1 Legacy Status Device Message](#315521-legacy-status-device-message)
+          - [3.1.5.5.2.2 Extended Status Device Message](#315522-extended-status-device-message)
+          - [3.1.5.5.2.3 for the definition of specific Event types. Events](#315523-for-the-definition-of-specific-event-types-events)
+            - [3.1.5.5.2.3.1 Fault Event](#3155231-fault-event)
+        - [3.1.5.5.3 Metadata Request Command](#31553-metadata-request-command)
+        - [3.1.5.5.4 Metadata Response Command](#31554-metadata-response-command)
+          - [3.1.5.5.4.1 Initial Metadata Response Command](#315541-initial-metadata-response-command)
+          - [3.1.5.5.4.2 Middle Metadata Response Command](#315542-middle-metadata-response-command)
+          - [3.1.5.5.4.3 Final Metadata Response Command](#315543-final-metadata-response-command)
+          - [3.1.5.5.4.4 Metadata Complete Command](#315544-metadata-complete-command)
+        - [3.1.5.5.5 Set Device State Command](#31555-set-device-state-command)
+        - [3.1.5.5.6 Guide Button Status](#31556-guide-button-status)
+        - [3.1.5.5.7 LED eButton Command](#31557-led-ebutton-command)
+        - [3.1.5.5.8 LED IR Command](#31558-led-ir-command)
+        - [3.1.5.5.9 Debug Commands](#31559-debug-commands)
+          - [3.1.5.5.9.1 Debug Large Message Request](#315591-debug-large-message-request)
+          - [3.1.5.5.9.2 Debug Test Command](#315592-debug-test-command)
+        - [3.1.5.5.10 Extended Commands](#315510-extended-commands)
+          - [3.1.5.5.10.1 Get Capabilities Command](#3155101-get-capabilities-command)
+          - [3.1.5.5.10.2 Get Serial Number Command](#3155102-get-serial-number-command)
+          - [3.1.5.5.10.3 Telemetry Extended Commands](#3155103-telemetry-extended-commands)
+            - [3.1.5.5.10.3.1 Get Telemetry Data Command](#31551031-get-telemetry-data-command)
+      - [3.1.5.6 Gamepad Vendor Messages](#3156-gamepad-vendor-messages)
+        - [3.1.5.6.1 Direct Motor Command](#31561-direct-motor-command)
+          - [3.1.5.6.1.1 Gamepad Input Report](#315611-gamepad-input-report)
+          - [3.1.5.6.1.2 Custom Vendor Data](#315612-custom-vendor-data)
+          - [3.1.5.6.1.3 Extensions](#315613-extensions)
+            - [3.1.5.6.1.3.1 Console Function Map](#3156131-console-function-map)
+            - [3.1.5.6.1.3.2 Share button](#3156132-share-button)
+          - [3.1.5.6.1.4 Overflow Message](#315614-overflow-message)
+          - [3.1.5.6.1.5 Preventing Host from Entering Power Save Mode](#315615-preventing-host-from-entering-power-save-mode)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Audio Details](#32-audio-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Audio System Messages](#3251-audio-system-messages)
+        - [3.2.5.1.1 Audio Control Volume Extended](#32511-audio-control-volume-extended)
+        - [3.2.5.1.2 Audio Control Configuration](#32512-audio-control-configuration)
+        - [3.2.5.1.3 Audio Render Data Message](#32513-audio-render-data-message)
+        - [3.2.5.1.4 Audio Capture Data Message](#32514-audio-capture-data-message)
+        - [3.2.5.1.5 Audio Data Message Size and Flow Control](#32515-audio-data-message-size-and-flow-control)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Software Development Kits](#6-appendix-a-software-development-kits)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension is a modified version of the
 USB 2.0 interface that provides extended semantics for interaction between game controller devices
@@ -430,7 +234,7 @@ for an expansion device on the controller.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -463,14 +267,14 @@ transfer: One or more transactions to move information between the GIP device an
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -486,7 +290,8 @@ Release: September 16, 2024
 
 6 / 89
 
-[USB-SPC2.0] USB Implementers Forum, Inc., "Document Library", USB 2.0 Specification, October
+
+[USB-SPC2.0] USB Implementers Forum, Inc., "Document Library", USB 2.0 Specification, October
 2021, https://www.usb.org/documents
 
 Note Search for 2.0 and Technology USB 2.0
@@ -494,7 +299,7 @@ Note Search for 2.0 and Technology USB 2.0
 [USB-SPC] USB Consortium, "USB 3.0 Specification", April 2000,
 http://www.usb.org/developers/docs/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [JSON-Schema] Internet Engineering Task Force (IETF), "JSON Schema and Hyper-Schema",
 http://json-schema.org/
@@ -512,7 +317,7 @@ https://learn.microsoft.com/en-us/windows/win32/api/_xinput/
 [USB-VID] USB Implementers Forum, Inc, "Getting a Vendor ID", https://www.usb.org/getting-
 vendor-id
 
-1.3  Overview
+### 1.3 Overview
 
 The Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension provides flexibility for various
 transmission scenarios. A large GIP message can be split across multiple packets, which is necessary
@@ -529,7 +334,7 @@ that are available from supported APIs can leverage extensibility options provid
 GIP device state diagram, see section 3.1.1. For more information, see the documentation
 downloadable from [MSLEARN-XIGC-API].
 
-1.3.1  Startup Sequence
+#### 1.3.1 Startup Sequence
 
 The following diagram shows the startup sequence of GIP devices for a device to host connection.
 
@@ -540,7 +345,8 @@ Release: September 16, 2024
 
 7 / 89
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-GIPUSB].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -560,7 +366,7 @@ Process notes follow:
 
 6.  Motor command is only applicable to Gamepad.
 
-1.3.2  Hello Stage
+#### 1.3.2 Hello Stage
 
 All GIP devices advertise a Hello message at enumeration that contains essential information
 necessary for identification. This includes information required to identify their unique instance from
@@ -568,7 +374,7 @@ others: a device ID akin to a serial number, the product vendor and model, and t
 hardware, and protocol versions. See section 2.2.1 for vendor ID, product ID, device ID, and
 secondary device ID.
 
-1.3.3  Metadata Stage
+#### 1.3.3 Metadata Stage
 
 See section 2.2.2 for more information.
 
@@ -579,24 +385,25 @@ Release: September 16, 2024
 
 8 / 89
 
-1.3.4  Gamepad Input Report
+
+#### 1.3.4 Gamepad Input Report
 
 The Gamepad Input Report that follows the Motor exchange in the previous figure (section 1.3.1) is
 not strictly necessary. However, the first Gamepad Input Report after Set Device State: Start is
 required and MUST reflect the current state of the device.
 
-1.3.5  Audio
+#### 1.3.5 Audio
 
 An audio streaming device is a special case. Audio data is not routed to or from the vendor’s library.
 Instead, it is communicated directly to the host’s audio stack, and special handling is done to ensure
 regular and continuous flow of data. See section 2.2.11 for more information.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension uses the [USB-SPC2.0] or
 [USB-SPC] specifications from the USB Implementors Forum.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The requirements in this section apply to all accessories that utilize USB (this includes game
 controllers).
@@ -641,11 +448,11 @@ communicate charging battery status.
   All partner accessories that seek to connect via wireless SHOULD leverage the USB path and
 implement encryption on top of it to guarantee the privacy and security of the transport.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Applies to all accessories that utilize the Universal Serial Bus (USB).
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
@@ -656,7 +463,8 @@ Release: September 16, 2024
 
 9 / 89
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 All GIP devices advertise a Hello message at enumeration that contains essential information
 necessary for identification. This includes information required to identify their unique instance from
@@ -667,7 +475,7 @@ All accessories that utilize USB MUST use a valid USB Vendor ID (VID) registered
 manufacturer. See [USB-VID] for more information. See section 2.2.1 for vendor ID, product ID,
 device ID, and secondary device ID.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -678,18 +486,19 @@ Release: September 16, 2024
 
 10 / 89
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension transports messages via the
 Universal Serial Bus (USB) Core protocol as specified by [USB-SPC2.0] and [USB-SPC]. USB Core is an
 external bus architecture that connects USB-capable peripheral devices to a host computer. Wired and
 wireless USB adapters are supported.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Device Hello Enumeration
+#### 2.2.1 Device Hello Enumeration
 
 All GIP devices advertise a Hello message at enumeration that contains essential information
 necessary for identification. This includes information required to identify their unique instance from
@@ -707,7 +516,7 @@ until a response is received from the host. For all GIP devices, this response m
 Metadata Request, a Set Device State: Off, or a Set Device State: Reset. Additionally, the response for
 non-audio devices could be a Set Device State: Start, or for audio devices a Set Device State: Stop.
 
-2.2.1.1  Vendor ID
+##### 2.2.1.1 Vendor ID
 
 The USB Vendor ID of a product identifies the partner company that produced the product. It is
 assigned by the USB Implementer’s Forum (USB-IF). See [USB-VID] for more information. The VID
@@ -716,7 +525,7 @@ IF for the submitting partner. If the Gaming Input Protocol (GIP) is used with a
 Vendor ID (VID) and Product ID (PID) specified in the USB Device Descriptor MUST match the VID and
 PID specified in the primary GIP Hello message.
 
-2.2.1.2  Product ID
+##### 2.2.1.2 Product ID
 The USB Product ID (PID) is allocated and assigned to a device by the vendor. This differs from the
 USB Vendor ID (VID) which is assigned by the USB Implementer’s Forum (USB-IF). For purposes of
 telemetry and differentiation, there are a few requirements that MUST be followed when a PID is
@@ -741,7 +550,8 @@ Release: September 16, 2024
 
 11 / 89
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GIPUSB].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -754,7 +564,7 @@ previous product. For example, Product A is assigned Primary PID 0x0123 and Seco
 use Secondary PID 0x0124 if the functionality of the sub-device is equivalent Product A’s
 functionality.
 
-2.2.1.3  Device ID
+##### 2.2.1.3 Device ID
 
 All GIP devices MUST have a unique 64-bit Primary Device ID of which the four most significant bytes
 are 0x00, 0x00, 0xFF, 0xFB. The remaining bytes MUST be Random numbers, determined on bootup
@@ -766,7 +576,7 @@ through the GIP connection process without a valid Device ID.
 
 Figure 2: GIP device IDs example
 
-2.2.1.4  Secondary Device ID
+##### 2.2.1.4 Secondary Device ID
 
 GIP supports enumeration of additional sub-devices after the primary device has completed the
 Security Handshake successfully. These secondary sub-devices MUST also have their own unique
@@ -787,7 +597,8 @@ Release: September 16, 2024
 
 12 / 89
 
-Device  Sub-device
+
+Device  Sub-device
 
 VID
 
@@ -851,7 +662,7 @@ to the previous byte for up to 4 bytes.
      }
  }
 
-2.2.2  GIP Metadata Exchange
+#### 2.2.2 GIP Metadata Exchange
 
 All GIP devices provide details about supported system and vendor feature sets and their related
 message properties through device-specific metadata. Metadata packets are requested by a host in
@@ -867,7 +678,8 @@ Release: September 16, 2024
 
 13 / 89
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-GIPUSB].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -902,7 +714,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-unique metadata cache entries. For example, if the host caches the metadata for the device in Arcade
+
+unique metadata cache entries. For example, if the host caches the metadata for the device in Arcade
 Stick mode and the Hello message for Gamepad is not properly differentiated, the host will use the
 cached Arcade Stick metadata for Gamepad mode and the device will not function properly. To assure
 appropriate metadata association, a device can differentiate the Hello messages through use of either
@@ -975,7 +788,8 @@ Release: September 16, 2024
 
 15 / 89
 
- }
+
+ }
 
 Note the preferred type of Windows.Xbox.Input.Gamepad that specifies the DLL to load and the three
 supported interfaces as follows:
@@ -1019,7 +833,7 @@ The following shows a typical GIP Gamepad compiled metadata binary blob as sourc
 // 0xB0
  };
 
-2.2.2.1  GIP Metadata
+##### 2.2.2.1 GIP Metadata
 
 GIP device manufacturers start with creation of the JavaScript Object Notation (JSON) metadata
 descriptions for their device with the schema defined in the following GIP Metadata sections. They
@@ -1049,7 +863,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The JSON object is run through a compiler to produce a more compact binary blob. The compiler is
+
+The JSON object is run through a compiler to produce a more compact binary blob. The compiler is
 available as source code contained within a download available online. See [MSLEARN-XIGC-API].
 
 Usage once the compiler source code is compiled:
@@ -1062,7 +877,7 @@ outputfile: The resultant binary metadata blob. This parameter is optional. If n
 
 be sent to inputfile.bin.
 
-2.2.2.2  Metadata JSON Object
+##### 2.2.2.2 Metadata JSON Object
 
 The complete metadata is a single top-level, unnamed JSON object that contains three name/value
 pairs.
@@ -1073,7 +888,7 @@ pairs.
      "Messages"       : [ … ]
  }
 
-2.2.2.3  Metadata Header Object
+##### 2.2.2.3 Metadata Header Object
 
 The MetdataHeader is an object that contains two name/value pairs.
 
@@ -1090,7 +905,7 @@ MinorVersion: An integer. It represents the minor portion of the metadata specif
 
 follows. Its value is 0.
 
-2.2.2.4  Device Metadata Object
+##### 2.2.2.4 Device Metadata Object
 
 DeviceMetadata is of type object. It contains six name/value pairs.
 
@@ -1105,7 +920,7 @@ DeviceMetadata is of type object. It contains six name/value pairs.
 
 The following sections define the DeviceMetadata fields.
 
-2.2.2.4.1 SupportedInSystemCommands
+###### 2.2.2.4.1 SupportedInSystemCommands
 
 [MS-GIPUSB] - v20240916
 Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
@@ -1114,7 +929,8 @@ Release: September 16, 2024
 
 17 / 89
 
-SupportedInSystemCommands is an array of integers. These values are the system commands
+
+SupportedInSystemCommands is an array of integers. These values are the system commands
 that the device can send to the console. The following table lists the commands. As noted in the table,
 almost every device has this SupportedInSystemCommands name value pair.
 
@@ -1185,7 +1001,7 @@ Any device which provides audio MUST support, whether input or output.
 
 Table 2: SupportedInSystemCommands name value pairs
 
-2.2.2.4.2 SupportedOutSystemCommands
+###### 2.2.2.4.2 SupportedOutSystemCommands
 
 SupportedOutSystemCommands is an array of integers. These values are the system commands
 that the device supports receiving. Almost all devices have the following array for out commands.
@@ -1258,7 +1074,8 @@ Release: September 16, 2024
 
 18 / 89
 
-2.2.2.4.3 SupportedAudioFormats
+
+###### 2.2.2.4.3 SupportedAudioFormats
 
 SupportedAudioFormats is an array of unnamed audio format objects. The audio format objects can
 contain one or two named objects to describe inbound and outbound audio format information.
@@ -1309,7 +1126,7 @@ Example 2: A microphone-only product.
     }
  ]
 
-2.2.2.4.3.1  Supported Frequencies
+###### 2.2.2.4.3.1 Supported Frequencies
 
 Any frequency can support one or two channels. All audio data formats are 16-bit, little endian. Multi-
 channel audio devices MUST interleave the samples. The following lists supported frequencies:
@@ -1327,7 +1144,8 @@ Release: September 16, 2024
 
 19 / 89
 
-  16000
+
+  16000
 
   20000
 
@@ -1346,7 +1164,7 @@ provider will be a single title that understands the device, any frequency can b
 recommendation that the source frequency SHOULD match the output frequency. Audio resampling is
 done in software, is computationally intensive and might result in poor quality.
 
-2.2.2.4.4 SupportedDeviceFirmareVersions
+###### 2.2.2.4.4 SupportedDeviceFirmareVersions
 
 SupportedDeviceFirmareVersions is an array of unnamed version objects. The version objects
 contain two named number pairs.
@@ -1382,7 +1200,7 @@ The following is an example that supports both 1.0 and 1.1 firmware revisions.
    }
  ]
 
-2.2.2.4.5 PreferredTypes
+###### 2.2.2.4.5 PreferredTypes
 
 PreferredTypes is an array of string values. The strings represent an ordered list of types supported
 by the controller. Games (or the system) MUST provide a handler (usually a DLL) for the specified
@@ -1396,7 +1214,8 @@ Release: September 16, 2024
 
 20 / 89
 
-Published Types
+
+Published Types
 
   Windows.Xbox.Input.Gamepad
 
@@ -1467,14 +1286,15 @@ Release: September 16, 2024
 
 21 / 89
 
-system packet 96. Host does not support the vendor’s library directly handling of audio streaming, and
+
+system packet 96. Host does not support the vendor’s library directly handling of audio streaming, and
 audio data is instead routed through the audio driver to ensure consistent quality.
 
 Vendors are free to implement non-streaming scenarios such as the download of clips to the device for
 later playback using non-system vendor commands. The GIP protocol MAY enforce a size limit on
 vendor messages in either direction.
 
-2.2.2.4.6 SupportedInterfaces
+###### 2.2.2.4.6 SupportedInterfaces
 
 SupportedInterfaces is an array of string values. The strings represent interface GUIDs.
 
@@ -1540,13 +1360,14 @@ Release: September 16, 2024
 
 22 / 89
 
-   "Contoso.Xbox.Gamepad.IShazam",
+
+   "Contoso.Xbox.Gamepad.IShazam",
    "Microsoft.Xbox.Input.IGamepad",
    "Microsoft.Xbox.Input.INavigationController",
    "Microsoft.Xbox.Input.IController"
  ]
 
-2.2.2.4.7 SupportedHidDescriptor
+###### 2.2.2.4.7 SupportedHidDescriptor
 
 Some devices like a chatpad can tunnel human interface device (HID) input in GIP packets through
 use of the GIP MessageType 0xB (System flag set). These devices SHOULD specify
@@ -1559,7 +1380,7 @@ SHOULD be the hex bytes of an appropriate HID descriptor as follows.
 
 "SupportedInterfaces" SHOULD include the GUID: "9776FF56-9BFD-4581-AD45-B645BBA526D6".
 
-2.2.2.5  Messages Array
+##### 2.2.2.5 Messages Array
 
 The Messages array is an array of unnamed Message objects. The messages in the array are the
 non-system messages the device sends and receives. If a message is not listed here, the system will
@@ -1607,7 +1428,8 @@ Release: September 16, 2024
 
 23 / 89
 
-receiver can know that it missed a particular message if it detects a gap. For USB devices this is
+
+receiver can know that it missed a particular message if it detects a gap. For USB devices this is
 not a problem, and this SHOULD always be set to false.
 
 IsDownstream: A Boolean value where true indicates this message is sent from the system to the
@@ -1622,7 +1444,7 @@ Period: A number. This is not implemented by the console and SHOULD be set to 0.
 
 PersistanceTimeout: A number. This is not implemented by the console and SHOULD be set to 0.
 
-2.2.2.5.1 Message Example
+###### 2.2.2.5.1 Message Example
 
 The Gamepad supports two messages: one upstream only, one downstream only.
 
@@ -1653,7 +1475,7 @@ The Gamepad supports two messages: one upstream only, one downstream only.
      }
    ]
 
-2.2.3  USB Configuration
+#### 2.2.3 USB Configuration
 
 USB device Configuration consists of the following parts:
 
@@ -1665,7 +1487,7 @@ USB device Configuration consists of the following parts:
 
   Various Descriptors
 
-2.2.3.1  USB Device Initialization
+##### 2.2.3.1 USB Device Initialization
 
 See [MSLEARN-XIGC-API] gipdocs download for a wire trace of GET/SET exchanges in figure 3-10.
 
@@ -1676,7 +1498,8 @@ Release: September 16, 2024
 
 24 / 89
 
-2.2.3.2  USB Remote Wakeup
+
+##### 2.2.3.2 USB Remote Wakeup
 
 USB devices that support remote wakeup (indicated by the USB Configuration Descriptor’s
 bmAttributes field) MUST have remote wakeup enabled (armed) by the host sending SET_FEATURE
@@ -1695,7 +1518,7 @@ test case.
 
 See [MSLEARN-XIGC-API] gipdocs download for wire traces in figures 3-11 and 3-12.
 
-2.2.3.3  USB Control Endpoints
+##### 2.2.3.3 USB Control Endpoints
 
 The following table summarizes standard requests and specific extensions.
 
@@ -2021,7 +1844,8 @@ Returns up to
 
 25 / 89
 
-Request Name  SETUP Packet
+
+Request Name  SETUP Packet
 
 USB State
 
@@ -2377,7 +2201,8 @@ Interface.
 
 26 / 89
 
-Request Name  SETUP Packet
+
+Request Name  SETUP Packet
 
 USB State
 
@@ -2515,7 +2340,7 @@ Descriptor.
 For the preceding table, in the Def, Adr and Cfg columns, S means STALL, and V means Valid. The
 device MUST STALL the requests that are not listed in this table.
 
-2.2.4  USB String Descriptors
+#### 2.2.4 USB String Descriptors
 
 All USB strings use UTF-16LE encoding and GIP USB strings MUST use 0x0409 English (United States)
 for the Language ID (LANGID). USB String Descriptors include the following:
@@ -2559,11 +2384,12 @@ Release: September 16, 2024
 
 27 / 89
 
-The host requests the Serial Number String from Index 0x0003 with LANGID 0x0409 and the device
+
+The host requests the Serial Number String from Index 0x0003 with LANGID 0x0409 and the device
 MUST respond with the unique Serial Number String Descriptor that contains the device ID. See
 [MSLEARN-XIGC-API] gipdocs download for wire trace figure 3-16.
 
-2.2.5  USB Device Qualifier Descriptor
+#### 2.2.5 USB Device Qualifier Descriptor
 
 USB GIP devices MUST respond to a request for the device_qualifier descriptor with a request error
 (STALL) to indicate that this is a Full-Speed (12 Mbps) device and not a High-Speed (480 Mbps)
@@ -2571,7 +2397,7 @@ device as per USB 2.0 specification .6.1 Device. To ignore this request has side
 device can perform faster" pop-up message. See [MSLEARN-XIGC-API] gipdocs download for wire
 trace figure 3-18.
 
-2.2.6  Microsoft OS and Extended Compatible ID Descriptors
+#### 2.2.6 Microsoft OS and Extended Compatible ID Descriptors
 
 The host will identify GIP USB devices that use the Microsoft OS Descriptor / Extended Compatible ID
 Descriptor mechanism. See [MSLEARN-USB-OS-Descriptors] for an overview. See also [MSLEARN-
@@ -2735,7 +2561,8 @@ Release: September 16, 2024
 
 28 / 89
 
-Offset  Field
+
+Offset  Field
 
 Size
 (bytes)
@@ -2766,7 +2593,7 @@ Reserved
 
 Table 6: Extended compatible ID descriptor
 
-2.2.7  USB Device Descriptor
+#### 2.2.7 USB Device Descriptor
 
 The following table shows the device descriptor.
 
@@ -2925,7 +2752,7 @@ Number of configurations: 1
 
 Table 7: Device descriptor
 
-2.2.8  USB Configuration Descriptor
+#### 2.2.8 USB Configuration Descriptor
 
 The following table shows the configuration descriptor.
 
@@ -2977,7 +2804,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Field
+
+Offset  Field
 
 Size
 (bytes)
@@ -3051,11 +2879,11 @@ zero and less than or equal to 500 mA (0xFA).
 
 Table 8: Configuration descriptor
 
-2.2.9  USB Interface Descriptors
+#### 2.2.9 USB Interface Descriptors
 
 The following subsections define the GIP data interface
 
-2.2.9.1  GIP Data Interface
+##### 2.2.9.1 GIP Data Interface
 
 All GIP USB devices require a Data Interface (USB Interface #0) with one 64-byte packet capable
 interrupt IN endpoint and one 64-byte packet capable interrupt OUT endpoint. Polling interval / rate is
@@ -3153,7 +2981,7 @@ No Interface String Descriptor.
 
 Table 9: GIP data interface descriptor
 
-2.2.9.1.1 GIP Data Interrupt OUT Endpoint Descriptor
+###### 2.2.9.1.1 GIP Data Interrupt OUT Endpoint Descriptor
 
 The following table shows the GIP Data Interrupt OUT endpoint descriptor.
 
@@ -3164,7 +2992,8 @@ Release: September 16, 2024
 
 30 / 89
 
-Offset  Field
+
+Offset  Field
 
 Size
 (bytes)
@@ -3255,7 +3084,7 @@ NUMBER  Polling interval in milliseconds: MUST be ≥ 4.
 
 Table 10: GIP Data Interrupt OUT endpoint descriptor
 
-2.2.9.1.2 GIP Data Interrupt IN Endpoint Descriptor
+###### 2.2.9.1.2 GIP Data Interrupt IN Endpoint Descriptor
 
 The following table shows the GIP Data Interrupt IN endpoint descriptor.
 
@@ -3355,9 +3184,10 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Table 11: GIP Data Interrupt IN endpoint descriptor
 
-2.2.10 Message Header
+Table 11: GIP Data Interrupt IN endpoint descriptor
+
+#### 2.2.10 Message Header
 
 All upstream and downstream packets are wrapped by a GIP header which contains information about
 the size, type of the data, and transport information. The size of the GIP header can be extended to
@@ -3424,9 +3254,9 @@ is needed, set bit 7.
 
 Table 12: GIP message header: single packet message
 
-2.2.10.1
+##### 2.2.10.1 Message Type
 
-Message Type
+
 
 The MessageType field defines which data class the packet contains and the message number.
 
@@ -3465,7 +3295,8 @@ Release: September 16, 2024
 
 32 / 89
 
-  System Commands are the same for all devices. Because they are the same for all devices,
+
+  System Commands are the same for all devices. Because they are the same for all devices,
 
 it is not necessary to define these Commands in the Message array of the Metadata. However,
 they still MUST be listed within either the SupportedInSystemCommands array or the
@@ -3492,9 +3323,9 @@ Standard Latency Data Class. Formerly known as Controller 2 Data.
   Audio Data: Used to send audio data between the device and host. It is available to both
 upstream and downstream. These messages are not defined in the Metadata (system).
 
-2.2.10.2
+##### 2.2.10.2 Flags
 
-Flags
+
 
 The Flags field values define the content of the message. They are used to indicate if the message is
 fragmented, if it is the first fragment of a fragmented message, if it is a system defined message,
@@ -3575,9 +3406,10 @@ Release: September 16, 2024
 
 33 / 89
 
-2.2.10.3
 
-Sequence ID
+##### 2.2.10.3 Sequence ID
+
+
 
 The GIP Sequence ID is a rolling counter that tracks the number of similar messages sent and allows
 for potential identification of missing messages/packets via skips in the sequence. GIP Messages share
@@ -3686,9 +3518,9 @@ Low Latency
 
 Table 15: GIP Message header: Sequence ID pools
 
-2.2.10.4
+##### 2.2.10.4 GIP Payload Length MTUs
 
-GIP Payload Length MTUs
+
 
 Yes
 
@@ -3791,11 +3623,12 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-GIPUSB].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
-2.2.11 Audio Initialization
+#### 2.2.11 Audio Initialization
 
 An audio streaming device is a special case. Audio data is not routed to or from the vendor’s library.
 Instead, it is communicated directly to the host’s audio stack. Special handling is done to ensure
@@ -3828,7 +3661,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-unless the device responds with a mismatched format configuration, or the host fails to receive a
+
+unless the device responds with a mismatched format configuration, or the host fails to receive a
 response from the device within one second. The response will be the same as the format request,
 apart from the sequence ID. However, in the case the host receives a mismatched audio configuration,
 it will try up to four times to negotiate a matching configuration with the device. The device SHOULD
@@ -3866,9 +3700,9 @@ Once started, audio data flows continually even if the data represents only sile
 powered off, disconnected, or until the host requests a new audio configuration first through
 transmission of a Set Device State: STOP.
 
-2.2.11.1
+##### 2.2.11.1 Starting Audio Capture
 
-Starting Audio Capture
+
 
 If audio capture is supported, the device SHOULD begin transmission as soon as is practical after
 receipt of the Device State: START message and after the volume indication is sent. The device
@@ -3903,13 +3737,14 @@ Release: September 16, 2024
 
 36 / 89
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-GIPUSB].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
-2.2.11.2
+##### 2.2.11.2 Lost Initialization Packets
 
-Lost Initialization Packets
+
 
 In some circumstances, the initialization process can be salvaged when certain packets are lost.
 
@@ -3927,9 +3762,9 @@ received, it can be assumed the GIP Set Device State: STOP message was lost and 
 can go ahead and proceed with the next step of Audio Initialization through reply to the Audio
 Control: Configuration message.
 
-2.2.11.3
+##### 2.2.11.3 Audio Reconfiguration
 
-Audio Reconfiguration
+
 
 If GIP needs to reconfigure the audio stream, the behavior is the same as the initialization sequence
 and begins with the Set Device State: STOP message. The following figure shows the audio device
@@ -3937,7 +3772,7 @@ reconfiguration sequence.
 
 Figure 5: Audio device reconfiguration sequence
 
-2.2.12 GIP Audio Interface Descriptors
+#### 2.2.12 GIP Audio Interface Descriptors
 
 If the Configuration Descriptor indicates more than one Interface Descriptor (GIP devices require at
 minimum the GIP Data Interface) an Audio Interface and Alternate MUST be defined (USB Interface
@@ -3952,7 +3787,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Field
+
+Offset  Field
 
 Size
 (bytes)
@@ -4049,9 +3885,9 @@ No Interface String Descriptor.
 
 Table 17: GIP Audio Interface descriptor
 
-2.2.12.1
+##### 2.2.12.1 GIP Audio Interface Descriptor Alternate
 
-GIP Audio Interface Descriptor Alternate
+
 
 The following table shows the GIP Audio Interface descriptor alternate.
 
@@ -4152,9 +3988,9 @@ No Interface String Descriptor.
 
 Table 18: GIP Audio Interface descriptor alternate
 
-2.2.12.2
+##### 2.2.12.2 GIP Audio Isochronous OUT Endpoint Descriptor
 
-GIP Audio Isochronous OUT Endpoint Descriptor
+
 
 The following table shows the GIP Audio Isochronous OUT endpoint descriptor.
 
@@ -4212,7 +4048,8 @@ Release: September 16, 2024
 
 38 / 89
 
-Offset  Field
+
+Offset  Field
 
 Size
 (bytes)
@@ -4265,9 +4102,9 @@ of 1 indicates a polling interval of 1 ms. This MUST be 1.
 
 Table 19: GIP Audio Isochronous OUT endpoint descriptor
 
-2.2.12.3
+##### 2.2.12.3 GIP Audio Isochronous IN Endpoint Descriptor
 
-GIP Audio Isochronous IN Endpoint Descriptor
+
 
 The following table shows the GIP Audio Isochronous IN endpoint descriptor.
 
@@ -4371,11 +4208,12 @@ Release: September 16, 2024
 
 39 / 89
 
-3  Protocol Details
 
-3.1  GIP Accessory Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 GIP Accessory Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The organization is provided to help explain how the protocol
@@ -4398,7 +4236,8 @@ Release: September 16, 2024
 
 40 / 89
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-GIPUSB].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -4439,7 +4278,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-message SHOULD indicate the current status. The device SHOULD then wait 500 ms before a
+
+message SHOULD indicate the current status. The device SHOULD then wait 500 ms before a
 power off or reset to ensure the message gets sent to the host and processed. No other traffic
 SHOULD be transmitted from the device except this status message. During this wait the device
 can save parameters in persistent storage, do other cleanup and anything else needed before a
@@ -4465,23 +4305,23 @@ not respond to the host with a valid audio control format after four attempts.
 
   USB Reset and USB Suspend MUST be handled by all GIP states.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The host requests metadata up to four times at 500 ms intervals.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 For USB Device initialization see section 2.2.3.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following subsections define GIP processing messages, commands, and events.
 
-3.1.5.1  Reliable Message Acknowledgement
+##### 3.1.5.1 Reliable Message Acknowledgement
 
 The sender can request that the receiver acknowledge a GIP message (or more commonly a message
 fragment) by setting the ACME (ACknowledge ME) bit in the Flags field of the GIP header. The
@@ -4508,7 +4348,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-There are occasions where the host sends an ACK even if not requested. The ACKs in these instances
+
+There are occasions where the host sends an ACK even if not requested. The ACKs in these instances
 help communicate possible transmission or buffer issues. The host abides by the following rules for
 transmission of ACK:
 
@@ -4549,13 +4390,14 @@ Release: September 16, 2024
 
 43 / 89
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-GIPUSB].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
 Figure 7: Reliable message ACK process flow
 
-3.1.5.2  Reliable Large Message Transmission
+##### 3.1.5.2 Reliable Large Message Transmission
 
 GIP messages which are larger than the MTU for the data class contained are fragmented across
 multiple packets and require additional handling. See MTU sizes section 2.2.10.4. Some system
@@ -4571,7 +4413,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-last fragment to request acknowledgment. To increase protocol efficiency the host and device do not
+
+last fragment to request acknowledgment. To increase protocol efficiency the host and device do not
 request that all other middle fragments be acknowledged, usually just every fourth or fifth packet.
 
 To handle message fragmentation, the header includes an extra field to indicate either the total
@@ -4679,7 +4522,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -4809,7 +4653,8 @@ Release: September 16, 2024
 
 46 / 89
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -4968,7 +4813,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -5078,12 +4924,12 @@ High byte:
 
 Table 25: GIP Message Header: Final Fragment of Fragmented Message
 
-3.1.5.3  Coalescing Messages
+##### 3.1.5.3 Coalescing Messages
 
 Multiple small GIP messages can be packed into a single packet. Wheel and arcade stick libraries do
 not use this feature for downstream packets.
 
-3.1.5.4  Message Summary
+##### 3.1.5.4 Message Summary
 
 The following table summarizes GIP messages for a quick reference.<2>
 
@@ -5094,7 +4940,8 @@ Release: September 16, 2024
 
 48 / 89
 
-Type
+
+Type
 
 Flags  Sequence
 
@@ -5414,7 +5261,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Type
+
+Type
 
 Flags  Sequence
 
@@ -5803,11 +5651,12 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Table 26: GIP Message Quick Reference
 
-3.1.5.5  Core System Messages
+Table 26: GIP Message Quick Reference
 
-3.1.5.5.1 Hello Device Command
+##### 3.1.5.5 Core System Messages
+
+###### 3.1.5.5.1 Hello Device Command
 
 A device to host message contains information about the device that connects to a host. The device
 SHOULD continue to send this message every 500 ms until the host responds either with Metadata
@@ -5975,7 +5824,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -6067,7 +5917,7 @@ MUST be 0x00.
 
 Table 27: Upstream GIP Message: Hello Device
 
-3.1.5.5.2 Status Device Command
+###### 3.1.5.5.2 Status Device Command
 
 Device to host message provides the current status of the device. There are eight events on which a
 device MUST send status:
@@ -6110,7 +5960,7 @@ Device State: START from the host.
 The status field of a Status Device Message sent during Power Off or Reset MUST reflect the actual
 state of the device at the time of the power off or reset process.
 
-3.1.5.5.2.1  Legacy Status Device Message
+###### 3.1.5.5.2.1 Legacy Status Device Message
 
 DEPRECATED. The original version of the Status Device Message was replaced with an expanded
 version (see section 3.1.5.5.2.2). All new GIP devices MUST use the expanded version. The host’s GIP
@@ -6125,7 +5975,8 @@ Release: September 16, 2024
 
 52 / 89
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -6177,7 +6028,7 @@ See Status Field and table section 3.1.5.5.2.2.1.
 
 Table 28: Upstream GIP Message: Legacy Status Device Message
 
-3.1.5.5.2.2  Extended Status Device Message
+###### 3.1.5.5.2.2 Extended Status Device Message
 
 This format MUST be used for all new GIP devices.
 
@@ -6310,7 +6161,7 @@ Because status messages are expected to be sent frequently,
 a device can choose to buffer a maximum of five events and
 discard any further until the event buffer is cleared via the
 next transmission. See Extended Status Events section
-3.1.5.5.2.3 for the definition of specific Event types. Events
+###### 3.1.5.5.2.3 for the definition of specific Event types. Events
 SHOULD NOT be sent outside of the expected status
 scenarios. They are rolled into the next periodic status report,
 or the first status report sent by the device after a power
@@ -6325,7 +6176,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.5.5.2.2.1  Status Field
+
+3.1.5.5.2.2.1  Status Field
 
 The status field of the Legacy Status Device and Extended Status Device Message relays the current
 power state information of the device. This information is used to trigger UI updates on host and to
@@ -6435,7 +6287,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-whether the USB device is a wired controller or a USB adapter connected to a wireless device.
+
+whether the USB device is a wired controller or a USB adapter connected to a wireless device.
 Batteries are not differentiated by specific battery chemistry but rather by the ability to be recharged
 by the GIP device that contains them.
 
@@ -6574,7 +6427,8 @@ Release: September 16, 2024
 
 55 / 89
 
-Bit  Field
+
+Bit  Field
 
 Values
 
@@ -6626,7 +6480,7 @@ via the next successful GIP connection, unless, as previously noted, there is a 
 device MUST retain at minimum the last three events; however, with the addition of Performance
 Events, five is preferred.
 
-3.1.5.5.2.3.1  Fault Event
+###### 3.1.5.5.2.3.1 Fault Event
 
 Fault Events log occurrences of failed assertions in code, watchdog timeouts, hard faults, or entry into
 other exception handlers such as non-maskable interrupt (NMI), supervisor call (SVC), or PendSV.
@@ -6669,7 +6523,8 @@ Release: September 16, 2024
 
 56 / 89
 
-Offset (bytes)  Value
+
+Offset (bytes)  Value
 
 Name
 
@@ -6705,7 +6560,7 @@ Variable  Fault Address  Address at which fault occurred, or zero if not known
 
 Table 33: Fault Event
 
-3.1.5.5.3 Metadata Request Command
+###### 3.1.5.5.3 Metadata Request Command
 
 Host to device request for metadata. The host resends this request to the device at 500 ms intervals if
 it does not receive a complete response within that timeframe.
@@ -6751,11 +6606,11 @@ Length of payload data: zero bytes.
 
 Table 34: Downstream GIP Message: Metadata Request Command
 
-3.1.5.5.4 Metadata Response Command
+###### 3.1.5.5.4 Metadata Response Command
 
-3.1.5.5.4.1
+###### 3.1.5.5.4.1 Initial Metadata Response Command
 
-Initial Metadata Response Command
+
 
 First fragment of fragmented device to host metadata message.
 
@@ -6817,7 +6672,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -6859,7 +6715,7 @@ Data
 
 Table 35: Upstream GIP Message: Initial Metadata Response Command
 
-3.1.5.5.4.2  Middle Metadata Response Command
+###### 3.1.5.5.4.2 Middle Metadata Response Command
 
 Fragments between initial fragment and final fragment of fragmented device to host metadata
 message. The following table shows the upstream GIP Middle Metadata Response Command message
@@ -6942,7 +6798,7 @@ Data
 
 Table 36: Upstream GIP Message: Middle Metadata Response Command
 
-3.1.5.5.4.3  Final Metadata Response Command
+###### 3.1.5.5.4.3 Final Metadata Response Command
 
 Last fragment of fragmented device to host metadata message.
 
@@ -6994,7 +6850,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Value
+
+Offset  Value
 
 Name
 
@@ -7036,7 +6893,7 @@ Data
 
 Table 37: Upstream GIP Message: Final Metadata Response Command
 
-3.1.5.5.4.4  Metadata Complete Command
+###### 3.1.5.5.4.4 Metadata Complete Command
 
 The device to host message indicates that metadata transfer is complete. It completes triple
 handshake similar to TCP.
@@ -7115,7 +6972,7 @@ High byte:
 
 Table 38: Upstream GIP Message: Metadata Complete Command
 
-3.1.5.5.5 Set Device State Command
+###### 3.1.5.5.5 Set Device State Command
 
 Host to device message used to set the state of the device.
 
@@ -7150,7 +7007,8 @@ Release: September 16, 2024
 
 59 / 89
 
-Offset  Value
+
+Offset  Value
 
 Name
 
@@ -7253,7 +7111,7 @@ Reserved.
 
 Table 40: Device States
 
-3.1.5.5.6 Guide Button Status
+###### 3.1.5.5.6 Guide Button Status
 
 Device to host message sent to communicate Guide button status changes on the device.
 
@@ -7263,7 +7121,7 @@ host until after the first release. The device can choose not to send any button
 events on initial use, or it can choose to send ONLY the button released event. After that, it MUST
 send both a button pressed event and a button released event.
 
-3.1.5.5.7 LED eButton Command
+###### 3.1.5.5.7 LED eButton Command
 
 Host to device message used to set the device’s Guide button LED intensity to match the Guide button
 intensity on the Guide host.
@@ -7280,7 +7138,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Value
+
+Offset  Value
 
 Name
 
@@ -7415,7 +7274,7 @@ Reserved
 
 Table 42: Guide Button LED Patterns
 
-3.1.5.5.8 LED IR Command
+###### 3.1.5.5.8 LED IR Command
 
 DEPRECATED. Host to device message used to control the device’s IR LEDs. The device has one or two
 IR LEDs which are used for Controller Pairing<7>.
@@ -7498,7 +7357,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.5.5.9 Debug Commands
+
+###### 3.1.5.5.9 Debug Commands
 
 OPTIONAL. All Debug Commands are encapsulated within GIP message type 0x1F (Command Data
 Class).
@@ -7508,7 +7368,7 @@ command 0x1F (31) in the SupportedInSystemCommands and SupportedOutSystemCommand
 arrays within the DeviceMetadata object. See Metadata Exchange section 2.2.2 and [MSLEARN-
 XIGC-API] gipdocs download for more information on metadata requirements.
 
-3.1.5.5.9.1  Debug Large Message Request
+###### 3.1.5.5.9.1 Debug Large Message Request
 
 A Debug Large Message Request is a device to host message used to test a device’s large GIP
 message handling. The host responds with a 2 KB message that contains a repeating 0x00—0xFF
@@ -7646,10 +7506,11 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The remaining data is sent over subsequent packets after the header definition and flow as specified in
+
+The remaining data is sent over subsequent packets after the header definition and flow as specified in
 Reliable Large Message Transmission section 3.1.5.2.
 
-3.1.5.5.9.2  Debug Test Command
+###### 3.1.5.5.9.2 Debug Test Command
 
 A Debug Test Command is a host to device message for sending test commands to a device and
 utilizes a request and response transaction flow. The device responds with at minimum a 10-byte
@@ -7805,7 +7666,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Value
+
+Offset  Value
 
 Name
 
@@ -7885,9 +7747,9 @@ fragmented.
 
 Table 47: Upstream GIP Message: Debug Command: Test Command Response
 
-3.1.5.5.10
+###### 3.1.5.5.10 Extended Commands
 
-Extended Commands
+
 
 OPTIONAL. All Extended Commands are encapsulated within GIP message type 0x1E (Command Data
 Class) and utilize a request and response transaction flow. Only GIP hosts issue requests to devices
@@ -7928,7 +7790,8 @@ Release: September 16, 2024
 
 64 / 89
 
-3.1.5.5.10.1  Get Capabilities Command
+
+###### 3.1.5.5.10.1 Get Capabilities Command
 
 This command requests a list of the Extended Commands supported by the device.
 
@@ -8091,9 +7954,10 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Table 49: Upstream GIP Message: Get Capabilities Response
 
-3.1.5.5.10.2  Get Serial Number Command
+Table 49: Upstream GIP Message: Get Capabilities Response
+
+###### 3.1.5.5.10.2 Get Serial Number Command
 
 This command requests the device’s serial number, which apps can query and use for telemetry
 purposes.
@@ -8251,11 +8115,12 @@ Release: September 16, 2024
 
 66 / 89
 
-3.1.5.5.10.3  Telemetry Extended Commands
 
-3.1.5.5.10.3.1
+###### 3.1.5.5.10.3 Telemetry Extended Commands
 
-Get Telemetry Data Command
+###### 3.1.5.5.10.3.1 Get Telemetry Data Command
+
+
 
 This command requests telemetry data.
 
@@ -8408,7 +8273,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset
+
+Offset
 (bytes)
 
 Value
@@ -8582,7 +8448,8 @@ Release: September 16, 2024
 
 68 / 89
 
-The remainder of the data is sent over subsequent packets following the header definition and flow
+
+The remainder of the data is sent over subsequent packets following the header definition and flow
 specified in Reliable Large Message Transmission section 3.1.5.2.
 
 The following table shows the parameter tag field of the Get Telemetry Data response message.
@@ -8609,9 +8476,9 @@ Specific Parameter IDs.
 
 Table 55: Get Telemetry Data Response Message: Parameter Tag Field
 
-3.1.5.6  Gamepad Vendor Messages
+##### 3.1.5.6 Gamepad Vendor Messages
 
-3.1.5.6.1 Direct Motor Command
+###### 3.1.5.6.1 Direct Motor Command
 
 Host to device message used to take direct control of the device’s vibration motors or impulse trigger
 motors.
@@ -8744,7 +8611,7 @@ Repeat
 
 Table 56: Downstream GIP Message: Direct Motor Command
 
-3.1.5.6.1.1  Gamepad Input Report
+###### 3.1.5.6.1.1 Gamepad Input Report
 
 [MS-GIPUSB] - v20240916
 Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
@@ -8753,7 +8620,8 @@ Release: September 16, 2024
 
 69 / 89
 
-All Gamepad Input Report messages contain a standard gamepad input report payload that includes
+
+All Gamepad Input Report messages contain a standard gamepad input report payload that includes
 status for the 16 digital buttons, two triggers, and two thumbsticks. This payload does not include the
 status for the Guide or Share buttons. For information on handling the Guide button, see Guide Button
 Status section 3.1.5.5.6. The Share button is handled via an input report extension, documented in
@@ -8914,7 +8782,8 @@ Release: September 16, 2024
 
 70 / 89
 
-Offset
+
+Offset
 (bytes)
 
 13
@@ -9051,7 +8920,7 @@ B button
 
 Table 58: GIP UI Navigation Minimum Input Requirements
 
-3.1.5.6.1.2  Custom Vendor Data
+###### 3.1.5.6.1.2 Custom Vendor Data
 
 A device partner can send custom vendor data by appending it to an input report message. Only GIP
 client applications that include GIP custom device libraries can interface with any additional fields
@@ -9075,7 +8944,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -9106,7 +8976,7 @@ differences in the payload from the previous payload or the host has specificall
 Note: During runtime, the only size that can be dynamically adjusted is the custom vendor data
 portion of a message.
 
-3.1.5.6.1.3  Extensions
+###### 3.1.5.6.1.3 Extensions
 
 GIP also supports the ability to append special data to the end of an input report payload to exercise
 additional system features. These extensions MUST appear after the standard input report payload
@@ -9165,7 +9035,8 @@ Release: September 16, 2024
 
 72 / 89
 
-The following table shows the payload for the upstream GIP input report layout with custom vendor
+
+The following table shows the payload for the upstream GIP input report layout with custom vendor
 data and extensions.
 
 GIP Header
@@ -9196,7 +9067,7 @@ IConsoleFunctionMap  ECDDD2FE-D387-4294-BD96-
 
 Table 60: Metadata: Supported Interfaces: Extension GUIDs
 
-3.1.5.6.1.3.1  Console Function Map
+###### 3.1.5.6.1.3.1 Console Function Map
 
 The Console Function Map extension allows devices to pass a request of up to 18 simultaneous console
 functions IDs to the host that are translated to actions executed by the operating system. This
@@ -9329,7 +9200,8 @@ Release: September 16, 2024
 
 73 / 89
 
-Offset
+
+Offset
 (bytes)
 
 14
@@ -9362,7 +9234,7 @@ Function 18
 
 Table 61: Upstream GIP Message: Input Report: Console Function Map Payload
 
-3.1.5.6.1.3.2  Share button
+###### 3.1.5.6.1.3.2 Share button
 
 The Share button was first introduced on GIP controllers in 2020. Like other buttons, it has physical
 placement, size, and icon requirements that are not covered in this specification. In terms of
@@ -9473,7 +9345,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- ...
+
+ ...
          "SupportedInterfaces" : [
              "9776FF56-9BFD-4581-AD45-B645BBA526D6",
              "082E402C-07DF-45E1-A5AB-A3127AF197B5",
@@ -9502,7 +9375,7 @@ Release: September 16, 2024
          }
      ]
 
-3.1.5.6.1.4  Overflow Message
+###### 3.1.5.6.1.4 Overflow Message
 
 There are scenarios where 60 bytes of payload for an input report is not enough space to include all
 the data necessary for the standard input report data, custom vendor data, and any extensions. For
@@ -9543,7 +9416,8 @@ Release: September 16, 2024
 
 75 / 89
 
-GIP Header
+
+GIP Header
 
 Custom Vendor Payload
 
@@ -9692,7 +9566,8 @@ Release: September 16, 2024
 
 76 / 89
 
-Metadata: Flight Stick Typical and Overflow Input Report with Share Button
+
+Metadata: Flight Stick Typical and Overflow Input Report with Share Button
 
 The following code shows an example of the metadata implementation of a typical Flight Stick
 Overflow Input Report message with the additional support interface GUIDs, and Vendor message
@@ -9753,9 +9628,9 @@ required to implement the overflow message (type 0x26 (38)).
          }
      ]
 
-3.1.5.6.1.5  Preventing Host from Entering Power Save Mode
+###### 3.1.5.6.1.5 Preventing Host from Entering Power Save Mode
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -9766,11 +9641,12 @@ Release: September 16, 2024
 
 77 / 89
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Audio Details
+### 3.2 Audio Details
 
 Audio Control messages are GIP system messages of the Command data class and are also
 predefined. These are used to negotiate audio formats and control volume levels. Other than at
@@ -9778,7 +9654,7 @@ startup or in response to a volume request from the host, Audio Control Volume a
 Volume Extended messages MUST only be sent if at least one field has changed. Duplicate Audio
 Control messages create unnecessary traffic between the host and device.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The organization is provided to help explain how the protocol
@@ -9787,23 +9663,23 @@ external behavior is consistent with that specified in this document.
 
 See section 3.1.1 for the GIP Device State Diagram that includes audio devices.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The host requests metadata up to four times at 500 ms intervals.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 For audio initialization, see section 2.2.11.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The following subsections define audio processing messages, commands, and events.
 
-3.2.5.1  Audio System Messages
+##### 3.2.5.1 Audio System Messages
 
 Audio data packets are GIP system packets of the Audio data class. Audio data is in a predefined
 format. See Audio Control Configuration section 3.2.5.1.2 for available formats. All audio data is in
@@ -9824,7 +9700,7 @@ side right.
 For 7.1 formats, the data is interleaved front left, front right, front center, low frequency, back
 left, back right, side left, and side right.
 
-3.2.5.1.1 Audio Control Volume Extended
+###### 3.2.5.1.1 Audio Control Volume Extended
 
 The volume control message has microphone monitoring/sidetone volume and provides a bit in each
 volume field to indicate whether the field is writeable by the host. Audio devices which implement
@@ -9837,7 +9713,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-GIPUSB].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -9945,7 +9822,8 @@ Release: September 16, 2024
 
 79 / 89
 
-Offset  Value
+
+Offset  Value
 
 Name
 
@@ -10034,7 +9912,7 @@ Reserved2
 
 Table 66: Bidirectional GIP Message: Audio Control Volume Extended
 
-3.2.5.1.2 Audio Control Configuration
+###### 3.2.5.1.2 Audio Control Configuration
 
 The following table describes the format of the bidirectional GIP Audio Control configuration.
 
@@ -10108,7 +9986,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Value  Name
+
+Offset  Value  Name
 
 Description
 
@@ -10146,7 +10025,7 @@ upstream format.
 
 Table 67: Bidirectional GIP Message: Audio Control Configuration
 
-3.2.5.1.3 Audio Render Data Message
+###### 3.2.5.1.3 Audio Render Data Message
 
 The following table shows the downstream GIP Audio Render Data message format.
 
@@ -10201,7 +10080,7 @@ format of the variable-sized GIP Payload Length field, 384 bytes is naturally en
 boundary. To correct this, the GIP Payload Length field is encoded as three bytes: 0x80, 0x83, 0x00.
 See section 3.1.5.2 for more information about GIP Header size management.
 
-3.2.5.1.4 Audio Capture Data Message
+###### 3.2.5.1.4 Audio Capture Data Message
 
 The following table shows the upstream GIP Audio Capture Data message format.
 
@@ -10258,7 +10137,8 @@ Gaming Input Protocol (GIP) Universal Serial Bus (USB) Extension
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Offset  Value
+
+Offset  Value
 
 Name
 
@@ -10274,7 +10154,7 @@ Audio stream data (not required to begin on even-byte boundary).
 
 Table 69: Upstream GIP Message: Audio Capture Data
 
-3.2.5.1.5 Audio Data Message Size and Flow Control
+###### 3.2.5.1.5 Audio Data Message Size and Flow Control
 
 USB sends one message each millisecond, or eight messages in each 8 ms isochronous (ISOCH)
 window. For flow control purposes, the size of the Audio Render message is modulated by the flow
@@ -10322,11 +10202,11 @@ the secondary could be simply implemented as pass-through from the secondary.
 
 If you require assistance with this documentation, contact gip@microsoft.com.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -10337,7 +10217,8 @@ Release: September 16, 2024
 
 82 / 89
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -10348,9 +10229,10 @@ Release: September 16, 2024
 
 83 / 89
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 All partner accessories that seek to connect via wireless SHOULD leverage the USB path and
 implement encryption on top of it to guarantee the privacy and security of the transport.
@@ -10363,7 +10245,7 @@ Opt-out GUID: 7a34ce77-7de2-45c6-8ca4-0042c08bd94a
 
 The host succeeds the security exchange by default.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -10374,7 +10256,8 @@ Release: September 16, 2024
 
 84 / 89
 
-6  Appendix A: Software Development Kits
+
+## 6 Appendix A: Software Development Kits
 
 GIP accessories have specific design requirements for use with Windows 10 operating system and
 later editions. GIP is not limited to gamepads. The Game Development and Windows Software
@@ -10398,7 +10281,8 @@ Release: September 16, 2024
 
 85 / 89
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -10471,7 +10355,8 @@ Release: September 16, 2024
 
 86 / 89
 
-<8> Section 3.2.5.1.1: Windows 10 and Windows 11 hosts allow users to adjust this field via the
+
+<8> Section 3.2.5.1.1: Windows 10 and Windows 11 hosts allow users to adjust this field via the
 legacy control panel.
 
 [MS-GIPUSB] - v20240916
@@ -10481,7 +10366,8 @@ Release: September 16, 2024
 
 87 / 89
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -10493,7 +10379,8 @@ Release: September 16, 2024
 
 88 / 89
 
-Parameters - security index 85
+
+Parameters - security index 85
 Preconditions 9
 Prerequisites 9
 Product behavior 87
@@ -10531,7 +10418,7 @@ V
 Vendor-extensible fields 10
 Versioning 9
 
-9  Index
+## 9 Index
 A
 
 Applicability 9

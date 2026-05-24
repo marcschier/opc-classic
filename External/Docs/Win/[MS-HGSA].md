@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 40
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -147,286 +148,123 @@ Release: April 23, 2024
 
 2 / 40
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Enumerations](#221-enumerations)
+      - [2.2.1.1 AttestationOperationMode](#2211-attestationoperationmode)
+      - [2.2.1.2 AttestationProvidedContentType](#2212-attestationprovidedcontenttype)
+      - [2.2.1.3 AttestationResultType](#2213-attestationresulttype)
+      - [2.2.1.4 TPMVersion](#2214-tpmversion)
+      - [2.2.1.5 TpmInterfaceType](#2215-tpminterfacetype)
+    - [2.2.2 Common Data Structures](#222-common-data-structures)
+      - [2.2.2.1 AttestationRequest](#2221-attestationrequest)
+      - [2.2.2.2 TpmRequest](#2222-tpmrequest)
+      - [2.2.2.3 TpmRequestInitial](#2223-tpmrequestinitial)
+      - [2.2.2.4 TpmRequestContinue](#2224-tpmrequestcontinue)
+      - [2.2.2.5 ADRequest](#2225-adrequest)
+      - [2.2.2.6 TpmReplyContinue](#2226-tpmreplycontinue)
+      - [2.2.2.7 HealthCertificateReply](#2227-healthcertificatereply)
+      - [2.2.2.8 TupleOfAttestationProvidedContentTypebase64Binary](#2228-tupleofattestationprovidedcontenttypebase64binary)
+      - [2.2.2.9 TupleOfAttestationResultTypebase64Binary](#2229-tupleofattestationresulttypebase64binary)
+      - [2.2.2.10 ServiceInfoReply](#22210-serviceinforeply)
+      - [2.2.2.11 ErrorReply](#22211-errorreply)
+      - [2.2.2.12 EndorsementKey](#22212-endorsementkey)
+      - [2.2.2.13 EvaluationLog](#22213-evaluationlog)
+      - [2.2.2.14 OperationModeErrorReply](#22214-operationmodeerrorreply)
+      - [2.2.2.15 PayloadErrorReply](#22215-payloaderrorreply)
+      - [2.2.2.16 PolicyEvaluationErrorReply](#22216-policyevaluationerrorreply)
+      - [2.2.2.17 ProtocolReplyBase](#22217-protocolreplybase)
+      - [2.2.2.18 ProtocolRequestBase](#22218-protocolrequestbase)
+      - [2.2.2.19 RtpmErrorReply](#22219-rtpmerrorreply)
+      - [2.2.2.20 TcgLogValidationErrorReply](#22220-tcglogvalidationerrorreply)
+      - [2.2.2.21 UnauthorizedErrorReply](#22221-unauthorizederrorreply)
+      - [2.2.2.22 UnavailableErrorReply](#22222-unavailableerrorreply)
+      - [2.2.2.23 VirtualSecureModeErrorReply](#22223-virtualsecuremodeerrorreply)
+      - [2.2.2.24 VsmReportValidationErrorReply](#22224-vsmreportvalidationerrorreply)
+      - [2.2.2.25 Context](#22225-context)
+      - [2.2.2.26 EncryptedStateObject](#22226-encryptedstateobject)
+      - [2.2.2.27 Data Blob](#22227-data-blob)
+        - [2.2.2.27.1 WBCL_INFO](#222271-wbclinfo)
+        - [2.2.2.27.2 TPM_DEVICE_INFO](#222272-tpmdeviceinfo)
+        - [2.2.2.27.3 TPM_COMMAND](#222273-tpmcommand)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Global](#3111-global)
+      - [3.1.1.2 Per Attestation Request](#3112-per-attestation-request)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 TPM Based Attestation](#3151-tpm-based-attestation)
+        - [3.1.5.1.1 POST](#31511-post)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+      - [3.1.5.2 Active Directory Based Attestation](#3152-active-directory-based-attestation)
+        - [3.1.5.2.1 POST](#31521-post)
+          - [3.1.5.2.1.1 Request Body](#315211-request-body)
+          - [3.1.5.2.1.2 Response Body](#315212-response-body)
+          - [3.1.5.2.1.3 Processing Details](#315213-processing-details)
+      - [3.1.5.3 Host Key Based Attestation](#3153-host-key-based-attestation)
+        - [3.1.5.3.1 POST](#31531-post)
+          - [3.1.5.3.1.1 Request Body](#315311-request-body)
+          - [3.1.5.3.1.2 Response Body](#315312-response-body)
+          - [3.1.5.3.1.3 Processing Details](#315313-processing-details)
+      - [3.1.5.4 Receiving GetInfo](#3154-receiving-getinfo)
+        - [3.1.5.4.1 GET](#31541-get)
+          - [3.1.5.4.1.1 Request Body](#315411-request-body)
+          - [3.1.5.4.1.2 Response Body](#315412-response-body)
+          - [3.1.5.4.1.3 Processing Details](#315413-processing-details)
+      - [3.1.5.5 Receiving SigningCertificates](#3155-receiving-signingcertificates)
+        - [3.1.5.5.1 GET](#31551-get)
+          - [3.1.5.5.1.1 Request Body](#315511-request-body)
+          - [3.1.5.5.1.2 Response Body](#315512-response-body)
+          - [3.1.5.5.1.3 Processing Details](#315513-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per Attestation Request](#3212-per-attestation-request)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Application Requests Attestation](#3241-application-requests-attestation)
+      - [3.2.4.2 Application Requests Information](#3242-application-requests-information)
+      - [3.2.4.3 Application Requests SigningCertificates](#3243-application-requests-signingcertificates)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 TPM Based Attestation](#3251-tpm-based-attestation)
+      - [3.2.5.2 Active Directory Based Attestation](#3252-active-directory-based-attestation)
+      - [3.2.5.3 Host Key Based Attestation](#3253-host-key-based-attestation)
+      - [3.2.5.4 Receiving Error Reply](#3254-receiving-error-reply)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Common Data Types .......................................................................................... 9
-Enumerations ............................................................................................... 9
-AttestationOperationMode ........................................................................ 9
-AttestationProvidedContentType ............................................................... 9
-AttestationResultType ............................................................................ 10
-TPMVersion .......................................................................................... 10
-TpmInterfaceType ................................................................................. 10
-Common Data Structures ............................................................................ 11
-AttestationRequest ................................................................................ 11
-2.2.2.1
-TpmRequest ......................................................................................... 11
-2.2.2.2
-TpmRequestInitial ................................................................................. 12
-2.2.2.3
-TpmRequestContinue ............................................................................ 12
-2.2.2.4
-ADRequest ........................................................................................... 13
-2.2.2.5
-TpmReplyContinue ................................................................................ 13
-2.2.2.6
-HealthCertificateReply ........................................................................... 14
-2.2.2.7
-TupleOfAttestationProvidedContentTypebase64Binary................................ 14
-2.2.2.8
-TupleOfAttestationResultTypebase64Binary .............................................. 14
-2.2.2.9
-ServiceInfoReply ................................................................................... 15
-2.2.2.10
-ErrorReply ............................................................................................ 16
-2.2.2.11
-EndorsementKey ................................................................................... 16
-2.2.2.12
-EvaluationLog ....................................................................................... 16
-2.2.2.13
-2.2.2.14  OperationModeErrorReply ...................................................................... 17
-PayloadErrorReply ................................................................................. 18
-2.2.2.15
-PolicyEvaluationErrorReply ..................................................................... 18
-2.2.2.16
-ProtocolReplyBase ................................................................................. 19
-2.2.2.17
-ProtocolRequestBase ............................................................................. 19
-2.2.2.18
-RtpmErrorReply .................................................................................... 19
-2.2.2.19
-2.2.2.20
-TcgLogValidationErrorReply .................................................................... 20
-2.2.2.21  UnauthorizedErrorReply ......................................................................... 20
-2.2.2.22  UnavailableErrorReply ........................................................................... 20
-VirtualSecureModeErrorReply ................................................................. 21
-2.2.2.23
-VsmReportValidationErrorReply .............................................................. 21
-2.2.2.24
-Context ............................................................................................... 22
-2.2.2.25
-2.2.2.26
-EncryptedStateObject ............................................................................ 22
-2.2.2.27  Data Blob ............................................................................................. 23
-2.2.2.27.1  WBCL_INFO .................................................................................... 23
-TPM_DEVICE_INFO .......................................................................... 23
-2.2.2.27.2
-TPM_COMMAND .............................................................................. 23
-2.2.2.27.3
-
-3  Protocol Details ..................................................................................................... 25
-
-3 / 40
-
-[MS-HGSA] - v20240423
-Host Guardian Service: Attestation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.5.2
-
-3.1.5.2.1
-
-3.1.5.3
-
-3.1.5.3.1
-
-3.1.5.4
-
-3.1.5.4.1
-
-3.1.5.5
-
-3.1.5.5.1
-
-3.1.5.3.1.1
-3.1.5.3.1.2
-3.1.5.3.1.3
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-
-Server Details .................................................................................................. 25
-Abstract Data Model .................................................................................... 25
-Global.................................................................................................. 25
-Per Attestation Request ......................................................................... 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 26
-Message Processing Events and Sequencing Rules .......................................... 26
-TPM Based Attestation ........................................................................... 26
-POST ............................................................................................. 26
-Request Body ............................................................................ 26
-Response Body .......................................................................... 26
-Processing Details ...................................................................... 26
-Active Directory Based Attestation .......................................................... 28
-POST ............................................................................................. 28
-Request Body ............................................................................ 28
-Response Body .......................................................................... 28
-Processing Details ...................................................................... 28
-Host Key Based Attestation .................................................................... 29
-POST ............................................................................................. 29
-Request Body ............................................................................ 29
-Response Body .......................................................................... 29
-Processing Details ...................................................................... 29
-Receiving GetInfo ................................................................................. 30
-GET ............................................................................................... 30
-Request Body ............................................................................ 30
-Response Body .......................................................................... 30
-Processing Details ...................................................................... 30
-Receiving SigningCertificates .................................................................. 30
-GET ............................................................................................... 30
-Request Body ............................................................................ 30
-Response Body .......................................................................... 30
-Processing Details ...................................................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Client Details ................................................................................................... 31
-Abstract Data Model .................................................................................... 31
-Global.................................................................................................. 31
-Per Attestation Request ......................................................................... 31
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Application Requests Attestation ............................................................. 32
-Application Requests Information ............................................................ 32
-Application Requests SigningCertificates .................................................. 33
-Message Processing Events and Sequencing Rules .......................................... 33
-TPM Based Attestation ........................................................................... 33
-Active Directory Based Attestation .......................................................... 33
-Host Key Based Attestation .................................................................... 33
-Receiving Error Reply ............................................................................ 34
-Timer Events .............................................................................................. 34
-Other Local Events ...................................................................................... 34
-
-3.1.5.5.1.1
-3.1.5.5.1.2
-3.1.5.5.1.3
-
-3.1.5.4.1.1
-3.1.5.4.1.2
-3.1.5.4.1.3
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 35
-
-5  Security ................................................................................................................. 36
-Security Considerations for Implementers ........................................................... 36
-Index of Security Parameters ............................................................................ 36
-
-5.1
-5.2
-
-4 / 40
-
-[MS-HGSA] - v20240423
-Host Guardian Service: Attestation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6  Appendix A: Product Behavior ............................................................................... 37
-
-7  Change Tracking .................................................................................................... 38
-
-8  Index ..................................................................................................................... 39
-
-[MS-HGSA] - v20240423
-Host Guardian Service: Attestation Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 40
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Host Guardian Services Attestation (HGSA) Protocol.
 
@@ -438,7 +276,7 @@ Key Protection Service is out of scope of the document.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -473,14 +311,14 @@ keys, passwords, and digital certificates. See [TCG-Architect] for more informat
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -495,7 +333,8 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-KPS] Microsoft Corporation, "Key Protection Service Protocol".
+
+[MS-KPS] Microsoft Corporation, "Key Protection Service Protocol".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
@@ -506,11 +345,11 @@ Release: April 23, 2024
 [RFC2818] Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000, https://www.rfc-
 editor.org/info/rfc2818
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Host Guardian Service Attestation protocol uses REST-based transport protocol.
 
@@ -578,7 +417,8 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The service ensures that the Host Key is recognized, uses the Host Key to validate the provided
 signature, and issues an attestation health certificate to the client.
@@ -587,12 +427,12 @@ The client can choose TPM, AD, or Host Key-based attestation depending upon the 
 
 configuration.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 For key protection service, the Host Guardian Service uses Key Protection services, as specified in
 [MS-KPS].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The server is configured to either the TPM-based attestation or AD-based attestation mode and can
 operate on only one mode at a time.
@@ -616,21 +456,21 @@ Following is the prerequisite/precondition needed to perform HostKey-based attes
 The client is required to be registered in the server configuration with the public portion of its Host
 Key.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The "Host Guardian Service" includes the Attestation Service and the Key Protection Service as critical
 components that enable secure virtual machines in a cloud-based environment.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Some server operations MAY<2> include a versioned URI formatted with either "v1.0" or "v2.0".
 These can also be referred to “version 1” or “version 2”, respectively.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields for the Host Guardian Service Attestation Protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -641,19 +481,20 @@ Release: April 23, 2024
 
 8 / 40
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses HTTP or secure HTTP 1.1 as transport, as specified in [RFC2616] and [RFC2818].
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  Enumerations
+#### 2.2.1 Enumerations
 
 The following sections specify the enumerations defined in this specification.
 
-2.2.1.1  AttestationOperationMode
+##### 2.2.1.1 AttestationOperationMode
 
 AttestationOperationMode represents the operation mode of the Attestation Service.
 
@@ -677,7 +518,7 @@ AD - Active Directory–based attestation mode
 
 HostKey – Key-based attestation mode
 
-2.2.1.2  AttestationProvidedContentType
+##### 2.2.1.2 AttestationProvidedContentType
 
 AttestationProvidedContentType represents the type of the content being sent to the Attestation
 Service.
@@ -756,7 +597,8 @@ Release: April 23, 2024
 
 9 / 40
 
-2.2.1.3  AttestationResultType
+
+##### 2.2.1.3 AttestationResultType
 
 AttestationResultType represents the type of the content being requested or returned by the
 Attestation Service.
@@ -788,7 +630,7 @@ A Certificate Authority intermediate certificate is being
 requested in the form of a health certificate. This type
 is supported only in TPM-based attestation mode.
 
-2.2.1.4  TPMVersion
+##### 2.2.1.4 TPMVersion
 
 The TPMVersion denotes the version of TPM.
 
@@ -814,7 +656,7 @@ TPM 1.2
 
 TPM 2.0
 
-2.2.1.5  TpmInterfaceType
+##### 2.2.1.5 TpmInterfaceType
 
 The TpmInterfaceType denotes the type of TPM interface.
 
@@ -860,7 +702,8 @@ TPM 2.0 software emulator interface.
 
 10 / 40
 
-2.2.2  Common Data Structures
+
+#### 2.2.2 Common Data Structures
 
 The following sections are the set of common data structures defined by this specification. Common
 data types are specified in [MS-DTYP].
@@ -870,7 +713,7 @@ root. Order of "__type" object property matters and, when present, must be place
 properties. Enumerations from the previous section may also be presented as JSON schema
 references in the format "[MS-HGSA]#/EnumerationName".
 
-2.2.2.1  AttestationRequest
+##### 2.2.2.1 AttestationRequest
 
 The AttestationRequest structure defines the type used for v2.0 and later TPM or Host Key-based
 protocol requests.
@@ -902,7 +745,7 @@ protocol requests.
         "$ref": "[MS-HGSA]#/ProtocolRequestBase"
 }]
 
-2.2.2.2  TpmRequest
+##### 2.2.2.2 TpmRequest
 
 The TpmRequest structure defines the base type of all v1.0 TPM-based protocol requests.
 
@@ -930,7 +773,8 @@ Release: April 23, 2024
 
 11 / 40
 
-         }
+
+         }
      },{
          "$ref": "[MS-HGSA]#/ProtocolRequestBase"
      }]
@@ -943,7 +787,7 @@ and information from the RTPM exchange.
 RtpmPublicEndorsementKey: A base64Binary string representing the remote TPM public
 endorsement key of the client that tried to perform attestation.
 
-2.2.2.3  TpmRequestInitial
+##### 2.2.2.3 TpmRequestInitial
 
 The TpmRequestInitial structure defines the initial request for triggering TPM-based attestation.
 This is used only for protocol version v1.0.
@@ -963,7 +807,7 @@ This is used only for protocol version v1.0.
      }]
  }
 
-2.2.2.4  TpmRequestContinue
+##### 2.2.2.4 TpmRequestContinue
 
 The TpmRequestContinue structure defines the subsequent request after receiving new remote TPM
 context as the response from the server. This is used only for protocol version v1.0.
@@ -994,10 +838,11 @@ Release: April 23, 2024
 
 12 / 40
 
-RtpmNewContext: A base64Binary string representing the new remote TPM context received from
+
+RtpmNewContext: A base64Binary string representing the new remote TPM context received from
 the server in response to the initial TPM request as defined in section 2.2.2.25.
 
-2.2.2.5  ADRequest
+##### 2.2.2.5 ADRequest
 
 The ADRequest structure defines the initial request for performing Active Directory–based
 attestation.
@@ -1026,7 +871,7 @@ attestation.
 
 RequestedContent: A tuple of the type of content being attested as well as the content itself.
 
-2.2.2.6  TpmReplyContinue
+##### 2.2.2.6 TpmReplyContinue
 
 The TpmReplyContinue structure defines the TPM-based attestation replies, preceding the final
 reply. This is used only for protocol version v1.0.
@@ -1061,7 +906,8 @@ Release: April 23, 2024
 
 13 / 40
 
-2.2.2.7  HealthCertificateReply
+
+##### 2.2.2.7 HealthCertificateReply
 
 The HealthCertificateReply structure defines the final attestation reply that is received from the
 server that contains the health certificate.
@@ -1091,7 +937,7 @@ server that contains the health certificate.
 Content: A TupleOfAttestationResultTypebase64Binary containing the requested content type
 and the attested content itself.
 
-2.2.2.8  TupleOfAttestationProvidedContentTypebase64Binary
+##### 2.2.2.8 TupleOfAttestationProvidedContentTypebase64Binary
 
 TupleOfAttestationProvidedContentTypebase64Binary specifies the
 AttestationProvidedContentType as an unsigned integer along with content of the associated type
@@ -1119,7 +965,7 @@ base64Binary string in m_Item2 represents.
 
 m_Item2: The base64Binary string of the content type identified in m_Item1.
 
-2.2.2.9  TupleOfAttestationResultTypebase64Binary
+##### 2.2.2.9 TupleOfAttestationResultTypebase64Binary
 
 TupleOfAttestationResultTypebase64Binary specifies the AttestationResultType as an unsigned
 integer along with content of the associated type in base-64 binary string representation.
@@ -1131,7 +977,8 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- {
+
+ {
      "id": "TupleOfAttestationResultTypebase64Binary",
      "type": "object",
      "properties": {
@@ -1151,9 +998,9 @@ string in m_Item2 represents.
 
 m_Item2: The base64Binary string of the content type identified in m_Item1.
 
-2.2.2.10
+##### 2.2.2.10 ServiceInfoReply
 
-ServiceInfoReply
+
 
 ServiceInfoReply denotes the information about the Server service.
 
@@ -1203,12 +1050,13 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SupportedFunctionalLevels: An array of integers representing the supported function levels of the
+
+SupportedFunctionalLevels: An array of integers representing the supported function levels of the
 server.
 
-2.2.2.11
+##### 2.2.2.11 ErrorReply
 
-ErrorReply
+
 
 The ErrorReply structure defines the base type of all protocol replies containing an error and the
 generic reply used when an error is not associated with other types of errors. Other errors can be any
@@ -1233,9 +1081,9 @@ one of the following structures mentioned in sections 2.2.2.14, 2.2.2.15, 2.2.2.
 Retryable: A Boolean representing whether the client can meaningfully retry the request that resulted
 in an error.
 
-2.2.2.12
+##### 2.2.2.12 EndorsementKey
 
-EndorsementKey
+
 
 The EndorsementKey structure defines the remote TPM public endorsement key that holds the
 buffer of the key.
@@ -1255,9 +1103,9 @@ buffer of the key.
 
 Key: A base64Binary string representing the public endorsement key of the Remote TPM.
 
-2.2.2.13
+##### 2.2.2.13 EvaluationLog
 
-EvaluationLog
+
 
 The EvaluationLog structure defines the policy evaluation log entry indicating whether the attestation
 has passed or not.
@@ -1276,7 +1124,8 @@ Release: April 23, 2024
 
 16 / 40
 
-             "type": "boolean"
+
+             "type": "boolean"
              "required": true
          },
          "Reason": {
@@ -1366,9 +1215,9 @@ DumpEncryptionKey - Policy which ensures that the crash
 dump encryption key is expected if crash dumps are
 enabled.
 
-2.2.2.14
+##### 2.2.2.14 OperationModeErrorReply
 
-OperationModeErrorReply
+
 
 OperationModeErrorReply structure defines the error reply due to incorrect operation mode
 specified by the client.
@@ -1382,7 +1231,8 @@ Release: April 23, 2024
 
 17 / 40
 
-     "id": "OperationModeErrorReply",
+
+     "id": "OperationModeErrorReply",
      "description": "Error reply from server for Operation mode",
      "allOf": [{
          "type": "object",
@@ -1406,9 +1256,9 @@ Release: April 23, 2024
 ExpectedOperationMode: Expected mode of operation from the server; possible modes of operation
 are specified in section 2.2.1.1.
 
-2.2.2.15
+##### 2.2.2.15 PayloadErrorReply
 
-PayloadErrorReply
+
 
 PayloadErrorReply structure defines the error in which a request sent by the client is not supported
 by the server.
@@ -1430,9 +1280,9 @@ by the server.
      }]
  }
 
-2.2.2.16
+##### 2.2.2.16 PolicyEvaluationErrorReply
 
-PolicyEvaluationErrorReply
+
 
 PolicyEvaluationErrorReply structure defines the error due to failure in the policy.
 
@@ -1456,7 +1306,8 @@ Release: April 23, 2024
 
 18 / 40
 
-                 "type": "array",
+
+                 "type": "array",
                  "items": {
                      "$ref": "[MS-HGSA]#/EvaluationLog"
                  },
@@ -1470,9 +1321,9 @@ Release: April 23, 2024
 
 EvaluationLog: Policy evaluation log specified in section 2.2.2.13.
 
-2.2.2.17
+##### 2.2.2.17 ProtocolReplyBase
 
-ProtocolReplyBase
+
 
 ProtocolReplyBase structure represents the base type of attestation protocol replies from the
 server.
@@ -1484,9 +1335,9 @@ server.
      "properties": {}
  }
 
-2.2.2.18
+##### 2.2.2.18 ProtocolRequestBase
 
-ProtocolRequestBase
+
 
 ProtocolRequestBase structure represents the base type of attestation protocol requests from the
 client to the server.
@@ -1505,9 +1356,9 @@ client to the server.
 
 SessionId: A GUID of type base64Binary string representing the attestation session.
 
-2.2.2.19
+##### 2.2.2.19 RtpmErrorReply
 
-RtpmErrorReply
+
 
 RtpmErrorReply structure represents an error received from the underlying remote TPM protocol.
 
@@ -1529,14 +1380,15 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                 }
+
+                 }
          }
      }]
  }
 
-2.2.2.20
+##### 2.2.2.20 TcgLogValidationErrorReply
 
-TcgLogValidationErrorReply
+
 
 TcgLogValidationErrorReply structure represents that an error is received from the server in WBCL
 validation.
@@ -1559,9 +1411,9 @@ validation.
      }]
  }
 
-2.2.2.21
+##### 2.2.2.21 UnauthorizedErrorReply
 
-UnauthorizedErrorReply
+
 
 UnauthorizedErrorReply structure represents that an error is received from the server due to an
 unauthorized client.
@@ -1582,9 +1434,9 @@ unauthorized client.
      }]
  }
 
-2.2.2.22
+##### 2.2.2.22 UnavailableErrorReply
 
-UnavailableErrorReply
+
 
 UnavailableErrorReply structure represents that an error reply is received from the server due to
 service is unavailable.
@@ -1602,7 +1454,8 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         "properties": {
+
+         "properties": {
              "__type": {
                  "enum": ["UnavailableErrorReply:#Microsoft.Windows.RemoteAttestation.Core"]
                  "required": true
@@ -1613,9 +1466,9 @@ Release: April 23, 2024
      }]
  }
 
-2.2.2.23
+##### 2.2.2.23 VirtualSecureModeErrorReply
 
-VirtualSecureModeErrorReply
+
 
 VirtualSecureModeErrorReply structure represents an error in fetching or parsing the VSMIDK or
 detecting VSM's presence.
@@ -1637,9 +1490,9 @@ detecting VSM's presence.
      },]
  }
 
-2.2.2.24
+##### 2.2.2.24 VsmReportValidationErrorReply
 
-VsmReportValidationErrorReply
+
 
 The VsmReportValidationErrorReply structure represents an error in validating the
 CaTrustletVsmReport.
@@ -1668,9 +1521,10 @@ Release: April 23, 2024
 
 21 / 40
 
-2.2.2.25
 
-Context
+##### 2.2.2.25 Context
+
+
 
 The main header remote TPM Context structure followed by a variable number of Data Blobs defined
 in section 2.2.2.27.
@@ -1710,9 +1564,9 @@ ignore this field.
 
 EncStateObject (variable): Encrypted blob containing the TPM state as defined in section 2.2.2.26.
 
-2.2.2.26
+##### 2.2.2.26 EncryptedStateObject
 
-EncryptedStateObject
+
 
 The EncryptedStateObject is an encrypted blob containing the TPM state.
 
@@ -1748,9 +1602,10 @@ Release: April 23, 2024
 
 22 / 40
 
-2.2.2.27
 
-Data Blob
+##### 2.2.2.27 Data Blob
+
+
 
 The Data Blob contains the payload and is one of the following.
 
@@ -1771,7 +1626,7 @@ TPM_DEVICE_INFO as defined in section 2.2.2.27.2.
 TPM_COMMAND as defined TCG. The list of supported
 commands is specified in section 2.2.2.27.3.
 
-2.2.2.27.1  WBCL_INFO
+###### 2.2.2.27.1 WBCL_INFO
 
 The WBCL_INFO structure defines the Windows Boot Counter Log (WBCL).
 
@@ -1794,9 +1649,9 @@ Size (4 bytes): The size, in bytes, of the WBCL.
 
 Data (4 bytes): The actual content of the WBCL.
 
-2.2.2.27.2
+###### 2.2.2.27.2 TPM_DEVICE_INFO
 
-TPM_DEVICE_INFO
+
 
 The TPM_DEVICE_INFO provides information about the version of the TPM.
 
@@ -1827,9 +1682,9 @@ TpmInterfaceType (4 bytes): TPM interface type as defined in section 2.2.1.5
 
 TpmImplVersion (4 bytes): Implementation-specific revision of the TPM.
 
-2.2.2.27.3
+###### 2.2.2.27.3 TPM_COMMAND
 
-TPM_COMMAND
+
 
 The list of supported TPM_Commands is as follows.
 
@@ -1840,7 +1695,8 @@ Release: April 23, 2024
 
 23 / 40
 
-Name
+
+Name
 
 TPM_CC_CreatePrimary
 
@@ -1871,11 +1727,12 @@ Release: April 23, 2024
 
 24 / 40
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1883,7 +1740,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  Global
+##### 3.1.1.1 Global
 
 SecurityGroup: List of domain-joined hosts that are known to be secure.
 
@@ -1892,7 +1749,7 @@ AttestationHealthCertificate: The health certificate as an X509Certificate2.
 SupportedFunctionalLevels: An array of integers representing the supported functional levels of the
 server.
 
-3.1.1.2  Per Attestation Request
+##### 3.1.1.2 Per Attestation Request
 
 SecurityIdentifier: A unique value of variable length used to identify a client.
 
@@ -1909,11 +1766,11 @@ AttestationOperationMode: The mode of operation of the Attestation Service as de
 
 FunctionalLevel: An integer representing the functional level of the server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST implement the following:
 
@@ -1936,22 +1793,23 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SupportedFunctionalLevels: MUST be set to an array of integers representing all supported
+
+SupportedFunctionalLevels: MUST be set to an array of integers representing all supported
 functional levels of the server.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
  None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following sections describe the sequence of operations performed by the server.
 
-3.1.5.1  TPM Based Attestation
+##### 3.1.5.1 TPM Based Attestation
 
 The server is configured to operate in TPM mode.
 
-3.1.5.1.1 POST
+###### 3.1.5.1.1 POST
 
 The operation can be invoked through the following URI.
 
@@ -1964,7 +1822,7 @@ The following is an example of a complete URI for this operation.
 
  http://attest.hgs151209.com/Attestation/v1.0/attest
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The request body for this method contains any one of the following structures:
 
@@ -1977,7 +1835,7 @@ section 2.2.2.3.
 TpmRequestContinue: Structure representing the subsequent TPM-based attestation protocol
 requests, following the initial request as specified in section 2.2.2.4.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The response body for this method contains any one of the following structures:
 
@@ -1989,7 +1847,7 @@ certificate as specified in section 2.2.2.7.
 
 ErrorReply: Structure containing the attestation protocol errors as specified in section 2.2.2.11.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 [MS-HGSA] - v20240423
 Host Guardian Service: Attestation Protocol
@@ -1998,7 +1856,8 @@ Release: April 23, 2024
 
 26 / 40
 
-If the AttestationOperatingMode on the server is TPM and received URI terminate with
+
+If the AttestationOperatingMode on the server is TPM and received URI terminate with
 "/domainattest” or “/hostkeyattest”, the server MUST return OperationModeErrorReply to the
 client.
 
@@ -2081,11 +1940,12 @@ Release: April 23, 2024
 
 27 / 40
 
-3.1.5.2  Active Directory Based Attestation
+
+##### 3.1.5.2 Active Directory Based Attestation
 
 The server is configured to operate in AD-based mode.
 
-3.1.5.2.1 POST
+###### 3.1.5.2.1 POST
 
 The operation can be invoked through the following URI.
 
@@ -2098,14 +1958,14 @@ The following is an example of a complete URI for this operation.
 
  http://attest.hgs151209.com/Attestation/v1.0/domainattest
 
-3.1.5.2.1.1  Request Body
+###### 3.1.5.2.1.1 Request Body
 
 The request body for this method contains the following structure:
 
 ADRequest: Structure representing the initial AD-based attestation request as specified in section
 2.2.2.5.
 
-3.1.5.2.1.2  Response Body
+###### 3.1.5.2.1.2 Response Body
 
 The response body for this method contains any one of the following:
 
@@ -2114,7 +1974,7 @@ certificate as specified in section 2.2.2.7.
 
 ErrorReply: Structure containing the attestation protocol errors as specified in section 2.2.2.11.
 
-3.1.5.2.1.3  Processing Details
+###### 3.1.5.2.1.3 Processing Details
 
 If the AttestationOperatingMode on the server is AD and received URI terminate with "/attest” or
 “/hostkeyattest”, the server MUST return OperationModeErrorReply to the client.
@@ -2155,14 +2015,15 @@ Host Guardian Service: Attestation Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the VSMIKD received is invalid, the server MUST return VirtualSecureModeErrorReply to the
+
+If the VSMIKD received is invalid, the server MUST return VirtualSecureModeErrorReply to the
 client.
 
-3.1.5.3  Host Key Based Attestation
+##### 3.1.5.3 Host Key Based Attestation
 
 The server is configured to operate in Host Key-based mode.
 
-3.1.5.3.1 POST
+###### 3.1.5.3.1 POST
 
 The operation can be invoked through the following URI.
 
@@ -2175,14 +2036,14 @@ The following is an example of a complete URI for this operation.
 
 http://attest.hgs151209.com/Attestation/v2.0/hostkeyattest
 
-3.1.5.3.1.1  Request Body
+###### 3.1.5.3.1.1 Request Body
 
 The request body for this method contains the following structure:
 
 AttestationRequest: Structure representing the initial Host Key-based attestation request as
 specified in section 2.2.2.1.
 
-3.1.5.3.1.2  Response Body
+###### 3.1.5.3.1.2 Response Body
 
 The response body for this method contains any one of the following:
 
@@ -2191,7 +2052,7 @@ health certificate as specified in section 2.2.2.7.
 
 ErrorReply: Structure containing the attestation protocol errors as specified in section 2.2.2.11.
 
-3.1.5.3.1.3  Processing Details
+###### 3.1.5.3.1.3 Processing Details
 
 If the AttestationOperatingMode on the server is HostKey and received URI terminate with "/attest”
 or “/domainattest”, the server MUST return OperationModeErrorReply to the client.
@@ -2221,7 +2082,8 @@ Release: April 23, 2024
 
 29 / 40
 
-
+
+
 
 If AttestationResultType in AttestationRequest is VSMIdentitySigningKeyCertificate (as
 specified in section 2.2.1.3), return HealthCertificateReply in the form of certified Virtual
@@ -2229,33 +2091,33 @@ Secure Mode Identity Key for Signing to the client.
 
 Otherwise, return UnauthorizedErrorReply to the client indicating that the host is not authorized.
 
-3.1.5.4  Receiving GetInfo
+##### 3.1.5.4 Receiving GetInfo
 
-3.1.5.4.1 GET
+###### 3.1.5.4.1 GET
 
 The operation can be invoked through the following URI and transported by HTTP GET.
 
  http://<configuredServiceName>.<configuredDomain>/Attestation/Getinfo
 
-3.1.5.4.1.1  Request Body
+###### 3.1.5.4.1.1 Request Body
 
 There is no request body.
 
-3.1.5.4.1.2  Response Body
+###### 3.1.5.4.1.2 Response Body
 
 The response body for this method contains the following:
 
 ServiceInfoReply: Structure representing the information about the server service as specified in
 section 2.2.2.10.
 
-3.1.5.4.1.3  Processing Details
+###### 3.1.5.4.1.3 Processing Details
 
 The server MUST return the FunctionalLevel, SupportedFunctionalLevels, and
 AttestationOperationMode, to which it is configured, to the client.
 
-3.1.5.5  Receiving SigningCertificates
+##### 3.1.5.5 Receiving SigningCertificates
 
-3.1.5.5.1 GET
+###### 3.1.5.5.1 GET
 
 The operation can be invoked through the following URI and transported by HTTP GET.
 
@@ -2269,11 +2131,11 @@ The following is an example of a complete URI for this operation.
 
 http://attest.hgs151209.com/Attestation/v2.0/signingCertificates
 
-3.1.5.5.1.1  Request Body
+###### 3.1.5.5.1.1 Request Body
 
 There is no request body.
 
-3.1.5.5.1.2  Response Body
+###### 3.1.5.5.1.2 Response Body
 
 The response body for this method contains the following:
 
@@ -2284,25 +2146,26 @@ Release: April 23, 2024
 
 30 / 40
 
-SigningCertificates: A byte array in the format of a PKCS7-encoded object representing the public
+
+SigningCertificates: A byte array in the format of a PKCS7-encoded object representing the public
 signing certificate(s) used by the service to issue health certificates.
 
-3.1.5.5.1.3  Processing Details
+###### 3.1.5.5.1.3 Processing Details
 
 The server MUST return the PKCS7-encoded object representing the public signing certificate(s) used
 by the service to issue health certificates.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2310,14 +2173,14 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Global
+##### 3.2.1.1 Global
 
 SecurityIdentifier: A Security Identifier (SID) uniquely identifies a security principal. Each security
 principal has a unique SID that is issued by a security agent.
 
 SecureClientList: A list of domain-joined clients that are known to be secure.
 
-3.2.1.2  Per Attestation Request
+##### 3.2.1.2 Per Attestation Request
 
 SessionId: Unique session identifier of the client performing attestation.
 
@@ -2336,7 +2199,7 @@ Retryable: A Boolean representing whether the client can meaningfully retry the 
 
 FunctionalLevel: An integer representing the current functional level.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
@@ -2347,7 +2210,8 @@ Release: April 23, 2024
 
 31 / 40
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 The client MUST implement the following:
 
@@ -2367,12 +2231,12 @@ Retryable: MUST be set to FALSE.
 
 SecureClientList: MUST be set to list empty.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The following sections describe the operations performed by the client to perform attestation initiation
 and to receive the attested health certificate.
 
-3.2.4.1  Application Requests Attestation
+##### 3.2.4.1 Application Requests Attestation
 
 The client performs TPM, AD, or Host Key attestation based on the configuration supported on the
 client and starts any of the attestation modes on the server.
@@ -2400,7 +2264,7 @@ procedures.
 If the configuration on the client supports Host Key, the client MUST initiate a request to server as
 specified in section 3.2.5.3 to perform Host Key-based attestation procedures.
 
-3.2.4.2  Application Requests Information
+##### 3.2.4.2 Application Requests Information
 
 The client requests GetInfo to get information about server configuration details FunctionalLevel
 and AttestationOperationMode.
@@ -2412,14 +2276,15 @@ Release: April 23, 2024
 
 32 / 40
 
-3.2.4.3  Application Requests SigningCertificates
+
+##### 3.2.4.3 Application Requests SigningCertificates
 
 The client requests SigningCertificates to get the certificates in the PKCS7-encoded object format
 representing the public signing certificate(s).
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  TPM Based Attestation
+##### 3.2.5.1 TPM Based Attestation
 
 The client MUST send EndorsementKeyCertificate in AttestationProvidedContentType of
 TpmInitialRequest to server.
@@ -2444,7 +2309,7 @@ If the type of response is ErrorReply, the client MUST process as specified in s
 If the type of response is HealthCertificateReply, the client MUST send the successful attestation to
 the calling application.
 
-3.2.5.2  Active Directory Based Attestation
+##### 3.2.5.2 Active Directory Based Attestation
 
 The SecurityIdentifier of the client is validated against clients in SecureClientList that are known
 to be secure.
@@ -2460,7 +2325,7 @@ If the response received is ErrorReply, the client MUST process as specified in 
 If the response received is HealthCertificateReply, the client is successfully authenticated and
 allowed to use the resources of the server.
 
-3.2.5.3  Host Key Based Attestation
+##### 3.2.5.3 Host Key Based Attestation
 
 The client MUST provide the following AttestationProvidedContentType with the
 AttestationRequest to the server.
@@ -2478,12 +2343,13 @@ Release: April 23, 2024
 
 33 / 40
 
-If the response received is ErrorReply, the client MUST process as specified in section 3.2.5.4.
+
+If the response received is ErrorReply, the client MUST process as specified in section 3.2.5.4.
 
 If the response received is HealthCertificateReply, the client is successfully authenticated and
 allowed to use the resources of the server.
 
-3.2.5.4  Receiving Error Reply
+##### 3.2.5.4 Receiving Error Reply
 
 If ErrorReply received is and Retryable flag is set, the client MAY retry performing attestation.
 
@@ -2525,11 +2391,11 @@ EvaluationLog.
 If the client received UnauthorizedErrorReply, it indicates that the client is not authorized to
 receive an AttestationHealthCertificate.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2540,7 +2406,8 @@ Release: April 23, 2024
 
 34 / 40
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 [MS-HGSA] - v20240423
 Host Guardian Service: Attestation Protocol
@@ -2549,15 +2416,16 @@ Release: April 23, 2024
 
 35 / 40
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The client is expected to use an implementation-dependent authentication mechanism to obtain a
 security token and include that token in the standard HTTP Authorization header. The server will
 validate the token and use it to authorize the request.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2568,7 +2436,8 @@ Release: April 23, 2024
 
 36 / 40
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2622,7 +2491,8 @@ Release: April 23, 2024
 
 37 / 40
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2666,7 +2536,8 @@ Release: April 23, 2024
 
 38 / 40
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2799,7 +2670,8 @@ V
 
 39 / 40
 
-Vendor-extensible fields 8
+
+Vendor-extensible fields 8
 Versioning 8
 
 [MS-HGSA] - v20240423

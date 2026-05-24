@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 35
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -277,7 +278,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Date
+
+Date
 
 Revision
 History
@@ -305,145 +307,62 @@ Release: June 1, 2017
 
 3 / 35
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Group Policy Extension Overview](#132-group-policy-extension-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Trace Settings](#21-trace-settings)
+    - [2.1.1 Enable Tracing](#211-enable-tracing)
+    - [2.1.2 Tracing Level](#212-tracing-level)
+  - [2.2 User Interface Settings](#22-user-interface-settings)
+    - [2.2.1 SmallText](#221-smalltext)
+    - [2.2.2 LargeText](#222-largetext)
+    - [2.2.3 ImageFile](#223-imagefile)
+    - [2.2.4 ImageFileName](#224-imagefilename)
+  - [2.3 Enforcement Client Settings](#23-enforcement-client-settings)
+    - [2.3.1 DHCP Enforcement](#231-dhcp-enforcement)
+    - [2.3.2 Remote Access Enforcement](#232-remote-access-enforcement)
+    - [2.3.3 IPsec Enforcement](#233-ipsec-enforcement)
+    - [2.3.4 RDG Enforcement](#234-rdg-enforcement)
+    - [2.3.5 EAP Enforcement](#235-eap-enforcement)
+  - [2.4 Health Registration Authority (HRA) Settings](#24-health-registration-authority-hra-settings)
+    - [2.4.1 PKCS#10 Certificate Settings](#241-pkcs10-certificate-settings)
+      - [2.4.1.1 Cryptographic Service Provider (CSP)](#2411-cryptographic-service-provider-csp)
+      - [2.4.1.2 Cryptographic Provider Type](#2412-cryptographic-provider-type)
+      - [2.4.1.3 Public Key OID](#2413-public-key-oid)
+      - [2.4.1.4 Public Key Length](#2414-public-key-length)
+      - [2.4.1.5 Public Key Spec](#2415-public-key-spec)
+      - [2.4.1.6 Hash Algorithm OID](#2416-hash-algorithm-oid)
+    - [2.4.2 HRA Auto-Discovery](#242-hra-auto-discovery)
+    - [2.4.3 Use SSL](#243-use-ssl)
+    - [2.4.4 HRA URLs](#244-hra-urls)
+      - [2.4.4.1 Server](#2441-server)
+      - [2.4.4.2 Order](#2442-order)
+    - [2.4.5 Reconnect Attempts](#245-reconnect-attempts)
+  - [2.5 SoH Settings](#25-soh-settings)
+    - [2.5.1 Task Timer](#251-task-timer)
+    - [2.5.2 Backward Compatible](#252-backward-compatible)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Background ................................................................................................. 9
-Group Policy Extension Overview .................................................................... 9
-Relationship to Protocols and Other Structures .................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Localization ............................................................................... 11
-Vendor-Extensible Fields ................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-
-1.3.1
-1.3.2
-
-2.4
-
-2.3
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-2.3.5
-
-2  Structures ............................................................................................................. 12
-Trace Settings ................................................................................................. 12
-Enable Tracing ........................................................................................... 12
-Tracing Level ............................................................................................. 12
-User Interface Settings ..................................................................................... 13
-SmallText .................................................................................................. 13
-LargeText .................................................................................................. 13
-ImageFile .................................................................................................. 13
-ImageFileName .......................................................................................... 14
-Enforcement Client Settings .............................................................................. 14
-DHCP Enforcement ..................................................................................... 15
-Remote Access Enforcement ........................................................................ 15
-IPsec Enforcement ...................................................................................... 16
-RDG Enforcement ....................................................................................... 17
-EAP Enforcement ........................................................................................ 17
-Health Registration Authority (HRA) Settings ....................................................... 17
-PKCS#10 Certificate Settings ....................................................................... 18
-Cryptographic Service Provider (CSP) ...................................................... 19
-Cryptographic Provider Type................................................................... 20
-Public Key OID ..................................................................................... 20
-Public Key Length ................................................................................. 21
-Public Key Spec .................................................................................... 22
-Hash Algorithm OID .............................................................................. 22
-HRA Auto-Discovery .................................................................................... 23
-Use SSL..................................................................................................... 24
-HRA URLs .................................................................................................. 24
-Server ................................................................................................. 24
-Order .................................................................................................. 25
-Reconnect Attempts .................................................................................... 25
-SoH Settings ................................................................................................... 25
-Task Timer ................................................................................................ 25
-Backward Compatible .................................................................................. 26
-
-2.4.1.1
-2.4.1.2
-2.4.1.3
-2.4.1.4
-2.4.1.5
-2.4.1.6
-
-2.4.2
-2.4.3
-2.4.4
-
-2.4.4.1
-2.4.4.2
-
-2.5.1
-2.5.2
-
-2.4.5
-
-2.4.1
-
-2.5
-
-3  Structure Examples ............................................................................................... 27
-
-4  Security ................................................................................................................. 29
-Security Considerations for Implementers ........................................................... 29
-Index of Security Fields .................................................................................... 29
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 30
-
-6  Change Tracking .................................................................................................... 32
-
-7  Index ..................................................................................................................... 33
-
-4 / 35
-
-[MS-GPNAP] - v20170601
-Group Policy: Network Access Protection (NAP) Extension
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-[MS-GPNAP] - v20170601
-Group Policy: Network Access Protection (NAP) Extension
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 35
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: Network Access Protection (NAP) Extension protocol specifies functionality to control
 client computer access to network resources. Access can be granted or restricted per client computer
@@ -454,7 +373,7 @@ dynamically upgrade access to network resources.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -511,7 +430,8 @@ Release: June 1, 2017
 
 6 / 35
 
-enforcement client: An enforcement client uses the health state of a computer to request a
+
+enforcement client: An enforcement client uses the health state of a computer to request a
 
 certain level of access to a network. For more information about enforcement clients, see
 [MSDN-NAP].
@@ -584,7 +504,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Public Key Cryptography Standards (PKCS): A group of Public Key Cryptography Standards
+
+Public Key Cryptography Standards (PKCS): A group of Public Key Cryptography Standards
 
 published by RSA Laboratories.
 
@@ -620,14 +541,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -653,7 +574,8 @@ Release: June 1, 2017
 
 8 / 35
 
-[MS-PEAP] Microsoft Corporation, "Protected Extensible Authentication Protocol (PEAP)".
+
+[MS-PEAP] Microsoft Corporation, "Protected Extensible Authentication Protocol (PEAP)".
 
 [MS-TSGU] Microsoft Corporation, "Terminal Services Gateway Server Protocol".
 
@@ -682,7 +604,7 @@ editor.org/info/rfc3447
 [TNC-IF-TNCCSPBSoH] TCG, "TNC IF-TNCCS: Protocol Bindings for SoH", version 1.0, May 2007,
 https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NAPOD] Microsoft Corporation, "Network Access Protection Protocols Overview".
 
@@ -720,7 +642,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.3  Overview
+
+### 1.3 Overview
 
 Network Access Protection (NAP) is a platform that controls access to network resources, based
 on a client computer's identity and compliance with corporate governance policy. NAP allows network
@@ -737,7 +660,7 @@ enable or disable NAP enforcement, to set Health Registration Authorities (HRAs)
 the client, and to control client user interface and tracing. All NAP group policies are machine-specific,
 meaning that the same policy is applied to all users on a given machine.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol, as specified in [MS-GPOL], allows clients to discover and retrieve
 policy settings created by administrators of a domain. These settings are persisted within Group
@@ -757,7 +680,7 @@ determine which client-side plug-ins on the client will handle the GPO. The clie
 client-side plug-ins to handle the GPO. Next, the client-side plug-in uses the contents of the GPO to
 retrieve and process settings specific to its class, in a manner specific to the plug-in.
 
-1.3.2  Group Policy Extension Overview
+#### 1.3.2 Group Policy Extension Overview
 
 NAP client configuration Group Policy settings are accessible from a GPO through the Group Policy:
 NAP Extension to the Group Policy: Core Protocol. The extension provides a mechanism for
@@ -787,7 +710,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GPNAP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -805,7 +729,7 @@ of the Group Policy: Core Protocol in step 2 is specified in [MS-GPOL] section 3
 retrieving the settings in step 3 is specified in [MS-GPREG] section 3.2. Step 4 is specific to a NAP
 client implementation.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Configuration changes updated on the Group Policy server are dependent on the Group Policy:
 Registry Extension Encoding, as specified in [MS-GPREG] section 3.1.5.8 (and all protocols specified in
@@ -830,9 +754,10 @@ Release: June 1, 2017
 
 11 / 35
 
-Figure 1: Protocol relationship diagram
 
-1.5  Applicability Statement
+Figure 1: Protocol relationship diagram
+
+### 1.5 Applicability Statement
 
 The Group Policy: NAP Extension is applicable only within the Group Policy framework and is used to
 configure certain aspects of NAP behavior on such clients.
@@ -841,7 +766,7 @@ The Group Policy: NAP Extension has only an administrative-side extension and no
 extension. This extension updates the generic settings database<3> and is documented here for
 informative purposes only.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This document covers versioning issues in the following areas:
 
@@ -856,7 +781,7 @@ Localization: Localization-dependent registry content is specified in section 2.
 The Group Policy: NAP client configuration contains registry keys with data that is used for display
 purposes; these keys can contain localization-dependent content.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The Group Policy: NAP Extension does not define any vendor-extensible fields.
 
@@ -876,7 +801,8 @@ Release: June 1, 2017
 
 12 / 35
 
-2  Structures
+
+## 2 Structures
 
 This protocol references commonly used data types as defined in [MS-DTYP]. The NAP Group Policy
 administrative plug-in uses the transport specified in [MS-GPOL] to read and modify settings in the
@@ -909,14 +835,14 @@ Policy file. The intent of various settings is also described in the following s
 settings are processed by the NAP system in the client, and their descriptions here are only for
 informative purposes, not for normative purposes.
 
-2.1  Trace Settings
+### 2.1 Trace Settings
 
 The NAP client tracing functionality settings are compounded from two registry entries that are
 represented in the machine-specific Registry Policy file as follows:
 
 Key: Software\Policies\Microsoft\NetworkAccessProtection\ClientConfig\
 
-2.1.1  Enable Tracing
+#### 2.1.1 Enable Tracing
 
 Value: "Enable Tracing" or one of the value names specified in the table in [MS-GPREG] section
 3.2.5.1 specifying how the value is deleted.
@@ -942,7 +868,8 @@ Release: June 1, 2017
 
 13 / 35
 
-2.1.2  Tracing Level
+
+#### 2.1.2 Tracing Level
 
 Value: "Tracing Level" or one of the value names listed in the table in [MS-GPREG] section 3.2.5.1
 specifying how the value is deleted.
@@ -965,7 +892,7 @@ Meaning
 
 0x00000003  Sets NAP tracing on the client to debug level.
 
-2.2  User Interface Settings
+### 2.2 User Interface Settings
 
 The NAP client uses user interface registry content as display information when user interface
 registry keys are available; otherwise, the user interface will not display a title and description. The
@@ -976,7 +903,7 @@ Key: Software\Policies\Microsoft\NetworkAccessProtection\ClientConfig\UI\<LCID>
 
 The <LCID> language code identifier (LCID) values are specified in [MS-LCID] section 2.2.
 
-2.2.1  SmallText
+#### 2.2.1 SmallText
 
 Value: "SmallText" or one of the value names listed in the table in [MS-GPREG] section 3.2.5.1
 specifying how the value is deleted.
@@ -988,7 +915,7 @@ Size: Equal to size of the Data field.
 Data: A variable-length null-terminated Unicode string. This setting specifies the user notification title
 displayed to the user.
 
-2.2.2  LargeText
+#### 2.2.2 LargeText
 
 Value: "LargeText" or one of the value names listed in the table in [MS-GPREG] section 3.2.5.1
 specifying how the value is deleted.
@@ -1007,7 +934,8 @@ Release: June 1, 2017
 
 14 / 35
 
-2.2.3  ImageFile
+
+#### 2.2.3 ImageFile
 
 The ImageFile entry can be represented in the machine-specific Registry Policy file as follows:
 
@@ -1026,7 +954,7 @@ NAP client implementations interpret this setting as the company logo to display
 no image is displayed. Implementations MAY choose to support this option. If this option is supported,
 the image file name key (see ImageFileName (section 2.2.4) MUST be available.
 
-2.2.4  ImageFileName
+#### 2.2.4 ImageFileName
 
 Value: "ImageFileName" or one of the value names listed in the table in [MS-GPREG] section 3.2.5.1
 specifying how the value is deleted.
@@ -1039,7 +967,7 @@ Data: A variable-length null-terminated Unicode string. This setting is used to 
 of the image data specified in section 2.2.3. File formats, as indicated in the file type extension,
 include but are not restricted to bmp, icon, gif, jpeg, exif, png, tiff, wmf, or emf.
 
-2.3  Enforcement Client Settings
+### 2.3 Enforcement Client Settings
 
 A NAP enforcement client uses the health state of a computer to request a certain level of access to
 a network. This is done using NAP protocol SoH ([TNC-IF-TNCCSPBSoH] section 3.5) and statement
@@ -1098,7 +1026,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<qec-
+
+<qec-
 id>
 value
 
@@ -1153,7 +1082,7 @@ Meaning
 
 0x00000001  Enables NAP enforcement.
 
-2.3.1  DHCP Enforcement
+#### 2.3.1 DHCP Enforcement
 
 The Dynamic Host Configuration Protocol (DHCP) NAP enforcement client provides functionality
 in the DHCP client service that uses industry standard DHCP messages to exchange system health
@@ -1168,7 +1097,7 @@ DHCP enforcement server might not provide IP addressing information.
 
 For more information on DHCP, see [MSDN-DHCP].
 
-2.3.2  Remote Access Enforcement
+#### 2.3.2 Remote Access Enforcement
 
 The remote access NAP enforcement client provides functionality in the Remote Access Service
 (RAS) that makes it possible to connect a remote client computer to a network server over a virtual
@@ -1181,7 +1110,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-When a client attempts to access a network over VPN, the VPN server can request an SoHR response
+
+When a client attempts to access a network over VPN, the VPN server can request an SoHR response
 message ([TNC-IF-TNCCSPBSoH] section 3.6) from the client by sending some PEAP TLV ([MS-PEAP])
 messages. If the RAS enforcement client is enabled on the client, it responds with an SoH message, as
 specified in [MS-PEAP] section 2.2.8. The RAS server might send the SoH message to a policy server
@@ -1192,7 +1122,7 @@ connection. Alternatively, the RAS server can reject the client access request.
 
 For more information on RAS clients, see [MSDN-RAS].
 
-2.3.3  IPsec Enforcement
+#### 2.3.3 IPsec Enforcement
 
 The IPsec NAP enforcement client is a component that obtains an SoH, as specified in section 2.3,
 and sends it to a HRA. The protocol used by the client to communicate with the HRA is called the
@@ -1255,7 +1185,8 @@ Release: June 1, 2017
 
 17 / 35
 
-2.3.4  RDG Enforcement
+
+#### 2.3.4 RDG Enforcement
 
 The NAP remote desktop gateway (RDG) enforcement client is a component that obtains the SoH
 from NAP as specified in section 2.3 and uses it while the client connects to a remote desktop server.
@@ -1270,7 +1201,7 @@ devices, and clipboards.<5>
 
 For more information on RDG and NAP, see [MSFT-RDG].
 
-2.3.5  EAP Enforcement
+#### 2.3.5 EAP Enforcement
 
 The NAP EAP enforcement client extends the 802.1x supplicant, allows responding to an SoH
 Request TLV message with an SoH TLV message, as specified in section 2.3, and sends the response
@@ -1284,7 +1215,7 @@ client to connect to other computers on the network or can restrict the traffic 
 specifying a restricted network that limits access to specific resources on the network, as described in
 [MS-NAPOD]. Alternatively, the 802.1x server can reject supplicant access.
 
-2.4  Health Registration Authority (HRA) Settings
+### 2.4 Health Registration Authority (HRA) Settings
 
 NAP HRAs are divided into groups that use the same certificate security settings specified in section
 2.3.3. The HRA groups are represented in the registry as depicted in the following figure.
@@ -1296,7 +1227,8 @@ Release: June 1, 2017
 
 18 / 35
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-GPNAP].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1311,7 +1243,7 @@ Group>
 
 <Server-Group> is the name of the HRAs group.
 
-2.4.1  PKCS#10 Certificate Settings
+#### 2.4.1 PKCS#10 Certificate Settings
 
 The health certificate enrollment agent (HCEA) MUST be configured with the required security
 parameters to construct the Public Key Cryptography Standards (PKCS) #10 certificate request,
@@ -1328,13 +1260,14 @@ Release: June 1, 2017
 
 19 / 35
 
-Key:  Software\Policies\Microsoft\NetworkAccessProtection\ClientConfig\ Enroll\HcsGroups\<Server-
+
+Key:  Software\Policies\Microsoft\NetworkAccessProtection\ClientConfig\ Enroll\HcsGroups\<Server-
 
 Group>
 
 Security parameter values follow in sections 2.4.1.1 through 2.4.1.6.
 
-2.4.1.1  Cryptographic Service Provider (CSP)
+##### 2.4.1.1 Cryptographic Service Provider (CSP)
 
 The name of the cryptographic service provider (CSP) used to generate the key pair on the HCEA.
 
@@ -1436,13 +1369,14 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-CSP
+
+CSP
 
 v1.0
 
 Description
 
-2.4.1.2  Cryptographic Provider Type
+##### 2.4.1.2 Cryptographic Provider Type
 
 The type of the CSP used to generate the key pair on the HCEA. There are many different standard
 data formats and protocols that CSP can use. These are generally organized into types, each of which
@@ -1501,7 +1435,7 @@ PROV_MS_EXCHANGE
 0x00000005  Designed for the cryptographic needs of the Exchange mail application
 and other applications compatible with Microsoft Mail.
 
-2.4.1.3  Public Key OID
+##### 2.4.1.3 Public Key OID
 
 A public key OID is an object identifier (OID) identifying the algorithm of the public-private key
 pair associated with the certificate. For more information, see [RFC3447].
@@ -1521,7 +1455,8 @@ Release: June 1, 2017
 
 21 / 35
 
-Data: A variable-length null-terminated Unicode string. This setting specifies the public key OID
+
+Data: A variable-length null-terminated Unicode string. This setting specifies the public key OID
 
 used.
 
@@ -1594,7 +1529,7 @@ RSAES_OAEP
 
 ECDH_STD_SHA1_KDF  1.3.133.16.840.63.0.2
 
-2.4.1.4  Public Key Length
+##### 2.4.1.4 Public Key Length
 
 The key length of the public-private key pair associated with the certificate. For more information, see
 [RFC3447].
@@ -1618,7 +1553,8 @@ Release: June 1, 2017
 
 22 / 35
 
-2.4.1.5  Public Key Spec
+
+##### 2.4.1.5 Public Key Spec
 
 When a public-private key pair is generated, several types of keys can be created. Keys can be
 created to allow their use with encryption, digital signatures, or both. The Value represents the public
@@ -1634,7 +1570,7 @@ Size: Equal to the size of the Data field.
 
 Data: A 32-bit value that is set to 0x00000001 (AT_KEYEXCHANGE).
 
-2.4.1.6  Hash Algorithm OID
+##### 2.4.1.6 Hash Algorithm OID
 
 The Hash Algorithm OID is an OID identifying the hash algorithm used to sign the certificate request.
 For more information on hash algorithms, see [RFC3174].
@@ -1718,7 +1654,8 @@ Release: June 1, 2017
 
 23 / 35
 
-Name
+
+Name
 
 OID
 
@@ -1778,7 +1715,7 @@ specifiedECDSA
 
 1.2.840.10045.4.3
 
-2.4.2  HRA Auto-Discovery
+#### 2.4.2 HRA Auto-Discovery
 
 HRA groups can be set by group policy or can be discovered automatically by the NAP client using
 DNS SRV lookup, as specified in [RFC2782]. A NAP client discovers a suitable HRA at start-up using
@@ -1818,7 +1755,8 @@ Release: June 1, 2017
 
 24 / 35
 
-Value
+
+Value
 
 Meaning
 
@@ -1826,7 +1764,7 @@ Meaning
 
 0x00000001  Enables HRA auto discovery.
 
-2.4.3  Use SSL
+#### 2.4.3 Use SSL
 
 The HCEP uses HTTP (as specified in [RFC2616]) or HTTP over TLS (as specified in [RFC2818]) as the
 transport for its messages. To configure how HCEP connects to the HRA, a registry setting entry MUST
@@ -1857,7 +1795,7 @@ Meaning
 Communication with the HRA is always performed using SSL when HRA auto-discovery is used; see
 section 2.4.1.
 
-2.4.4  HRA URLs
+#### 2.4.4 HRA URLs
 
 Group Policy enables the administrator to configure specific HRA groups by setting the URL. To
 configure an HRA URL, a registry entry MUST be represented in the machine-specific Registry Policy
@@ -1877,7 +1815,7 @@ section 2.3.3.
 Example: A URL of the first HRA is defined under the registry key
 "Software\Policies\Microsoft\NetworkAccessProtection\ClientConfig\Enroll\HcsGroups\MyGroup\Url0".
 
-2.4.4.1  Server
+##### 2.4.4.1 Server
 
 Value: "Server" or one of the value names specified in the table in [MS-GPREG] section 3.2.5.1
 
@@ -1890,7 +1828,8 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Type: REG_SZ.
+
+Type: REG_SZ.
 
 Size: Equal to size of the Data field.
 
@@ -1898,7 +1837,7 @@ Data: A variable-length null-terminated Unicode string. This setting specifies t
 
 connect to.
 
-2.4.4.2  Order
+##### 2.4.4.2 Order
 
 Value: "Order" or one of the value names specified in the table in [MS-GPREG] section 3.2.5.1
 
@@ -1910,7 +1849,7 @@ Size: Equal to size of the Data field.
 
 Data: A 32-bit value in the range from 0x00000000 to 0x000000FE, inclusive.
 
-2.4.5  Reconnect Attempts
+#### 2.4.5 Reconnect Attempts
 
 Group Policy enables the administrator to configure how long the client waits before attempting to
 reconnect to an HRA in the event of a connection failure. To configure a blackout interval, a registry
@@ -1932,7 +1871,7 @@ Data: A 32-bit value representing time in minutes. For example, 0x0000000A repre
 
 of blackout.
 
-2.5  SoH Settings
+### 2.5 SoH Settings
 
 SoH specified in [TNC-IF-TNCCSPBSoH] has two settings that an administrator can configure using
 Group Policy. These settings are represented in the machine-specific registry as values
@@ -1943,7 +1882,7 @@ machine-specific Registry Policy file under the following key:
 
 Key: Software\Policies\Microsoft\NetworkAccessProtection\ClientConfig\
 
-2.5.1  Task Timer
+#### 2.5.1 Task Timer
 
 A Task Timer is a system health agent (SHA) timeout. A task timer is associated with all function
 calls that a SoH client makes to the SHA. The SHA is expected to complete the call within the timeout.
@@ -1962,13 +1901,14 @@ Group Policy: Network Access Protection (NAP) Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Size: Equal to size of the Data field.
+
+Size: Equal to size of the Data field.
 
 Data: A 32-bit value representing time in milliseconds. For example, 0x0000000A represents 10
 
 milliseconds of blackout.
 
-2.5.2  Backward Compatible
+#### 2.5.2 Backward Compatible
 
 This setting determines the version of the message content, as specified in [TNC-IF-TNCCSPBSoH]
 section 3.5.1.1.
@@ -2004,7 +1944,8 @@ Release: June 1, 2017
 
 27 / 35
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 In the following example, an administrator sets up a new domain and attempts to enable NAP DHCP
 enforcement on the computers in the domain. The client computers run operating systems that
@@ -2059,7 +2000,8 @@ Release: June 1, 2017
 
 28 / 35
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-GPNAP].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2082,9 +2024,10 @@ Release: June 1, 2017
 
 29 / 35
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 The Group Policy: NAP Extension sets the NAP enforcement policy on the client computer. This policy
 consists of HRA URLs and HRA connection transport and certificate security settings, as well as
@@ -2094,7 +2037,7 @@ integrity of the NAP policy against tampering, especially during its transfer fr
 Ideally, this implementation-specific security method is provided as part of the transport for the Group
 Policy: Core Protocol.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -2105,7 +2048,8 @@ Release: June 1, 2017
 
 30 / 35
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2174,7 +2118,8 @@ Release: June 1, 2017
 
 31 / 35
 
-<6> Section 2.3.5: EAP enforcement is available in the following Windows versions:
+
+<6> Section 2.3.5: EAP enforcement is available in the following Windows versions:
 
   Windows Vista
 
@@ -2197,7 +2142,8 @@ Release: June 1, 2017
 
 32 / 35
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2209,7 +2155,8 @@ Release: June 1, 2017
 
 33 / 35
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 11
@@ -2343,7 +2290,8 @@ Release: June 1, 2017
 
 34 / 35
 
-   length 21
+
+   length 21
    OID 20
    spec 22
 

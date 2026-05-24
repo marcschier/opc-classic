@@ -63,7 +63,8 @@ Release: July 29, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: July 29, 2024
 
 2 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -526,7 +528,8 @@ Release: July 29, 2024
 
 3 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -608,128 +611,58 @@ Release: July 29, 2024
 
 4 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Mailslot Write Message](#221-mailslot-write-message)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Application Writes to a Mailslot](#3141-application-writes-to-a-mailslot)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Global](#3211-global)
+      - [3.2.1.2 Per Mailslot](#3212-per-mailslot)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Application Creates a Mailslot](#3241-application-creates-a-mailslot)
+      - [3.2.4.2 Application Reads from a Mailslot](#3242-application-reads-from-a-mailslot)
+      - [3.2.4.3 Application Closes a Mailslot](#3243-application-closes-a-mailslot)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Server Receives a Mailslot Write](#3251-server-receives-a-mailslot-write)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Mailslot Write Message .................................................................................. 9
-
-2.1
-2.2
-
-2.2.1
-
-3.2
-
-3.1
-
-3.2.1
-
-3.1.4.1
-
-3.1.5
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 13
-Client Details ................................................................................................... 13
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Application Writes to a Mailslot ............................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-Server Details .................................................................................................. 14
-Abstract Data Model .................................................................................... 14
-Global.................................................................................................. 14
-Per Mailslot .......................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 15
-Application Creates a Mailslot ................................................................. 15
-Application Reads from a Mailslot ............................................................ 15
-Application Closes a Mailslot ................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Server Receives a Mailslot Write ............................................................. 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 17
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.1.1
-3.2.1.2
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2.5
-
-4  Protocol Examples ................................................................................................. 18
-
-5  Security ................................................................................................................. 20
-Security Considerations for Implementers ........................................................... 20
-Index of Security Parameters ............................................................................ 20
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 21
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-MAIL] - v20240729
-Remote Mailslot Protocol
-Copyright © 2024 Microsoft Corporation
-Release: July 29, 2024
-
-5 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Remote Mailslot Protocol is a simple, unreliable, insecure, and unidirectional interprocess
 communications (IPC) protocol between a client and server. A mailslot server creates a mailslot, and a
@@ -740,7 +673,7 @@ locally on the server as a file.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -759,14 +692,14 @@ as specified in [RFC1001] section 17.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -797,20 +730,21 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-[RFC1002] Network Working Group, "Protocol Standard for a NetBIOS Service on a TCP/UDP
+
+[RFC1002] Network Working Group, "Protocol Standard for a NetBIOS Service on a TCP/UDP
 Transport: Detailed Specifications", STD 19, RFC 1002, March 1987, https://www.rfc-
 editor.org/info/rfc1002
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSLOT] Microsoft Corporation, "Mailslots", http://msdn.microsoft.com/en-us/library/aa365576.aspx
 
 [PIPE] Microsoft Corporation, "Named Pipes", http://msdn.microsoft.com/en-us/library/aa365590.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Remote Mailslot Protocol is a simple, unreliable, insecure, and unidirectional interprocess
 communications (IPC) protocol between a client and server or among a group of servers that use the
@@ -825,7 +759,7 @@ section 2.2.1) over a NetBIOS datagram service. The sender of the mailslot messa
 SMB_COM_TRANSACTION message and sends it as a NetBIOS datagram. This protocol is not
 transported over SMB.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Remote Mailslot Protocol relies on the transport mechanisms of the NetBIOS datagram service
 (as specified in section 2.1).
@@ -837,14 +771,14 @@ The Remote Mailslot Protocol is used by the Common Internet File System (CIFS) B
 described in [MS-BRWS] to accomplish inter-machine communication. The Common Internet File
 System (CIFS) Browser Protocol uses "\MAILSLOT\LANMAN" and "\MAILSLOT\BROWSE".
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The server needs to have a NetBIOS name registered, as described in [RFC1001] section 15. The
 higher-layer application that uses the Remote Mailslot Protocol needs to know the NetBIOS name of
 the server to which it is trying to connect. The higher-layer application needs to also know the name
 of the mailslot.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Remote mailslot messages are used in scenarios that require sending simple, short messages to one
 or more computers on the network. Neither the sender nor the receiver can expect reliable or ordered
@@ -861,18 +795,19 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-because the Remote Mailslot Protocol has no authentication, it is unsuitable for applications requiring a
+
+because the Remote Mailslot Protocol has no authentication, it is unsuitable for applications requiring a
 secure communication between the sender and receiver.<1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Remote Mailslot Protocol does not contain any version or capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments other than those implied by the use of the NetBIOS datagram
 service, as specified in [RFC1001] section 17.
@@ -884,11 +819,12 @@ Release: July 29, 2024
 
 8 / 26
 
-2  Messages
+
+## 2 Messages
 
 The Remote Mailslot Protocol defines exactly one message: a mailslot write command.
 
-2.1  Transport
+### 2.1 Transport
 
 Mailslot writes are delivered over the NetBIOS datagram service by using one of the following
 transports:
@@ -907,7 +843,7 @@ frame size of the underlying physical media. When using UDP as the underlying tr
 implementation SHOULD restrict the maximum allowed data in the MailslotName and Databytes
 fields (see section 2.2.1) of a mailslot write message to no more than 443 bytes.<2>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 A mailslot write message shares the structure of SMB_COM_TRANSACTION, as specified in [MS-
 CIFS] section 2.2.4.33, and redefines some of the structure fields as specified in section 2.2.1.
@@ -915,7 +851,7 @@ CIFS] section 2.2.4.33, and redefines some of the structure fields as specified 
 This section specifies the syntax of the Transaction SMB data structure as it applies to a mailslot write
 message. The byte ordering used is little-endian unless specified otherwise.
 
-2.2.1  Mailslot Write Message
+#### 2.2.1 Mailslot Write Message
 
 The SMB_COM_TRANSACTION data structure (see [MS-CIFS] section 2.2.4.33) for a mailslot write
 message required to be as follows:
@@ -970,7 +906,8 @@ Release: July 29, 2024
 
 9 / 26
 
-...
+
+...
 
 ...
 
@@ -1057,7 +994,8 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-to zero and be ignored on receipt. Because this value MUST be set to zero, it indicates that no
+
+to zero and be ignored on receipt. Because this value MUST be set to zero, it indicates that no
 parameter array is being sent in this request.
 
 TotalDataCount (2 bytes): An unsigned 16-bit integer that specifies the number of bytes in the
@@ -1143,7 +1081,8 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-Reserved3 (1 byte): An unsigned 8-bit integer reserved for future use. The Reserved3 field MUST
+
+Reserved3 (1 byte): An unsigned 8-bit integer reserved for future use. The Reserved3 field MUST
 
 be set to zero and ignored on receipt.
 
@@ -1203,30 +1142,31 @@ Release: July 29, 2024
 
 12 / 26
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 The Remote Mailslot Protocol clients are higher-layer applications that use the mailslot protocol to
 send a message to the server, as described in section 3.1.4.1. Because this is an unreliable,
 unidirectional protocol, there is neither a connection phase nor an acknowledgment from the server
 for the send from the client.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Application Writes to a Mailslot
+##### 3.1.4.1 Application Writes to a Mailslot
 
 The application provides the following:
 
@@ -1262,22 +1202,23 @@ Release: July 29, 2024
 
 13 / 26
 
-3.1.5  Message Processing Events and Sequencing Rules
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
  Multipacket segmentation is not supported by the Remote Mailslot Protocol. If the packet is too large
 to fit into a single NetBIOS datagram, it MUST be discarded.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The Remote Mailslot Protocol servers require higher-layer applications (running on the server) that use
 the protocol to specify individual mailslots. Each mailslot MUST be identified by an ASCII name that is
@@ -1288,13 +1229,13 @@ The server maintains a lookup table for the list of active mailslots indexed by 
 active mailslot has a queue, called the message queue, associated with it. This message queue holds
 pending incoming mailslot messages. The length of the queue is implementation specific.<14>
 
-3.2.1.1  Global
+##### 3.2.1.1 Global
 
 The following element is part of the abstract data model for MS-MAIL servers:
 
 MailslotList : A list of active mailslots on the system.
 
-3.2.1.2  Per Mailslot
+##### 3.2.1.2 Per Mailslot
 
 The following elements are part of the abstract data model for each mailslot on a mailslot server:
 
@@ -1303,11 +1244,11 @@ Mailslot.Name : The name of the mailslot, which has the format described in sect
 Mailslot.MessageQueue : A queue of pending, incoming mailslot messages received on the mailslot.
 The length of the queue is implementation-specific.<15>
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server MUST initialize MailslotList (section 3.2.1.1) to an empty list.
 
@@ -1325,7 +1266,8 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-  All servers MUST register their computer names to receive NetBIOS datagrams directed to the
+
+  All servers MUST register their computer names to receive NetBIOS datagrams directed to the
 computer. The computer name MUST be converted to a valid NetBIOS name by padding it with
 spaces to the right, up to 15 characters. The 16th character MUST be set to 0. The resulting name
 MUST be registered with NetBIOS as a "unique name" as described in [RFC1001] section 15.1.1.
@@ -1358,12 +1300,12 @@ MUST be registered with NetBIOS as a "unique name" as described in [RFC1001] sec
 For more information about receiving broadcast NetBIOS datagrams by NetBIOS datagram service,
 see [RFC1001] section 17.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The Remote Mailslot Protocol server MUST expose interfaces to upper-layer applications to allow them
 to create, read, and close mailslots on the server, as specified in this section.
 
-3.2.4.1  Application Creates a Mailslot
+##### 3.2.4.1 Application Creates a Mailslot
 
 The application provides the following data:
 
@@ -1385,7 +1327,7 @@ If a match is not found, the server MUST create a new mailslot, initialize
 Mailslot.MessageQueue (section 3.2.1.2) to an empty queue, and add the newly-created
 mailslot to MailslotList.
 
-3.2.4.2  Application Reads from a Mailslot
+##### 3.2.4.2 Application Reads from a Mailslot
 
 The application provides the following data:
 
@@ -1407,7 +1349,8 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-
+
+
 
 If a match is found and Mailslot.MessageQueue (section 3.2.1.2) is empty, the server MAY
 block until a message arrives in the queue, wait for an implementation-specific timeout interval, or
@@ -1416,7 +1359,7 @@ return an error.<16>
 If a message is available in Mailslot.MessageQueue, the message MUST be deleted from the head of
 the queue and returned to the application.
 
-3.2.4.3  Application Closes a Mailslot
+##### 3.2.4.3 Application Closes a Mailslot
 
 The application provides the following data:
 
@@ -1441,9 +1384,9 @@ If the server finds a match, it MUST perform the following steps:
 
   Delete the mailslot.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Server Receives a Mailslot Write
+##### 3.2.5.1 Server Receives a Mailslot Write
 
 On receiving a mailslot write request from a client, the mailslot server MUST verify that the request
 conforms to the syntax specified in section 2.2.1. If either the format or the contents do not conform
@@ -1482,11 +1425,12 @@ Release: July 29, 2024
 
 16 / 26
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1497,7 +1441,8 @@ Release: July 29, 2024
 
 17 / 26
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Mailslots are supported by three higher-level specialized functions, CreateMailslot, GetMailslotInfo,
 and SetMailslotInfo. These functions are used by the mailslot server. Note that none of these
@@ -1568,7 +1513,8 @@ Release: July 29, 2024
 
 18 / 26
 
- ProcessID: 65279 (0xFEFF)
+
+ ProcessID: 65279 (0xFEFF)
  UserID: 0 (0x0)
  MultiplexID: 0 (0x0)
  CTransaction:
@@ -1608,14 +1554,15 @@ Release: July 29, 2024
 
 19 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Remote Mailslot Protocol is not a secure protocol. Do not use the Remote Mailslot Protocol if
 applications need secure communication between client and server.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1626,7 +1573,8 @@ Release: July 29, 2024
 
 20 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1695,7 +1643,8 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-padding, and the data to be written) to 512 bytes. The maximum size of the write payload
+
+padding, and the data to be written) to 512 bytes. The maximum size of the write payload
 depends on the length of the Mailslot name and any padding added to the request by the client.
 
 The length of the write payload in bytes is given by:
@@ -1773,7 +1722,8 @@ Remote Mailslot Protocol
 Copyright © 2024 Microsoft Corporation
 Release: July 29, 2024
 
-separate datagram is sent to each address listed. For unique names, a single datagram is sent to the
+
+separate datagram is sent to each address listed. For unique names, a single datagram is sent to the
 address listed.
 
 As specified in [RFC1001] section 17.3, if the NBDD cannot distribute a datagram, the end-node has
@@ -1795,7 +1745,8 @@ Release: July 29, 2024
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1832,7 +1783,8 @@ Release: July 29, 2024
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1964,7 +1916,8 @@ Server
 
 25 / 26
 
-   abstract data model 14
+
+   abstract data model 14
       global 14
       mailslot 14
       overview 14

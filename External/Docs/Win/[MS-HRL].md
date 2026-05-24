@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 20
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -116,69 +117,35 @@ Release: April 23, 2024
 
 2 / 20
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Log File Format](#21-log-file-format)
+  - [2.2 Log File Header Format](#22-log-file-header-format)
+  - [2.3 Metadata Header Format](#23-metadata-header-format)
+  - [2.4 Log Metadata Entry Format](#24-log-metadata-entry-format)
+  - [2.5 Log Traversing Algorithm](#25-log-traversing-algorithm)
+  - [2.6 Checksum Algorithm](#26-checksum-algorithm)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Overview .......................................................................................................... 4
-Relationship to Protocols and Other Structures ...................................................... 4
-Applicability Statement ....................................................................................... 4
-Versioning and Localization ................................................................................. 4
-Vendor-Extensible Fields ..................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 6
-Log File Format .................................................................................................. 6
-Log File Header Format ....................................................................................... 6
-Metadata Header Format ..................................................................................... 8
-Log Metadata Entry Format ................................................................................. 8
-Log Traversing Algorithm .................................................................................... 9
-Checksum Algorithm ........................................................................................ 10
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-
-3  Structure Examples ............................................................................................... 12
-
-4  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Fields .................................................................................... 17
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 18
-
-6  Change Tracking .................................................................................................... 19
-
-7  Index ..................................................................................................................... 20
-
-[MS-HRL] - v20240423
-Hyper-V Replica Log (HRL) File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 20
-
-1  Introduction
+## 1 Introduction
 
 This specification defines the Hyper-V Replica Log (HRL) File Format, which provides a persistent
 backing store for files that track changes that have been made to the primary server. These files,
@@ -189,19 +156,19 @@ appended to the end of the log file.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -210,25 +177,25 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This document covers the format of HRL files that a creator application needs to adhere to so that the
 file can be parsed by Hyper-V. The HRL traversing algorithm is also covered (see section 2.5).
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 None.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This file format provides a persistent backing store for file changes that need to be tracked and have
 been made to the primary server.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 The version of the HRL File Format is determined by the value of the LogFormatVersion field in the
 header, as defined in section 2.2.
@@ -240,7 +207,8 @@ Hyper-V Replica Log (HRL) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HRL Version
+
+HRL Version
 
 Log Format Version 1<1>
 
@@ -252,7 +220,7 @@ Value
 
 0x00020000
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 None.
 
@@ -263,14 +231,15 @@ Release: April 23, 2024
 
 5 / 20
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-HRL].images/page006-img01.png)
 ![Extracted image 2 from page 6]([MS-HRL].images/page006-img02.png)
 <!-- /Extracted images from page 6 -->
 
-2  Structures
+## 2 Structures
 
-2.1  Log File Format
+### 2.1 Log File Format
 
 The following figure is a simplified representation of the log file. The log file header contains
 identification information, stores the size of the metadata field, and stores the location of the last valid
@@ -287,7 +256,7 @@ Figure 2: Metadata structure
 The log file is optimized for writing sequentially. Therefore, the metadata describing each log entry is
 written after each set of data entries.
 
-2.2  Log File Header Format
+### 2.2 Log File Header Format
 
 The log file header stores information about the log.
 
@@ -314,7 +283,8 @@ Release: April 23, 2024
 
 6 / 20
 
-     ULONG64 TotalMetadataEntries;
+
+     ULONG64 TotalMetadataEntries;
      ULONG FileType;
      UCHAR Flags[2];
      UCHAR Vhd2DataWriteGuid[16]
@@ -388,7 +358,8 @@ Release: April 23, 2024
 
 7 / 20
 
-Vhd2DataWriteGuid: This field stores the Data Write GUID of VHD2. This helps in detecting offline
+
+Vhd2DataWriteGuid: This field stores the Data Write GUID of VHD2. This helps in detecting offline
 Patch detection, that is, modifying the content of VHD when change tracking is not enabled. This
 field is not present in Log Format Version 1.
 
@@ -396,7 +367,7 @@ Reserved: This field is reserved and MUST be set to 0. It is 3,970 bytes in size
 
 header size equal to 4096.
 
-2.3  Metadata Header Format
+### 2.3 Metadata Header Format
 
 Each metadata block has a small header to indicate the valid number of log entries in that metadata.
 
@@ -422,7 +393,7 @@ section 2.6 with the Checksum field set to 0 during calculation.
 
 Reserved: This field MUST be set to 0. It is 16 bytes in size.
 
-2.4  Log Metadata Entry Format
+### 2.4 Log Metadata Entry Format
 
 The following is the format of the metadata entry.
 
@@ -459,7 +430,8 @@ Release: April 23, 2024
 
 8 / 20
 
-DataChecksum: This field contains the checksum of the data associated with this metadata entry.
+
+DataChecksum: This field contains the checksum of the data associated with this metadata entry.
 
 The checksum calculation algorithm is specified in section 2.6.
 
@@ -467,7 +439,7 @@ Location: This field contains the internal tracing-related information. It needs
 
 Reserved: This field MUST be set to 0. It is 6 bytes in size.
 
-2.5  Log Traversing Algorithm
+### 2.5 Log Traversing Algorithm
 
 The log file is optimized for writing sequentially. Therefore, the metadata describing each log entry is
 written after the data entries. For the log file’s data to be read, a two-pass traversal of the log needs
@@ -527,13 +499,14 @@ Release: April 23, 2024
 
 9 / 20
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-HRL].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
 Figure 3: Log traversing algorithm
 
-2.6  Checksum Algorithm
+### 2.6 Checksum Algorithm
 
 Calculates the checksum value of a buffer. Checksum is based on 1's compliment of the buffer content
 
@@ -576,7 +549,8 @@ Release: April 23, 2024
 
 10 / 20
 
-     return ~checksum;
+
+     return ~checksum;
  }
 
 [MS-HRL] - v20240423
@@ -586,7 +560,8 @@ Release: April 23, 2024
 
 11 / 20
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following are examples of the log file header and two metadata headers of the HRL file.
 
@@ -661,7 +636,8 @@ Release: April 23, 2024
 
 12 / 20
 
- 0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
+
+ 0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
@@ -738,7 +714,8 @@ Release: April 23, 2024
 
 13 / 20
 
- 0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
+
+ 0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0        0        0          0        , ( 1/ 1/2000  0: 0: 0)   0
@@ -814,7 +791,8 @@ Release: April 23, 2024
 
 14 / 20
 
- 0           0      0          0               0        , ( 1/ 1/2000  0: 0: 0)   0
+
+ 0           0      0          0               0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0      0          0               0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0      0          0               0        , ( 1/ 1/2000  0: 0: 0)   0
  0           0      0          0               0        , ( 1/ 1/2000  0: 0: 0)   0
@@ -927,7 +905,8 @@ Release: April 23, 2024
 
 15 / 20
 
- 20          1
+
+ 20          1
  19          1
  18          1
  17          1
@@ -976,13 +955,14 @@ Release: April 23, 2024
 
 16 / 20
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 None.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -993,7 +973,8 @@ Release: April 23, 2024
 
 17 / 20
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1032,7 +1013,8 @@ Release: April 23, 2024
 
 18 / 20
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1076,12 +1058,13 @@ Release: April 23, 2024
 
 19 / 20
 
-V
+
+V
 
 Vendor-extensible fields 5
 Versioning 4
 
-7  Index
+## 7 Index
 A
 
 Applicability 4

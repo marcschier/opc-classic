@@ -155,40 +155,36 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Table of Contents
-1 Introduction ............................................................................................................ 5
-1.1 Glossary ........................................................................................................... 5
-1.2 References ........................................................................................................ 6
-1.2.1 Normative References ................................................................................... 6
-1.2.2 Informative References ................................................................................. 6
-1.3 Overview .......................................................................................................... 6
-1.4 Relationship to Protocols and Other Structures ...................................................... 7
-1.5 Applicability Statement ....................................................................................... 7
-1.6 Versioning and Localization ................................................................................. 7
-1.7 Vendor-Extensible Fields ..................................................................................... 7
-2 Structures ............................................................................................................... 8
-2.1 Language Code Identifiers ................................................................................... 8
-2.2 LCID Structure ................................................................................................... 8
-2.2.1 Locale Names without LCIDs ........................................................................ 25
-3 Structure Examples ............................................................................................... 27
-4 Security Considerations ......................................................................................... 28
-5 Appendix A: Product Behavior ............................................................................... 29
-6 Change Tracking .................................................................................................... 60
-7 Index ..................................................................................................................... 61
-4 / 61
-[MS-LCID] - v20240423
-Windows Language Code Identifier (LCID) Reference
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
+## Table of Contents
 
-1 Introduction
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Language Code Identifiers](#21-language-code-identifiers)
+  - [2.2 LCID Structure](#22-lcid-structure)
+    - [2.2.1 Locale Names without LCIDs](#221-locale-names-without-lcids)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
+
+## 1 Introduction
 This document provides an overview of language code identifiers (LCIDs), also known as culture
 identifiers, which are being deprecated, and the preferred alternate system of locale codes, which
 specify a set of locale identifiers that designate culture-specific information such as how text is sorted,
 how a date is formatted, and the display format for numbers and currency.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
-1.1 Glossary
+### 1.1 Glossary
 This document uses the following terms:
 alternate sort: Specifies an alternate collation for a language that has multiple methods for
 sorting data. For example, German has both "Dictionary" and "Phone Book" sorts. "Dictionary"
@@ -233,12 +229,12 @@ Traditional Chinese Bopomofo order: Ideographs are ordered by their most common 
 pronunciation, using the Chinese Bopomofo order of the pronunciations.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
-1.2 References
+### 1.2 References
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
-1.2.1 Normative References
+#### 1.2.1 Normative References
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
 assist you in finding the relevant information.
@@ -257,10 +253,10 @@ Note There is a charge to download this specification.
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 [RFC5646] Phillips, A, and Davis, M., "Tags for Identifying Languages", BCP 47, RFC 4646, September
 2006, https://www.rfc-editor.org/info/rfc5646
-1.2.2 Informative References
+#### 1.2.2 Informative References
 [KSC5601] Korea Industrial Standards Association, "Code for Information Interchange (Hangul and
 Hanja)", Korean Industrial Standard, 1987, Ref. No. KS C 5601-1987.
-1.3 Overview
+### 1.3 Overview
 The LCID structure is used to identify specific languages for the purpose of customizing software for
 particular languages and cultures. For example, it can specify the way dates, times, and numbers are
 formatted as strings. It can also specify paper sizes and preferred sort order based on language
@@ -274,15 +270,15 @@ Release: April 23, 2024
 LCIDs are being deprecated, and implementers are strongly encouraged to use locale names instead.
 LCIDs can be used for backward compatibility, but as noted in section 2.2.1, there is no guarantee of
 LCID uniqueness when used with valid locale names not otherwise associated with an LCID.
-1.4 Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 This structure is related to protocols and structures that need to make special cases for specific
 languages and cultures.
-1.5 Applicability Statement
+### 1.5 Applicability Statement
 This structure applies in scenarios where special cases need to be made for specific languages and
 cultures.
-1.6 Versioning and Localization
+### 1.6 Versioning and Localization
 This structure serves to identify particular languages, locales, and cultures.
-1.7 Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 None.
 7 / 61
 [MS-LCID] - v20240423
@@ -290,15 +286,15 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2  Structures
-2.1  Language Code Identifiers
+## 2 Structures
+### 2.1 Language Code Identifiers
 LCIDs are identifiers used to specify localizable information. They are also known as culture identifiers
 in the Microsoft .NET Framework environment.
 The name of a culture consists of its [ISO-639] language code, its [ISO-3166] country/region code,
 and an optional [ISO-15924] script tag for the written language. For example, the name of the culture
 in which the language is Bosnian (as written in Latin script and used in the Bosnia and Herzegovina
 region) is bs-Latn-BA.<1><2><3>
-2.2  LCID Structure
+### 2.2 LCID Structure
 This protocol references commonly used data types as defined in [MS-DTYP].
 An LCID is a 4-byte value. The value supplied in an LCID is a standard numeric substitution for the
 international [RFC5646] string.
@@ -978,7 +974,7 @@ LCID Language tag (string name)
 0x00041404<11> zh-MO_radstr
 0x00050804<12> zh-CN_phoneb
 0x00051004<13> zh-SG_phoneb
-2.2.1 Locale Names without LCIDs
+#### 2.2.1 Locale Names without LCIDs
 Every locale name without an assigned LCID MAY be temporarily given one of the LCIDs in the
 following table, if the application requests an LCID.<14> These locale names include any valid
 [RFC5646] language tag.
@@ -1043,7 +1039,7 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3  Structure Examples
+## 3 Structure Examples
  The following are examples of LCID values.
 | LCID        | Language tag (string name)  | Type                       |
 | ----------- | --------------------------- | -------------------------- |
@@ -1057,7 +1053,7 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4 Security Considerations
+## 4 Security Considerations
 None.
 28 / 61
 [MS-LCID] - v20240423
@@ -1065,7 +1061,7 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5 Appendix A: Product Behavior
+## 5 Appendix A: Product Behavior
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
 The terms "earlier" and "later", when used with a product version, refer to either all preceding
@@ -2364,7 +2360,7 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6 Change Tracking
+## 6 Change Tracking
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
 The revision class Major means that the technical content in the document was significantly revised.
@@ -2400,7 +2396,7 @@ Windows Language Code Identifier (LCID) Reference
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-7 Index
+## 7 Index
 .
 T
 .NET - LCIDs as culture identifiers 8

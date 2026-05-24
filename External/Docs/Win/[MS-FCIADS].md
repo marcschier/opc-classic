@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 19
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -228,71 +229,36 @@ Release: April 23, 2024
 
 2 / 19
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 ADSStreamHeader](#21-adsstreamheader)
+  - [2.2 ADSFieldExtensionHeader](#22-adsfieldextensionheader)
+  - [2.3 ADSSecurePropertiesExtensionHeader](#23-adssecurepropertiesextensionheader)
+  - [2.4 ADSSecurePropertyHeader](#24-adssecurepropertyheader)
+  - [2.5 ADSNonSecurePropertyHeader](#25-adsnonsecurepropertyheader)
+  - [2.6 FileHash](#26-filehash)
+  - [2.7 CRC Algorithm](#27-crc-algorithm)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Fields](#42-index-of-security-fields)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Protocols and Other Structures ...................................................... 5
-Applicability Statement ....................................................................................... 5
-Versioning and Localization ................................................................................. 5
-Vendor-Extensible Fields ..................................................................................... 5
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 6
-ADSStreamHeader ............................................................................................. 6
-ADSFieldExtensionHeader ................................................................................... 7
-ADSSecurePropertiesExtensionHeader .................................................................. 8
-ADSSecurePropertyHeader .................................................................................. 9
-ADSNonSecurePropertyHeader........................................................................... 10
-FileHash .......................................................................................................... 11
-CRC Algorithm ................................................................................................. 11
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-
-3  Structure Examples ............................................................................................... 13
-
-4  Security ................................................................................................................. 16
-Security Considerations for Implementers ........................................................... 16
-Index of Security Fields .................................................................................... 16
-
-4.1
-4.2
-
-5  Appendix A: Product Behavior ............................................................................... 17
-
-6  Change Tracking .................................................................................................... 18
-
-7  Index ..................................................................................................................... 19
-
-[MS-FCIADS] - v20240423
-File Classification Infrastructure Alternate Data Stream (ADS) File Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 19
-
-1  Introduction
+## 1 Introduction
 
 The File Classification Infrastructure Alternate Data Stream (ADS) File Format is a subset of the
 functionality specified in the File Server Resource Manager Protocol [MS-FSRM] that persists metadata
@@ -301,7 +267,7 @@ information for files into NTFS alternate data streams that follow the formats d
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -345,7 +311,7 @@ specified in [UNICODE5.0.0/2007] section 2.6 for encoding Unicode characters as 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -359,7 +325,8 @@ Release: April 23, 2024
 
 4 / 19
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -372,7 +339,7 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-FSA] Microsoft Corporation, "File System Algorithms".
 
@@ -381,7 +348,7 @@ assist you in finding the relevant information.
 [MSFT-NTFSWorks] Microsoft Corporation, "How NTFS Works", March 2003,
 http://technet.microsoft.com/en-us/library/cc781134(WS.10).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The structures defined in this document are used to store metadata for files. The metadata
 information is derived from the Property Definition Instance ([MS-FSRM] section 3.2.1.6.5) ADM
@@ -390,7 +357,7 @@ structures, the File Server Resource Manager persists metadata for each file int
 data stream ([MS-FSCC] section 5 ) with the name FSRM{ef88c031-5950-4164-ab92-eec5f16005a5}.
 This type of NTFS alternate data stream ([MSFT-NTFSWorks]) is referred to as an FCIADS stream.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The File Server Resource Manager protocol creates the FCIADS stream and stores Property
 Definition Instance ([MS-FSRM] section 3.2.1.6.5) ADM element instances into it using the
@@ -402,17 +369,17 @@ The File System Algorithms specified in [MS-FSA], define the properties of a Dat
 element. An Alternate Data Stream is an NTFS DataStream ADM element instance with a
 nonempty Name ADM attribute.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The FCIADS is applicable when the File Server Resource Manager Protocol [MS-FSRM] persists a
 Property Definition Instance ([MS-FSRM] section 3.2.1.6.5) ADM element instance for a file.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 To provide compatibility, the FCIADS uses the same structure versions for Windows Server 2008 R2
 operating system, Windows 8 operating system, and Windows Server 2012 operating system.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The FCIADS has no vendor-extensible fields.
 
@@ -423,7 +390,8 @@ Release: April 23, 2024
 
 5 / 19
 
-2  Structures
+
+## 2 Structures
 
 The following structures specify the formats of the FCIADS stream when written. Unless otherwise
 specified, all noncharacter fields are stored as unsigned integers in little-endian format, and all
@@ -432,7 +400,7 @@ bits, little-endian). GUID ([MS-DTYP] section 2.3.4.2) fields are stored with th
 bytes), Data2 (the next 2 bytes), and Data3 (the next 2 bytes) fields in little-endian format; the
 Data4 field (the last 8 bytes) is stored in big-endian format.
 
-2.1  ADSStreamHeader
+### 2.1 ADSStreamHeader
 
 The ADSStreamHeader structure specifies fields that are used to provide status and basic
 information about an FCIADS stream.
@@ -489,7 +457,8 @@ Release: April 23, 2024
 
 6 / 19
 
-...
+
+...
 
 ...
 
@@ -538,7 +507,7 @@ file stored in ADSFieldExtensionHeader structures. Some of these structures can 
 ADSSecurePropertiesExtensionHeader (section 2.3). The offset to the first structure (if any) is
 stored in the FirstFieldExtensionOffset field.
 
-2.2  ADSFieldExtensionHeader
+### 2.2 ADSFieldExtensionHeader
 
 The ADSFieldExtensionHeader structure extends the ADSStreamHeader (section 2.1) structure to
 store information that cannot be determined for this version of the structure format.
@@ -567,7 +536,8 @@ Release: April 23, 2024
 
 7 / 19
 
-BlockLength
+
+BlockLength
 
 Data (variable)
 
@@ -585,7 +555,7 @@ ADSFieldExtensionHeader structure, including the length of the Data field.
 
 Data (variable): Contains unformatted data.
 
-2.3  ADSSecurePropertiesExtensionHeader
+### 2.3 ADSSecurePropertiesExtensionHeader
 
 The ADSSecurePropertiesExtensionHeader structure extends the FCIADS stream format to store
 Secure Properties.<3>
@@ -638,7 +608,8 @@ Release: April 23, 2024
 
 8 / 19
 
-2.4  ADSSecurePropertyHeader
+
+### 2.4 ADSSecurePropertyHeader
 
 The ADSSecurePropertyHeader structure specifies fields that correspond to the ADM attributes of a
 Property Definition Instance ([MS-FSRM] section 3.2.1.6.5) ADM element instance with a
@@ -711,7 +682,8 @@ Release: April 23, 2024
 
 9 / 19
 
-Name (variable): A null-terminated string encoded in UTF-16LE format that specifies the Property
+
+Name (variable): A null-terminated string encoded in UTF-16LE format that specifies the Property
 
 Definition Instance.Name ADM attribute of the Secure Property in the FCIADS stream.
 
@@ -719,7 +691,7 @@ Value (variable): A null-terminated string encoded in UTF-16LE format that speci
 
 Definition Instance.Value ADM attribute of the Secure Property in the FCIADS stream.
 
-2.5  ADSNonSecurePropertyHeader
+### 2.5 ADSNonSecurePropertyHeader
 
 The ADSNonSecurePropertyHeader structure specifies fields that correspond to the ADM attributes
 of a Property Definition Instance ([MS-FSRM] section 3.2.1.6.5) ADM element instance with a
@@ -786,7 +758,8 @@ File Classification Infrastructure Alternate Data Stream (ADS) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ValueOffset (4 bytes): A 32-bit unsigned integer set to the offset, in bytes, of the Value field from
+
+ValueOffset (4 bytes): A 32-bit unsigned integer set to the offset, in bytes, of the Value field from
 
 the beginning of the ADSNonSecurePropertyHeader structure.
 
@@ -798,7 +771,7 @@ Value (variable): A null-terminated string encoded in UTF-16LE format that speci
 
 Definition Instance.Value ADM attribute of the Normal Property in the FCIADS stream.
 
-2.6  FileHash
+### 2.6 FileHash
 
 The FileHash structure specifies fields that are used to calculate the CRC checksum for a file.
 
@@ -844,7 +817,7 @@ LastModificationTime (8 bytes): A FILETIME ([MS-DTYP] section 2.3.3) structure c
 
 time in UTC at which the file was last written.
 
-2.7  CRC Algorithm
+### 2.7 CRC Algorithm
 
 The following algorithm is used to generate the 64-bit CRC. Modulo 2 polynomial arithmetic is used in
 this algorithm.
@@ -865,7 +838,8 @@ File Classification Infrastructure Alternate Data Stream (ADS) File Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-FCIADS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -888,7 +862,8 @@ Release: April 23, 2024
 
 12 / 19
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following example depicts an FCIADS stream as an ADSStreamHeader (section 2.1) structure
 followed by two Normal Properties encoded as two ADSNonSecurePropertyHeader (section 2.5)
@@ -961,7 +936,8 @@ Release: April 23, 2024
 
 13 / 19
 
-Field Name
+
+Field Name
 
 Offset
 
@@ -1032,7 +1008,8 @@ Release: April 23, 2024
 
 14 / 19
 
-Field Name
+
+Field Name
 
 Offset
 
@@ -1100,13 +1077,14 @@ Release: April 23, 2024
 
 15 / 19
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 None.
 
-4.2  Index of Security Fields
+### 4.2 Index of Security Fields
 
 None.
 
@@ -1117,7 +1095,8 @@ Release: April 23, 2024
 
 16 / 19
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1178,7 +1157,8 @@ Release: April 23, 2024
 
 17 / 19
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1222,7 +1202,8 @@ Release: April 23, 2024
 
 18 / 19
 
-References 4
+
+References 4
    informative 5
    normative 5
 Relationship to protocols and other structures 5
@@ -1249,7 +1230,7 @@ V
 Vendor-extensible fields 5
 Versioning 5
 
-7  Index
+## 7 Index
 A
 
 ADSFieldExtensionHeader structure 7

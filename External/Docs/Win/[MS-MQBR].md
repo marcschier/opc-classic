@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 28
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: April 23, 2024
 
 2 / 28
 
-Date
+
+Date
 
 Revision
 History
@@ -519,140 +521,60 @@ Release: April 23, 2024
 
 3 / 28
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Direct Connection](#131-direct-connection)
+    - [1.3.2 Intra-Site Routing](#132-intra-site-routing)
+    - [1.3.3 Inter-Site Routing](#133-inter-site-routing)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Algorithm Details](#31-algorithm-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Shared Data Elements](#3111-shared-data-elements)
+      - [3.1.1.2 Routing Table](#3112-routing-table)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 QueueManager Query Timer](#3121-queuemanager-query-timer)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 RoutingTable Initialization](#3131-routingtable-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 GetNextHops](#3151-getnexthops)
+      - [3.1.5.2 GetNextHopsForRouter](#3152-getnexthopsforrouter)
+      - [3.1.5.3 GetNextHopsForSiteGate](#3153-getnexthopsforsitegate)
+      - [3.1.5.4 GetQueueManager](#3154-getqueuemanager)
+      - [3.1.5.5 GetRoutingServer](#3155-getroutingserver)
+      - [3.1.5.6 GetSiteGate](#3156-getsitegate)
+      - [3.1.5.7 GetSiteGateForSite](#3157-getsitegateforsite)
+      - [3.1.5.8 IsSiteGate](#3158-issitegate)
+      - [3.1.5.9 GetDirectoryData](#3159-getdirectorydata)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 QueueManager Query Timer Event](#3161-queuemanager-query-timer-event)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Direct Connection ......................................................................................... 7
-Intra-Site Routing ......................................................................................... 7
-Inter-Site Routing ......................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-1.3.3
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Directory Service Schema Elements ................................................................... 11
-
-2.1
-2.2
-2.3
-
-3.1
-
-3.1.3
-
-3.1.2
-
-3.1.1
-
-3.1.3.1
-
-3.1.2.1
-
-3.1.4
-3.1.5
-
-3.1.1.1
-3.1.1.2
-
-3  Protocol Details ..................................................................................................... 12
-Algorithm Details ............................................................................................. 12
-Abstract Data Model .................................................................................... 12
-Shared Data Elements ........................................................................... 13
-Routing Table ....................................................................................... 13
-Timers ...................................................................................................... 13
-QueueManager Query Timer ................................................................... 13
-Initialization ............................................................................................... 13
-RoutingTable Initialization ...................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-GetNextHops ........................................................................................ 14
-GetNextHopsForRouter .......................................................................... 15
-GetNextHopsForSiteGate........................................................................ 16
-GetQueueManager ................................................................................ 16
-GetRoutingServer ................................................................................. 17
-GetSiteGate ......................................................................................... 18
-GetSiteGateForSite................................................................................ 18
-IsSiteGate ............................................................................................ 19
-GetDirectoryData .................................................................................. 19
-Timer Events .............................................................................................. 20
-QueueManager Query Timer Event .......................................................... 20
-Other Local Events ...................................................................................... 20
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3.1.6.1
-
-3.1.7
-
-3.1.6
-
-4  Protocol Examples ................................................................................................. 21
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MS-MQBR] - v20240423
-Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 28
-
-[MS-MQBR] - v20240423
-Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 28
-
-1  Introduction
+## 1 Introduction
 
 The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm is used by Message
 Queuing (also known as MSMQ) to determine the next hop when routing a message.
@@ -665,7 +587,7 @@ For more information on MSMQ, see [MSDN-MSMQ].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -726,7 +648,8 @@ Release: April 23, 2024
 
 6 / 28
 
-MSMQ routing link: A communication link between two sites. A routing link is represented by a
+
+MSMQ routing link: A communication link between two sites. A routing link is represented by a
 
 routing link object in the directory service. Routing links can have associated link costs. Routing
 links with their associated costs can be used to compute lowest-cost routing paths for store-and-
@@ -766,14 +689,14 @@ server: A computer on which the remote procedure call (RPC) server is executing.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -798,10 +721,11 @@ Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQDS] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Protocol".
 
@@ -810,7 +734,7 @@ Release: April 23, 2024
 [MSDN-MSMQ] Microsoft Corporation, "Message Queuing (MSMQ)", http://msdn.microsoft.com/en-
 us/library/ms711472.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm describes message
 routing within an enterprise network.
@@ -847,14 +771,14 @@ server.
 
 More information on queuing messages is specified in [MS-MQQB].
 
-1.3.1  Direct Connection
+#### 1.3.1 Direct Connection
 
 A direct connection between two MSMQ queue managers that share a connected network is
 possible when the source MSMQ queue manager is not configured to use one or more out-routing
 server(s), and the destination MSMQ queue manager is not configured to use one or more in-
 routing server(s). A MSMQ queue manager can belong to more than one connected network.
 
-1.3.2  Intra-Site Routing
+#### 1.3.2 Intra-Site Routing
 
 If a source MSMQ queue manager is configured to use an out-routing server, every outgoing
 message is routed through that out-routing server. Similarly, if a destination MSMQ queue manager
@@ -872,10 +796,11 @@ Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An MSMQ routing server can also be used to exchange messages between two MSMQ queue managers
+
+An MSMQ routing server can also be used to exchange messages between two MSMQ queue managers
 within an MSMQ site when direct connection between those MSMQ queue managers fails.
 
-1.3.3  Inter-Site Routing
+#### 1.3.3 Inter-Site Routing
 
 Administrators can model the physical topology of an enterprise as properties in the directory. The
 Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm uses this model to make
@@ -911,7 +836,8 @@ Release: April 23, 2024
 
 9 / 28
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-MQBR].images/page010-img01.png)
 ![Extracted image 2 from page 10]([MS-MQBR].images/page010-img02.png)
 <!-- /Extracted images from page 10 -->
@@ -925,7 +851,7 @@ As described in section 3.1.6.1, each MSMQ queue manager that runs MSMQ within a
 periodically queries the directory to determine whether it acts as an MSMQ site gate, and to build a
 routing table if the querying MSMQ queue manager is an MSMQ site gate.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Message Queuing (MSMQ): Binary Reliable Messaging Protocol, as specified in [MS-MQQB], relies
 upon the Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm to determine the next
@@ -941,9 +867,10 @@ Release: April 23, 2024
 
 10 / 28
 
-Figure 2: MS-MQQB uses the MS-MQBR algorithm when message routing is required
 
-1.5  Prerequisites/Preconditions
+Figure 2: MS-MQQB uses the MS-MQBR algorithm when message routing is required
+
+### 1.5 Prerequisites/Preconditions
 
 If an enterprise has more than one MSMQ site, each MSMQ site has one or more MSMQ site gates
 assigned to it.
@@ -962,20 +889,20 @@ neighboring MSMQ site.
 MSMQ routing servers within an MSMQ site have to be able to communicate on all connected
 networks used by the MSMQ queue managers within that MSMQ site.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm is applicable when a public
 or private format name message has to be routed within an enterprise.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -986,17 +913,18 @@ Release: April 23, 2024
 
 11 / 28
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
 
-None.
-
-2.2  Message Syntax
+### 2.1 Transport
 
 None.
 
-2.3  Directory Service Schema Elements
+### 2.2 Message Syntax
+
+None.
+
+### 2.3 Directory Service Schema Elements
 
 This algorithm uses abstract data model (ADM) elements specified in section 3.1.1. A subset of these
 elements can be published in a directory. This algorithm SHOULD<2> access the directory using the
@@ -1010,13 +938,14 @@ Release: April 23, 2024
 
 12 / 28
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-MQBR].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  Algorithm Details
+### 3.1 Algorithm Details
 
  This section describes a conceptual model of possible data organization that an implementation
 maintains to implement in this algorithm. The described organization is provided to facilitate the
@@ -1038,7 +967,7 @@ The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm determines
 message traverses between MSMQ queue managers. The path computed by this algorithm is agnostic
 of message or queue priorities.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The abstract data model for the Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
 comprises elements that are private to this algorithm and others that are shared between multiple
@@ -1058,7 +987,8 @@ Release: April 23, 2024
 
 13 / 28
 
-3.1.1.1  Shared Data Elements
+
+##### 3.1.1.1 Shared Data Elements
 
  This algorithm manipulates the following abstract data model elements from the shared abstract data
 model defined in [MS-MQDMPR] section 3.1.1.
@@ -1071,7 +1001,7 @@ Site: As defined in [MS-MQDMPR] section 3.1.1.7.
 
 RoutingLink: As defined in [MS-MQDMPR] section 3.1.1.8.
 
-3.1.1.2  Routing Table
+##### 3.1.1.2 Routing Table
 
 The RoutingTable contains records of mappings from the unique identifier of the destination Site to the
 unique identifier of the next-hop Site on the least-cost path to the destination Site.
@@ -1080,22 +1010,22 @@ DestinationSiteID: Site.Identifier that is the unique identifier of the destinat
 
 NextHopSiteID: Site.Identifier that is the unique identifier of the next-hop Site.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm SHOULD maintain the
 following timer.
 
-3.1.2.1  QueueManager Query Timer
+##### 3.1.2.1 QueueManager Query Timer
 
 This timer regulates the amount of time that the protocol waits before updating the information in the
 RoutingTable. This timer fires the QueueManager Query Timer Event, as described in section 3.1.6.1.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The QueueManager Query Timer SHOULD be started and SHOULD be initialized internally to 3,600
 seconds.
 
-3.1.3.1  RoutingTable Initialization
+##### 3.1.3.1 RoutingTable Initialization
 
 If IsSiteGate returns 0 when called with the QueueManager.Identifier initializing its RoutingTable,
 the RoutingTable is initialized to be empty.
@@ -1123,7 +1053,8 @@ Release: April 23, 2024
 
 14 / 28
 
-Each vertex in S represents a Site. Each edge in L represents one direction of a RoutingLink
+
+Each vertex in S represents a Site. Each edge in L represents one direction of a RoutingLink
 between two Sites. That is, for any two Sitesx and y, the directed edge (x, y) exists if and only if a
 RoutingLink exists where x is equal to the RoutingLink.Site1Identifier and y is equal to the
 RoutingLink.Site2Identifier or where x is equal to the RoutingLink.Site2Identifier and y is equal
@@ -1147,17 +1078,17 @@ from the current site to S.
 When for a given pair of source and destination vertices there are two or more routes with equal cost,
 the algorithm selects one of them.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 This section describes how the Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
 uses QueueManager, Site, RoutingLink (section 3.1.1 of [MS-MQDMPR]), and
 RoutingTable (section 3.1.1.2) data elements to determine the next hop for a message.
 
-3.1.5.1  GetNextHops
+##### 3.1.5.1 GetNextHops
 
 GetNextHops defines the algorithm that a QueueManager ADM element uses to determine the next
 possible hops for a message to get from the current QueueManager ADM element (identified by the
@@ -1191,7 +1122,8 @@ Release: April 23, 2024
 
 15 / 28
 
-    ELSE
+
+    ELSE
        IF SourceMachine.OutRoutingServerIdentifierList is not empty THEN
           SET NextHops to SourceMachine.OutRoutingServerIdentifierList
        ELSE
@@ -1216,7 +1148,7 @@ Release: April 23, 2024
 
  RETURN with NextHops
 
-3.1.5.2  GetNextHopsForRouter
+##### 3.1.5.2 GetNextHopsForRouter
 
 GetNextHopsForRouter defines the algorithm that a QueueManager ADM element uses to determine
 the next hops for a message to get from the source QueueManager ADM element (identified by the
@@ -1261,11 +1193,12 @@ Release: April 23, 2024
 
 16 / 28
 
- ENDIF
+
+ ENDIF
 
  RETURN with NextHops
 
-3.1.5.3  GetNextHopsForSiteGate
+##### 3.1.5.3 GetNextHopsForSiteGate
 
 GetNextHopsForSiteGate defines the algorithm that a QueueManager ADM element uses to
 determine the next possible hops for a message to get from the source QueueManager (identified
@@ -1314,7 +1247,7 @@ Nothing on failure.
 
  RETURN with NextHops
 
-3.1.5.4  GetQueueManager
+##### 3.1.5.4 GetQueueManager
 
 GetQueueManager returns the QueueManager record from the directory identified by the MachineID
 parameter. If no such record is found, it returns Nothing.
@@ -1326,7 +1259,8 @@ Release: April 23, 2024
 
 17 / 28
 
- GetQueueManager(MachineID of type GUID)
+
+ GetQueueManager(MachineID of type GUID)
 
  ;MachineID - QueueManager.Identifier
  ;corresponding to the requested QueueManager
@@ -1347,7 +1281,7 @@ Release: April 23, 2024
 
  RETURN with Machine
 
-3.1.5.5  GetRoutingServer
+##### 3.1.5.5 GetRoutingServer
 
 GetRoutingServer returns the QueueManager.Identifier of the MSMQ Routing Server for a given
 QueueManager identified by the input parameter MachineID. If there is no MSMQ Routing Server
@@ -1393,7 +1327,8 @@ Release: April 23, 2024
 
 18 / 28
 
-3.1.5.6  GetSiteGate
+
+##### 3.1.5.6 GetSiteGate
 
 GetSiteGate returns the QueueManager.Identifier of an MSMQ Site Gate for a given
 QueueManager identified by the MachineID parameter. If no MSMQ Site Gate is found within the Site
@@ -1431,7 +1366,7 @@ to which the QueueManager belongs, this method returns Nothing.
 
  RETURN with SiteGate
 
-3.1.5.7  GetSiteGateForSite
+##### 3.1.5.7 GetSiteGateForSite
 
 GetSiteGateForSite returns the QueueManager.Identifier of the MSMQ site gate for a given MSMQ
 site identified by the SiteID parameter. If no MSMQ site gate is found within the Site, this method
@@ -1463,13 +1398,14 @@ Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- SET SiteTemp to one of ArraySite
+
+ SET SiteTemp to one of ArraySite
 
  SET SiteGate to one of SiteTemp.SiteGateCollection
 
  RETURN with SiteGate
 
-3.1.5.8  IsSiteGate
+##### 3.1.5.8 IsSiteGate
 
 IsSiteGate returns 1 if a given QueueManager identified by the MachineID parameter is an MSMQ
 Site Gate. Otherwise this method returns 0.
@@ -1508,7 +1444,7 @@ Site Gate. Otherwise this method returns 0.
 
  RETURN with 0
 
-3.1.5.9  GetDirectoryData
+##### 3.1.5.9 GetDirectoryData
 
 The GetDirectoryData method returns a vector of DirectoryObject. It accepts two parameters. The
 DataElementType parameter is a string that specifies the type of the DirectoryObject. The
@@ -1526,7 +1462,8 @@ Release: April 23, 2024
 
 20 / 28
 
-method uses the DirectoryOperationResult enumeration as specified in [MS-MQDMPR] section
+
+method uses the DirectoryOperationResult enumeration as specified in [MS-MQDMPR] section
 3.1.1.17, to determine the outcome of these events.
 
  GetDirectoryData( DataElementType of type string,
@@ -1567,13 +1504,13 @@ Release: April 23, 2024
 
  RETURN with RequestedData
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  QueueManager Query Timer Event
+##### 3.1.6.1 QueueManager Query Timer Event
 
 When this timer fires, a QueueManager reinitializes its RoutingTable, as specified in section 3.1.3.1.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1584,11 +1521,12 @@ Release: April 23, 2024
 
 21 / 28
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-MQBR].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The Message Queuing (MSMQ): Binary Reliable Message Routing Algorithm calculates inter-site
 routing based on the routing link costs.
@@ -1611,13 +1549,14 @@ Release: April 23, 2024
 
 22 / 28
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1628,7 +1567,8 @@ Release: April 23, 2024
 
 23 / 28
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1693,7 +1633,8 @@ Release: April 23, 2024
 
 24 / 28
 
-<3> Section 2.3: For the Message Queuing (MSMQ): Directory Service Protocol [MS-MQDS], the
+
+<3> Section 2.3: For the Message Queuing (MSMQ): Directory Service Protocol [MS-MQDS], the
 Directory Service schema elements are described in [MS-MQDS] sections 2.2.10 and 3.1.4.21.1
 through 3.1.4.21.4.
 
@@ -1704,7 +1645,8 @@ Release: April 23, 2024
 
 25 / 28
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1748,7 +1690,8 @@ Release: April 23, 2024
 
 26 / 28
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1877,7 +1820,8 @@ Release: April 23, 2024
 
 27 / 28
 
-T
+
+T
 
 Timer events - QueueManager query 20
 Timers

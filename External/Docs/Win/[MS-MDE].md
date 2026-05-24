@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 52
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -178,253 +179,105 @@ Release: April 23, 2024
 
 2 / 52
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IDiscoveryService Server Details](#31-idiscoveryservice-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Discover](#3141-discover)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 IDiscoveryService_Discover_InputMessage Message](#314111-idiscoveryservicediscoverinputmessage-message)
+          - [3.1.4.1.1.2 IDiscoveryService_Discover_OutputMessage Message](#314112-idiscoveryservicediscoveroutputmessage-message)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 Discover](#314121-discover)
+          - [3.1.4.1.2.2 DiscoverResponse](#314122-discoverresponse)
+        - [3.1.4.1.3 Complex Types](#31413-complex-types)
+          - [3.1.4.1.3.1 DiscoveryRequest](#314131-discoveryrequest)
+          - [3.1.4.1.3.2 DiscoveryResponse](#314132-discoveryresponse)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Interaction with Security Token Service (STS)](#32-interaction-with-security-token-service-sts)
+  - [3.3 Interaction with X.509 Certificate Enrollment Policy](#33-interaction-with-x509-certificate-enrollment-policy)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 GetPolicies Operation](#3341-getpolicies-operation)
+        - [3.3.4.1.1 Messages](#33411-messages)
+          - [3.3.4.1.1.1 GetPolicies](#334111-getpolicies)
+          - [3.3.4.1.1.2 GetPoliciesResponse](#334112-getpoliciesresponse)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 Interaction with WS-Trust X.509v3 Token Enrollment](#34-interaction-with-ws-trust-x509v3-token-enrollment)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 RequestSecurityToken Operation](#3441-requestsecuritytoken-operation)
+        - [3.4.4.1.1 Messages](#34411-messages)
+          - [3.4.4.1.1.1 RequestSecurityToken](#344111-requestsecuritytoken)
+          - [3.4.4.1.1.2 RequestSecurityTokenOnBehalfOf](#344112-requestsecuritytokenonbehalfof)
+          - [3.4.4.1.1.3 RequestSecurityTokenResponseCollection](#344113-requestsecuritytokenresponsecollection)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 Certificate Renewal](#35-certificate-renewal)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+      - [3.5.4.1 RequestSecurityToken Operation](#3541-requestsecuritytoken-operation)
+        - [3.5.4.1.1 Messages](#35411-messages)
+          - [3.5.4.1.1.1 RequestSecurityToken](#354111-requestsecuritytoken)
+          - [3.5.4.1.1.2 RequestSecurityTokenCollectionResponse](#354112-requestsecuritytokencollectionresponse)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+  - [3.6 XML Provisioning Document Schema](#36-xml-provisioning-document-schema)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Discovery Example](#41-discovery-example)
+    - [4.1.1 Discovery Example: Request](#411-discovery-example-request)
+    - [4.1.2 Discovery Example: Response](#412-discovery-example-response)
+  - [4.2 GetPolicies Example](#42-getpolicies-example)
+    - [4.2.1 GetPolicies Example: Request](#421-getpolicies-example-request)
+    - [4.2.2 GetPolicies Example: Response](#422-getpolicies-example-response)
+  - [4.3 RequestSecurityToken Example](#43-requestsecuritytoken-example)
+    - [4.3.1 RequestSecurityToken Example: Request](#431-requestsecuritytoken-example-request)
+    - [4.3.2 RequestSecurityToken Example: Response](#432-requestsecuritytoken-example-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Message Syntax ................................................................................. 13
-Namespaces .............................................................................................. 13
-Messages ................................................................................................... 13
-Elements ................................................................................................... 13
-Complex Types ........................................................................................... 13
-Simple Types ............................................................................................. 14
-Attributes .................................................................................................. 14
-Groups ...................................................................................................... 14
-Attribute Groups ......................................................................................... 14
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.3
-
-3.1.4.1.2
-
-3.1.4.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3  Protocol Details ..................................................................................................... 15
-IDiscoveryService Server Details ........................................................................ 15
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Discover .............................................................................................. 17
-Messages ....................................................................................... 18
-IDiscoveryService_Discover_InputMessage Message ...................... 18
-IDiscoveryService_Discover_OutputMessage Message .................... 18
-Elements ........................................................................................ 19
-Discover ................................................................................... 19
-DiscoverResponse ...................................................................... 19
-Complex Types ............................................................................... 19
-DiscoveryRequest ...................................................................... 20
-DiscoveryResponse .................................................................... 20
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Interaction with Security Token Service (STS) ..................................................... 21
-Interaction with X.509 Certificate Enrollment Policy .............................................. 23
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Message Processing Events and Sequencing Rules .......................................... 25
-GetPolicies Operation ............................................................................ 26
-Messages ....................................................................................... 26
-GetPolicies ................................................................................ 26
-GetPoliciesResponse ................................................................... 27
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-
-3.3.4.1.1.1
-3.3.4.1.1.2
-
-3.1.4.1.3.1
-3.1.4.1.3.2
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-3.3.6
-
-3.1.5
-3.1.6
-
-3.3.4.1.1
-
-3.3.4.1
-
-3.2
-3.3
-
-[MS-MDE] - v20240423
-Mobile Device Enrollment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 52
-
-3.4.4.1
-
-3.4.4.1.1
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.5
-
-3.4.5
-3.4.6
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.5
-3.5.6
-
-3.6
-
-3.4.4.1.1.1
-3.4.4.1.1.2
-3.4.4.1.1.3
-
-Interaction with WS-Trust X.509v3 Token Enrollment ........................................... 28
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-RequestSecurityToken Operation ............................................................ 30
-Messages ....................................................................................... 31
-RequestSecurityToken ................................................................ 31
-RequestSecurityTokenOnBehalfOf ................................................ 32
-RequestSecurityTokenResponseCollection ..................................... 34
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-Certificate Renewal .......................................................................................... 35
-Abstract Data Model .................................................................................... 36
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 36
-RequestSecurityToken Operation ............................................................ 36
-Messages ....................................................................................... 36
-RequestSecurityToken ................................................................ 36
-RequestSecurityTokenCollectionResponse ..................................... 36
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-XML Provisioning Document Schema .................................................................. 37
-
-3.5.4.1.1.1
-3.5.4.1.1.2
-
-3.5.4.1
-
-3.5.4.1.1
-
-4.2
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 41
-Discovery Example ........................................................................................... 41
-Discovery Example: Request ........................................................................ 41
-Discovery Example: Response ...................................................................... 41
-GetPolicies Example ......................................................................................... 42
-GetPolicies Example: Request ...................................................................... 42
-GetPolicies Example: Response .................................................................... 43
-RequestSecurityToken Example ......................................................................... 43
-RequestSecurityToken Example: Request ...................................................... 43
-RequestSecurityToken Example: Response .................................................... 44
-
-4.2.1
-4.2.2
-
-4.3.1
-4.3.2
-
-4.3
-
-5  Security ................................................................................................................. 46
-Security Considerations for Implementers ........................................................... 46
-Index of Security Parameters ............................................................................ 46
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 47
-
-7  Appendix B: Product Behavior ............................................................................... 49
-
-8  Change Tracking .................................................................................................... 50
-
-9  Index ..................................................................................................................... 51
-
-[MS-MDE] - v20240423
-Mobile Device Enrollment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 52
-
-1  Introduction
+## 1 Introduction
 
 An industry trend has been developing in which employees connect their personal mobile computing
 devices to the corporate network and resources (either on premise or through the cloud) to perform
@@ -442,7 +295,7 @@ and enrollment with the ES.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -495,7 +348,8 @@ Release: April 23, 2024
 
 5 / 52
 
-Discovery Service (DS): A simple protocol based on an endpoint with a known portion of an
+
+Discovery Service (DS): A simple protocol based on an endpoint with a known portion of an
 address that is used to discover services which have no upfront name or location hints.
 
 Domain Name System (DNS): A hierarchical, distributed database that contains mappings of
@@ -573,7 +427,8 @@ Release: April 23, 2024
 
 6 / 52
 
-SOAP header: A mechanism for implementing extensions to a SOAP message in a decentralized
+
+SOAP header: A mechanism for implementing extensions to a SOAP message in a decentralized
 manner without prior agreement between the communicating parties. See [SOAP1.2-1/2007]
 section 5.2 for more information.
 
@@ -647,14 +502,15 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -698,7 +554,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSKB-2909569] Microsoft Corporation, "Update that fixes issues and adds support to MDM client in
 Windows RT 8.1 and Windows 8.1", December 2013, http://support.microsoft.com/kb/2909569
@@ -710,11 +566,12 @@ Release: April 23, 2024
 
 8 / 52
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-MDE].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.3  Overview
+### 1.3 Overview
 
 MDE enables a device to be enrolled with the Device Management Service (DMS) through an
 Enrollment Service (ES), including the discovery of the Management Enrollment Service (MES)
@@ -755,7 +612,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-6.  The enrollment client sends a GetPolicies message (section 3.3.4.1.1.1) the ES endpoint [MS-
+
+6.  The enrollment client sends a GetPolicies message (section 3.3.4.1.1.1) the ES endpoint [MS-
 
 XCEP] using the security token received in the previous step. The ES endpoint [MS-XCEP]
 responds with a GetPoliciesResponse message (section 3.3.4.1.1.2) containing the certificate
@@ -785,13 +643,14 @@ Release: April 23, 2024
 
 10 / 52
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-MDE].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 2: MDE device enrollment phases
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 MDE depends on the WS-Trust X.509v3 Token Enrollment Extensions [MS-WSTEP].
 
@@ -807,13 +666,14 @@ Release: April 23, 2024
 
 11 / 52
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-MDE].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 3: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 MDE issues X.509v3 [MS-WSTEP] certificates and provisioning information for device
 management clients [MS-MDM] to enable a relationship between the user and a device in the DMS.
@@ -826,20 +686,20 @@ The ES communicates with a certification authority (CA) to issue an X.509 certif
 The ES issues provisioning information for a device management client [MS-MDM]. The ES has to be
 configured with this information or be able to retrieve it from the DMS.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 A device has to be enrolled in an MES through the use of MDE before the device can be managed
 using MDM [MS-MDM].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -850,9 +710,10 @@ Release: April 23, 2024
 
 12 / 52
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 MDE is a client-to-server protocol that consists of a SOAP-based Web service.
 
@@ -860,13 +721,13 @@ MDE operates over the following Web services transport:
 
   SOAP 1.1 ([SOAP1.1], [SOAP1.1-Envelope]) over HTTPS over TCP/IP [RFC2616]
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses the
 XML Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and the Web Services Description
 Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -919,15 +780,15 @@ http://www.w3.org/2001/XMLSchema
 
 [XMLSCHEMA1]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML Schema message definitions.
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 This specification does not define any common XML Schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
@@ -938,19 +799,20 @@ Release: April 23, 2024
 
 13 / 52
 
-2.2.5  Simple Types
+
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
@@ -961,13 +823,14 @@ Release: April 23, 2024
 
 14 / 52
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-MDE].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  IDiscoveryService Server Details
+### 3.1 IDiscoveryService Server Details
 
 This section describes the first and second phases in MDE device enrollment: resolving the Discovery
 Service (DS) and discovering the ES. The following diagram highlights these two phases.
@@ -981,7 +844,8 @@ Release: April 23, 2024
 
 15 / 52
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-MDE].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1003,7 +867,8 @@ Release: April 23, 2024
 
 16 / 52
 
-As a prerequisite for enabling the enrollment client to discover the Discovery Service (DS), the
+
+As a prerequisite for enabling the enrollment client to discover the Discovery Service (DS), the
 administrator MUST configure the DNS, such that the name "EnterpriseEnrollment.[User's Domain]"
 resolves to the Discovery Service (DS). The enrollment client extracts the domain suffix from the
 email address of the enrolling user and prepends it with the DNS to construct the address for the DS.
@@ -1019,7 +884,7 @@ The path portion of the URL "/EnrollmentServer/Discovery.svc" is always constant
 The enrollment client validates the Secure Sockets Layer (SSL) certificate that is protecting the
 DS endpoint, along with any intermediary certificates that are signed by a trusted CA.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1030,15 +895,15 @@ document.
 EnrollmentServiceDirectory: A repository which stores the URLs for the services used during
 enrollment.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The EnrollmentServiceDirectory element MUST be initialized with the list of ES's.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations as defined by this specification for
 discovering the ES:
@@ -1053,7 +918,7 @@ Description
 Describes the messages for discovering service endpoints to complete enrollment. Service
 endpoints include the security token issuance endpoints and the ES endpoints.
 
-3.1.4.1  Discover
+##### 3.1.4.1 Discover
 
 The Discover operation defines the client request and server response messages that are used to
 complete the process of discovering URLs for the ES's.
@@ -1069,7 +934,8 @@ Release: April 23, 2024
 
 17 / 52
 
-   <wsdl:input
+
+   <wsdl:input
 wsaw:Action="http://schemas.microsoft.com/windows/management/2012/01/enrollment/IDiscoverySer
 vice/Discover" name="IDiscoveryService_Discover_InputMessage"
 message="tns:IDiscoveryService_Discover_InputMessage"/>
@@ -1082,7 +948,7 @@ message="tns:IDiscoveryService_Discover_OutputMessage"/>
 The following sections specify the request commands used in conjunction with the SyncML message
 specified in [MS-MDM] section 2.2.4.1.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1099,9 +965,9 @@ IDiscoveryService_Discover_OutputMessage  Sent from the server to the client and
 
 about the service endpoints.
 
-3.1.4.1.1.1
+###### 3.1.4.1.1.1 IDiscoveryService_Discover_InputMessage Message
 
-IDiscoveryService_Discover_InputMessage Message
+
 
 The IDiscoveryService_Discover_InputMessage message contains the Discover request
 message for the Discover operation.
@@ -1118,9 +984,9 @@ The Discover request message is sent from the client to the server to discover E
 
 tns:Discover: An instance of a <Discover> element (section 3.1.4.1.2.1).
 
-3.1.4.1.1.2
+###### 3.1.4.1.1.2 IDiscoveryService_Discover_OutputMessage Message
 
-IDiscoveryService_Discover_OutputMessage Message
+
 
 The IDiscoveryService_Discover_OutputMessage message contains the DiscoverResponse
 response message for the Discover operation.
@@ -1137,7 +1003,8 @@ Release: April 23, 2024
 
 18 / 52
 
-The DiscoverResponse response message is sent from the server to the client and contains
+
+The DiscoverResponse response message is sent from the server to the client and contains
 information about the ES endpoints.
 
  <wsdl:message name="IDiscoveryService_Discover_OutputMessage">
@@ -1146,7 +1013,7 @@ information about the ES endpoints.
 
 tns:DiscoverResponse: An instance of a <DiscoverResponse> element (section 3.1.4.1.2.2).
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 The following table summarizes the set of XML Schema element definitions that are specific to this
 operation.
@@ -1163,7 +1030,7 @@ DiscoverResponse  Contains the body of the Discover response message sent by the
 
 request message received from the client.
 
-3.1.4.1.2.1  Discover
+###### 3.1.4.1.2.1 Discover
 
 The <Discover> element contains the client request to the server.
 
@@ -1179,7 +1046,7 @@ type="tns:DiscoveryRequest"/>
 request: This element is of type <DiscoveryRequest> (section 3.1.4.1.3.1) and contains information
 about the request.
 
-3.1.4.1.2.2  DiscoverResponse
+###### 3.1.4.1.2.2 DiscoverResponse
 
 The <DiscoverResponse> element contains the information to send in the response from the server to
 the client.
@@ -1196,7 +1063,7 @@ type="tns:DiscoveryResponse"/>
 DiscoverResult: This element is of type <DiscoveryResponse> (section 3.1.4.1.3.2) and contains
 response information from the server.
 
-3.1.4.1.3 Complex Types
+###### 3.1.4.1.3 Complex Types
 
 [MS-MDE] - v20240423
 Mobile Device Enrollment Protocol
@@ -1205,7 +1072,8 @@ Release: April 23, 2024
 
 19 / 52
 
-The following table summarizes the set of XML Schema complex type definitions that are specific to
+
+The following table summarizes the set of XML Schema complex type definitions that are specific to
 this operation.
 
 ComplexType
@@ -1221,7 +1089,7 @@ DiscoveryResponse  Specifies the type of the <DiscoverResponse> element for the 
 
 3.1.4.1.1.2) message.
 
-3.1.4.1.3.1  DiscoveryRequest
+###### 3.1.4.1.3.1 DiscoveryRequest
 
 The <DiscoveryRequest> complex type describes the information to send to the server in the
 <Discover> request element (section 3.1.4.1.2.1).
@@ -1242,7 +1110,7 @@ EmailAddress: This element supplies the name of the user making the enrollment r
 
 RequestVersion: The value MUST be set to nil.
 
-3.1.4.1.3.2  DiscoveryResponse
+###### 3.1.4.1.3.2 DiscoveryResponse
 
 The <DiscoveryResponse> complex type describes the information to send to the client in the
 <DiscoverResponse> request element (section 3.1.4.1.2.2).
@@ -1274,22 +1142,23 @@ Release: April 23, 2024
 
 20 / 52
 
-EnrollmentPolicyServiceUrl: The value of <EnrollmentPolicyServiceUrl> MUST be the address of the
+
+EnrollmentPolicyServiceUrl: The value of <EnrollmentPolicyServiceUrl> MUST be the address of the
 DS against which the X.509 Certificate Enrollment Policy Protocol [MS-XCEP] operations are
 performed.
 
 EnrollmentServiceUrl: The value of <EnrollmentServiceUrl> MUST be the address of the DS against
 which the WS-Trust X.509v3 Token Enrollment Extensions [MS-WSTEP] operations are performed.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Interaction with Security Token Service (STS)
+### 3.2 Interaction with Security Token Service (STS)
 
 This section describes the third phase in MDE device enrollment: requesting and receiving the
 security token. The following diagram highlights this phase.
@@ -1301,7 +1170,8 @@ Release: April 23, 2024
 
 21 / 52
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-MDE].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1324,7 +1194,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following are the explicit requirements for the STS:
+
+The following are the explicit requirements for the STS:
 
 The <DiscoveryResponse><AuthenticationServiceUrl> element (section 3.1.4.1.3.2) MUST support
 HTTPS.
@@ -1376,7 +1247,7 @@ from base64 it can be returned embedded in HTML.
 
 This string is opaque to the enrollment client; the client does not interpret the string.
 
-3.3  Interaction with X.509 Certificate Enrollment Policy
+### 3.3 Interaction with X.509 Certificate Enrollment Policy
 
 This section describes the fourth phase in MDE device enrollment: interacting with the X.509
 Certificate Enrollment Policy Protocol [MS-XCEP] to obtain the certificate policies. The following
@@ -1389,7 +1260,8 @@ Release: April 23, 2024
 
 23 / 52
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-MDE].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1412,7 +1284,8 @@ Release: April 23, 2024
 
 24 / 52
 
-MDE implements the authentication provisions in WS-Security 2004 [WSS] to enable the ES [MS-
+
+MDE implements the authentication provisions in WS-Security 2004 [WSS] to enable the ES [MS-
 XCEP] to authenticate the GetPolicies requestor [MS-XCEP]. This section defines the schema used to
 express the credential descriptor for the credential type. The security token credential is provided in
 a request message using the <wsse:BinarySecurityToken> element [WSS]. The security token is
@@ -1445,19 +1318,19 @@ wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations as defined by this specification for
 obtaining the certificate policies:
@@ -1478,7 +1351,8 @@ Release: April 23, 2024
 
 25 / 52
 
-3.3.4.1  GetPolicies Operation
+
+##### 3.3.4.1 GetPolicies Operation
 
 The GetPolicies operation defines the client request and server response messages that are used to
 complete the process of retrieving a certificate policy for enrollment.
@@ -1492,7 +1366,7 @@ cies message="xcep:IPolicy_GetPolicies_InputMessage"/>
 ciesResponse message="xcep:IPolicy_GetPolicies_OutputMessage"/>
  </wsdl:operation>
 
-3.3.4.1.1 Messages
+###### 3.3.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1509,7 +1383,7 @@ GetPoliciesResponse  Sent from the server to the client and contains the request
 
 enrollment.
 
-3.3.4.1.1.1  GetPolicies
+###### 3.3.4.1.1.1 GetPolicies
 
 The GetPolicies message contains the request for the GetPolicies operation.
 
@@ -1545,7 +1419,8 @@ Release: April 23, 2024
 
 26 / 52
 
-"http://schemas.microsoft.com/5.0.0.0/ConfigurationManager/Enrollment/DeviceEnrollment
+
+"http://schemas.microsoft.com/5.0.0.0/ConfigurationManager/Enrollment/DeviceEnrollment
 UserToken".
 
 wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
@@ -1565,7 +1440,7 @@ xcep:preferredLanguage: MDE modifies the <GetPolicies> xcep:client attribute by 
 <Client> <preferredLanguage> element xsi:nil attribute to "true" (see [MS-XCEP] section
 3.1.4.1.3.9).
 
-3.3.4.1.1.2  GetPoliciesResponse
+###### 3.3.4.1.1.2 GetPoliciesResponse
 
 The GetPoliciesResponse message contains the response for the GetPolicies operation.
 
@@ -1611,18 +1486,19 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.2.2). The value MUST conform to the constraints specified in [MS-XCEP] section 3.1.4.1.3.16.
+
+3.1.4.1.2.2). The value MUST conform to the constraints specified in [MS-XCEP] section 3.1.4.1.3.16.
 For example, the <group> element value is 1.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
-3.4  Interaction with WS-Trust X.509v3 Token Enrollment
+### 3.4 Interaction with WS-Trust X.509v3 Token Enrollment
 
 This section describes the fifth phase in MDE device enrollment: interacting with the WS-Trust
 X.509v3 Token Enrollment Extensions [MS-WSTEP] to complete enrollment. The following diagram
@@ -1635,7 +1511,8 @@ Release: April 23, 2024
 
 28 / 52
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MDE].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1659,7 +1536,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-token requestor. This section defines the schema used to express the credential descriptor for each
+
+token requestor. This section defines the schema used to express the credential descriptor for each
 supported credential type. The security token credential is provided in a request message using the
 <wsse:BinarySecurityToken> element [WSS]. The security token is retrieved as described in section
 3.2. The authentication information is as follows:
@@ -1691,19 +1569,19 @@ wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 None.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations as defined by this specification for
 completing enrollment:
@@ -1717,7 +1595,7 @@ RequestSecurityToken  Provides the mechanism for completing the enrollment proce
 defined by this operation as specified in the WS-Trust X.509v3 Token Enrollment
 Extensions (see [MS-WSTEP] section 3.1.4).
 
-3.4.4.1  RequestSecurityToken Operation
+##### 3.4.4.1 RequestSecurityToken Operation
 
 The RequestSecurityToken operation is called by the client to register a device.
 
@@ -1728,7 +1606,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <wsdl:operation name="RequestSecurityToken">
+
+ <wsdl:operation name="RequestSecurityToken">
    <wsdl:input
 wsaw:Action="http://schemas.microsoft.com/windows/pki/2009/01/enrollment/RST/wstep"
 message="tns:IWindowsDeviceEnrollmentService_RequestSecurityToken_InputMessage"/>
@@ -1743,7 +1622,7 @@ message="tns:IWindowsDeviceEnrollmentService_RequestSecurityToken_WindowsDeviceE
 iceErrorFault_FaultMessage"/>
  </wsdl:operation>
 
-3.4.4.1.1 Messages
+###### 3.4.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation<1>.
@@ -1765,7 +1644,7 @@ RequestSecurityTokenResponseCollection  Sent from the server to the client and c
 
 certificate and provisioning information.
 
-3.4.4.1.1.1  RequestSecurityToken
+###### 3.4.4.1.1.1 RequestSecurityToken
 
 The RequestSecurityToken message contains the request for the RequestSecurityToken
 operation.
@@ -1799,7 +1678,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-wsse:BinarySecurityToken/attributes/ValueType: The <wsse:BinarySecurityToken> ValueType
+
+wsse:BinarySecurityToken/attributes/ValueType: The <wsse:BinarySecurityToken> ValueType
 attribute MUST be
 "http://schemas.microsoft.com/5.0.0.0/ConfigurationManager/Enrollment/DeviceEnrollmentUserToken
 ".
@@ -1842,7 +1722,7 @@ ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the 
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value MUST
 be CIMClient_Windows.
 
-3.4.4.1.1.2  RequestSecurityTokenOnBehalfOf
+###### 3.4.4.1.1.2 RequestSecurityTokenOnBehalfOf
 
 The RequestSecurityTokenOnBehalfOf message contains the request for the
 RequestSecurityTokenOnBehalfOf operation<2>.
@@ -1866,7 +1746,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </wsdl:message>
+
+ </wsdl:message>
 
 wst:RequestSecurityTokenOnBehalfOf: MDE modifies the implementation of the
 RequestSecurityTokenOnBehalfOf message as defined in [MS-WSTEP] section 3.1.4.1.1.1 and its
@@ -1933,7 +1814,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal string
+
+ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal string
 "EnrollmentOnBehalfOfUser".
 
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value MUST
@@ -1945,7 +1827,7 @@ ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the 
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value MUST
 be "8.0.0.0".
 
-3.4.4.1.1.3  RequestSecurityTokenResponseCollection
+###### 3.4.4.1.1.3 RequestSecurityTokenResponseCollection
 
 The RequestSecurityTokenResponseCollection message contains the response for the
 RequestSecurityToken and RequestSecurityTokenOnBehalfOf operations.
@@ -1998,7 +1880,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-MDE].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2006,15 +1889,15 @@ wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 None.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 None.
 
-3.5  Certificate Renewal
+### 3.5 Certificate Renewal
 
 The enrollment client can request to renew an existing certificate. This section defines how the
 RequestSecurityToken message (section 3.5.4.1.1.1) and
@@ -2030,33 +1913,34 @@ Release: April 23, 2024
 
 35 / 52
 
-3.5.1  Abstract Data Model
+
+#### 3.5.1 Abstract Data Model
 
 None.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 None.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Message Processing Events and Sequencing Rules
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 The WSDL operations for certificate renewal are as specified in section 3.4.4.
 
-3.5.4.1  RequestSecurityToken Operation
+##### 3.5.4.1 RequestSecurityToken Operation
 
 MDE does not modify the RequestSecurityToken operation for the certificate renewal process. The
 operation is as specified in section 3.4.4.1.
 
-3.5.4.1.1 Messages
+###### 3.5.4.1.1 Messages
 
 MDE does not modify the set of messages for the RequestSecurityToken operation for the certificate
 renewal process. The set of messages are as specified in section 3.4.4.1.1.
 
-3.5.4.1.1.1  RequestSecurityToken
+###### 3.5.4.1.1.1 RequestSecurityToken
 
 For the certificate renewal process, MDE modifies the RequestSecurityToken message as follows.
 The remainder of the definition for the RequestSecurityToken message is as specified in section
@@ -2075,7 +1959,7 @@ open.org/ws-sx/ws-trust/200512/Renew" (see [WSTrust1.3] section 3.1).
 wsse:BinarySecurityToken/attributes/ValueType: The <wsse:BinarySecurityToken> ValueType
 attribute MUST be "http://schemas.microsoft.com/windows/pki/2009/01/ enrollment#PKCS7".
 
-3.5.4.1.1.2  RequestSecurityTokenCollectionResponse
+###### 3.5.4.1.1.2 RequestSecurityTokenCollectionResponse
 
 For the certificate renewal process, MDE modifies the RequestSecurityTokenCollectionResponse
 message as follows. The remainder of the definition for the RequestSecurityTokenCollectionResponse
@@ -2095,7 +1979,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <characteristic type="My" >
+
+     <characteristic type="My" >
        <characteristic type="User">
  <!-- Certificate thumbprint. -->
          <characteristic type="B692158116B7B82EDA4600FF4145414933B0D5AB">
@@ -2119,15 +2004,15 @@ TWGDEB53/87qIlnkslw35DS+LaRGrpCvRvG3Y9Cn" />
    </characteristic>
  </wap-provisioningdoc>
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 None.
 
-3.5.6  Other Local Events
+#### 3.5.6 Other Local Events
 
 None.
 
-3.6  XML Provisioning Document Schema
+### 3.6 XML Provisioning Document Schema
 
 As described in section 3.4.4.1.1.3, the
 <RequestSecurityTokenResponseCollection><wsse:BinarySecurityToken> element contains an XML
@@ -2164,7 +2049,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-MDE].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -2246,7 +2132,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <parm name="NAME" value="BecMobile"/>
+
+     <parm name="NAME" value="BecMobile"/>
      <!-- Link to an application that the management service may provide eg a Windows Store
 application link. The Enrollment Client may show this link in its UX.-->
      <parm name="SSPHyperlink" value="http://go.microsoft.com/fwlink/?LinkId=255310" />
@@ -2323,7 +2210,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <parm name="SslClientCertHash" value="B692158116B7B82EDA4600FF4145414933B0D5AB"
+
+       <parm name="SslClientCertHash" value="B692158116B7B82EDA4600FF4145414933B0D5AB"
 datatype="string" />
      </characteristic>
      <characteristic
@@ -2341,14 +2229,15 @@ Release: April 23, 2024
 
 40 / 52
 
-4  Protocol Examples
 
-4.1  Discovery Example
+## 4 Protocol Examples
+
+### 4.1 Discovery Example
 
 The following example is a full request/response sequence using the Discovery protocol to auto-
 discover a management enrollment server based on the user’s email address.
 
-4.1.1  Discovery Example: Request
+#### 4.1.1 Discovery Example: Request
 
 The following snippet demonstrates the call to the Discovery (section 3.1.4.1.1.1) input message.
 
@@ -2377,7 +2266,7 @@ overyService/Discover
     </s:Body>
  </s:Envelope>
 
-4.1.2  Discovery Example: Response
+#### 4.1.2 Discovery Example: Response
 
 The following snippet demonstrates the call to the Discovery (section 3.1.4.1.1.2) output message.
 
@@ -2411,7 +2300,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             </AuthenticationServiceUrl>
+
+             </AuthenticationServiceUrl>
              <EnrollmentPolicyServiceUrl>
                 https://manage.contoso.com/DeviceEnrollment/WinDeviceEnrollmentService.svc
              </EnrollmentPolicyServiceUrl>
@@ -2423,13 +2313,13 @@ Release: April 23, 2024
     </s:Body>
  </s:Envelope>
 
-4.2  GetPolicies Example
+### 4.2 GetPolicies Example
 
 The following example is a full request/response sequence where the caller requests certificate
 policies that are used to determine if the enrollment service is compliant with the caller’s
 requirements.
 
-4.2.1  GetPolicies Example: Request
+#### 4.2.1 GetPolicies Example: Request
 
 The following snippet demonstrates the call to the GetPolicies (section 3.3.4.1.1.1) message.
 
@@ -2483,11 +2373,12 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     </GetPolicies>
+
+     </GetPolicies>
    </s:Body>
   </s:Envelope>
 
-4.2.2  GetPolicies Example: Response
+#### 4.2.2 GetPolicies Example: Response
 
 The following snippet demonstrates the call to the GetPoliciesResponse (section 3.3.4.1.1.2)
 message.
@@ -2531,12 +2422,12 @@ xmlns="http://schemas.microsoft.com/windows/pki/2009/01/enrollmentpolicy">
    </s:Body>
  </s:Envelope>
 
-4.3  RequestSecurityToken Example
+### 4.3 RequestSecurityToken Example
 
 The following example is a full request/response sequence where the caller requests a security token
 (provisioning document) for the device type "CIMClient_Windows".
 
-4.3.1  RequestSecurityToken Example: Request
+#### 4.3.1 RequestSecurityToken Example: Request
 
 The following snippet demonstrates the call to the RequestSecurityToken (section 3.4.4.1.1.1)
 message.
@@ -2552,7 +2443,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      <a:Action s:mustUnderstand="1">
+
+      <a:Action s:mustUnderstand="1">
          http://schemas.microsoft.com/windows/pki/2009/01/enrollment/RST/wstep
       </a:Action>
       <a:MessageID>urn:uuid:b5d1a601-5091-4a7d-b34b-5204c18b5919</a:MessageID>
@@ -2595,7 +2487,7 @@ secext-1.0.xsd#base64binary"
     </s:Body>
  </s:Envelope>
 
-4.3.2  RequestSecurityToken Example: Response
+#### 4.3.2 RequestSecurityToken Example: Response
 
 The following snippet demonstrates the call to the RequestSecurityTokenResponseCollection (section
 3.4.4.1.1.3) message.
@@ -2625,7 +2517,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                   ValueType="http://schemas.microsoft.com/5.0.0.0/Configuration
+
+                   ValueType="http://schemas.microsoft.com/5.0.0.0/Configuration
 Manager/Enrollment/DeviceEnrollmentProvisionDoc"
                    EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary">
@@ -2645,9 +2538,10 @@ Release: April 23, 2024
 
 45 / 52
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 MDE does not provide message-level signing or message-level encryption for any messages.
 Implementers can make use of transport protection as available in HTTPS to provide security to the
@@ -2656,7 +2550,7 @@ client/server interaction.
 MDE does not define a mechanism to limit a client's use of server resources, such as CPU, network
 bandwidth, and memory.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2667,7 +2561,8 @@ Release: April 23, 2024
 
 46 / 52
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation, the full WSDL and schema are provided in this appendix.
 
@@ -2742,7 +2637,8 @@ Mobile Device Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <soap12:operation
+
+       <soap12:operation
 soapAction="http://schemas.microsoft.com/windows/management/2012/01/enrollment/IDiscoveryServ
 ice/Discover" style="document"/>
        <wsdl:input name="IDiscoveryService_Discover_InputMessage">
@@ -2768,7 +2664,8 @@ Release: April 23, 2024
 
 48 / 52
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2824,7 +2721,8 @@ Release: April 23, 2024
 
 49 / 52
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2868,7 +2766,8 @@ Release: April 23, 2024
 
 50 / 52
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2999,7 +2898,8 @@ Types
 
 51 / 52
 
-   simple 14
+
+   simple 14
 
 V
 

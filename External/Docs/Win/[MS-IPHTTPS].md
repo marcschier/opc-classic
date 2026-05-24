@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 27
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 27
 
-Date
+
+Date
 
 Revision
 History
@@ -442,180 +444,71 @@ Release: April 23, 2024
 
 3 / 27
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IP-HTTPS Client Details](#31-ip-https-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.3 to happen. These preconditions transition the IP-HTTPS client to the LinkDown](#313-to-happen-these-preconditions-transition-the-ip-https-client-to-the-linkdown)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Enable IP-HTTPS Link](#3141-enable-ip-https-link)
+      - [3.1.4.2 Disable IP-HTTPS Link](#3142-disable-ip-https-link)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Establishing the HTTPS Connection](#3151-establishing-the-https-connection)
+      - [3.1.5.2 Bringing the IP-HTTPS Link Up](#3152-bringing-the-ip-https-link-up)
+      - [3.1.5.3 Data Transfer](#3153-data-transfer)
+      - [3.1.5.4 Error Handling](#3154-error-handling)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 IP-HTTPS Server Details](#32-ip-https-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 Entering the Listen State](#3231-entering-the-listen-state)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Enable IP-HTTPS Link](#3241-enable-ip-https-link)
+      - [3.2.4.2 Disable IP-HTTPS Link](#3242-disable-ip-https-link)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Accepting IP-HTTPS Clients](#3251-accepting-ip-https-clients)
+      - [3.2.5.2 Data Transfer](#3252-data-transfer)
+        - [3.2.5.2.1 Sending a Packet to a Client](#32521-sending-a-packet-to-a-client)
+        - [3.2.5.2.2 Receiving a Packet from a Client](#32522-receiving-a-packet-from-a-client)
+      - [3.2.5.3 Error Handling](#3253-error-handling)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Changing Authentication Mode](#3271-changing-authentication-mode)
+      - [3.2.7.2 Client Disconnection](#3272-client-disconnection)
+      - [3.2.7.3 Shutdown](#3273-shutdown)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Packet Flow and Connection Establishment](#41-packet-flow-and-connection-establishment)
+  - [4.2 Attack Scenarios](#42-attack-scenarios)
+    - [4.2.1 Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication](#421-unauthorized-client-connecting-to-an-ip-https-server-when-authentication)
+    - [4.2.2 Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication](#422-unauthorized-client-connecting-to-an-ip-https-server-when-authentication)
+    - [4.2.3 Unauthorized IP-HTTPS Server Accepting Connections from a Genuine IP-](#423-unauthorized-ip-https-server-accepting-connections-from-a-genuine-ip-)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Message Syntax ............................................................................................... 11
-
-2.1
-2.2
-
-3.2
-
-3.1
-
-3.1.5
-
-3.1.2.1
-
-3.1.3
-3.1.4
-
-3.1.1
-3.1.2
-
-3.1.6
-3.1.7
-
-3.1.4.1
-3.1.4.2
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3  Protocol Details ..................................................................................................... 12
-IP-HTTPS Client Details ..................................................................................... 12
-Abstract Data Model .................................................................................... 13
-Timers ...................................................................................................... 14
-Reconnect Timer ................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 15
-Enable IP-HTTPS Link ............................................................................ 15
-Disable IP-HTTPS Link ........................................................................... 15
-Processing Events and Sequencing Rules ....................................................... 15
-Establishing the HTTPS Connection .......................................................... 15
-Bringing the IP-HTTPS Link Up ................................................................ 15
-Data Transfer ....................................................................................... 15
-Error Handling ...................................................................................... 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-IP-HTTPS Server Details.................................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Entering the Listen State ....................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Enable IP-HTTPS Link ............................................................................ 17
-Disable IP-HTTPS Link ........................................................................... 17
-Processing Events and Sequencing Rules ....................................................... 17
-Accepting IP-HTTPS Clients .................................................................... 17
-Data Transfer ....................................................................................... 17
-Sending a Packet to a Client ............................................................. 17
-Receiving a Packet from a Client ....................................................... 18
-Error Handling ...................................................................................... 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Changing Authentication Mode ................................................................ 19
-Client Disconnection .............................................................................. 19
-Shutdown ............................................................................................ 19
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.2.5.2.1
-3.2.5.2.2
-
-3.2.1
-3.2.2
-3.2.3
-
-3.2.5.1
-3.2.5.2
-
-3.2.4.1
-3.2.4.2
-
-3.2.6
-3.2.7
-
-3.2.5.3
-
-3.2.3.1
-
-3.2.4
-
-3.2.5
-
-4  Protocol Examples ................................................................................................. 20
-Packet Flow and Connection Establishment .......................................................... 20
-
-4.1
-
-4 / 27
-
-[MS-IPHTTPS] - v20240423
-IP over HTTPS (IP-HTTPS) Tunneling Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.2
-
-4.2.1
-
-4.2.2
-
-4.2.3
-
-Attack Scenarios .............................................................................................. 21
-Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication Mode
-Is Set to Certificates) .................................................................................. 21
-Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication Mode
-Is Set to None) ........................................................................................... 21
-Unauthorized IP-HTTPS Server Accepting Connections from a Genuine IP-HTTPS
-Client ........................................................................................................ 22
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-Index of Security Parameters ............................................................................ 23
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MS-IPHTTPS] - v20240423
-IP over HTTPS (IP-HTTPS) Tunneling Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 27
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the IP over HTTPS (IP-HTTPS) Protocol, a mechanism to transport IPv6
 packets on an HTTPS connection.
@@ -623,7 +516,7 @@ packets on an HTTPS connection.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -646,14 +539,14 @@ Generic Syntax [RFC3986].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -681,7 +574,8 @@ Release: April 23, 2024
 
 6 / 27
 
-[RFC4346] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.1",
+
+[RFC4346] Dierks, T., and Rescorla, E., "The Transport Layer Security (TLS) Protocol Version 1.1",
 RFC 4346, April 2006, https://www.rfc-editor.org/info/rfc4346
 
 [RFC4861] Narten, T., Nordmark, E., Simpson, W., and Soliman, H., "Neighbor Discovery for IP
@@ -690,7 +584,7 @@ version 6 (IPv6)", RFC 4861, September 2007, https://www.rfc-editor.org/info/rfc
 [SSLPROXY] Luotonen, A., "Tunneling TCP based protocols through Web proxy servers", Version 01,
 August 1998, https://datatracker.ietf.org/doc/html/draft-luotonen-web-proxy-tunneling-01
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC1661] Simpson, W., Ed., "The Point-to-Point Protocol (PPP)", STD 51, RFC 1661, July 1994,
 https://www.rfc-editor.org/info/rfc1661
@@ -698,7 +592,7 @@ https://www.rfc-editor.org/info/rfc1661
 [RFC3971] Arkko, J., Ed., Kempf, J., Zill, B., and Nikander, P., "SEcure Neighbor Discovery (SEND)",
 RFC 3971, March 2005, http://www.rfc-editor.org/rfc/rfc3971.txt
 
-1.3  Overview
+### 1.3 Overview
 
 Many virtual private network (VPN) services provide a way for mobile and home users to access the
 corporate network remotely by using the Point-to-Point Tunneling Protocol (PPTP) and the Layer Two
@@ -732,7 +626,7 @@ the edge of a network. The IP-HTTPS server directly accepts HTTPS connections ma
 HTTPS clients. When positioned behind a device that terminates HTTPS on its behalf (such as a
 reverse proxy or a TLS/SSL load balancer), the server can be configured to listen over HTTP.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The IP over HTTPS (IP-HTTPS) Protocol allows encapsulation of IPv6 traffic over HTTPS. To do so, it
 depends on the following protocols:
@@ -748,7 +642,8 @@ IP over HTTPS (IP-HTTPS) Tunneling Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-IPHTTPS].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -778,7 +673,7 @@ The relationship between these protocols is illustrated in the following diagram
 
 Figure 1: Protocol relationships
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The IP-HTTPS Protocol requires IPv6 and either HTTP or HTTPS. If HTTPS is used, TLS/SSL is also
 required for operation.
@@ -792,7 +687,7 @@ with the Uniform Resource Identifier (URI) of the server.
 
 The HTTPS connection can be set up over an IPv4 or an IPv6 network.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The IP-HTTPS Protocol is useful for enabling remote users behind a protocol blocking firewall or proxy
 server to access a private network using HTTPS.
@@ -804,18 +699,19 @@ IP over HTTPS (IP-HTTPS) Tunneling Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IP-HTTPS only supports IPv6 encapsulation over HTTPS.
 
-1.7  Versioning and Capability Negotiation
+IP-HTTPS only supports IPv6 encapsulation over HTTPS.
+
+### 1.7 Versioning and Capability Negotiation
 
 The IP over HTTPS (IP-HTTPS) Protocol is a simple encapsulation of IP over HTTPS. It does not have
 any versioning or capability negotiations with peers.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The IP-HTTPS Protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for this protocol.
 
@@ -826,13 +722,14 @@ Release: April 23, 2024
 
 9 / 27
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-IPHTTPS].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
-2  Messages
+## 2 Messages
 
-2.1  Transport
+### 2.1 Transport
 
 The following diagrams show the IP-HTTPS protocol stack options for client and server.
 
@@ -847,7 +744,8 @@ Release: April 23, 2024
 
 10 / 27
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-IPHTTPS].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -859,7 +757,7 @@ packets is "application/octet-stream". The sender of the HTTP payload MAY includ
 header in the HTTP request or response to indicate that the content type is an application/octet-
 stream.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The IP-HTTPS Protocol uses HTTP, HTTPS, TLS/SSL and IPv6 as described in section 2.1. The IP-
 HTTPS Protocol does not introduce any new packet formats.
@@ -871,11 +769,12 @@ Release: April 23, 2024
 
 11 / 27
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-IPHTTPS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The IP-HTTPS Protocol encapsulates IPv6 packets over an HTTPS connection. This is achieved by
 creating a tunneled interface, which provides a symmetric link, with multicast and neighbor discovery
@@ -889,7 +788,7 @@ connection, as illustrated in the diagram below.
 
 Figure 5: IP-HTTPS clients connected to an IP-HTTPS server
 
-3.1  IP-HTTPS Client Details
+### 3.1 IP-HTTPS Client Details
 
 The following figure shows the state machine when a client establishes the outgoing IP-HTTPS tunnel.
 
@@ -900,13 +799,14 @@ Release: April 23, 2024
 
 12 / 27
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-IPHTTPS].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 6: IP-HTTPS client state diagram
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -927,8 +827,9 @@ Release: April 23, 2024
 
 13 / 27
 
-Enabled:  In this state, the IP-HTTPS client waits for the pre-conditions specified in Section
-3.1.3 to happen. These preconditions transition the IP-HTTPS client to the LinkDown
+
+Enabled:  In this state, the IP-HTTPS client waits for the pre-conditions specified in Section
+#### 3.1.3 to happen. These preconditions transition the IP-HTTPS client to the LinkDown
 state.
 
 LinkDown:  In this state, the IP-HTTPS client reads the configuration and tries to establish
@@ -998,7 +899,8 @@ IP over HTTPS (IP-HTTPS) Tunneling Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Client detects that it is behind an HTTP proxy.
+
+  Client detects that it is behind an HTTP proxy.
 
   Client is detected behind a port/protocol blocking firewall.
 
@@ -1008,26 +910,26 @@ Release: April 23, 2024
 
 Initialization of the client involves the client reading the URI of the server.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The following events are triggered by an end user or by administrative policy.
 
-3.1.4.1  Enable IP-HTTPS Link
+##### 3.1.4.1 Enable IP-HTTPS Link
 
 The Enable IP-HTTPS Link event transitions the client from the Disabled to Enabled state, making
 initialization possible as defined in section 3.1.3.
 
-3.1.4.2  Disable IP-HTTPS Link
+##### 3.1.4.2 Disable IP-HTTPS Link
 
 The Disable IP-HTTPS Link event transitions the client to the Disabled state. The underlying transport
 protocols tear down their state. No further IP-HTTPS operations are possible while in this state.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The IP-HTTPS client waits for the pre-conditions specified in section 3.1.3 to happen and triggers the
 following events.
 
-3.1.5.1  Establishing the HTTPS Connection
+##### 3.1.5.1 Establishing the HTTPS Connection
 
 Immediately following initialization per section 3.1.3, the IP-HTTPS client MUST establish an HTTPS
 connection to the IP-HTTPS server (per the configuration in section 3.1.3), as defined in [RFC1945],
@@ -1035,7 +937,7 @@ connection to the IP-HTTPS server (per the configuration in section 3.1.3), as d
 
 The IP-HTTPS client SHOULD<1> support proxy authentication as specified in [SSLPROXY].
 
-3.1.5.2  Bringing the IP-HTTPS Link Up
+##### 3.1.5.2 Bringing the IP-HTTPS Link Up
 
 After the HTTPS connection is established, the IP-HTTPS client MUST send an HTTP POST request to
 the configured URI. The POST request SHOULD use content length encoding [RFC2616], and the
@@ -1047,7 +949,7 @@ discovery). The default MTU for the IP-HTTPS link is set to the minimum IPv6 MTU
 
 Sections 3.1.5.3 and 3.1.5.4 apply when the IP-HTTPS client is in LinkUp state.
 
-3.1.5.3  Data Transfer
+##### 3.1.5.3 Data Transfer
 
 Framing in the IP-HTTPS Protocol relies exclusively on the length of the IPv6 header.
 
@@ -1061,27 +963,28 @@ Release: April 23, 2024
 
 15 / 27
 
-therefore, the IP-HTTPS client MUST delimit the IPv6 packet boundaries using the Payload Length
+
+therefore, the IP-HTTPS client MUST delimit the IPv6 packet boundaries using the Payload Length
 field in the IPv6 header. The IP-HTTPS client MUST discard non IPv6 packets.
 
-3.1.5.4  Error Handling
+##### 3.1.5.4 Error Handling
 
 Upon loss of connectivity in any of the underlying transports that IP-HTTPS client relies on (section
 2.1), the client MUST attempt to establish the HTTPS connection as specified above.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 Re-connect timer:  When this timer expires, the IP-HTTPS tunnel MUST be re-established, as
 
 described in 3.1.5.2.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  IP-HTTPS Server Details
+### 3.2 IP-HTTPS Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1132,47 +1035,48 @@ Release: April 23, 2024
 
 16 / 27
 
-Further details about state processing, handling error conditions, and state transitions are specified in
+
+Further details about state processing, handling error conditions, and state transitions are specified in
 subsequent sections.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The IP-HTTPS Protocol does not introduce any new timers. It is possible that other timing logic is
 dictated by the other protocols upon which IP-HTTPS relies.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 If the IP-HTTPS server is in the Stopped state, the IP-HTTPS server MUST transition to the Listen
 state as specified in section 3.2.3.1.
 
-3.2.3.1  Entering the Listen State
+##### 3.2.3.1 Entering the Listen State
 
 When the IP-HTTPS server transitions to the Listen state, the IP-HTTPS link at the server is
 considered to be up. The default MTU for the IP-HTTPS link MUST be set to the minimum IPv6 MTU,
 which is 1,280 octets per [RFC2460]. The server SHOULD then act as a router between its IP-HTTPS
 clients and other networks to which it is connected.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The following events are triggered by an end user or administrative policy.
 
-3.2.4.1  Enable IP-HTTPS Link
+##### 3.2.4.1 Enable IP-HTTPS Link
 
 When this event is triggered and the server is in the Disabled state, the IP-HTTPS server MUST
 transition to the Listen state, as specified in section 3.2.3.1.
 
-3.2.4.2  Disable IP-HTTPS Link
+##### 3.2.4.2 Disable IP-HTTPS Link
 
 This transitions the server to the Disabled state. If there are any client connections, the IP-HTTPS
 server MUST disconnect them, causing the underlying transport protocols to tear down their state. No
 further IP-HTTPS operations are possible while in this state.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The IP-HTTPS server stays in the Listen state waiting for clients to connect to it. When a client tries
 to connect to the server the following events are triggered.
 
-3.2.5.1  Accepting IP-HTTPS Clients
+##### 3.2.5.1 Accepting IP-HTTPS Clients
 
 When an HTTP request for the configured server URI is received from a client, the server MUST
 attempt to add an entry to its HTTP Client Table. If the attempt fails, it MUST disconnect the client.
@@ -1180,11 +1084,11 @@ Otherwise, it MUST send an HTTP 200 OK reply with the Date and Server headers.
 
 Sections 3.2.5.2.1 and 3.2.5.2.2 apply when the IP-HTTPS server is in the Listen state.
 
-3.2.5.2  Data Transfer
+##### 3.2.5.2 Data Transfer
 
 Framing in the IP-HTTPS Protocol relies exclusively on the length of the IPv6 header.
 
-3.2.5.2.1 Sending a Packet to a Client
+###### 3.2.5.2.1 Sending a Packet to a Client
 
 [MS-IPHTTPS] - v20240423
 IP over HTTPS (IP-HTTPS) Tunneling Protocol
@@ -1193,13 +1097,14 @@ Release: April 23, 2024
 
 17 / 27
 
-Outgoing IPv6 packets are sent within the HTTP response entity body.
+
+Outgoing IPv6 packets are sent within the HTTP response entity body.
 
 If the Authentication Mode is set to None, Router Advertisement (RA) packets sent or forwarded from
 the server SHOULD be allowed to be multicast to clients and the IP-HTTPS server MUST NOT send or
 forward any other multicast traffic over the IP-HTTPS link.
 
-3.2.5.2.2 Receiving a Packet from a Client
+###### 3.2.5.2.2 Receiving a Packet from a Client
 
 The HTTP entity body is received as a byte stream; therefore, the IP-HTTPS server MUST delimit the
 IPv6 packet boundaries using the Payload Length field in the IPv6 header. The IP-HTTPS server MUST
@@ -1246,16 +1151,16 @@ If the Target Address in the packet is present in at least one entry in the Neig
 Cache, then the packet SHOULD NOT<4> be forwarded to a client that has no such
 entry in the Neighbor Cache.
 
-3.2.5.3  Error Handling
+##### 3.2.5.3 Error Handling
 
 When any of the underlying transport connections to an IP-HTTPS client terminate, the IP-HTTPS
 server tears down the state for that client and remains in or transitions to Listen state.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1266,17 +1171,18 @@ Release: April 23, 2024
 
 18 / 27
 
-3.2.7.1  Changing Authentication Mode
+
+##### 3.2.7.1 Changing Authentication Mode
 
 When the Authentication Mode is changed, all existing connections from IP-HTTPS clients MUST be
 terminated.
 
-3.2.7.2  Client Disconnection
+##### 3.2.7.2 Client Disconnection
 
 When any of the underlying transport connections to an IP-HTTPS client terminate, the IP-HTTPS
 server MUST remove the Client Table entry for that client.
 
-3.2.7.3  Shutdown
+##### 3.2.7.3 Shutdown
 
 When the IP-HTTPS server is shut down, the server MUST disconnect all IP-HTTPS clients and
 transition to the Stopped state.
@@ -1288,15 +1194,16 @@ Release: April 23, 2024
 
 19 / 27
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-IPHTTPS].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 These examples assume HTTPS is used as transport for IP-HTTPS.
 
-4.1  Packet Flow and Connection Establishment
+### 4.1 Packet Flow and Connection Establishment
 
 The following diagram shows packet flows between an IP-HTTPS client, IP-HTTPS server, and an
 IP-HTTPS endpoint.
@@ -1326,16 +1233,17 @@ Release: April 23, 2024
 
 20 / 27
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-IPHTTPS].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
  Date: Sun, 10 Aug 2008 03:51:52 GMT \r\n
  \r\n
 
-4.2  Attack Scenarios
+### 4.2 Attack Scenarios
 
-4.2.1  Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication
+#### 4.2.1 Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication
 
 Mode Is Set to Certificates)
 
@@ -1345,7 +1253,7 @@ have a valid client certificate to present to the IP-HTTPS server.
 
 Figure 8: Unauthorized IP-HTTPS client when configured to use client authentication
 
-4.2.2  Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication
+#### 4.2.2 Unauthorized Client Connecting to an IP-HTTPS Server (When Authentication
 
 Mode Is Set to None)
 
@@ -1360,14 +1268,15 @@ Release: April 23, 2024
 
 21 / 27
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-IPHTTPS].images/page022-img01.png)
 ![Extracted image 2 from page 22]([MS-IPHTTPS].images/page022-img02.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 9: IP-HTTPS server configured not to use client authentication
 
-4.2.3  Unauthorized IP-HTTPS Server Accepting Connections from a Genuine IP-
+#### 4.2.3 Unauthorized IP-HTTPS Server Accepting Connections from a Genuine IP-
 
 HTTPS Client
 
@@ -1385,9 +1294,10 @@ Release: April 23, 2024
 
 22 / 27
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 IP-HTTPS does not implement any form of security mechanism. It can use security mechanisms
 implemented by HTTPS (TLS), as described in [RFC2818] and [RFC4346].
@@ -1408,7 +1318,7 @@ It is not possible to use the SEcure Neighbor Discovery (SEND) protocol [RFC3971
 authentication mode is None because the server generates Neighbor Advertisements on behalf of
 clients.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 IP-HTTPS assumes that security has already been negotiated by the HTTPS/TLS layers, as described in
 section (1.5).
@@ -1426,7 +1336,8 @@ Release: April 23, 2024
 
 23 / 27
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1486,7 +1397,8 @@ Release: April 23, 2024
 
 24 / 27
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1530,7 +1442,8 @@ Release: April 23, 2024
 
 25 / 27
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1662,7 +1575,8 @@ Release: April 23, 2024
 
 26 / 27
 
-   timers 17
+
+   timers 17
    unauthorized - accepting connections from genuine
 
 client example 22

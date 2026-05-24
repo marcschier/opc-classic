@@ -63,7 +63,8 @@ Release: November 21, 2025
 
 1 / 243
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: November 21, 2025
 
 2 / 243
 
-Date
+
+Date
 
 Revision
 History
@@ -564,7 +566,8 @@ Significantly changed the technical content.
 
 3 / 243
 
-Date
+
+Date
 
 Revision
 History
@@ -668,634 +671,274 @@ Release: November 21, 2025
 
 4 / 243
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 14
-Normative References ................................................................................. 14
-Informative References ............................................................................... 15
-Overview ........................................................................................................ 16
-Relationship to Protocols and Other Structures .................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Localization ............................................................................... 17
-Vendor-Extensible Fields ................................................................................... 17
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2.1.3
-
-2.1.5.2.1
-
-2.1.4
-2.1.5
-
-2.1.1
-2.1.2
-
-2.1.5.1
-2.1.5.2
-
-2.1.3.1
-2.1.3.2
-
-2.1.5.3
-2.1.5.4
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-2.1.2.4
-2.1.2.5
-2.1.2.6
-2.1.2.7
-
-2  Structures ............................................................................................................. 18
-Common Data Types ........................................................................................ 18
-Time ......................................................................................................... 18
-Reparse Point Data Structures ...................................................................... 18
-Reparse Tags ....................................................................................... 18
-REPARSE_DATA_BUFFER ....................................................................... 22
-REPARSE_GUID_DATA_BUFFER .............................................................. 23
-Symbolic Link Reparse Data Buffer .......................................................... 24
-Mount Point Reparse Data Buffer ............................................................ 25
-Network File System (NFS) Reparse Data Buffer ....................................... 26
-LX SYMLINK REPARSE_DATA_BUFFER ..................................................... 27
-FILE_OBJECTID_BUFFER Structure ............................................................... 28
-FILE_OBJECTID_BUFFER Type 1 ............................................................. 28
-FILE_OBJECTID_BUFFER Type 2 ............................................................. 29
-Alternate Data Streams ............................................................................... 30
-Pathname .................................................................................................. 30
-Dot Directory Names ............................................................................. 30
-Filename .............................................................................................. 31
-8.3 Filename ................................................................................... 31
-Streamname ........................................................................................ 31
-Streamtype .......................................................................................... 31
-Share name ............................................................................................... 32
-FILE_NAME_INFORMATION .......................................................................... 32
-Boolean ..................................................................................................... 32
-64-bit file ID .............................................................................................. 33
-128-bit file ID ............................................................................................ 33
-STORAGE_OFFLOAD_TOKEN ........................................................................ 33
-Status Codes ................................................................................................... 34
-FSCTL Structures ............................................................................................. 34
-FSCTL_CREATE_OR_GET_OBJECT_ID Request ............................................... 36
-FSCTL_CREATE_OR_GET_OBJECT_ID Reply ................................................... 36
-FSCTL_DELETE_OBJECT_ID Request ............................................................. 37
-FSCTL_DELETE_OBJECT_ID Reply................................................................. 37
-FSCTL_DELETE_REPARSE_POINT Request ..................................................... 37
-FSCTL_DELETE_REPARSE_POINT Reply ......................................................... 38
-FSCTL_DUPLICATE_EXTENTS_TO_FILE Request ............................................. 38
-DUPLICATE_EXTENTS_DATA .................................................................. 39
-SMB2_DUPLICATE_EXTENTS_DATA ......................................................... 39
-FSCTL_DUPLICATE_EXTENTS_TO_FILE Reply ................................................. 40
-FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Request ........................................ 41
-DUPLICATE_EXTENTS_DATA_EX ............................................................. 41
-SMB2_DUPLICATE_EXTENTS_DATA_EX ................................................... 42
-FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Reply ........................................... 43
-FSCTL_FILESYSTEM_GET_STATISTICS Request .............................................. 44
-
-2.1.6
-2.1.7
-2.1.8
-2.1.9
-2.1.10
-2.1.11
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-2.3.5
-2.3.6
-2.3.7
-
-2.3.9.1
-2.3.9.2
-
-2.3.7.1
-2.3.7.2
-
-2.3.10
-2.3.11
-
-2.3.8
-2.3.9
-
-2.2
-2.3
-
-[MS-FSCC] - v20251121
-File System Control Codes
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-5 / 243
-
-2.3.13
-
-2.3.12
-
-2.3.13.1
-
-2.3.14
-2.3.15
-2.3.16
-2.3.17
-2.3.18
-2.3.19
-2.3.20
-2.3.21
-2.3.22
-2.3.23
-2.3.24
-2.3.25
-2.3.26
-2.3.27
-2.3.28
-2.3.29
-2.3.30
-2.3.31
-2.3.32
-
-2.3.12.3
-2.3.12.4
-
-FSCTL_FILESYSTEM_GET_STATISTICS Reply ................................................. 44
-2.3.12.1
-FILESYSTEM_STATISTICS ...................................................................... 45
-2.3.12.2  NTFS_STATISTICS ................................................................................ 47
-2.3.12.2.1  MftWritesUserLevel .......................................................................... 51
-2.3.12.2.2  Mft2WritesUserLevel ........................................................................ 51
-2.3.12.2.3
-BitmapWritesUserLevel .................................................................... 52
-2.3.12.2.4  MftBitmapWritesUserLevel ................................................................ 52
-Allocate .......................................................................................... 53
-2.3.12.2.5
-FAT_STATISTICS .................................................................................. 54
-EXFAT_STATISTICS ............................................................................... 55
-FSCTL_FILE_LEVEL_TRIM Request ................................................................ 56
-FILE_LEVEL_TRIM_RANGE ..................................................................... 56
-FSCTL_FILE_LEVEL_TRIM Reply.................................................................... 57
-FSCTL_FIND_FILES_BY_SID Request ............................................................ 57
-FSCTL_FIND_FILES_BY_SID Reply ................................................................ 58
-FSCTL_GET_COMPRESSION Request ............................................................. 59
-FSCTL_GET_COMPRESSION Reply ................................................................ 59
-FSCTL_GET_INTEGRITY_INFORMATION Request ............................................ 59
-FSCTL_GET_INTEGRITY_INFORMATION Reply ................................................ 60
-FSCTL_GET_NTFS_VOLUME_DATA Request .................................................... 61
-FSCTL_GET_NTFS_VOLUME_DATA Reply ....................................................... 61
-FSCTL_GET_REFS_VOLUME_DATA Request .................................................... 63
-FSCTL_GET_REFS_VOLUME_DATA Reply ....................................................... 64
-FSCTL_GET_OBJECT_ID Request .................................................................. 66
-FSCTL_GET_OBJECT_ID Reply ...................................................................... 66
-FSCTL_GET_REPARSE_POINT Request .......................................................... 66
-FSCTL_GET_REPARSE_POINT Reply .............................................................. 66
-FSCTL_GET_RETRIEVAL_POINTER_COUNT Request ........................................ 67
-FSCTL_GET_RETRIEVAL_POINTER_COUNT Reply ............................................ 67
-FSCTL_GET_RETRIEVAL_POINTERS Request .................................................. 68
-FSCTL_GET_RETRIEVAL_POINTERS Reply ...................................................... 68
-EXTENTS ............................................................................................. 69
-FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Request ......................... 70
-FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Reply ............................. 70
-EXTENT_AND_REFCOUNTS ..................................................................... 71
-FSCTL_IS_PATHNAME_VALID Request ........................................................... 72
-FSCTL_IS_PATHNAME_VALID Reply .............................................................. 73
-FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request ............................. 73
-FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB............ 73
-FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB2 .......... 73
-TARGET_LINK_TRACKING_INFORMATION_Buffer ...................................... 74
-TARGET_LINK_TRACKING_INFORMATION_Buffer_1 ............................. 74
-TARGET_LINK_TRACKING_INFORMATION_Buffer_2 ............................. 74
-FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Reply ................................. 75
-FSCTL_MARK_HANDLE Request .................................................................... 76
-FSCTL_MARK_HANDLE Reply ....................................................................... 76
-FSCTL_OFFLOAD_READ Request ................................................................... 77
-FSCTL_OFFLOAD_READ Reply ...................................................................... 78
-FSCTL_OFFLOAD_WRITE Request ................................................................. 80
-FSCTL_OFFLOAD_WRITE Reply ..................................................................... 81
-FSCTL_PIPE_PEEK Request .......................................................................... 83
-FSCTL_PIPE_PEEK Reply .............................................................................. 83
-FSCTL_PIPE_TRANSCEIVE Request ............................................................... 85
-FSCTL_PIPE_TRANSCEIVE Reply ................................................................... 85
-FSCTL_PIPE_WAIT Request .......................................................................... 85
-FSCTL_PIPE_WAIT Reply ............................................................................. 86
-FSCTL_QUERY_ALLOCATED_RANGES Request ................................................ 87
-FSCTL_QUERY_ALLOCATED_RANGES Reply ................................................... 87
-
-2.3.37.1
-2.3.37.2
-2.3.37.3
-
-2.3.37.3.1
-2.3.37.3.2
-
-2.3.38
-2.3.39
-2.3.40
-2.3.41
-2.3.42
-2.3.43
-2.3.44
-2.3.45
-2.3.46
-2.3.47
-2.3.48
-2.3.49
-2.3.50
-2.3.51
-2.3.52
-
-2.3.35
-2.3.36
-2.3.37
-
-2.3.33
-2.3.34
-
-2.3.32.1
-
-2.3.34.1
-
-[MS-FSCC] - v20251121
-File System Control Codes
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-6 / 243
-
-2.3.66
-
-2.3.66.2
-
-2.3.66.1
-
-2.3.65.1
-
-2.3.56.1
-
-2.3.66.2.1
-
-2.3.66.1.1
-
-2.3.63
-2.3.64
-2.3.65
-
-2.3.53
-2.3.54
-2.3.55
-2.3.56
-
-2.3.57
-2.3.58
-2.3.59
-2.3.60
-2.3.61
-2.3.62
-
-2.3.67
-2.3.68
-2.3.69
-2.3.70
-2.3.71
-2.3.72
-
-FSCTL_QUERY_FAT_BPB Request ................................................................. 88
-FSCTL_QUERY_FAT_BPB Reply ..................................................................... 88
-FSCTL_QUERY_FILE_REGIONS Request ......................................................... 89
-FSCTL_QUERY_FILE_REGIONS Reply ............................................................ 90
-FILE_REGION_INFO .............................................................................. 91
-FSCTL_QUERY_ON_DISK_VOLUME_INFO Request .......................................... 91
-FSCTL_QUERY_ON_DISK_VOLUME_INFO Reply .............................................. 92
-FSCTL_QUERY_SPARING_INFO Request ........................................................ 94
-FSCTL_QUERY_SPARING_INFO Reply ............................................................ 94
-FSCTL_READ_FILE_USN_DATA Request......................................................... 95
-FSCTL_READ_FILE_USN_DATA Reply ............................................................ 95
-2.3.62.1  USN_RECORD_COMMON_HEADER .......................................................... 95
-2.3.62.2  USN_RECORD_V2 ................................................................................. 96
-2.3.62.3  USN_RECORD_V3 ................................................................................. 99
-FSCTL_RECALL_FILE Request ...................................................................... 101
-FSCTL_RECALL_FILE Reply ......................................................................... 101
-FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Request ............................. 101
-REFS_STREAM_SNAPSHOT_QUERY_DELTAS_INPUT_BUFFER .................... 103
-FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Reply ................................ 104
-REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER .................................. 104
-REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER_ENTRY ................. 105
-REFS_STREAM_SNAPSHOT_QUERY_DELTAS_OUTPUT_BUFFER .................. 106
-REFS_STREAM_EXTENT ................................................................... 106
-FSCTL_SET_COMPRESSION Request ............................................................ 107
-FSCTL_SET_COMPRESSION Reply ................................................................ 108
-FSCTL_SET_DEFECT_MANAGEMENT Request ................................................ 108
-FSCTL_SET_DEFECT_MANAGEMENT Reply .................................................... 109
-FSCTL_SET_ENCRYPTION Request ............................................................... 109
-FSCTL_SET_ENCRYPTION Reply .................................................................. 110
-2.3.72.1  DECRYPTION_STATUS_BUFFER ............................................................. 111
-FSCTL_SET_INTEGRITY_INFORMATION Request ............................................ 111
-FSCTL_SET_INTEGRITY_INFORMATION Reply ............................................... 112
-FSCTL_SET_INTEGRITY_INFORMATION_EX Request ...................................... 113
-FSCTL_SET_INTEGRITY_INFORMATION_EX Reply .......................................... 114
-FSCTL_SET_OBJECT_ID Request ................................................................. 114
-FSCTL_SET_OBJECT_ID Reply ..................................................................... 114
-FSCTL_SET_OBJECT_ID_EXTENDED Request ................................................ 115
-FSCTL_SET_OBJECT_ID_EXTENDED Reply .................................................... 115
-FSCTL_SET_REPARSE_POINT Request .......................................................... 116
-FSCTL_SET_REPARSE_POINT Reply ............................................................. 116
-FSCTL_SET_SPARSE Request ...................................................................... 116
-FSCTL_SET_SPARSE Reply .......................................................................... 117
-FSCTL_SET_ZERO_DATA Request ................................................................ 117
-FSCTL_SET_ZERO_DATA Reply ................................................................... 118
-FSCTL_SET_ZERO_ON_DEALLOCATION Request ........................................... 118
-FSCTL_SET_ZERO_ON_DEALLOCATION Reply ............................................... 118
-FSCTL_SIS_COPYFILE Request .................................................................... 119
-FSCTL_SIS_COPYFILE Reply........................................................................ 120
-FSCTL_VIRTUAL_STORAGE_QUERY_PROPERTY Request ................................. 120
-FSCTL_WRITE_USN_CLOSE_RECORD Request .............................................. 120
-FSCTL_WRITE_USN_CLOSE_RECORD Reply .................................................. 121
-File Information Classes ................................................................................... 121
-FileAccessInformation ................................................................................ 123
-FileAllInformation ...................................................................................... 123
-FileAlignmentInformation ............................................................................ 125
-FileAllocationInformation ............................................................................ 126
-FileAlternateNameInformation ..................................................................... 127
-FileAttributeTagInformation ........................................................................ 127
-
-2.3.73
-2.3.74
-2.3.75
-2.3.76
-2.3.77
-2.3.78
-2.3.79
-2.3.80
-2.3.81
-2.3.82
-2.3.83
-2.3.84
-2.3.85
-2.3.86
-2.3.87
-2.3.88
-2.3.89
-2.3.90
-2.3.91
-2.3.92
-2.3.93
-
-2.4.1
-2.4.2
-2.4.3
-2.4.4
-2.4.5
-2.4.6
-
-2.4
-
-[MS-FSCC] - v20251121
-File System Control Codes
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-7 / 243
-
-2.4.28.1
-2.4.28.2
-
-2.4.16.1
-
-2.4.17
-
-2.4.17.1
-
-2.4.7
-2.4.8
-2.4.9
-2.4.10
-2.4.11
-2.4.12
-2.4.13
-2.4.14
-2.4.15
-2.4.16
-
-2.4.18
-2.4.19
-2.4.20
-2.4.21
-2.4.22
-2.4.23
-2.4.24
-2.4.25
-2.4.26
-2.4.27
-2.4.28
-
-2.4.29
-2.4.30
-2.4.31
-2.4.32
-2.4.33
-2.4.34
-2.4.35
-2.4.36
-
-2.4.37
-2.4.38
-2.4.39
-2.4.40
-2.4.41
-
-FileBasicInformation................................................................................... 128
-FileBothDirectoryInformation ...................................................................... 129
-FileCompressionInformation ........................................................................ 132
-FileDirectoryInformation ............................................................................. 133
-FileDispositionInformation .......................................................................... 135
-FileDispositionInformationEx ....................................................................... 135
-FileEaInformation ...................................................................................... 137
-FileEndOfFileInformation ............................................................................. 137
-FileFullDirectoryInformation ........................................................................ 138
-FileFullEaInformation ................................................................................. 140
-FILE_GET_EA_INFORMATION ................................................................ 142
-FileHardLinkInformation ............................................................................. 142
-FILE_LINK_ENTRY_INFORMATION .......................................................... 143
-FileId64ExtdBothDirectoryInformation .......................................................... 144
-FileId64ExtdDirectoryInformation ................................................................ 146
-FileIdAllExtdBothDirectoryInformation .......................................................... 149
-FileIdAllExtdDirectoryInformation ................................................................ 152
-FileIdBothDirectoryInformation .................................................................... 154
-FileIdExtdDirectoryInformation .................................................................... 157
-FileIdFullDirectoryInformation ..................................................................... 159
-FileIdGlobalTxDirectoryInformation .............................................................. 162
-FileIdInformation ....................................................................................... 165
-FileInternalInformation ............................................................................... 165
-FileLinkInformation .................................................................................... 166
-FileLinkInformation for the SMB Protocol ................................................. 167
-FileLinkInformation for the SMB2 Protocol ............................................... 167
-FileMailslotQueryInformation ....................................................................... 168
-FileMailslotSetInformation ........................................................................... 169
-FileModeInformation .................................................................................. 170
-FileNameInformation .................................................................................. 171
-FileNamesInformation ................................................................................ 171
-FileNetworkOpenInformation ....................................................................... 172
-FileNormalizedNameInformation .................................................................. 174
-FileObjectIdInformation .............................................................................. 174
-FILE_OBJECTID_INFORMATION_TYPE_1 ................................................. 175
-FILE_OBJECTID_INFORMATION_TYPE_2 ................................................. 176
-FilePipeInformation .................................................................................... 177
-FilePipeLocalInformation ............................................................................. 178
-FilePipeRemoteInformation ......................................................................... 180
-FilePositionInformation ............................................................................... 181
-FileQuotaInformation ................................................................................. 181
-FILE_GET_QUOTA_INFORMATION .......................................................... 183
-FileRenameInformation .............................................................................. 184
-FileRenameInformation for SMB ............................................................. 184
-FileRenameInformation for SMB2 ........................................................... 185
-FileRenameInformationEx ........................................................................... 186
-FileReparsePointInformation........................................................................ 188
-FileSfioReserveInformation ......................................................................... 189
-FileShortNameInformation .......................................................................... 190
-FileStandardInformation ............................................................................. 190
-FileStandardLinkInformation ....................................................................... 191
-FileStreamInformation................................................................................ 192
-FileValidDataLengthInformation ................................................................... 193
-File System Information Classes ....................................................................... 194
-FileFsAttributeInformation .......................................................................... 195
-FileFsControlInformation ............................................................................. 197
-FileFsDriverPathInformation ........................................................................ 199
-FileFsFullSizeInformation ............................................................................ 200
-
-2.4.41.1
-
-2.4.42
-
-2.4.42.1
-2.4.42.2
-
-2.4.36.1
-2.4.36.2
-
-2.4.43
-2.4.44
-2.4.45
-2.4.46
-2.4.47
-2.4.48
-2.4.49
-2.4.50
-
-2.5
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-
-[MS-FSCC] - v20251121
-File System Control Codes
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-8 / 243
-
-2.5.5
-2.5.6
-2.5.7
-2.5.8
-2.5.9
-2.5.10
-
-2.6
-2.7
-
-2.8
-
-2.7.1
-
-2.8.1
-2.8.2
-2.8.3
-2.8.4
-
-FileFsLabelInformation ............................................................................... 201
-FileFsObjectIdInformation ........................................................................... 202
-FileFsSectorSizeInformation ........................................................................ 203
-FileFsSizeInformation ................................................................................. 204
-FileFsVolumeInformation ............................................................................ 205
-FileFsDeviceInformation ............................................................................. 206
-File Attributes ................................................................................................. 208
-Directory Change Notifications .......................................................................... 209
-FILE_NOTIFY_INFORMATION ....................................................................... 209
-Cluster Shared Volume File System IOCTLs ........................................................ 211
-IOCTL_STORAGE_QUERY_PROPERTY Request ............................................... 211
-IOCTL_STORAGE_QUERY_PROPERTY Reply ................................................... 212
-IOCTL_VOLUME_GET_GPT_ATTRIBUTES Request .......................................... 212
-IOCTL_VOLUME_GET_GPT_ATTRIBUTES Reply .............................................. 213
-
-3  Structure Examples ............................................................................................. 214
-
-4  Security ............................................................................................................... 215
-Security Considerations for Implementers .......................................................... 215
-Index of Security Parameters ........................................................................... 215
-
-4.1
-4.2
-
-5.1
-5.2
-5.3
-5.4
-5.5
-5.6
-
-5  Appendix A: NTFS Alternate Streams ................................................................... 216
-NTFS Streams ................................................................................................ 216
-NTFS Attribute Types ....................................................................................... 216
-NTFS Reserved File Names ............................................................................... 217
-NTFS Stream Names ....................................................................................... 218
-NTFS Stream Types ......................................................................................... 218
-Known Alternate Stream Names ........................................................................ 219
-Zone.Identifier Stream Name ...................................................................... 219
-Outlook Express Properties Stream Name ..................................................... 219
-Document Properties Stream Name ............................................................. 219
-Encryptable Thumbnails Stream Name ......................................................... 220
-Internet Explorer Favicon Stream Name ....................................................... 220
-Macintosh Supported Stream Names ............................................................ 220
-XPRESS Stream Name ................................................................................ 220
-
-5.6.1
-5.6.2
-5.6.3
-5.6.4
-5.6.5
-5.6.6
-5.6.7
-
-6  Appendix B: Product Behavior ............................................................................. 221
-
-7  Change Tracking .................................................................................................. 240
-
-8  Index ................................................................................................................... 241
-
-[MS-FSCC] - v20251121
-File System Control Codes
-Copyright © 2025 Microsoft Corporation
-Release: November 21, 2025
-
-9 / 243
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Common Data Types](#21-common-data-types)
+    - [2.1.1 Time](#211-time)
+    - [2.1.2 Reparse Point Data Structures](#212-reparse-point-data-structures)
+      - [2.1.2.1 Reparse Tags](#2121-reparse-tags)
+      - [2.1.2.2 REPARSE_DATA_BUFFER](#2122-reparsedatabuffer)
+      - [2.1.2.3 REPARSE_GUID_DATA_BUFFER](#2123-reparseguiddatabuffer)
+      - [2.1.2.4 Symbolic Link Reparse Data Buffer](#2124-symbolic-link-reparse-data-buffer)
+      - [2.1.2.5 Mount Point Reparse Data Buffer](#2125-mount-point-reparse-data-buffer)
+      - [2.1.2.6 Network File System (NFS) Reparse Data Buffer](#2126-network-file-system-nfs-reparse-data-buffer)
+      - [2.1.2.7 LX SYMLINK REPARSE_DATA_BUFFER](#2127-lx-symlink-reparsedatabuffer)
+    - [2.1.3 FILE_OBJECTID_BUFFER Structure](#213-fileobjectidbuffer-structure)
+      - [2.1.3.1 FILE_OBJECTID_BUFFER Type 1](#2131-fileobjectidbuffer-type-1)
+      - [2.1.3.2 FILE_OBJECTID_BUFFER Type 2](#2132-fileobjectidbuffer-type-2)
+    - [2.1.4 Alternate Data Streams](#214-alternate-data-streams)
+    - [2.1.5 Pathname](#215-pathname)
+      - [2.1.5.1 Dot Directory Names](#2151-dot-directory-names)
+      - [2.1.5.2 Filename](#2152-filename)
+        - [2.1.5.2.1 8.3 Filename](#21521-83-filename)
+      - [2.1.5.3 Streamname](#2153-streamname)
+      - [2.1.5.4 Streamtype](#2154-streamtype)
+    - [2.1.6 Share name](#216-share-name)
+    - [2.1.7 FILE_NAME_INFORMATION](#217-filenameinformation)
+    - [2.1.8 Boolean](#218-boolean)
+    - [2.1.9 64-bit file ID](#219-64-bit-file-id)
+    - [2.1.10 128-bit file ID](#2110-128-bit-file-id)
+    - [2.1.11 STORAGE_OFFLOAD_TOKEN](#2111-storageoffloadtoken)
+  - [2.2 Status Codes](#22-status-codes)
+  - [2.3 FSCTL Structures](#23-fsctl-structures)
+    - [2.3.1 FSCTL_CREATE_OR_GET_OBJECT_ID Request](#231-fsctlcreateorgetobjectid-request)
+    - [2.3.2 FSCTL_CREATE_OR_GET_OBJECT_ID Reply](#232-fsctlcreateorgetobjectid-reply)
+    - [2.3.3 FSCTL_DELETE_OBJECT_ID Request](#233-fsctldeleteobjectid-request)
+    - [2.3.4 FSCTL_DELETE_OBJECT_ID Reply](#234-fsctldeleteobjectid-reply)
+    - [2.3.5 FSCTL_DELETE_REPARSE_POINT Request](#235-fsctldeletereparsepoint-request)
+    - [2.3.6 FSCTL_DELETE_REPARSE_POINT Reply](#236-fsctldeletereparsepoint-reply)
+    - [2.3.7 FSCTL_DUPLICATE_EXTENTS_TO_FILE Request](#237-fsctlduplicateextentstofile-request)
+      - [2.3.7.1 DUPLICATE_EXTENTS_DATA](#2371-duplicateextentsdata)
+      - [2.3.7.2 SMB2_DUPLICATE_EXTENTS_DATA](#2372-smb2duplicateextentsdata)
+    - [2.3.8 FSCTL_DUPLICATE_EXTENTS_TO_FILE Reply](#238-fsctlduplicateextentstofile-reply)
+    - [2.3.9 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Request](#239-fsctlduplicateextentstofileex-request)
+      - [2.3.9.1 DUPLICATE_EXTENTS_DATA_EX](#2391-duplicateextentsdataex)
+      - [2.3.9.2 SMB2_DUPLICATE_EXTENTS_DATA_EX](#2392-smb2duplicateextentsdataex)
+    - [2.3.10 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Reply](#2310-fsctlduplicateextentstofileex-reply)
+    - [2.3.11 FSCTL_FILESYSTEM_GET_STATISTICS Request](#2311-fsctlfilesystemgetstatistics-request)
+    - [2.3.12 FSCTL_FILESYSTEM_GET_STATISTICS Reply](#2312-fsctlfilesystemgetstatistics-reply)
+      - [2.3.12.1 FILESYSTEM_STATISTICS](#23121-filesystemstatistics)
+      - [2.3.12.2 NTFS_STATISTICS](#23122-ntfsstatistics)
+        - [2.3.12.2.1 MftWritesUserLevel](#231221-mftwritesuserlevel)
+        - [2.3.12.2.2 Mft2WritesUserLevel](#231222-mft2writesuserlevel)
+        - [2.3.12.2.3 BitmapWritesUserLevel](#231223-bitmapwritesuserlevel)
+        - [2.3.12.2.4 MftBitmapWritesUserLevel](#231224-mftbitmapwritesuserlevel)
+        - [2.3.12.2.5 Allocate](#231225-allocate)
+      - [2.3.12.3 FAT_STATISTICS](#23123-fatstatistics)
+      - [2.3.12.4 EXFAT_STATISTICS](#23124-exfatstatistics)
+    - [2.3.13 FSCTL_FILE_LEVEL_TRIM Request](#2313-fsctlfileleveltrim-request)
+      - [2.3.13.1 FILE_LEVEL_TRIM_RANGE](#23131-fileleveltrimrange)
+    - [2.3.14 FSCTL_FILE_LEVEL_TRIM Reply](#2314-fsctlfileleveltrim-reply)
+    - [2.3.15 FSCTL_FIND_FILES_BY_SID Request](#2315-fsctlfindfilesbysid-request)
+    - [2.3.16 FSCTL_FIND_FILES_BY_SID Reply](#2316-fsctlfindfilesbysid-reply)
+    - [2.3.17 FSCTL_GET_COMPRESSION Request](#2317-fsctlgetcompression-request)
+    - [2.3.18 FSCTL_GET_COMPRESSION Reply](#2318-fsctlgetcompression-reply)
+    - [2.3.19 FSCTL_GET_INTEGRITY_INFORMATION Request](#2319-fsctlgetintegrityinformation-request)
+    - [2.3.20 FSCTL_GET_INTEGRITY_INFORMATION Reply](#2320-fsctlgetintegrityinformation-reply)
+    - [2.3.21 FSCTL_GET_NTFS_VOLUME_DATA Request](#2321-fsctlgetntfsvolumedata-request)
+    - [2.3.22 FSCTL_GET_NTFS_VOLUME_DATA Reply](#2322-fsctlgetntfsvolumedata-reply)
+    - [2.3.23 FSCTL_GET_REFS_VOLUME_DATA Request](#2323-fsctlgetrefsvolumedata-request)
+    - [2.3.24 FSCTL_GET_REFS_VOLUME_DATA Reply](#2324-fsctlgetrefsvolumedata-reply)
+    - [2.3.25 FSCTL_GET_OBJECT_ID Request](#2325-fsctlgetobjectid-request)
+    - [2.3.26 FSCTL_GET_OBJECT_ID Reply](#2326-fsctlgetobjectid-reply)
+    - [2.3.27 FSCTL_GET_REPARSE_POINT Request](#2327-fsctlgetreparsepoint-request)
+    - [2.3.28 FSCTL_GET_REPARSE_POINT Reply](#2328-fsctlgetreparsepoint-reply)
+    - [2.3.29 FSCTL_GET_RETRIEVAL_POINTER_COUNT Request](#2329-fsctlgetretrievalpointercount-request)
+    - [2.3.30 FSCTL_GET_RETRIEVAL_POINTER_COUNT Reply](#2330-fsctlgetretrievalpointercount-reply)
+    - [2.3.31 FSCTL_GET_RETRIEVAL_POINTERS Request](#2331-fsctlgetretrievalpointers-request)
+    - [2.3.32 FSCTL_GET_RETRIEVAL_POINTERS Reply](#2332-fsctlgetretrievalpointers-reply)
+      - [2.3.32.1 EXTENTS](#23321-extents)
+    - [2.3.33 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Request](#2333-fsctlgetretrievalpointersandrefcount-request)
+    - [2.3.34 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Reply](#2334-fsctlgetretrievalpointersandrefcount-reply)
+      - [2.3.34.1 EXTENT_AND_REFCOUNTS](#23341-extentandrefcounts)
+    - [2.3.35 FSCTL_IS_PATHNAME_VALID Request](#2335-fsctlispathnamevalid-request)
+    - [2.3.36 FSCTL_IS_PATHNAME_VALID Reply](#2336-fsctlispathnamevalid-reply)
+    - [2.3.37 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request](#2337-fsctllmrsetlinktrackinginformation-request)
+      - [2.3.37.1 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB](#23371-fsctllmrsetlinktrackinginformation-request-for-smb)
+      - [2.3.37.2 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB2](#23372-fsctllmrsetlinktrackinginformation-request-for-smb2)
+      - [2.3.37.3 TARGET_LINK_TRACKING_INFORMATION_Buffer](#23373-targetlinktrackinginformationbuffer)
+        - [2.3.37.3.1 TARGET_LINK_TRACKING_INFORMATION_Buffer_1](#233731-targetlinktrackinginformationbuffer1)
+        - [2.3.37.3.2 TARGET_LINK_TRACKING_INFORMATION_Buffer_2](#233732-targetlinktrackinginformationbuffer2)
+    - [2.3.38 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Reply](#2338-fsctllmrsetlinktrackinginformation-reply)
+    - [2.3.39 FSCTL_MARK_HANDLE Request](#2339-fsctlmarkhandle-request)
+    - [2.3.40 FSCTL_MARK_HANDLE Reply](#2340-fsctlmarkhandle-reply)
+    - [2.3.41 FSCTL_OFFLOAD_READ Request](#2341-fsctloffloadread-request)
+    - [2.3.42 FSCTL_OFFLOAD_READ Reply](#2342-fsctloffloadread-reply)
+    - [2.3.43 FSCTL_OFFLOAD_WRITE Request](#2343-fsctloffloadwrite-request)
+    - [2.3.44 FSCTL_OFFLOAD_WRITE Reply](#2344-fsctloffloadwrite-reply)
+    - [2.3.45 FSCTL_PIPE_PEEK Request](#2345-fsctlpipepeek-request)
+    - [2.3.46 FSCTL_PIPE_PEEK Reply](#2346-fsctlpipepeek-reply)
+    - [2.3.47 FSCTL_PIPE_TRANSCEIVE Request](#2347-fsctlpipetransceive-request)
+    - [2.3.48 FSCTL_PIPE_TRANSCEIVE Reply](#2348-fsctlpipetransceive-reply)
+    - [2.3.49 FSCTL_PIPE_WAIT Request](#2349-fsctlpipewait-request)
+    - [2.3.50 FSCTL_PIPE_WAIT Reply](#2350-fsctlpipewait-reply)
+    - [2.3.51 FSCTL_QUERY_ALLOCATED_RANGES Request](#2351-fsctlqueryallocatedranges-request)
+    - [2.3.52 FSCTL_QUERY_ALLOCATED_RANGES Reply](#2352-fsctlqueryallocatedranges-reply)
+    - [2.3.53 FSCTL_QUERY_FAT_BPB Request](#2353-fsctlqueryfatbpb-request)
+    - [2.3.54 FSCTL_QUERY_FAT_BPB Reply](#2354-fsctlqueryfatbpb-reply)
+    - [2.3.55 FSCTL_QUERY_FILE_REGIONS Request](#2355-fsctlqueryfileregions-request)
+    - [2.3.56 FSCTL_QUERY_FILE_REGIONS Reply](#2356-fsctlqueryfileregions-reply)
+      - [2.3.56.1 FILE_REGION_INFO](#23561-fileregioninfo)
+    - [2.3.57 FSCTL_QUERY_ON_DISK_VOLUME_INFO Request](#2357-fsctlqueryondiskvolumeinfo-request)
+    - [2.3.58 FSCTL_QUERY_ON_DISK_VOLUME_INFO Reply](#2358-fsctlqueryondiskvolumeinfo-reply)
+    - [2.3.59 FSCTL_QUERY_SPARING_INFO Request](#2359-fsctlquerysparinginfo-request)
+    - [2.3.60 FSCTL_QUERY_SPARING_INFO Reply](#2360-fsctlquerysparinginfo-reply)
+    - [2.3.61 FSCTL_READ_FILE_USN_DATA Request](#2361-fsctlreadfileusndata-request)
+    - [2.3.62 FSCTL_READ_FILE_USN_DATA Reply](#2362-fsctlreadfileusndata-reply)
+      - [2.3.62.1 USN_RECORD_COMMON_HEADER](#23621-usnrecordcommonheader)
+      - [2.3.62.2 USN_RECORD_V2](#23622-usnrecordv2)
+      - [2.3.62.3 USN_RECORD_V3](#23623-usnrecordv3)
+    - [2.3.63 FSCTL_RECALL_FILE Request](#2363-fsctlrecallfile-request)
+    - [2.3.64 FSCTL_RECALL_FILE Reply](#2364-fsctlrecallfile-reply)
+    - [2.3.65 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Request](#2365-fsctlrefsstreamsnapshotmanagement-request)
+      - [2.3.65.1 REFS_STREAM_SNAPSHOT_QUERY_DELTAS_INPUT_BUFFER](#23651-refsstreamsnapshotquerydeltasinputbuffer)
+    - [2.3.66 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Reply](#2366-fsctlrefsstreamsnapshotmanagement-reply)
+      - [2.3.66.1 REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER](#23661-refsstreamsnapshotlistoutputbuffer)
+        - [2.3.66.1.1 REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER_ENTRY](#236611-refsstreamsnapshotlistoutputbufferentry)
+      - [2.3.66.2 REFS_STREAM_SNAPSHOT_QUERY_DELTAS_OUTPUT_BUFFER](#23662-refsstreamsnapshotquerydeltasoutputbuffer)
+        - [2.3.66.2.1 REFS_STREAM_EXTENT](#236621-refsstreamextent)
+    - [2.3.67 FSCTL_SET_COMPRESSION Request](#2367-fsctlsetcompression-request)
+    - [2.3.68 FSCTL_SET_COMPRESSION Reply](#2368-fsctlsetcompression-reply)
+    - [2.3.69 FSCTL_SET_DEFECT_MANAGEMENT Request](#2369-fsctlsetdefectmanagement-request)
+    - [2.3.70 FSCTL_SET_DEFECT_MANAGEMENT Reply](#2370-fsctlsetdefectmanagement-reply)
+    - [2.3.71 FSCTL_SET_ENCRYPTION Request](#2371-fsctlsetencryption-request)
+    - [2.3.72 FSCTL_SET_ENCRYPTION Reply](#2372-fsctlsetencryption-reply)
+      - [2.3.72.1 DECRYPTION_STATUS_BUFFER](#23721-decryptionstatusbuffer)
+    - [2.3.73 FSCTL_SET_INTEGRITY_INFORMATION Request](#2373-fsctlsetintegrityinformation-request)
+    - [2.3.74 FSCTL_SET_INTEGRITY_INFORMATION Reply](#2374-fsctlsetintegrityinformation-reply)
+    - [2.3.75 FSCTL_SET_INTEGRITY_INFORMATION_EX Request](#2375-fsctlsetintegrityinformationex-request)
+    - [2.3.76 FSCTL_SET_INTEGRITY_INFORMATION_EX Reply](#2376-fsctlsetintegrityinformationex-reply)
+    - [2.3.77 FSCTL_SET_OBJECT_ID Request](#2377-fsctlsetobjectid-request)
+    - [2.3.78 FSCTL_SET_OBJECT_ID Reply](#2378-fsctlsetobjectid-reply)
+    - [2.3.79 FSCTL_SET_OBJECT_ID_EXTENDED Request](#2379-fsctlsetobjectidextended-request)
+    - [2.3.80 FSCTL_SET_OBJECT_ID_EXTENDED Reply](#2380-fsctlsetobjectidextended-reply)
+    - [2.3.81 FSCTL_SET_REPARSE_POINT Request](#2381-fsctlsetreparsepoint-request)
+    - [2.3.82 FSCTL_SET_REPARSE_POINT Reply](#2382-fsctlsetreparsepoint-reply)
+    - [2.3.83 FSCTL_SET_SPARSE Request](#2383-fsctlsetsparse-request)
+    - [2.3.84 FSCTL_SET_SPARSE Reply](#2384-fsctlsetsparse-reply)
+    - [2.3.85 FSCTL_SET_ZERO_DATA Request](#2385-fsctlsetzerodata-request)
+    - [2.3.86 FSCTL_SET_ZERO_DATA Reply](#2386-fsctlsetzerodata-reply)
+    - [2.3.87 FSCTL_SET_ZERO_ON_DEALLOCATION Request](#2387-fsctlsetzeroondeallocation-request)
+    - [2.3.88 FSCTL_SET_ZERO_ON_DEALLOCATION Reply](#2388-fsctlsetzeroondeallocation-reply)
+    - [2.3.89 FSCTL_SIS_COPYFILE Request](#2389-fsctlsiscopyfile-request)
+    - [2.3.90 FSCTL_SIS_COPYFILE Reply](#2390-fsctlsiscopyfile-reply)
+    - [2.3.91 FSCTL_VIRTUAL_STORAGE_QUERY_PROPERTY Request](#2391-fsctlvirtualstoragequeryproperty-request)
+    - [2.3.92 FSCTL_WRITE_USN_CLOSE_RECORD Request](#2392-fsctlwriteusncloserecord-request)
+    - [2.3.93 FSCTL_WRITE_USN_CLOSE_RECORD Reply](#2393-fsctlwriteusncloserecord-reply)
+  - [2.4 File Information Classes](#24-file-information-classes)
+    - [2.4.1 FileAccessInformation](#241-fileaccessinformation)
+    - [2.4.2 FileAllInformation](#242-fileallinformation)
+    - [2.4.3 FileAlignmentInformation](#243-filealignmentinformation)
+    - [2.4.4 FileAllocationInformation](#244-fileallocationinformation)
+    - [2.4.5 FileAlternateNameInformation](#245-filealternatenameinformation)
+    - [2.4.6 FileAttributeTagInformation](#246-fileattributetaginformation)
+    - [2.4.7 FileBasicInformation](#247-filebasicinformation)
+    - [2.4.8 FileBothDirectoryInformation](#248-filebothdirectoryinformation)
+    - [2.4.9 FileCompressionInformation](#249-filecompressioninformation)
+    - [2.4.10 FileDirectoryInformation](#2410-filedirectoryinformation)
+    - [2.4.11 FileDispositionInformation](#2411-filedispositioninformation)
+    - [2.4.12 FileDispositionInformationEx](#2412-filedispositioninformationex)
+    - [2.4.13 FileEaInformation](#2413-fileeainformation)
+    - [2.4.14 FileEndOfFileInformation](#2414-fileendoffileinformation)
+    - [2.4.15 FileFullDirectoryInformation](#2415-filefulldirectoryinformation)
+    - [2.4.16 FileFullEaInformation](#2416-filefulleainformation)
+      - [2.4.16.1 FILE_GET_EA_INFORMATION](#24161-filegeteainformation)
+    - [2.4.17 FileHardLinkInformation](#2417-filehardlinkinformation)
+      - [2.4.17.1 FILE_LINK_ENTRY_INFORMATION](#24171-filelinkentryinformation)
+    - [2.4.18 FileId64ExtdBothDirectoryInformation](#2418-fileid64extdbothdirectoryinformation)
+    - [2.4.19 FileId64ExtdDirectoryInformation](#2419-fileid64extddirectoryinformation)
+    - [2.4.20 FileIdAllExtdBothDirectoryInformation](#2420-fileidallextdbothdirectoryinformation)
+    - [2.4.21 FileIdAllExtdDirectoryInformation](#2421-fileidallextddirectoryinformation)
+    - [2.4.22 FileIdBothDirectoryInformation](#2422-fileidbothdirectoryinformation)
+    - [2.4.23 FileIdExtdDirectoryInformation](#2423-fileidextddirectoryinformation)
+    - [2.4.24 FileIdFullDirectoryInformation](#2424-fileidfulldirectoryinformation)
+    - [2.4.25 FileIdGlobalTxDirectoryInformation](#2425-fileidglobaltxdirectoryinformation)
+    - [2.4.26 FileIdInformation](#2426-fileidinformation)
+    - [2.4.27 FileInternalInformation](#2427-fileinternalinformation)
+    - [2.4.28 FileLinkInformation](#2428-filelinkinformation)
+      - [2.4.28.1 FileLinkInformation for the SMB Protocol](#24281-filelinkinformation-for-the-smb-protocol)
+      - [2.4.28.2 FileLinkInformation for the SMB2 Protocol](#24282-filelinkinformation-for-the-smb2-protocol)
+    - [2.4.29 FileMailslotQueryInformation](#2429-filemailslotqueryinformation)
+    - [2.4.30 FileMailslotSetInformation](#2430-filemailslotsetinformation)
+    - [2.4.31 FileModeInformation](#2431-filemodeinformation)
+    - [2.4.32 FileNameInformation](#2432-filenameinformation)
+    - [2.4.33 FileNamesInformation](#2433-filenamesinformation)
+    - [2.4.34 FileNetworkOpenInformation](#2434-filenetworkopeninformation)
+    - [2.4.35 FileNormalizedNameInformation](#2435-filenormalizednameinformation)
+    - [2.4.36 FileObjectIdInformation](#2436-fileobjectidinformation)
+      - [2.4.36.1 FILE_OBJECTID_INFORMATION_TYPE_1](#24361-fileobjectidinformationtype1)
+      - [2.4.36.2 FILE_OBJECTID_INFORMATION_TYPE_2](#24362-fileobjectidinformationtype2)
+    - [2.4.37 FilePipeInformation](#2437-filepipeinformation)
+    - [2.4.38 FilePipeLocalInformation](#2438-filepipelocalinformation)
+    - [2.4.39 FilePipeRemoteInformation](#2439-filepiperemoteinformation)
+    - [2.4.40 FilePositionInformation](#2440-filepositioninformation)
+    - [2.4.41 FileQuotaInformation](#2441-filequotainformation)
+      - [2.4.41.1 FILE_GET_QUOTA_INFORMATION](#24411-filegetquotainformation)
+    - [2.4.42 FileRenameInformation](#2442-filerenameinformation)
+      - [2.4.42.1 FileRenameInformation for SMB](#24421-filerenameinformation-for-smb)
+      - [2.4.42.2 FileRenameInformation for SMB2](#24422-filerenameinformation-for-smb2)
+    - [2.4.43 FileRenameInformationEx](#2443-filerenameinformationex)
+    - [2.4.44 FileReparsePointInformation](#2444-filereparsepointinformation)
+    - [2.4.45 FileSfioReserveInformation](#2445-filesfioreserveinformation)
+    - [2.4.46 FileShortNameInformation](#2446-fileshortnameinformation)
+    - [2.4.47 FileStandardInformation](#2447-filestandardinformation)
+    - [2.4.48 FileStandardLinkInformation](#2448-filestandardlinkinformation)
+    - [2.4.49 FileStreamInformation](#2449-filestreaminformation)
+    - [2.4.50 FileValidDataLengthInformation](#2450-filevaliddatalengthinformation)
+  - [2.5 File System Information Classes](#25-file-system-information-classes)
+    - [2.5.1 FileFsAttributeInformation](#251-filefsattributeinformation)
+    - [2.5.2 FileFsControlInformation](#252-filefscontrolinformation)
+    - [2.5.3 FileFsDriverPathInformation](#253-filefsdriverpathinformation)
+    - [2.5.4 FileFsFullSizeInformation](#254-filefsfullsizeinformation)
+    - [2.5.5 FileFsLabelInformation](#255-filefslabelinformation)
+    - [2.5.6 FileFsObjectIdInformation](#256-filefsobjectidinformation)
+    - [2.5.7 FileFsSectorSizeInformation](#257-filefssectorsizeinformation)
+    - [2.5.8 FileFsSizeInformation](#258-filefssizeinformation)
+    - [2.5.9 FileFsVolumeInformation](#259-filefsvolumeinformation)
+    - [2.5.10 FileFsDeviceInformation](#2510-filefsdeviceinformation)
+  - [2.6 File Attributes](#26-file-attributes)
+  - [2.7 Directory Change Notifications](#27-directory-change-notifications)
+    - [2.7.1 FILE_NOTIFY_INFORMATION](#271-filenotifyinformation)
+  - [2.8 Cluster Shared Volume File System IOCTLs](#28-cluster-shared-volume-file-system-ioctls)
+    - [2.8.1 IOCTL_STORAGE_QUERY_PROPERTY Request](#281-ioctlstoragequeryproperty-request)
+    - [2.8.2 IOCTL_STORAGE_QUERY_PROPERTY Reply](#282-ioctlstoragequeryproperty-reply)
+    - [2.8.3 IOCTL_VOLUME_GET_GPT_ATTRIBUTES Request](#283-ioctlvolumegetgptattributes-request)
+    - [2.8.4 IOCTL_VOLUME_GET_GPT_ATTRIBUTES Reply](#284-ioctlvolumegetgptattributes-reply)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Parameters](#42-index-of-security-parameters)
+- [5 Appendix A: NTFS Alternate Streams](#5-appendix-a-ntfs-alternate-streams)
+  - [5.1 NTFS Streams](#51-ntfs-streams)
+  - [5.2 NTFS Attribute Types](#52-ntfs-attribute-types)
+  - [5.3 NTFS Reserved File Names](#53-ntfs-reserved-file-names)
+  - [5.4 NTFS Stream Names](#54-ntfs-stream-names)
+  - [5.5 NTFS Stream Types](#55-ntfs-stream-types)
+  - [5.6 Known Alternate Stream Names](#56-known-alternate-stream-names)
+    - [5.6.1 Zone.Identifier Stream Name](#561-zoneidentifier-stream-name)
+    - [5.6.2 Outlook Express Properties Stream Name](#562-outlook-express-properties-stream-name)
+    - [5.6.3 Document Properties Stream Name](#563-document-properties-stream-name)
+    - [5.6.4 Encryptable Thumbnails Stream Name](#564-encryptable-thumbnails-stream-name)
+    - [5.6.5 Internet Explorer Favicon Stream Name](#565-internet-explorer-favicon-stream-name)
+    - [5.6.6 Macintosh Supported Stream Names](#566-macintosh-supported-stream-names)
+    - [5.6.7 XPRESS Stream Name](#567-xpress-stream-name)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This specification defines the network format of native Windows structures that can be used within
 other protocols. It also describes the structure of common Windows native file system control codes,
@@ -1307,7 +950,7 @@ be used by other protocols to ensure consistency and accuracy.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1370,7 +1013,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-using FAT or FAT32 file systems. The operating system stores information about each file in the
+
+using FAT or FAT32 file systems. The operating system stores information about each file in the
 FAT so that it can retrieve the file later.
 
 Fid: A 16-bit value that the Server Message Block (SMB) server uses to represent an opened file,
@@ -1443,7 +1087,8 @@ Release: November 21, 2025
 
 11 / 243
 
-mailslot: A mechanism for one-way interprocess communications (IPC). For more information, see
+
+mailslot: A mechanism for one-way interprocess communications (IPC). For more information, see
 
 [MSLOT] and [MS-MAIL].
 
@@ -1520,7 +1165,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-reparse point for use with a file system, a file system filter driver, or a minifilter driver. To
+
+reparse point for use with a file system, a file system filter driver, or a minifilter driver. To
 request a reparse point tag, use the reparse point tag request form. For more information, see
 [WHDC-RPTR].
 
@@ -1592,7 +1238,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Unicode character: Unless otherwise specified, a 16-bit UTF-16 code unit.
+
+Unicode character: Unless otherwise specified, a 16-bit UTF-16 code unit.
 
 Uniform Resource Locator (URL): A string of characters in a standardized format that identifies
 
@@ -1616,14 +1263,14 @@ on one or more partitions.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1662,7 +1309,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [FSBO] Microsoft Corporation, "File System Behavior in the Microsoft Windows Environment", June
 2008, http://download.microsoft.com/download/4/3/8/43889780-8d45-4b2e-9d3a-
@@ -1727,7 +1375,8 @@ Release: November 21, 2025
 
 15 / 243
 
-[REPARSE] Microsoft Corporation, "Reparse Points", http://msdn.microsoft.com/en-
+
+[REPARSE] Microsoft Corporation, "Reparse Points", http://msdn.microsoft.com/en-
 us/library/aa365503.aspx
 
 [SPARSE] Microsoft Corporation, "Sparse Files", http://msdn.microsoft.com/en-
@@ -1745,7 +1394,7 @@ us/windows-hardware/drivers/ifs/reparse-point-tag-request
 [WININTERNALS] Russinovich, M., and Solomon, D., "Microsoft Windows Internals, Fourth Edition",
 Microsoft Press, 2005, ISBN: 0735619174.
 
-1.3  Overview
+### 1.3 Overview
 
 This document describes the structure of common file system control (FSCTL) codes, file information
 levels, and file system information levels that are issued in client/server and server/server
@@ -1778,13 +1427,13 @@ File system information classes and their corresponding structures.
 File attribute definitions and NTSTATUS code definitions referenced by the file system control
 code, file information level, and file system information-level documentation.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Versions 1 and 2 of the Server Message Block (SMB) Protocol, as specified in [MS-SMB] and [MS-
 SMB2], rely on the structures and definitions in this document to interpret certain fields that can be
 sent or received as part of its processing.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The structures and classes defined in this document are useful for any lower-level protocol that
 serializes and exchanges file information levels, file system information levels, and file system control
@@ -1797,11 +1446,12 @@ Release: November 21, 2025
 
 16 / 243
 
-1.6  Versioning and Localization
+
+### 1.6 Versioning and Localization
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 File system control codes that are used to set reparse point data specify a ReparseTag field value
 that identifies the file system filter that understands the application-specific reparse point data
@@ -1819,7 +1469,8 @@ Release: November 21, 2025
 
 17 / 243
 
-2  Structures
+
+## 2 Structures
 
 The structures specified in this document have no transport requirements of their own. Instead, they
 are packaged and transported in accordance with the protocol that makes use of them, such as the
@@ -1834,9 +1485,9 @@ This document references commonly used data types as defined in [MS-DTYP].
 
 Unless otherwise qualified, instances of GUID in this section refer to [MS-DTYP] section 2.3.4.
 
-2.1  Common Data Types
+### 2.1 Common Data Types
 
-2.1.1  Time
+#### 2.1.1 Time
 
 Unless otherwise noted, Time fields are 64-bit signed integers representing the number of 100-
 nanosecond intervals that have elapsed since January 1, 1601, Coordinated Universal Time (UTC).
@@ -1846,11 +1497,11 @@ See FILETIME ([MS-DTYP] section 2.3.3) for related information.
 For information regarding the semantics of the file timestamps of the CreationTime,
 LastAccessTime, LastWriteTime, and ChangeTime fields, see [FSBO] section 6.
 
-2.1.2  Reparse Point Data Structures
+#### 2.1.2 Reparse Point Data Structures
 
 For conceptual information about reparse points, see [REPARSE].
 
-2.1.2.1  Reparse Tags
+##### 2.1.2.1 Reparse Tags
 
 Each reparse point has a reparse tag. The reparse tag uniquely identifies the owner of that reparse
 point. The owner is the implementer of the file system filter driver associated with a reparse tag.
@@ -1898,7 +1549,8 @@ Release: November 21, 2025
 
 18 / 243
 
-Reserved (12 bits): This field is reserved. This field SHOULD be set to 0 and MUST be ignored on
+
+Reserved (12 bits): This field is reserved. This field SHOULD be set to 0 and MUST be ignored on
 
 receipt.
 
@@ -2018,7 +1670,8 @@ Release: November 21, 2025
 
 19 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -2157,7 +1810,8 @@ over the wire.
 
 20 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -2296,7 +1950,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 0x80000021
 
@@ -2356,7 +2011,7 @@ interpretation only, not meaningful over the wire.
 Used by the Windows Container Isolation filter. Server-side
 interpretation only, not meaningful over the wire.
 
-2.1.2.2  REPARSE_DATA_BUFFER
+##### 2.1.2.2 REPARSE_DATA_BUFFER
 
 The REPARSE_DATA_BUFFER data element stores data for a reparse point. This reparse data buffer
 MUST be used only with reparse tag values whose high bit is set to 1.
@@ -2401,7 +2056,8 @@ Release: November 21, 2025
 
 22 / 243
 
-ReparseTag (4 bytes): A 32-bit unsigned integer value containing the reparse point tag that
+
+ReparseTag (4 bytes): A 32-bit unsigned integer value containing the reparse point tag that
 
 uniquely identifies the owner of the reparse point.
 
@@ -2418,7 +2074,7 @@ DataBuffer (variable): A variable-length array of 8-bit unsigned integer values 
 specific data for the reparse point. The format of this data is defined by the owner (that is, the
 implementer of the filter driver associated with the specified ReparseTag) of the reparse point.
 
-2.1.2.3  REPARSE_GUID_DATA_BUFFER
+##### 2.1.2.3 REPARSE_GUID_DATA_BUFFER
 
 The REPARSE_GUID_DATA_BUFFER data element stores data for a reparse point and associates a
 GUID with the reparse tag. This reparse data buffer MUST be used only with reparse tag values
@@ -2483,7 +2139,8 @@ Release: November 21, 2025
 
 23 / 243
 
-2.1.2.4  Symbolic Link Reparse Data Buffer
+
+##### 2.1.2.4 Symbolic Link Reparse Data Buffer
 
 The Symbolic Link Reparse Data Buffer data element is a subtype of REPARSE_DATA_BUFFER,
 which contains information on symbolic link reparse points. This reparse data buffer MUST be used
@@ -2563,7 +2220,8 @@ Release: November 21, 2025
 
 24 / 243
 
-Flags (4 bytes): A 32-bit field that specifies whether the substitute name is a full path name or a
+
+Flags (4 bytes): A 32-bit field that specifies whether the substitute name is a full path name or a
 
 path name relative to the directory containing the symbolic link.
 
@@ -2591,7 +2249,7 @@ PathBuffer. To locate the substitute name and print name strings in the PathBuff
 SubstituteNameOffset, SubstituteNameLength, PrintNameOffset, and PrintNameLength
 members.
 
-2.1.2.5  Mount Point Reparse Data Buffer
+##### 2.1.2.5 Mount Point Reparse Data Buffer
 
 The Mount Point Reparse Data Buffer data element is a subtype of REPARSE_DATA_BUFFER, which
 contains information about mount point reparse points. This reparse data buffer MUST be used only
@@ -2652,7 +2310,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-SubstituteNameOffset (2 bytes): A 16-bit unsigned integer that contains the offset, in bytes, of the
+
+SubstituteNameOffset (2 bytes): A 16-bit unsigned integer that contains the offset, in bytes, of the
 
 substitute name string in the PathBuffer array, computed as an offset from byte 0 of
 PathBuffer. Note that this offset is divided by 2 to get the array index.
@@ -2676,7 +2335,7 @@ To locate the substitute name and print name strings in the PathBuffer field, us
 SubstituteNameOffset, SubstituteNameLength, PrintNameOffset, and PrintNameLength
 members.
 
-2.1.2.6  Network File System (NFS) Reparse Data Buffer
+##### 2.1.2.6 Network File System (NFS) Reparse Data Buffer
 
 The Network File System Reparse Data Buffer data element is a subtype of
 REPARSE_DATA_BUFFER, which contains information about symbolic files and devices created by the
@@ -2738,7 +2397,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-...
+
+...
 
 DataBuffer (variable)
 
@@ -2804,7 +2464,7 @@ limit on the size of the symbolic link data is 2050 bytes.
 
   NFS_SPECFILE_FIFO and NFS_SPECFILE_SOCK: The DataBuffer field is empty.
 
-2.1.2.7  LX SYMLINK REPARSE_DATA_BUFFER
+##### 2.1.2.7 LX SYMLINK REPARSE_DATA_BUFFER
 
 The LX SYMLINK Reparse Data Buffer data element is a subtype of section
 REPARSE_DATA_BUFFER, which contains information about symbolic files generated by WSL (Windows
@@ -2836,7 +2496,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Target (variable)
+
+Target (variable)
 
 ...
 
@@ -2857,7 +2518,7 @@ set to 2.
 
 Target (variable): An array of 8-byte characters that contains the target path of the symlink.
 
-2.1.3  FILE_OBJECTID_BUFFER Structure
+#### 2.1.3 FILE_OBJECTID_BUFFER Structure
 
 The FILE_OBJECTID_BUFFER structure contains extended metadata for a file system object,
 including its object ID. This data element MUST be in one of the following two formats:
@@ -2870,7 +2531,7 @@ FILE_OBJECTID_BUFFER Type 1
 
 FILE_OBJECTID_BUFFER Type 2
 
-2.1.3.1  FILE_OBJECTID_BUFFER Type 1
+##### 2.1.3.1 FILE_OBJECTID_BUFFER Type 1
 
 The first possible structure for the FILE_OBJECTID_BUFFER data element is as follows.
 
@@ -2910,7 +2571,8 @@ Release: November 21, 2025
 
 28 / 243
 
-DomainId (16 bytes)
+
+DomainId (16 bytes)
 
 ...
 
@@ -2936,7 +2598,7 @@ DomainId (16 bytes): A 16-byte GUID value containing the domain identifier. This
 
 it SHOULD be zero, and MUST be ignored.<6>
 
-2.1.3.2  FILE_OBJECTID_BUFFER Type 2
+##### 2.1.3.2 FILE_OBJECTID_BUFFER Type 2
 
 The second possible structure for the FILE_OBJECTID_BUFFER data element is as follows.
 
@@ -2978,7 +2640,8 @@ Release: November 21, 2025
 
 29 / 243
 
-2.1.4  Alternate Data Streams
+
+#### 2.1.4 Alternate Data Streams
 
 A file system MAY<8> support alternate data streams within a file or a directory. For a general
 description of file streams, section 1.1.
@@ -2990,7 +2653,7 @@ however, it can have named alternate data streams.
 For more information on stream naming, see section 2.1.5; for more information on streams in
 general, see section 5.
 
-2.1.5  Pathname
+#### 2.1.5 Pathname
 
 A pathname has the following characteristics:
 
@@ -3028,7 +2691,7 @@ streamtype as specified in section 2.1.5.4. The streamname, if specified, MAY be
 only if streamtype is also specified; otherwise, it MUST be at least one character. The
 streamtype, if specified, MUST be at least one character.
 
-2.1.5.1  Dot Directory Names
+##### 2.1.5.1 Dot Directory Names
 
 The pathname components of "." (single period) and ".." (two periods) are reserved as dot directory
 names.
@@ -3053,7 +2716,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 In the pathname "dirA\dirB\..\dirC", the ".." refers to dirA, so this expression is equivalent to
 "dirA\dirC".
@@ -3062,7 +2726,7 @@ A dot directory name of ".." at the root of a share MUST be treated as equivalen
 \\ServerX\ShareY\..\dirA is equivalent to \\ServerX\ShareY\.\dirA (which is equivalent to
 \\ServerX\ShareY\dirA).
 
-2.1.5.2  Filename
+##### 2.1.5.2 Filename
 
   All Unicode characters are legal in a filename except the following:
 
@@ -3076,7 +2740,7 @@ The characters
 
   A filename MUST be at least one character but no more than 255 characters in length.
 
-2.1.5.2.1 8.3 Filename
+###### 2.1.5.2.1 8.3 Filename
 
 An 8.3 filename (also referred to as a DOS name, a short name, or an 8.3-compliant filename) is a
 filename that conforms to the following restrictions:
@@ -3104,7 +2768,7 @@ character.
 The filename extension, if present, MUST be 1-3 characters in length and MUST NOT contain a
 "." period character.
 
-2.1.5.3  Streamname
+##### 2.1.5.3 Streamname
 
   All Unicode characters are legal in a streamname component except the following:
 
@@ -3120,7 +2784,7 @@ The characters \ / :
 
 See section 5 for additional information on alternate streams in the NTFS file system.
 
-2.1.5.4  Streamtype
+##### 2.1.5.4 Streamtype
 
   All Unicode characters are legal in a streamtype component except the following:
 
@@ -3131,13 +2795,14 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-
+
+
 
 The characters \ / :
 
   Control character 0x00.
 
-2.1.6  Share name
+#### 2.1.6 Share name
 
 A share name has the following characteristics:
 
@@ -3153,7 +2818,7 @@ The following characters are illegal in a share name:
 
   All other Unicode characters are legal.
 
-2.1.7  FILE_NAME_INFORMATION
+#### 2.1.7 FILE_NAME_INFORMATION
 
 The FILE_NAME_INFORMATION data element is as follows.
 
@@ -3185,7 +2850,7 @@ buffer alignment requirements, but their presence and their values MUST NOT be r
 When working with this field, use FileNameLength to determine the length of the file name
 rather than assuming the presence of a trailing null delimiter.
 
-2.1.8  Boolean
+#### 2.1.8 Boolean
 
 A Boolean data type is a primitive that has one of two possible values: TRUE and FALSE, which are
 defined as follows:
@@ -3205,7 +2870,8 @@ Release: November 21, 2025
 
 32 / 243
 
-2.1.9  64-bit file ID
+
+#### 2.1.9 64-bit file ID
 
 A 64-bit file ID value uniquely identifies a file within a given volume. This identifier is generated and
 stored by the file system. The identifier SHOULD<10> be unique to the volume and stable until the
@@ -3216,7 +2882,7 @@ For file systems that do not support a 64-bit file ID, this field MUST be set to
 For files for which a unique 64-bit file ID cannot be established, this field MUST be set to
 0xFFFFFFFFFFFFFFFF, and MUST be ignored.
 
-2.1.10 128-bit file ID
+#### 2.1.10 128-bit file ID
 
 A 128-bit file ID value uniquely identifies a file within a given volume. This identifier is generated
 and stored by the file system. The identifier SHOULD<11> be unique to the volume and stable until
@@ -3228,7 +2894,7 @@ ignored.
 For files for which a unique 128-bit file ID cannot be established, this field MUST be set to
 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, and MUST be ignored.
 
-2.1.11 STORAGE_OFFLOAD_TOKEN
+#### 2.1.11 STORAGE_OFFLOAD_TOKEN
 
 The STORAGE_OFFLOAD_TOKEN structure contains the Token to be used as a representation of
 the data contained within the portion of the file specified in the FSCTL_OFFLOAD_READ_INPUT data
@@ -3277,7 +2943,8 @@ Release: November 21, 2025
 
 33 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -3311,7 +2978,7 @@ bytes.
 
 TokenId (504 bytes): A 504-byte unsigned integer that contains opaque vendor-specific data.
 
-2.2  Status Codes
+### 2.2 Status Codes
 
 This specification uses NTSTATUS status codes, as specified in [MS-ERREF] section 2.3. The format of
 a status code MUST be as specified in [MS-ERREF].
@@ -3328,7 +2995,7 @@ STATUS_BUFFER_OVERFLOW is a warning code and not an error code. This warning mea
 given output buffer is not large enough to contain all of the requested information. Unless otherwise
 noted, a given operation SHOULD attempt to return as much data as it reasonably can.
 
-2.3  FSCTL Structures
+### 2.3 FSCTL Structures
 
 A process invokes an FSCTL on a handle to perform an action against the file or directory associated
 with the handle. When a server receives an FSCTL request, it SHOULD use the information in the
@@ -3362,7 +3029,8 @@ Release: November 21, 2025
 
 34 / 243
 
-FSCTL name
+
+FSCTL name
 
 FSCTL function number
 
@@ -3499,7 +3167,8 @@ Release: November 21, 2025
 
 35 / 243
 
-FSCTL name
+
+FSCTL name
 
 FSCTL function number
 
@@ -3551,7 +3220,7 @@ FSCTL_WRITE_USN_CLOSE_RECORD
 
 0X900EF
 
-2.3.1  FSCTL_CREATE_OR_GET_OBJECT_ID Request
+#### 2.3.1 FSCTL_CREATE_OR_GET_OBJECT_ID Request
 
 This message requests that the server return the object identifier for the file or directory associated
 with the handle on which this FSCTL was invoked. If no object identifier exists, the server MUST
@@ -3559,7 +3228,7 @@ create one.
 
 This message does not contain any additional data elements.
 
-2.3.2  FSCTL_CREATE_OR_GET_OBJECT_ID Reply
+#### 2.3.2 FSCTL_CREATE_OR_GET_OBJECT_ID Reply
 
 This message returns the results of the FSCTL_CREATE_OR_GET_OBJECT_ID request in a
 FILE_OBJECTID_BUFFER (section 2.1.3).
@@ -3597,7 +3266,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- Error code
+
+ Error code
 
  Meaning
 
@@ -3629,7 +3299,7 @@ The file system does not support the use of object IDs.
 
 0xC0000010
 
-2.3.3  FSCTL_DELETE_OBJECT_ID Request
+#### 2.3.3 FSCTL_DELETE_OBJECT_ID Request
 
 This message requests that the server remove the object identifier from the file or directory
 associated with the handle on which this FSCTL was invoked. The underlying object MUST NOT be
@@ -3637,7 +3307,7 @@ deleted. If the file or directory has no object identifier, the request MUST be 
 
 This message does not contain any additional data elements.
 
-2.3.4  FSCTL_DELETE_OBJECT_ID Reply
+#### 2.3.4 FSCTL_DELETE_OBJECT_ID Reply
 
 This message returns the results of the FSCTL_DELETE_OBJECT_ID request.
 
@@ -3674,7 +3344,7 @@ The file system does not support the use of object IDs.
 
 0xC0000010
 
-2.3.5  FSCTL_DELETE_REPARSE_POINT Request
+#### 2.3.5 FSCTL_DELETE_REPARSE_POINT Request
 
 This message requests that the server delete the reparse point from the file or directory associated
 with the handle on which this FSCTL was invoked. The underlying file or directory MUST NOT be
@@ -3690,7 +3360,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-REPARSE_DATA_BUFFER structures begin with a ReparseTag field. The ReparseTag value uniquely
+
+REPARSE_DATA_BUFFER structures begin with a ReparseTag field. The ReparseTag value uniquely
 identifies the filter driver that creates/uses the reparse point, and the application's filter driver
 processes the reparse point data as either a REPARSE_GUID_DATA_BUFFER or a
 REPARSE_DATA_BUFFER, depending on the structure implemented by the filter driver for that type of
@@ -3698,7 +3369,7 @@ reparse point.
 
 This message MUST only be sent for a file or directory handle.
 
-2.3.6  FSCTL_DELETE_REPARSE_POINT Reply
+#### 2.3.6 FSCTL_DELETE_REPARSE_POINT Reply
 
 This message returns the result of the FSCTL_DELETE_REPARSE_POINT request.
 
@@ -3761,7 +3432,7 @@ The file or directory has a third party tag, and the Reparse GUID
 provided does not match the one in the reparse point for this file or
 directory.
 
-2.3.7  FSCTL_DUPLICATE_EXTENTS_TO_FILE Request
+#### 2.3.7 FSCTL_DUPLICATE_EXTENTS_TO_FILE Request
 
 The FSCTL_DUPLICATE_EXTENTS_TO_FILE<18> request message requests that the server copy the
 specified portion of one file (that is the source file) into a specified portion of another file (target file)
@@ -3780,7 +3451,8 @@ Release: November 21, 2025
 
 38 / 243
 
-2.3.7.1  DUPLICATE_EXTENTS_DATA
+
+##### 2.3.7.1 DUPLICATE_EXTENTS_DATA
 
 A DUPLICATE_EXTENTS_DATA data element is defined as follows:
 
@@ -3830,7 +3502,7 @@ ByteCount (8 bytes): A 64-bit signed integer that contains the number of bytes t
 to target. The value of this field MUST be greater than or equal to 0x0000000000000000 and
 MUST be aligned to a logical cluster boundary.
 
-2.3.7.2  SMB2_DUPLICATE_EXTENTS_DATA
+##### 2.3.7.2 SMB2_DUPLICATE_EXTENTS_DATA
 
 A SMB2_DUPLICATE_EXTENTS_DATA data element is defined as follows:
 
@@ -3860,7 +3532,8 @@ Release: November 21, 2025
 
 39 / 243
 
-SourceFileOffset
+
+SourceFileOffset
 
 ...
 
@@ -3891,7 +3564,7 @@ ByteCount (8 bytes): A 64-bit signed integer that contains the number of bytes t
 to target. The value of this field MUST be greater than or equal to 0x0000000000000000 and
 MUST be aligned to a logical cluster boundary.
 
-2.3.8  FSCTL_DUPLICATE_EXTENTS_TO_FILE Reply
+#### 2.3.8 FSCTL_DUPLICATE_EXTENTS_TO_FILE Reply
 
 This message returns the result of the FSCTL_DUPLICATE_EXTENTS_TO_FILE<19> request.
 
@@ -3947,7 +3620,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error Code
+
+Error Code
 
 0xC00000A2
 
@@ -3959,7 +3633,7 @@ The file system does not support duplicating extents.
 
 0xC0000010
 
-2.3.9  FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Request
+#### 2.3.9 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Request
 
 The FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX<21> request message requests that the server copy
 the specified portion of the source file into a specified portion of the target file on the same volume.
@@ -3974,7 +3648,7 @@ When used locally, the request message takes the form of DUPLICATE_EXTENTS_DATA_
 specified in section 2.3.9.1. When used remotely with [MS-SMB2], the request message takes the
 form of SMB2_DUPLICATE_EXTENTS_DATA_EX as specified in section 2.3.9.2.
 
-2.3.9.1  DUPLICATE_EXTENTS_DATA_EX
+##### 2.3.9.1 DUPLICATE_EXTENTS_DATA_EX
 
 A DUPLICATE_EXTENTS_DATA_EX data element is defined as follows:
 
@@ -4018,7 +3692,8 @@ Release: November 21, 2025
 
 41 / 243
 
-StructureSize (8 bytes): A SIZE_T [MS-DTYP] section 2.2.43) data type that specifies the size of
+
+StructureSize (8 bytes): A SIZE_T [MS-DTYP] section 2.2.43) data type that specifies the size of
 
 the structure, in bytes.
 
@@ -4055,7 +3730,7 @@ point of view.
 
 0x00000001
 
-2.3.9.2  SMB2_DUPLICATE_EXTENTS_DATA_EX
+##### 2.3.9.2 SMB2_DUPLICATE_EXTENTS_DATA_EX
 
 A SMB2_DUPLICATE_EXTENTS_DATA_EX data element is defined as follows:
 
@@ -4093,7 +3768,8 @@ Release: November 21, 2025
 
 42 / 243
 
-TargetFileOffset
+
+TargetFileOffset
 
 ...
 
@@ -4144,7 +3820,7 @@ point of view.
 
 Reserved (4 bytes): This field SHOULD be set to zero and MUST be ignored.
 
-2.3.10 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Reply
+#### 2.3.10 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX Reply
 
 This message returns the result of the FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX request<22>.
 
@@ -4172,7 +3848,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error Code
+
+Error Code
 
 Meaning
 
@@ -4219,7 +3896,7 @@ The file system does not support duplicating extents.
 
 0xC0000010
 
-2.3.11 FSCTL_FILESYSTEM_GET_STATISTICS Request
+#### 2.3.11 FSCTL_FILESYSTEM_GET_STATISTICS Request
 
 This message requests that the server return the statistical information of the file system such as
 Type, Version, and so on, as specified in FSCTL_FILESYSTEM_GET_STATISTICS reply, for the file or
@@ -4227,7 +3904,7 @@ directory associated with the handle on which this FSCTL was invoked.<23>
 
 This message does not contain any additional data elements.
 
-2.3.12 FSCTL_FILESYSTEM_GET_STATISTICS Reply
+#### 2.3.12 FSCTL_FILESYSTEM_GET_STATISTICS Reply
 
 This message returns the result of the FSCTL_FILESYSTEM_GET_STATISTICS request message as a
 pair of structures: a generic structure, FILESYSTEM_STATISTICS, optionally followed by a file system
@@ -4257,7 +3934,8 @@ Release: November 21, 2025
 
 44 / 243
 
-Error code
+
+Error code
 
 Meaning
 
@@ -4273,9 +3951,9 @@ The output buffer was filled before all the statistics data could be returned.
 
 0x80000005
 
-2.3.12.1
+##### 2.3.12.1 FILESYSTEM_STATISTICS
 
-FILESYSTEM_STATISTICS
+
 
 The FILESYSTEM_STATISTICS data element is returned with a
 FSCTL_FILESYSTEM_GET_STATISTICS reply message. It contains the generic information for the
@@ -4335,7 +4013,8 @@ Release: November 21, 2025
 
 45 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -4432,13 +4111,14 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-MetaDataDiskWrites (4 bytes): A 32-bit unsigned integer value containing the number of write
+
+MetaDataDiskWrites (4 bytes): A 32-bit unsigned integer value containing the number of write
 
 operations on metadata files. This value includes sub-write operations.
 
-2.3.12.2
+##### 2.3.12.2 NTFS_STATISTICS
 
-NTFS_STATISTICS
+
 
 The NTFS_STATISTICS data element is returned with a FSCTL_FILESYSTEM_GET_STATISTICS reply
 message when NTFS file system statistics are requested.
@@ -4509,7 +4189,8 @@ Release: November 21, 2025
 
 47 / 243
 
-RootIndexWriteBytes
+
+RootIndexWriteBytes
 
 BitmapReads
 
@@ -4576,7 +4257,8 @@ Release: November 21, 2025
 
 48 / 243
 
-...
+
+...
 
 ...
 
@@ -4659,7 +4341,8 @@ Release: November 21, 2025
 
 49 / 243
 
-RootIndexReadBytes (4 bytes): A 32-bit unsigned integer value containing the number of bytes
+
+RootIndexReadBytes (4 bytes): A 32-bit unsigned integer value containing the number of bytes
 
 read from the root index.
 
@@ -4746,7 +4429,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-UserIndexReads (4 bytes): A 32-bit unsigned integer value containing the number of read
+
+UserIndexReads (4 bytes): A 32-bit unsigned integer value containing the number of read
 
 operations on the user index.
 
@@ -4780,7 +4464,7 @@ written to the log file.
 
 Allocate (40 bytes): An Allocate structure describes cluster allocation patterns in NTFS.
 
-2.3.12.2.1  MftWritesUserLevel
+###### 2.3.12.2.1 MftWritesUserLevel
 
 The MftWritesUserLevel structure contains statistics about writes resulting from certain user-level
 operations.
@@ -4822,7 +4506,7 @@ Flush (2 bytes): A 16-bit unsigned integer containing the number of MFT writes d
 
 operation.
 
-2.3.12.2.2  Mft2WritesUserLevel
+###### 2.3.12.2.2 Mft2WritesUserLevel
 
 The Mft2WritesUserLevel structure contains statistics about writes resulting from certain user-level
 operations.
@@ -4836,7 +4520,8 @@ Release: November 21, 2025
 
 51 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4871,7 +4556,7 @@ Flush (2 bytes): A 16-bit unsigned integer containing the number of MFT2 writes 
 
 operation.
 
-2.3.12.2.3  BitmapWritesUserLevel
+###### 2.3.12.2.3 BitmapWritesUserLevel
 
 The BitmapWritesUserLevel structure contains statistics about bitmap writes resulting from certain
 user-level operations.
@@ -4907,7 +4592,7 @@ SetInfo (2 bytes): A 16-bit unsigned integer containing the number of bitmap wri
 
 information operation.
 
-2.3.12.2.4  MftBitmapWritesUserLevel
+###### 2.3.12.2.4 MftBitmapWritesUserLevel
 
 The MftBitmapWritesUserLevel structure contains statistics about MFT bitmap write operations
 resulting from certain user-level operations.
@@ -4940,7 +4625,8 @@ Release: November 21, 2025
 
 52 / 243
 
-Write (2 bytes): A 16-bit unsigned integer containing the number of MFT bitmap write operations
+
+Write (2 bytes): A 16-bit unsigned integer containing the number of MFT bitmap write operations
 
 due to a write operation.
 
@@ -4956,7 +4642,7 @@ Flush (2 bytes): A 16-bit unsigned integer containing the number of MFT bitmap w
 
 due to a flush operation.
 
-2.3.12.2.5  Allocate
+###### 2.3.12.2.5 Allocate
 
 The Allocate structure describes cluster allocation patterns in NTFS. The cache refers to in-memory
 structures that allow quick lookups of free cluster runs either by logical cluster number (LCN) or by
@@ -5020,7 +4706,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-HintsClusters (4 bytes): A 32-bit unsigned integer value containing the number of clusters allocated
+
+HintsClusters (4 bytes): A 32-bit unsigned integer value containing the number of clusters allocated
 
 via the starting LCN hint.
 
@@ -5040,9 +4727,9 @@ CacheMissClusters (4 bytes): A 32-bit unsigned integer value containing the numb
 
 allocated by scanning the bitmap.
 
-2.3.12.3
+##### 2.3.12.3 FAT_STATISTICS
 
-FAT_STATISTICS
+
 
 The FAT_STATISTICS data element is returned with a FSCTL_FILESYSTEM_GET_STATISTICS reply
 message when FAT file system statistics are requested.
@@ -5103,7 +4790,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-NonCachedWrites (4 bytes): A 32-bit unsigned integer value containing the number of write
+
+NonCachedWrites (4 bytes): A 32-bit unsigned integer value containing the number of write
 
 operations that were not cached.
 
@@ -5119,9 +4807,9 @@ NonCachedDiskWrites (4 bytes): A 32-bit unsigned integer value containing the nu
 
 operations that were not cached. This value includes sub-write operations.
 
-2.3.12.4
+##### 2.3.12.4 EXFAT_STATISTICS
 
-EXFAT_STATISTICS
+
 
 The EXFAT_STATISTICS data element is returned with a FSCTL_FILESYSTEM_GET_STATISTICS
 reply message when exFAT file system statistics are requested.
@@ -5186,7 +4874,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-NonCachedWriteBytes (4 bytes): A 32-bit unsigned integer value containing the number of bytes
+
+NonCachedWriteBytes (4 bytes): A 32-bit unsigned integer value containing the number of bytes
 
 written to a file that were not cached.
 
@@ -5198,7 +4887,7 @@ NonCachedDiskWrites (4 bytes): A 32-bit unsigned integer value containing the nu
 
 operations that were not cached. This value includes sub-write operations.
 
-2.3.13 FSCTL_FILE_LEVEL_TRIM Request
+#### 2.3.13 FSCTL_FILE_LEVEL_TRIM Request
 
 The FSCTL_FILE_LEVEL_TRIM operation informs the underlying storage medium that the contents of
 the given range of the file no longer needs to be maintained. This message allows the storage medium
@@ -5236,9 +4925,9 @@ Ranges (variable): An array of zero or more FILE_LEVEL_TRIM_RANGE (section 2.3.1
 elements. The NumRanges field contains the number of FILE_LEVEL_TRIM_RANGE data
 elements in the array.
 
-2.3.13.1
+##### 2.3.13.1 FILE_LEVEL_TRIM_RANGE
 
-FILE_LEVEL_TRIM_RANGE
+
 
 The FILE_LEVEL_TRIM_RANGE data element follows.
 
@@ -5268,7 +4957,8 @@ Release: November 21, 2025
 
 56 / 243
 
-Offset (8 bytes): A 64-bit unsigned integer that contains a byte offset into the given file at which to
+
+Offset (8 bytes): A 64-bit unsigned integer that contains a byte offset into the given file at which to
 
 start the trim request.
 
@@ -5276,7 +4966,7 @@ Length (8 bytes): A 64-bit unsigned integer that contains the length, in bytes, 
 
 file to trim, starting at Offset.
 
-2.3.14 FSCTL_FILE_LEVEL_TRIM Reply
+#### 2.3.14 FSCTL_FILE_LEVEL_TRIM Reply
 
 This message returns the results of the FSCTL_FILE_LEVEL_TRIM Request (section 2.3.13).
 
@@ -5336,7 +5026,7 @@ The operation was successful, but no range was processed.
 
 0xC0000460
 
-2.3.15 FSCTL_FIND_FILES_BY_SID Request
+#### 2.3.15 FSCTL_FIND_FILES_BY_SID Request
 
 The FSCTL_FIND_FILES_BY_SID Request message requests that the server return a list of the files
 and directories whose owner matches the specified security identifier (SID), in no necessary order.
@@ -5365,7 +5055,8 @@ Release: November 21, 2025
 
 57 / 243
 
-SID (variable)
+
+SID (variable)
 
 ...
 
@@ -5377,7 +5068,7 @@ the search resumes at the point where it stopped.
 
 SID (variable): A SID ([MS-DTYP] section 2.4.2.2) data element that specifies the owner.
 
-2.3.16 FSCTL_FIND_FILES_BY_SID Reply
+#### 2.3.16 FSCTL_FIND_FILES_BY_SID Reply
 
 The FSCTL_FIND_FILES_BY_SID Reply message returns the results of the FSCTL_FIND_FILES_BY_SID
 Request (section 2.3.15) as an array of FILE_NAME_INFORMATION (section 2.1.7) data elements
@@ -5448,14 +5139,15 @@ Release: November 21, 2025
 
 58 / 243
 
-2.3.17 FSCTL_GET_COMPRESSION Request
+
+#### 2.3.17 FSCTL_GET_COMPRESSION Request
 
 This message requests that the server return the current compression state of the file or directory
 associated with the handle on which this FSCTL was invoked.
 
 This message does not contain any additional data elements.
 
-2.3.18 FSCTL_GET_COMPRESSION Reply
+#### 2.3.18 FSCTL_GET_COMPRESSION Reply
 
 The FSCTL_GET_COMPRESSION reply message returns the results of the FSCTL_GET_COMPRESSION
 request as a 16-bit unsigned integer value that indicates the current compression state of the file or
@@ -5526,7 +5218,7 @@ The volume does not support compression.<27>
 
 0xC0000010
 
-2.3.19 FSCTL_GET_INTEGRITY_INFORMATION Request
+#### 2.3.19 FSCTL_GET_INTEGRITY_INFORMATION Request
 
 The FSCTL_GET_INTEGRITY_INFORMATION Request message requests that the server return the
 current integrity state of the file or directory associated with the handle on which this FSCTL is
@@ -5539,13 +5231,14 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-If the file system of the volume containing the specified file or directory does not support the use of
+
+If the file system of the volume containing the specified file or directory does not support the use of
 integrity, the request will not succeed. The error code returned in this situation varies, depending on
 the file system.
 
 This message does not contain additional data elements.
 
-2.3.20 FSCTL_GET_INTEGRITY_INFORMATION Reply
+#### 2.3.20 FSCTL_GET_INTEGRITY_INFORMATION Reply
 
 The FSCTL_GET_INTEGRITY_INFORMATION Reply message returns the results of the
 FSCTL_GET_INTEGRITY_INFORMATION Request (section 2.3.19) and indicates the current integrity
@@ -5637,7 +5330,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flags (4 bytes): A 32-bit unsigned integer that contains zero or more of the following flag values.
+
+Flags (4 bytes): A 32-bit unsigned integer that contains zero or more of the following flag values.
 Flag values not specified in the following table SHOULD be set to 0 and MUST be ignored.
 
 Value
@@ -5686,14 +5380,14 @@ The volume does not support integrity.
 
 0xC0000010
 
-2.3.21 FSCTL_GET_NTFS_VOLUME_DATA Request
+#### 2.3.21 FSCTL_GET_NTFS_VOLUME_DATA Request
 
 This message requests that the server return information about the NTFS file system volume that
 contains the file or directory that is associated with the handle on which this FSCTL was invoked.
 
 This message does not contain any parameters.
 
-2.3.22 FSCTL_GET_NTFS_VOLUME_DATA Reply
+#### 2.3.22 FSCTL_GET_NTFS_VOLUME_DATA Reply
 
 The FSCTL_GET_NTFS_VOLUME_DATA reply message returns the results of the
 FSCTL_GET_NTFS_VOLUME_DATA request as an NTFS_VOLUME_DATA_BUFFER element.
@@ -5725,7 +5419,8 @@ Release: November 21, 2025
 
 61 / 243
 
-...
+
+...
 
 TotalClusters
 
@@ -5787,7 +5482,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-FreeClusters (8 bytes): A 64-bit signed integer that contains the number of free clusters in the
+
+FreeClusters (8 bytes): A 64-bit signed integer that contains the number of free clusters in the
 
 specified volume.
 
@@ -5859,7 +5555,7 @@ STATUS_BUFFER_TOO_SMALL
 The output buffer is too small to contain an NTFS_VOLUME_DATA_BUFFER
 structure.
 
-2.3.23 FSCTL_GET_REFS_VOLUME_DATA Request
+#### 2.3.23 FSCTL_GET_REFS_VOLUME_DATA Request
 
 This message requests that the server return information about the ReFS file system volume that
 contains the file or directory that is associated with the handle on which this FSCTL was invoked.
@@ -5873,7 +5569,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.24 FSCTL_GET_REFS_VOLUME_DATA Reply
+
+#### 2.3.24 FSCTL_GET_REFS_VOLUME_DATA Reply
 
 The FSCTL_GET_REFS_VOLUME_DATA reply message returns the results of the
 FSCTL_GET_REFS_VOLUME_DATA request as an REFS_VOLUME_DATA_BUFFER element.
@@ -5940,7 +5637,8 @@ Release: November 21, 2025
 
 64 / 243
 
-ByteCount (4 bytes): A 32-bit unsigned integer that contains the valid data length for this structure.
+
+ByteCount (4 bytes): A 32-bit unsigned integer that contains the valid data length for this structure.
 ByteCount can be less than the size of this structure. Only the fields that entirely fit within the
 valid data length for this structure, as defined by ByteCount, are valid.
 
@@ -6028,7 +5726,8 @@ Release: November 21, 2025
 
 65 / 243
 
-2.3.25 FSCTL_GET_OBJECT_ID Request
+
+#### 2.3.25 FSCTL_GET_OBJECT_ID Request
 
 This message requests that the server return the object identifier for the file or directory associated
 with the handle on which this FSCTL was invoked.
@@ -6039,7 +5738,7 @@ SHOULD never be modified by applications.
 
 This message does not contain any additional data elements.
 
-2.3.26 FSCTL_GET_OBJECT_ID Reply
+#### 2.3.26 FSCTL_GET_OBJECT_ID Reply
 
 This message returns the results of an FSCTL_GET_OBJECT_ID request in a
 FILE_OBJECTID_BUFFER (section 2.1.3).
@@ -6075,7 +5774,7 @@ The file system does not support the use of object IDs.
 
 0xC0000010
 
-2.3.27 FSCTL_GET_REPARSE_POINT Request
+#### 2.3.27 FSCTL_GET_REPARSE_POINT Request
 
 This message requests that the server return the reparse point data for the file or directory
 associated with the handle on which this FSCTL was invoked.
@@ -6084,7 +5783,7 @@ This message MUST only be sent for a file or directory handle.
 
 This message does not contain any additional data elements.
 
-2.3.28 FSCTL_GET_REPARSE_POINT Reply
+#### 2.3.28 FSCTL_GET_REPARSE_POINT Reply
 
 This message returns the results of the FSCTL_GET_REPARSE_POINT request. The message contains a
 REPARSE_GUID_DATA_BUFFER (including subtypes) or a REPARSE_DATA_BUFFER data element.
@@ -6103,7 +5802,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-If the file system of the volume containing the specified file or directory does not support the use of
+
+If the file system of the volume containing the specified file or directory does not support the use of
 reparse points, the request will not succeed. The error code returned in this situation MAY vary,
 depending on the file system.<29>
 
@@ -6146,7 +5846,7 @@ The file system does not support the use of reparse points.
 
 0xC0000010
 
-2.3.29 FSCTL_GET_RETRIEVAL_POINTER_COUNT Request
+#### 2.3.29 FSCTL_GET_RETRIEVAL_POINTER_COUNT Request
 
 The FSCTL_GET_RETRIEVAL_POINTER_COUNT request message requests that the server return a
 count of extents for the file or directory associated with the handle on which this FSCTL was invoked.
@@ -6174,7 +5874,7 @@ StartingVcn
 StartingVcn (8 bytes): A 64-bit signed integer that contains the virtual cluster number (VCN) at
 which to begin retrieving extents in the file. This value MUST be greater than or equal to 0.
 
-2.3.30 FSCTL_GET_RETRIEVAL_POINTER_COUNT Reply
+#### 2.3.30 FSCTL_GET_RETRIEVAL_POINTER_COUNT Reply
 
 The FSCTL_GET_RETRIEVAL_POINTER_COUNT reply message returns the results of the
 FSCTL_GET_RETRIEVAL_POINTER_COUNT request as a fixed size data element,
@@ -6192,7 +5892,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The RETRIEVAL_POINTER_COUNT data element is as follows.
+
+The RETRIEVAL_POINTER_COUNT data element is as follows.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -6240,7 +5941,7 @@ STATUS_END_OF_FILE
 The stream is resident in the MFT and has no clusters allocated, or the starting
 VCN is beyond the end of the file.
 
-2.3.31 FSCTL_GET_RETRIEVAL_POINTERS Request
+#### 2.3.31 FSCTL_GET_RETRIEVAL_POINTERS Request
 
 The FSCTL_GET_RETRIEVAL_POINTERS request message requests that the server return a list of
 extents for the file or directory associated with the handle on which this FSCTL was invoked. The
@@ -6268,7 +5969,7 @@ StartingVcn
 StartingVcn (8 bytes): A 64-bit signed integer that contains the virtual cluster number (VCN) at
 which to begin retrieving extents in the file. This value MUST be greater than or equal to 0.
 
-2.3.32 FSCTL_GET_RETRIEVAL_POINTERS Reply
+#### 2.3.32 FSCTL_GET_RETRIEVAL_POINTERS Reply
 
 The FSCTL_GET_RETRIEVAL_POINTERS reply message returns the results of the
 FSCTL_GET_RETRIEVAL_POINTERS request as a variably sized data element,
@@ -6284,7 +5985,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-data that can be written to disk within the file's directory record. Because resident data requires no
+
+data that can be written to disk within the file's directory record. Because resident data requires no
 additional disk space allocation, no extent locations are associated with resident data.<31>
 
 The RETRIEVAL_POINTERS_BUFFER data element is as follows.
@@ -6330,9 +6032,9 @@ Extents (variable): An array of zero or more EXTENTS data elements. For the numb
 
 data elements in the array, see ExtentCount.
 
-2.3.32.1
+##### 2.3.32.1 EXTENTS
 
-EXTENTS
+
 
 The EXTENTS data element is as follows.
 
@@ -6368,7 +6070,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Lcn (8 bytes): A 64-bit signed integer that contains the logical cluster number (LCN) at which the
+
+Lcn (8 bytes): A 64-bit signed integer that contains the logical cluster number (LCN) at which the
 current extent begins on the volume. A 64-bit value of -1 indicates either a compression unit
 that is partially allocated or an unallocated region of a sparse file. For more information about
 sparse files, see [SPARSE]. Compression is performed in 16-cluster units. If a given 16-cluster unit
@@ -6410,7 +6113,7 @@ The output buffer filled before all the extents for this file were returned.
 
 0x80000005
 
-2.3.33 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Request
+#### 2.3.33 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Request
 
 The FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT request message requests that the server
 return a list of extents and their reference counts for the file or directory associated with the handle
@@ -6440,7 +6143,7 @@ StartingVcn
 StartingVcn (8 bytes): A 64-bit signed integer that contains the virtual cluster number (VCN) at
 which to begin retrieving extents in the file. This value MUST be greater than or equal to 0.
 
-2.3.34 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Reply
+#### 2.3.34 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT Reply
 
 The FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT reply message returns the results of the
 FSCTL_GET_RETRIEVAL_POINTERS AND_REFCOUNT request as a variably-sized data element,
@@ -6454,7 +6157,8 @@ Release: November 21, 2025
 
 70 / 243
 
-The FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT reply returns the extent locations (that is,
+
+The FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT reply returns the extent locations (that is,
 locations of allocated regions of disk space) and their reference counts of nonresident data. A file
 system MAY allow resident data, which is data that can be written to disk within the file's directory
 record. Because resident data requires no additional disk space allocation, no extent locations or
@@ -6502,9 +6206,9 @@ Extents (variable): An array of zero or more EXTENT_AND_REFCOUNTS data elements.
 
 number of EXTENT_AND_REFCOUNTS data elements in the array, see ExtentCount.
 
-2.3.34.1
+##### 2.3.34.1 EXTENT_AND_REFCOUNTS
 
-EXTENT_AND_REFCOUNTS
+
 
 The EXTENT_AND_REFCOUNTS data element is as follows.
 
@@ -6536,7 +6240,8 @@ Release: November 21, 2025
 
 71 / 243
 
-NextVcn (8 bytes): A 64-bit signed integer that contains the VCN at which the next extent begins.
+
+NextVcn (8 bytes): A 64-bit signed integer that contains the VCN at which the next extent begins.
 
 This value minus either StartingVcn (for the first Extents array element) or the NextVcn of the
 previous element of the array (for all other Extents array elements) is the length in clusters of
@@ -6589,7 +6294,7 @@ The output buffer filled before all the extents for this file were returned.
 
 0x80000005
 
-2.3.35 FSCTL_IS_PATHNAME_VALID Request
+#### 2.3.35 FSCTL_IS_PATHNAME_VALID Request
 
 The FSCTL_IS_PATHNAME_VALID request message requests that the server indicate whether the
 specified pathname is well-formed (of acceptable length, with no invalid characters, and so on - see
@@ -6626,16 +6331,17 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-PathName (variable):  A variable-length Unicode string that specifies the path name.
 
-2.3.36 FSCTL_IS_PATHNAME_VALID Reply
+PathName (variable):  A variable-length Unicode string that specifies the path name.
+
+#### 2.3.36 FSCTL_IS_PATHNAME_VALID Reply
 
 This message returns the results of the FSCTL_IS_PATHNAME_VALID Request (section 2.3.35).
 
 A STATUS_SUCCESS from this call means that the pathname is valid. An error means that the
 pathname is not valid.<34>
 
-2.3.37 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request
+#### 2.3.37 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request
 
 The FSCTL_LMR_SET_LINK_TRACKING_INFORMATION request message sets Distributed Link
 Tracking (DLT) information such as file system type, volume ID, object ID, and destination
@@ -6654,9 +6360,9 @@ FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB
 
 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB2
 
-2.3.37.1
+##### 2.3.37.1 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB
 
-FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB
+
 
 The message contains a REMOTE_LINK_TRACKING_INFORMATION32 data element. The SMB
 REMOTE_LINK_TRACKING_INFORMATION32 data element is as follows.
@@ -6692,9 +6398,9 @@ TargetLinkTrackingInformationBuffer (variable): This field is as specified in
 
 TARGET_LINK_TRACKING_INFORMATION_Buffer.
 
-2.3.37.2
+##### 2.3.37.2 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB2
 
-FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Request for SMB2
+
 
 The message contains an SMB2_REMOTE_LINK_TRACKING_INFORMATION data element. The
 SMB2_REMOTE_LINK_TRACKING_INFORMATION data element is as follows.
@@ -6706,7 +6412,8 @@ Release: November 21, 2025
 
 73 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6739,9 +6446,9 @@ TargetLinkTrackingInformationBuffer (variable): This field is as specified in
 
 TARGET_LINK_TRACKING_INFORMATION_BUFFER.
 
-2.3.37.3
+##### 2.3.37.3 TARGET_LINK_TRACKING_INFORMATION_Buffer
 
-TARGET_LINK_TRACKING_INFORMATION_Buffer
+
 
 The TARGET_LINK_TRACKING_INFORMATION_Buffer data element MUST take one of the following
 forms:
@@ -6756,9 +6463,9 @@ TargetLinkTrackingInformationLength value is less than 36.
 TARGET_LINK_TRACKING_INFORMATION_Buffer_2 if the
 TargetLinkTrackingInformationLength value is greater than or equal to 36.
 
-2.3.37.3.1
+###### 2.3.37.3.1 TARGET_LINK_TRACKING_INFORMATION_Buffer_1
 
-TARGET_LINK_TRACKING_INFORMATION_Buffer_1
+
 
 If the TargetLinkTrackingInformationLength value is less than 36, the
 TARGET_LINK_TRACKING_INFORMATION_Buffer data element MUST be as follows.
@@ -6782,9 +6489,9 @@ NetBIOSName (variable): A null-terminated ASCII string containing the NetBIOS na
 destination computer, if known. For more information, see [MS-DLTW] section 3.1.6. If not
 known, this field is zero length and contains nothing.
 
-2.3.37.3.2
+###### 2.3.37.3.2 TARGET_LINK_TRACKING_INFORMATION_Buffer_2
 
-TARGET_LINK_TRACKING_INFORMATION_Buffer_2
+
 
 If the TargetLinkTrackingInformationLength value is greater than or equal to 36, the
 TARGET_LINK_TRACKING_INFORMATION_Buffer data element MUST be as follows.
@@ -6796,7 +6503,8 @@ Release: November 21, 2025
 
 74 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6849,7 +6557,7 @@ NetBIOSName (variable): A null-terminated ASCII string containing the NetBIOS na
 destination computer, if known. For more information, see [MS-DLTW] section 3.1.6. If not
 known, this field is zero length and contains nothing.
 
-2.3.38 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Reply
+#### 2.3.38 FSCTL_LMR_SET_LINK_TRACKING_INFORMATION Reply
 
 This message returns the results of the FSCTL_LMR_SET_LINK_TRACKING_INFORMATION request.
 
@@ -6875,7 +6583,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.39 FSCTL_MARK_HANDLE Request
+
+#### 2.3.39 FSCTL_MARK_HANDLE Request
 
 The FSCTL_MARK_HANDLE request is used to set specific operational state on the given file handle.
 This state is lost once the handle is closed.<35>
@@ -6948,7 +6657,7 @@ Reserved (4 Bytes):  A 32-bit field. This field is reserved. This field SHOULD b
 
 be ignored.
 
-2.3.40 FSCTL_MARK_HANDLE Reply
+#### 2.3.40 FSCTL_MARK_HANDLE Reply
 
 This message returns the results of the FSCTL_MARK_HANDLE request.
 
@@ -6959,7 +6668,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The only data item this message returns is a status code, as specified in section 2.2. Upon success,
+
+The only data item this message returns is a status code, as specified in section 2.2. Upon success,
 the status code returned by the function that processes this FSCTL is STATUS_SUCCESS. The most
 common error codes are listed in the following table.
 
@@ -7005,7 +6715,7 @@ This operation is not supported on compressed files.
 
 0xC000047B
 
-2.3.41 FSCTL_OFFLOAD_READ Request
+#### 2.3.41 FSCTL_OFFLOAD_READ Request
 
 The FSCTL_OFFLOAD_READ Request message requests that the server perform an Offload Read
 operation to a specified portion of a file on a target volume. On the client side, this request is
@@ -7048,7 +6758,8 @@ Release: November 21, 2025
 
 77 / 243
 
-...
+
+...
 
 Size (4 bytes): A 32-bit unsigned integer that indicates the size, in bytes, of this data element.
 
@@ -7077,7 +6788,7 @@ range of the file from which to generate the Token. The value of this field MUST
 equal to 0x0000000000000000 and MUST be aligned to a logical sector boundary on the
 volume.<38>
 
-2.3.42 FSCTL_OFFLOAD_READ Reply
+#### 2.3.42 FSCTL_OFFLOAD_READ Reply
 
 The FSCTL_OFFLOAD_READ Reply message returns the results of the FSCTL_OFFLOAD_READ
 Request (section 2.3.41).
@@ -7125,7 +6836,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -7233,7 +6945,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -7286,7 +6999,7 @@ The storage device does not support offload read.
 
 0xC0000463
 
-2.3.43 FSCTL_OFFLOAD_WRITE Request
+#### 2.3.43 FSCTL_OFFLOAD_WRITE Request
 
 The FSCTL_OFFLOAD_WRITE Request message requests that the server perform an Offload Write
 operation to a specified portion of a file on a target volume, providing a Token to the server that
@@ -7329,7 +7042,8 @@ Release: November 21, 2025
 
 80 / 243
 
-TransferOffset
+
+TransferOffset
 
 ...
 
@@ -7368,7 +7082,7 @@ Token (512 bytes): A STORAGE_OFFLOAD_TOKEN (section 2.1.11) structure that conta
 generated (or constructed) Token to be used as a representation of the data to be logically
 written. The contents of this field MUST NOT be modified during subsequent operations.
 
-2.3.44 FSCTL_OFFLOAD_WRITE Reply
+#### 2.3.44 FSCTL_OFFLOAD_WRITE Reply
 
 The FSCTL_OFFLOAD_WRITE Reply message returns the results of the FSCTL_OFFLOAD_WRITE
 Request (section 2.3.43).
@@ -7405,7 +7119,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Flags (4 bytes): A 32-bit unsigned integer that indicates which flags were returned for this
+
+Flags (4 bytes): A 32-bit unsigned integer that indicates which flags were returned for this
 
 operation. Currently, no flags are defined. This field SHOULD be set to 0x00000000 and MUST be
 ignored.
@@ -7515,7 +7230,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -7581,13 +7297,13 @@ The token representing the data is invalid or expired.
 
 0xC0000465L
 
-2.3.45 FSCTL_PIPE_PEEK Request
+#### 2.3.45 FSCTL_PIPE_PEEK Request
 
 The FSCTL_PIPE_PEEK request requests that the server copy a named pipe's data into a buffer for
 preview without removing it. The FSCTL_PIPE_PEEK request message is issued to invoke a reply, and
 does not have an associated data structure.
 
-2.3.46 FSCTL_PIPE_PEEK Reply
+#### 2.3.46 FSCTL_PIPE_PEEK Reply
 
 The FSCTL_PIPE_PEEK response returns data from the pipe server's output buffer in the FSCTL
 output buffer. The structure of that data is as follows.
@@ -7618,7 +7334,8 @@ Release: November 21, 2025
 
 83 / 243
 
-Data (variable)
+
+Data (variable)
 
 ...
 
@@ -7720,7 +7437,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.47 FSCTL_PIPE_TRANSCEIVE Request
+
+#### 2.3.47 FSCTL_PIPE_TRANSCEIVE Request
 
 The FSCTL_PIPE_TRANSCEIVE request is used to send and receive data from an open pipe. Any bytes
 in the FSCTL input buffer are written as a binary large object (BLOB) to the input buffer of the pipe
@@ -7729,7 +7447,7 @@ server.
 The FSCTL input buffer does not have an associated structure. The buffer is a BLOB of bytes that are
 written into the associated pipe.
 
-2.3.48 FSCTL_PIPE_TRANSCEIVE Reply
+#### 2.3.48 FSCTL_PIPE_TRANSCEIVE Reply
 
 The FSCTL_PIPE_TRANSCEIVE response returns data from the pipe server's output buffer in the FSCTL
 output buffer.
@@ -7787,7 +7505,7 @@ The data was too large to fit into the specified buffer.
 
 For more information on named pipes, see [PIPE].
 
-2.3.49 FSCTL_PIPE_WAIT Request
+#### 2.3.49 FSCTL_PIPE_WAIT Request
 
 The FSCTL_PIPE_WAIT Request requests that the server wait until either a time-out interval elapses,
 or an instance of the specified named pipe is available for connection.
@@ -7816,7 +7534,8 @@ Release: November 21, 2025
 
 85 / 243
 
-TimeoutSpecified
+
+TimeoutSpecified
 
 Padding
 
@@ -7855,7 +7574,7 @@ include the "\pipe\", so if the operation was on \\server\pipe\pipename, the nam
 
 For more information on named pipes, see [PIPE].
 
-2.3.50 FSCTL_PIPE_WAIT Reply
+#### 2.3.50 FSCTL_PIPE_WAIT Reply
 
 This message returns the results of the FSCTL_PIPE_WAIT request.
 
@@ -7906,7 +7625,8 @@ Release: November 21, 2025
 
 86 / 243
 
-2.3.51 FSCTL_QUERY_ALLOCATED_RANGES Request
+
+#### 2.3.51 FSCTL_QUERY_ALLOCATED_RANGES Request
 
 The FSCTL_QUERY_ALLOCATED_RANGES request message requests that the server scan a file or
 alternate stream looking for byte ranges that can contain nonzero data, and then return information
@@ -7943,7 +7663,7 @@ Length (8 bytes): A 64-bit signed integer that contains the size, in bytes, of t
 message, the value of this field MUST be greater than or equal to 0. In a reply message, it MUST
 be greater than 0.
 
-2.3.52 FSCTL_QUERY_ALLOCATED_RANGES Reply
+#### 2.3.52 FSCTL_QUERY_ALLOCATED_RANGES Reply
 
 The FSCTL_QUERY_ALLOCATED_RANGES Reply message returns the results of the
 FSCTL_QUERY_ALLOCATED_RANGES Request (section 2.3.51).
@@ -7984,7 +7704,8 @@ Release: November 21, 2025
 
 87 / 243
 
-FileOffset (8 bytes): A 64-bit signed integer that contains the file offset in bytes from the start of
+
+FileOffset (8 bytes): A 64-bit signed integer that contains the file offset in bytes from the start of
 the file; the start of a range of bytes to which storage is allocated. If the file is a sparse file, it
 can contain ranges of bytes for which storage is not allocated; these ranges will be excluded from
 the list of allocated ranges returned by this FSCTL.<45> Because an application using a sparse file
@@ -8034,7 +7755,7 @@ STATUS_BUFFER_OVERFLOW
 The output buffer is too small to contain the required number of
 FILE_ALLOCATED_RANGE_BUFFER structures.
 
-2.3.53 FSCTL_QUERY_FAT_BPB Request
+#### 2.3.53 FSCTL_QUERY_FAT_BPB Request
 
 This message requests that the server return the first 0x24 bytes of sector 0 for the volume that
 contains the file or directory associated with the handle on which this FSCTL was invoked. The first
@@ -8045,7 +7766,7 @@ This message does not contain any additional data elements.
 
 This FSCTL is valid only for a FAT file system. All other file systems treat this as an invalid FSCTL.
 
-2.3.54 FSCTL_QUERY_FAT_BPB Reply
+#### 2.3.54 FSCTL_QUERY_FAT_BPB Reply
 
 The reply buffer contains the first 0x24 bytes of sector 0 for the volume associated with the handle
 on which this FSCTL was invoked.
@@ -8067,7 +7788,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error Code
+
+Error Code
 
 0xC0000010
 
@@ -8080,7 +7802,7 @@ STATUS_BUFFER_TOO_SMALL
 The buffer is too small to contain the entry. No information has been
 written to the buffer.
 
-2.3.55 FSCTL_QUERY_FILE_REGIONS Request
+#### 2.3.55 FSCTL_QUERY_FILE_REGIONS Request
 
 The FSCTL_QUERY_FILE_REGIONS request message requests that the server return a list of file
 regions, based on a specified usage parameter, for the file associated with the handle on which this
@@ -8157,7 +7879,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.56 FSCTL_QUERY_FILE_REGIONS Reply
+
+#### 2.3.56 FSCTL_QUERY_FILE_REGIONS Reply
 
 The FSCTL_QUERY_FILE_REGIONS reply message returns the results of the
 FSCTL_QUERY_FILE_REGIONS Request as a variably sized data element, FILE_REGION_OUTPUT,
@@ -8248,9 +7971,10 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.56.1
 
-FILE_REGION_INFO
+##### 2.3.56.1 FILE_REGION_INFO
+
+
 
 The FILE_REGION_INFO structure contains a computed region of a file based on a desired usage.
 This structure is used to store region information for the FSCTL_QUERY_FILE_REGIONS reply
@@ -8318,7 +8042,7 @@ Reserved (4 bytes): A 32-bit unsigned integer field that is reserved. This field
 
 0x00000000 and MUST be ignored.
 
-2.3.57 FSCTL_QUERY_ON_DISK_VOLUME_INFO Request
+#### 2.3.57 FSCTL_QUERY_ON_DISK_VOLUME_INFO Request
 
 This message requests UDF-specific volume information for the volume that contains the file or
 directory associated with the handle on which this FSCTL was invoked.
@@ -8332,10 +8056,11 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-This FSCTL is only valid on UDF file systems. All other File Systems will treat this as an invalid FSCTL.
+
+This FSCTL is only valid on UDF file systems. All other File Systems will treat this as an invalid FSCTL.
 For information regarding UDF, see [UDF].
 
-2.3.58 FSCTL_QUERY_ON_DISK_VOLUME_INFO Reply
+#### 2.3.58 FSCTL_QUERY_ON_DISK_VOLUME_INFO Reply
 
 This message returns the results of the FSCTL_QUERY_ON_DISK_VOLUME_INFO request (section
 2.3.57) as a FSCTL_QUERY_ON_DISK_VOLUME_INFO_BUFFER structure.
@@ -8400,7 +8125,8 @@ Release: November 21, 2025
 
 92 / 243
 
-...
+
+...
 
 LastModifyingImplementationInfo (68 bytes)
 
@@ -8475,7 +8201,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error Code
+
+Error Code
 
 Meaning
 
@@ -8492,7 +8219,7 @@ An invalid parameter was passed to a service or function.
 
 0xC000000D
 
-2.3.59 FSCTL_QUERY_SPARING_INFO Request
+#### 2.3.59 FSCTL_QUERY_SPARING_INFO Request
 
 Retrieves the defect management properties of the volume that contains the file or directory
 associated with the handle on which this FSCTL was invoked.
@@ -8502,7 +8229,7 @@ This message does not contain any additional data elements.
 This FSCTL is only valid on UDF file systems. All other file systems will treat this as an invalid FSCTL.
 For information regarding UDF, see [UDF].
 
-2.3.60 FSCTL_QUERY_SPARING_INFO Reply
+#### 2.3.60 FSCTL_QUERY_SPARING_INFO Reply
 
 This message returns the results of the FSCTL_QUERY_SPARING_INFO request (section 2.3.59) as a
 FSCTL_QUERY_SPARING_BUFFER structure.
@@ -8557,7 +8284,8 @@ Release: November 21, 2025
 
 94 / 243
 
-Error code
+
+Error code
 
 Meaning
 
@@ -8568,7 +8296,7 @@ STATUS_INVALID_PARAMETER
 An invalid parameter was passed to a service or function, or the buffer is too
 small to contain the entry.
 
-2.3.61 FSCTL_READ_FILE_USN_DATA Request
+#### 2.3.61 FSCTL_READ_FILE_USN_DATA Request
 
 This message requests that the server return the most recent change journal USN for the file or
 directory associated with the handle on which this FSCTL was invoked. This message contains an
@@ -8599,7 +8327,7 @@ MaxMajorVersion (2 bytes): A 16-bit unsigned integer that contains the maximum m
 
 records returned in the results of this request.<58>
 
-2.3.62 FSCTL_READ_FILE_USN_DATA Reply
+#### 2.3.62 FSCTL_READ_FILE_USN_DATA Reply
 
 The FSCTL_READ_FILE_USN_DATA reply message returns the results of the
 FSCTL_READ_FILE_USN_DATA request as a USN_RECORD_V2 or a USN_RECORD_V3. Both forms of
@@ -8639,9 +8367,9 @@ The file system does not support the use of a USN change journal.
 
 0xC0000010
 
-2.3.62.1
+##### 2.3.62.1 USN_RECORD_COMMON_HEADER
 
-USN_RECORD_COMMON_HEADER
+
 
 The USN_RECORD_COMMON_HEADER element is as follows.
 
@@ -8652,7 +8380,8 @@ Release: November 21, 2025
 
 95 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8681,9 +8410,9 @@ MinorVersion (2 bytes): A 16-bit unsigned integer that contains the minor versio
 journal software for this record. For example, if the change journal software is version 2.0, the
 minor version number is 0 (zero).<60>
 
-2.3.62.2
+##### 2.3.62.2 USN_RECORD_V2
 
-USN_RECORD_V2
+
 
 The USN_RECORD_V2 element is as follows.
 
@@ -8735,7 +8464,8 @@ Release: November 21, 2025
 
 96 / 243
 
-FileNameLength
+
+FileNameLength
 
 FileNameOffset
 
@@ -8830,7 +8560,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 0x00000004
 
@@ -8958,7 +8689,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-prior record continue to be present only if the thread also sets those flags. Therefore, the source
+
+prior record continue to be present only if the thread also sets those flags. Therefore, the source
 information structure allows applications to filter out USN records that are set only by a known
 source, for example, an antivirus filter. This flag MUST contain one of the following values.
 
@@ -9021,9 +8753,9 @@ assume that the file name will contain a trailing Unicode null character.
 The fields Reason, TimeStamp, SourceInfo, and SecurityId for a USN RECORD element returned
 by this FSCTL MUST all be set to 0.<61>
 
-2.3.62.3
+##### 2.3.62.3 USN_RECORD_V3
 
-USN_RECORD_V3
+
 
 The USN_RECORD_V3 element is as follows.
 
@@ -9053,7 +8785,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-...
+
+...
 
 ...
 
@@ -9117,7 +8850,8 @@ Release: November 21, 2025
 
 100 / 243
 
-2.3.63 FSCTL_RECALL_FILE Request
+
+#### 2.3.63 FSCTL_RECALL_FILE Request
 
 This message requests that the server recall the file (associated with the handle on which this FSCTL
 was invoked) from storage media that Remote Storage manages. This FSCTL is not valid for
@@ -9131,7 +8865,7 @@ unnecessarily.
 
 This message does not contain any additional data elements.
 
-2.3.64 FSCTL_RECALL_FILE Reply
+#### 2.3.64 FSCTL_RECALL_FILE Reply
 
 This message returns the results of the FSCTL_RECALL_FILE request.
 
@@ -9167,7 +8901,7 @@ The supplied handle is not that of a file.
 
 0xC0000010
 
-2.3.65 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Request
+#### 2.3.65 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Request
 
 The FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT request message requests that the server
 perform a specific stream snapshot operation on a given data stream contained in a file. The operation
@@ -9202,7 +8936,8 @@ Release: November 21, 2025
 
 101 / 243
 
-...
+
+...
 
 ...
 
@@ -9302,7 +9037,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 0x00000006
 
@@ -9340,9 +9076,9 @@ The following Operation code requires a control structure of the following type:
 
 REFS_STREAM_SNAPSHOT_QUERY_DELTAS_INPUT_BUFFER to be present.
 
-2.3.65.1
+##### 2.3.65.1 REFS_STREAM_SNAPSHOT_QUERY_DELTAS_INPUT_BUFFER
 
-REFS_STREAM_SNAPSHOT_QUERY_DELTAS_INPUT_BUFFER
+
 
 The REFS_STREAM_SNAPSHOT_QUERY_DELTAS_INPUT_BUFFER is as follows:
 
@@ -9382,7 +9118,8 @@ Release: November 21, 2025
 
 103 / 243
 
-2.3.66 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Reply
+
+#### 2.3.66 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT Reply
 
 This message returns the result of the FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT request.
 
@@ -9433,9 +9170,9 @@ STATUS_SUCCESS
 
 The operation was successful.
 
-2.3.66.1
+##### 2.3.66.1 REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER
 
-REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER
+
 
 The REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER is as follows:
 
@@ -9478,13 +9215,14 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Reserved (8 bytes): This field MUST be set to zero and MUST be ignored.
+
+Reserved (8 bytes): This field MUST be set to zero and MUST be ignored.
 
 Entries (variable): An array of REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER_ENTRY
 
 structs.
 
-2.3.66.1.1  REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER_ENTRY
+###### 2.3.66.1.1 REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER_ENTRY
 
 The REFS_STREAM_SNAPSHOT_LIST_OUTPUT_BUFFER_ENTRY is as follows:
 
@@ -9565,14 +9303,15 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-SnapshotName (variable): An array of WCHARs, as specified in [MS-DTYP] section 2.2.60,
+
+SnapshotName (variable): An array of WCHARs, as specified in [MS-DTYP] section 2.2.60,
 
 representing the UNICODE name for the snapshot representing this entry. The size of the array is
 defined in the SnapshotNameLength field.
 
-2.3.66.2
+##### 2.3.66.2 REFS_STREAM_SNAPSHOT_QUERY_DELTAS_OUTPUT_BUFFER
 
-REFS_STREAM_SNAPSHOT_QUERY_DELTAS_OUTPUT_BUFFER
+
 
 The REFS_STREAM_SNAPSHOT_QUERY_DELTAS_OUTPUT_BUFFER is as follows:
 
@@ -9605,7 +9344,7 @@ Reserved (8 bytes): This field MUST be set to zero and MUST be ignored.
 
 Extents (variable): An array of REFS_STREAM_EXTENT structs.
 
-2.3.66.2.1  REFS_STREAM_EXTENT
+###### 2.3.66.2.1 REFS_STREAM_EXTENT
 
 The REFS_STREAM_EXTENT is as follows:
 
@@ -9649,7 +9388,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Length (8 bytes): A signed integer representing the contiguous length in clusters for which the VCN
+
+Length (8 bytes): A signed integer representing the contiguous length in clusters for which the VCN
 
 to LCN mapping holds. This value will always be greater than zero.
 
@@ -9713,7 +9453,7 @@ The metadata extent represents a sparse range within
 the stream. The range represented by this extent is
 analogous to a sparse hole in the stream table.
 
-2.3.67 FSCTL_SET_COMPRESSION Request
+#### 2.3.67 FSCTL_SET_COMPRESSION Request
 
 The FSCTL_SET_COMPRESSION request message requests that the server set the compression state
 of the file or directory associated with the handle on which this FSCTL was invoked. The message
@@ -9764,7 +9504,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 0x0002
 
@@ -9784,7 +9525,7 @@ If the file system of the volume containing the specified file or directory does
 or per-directory compression, the request MUST NOT succeed. The error code returned in this
 situation is specified in section 2.2.
 
-2.3.68 FSCTL_SET_COMPRESSION Reply
+#### 2.3.68 FSCTL_SET_COMPRESSION Reply
 
 This message returns the results of the FSCTL_SET_COMPRESSION request.
 
@@ -9817,7 +9558,7 @@ The disk is full.
 
 0xC00007F
 
-2.3.69 FSCTL_SET_DEFECT_MANAGEMENT Request
+#### 2.3.69 FSCTL_SET_DEFECT_MANAGEMENT Request
 
 Sets the software defect management state for the specified file associated with the handle on which
 this FSCTL was invoked. Used for UDF file systems.
@@ -9853,7 +9594,8 @@ Release: November 21, 2025
 
 108 / 243
 
-2.3.70 FSCTL_SET_DEFECT_MANAGEMENT Reply
+
+#### 2.3.70 FSCTL_SET_DEFECT_MANAGEMENT Reply
 
 The only data item this message returns is a status code, as specified in section 2.2. Upon success,
 the status code returned directly by the function that processes this FSCTL is STATUS_SUCCESS. The
@@ -9911,7 +9653,7 @@ operation.
 
 There are no additional data elements in this reply.
 
-2.3.71 FSCTL_SET_ENCRYPTION Request
+#### 2.3.71 FSCTL_SET_ENCRYPTION Request
 
 The FSCTL_SET_ENCRYPTION request sets the encryption for the file or directory associated with the
 given handle.<64><65>
@@ -9959,7 +9701,8 @@ Release: November 21, 2025
 
 109 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -9988,7 +9731,7 @@ Private (1 byte): An 8-bit unsigned char value.<70>
 
 Padding (3 bytes): These bytes MUST be ignored.
 
-2.3.72 FSCTL_SET_ENCRYPTION Reply
+#### 2.3.72 FSCTL_SET_ENCRYPTION Reply
 
 This message returns the results of the FSCTL_SET_ENCRYPTION request. If the file system of the
 volume containing the specified file or directory does not support encryption, the request MUST NOT
@@ -10065,9 +9808,10 @@ Release: November 21, 2025
 
 110 / 243
 
-2.3.72.1
 
-DECRYPTION_STATUS_BUFFER
+##### 2.3.72.1 DECRYPTION_STATUS_BUFFER
+
+
 
 The DECRYPTION_STATUS_BUFFER is defined as follows.
 
@@ -10089,7 +9833,7 @@ NoEncryptedStreams (1 byte): A Boolean (section 2.1.8) value. A TRUE value means
 encrypted stream of the specified file was just decrypted by an FSCTL_SET_ENCRYPTION
 operation; otherwise, a FALSE value is returned.
 
-2.3.73 FSCTL_SET_INTEGRITY_INFORMATION Request
+#### 2.3.73 FSCTL_SET_INTEGRITY_INFORMATION Request
 
 The FSCTL_SET_INTEGRITY_INFORMATION Request message requests that the server set the
 integrity state of the file or directory associated with the handle on which this FSCTL was
@@ -10172,7 +9916,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 0x0001
 
@@ -10222,7 +9967,7 @@ FSCTL_INTEGRITY_FLAG_CHECKSUM_ENFORCEMENT_OFF
 When set, if a checksum does not match, the
 associated I/O operation will not be failed.
 
-2.3.74 FSCTL_SET_INTEGRITY_INFORMATION Reply
+#### 2.3.74 FSCTL_SET_INTEGRITY_INFORMATION Reply
 
 This message returns the results of the FSCTL_SET_INTEGRITY_INFORMATION
 Request (section 2.3.73).
@@ -10270,7 +10015,8 @@ Release: November 21, 2025
 
 112 / 243
 
-2.3.75 FSCTL_SET_INTEGRITY_INFORMATION_EX Request
+
+#### 2.3.75 FSCTL_SET_INTEGRITY_INFORMATION_EX Request
 
 The FSCTL_SET_INTEGRITY_INFORMATION_EX Request message requests that the server set the
 integrity state of the file or directory associated with the handle on which this FSCTL was
@@ -10364,7 +10110,8 @@ Release: November 21, 2025
 
 113 / 243
 
-2.3.76 FSCTL_SET_INTEGRITY_INFORMATION_EX Reply
+
+#### 2.3.76 FSCTL_SET_INTEGRITY_INFORMATION_EX Reply
 
 This message returns the results of the FSCTL_SET_INTEGRITY_INFORMATION_EX Request (section
 2.3.75).
@@ -10405,13 +10152,13 @@ The disk is full.
 The file has been ghosted (allocation blocks are being
 shared).
 
-2.3.77 FSCTL_SET_OBJECT_ID Request
+#### 2.3.77 FSCTL_SET_OBJECT_ID Request
 
 This message sets the object identifier for the file or directory associated with the handle on which
 this FSCTL was invoked. The message contains a FILE_OBJECTID_BUFFER (section 2.1.3) data
 element. Either a Type 1 or a Type 2 buffer is valid.<77><78>
 
-2.3.78 FSCTL_SET_OBJECT_ID Reply
+#### 2.3.78 FSCTL_SET_OBJECT_ID Reply
 
 This message returns the results of the FSCTL_SET_OBJECT_ID request.
 
@@ -10460,7 +10207,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
- Error code
+
+ Error code
 
  Meaning
 
@@ -10470,7 +10218,7 @@ The volume is write-protected and changes to it cannot be made.
 
 0xC00000A2
 
-2.3.79 FSCTL_SET_OBJECT_ID_EXTENDED Request
+#### 2.3.79 FSCTL_SET_OBJECT_ID_EXTENDED Request
 
 The FSCTL_SET_OBJECT_ID_EXTENDED request message requests that the server set the extended
 information for the file or directory associated with the handle on which this FSCTL was invoked. The
@@ -10502,7 +10250,7 @@ no rules enforced by NTFS as to what these last 48 bytes contain. Contrast this 
 bytes of an object ID, which can be used to open the file, so NTFS requires that they be unique
 within a volume.<79>
 
-2.3.80 FSCTL_SET_OBJECT_ID_EXTENDED Reply
+#### 2.3.80 FSCTL_SET_OBJECT_ID_EXTENDED Reply
 
 This message returns the results of the FSCTL_SET_OBJECT_ID_EXTENDED request.
 
@@ -10550,7 +10298,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.81 FSCTL_SET_REPARSE_POINT Request
+
+#### 2.3.81 FSCTL_SET_REPARSE_POINT Request
 
 This message requests that the server set a reparse point on the file or directory associated with the
 handle on which this FSCTL was invoked.
@@ -10564,7 +10313,7 @@ implemented by the filter driver for that type of reparse point.
 
 This message is applicable only to a file or directory handle, not to a volume handle.
 
-2.3.82 FSCTL_SET_REPARSE_POINT Reply
+#### 2.3.82 FSCTL_SET_REPARSE_POINT Reply
 
 This message returns the results of the FSCTL_SET_REPARSE_POINT request.
 
@@ -10604,7 +10353,7 @@ The file system does not support reparse points.
 
 0xC0000010
 
-2.3.83 FSCTL_SET_SPARSE Request
+#### 2.3.83 FSCTL_SET_SPARSE Request
 
 This message requests that the server mark the file that is associated with the handle on which this
 FSCTL was invoked as sparse. In a sparse file, large ranges of zeros (0) might not require disk
@@ -10622,7 +10371,8 @@ Release: November 21, 2025
 
 116 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10645,7 +10395,7 @@ file that were unsparsed MAY<81> remain unsparsed.
 A TRUE value will cause the sparse flag for the file to set. Currently allocated clusters SHOULD
 NOT<82> be deallocated.
 
-2.3.84 FSCTL_SET_SPARSE Reply
+#### 2.3.84 FSCTL_SET_SPARSE Reply
 
 This message returns the results of the FSCTL_SET_SPARSE request.
 
@@ -10670,7 +10420,7 @@ The handle is not open with write data or write attribute access.
 
 0xC0000022
 
-2.3.85 FSCTL_SET_ZERO_DATA Request
+#### 2.3.85 FSCTL_SET_ZERO_DATA Request
 
 The FSCTL_SET_ZERO_DATA request message requests that the server fill the specified range of the
 file (associated with the handle on which this FSCTL was invoked) with zeros. The message contains a
@@ -10708,14 +10458,15 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-BeyondFinalZero (8 bytes):  A 64-bit signed integer that contains the byte offset of the first byte
+
+BeyondFinalZero (8 bytes):  A 64-bit signed integer that contains the byte offset of the first byte
 
 beyond the last zeroed byte. The value of this field MUST be greater than or equal to 0.
 
 How an implementation zeros data within a file is implementation-dependent. A file system MAY
 choose to deallocate regions of disk space that have been zeroed.<83>
 
-2.3.86 FSCTL_SET_ZERO_DATA Reply
+#### 2.3.86 FSCTL_SET_ZERO_DATA Reply
 
 This message returns the results of the FSCTL_SET_ZERO_DATA request.
 
@@ -10742,7 +10493,7 @@ The handle is not open with write data or write attribute access.
 
 0xC0000022
 
-2.3.87 FSCTL_SET_ZERO_ON_DEALLOCATION Request
+#### 2.3.87 FSCTL_SET_ZERO_ON_DEALLOCATION Request
 
 This message requests that the server fill the clusters of the target file with zeros when they are
 deallocated.<84> This is used to set a file to secure delete mode, which ensures that data will be
@@ -10760,7 +10511,7 @@ with a cluster representing compressed zeros before being reallocated.
 
 This message does not contain any additional data elements.
 
-2.3.88 FSCTL_SET_ZERO_ON_DEALLOCATION Reply
+#### 2.3.88 FSCTL_SET_ZERO_ON_DEALLOCATION Reply
 
 This message returns the results of the FSCTL_SET_ZERO_ON_DEALLOCATION request. The only data
 item this message returns is a status code, as specified in section 2.2. Upon success, the status code
@@ -10785,7 +10536,8 @@ Release: November 21, 2025
 
 118 / 243
 
-2.3.89 FSCTL_SIS_COPYFILE Request
+
+#### 2.3.89 FSCTL_SIS_COPYFILE Request
 
 The FSCTL_SIS_COPYFILE request message requests that the server use the single-instance
 storage (SIS) filter to copy a file. The message contains an SI_COPYFILE data element.
@@ -10873,7 +10625,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.3.90 FSCTL_SIS_COPYFILE Reply
+
+#### 2.3.90 FSCTL_SIS_COPYFILE Reply
 
 This message returns the results of the FSCTL_SIS_COPYFILE request.
 
@@ -10945,7 +10698,7 @@ The caller is not an administrator.
 
 0xC0000022
 
-2.3.91 FSCTL_VIRTUAL_STORAGE_QUERY_PROPERTY Request
+#### 2.3.91 FSCTL_VIRTUAL_STORAGE_QUERY_PROPERTY Request
 
 This request contains a message with the same structure as the IOCTL_STORAGE_QUERY_PROPERTY
 request (section 2.8.1) with the following values:
@@ -10956,7 +10709,7 @@ QueryType (4 bytes): 0x00000000
 
 Remote servers SHOULD ignore this request.<86>
 
-2.3.92 FSCTL_WRITE_USN_CLOSE_RECORD Request
+#### 2.3.92 FSCTL_WRITE_USN_CLOSE_RECORD Request
 
 This message requests that the server generate a record in the server's file system change journal
 stream for the file or directory associated with the handle on which this FSCTL was invoked,
@@ -10968,13 +10721,14 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-indicating that the file or directory was closed. This FSCTL can be called independently of the actual
+
+indicating that the file or directory was closed. This FSCTL can be called independently of the actual
 file close operation to write a USN record and cause a post of any pending USN updates for the
 indicated file.
 
 No data structure is associated with this request.
 
-2.3.93 FSCTL_WRITE_USN_CLOSE_RECORD Reply
+#### 2.3.93 FSCTL_WRITE_USN_CLOSE_RECORD Reply
 
 This message returns the results of the FSCTL_WRITE_USN_CLOSE_RECORD request as a single field,
 Usn, which is a 64-bit signed integer that contains the server file system's USN for the file or
@@ -11002,7 +10756,7 @@ The file system does not support the use of a USN change journal.
 
 0xC0000010
 
-2.4  File Information Classes
+### 2.4 File Information Classes
 
 File information classes are numerical values (specified by the Level column in the following table) that
 specify what information for a file is to be queried or set or for local use<87>. File information classes
@@ -11093,7 +10847,8 @@ Release: November 21, 2025
 
 121 / 243
 
-File information class
+
+File information class
 
 Level  Uses
 
@@ -11292,7 +11047,8 @@ Release: November 21, 2025
 
 122 / 243
 
-File information class
+
+File information class
 
 Level  Uses
 
@@ -11354,7 +11110,7 @@ If an information class is specified that does not match the usage in the above 
 STATUS_INVALID_INFO_CLASS MUST be returned. If a file system does not support a specific file
 information class, STATUS_INVALID_PARAMETER MUST be returned.
 
-2.4.1  FileAccessInformation
+#### 2.4.1 FileAccessInformation
 
 This information class is used to query the access rights of a file that were granted when the file was
 opened.
@@ -11393,7 +11149,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.2  FileAllInformation
+#### 2.4.2 FileAllInformation
 
 This information class is used to query a collection of file information structures.
 
@@ -11406,7 +11162,8 @@ Release: November 21, 2025
 
 123 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -11480,7 +11237,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-NameInformation (variable): A FILE_NAME_INFORMATION structure specified in section 2.4.32.
+
+NameInformation (variable): A FILE_NAME_INFORMATION structure specified in section 2.4.32.
 
 This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file information class is STATUS_SUCCESS. The most
@@ -11497,7 +11255,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.3  FileAlignmentInformation
+#### 2.4.3 FileAlignmentInformation
 
 This information class is used to query the buffer alignment required by the underlying device.
 
@@ -11587,7 +11345,8 @@ Release: November 21, 2025
 
 125 / 243
 
-Value
+
+Value
 
 0X000001FF
 
@@ -11608,7 +11367,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.4  FileAllocationInformation
+#### 2.4.4 FileAllocationInformation
 
 This information class is used to set but not to query the allocation size for a file. The file system is
 passed a 64-bit signed integer containing the file allocation size, in bytes. The file system rounds the
@@ -11678,7 +11437,8 @@ Release: November 21, 2025
 
 126 / 243
 
-2.4.5  FileAlternateNameInformation
+
+#### 2.4.5 FileAlternateNameInformation
 
 This information class is used to query alternate name information for a file. The alternate name for
 a file is its 8.3 format name (eight characters that appear before the "." and three characters that
@@ -11715,7 +11475,7 @@ The output buffer was filled before the complete name could be returned.
 
 0x80000005
 
-2.4.6  FileAttributeTagInformation
+#### 2.4.6 FileAttributeTagInformation
 
 This information class is used to query for attribute and reparse tag information for a file.
 
@@ -11768,7 +11528,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -11778,7 +11539,7 @@ The handle was not opened to read file data or file attributes.
 
 0xC0000022
 
-2.4.7  FileBasicInformation
+#### 2.4.7 FileBasicInformation
 
 This information class is used to query or set file information.
 
@@ -11840,7 +11601,8 @@ Release: November 21, 2025
 
 128 / 243
 
-LastWriteTime (8 bytes): The last time information was written to the file; see section 2.1.1. A
+
+LastWriteTime (8 bytes): The last time information was written to the file; see section 2.1.1. A
 valid time for this field is an integer greater than or equal to 0. When setting file attributes, a
 value of 0 indicates to the server that it MUST NOT change this attribute. When setting file
 attributes, a value of -1 indicates to the server that it MUST NOT change this attribute for all
@@ -11886,7 +11648,7 @@ The handle was not opened to read file data or file attributes.
 
 0xC0000022
 
-2.4.8  FileBothDirectoryInformation
+#### 2.4.8 FileBothDirectoryInformation
 
 This information class is used in directory enumeration to return detailed information about the
 contents of a directory.
@@ -11923,7 +11685,8 @@ Release: November 21, 2025
 
 129 / 243
 
-FileIndex
+
+FileIndex
 
 CreationTime
 
@@ -11989,7 +11752,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-fixed and can be changed at any time to maintain sort order, this field SHOULD be set to 0 and
+
+fixed and can be changed at any time to maintain sort order, this field SHOULD be set to 0 and
 MUST be ignored.<108>
 
 CreationTime (8 bytes): The time when the file was created; see section 2.1.1. This value MUST be
@@ -12069,7 +11833,8 @@ Release: November 21, 2025
 
 131 / 243
 
-2.4.9  FileCompressionInformation
+
+#### 2.4.9 FileCompressionInformation
 
 This information class is used to query compression information for a file.
 
@@ -12162,7 +11927,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-This operation returns a status code as specified in section 2.2. Upon success, the status code
+
+This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file information class is STATUS_SUCCESS. The most
 common error codes are listed in the following table.
 
@@ -12183,7 +11949,7 @@ The data was too large to fit into the specified buffer. No data is returned.
 
 0x80000005
 
-2.4.10 FileDirectoryInformation
+#### 2.4.10 FileDirectoryInformation
 
 This information class is used in directory enumeration to return detailed information about the
 contents of a directory.
@@ -12239,7 +12005,8 @@ Release: November 21, 2025
 
 133 / 243
 
-AllocationSize
+
+AllocationSize
 
 ...
 
@@ -12311,7 +12078,8 @@ Release: November 21, 2025
 
 134 / 243
 
-This operation returns a status code as specified in section 2.2. Upon success, the status code
+
+This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file information class is STATUS_SUCCESS. The most
 common error codes are listed in the following table.
 
@@ -12326,7 +12094,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.11 FileDispositionInformation
+#### 2.4.11 FileDispositionInformation
 
 This information class is used to mark a file for deletion.
 
@@ -12378,7 +12146,7 @@ Indicates that the directory trying to be deleted is not empty.
 
 0xC0000101
 
-2.4.12 FileDispositionInformationEx
+#### 2.4.12 FileDispositionInformationEx
 
 This information class is used to mark a file for deletion.
 
@@ -12405,7 +12173,8 @@ Release: November 21, 2025
 
 135 / 243
 
-Flags (4 bytes): A 32-bit field that specifies options on how the file is deleted.
+
+Flags (4 bytes): A 32-bit field that specifies options on how the file is deleted.
 
 This field contains one or more of the values in the following table.
 
@@ -12514,7 +12283,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 0xC0000121
 
@@ -12522,7 +12292,7 @@ Meaning
 
 deleted.
 
-2.4.13 FileEaInformation
+#### 2.4.13 FileEaInformation
 
 This information class is used to query for the size of the extended attributes (EA) for a file. An
 extended attribute is a piece of application-specific metadata that an application can link with a file
@@ -12563,7 +12333,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.14 FileEndOfFileInformation
+#### 2.4.14 FileEndOfFileInformation
 
 This information class is used to set end-of-file information for a file.
 
@@ -12601,7 +12371,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -12631,7 +12402,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.15 FileFullDirectoryInformation
+#### 2.4.15 FileFullDirectoryInformation
 
 This information class is used in directory enumeration to return detailed information about the
 contents of a directory.
@@ -12685,7 +12456,8 @@ Release: November 21, 2025
 
 138 / 243
 
-...
+
+...
 
 AllocationSize
 
@@ -12759,7 +12531,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-unsigned integer that contains the combined length, in bytes, of the extended attributes (EA) for
+
+unsigned integer that contains the combined length, in bytes, of the extended attributes (EA) for
 the file.
 
 FileName (variable): A sequence of Unicode characters containing the file name. When working with
@@ -12782,7 +12555,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.16 FileFullEaInformation
+#### 2.4.16 FileFullEaInformation
 
 This information class is used to query or set extended attribute (EA) information for a file. For
 queries, the client provides a list of FILE_GET_EA_INFORMATION (section 2.4.16.1) structures, and a
@@ -12838,7 +12611,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -12924,9 +12698,9 @@ following characters:
 
 ASCII values 0x00 - 0x1F,  \ / : * ? " < > | , + = [ ] ;
 
-2.4.16.1
+##### 2.4.16.1 FILE_GET_EA_INFORMATION
 
-FILE_GET_EA_INFORMATION
+
 
 This data structure can be used to specify an explicit list of attributes to query via the
 FileFullEaInformation (section 2.4.16) information class. If no FILE_GET_EA_INFORMATION elements
@@ -12939,7 +12713,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-When multiple FILE_GET_EA_INFORMATION data elements are present in the buffer, each MUST be
+
+When multiple FILE_GET_EA_INFORMATION data elements are present in the buffer, each MUST be
 aligned on a 4-byte boundary. Any bytes inserted for alignment SHOULD be set to zero, and the
 receiver MUST ignore them. No padding is required following the last data element.
 
@@ -12977,7 +12752,7 @@ EaName (variable): An array of 8-bit ASCII characters that contains the extended
 
 followed by a single terminating null character byte.
 
-2.4.17 FileHardLinkInformation
+#### 2.4.17 FileHardLinkInformation
 
 This information class is used locally to query hard links to an existing file.<116> At least one name
 MUST be returned.
@@ -13025,7 +12800,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-This operation returns a status code as specified in section 2.2. Upon success, the status code
+
+This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file information class is STATUS_SUCCESS. The most
 common error codes are listed in the following table.
 
@@ -13054,9 +12830,9 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.17.1
+##### 2.4.17.1 FILE_LINK_ENTRY_INFORMATION
 
-FILE_LINK_ENTRY_INFORMATION
+
 
 The FILE_LINK_ENTRY_INFORMATION packet is used to describe a single hard link to an existing
 file.
@@ -13113,7 +12889,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-2.4.18 FileId64ExtdBothDirectoryInformation
+
+#### 2.4.18 FileId64ExtdBothDirectoryInformation
 
 This information class is used in directory enumeration to return extended information about the
 contents of a directory.
@@ -13181,7 +12958,8 @@ Release: November 21, 2025
 
 144 / 243
 
-ReparsePointTag
+
+ReparsePointTag
 
 ShortNameLength
 
@@ -13260,7 +13038,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-ReparsePointTag (4 bytes): If FILE_ATTRIBUTE_REPARSE_POINT is set in the FileAttributes
+
+ReparsePointTag (4 bytes): If FILE_ATTRIBUTE_REPARSE_POINT is set in the FileAttributes
 field, this field MUST contain a 32-bit unsigned integer value containing the reparse point tag that
 uniquely identifies the owner of the reparse point. Section 2.1.2.1 contains more details on
 reparse tags.
@@ -13304,7 +13083,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.19 FileId64ExtdDirectoryInformation
+#### 2.4.19 FileId64ExtdDirectoryInformation
 
 This information class is used in directory enumeration to return extended information about the
 contents of a directory.
@@ -13340,7 +13119,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-CreationTime
+
+CreationTime
 
 ...
 
@@ -13400,7 +13180,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-CreationTime (8 bytes): The time when the file was created; see section 2.1.1. The value of this
+
+CreationTime (8 bytes): The time when the file was created; see section 2.1.1. The value of this
 
 field MUST be greater than or equal to 0.
 
@@ -13477,7 +13258,8 @@ Release: November 21, 2025
 
 148 / 243
 
-2.4.20 FileIdAllExtdBothDirectoryInformation
+
+#### 2.4.20 FileIdAllExtdBothDirectoryInformation
 
 This information class is used in directory enumeration to return extended information about the
 contents of a directory.
@@ -13545,7 +13327,8 @@ Release: November 21, 2025
 
 149 / 243
 
-ReparsePointTag
+
+ReparsePointTag
 
 FileId
 
@@ -13616,7 +13399,8 @@ Release: November 21, 2025
 
 150 / 243
 
-AllocationSize (8 bytes): A 64-bit signed integer that contains the file allocation size, in bytes. The
+
+AllocationSize (8 bytes): A 64-bit signed integer that contains the file allocation size, in bytes. The
 
 value of this field MUST be an integer multiple of the cluster size.
 
@@ -13680,7 +13464,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.21 FileIdAllExtdDirectoryInformation
+#### 2.4.21 FileIdAllExtdDirectoryInformation
 
 This information class is used in directory enumeration to return extended information about the
 contents of a directory.
@@ -13695,7 +13479,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-When multiple FILE_ID_ALL_EXTD_DIR_INFORMATION data elements are present in the buffer,
+
+When multiple FILE_ID_ALL_EXTD_DIR_INFORMATION data elements are present in the buffer,
 each MUST be aligned on an 8-byte boundary. Any bytes inserted for alignment SHOULD be set to
 zero, and the receiver MUST ignore them. No padding is required following the last data element.
 
@@ -13759,7 +13544,8 @@ Release: November 21, 2025
 
 152 / 243
 
-FileId128
+
+FileId128
 
 …
 
@@ -13833,7 +13619,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-uniquely identifies the owner of the reparse point. section 2.1.2.1 contains more details on reparse
+
+uniquely identifies the owner of the reparse point. section 2.1.2.1 contains more details on reparse
 tags.
 
 FileId (8 bytes): The 64-bit file ID, as specified in section 2.1.9, for the file. For file systems that do
@@ -13866,7 +13653,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.22 FileIdBothDirectoryInformation
+#### 2.4.22 FileIdBothDirectoryInformation
 
 This information class is used in directory enumeration to return detailed information about the
 contents of a directory.
@@ -13910,7 +13697,8 @@ Release: November 21, 2025
 
 154 / 243
 
-LastWriteTime
+
+LastWriteTime
 
 ...
 
@@ -13978,7 +13766,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-LastAccessTime (8 bytes): The last time the file was accessed; see section 2.1.1. The value of this
+
+LastAccessTime (8 bytes): The last time the file was accessed; see section 2.1.1. The value of this
 
 field MUST be greater than or equal to 0.
 
@@ -14059,7 +13848,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 0xC0000004
 
@@ -14067,7 +13857,7 @@ Meaning
 
 required for the specified information class.
 
-2.4.23 FileIdExtdDirectoryInformation
+#### 2.4.23 FileIdExtdDirectoryInformation
 
 This information class is used in directory enumeration to return extended information about the
 contents of a directory.
@@ -14127,7 +13917,8 @@ Release: November 21, 2025
 
 157 / 243
 
-FileAttributes
+
+FileAttributes
 
 FileNameLength
 
@@ -14198,7 +13989,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-FileNameLength (4 bytes): A 32-bit unsigned integer that specifies the length, in bytes, of the file
+
+FileNameLength (4 bytes): A 32-bit unsigned integer that specifies the length, in bytes, of the file
 
 name contained within the FileName member.
 
@@ -14235,7 +14027,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.24 FileIdFullDirectoryInformation
+#### 2.4.24 FileIdFullDirectoryInformation
 
 This information class is used in directory enumeration to return detailed information about the
 contents of a directory.
@@ -14277,7 +14069,8 @@ Release: November 21, 2025
 
 159 / 243
 
-...
+
+...
 
 LastWriteTime
 
@@ -14339,7 +14132,8 @@ Release: November 21, 2025
 
 160 / 243
 
-LastWriteTime (8 bytes): The last time information was written; see section 2.1.1. The value of this
+
+LastWriteTime (8 bytes): The last time information was written; see section 2.1.1. The value of this
 
 field MUST be greater than or equal to 0.
 
@@ -14399,7 +14193,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.25 FileIdGlobalTxDirectoryInformation
+#### 2.4.25 FileIdGlobalTxDirectoryInformation
 
 This information class is used locally to query transactional visibility information for the files in a
 directory. This information class MAY be implemented for file systems that return the
@@ -14416,7 +14210,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-of a subdirectory named "." (synonymous with the target directory itself) within the target directory
+
+of a subdirectory named "." (synonymous with the target directory itself) within the target directory
 and one named ".." (synonymous with the parent directory of the target directory), unless the target
 directory is the root of the volume. For more details, see section 2.1.5.1.
 
@@ -14484,7 +14279,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-...
+
+...
 
 TxInfoFlags
 
@@ -14559,7 +14355,8 @@ Release: November 21, 2025
 
 163 / 243
 
-TxInfoFlags (4 bytes): A 32-bit unsigned integer that contains a bitmask of flags that indicate the
+
+TxInfoFlags (4 bytes): A 32-bit unsigned integer that contains a bitmask of flags that indicate the
 transactional visibility of the file. The value of this field MUST be a bitwise OR of zero or more of
 the following values. Any flag values not explicitly mentioned here can be set to any value and
 MUST be ignored. If the FILE_ID_GLOBAL_TX_DIR_INFO_FLAG_WRITELOCKED flag is not set, the
@@ -14618,7 +14415,7 @@ The request is not supported.
 
 0xC00000BB
 
-2.4.26 FileIdInformation
+#### 2.4.26 FileIdInformation
 
 This information class is used to query the volume serial number and fileid information for a file.
 
@@ -14648,7 +14445,8 @@ Release: November 21, 2025
 
 164 / 243
 
-...
+
+...
 
 ...
 
@@ -14678,7 +14476,7 @@ The specified information record length does not
 match the length that is required for the specified
 information class.
 
-2.4.27 FileInternalInformation
+#### 2.4.27 FileInternalInformation
 
 This information class is used to query for the file system's 64-bit file ID, as specified in section 2.1.9.
 
@@ -14725,7 +14523,8 @@ Release: November 21, 2025
 
 165 / 243
 
-2.4.28 FileLinkInformation
+
+#### 2.4.28 FileLinkInformation
 
 This information class is used to create a hard link to an existing file.<134> The Server Message Block
 (SMB) Protocol [MS-SMB] and the Server Message Block (SMB) Version 2 Protocol [MS-SMB2]
@@ -14793,9 +14592,9 @@ The request is not supported.
 
 0xC00000BB
 
-2.4.28.1
+##### 2.4.28.1 FileLinkInformation for the SMB Protocol
 
-FileLinkInformation for the SMB Protocol
+
 
 This information class is used to create a hard link to an existing file via the SMB Protocol as specified
 in [MS-SMB].
@@ -14828,7 +14627,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-FileName (variable)
+
+FileName (variable)
 
 ...
 
@@ -14857,9 +14657,9 @@ be created. For network operations, this pathname is relative to the root of the
 RootDirectory field is not zero, this field MUST specify a pathname, relative to RootDirectory,
 for the link name.
 
-2.4.28.2
+##### 2.4.28.2 FileLinkInformation for the SMB2 Protocol
 
-FileLinkInformation for the SMB2 Protocol
+
 
 This information class is used to create a hard link to an existing file via the SMB Version 2 Protocol,
 as specified in [MS-SMB2].
@@ -14907,7 +14707,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-RootDirectory (8 bytes): A 64-bit unsigned integer that contains the file handle for the directory
+
+RootDirectory (8 bytes): A 64-bit unsigned integer that contains the file handle for the directory
 
 where the link is to be created. For network operations, this value MUST be zero.
 
@@ -14923,7 +14724,7 @@ RootDirectory field is zero, this field MUST specify a full pathname to the link
 network operations, this pathname is relative to the root of the share. If the RootDirectory field
 is not zero, this field MUST specify a pathname, relative to RootDirectory, for the link name.
 
-2.4.29 FileMailslotQueryInformation
+#### 2.4.29 FileMailslotQueryInformation
 
 This information class is used locally to query information on a mailslot.
 
@@ -14985,7 +14786,8 @@ Release: November 21, 2025
 
 168 / 243
 
-This operation returns a status code as specified in section 2.2. Upon success, the status code
+
+This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file information class is STATUS_SUCCESS. The most
 common error codes are listed in the following table.
 
@@ -15000,7 +14802,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.30 FileMailslotSetInformation
+#### 2.4.30 FileMailslotSetInformation
 
 This information class is used locally to set information on a mailslot.
 
@@ -15056,7 +14858,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.31 FileModeInformation
+#### 2.4.31 FileModeInformation
 
 The FileModeInformation information class is used to query or set the mode of the file. The mode
 returned by a query corresponds to the CreateOptions used in the initial create operation, modified
@@ -15069,7 +14871,8 @@ Release: November 21, 2025
 
 169 / 243
 
-A FILE_MODE_INFORMATION data element, defined as follows, is returned by the server or
+
+A FILE_MODE_INFORMATION data element, defined as follows, is returned by the server or
 provided by the client.
 
 0  1  2  3  4  5  6  7  8  9
@@ -15184,7 +14987,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -15193,7 +14997,7 @@ Meaning
 FILE_SYNCHRONOUS_IO_ALERT and
 FILE_SYNCHRONOUS_IO_NONALERT are both set.
 
-2.4.32 FileNameInformation
+#### 2.4.32 FileNameInformation
 
 This information class is used locally to query the name of a file. This information class returns a
 FILE_NAME_INFORMATION data element containing an absolute pathname (section 2.1.5).
@@ -15218,7 +15022,7 @@ The output buffer was filled before the complete name could be returned.
 
 0x80000005
 
-2.4.33 FileNamesInformation
+#### 2.4.33 FileNamesInformation
 
 This information class is used in directory enumeration to return detailed information about the
 contents of a directory.
@@ -15260,7 +15064,8 @@ Release: November 21, 2025
 
 171 / 243
 
-NextEntryOffset (4 bytes):  A 32-bit unsigned integer that contains the byte offset from the
+
+NextEntryOffset (4 bytes):  A 32-bit unsigned integer that contains the byte offset from the
 
 beginning of this entry, at which the next FILE_NAMES_INFORMATION entry is located, if multiple
 entries are present in a buffer. This member MUST be zero if no other entries follow this one. An
@@ -15297,7 +15102,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.34 FileNetworkOpenInformation
+#### 2.4.34 FileNetworkOpenInformation
 
 This information class is used to query for information that is commonly needed when a file is opened
 across a network.<138>
@@ -15337,7 +15142,8 @@ Release: November 21, 2025
 
 172 / 243
 
-...
+
+...
 
 AllocationSize
 
@@ -15414,7 +15220,8 @@ Release: November 21, 2025
 
 173 / 243
 
-2.4.35 FileNormalizedNameInformation
+
+#### 2.4.35 FileNormalizedNameInformation
 
 This information class is used to query the normalized name of a file. A normalized name is an
 absolute pathname where each short name component has been replaced with the corresponding long
@@ -15443,7 +15250,7 @@ The resource is not supported.
 The output buffer was filled before the complete name
 could be returned.
 
-2.4.36 FileObjectIdInformation
+#### 2.4.36 FileObjectIdInformation
 
 This information class is used locally to query object ID information for the files in a directory on a
 volume. The query MUST fail if the file system does not support object IDs.<140>
@@ -15513,7 +15320,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -15525,9 +15333,9 @@ The output buffer was filled before all of the ObjectID information could
 be returned. Only complete FILE_OBJECTID_INFORMATION structures
 are returned.
 
-2.4.36.1
+##### 2.4.36.1 FILE_OBJECTID_INFORMATION_TYPE_1
 
-FILE_OBJECTID_INFORMATION_TYPE_1
+
 
 A FILE_OBJECTID_INFORMATION_TYPE_1 data element is as follows.
 
@@ -15589,7 +15397,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-that time. After copy operations, move operations, or other file operations, this might not be the
+
+that time. After copy operations, move operations, or other file operations, this might not be the
 same as the object identifier of the volume on which the object presently resides.
 
 BirthObjectId (16 bytes):  A 16-byte GUID value containing the object identifier of the object at the
@@ -15600,9 +15409,9 @@ DomainId (16 bytes):  A 16-byte GUID value containing the domain identifier. Thi
 
 it SHOULD be zero and MUST be ignored.
 
-2.4.36.2
+##### 2.4.36.2 FILE_OBJECTID_INFORMATION_TYPE_2
 
-FILE_OBJECTID_INFORMATION_TYPE_2
+
 
 A FILE_OBJECTID_INFORMATION_TYPE_2 data element is as follows.
 
@@ -15647,7 +15456,7 @@ ExtendedInfo (48 bytes):  A 48-byte BLOB that contains application-specific exte
 on the file object. If no extended information has been written for this file, the server MUST return
 48 bytes of 0x00 in this field.
 
-2.4.37 FilePipeInformation
+#### 2.4.37 FilePipeInformation
 
 This information class is used to query or set information on a named pipe that is not specific to one
 end of the pipe or another.
@@ -15662,7 +15471,8 @@ Release: November 21, 2025
 
 176 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15772,9 +15582,10 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-For more information on named pipes, please see [PIPE].
 
-2.4.38 FilePipeLocalInformation
+For more information on named pipes, please see [PIPE].
+
+#### 2.4.38 FilePipeLocalInformation
 
 This information class is used to query information on a named pipe that is associated with the end of
 the pipe that is being queried.
@@ -15863,7 +15674,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -15963,7 +15775,8 @@ Release: November 21, 2025
 
 179 / 243
 
-This operation returns a status code as specified in section 2.2. Upon success, the status code
+
+This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file information class is STATUS_SUCCESS. The most
 common error codes are listed in the following table.
 
@@ -15980,7 +15793,7 @@ required for the specified information class.
 
 For more information on named pipes, please see [PIPE].
 
-2.4.39 FilePipeRemoteInformation
+#### 2.4.39 FilePipeRemoteInformation
 
 This information class is used to query information on a named pipe that is associated with the client
 end of the pipe that is being queried. Remote information is not available for local pipes or for the
@@ -16031,7 +15844,7 @@ required for the specified information class.
 
 For more information on named pipes, please see [PIPE].
 
-2.4.40 FilePositionInformation
+#### 2.4.40 FilePositionInformation
 
 This information class is used to query or set the position of the file pointer within a file.<143>
 
@@ -16045,7 +15858,8 @@ Release: November 21, 2025
 
 180 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -16092,7 +15906,7 @@ Returned when setting the offset if the CurrentByteOffset is negative or
 the file was opened using the FILE_NO_INTERMEDIATE_BUFFERING flag
 and CurrentByteOffset is not aligned to a sector boundary.
 
-2.4.41 FileQuotaInformation
+#### 2.4.41 FileQuotaInformation
 
 This information class is used to query or to set file quota information for a volume. For queries, an
 optional buffer of FILE_GET_QUOTA_INFORMATION (section 2.4.41.1) data elements is provided by
@@ -16132,7 +15946,8 @@ Release: November 21, 2025
 
 181 / 243
 
-...
+
+...
 
 QuotaUsed
 
@@ -16204,7 +16019,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 Meaning
 
@@ -16242,9 +16058,9 @@ STATUS_BUFFER_TOO_SMALL
 The buffer is too small to contain the entry. No information has been
 written to the buffer.
 
-2.4.41.1
+##### 2.4.41.1 FILE_GET_QUOTA_INFORMATION
 
-FILE_GET_QUOTA_INFORMATION
+
 
 This structure is used to provide the list of SIDs for which quota query information is requested.
 
@@ -16295,7 +16111,8 @@ Release: November 21, 2025
 
 183 / 243
 
-2.4.42 FileRenameInformation
+
+#### 2.4.42 FileRenameInformation
 
 This information class is used to rename a file. The data element provided by the client takes one of
 two forms, depending on whether it is embedded within SMB or SMB2. The structure definitions are as
@@ -16357,9 +16174,9 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.42.1
+##### 2.4.42.1 FileRenameInformation for SMB
 
-FileRenameInformation for SMB
+
 
 This information class is used to rename a file from within the SMB Protocol, as specified in [MS-SMB].
 
@@ -16396,7 +16213,8 @@ Release: November 21, 2025
 
 184 / 243
 
-ReplaceIfExists (1 byte): A Boolean (section 2.1.8) value. Set to TRUE to indicate that if a file with
+
+ReplaceIfExists (1 byte): A Boolean (section 2.1.8) value. Set to TRUE to indicate that if a file with
 the given name already exists, it SHOULD be replaced with the given file. Set to FALSE to indicate
 that the rename operation MUST fail if a file with the given name already exists.
 
@@ -16416,9 +16234,9 @@ FileName (variable): A sequence of Unicode characters containing the new file na
 Filename (section 2.1.5.2). When working with this field, use FileNameLength to determine the
 length of the file name rather than assuming the presence of a trailing null delimiter.
 
-2.4.42.2
+##### 2.4.42.2 FileRenameInformation for SMB2
 
-FileRenameInformation for SMB2
+
 
 This information class is used to rename a file from within the SMB2 Protocol [MS-SMB2].
 
@@ -16477,7 +16295,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-FileName (variable): A sequence of Unicode characters containing the new name of the file. When
+
+FileName (variable): A sequence of Unicode characters containing the new name of the file. When
 working with this field, use FileNameLength to determine the length of the file name rather than
 assuming the presence of a trailing null delimiter.
 
@@ -16485,7 +16304,7 @@ Padding (variable): Length of this field MUST be the number of bytes required to
 
 this structure at least 24. This field MAY be set to 0 and MUST be ignored on receipt.
 
-2.4.43 FileRenameInformationEx
+#### 2.4.43 FileRenameInformationEx
 
 This information class is used to rename a file.
 
@@ -16564,7 +16383,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -16671,7 +16491,8 @@ Release: November 21, 2025
 
 187 / 243
 
-FileName (variable): A sequence of Unicode characters containing the new name of the file. When
+
+FileName (variable): A sequence of Unicode characters containing the new name of the file. When
 working with this field, use FileNameLength to determine the length of the file name rather than
 assuming the presence of a trailing null delimiter.
 
@@ -16679,7 +16500,7 @@ Padding (variable): Length of this field MUST be the number of bytes required to
 
 this structure at least 24. This field MAY be set to 0 and MUST be ignored on receipt.
 
-2.4.44 FileReparsePointInformation
+#### 2.4.44 FileReparsePointInformation
 
 This information class is used locally to query for information on a reparse point.
 
@@ -16751,7 +16572,7 @@ The output buffer was filled before all of the
 FILE_REPARSE_POINT_INFORMATION structures could be returned; a
 partial structure might be returned.
 
-2.4.45 FileSfioReserveInformation
+#### 2.4.45 FileSfioReserveInformation
 
 This information class is used locally to query or set reserved bandwidth for a file handle. Conceptually
 reserving bandwidth is effectively specifying the bytes per second to allocate to file IO.
@@ -16763,7 +16584,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-A FILE_SFIO_RESERVE_INFORMATION data element, defined as follows, is returned to the caller.
+
+A FILE_SFIO_RESERVE_INFORMATION data element, defined as follows, is returned to the caller.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -16834,7 +16656,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.46 FileShortNameInformation
+#### 2.4.46 FileShortNameInformation
 
 This information class is used to change a file's short name. If the supplied name is of zero length,
 the file's existing short name, if any, SHOULD<155> be deleted. Otherwise, the supplied name MUST
@@ -16847,7 +16669,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-names in the same directory as the file being operated on. A caller changing the file's short name
+
+names in the same directory as the file being operated on. A caller changing the file's short name
 MUST have SeRestorePrivilege, as specified in [MS-LSAD] section 3.1.1.2.1.
 
 A FILE_NAME_INFORMATION (section 2.1.7) data element containing an 8.3 file name (section
@@ -16907,7 +16730,7 @@ The specified information record length does not match
 the length that is required for the specified information
 class.
 
-2.4.47 FileStandardInformation
+#### 2.4.47 FileStandardInformation
 
 This information class is used to query file information.
 
@@ -16947,7 +16770,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-AllocationSize (8 bytes): A 64-bit signed integer that contains the file allocation size, in bytes. The
+
+AllocationSize (8 bytes): A 64-bit signed integer that contains the file allocation size, in bytes. The
 
 value of this field MUST be an integer multiple of the cluster size.
 
@@ -16988,7 +16812,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.48 FileStandardLinkInformation
+#### 2.4.48 FileStandardLinkInformation
 
 This information class is used locally to query file link information.<156>
 
@@ -17035,7 +16859,8 @@ Release: November 21, 2025
 
 191 / 243
 
-Directory (1 byte): An 8-bit field that MUST be set to 1 to indicate that the file is a directory;
+
+Directory (1 byte): An 8-bit field that MUST be set to 1 to indicate that the file is a directory;
 
 otherwise, 0.
 
@@ -17064,7 +16889,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.49 FileStreamInformation
+#### 2.4.49 FileStreamInformation
 
 This information class is used to enumerate the data streams of a file or a directory. A buffer of
 FILE_STREAM_INFORMATION data elements is returned by the server.
@@ -17116,7 +16941,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-StreamNameLength (4 bytes):  A 32-bit unsigned integer that contains the length, in bytes, of the
+
+StreamNameLength (4 bytes):  A 32-bit unsigned integer that contains the length, in bytes, of the
 
 stream name string.
 
@@ -17157,7 +16983,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.4.50 FileValidDataLengthInformation
+#### 2.4.50 FileValidDataLengthInformation
 
 This information class is used to set the valid data length information for a file. A file's valid data
 length is the length, in bytes, of the data that has been written to the file. This valid data extends
@@ -17204,7 +17030,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 0xC00000A2
 
@@ -17230,7 +17057,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.5  File System Information Classes
+### 2.5 File System Information Classes
 
 File system information classes are numerical values (specified by the Level column in the following
 table) that specify what information on a particular instance of a file system on a volume is to be
@@ -17310,7 +17137,7 @@ If an Information Class is specified that does not match the usage in the above 
 STATUS_INVALID_INFO_CLASS MUST be returned. If a file system does not implement one of the
 above defined uses of an Information Class, STATUS_INVALID_PARAMETER MUST be returned.
 
-2.5.1  FileFsAttributeInformation
+#### 2.5.1 FileFsAttributeInformation
 
 This information class is used to query attribute information for a file system.
 
@@ -17324,7 +17151,8 @@ Release: November 21, 2025
 
 194 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17439,7 +17267,8 @@ Release: November 21, 2025
 
 195 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -17556,7 +17385,8 @@ Release: November 21, 2025
 
 196 / 243
 
-FileSystemName (variable): A variable-length Unicode field containing the name of the file system.
+
+FileSystemName (variable): A variable-length Unicode field containing the name of the file system.
 This field is not null-terminated and MUST be handled as a sequence of FileSystemNameLength
 bytes. This field is intended to be informative only. A client SHOULD NOT infer file system type
 specific behavior from this field.<169>
@@ -17583,7 +17413,7 @@ STATUS_BUFFER_OVERFLOW
 The output buffer was filled before all of the file system information could
 be returned; only a portion of the FileSystemName field is returned.
 
-2.5.2  FileFsControlInformation
+#### 2.5.2 FileFsControlInformation
 
 This information class is used to query or set quota and content indexing control information for a file
 system volume.
@@ -17634,7 +17464,8 @@ Release: November 21, 2025
 
 197 / 243
 
-Padding
+
+Padding
 
 FreeSpaceStartFiltering (8 bytes): A 64-bit signed integer that contains the minimum amount of
 
@@ -17734,7 +17565,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -17783,7 +17615,7 @@ The file system on the volume does not support quotas.
 
 0xC000029C
 
-2.5.3  FileFsDriverPathInformation
+#### 2.5.3 FileFsDriverPathInformation
 
 This information class is used locally to query if a given driver is in the I/O path for a file system
 volume.
@@ -17829,7 +17661,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-DriverName (variable): A variable-length Unicode field containing the name of the driver for which
+
+DriverName (variable): A variable-length Unicode field containing the name of the driver for which
 
 to query. This sequence of Unicode characters MUST NOT be null-terminated.
 
@@ -17848,7 +17681,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.5.4  FileFsFullSizeInformation
+#### 2.5.4 FileFsFullSizeInformation
 
 This information class is used to query sector size information for a file system volume.
 
@@ -17908,7 +17741,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-This operation returns a status code as specified in section 2.2. Upon success, the status code
+
+This operation returns a status code as specified in section 2.2. Upon success, the status code
 returned by the function that processes this file system information class is STATUS_SUCCESS. The
 most common error codes are listed in the following table.
 
@@ -17923,7 +17757,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.5.5  FileFsLabelInformation
+#### 2.5.5 FileFsLabelInformation
 
 This information class is used locally to set the label for a file system volume.
 
@@ -17969,7 +17803,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.5.6  FileFsObjectIdInformation
+#### 2.5.6 FileFsObjectIdInformation
 
 This information class is used to query or set the object ID for a file system data element. The
 operation MUST fail if the file system does not support object IDs.<175>
@@ -17984,7 +17818,8 @@ Release: November 21, 2025
 
 201 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -18043,7 +17878,7 @@ The file system does not implement object IDs.
 
 0xC000000D
 
-2.5.7  FileFsSectorSizeInformation
+#### 2.5.7 FileFsSectorSizeInformation
 
 This information class is used to query for the extended sector size and alignment information for a
 volume. The message contains a FILE_FS_SECTOR_SIZE_INFORMATION data element.<177>
@@ -18073,7 +17908,8 @@ Release: November 21, 2025
 
 202 / 243
 
-PhysicalBytesPerSectorForPerformance
+
+PhysicalBytesPerSectorForPerformance
 
 FileSystemEffectivePhysicalBytesPerSectorForAtomicity
 
@@ -18160,7 +17996,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-SSINFO_OFFSET_UNKNOWN (0XFFFFFFFF), there was either insufficient information or an error
+
+SSINFO_OFFSET_UNKNOWN (0XFFFFFFFF), there was either insufficient information or an error
 was encountered in computing this field.
 
 This operation returns a status code as specified in section 2.2. Upon success, the status code
@@ -18178,7 +18015,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.5.8  FileFsSizeInformation
+#### 2.5.8 FileFsSizeInformation
 
 This information class is used to query sector size information for a file system volume.
 
@@ -18240,7 +18077,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Error code
+
+Error code
 
 0xC0000004
 
@@ -18248,7 +18086,7 @@ Meaning
 
 required for the specified information class.
 
-2.5.9  FileFsVolumeInformation
+#### 2.5.9 FileFsVolumeInformation
 
 This information class is used to query information on a volume on which a file system is mounted.
 
@@ -18322,7 +18160,8 @@ Release: November 21, 2025
 
 205 / 243
 
-Error code
+
+Error code
 
 Meaning
 
@@ -18340,7 +18179,7 @@ STATUS_BUFFER_OVERFLOW
 The output buffer was filled before all of the volume information could be
 returned; only a portion of the VolumeLabel field is returned.
 
-2.5.10 FileFsDeviceInformation
+#### 2.5.10 FileFsDeviceInformation
 
 This information class is used to query device information associated with a file system volume.
 
@@ -18430,7 +18269,8 @@ like SMB or CIFS.
 
 206 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -18507,7 +18347,7 @@ STATUS_INFO_LENGTH_MISMATCH
 The specified information record length does not match the length that is
 required for the specified information class.
 
-2.6  File Attributes
+### 2.6 File Attributes
 
 The following attributes are defined for files and directories. They can be used in any combination
 unless noted in the description of the attribute's meaning. There is no file attribute with the value
@@ -18537,7 +18377,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -18668,7 +18509,8 @@ on the local system; the item is virtual. Opening the item will be
 
 208 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -18711,12 +18553,12 @@ the file or directory content to be fetched from a remote store.
 Only kernel-mode callers can set this attribute. This attribute is
 for use with hierarchical storage management software.<193>
 
-2.7  Directory Change Notifications
+### 2.7 Directory Change Notifications
 
 The following definitions are part of the Directory Change Notification algorithm defined in [MS-FSA]
 section 2.1.5.11.
 
-2.7.1  FILE_NOTIFY_INFORMATION
+#### 2.7.1 FILE_NOTIFY_INFORMATION
 
 The FILE_NOTIFY_INFORMATION structure contains the changes for which the client is being
 notified. The structure consists of the following.
@@ -18754,7 +18596,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Action (4 bytes): The changes that occurred on the file. This field MUST contain one of the following
+
+Action (4 bytes): The changes that occurred on the file. This field MUST contain one of the following
 
 values.<194>
 
@@ -18867,7 +18710,8 @@ Release: November 21, 2025
 
 210 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -18883,13 +18727,13 @@ FileNameLength (4 bytes): The length, in bytes, of the file name in the FileName
 
 FileName (variable): A Unicode string with the name of the file that changed.
 
-2.8  Cluster Shared Volume File System IOCTLs
+### 2.8 Cluster Shared Volume File System IOCTLs
 
 SQL Server Remote Storage Profile [MS-SQLRS] relies on the I/O control (IOCTL) code structures,
 and definitions in this section, to interpret certain fields that can be sent or received as part of its
 processing. See section 2.3 for more information about processing.
 
-2.8.1  IOCTL_STORAGE_QUERY_PROPERTY Request
+#### 2.8.1 IOCTL_STORAGE_QUERY_PROPERTY Request
 
 The IOCTL_STORAGE_QUERY_PROPERTY Request message requests that the server return the
 properties of a storage device or verify that the request is supported.
@@ -18928,7 +18772,7 @@ PropertyExistsQuery
 
 Query to see whether PropertyId is supported.
 
-2.8.2  IOCTL_STORAGE_QUERY_PROPERTY Reply
+#### 2.8.2 IOCTL_STORAGE_QUERY_PROPERTY Reply
 
 The IOCTL_STORAGE_QUERY_PROPERTY Reply message contains the storage alignment information.
 
@@ -18939,7 +18783,8 @@ Release: November 21, 2025
 
 211 / 243
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -18982,13 +18827,13 @@ BytesOffsetForSectorAlignment (4 bytes): The logical sector offset within the fi
 
 where the first logical sector is placed, in bytes.
 
-2.8.3  IOCTL_VOLUME_GET_GPT_ATTRIBUTES Request
+#### 2.8.3 IOCTL_VOLUME_GET_GPT_ATTRIBUTES Request
 
 The IOCTL_VOLUME_GET_GPT_ATTRIBUTES Request message retrieves the attributes for a volume.
 
 This message does not contain any additional data elements.
 
-2.8.4  IOCTL_VOLUME_GET_GPT_ATTRIBUTES Reply
+#### 2.8.4 IOCTL_VOLUME_GET_GPT_ATTRIBUTES Reply
 
 The IOCTL_VOLUME_GET_GPT_ATTRIBUTES Reply message returns the attributes of the volume.
 
@@ -19016,7 +18861,8 @@ Release: November 21, 2025
 
 212 / 243
 
-Value
+
+Value
 
 Meaning
 
@@ -19047,7 +18893,8 @@ Release: November 21, 2025
 
 213 / 243
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 For structure examples, see the individual protocols (such as the Distributed Link Tracking:
 Workstation Protocol; for more information, see [MS-DLTW] section 3.1.6) that use the structures and
@@ -19060,9 +18907,10 @@ Release: November 21, 2025
 
 214 / 243
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 Allowing the use of native information levels and file system controls by a protocol could
 unintentionally grant access to a wider range of functionality than the protocol author intended.
@@ -19075,7 +18923,7 @@ at the time of protocol design and development before the protocol performs any 
 The latter is significant if the underlying file system might be upgraded to support new functionality
 that was not there when the protocol was initially implemented.
 
-4.2  Index of Security Parameters
+### 4.2 Index of Security Parameters
 
 None.
 
@@ -19086,9 +18934,10 @@ Release: November 21, 2025
 
 215 / 243
 
-5  Appendix A: NTFS Alternate Streams
 
-5.1  NTFS Streams
+## 5 Appendix A: NTFS Alternate Streams
+
+### 5.1 NTFS Streams
 
 All files on an NTFS volume consist of at least one stream - the main stream – this is the normal,
 viewable file in which data is stored. The full name of a stream is of the form below.
@@ -19120,7 +18969,7 @@ Although directories do not have a default data stream, they can have named data
 alternate data streams are not normally visible, but can be observed from a command line using the
 /R option of the DIR command.
 
-5.2  NTFS Attribute Types
+### 5.2 NTFS Attribute Types
 
 On a NTFS volume, each unit of information associated with a file including its name, its owner, its
 timestamp, its contents, and so on, is implemented as a file attribute. A file's data is an attribute; the
@@ -19171,7 +19020,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-Attribute Name
+
+Attribute Name
 
 Description
 
@@ -19218,7 +19068,7 @@ Obsolete. Volume version
 A comprehensive discussion and explanation about attributes is available in [WININTERNALS]
 Chapter 12 and [MSFT-NTFSWorks].
 
-5.3  NTFS Reserved File Names
+### 5.3 NTFS Reserved File Names
 
 NTFS uses a number of names as part of the file system internals. The names used by NTFS within the
 root directory are listed in the following table:
@@ -19282,7 +19132,8 @@ Release: November 21, 2025
 
 217 / 243
 
-Filename
+
+Filename
 
 Description
 
@@ -19325,7 +19176,7 @@ Transactional NTFS
 
 Transactional NTFS log
 
-5.4  NTFS Stream Names
+### 5.4 NTFS Stream Names
 
 NTFS by convention uses names starting with '$' for internal metadata files and streams on those
 internal metadata files. There is no mechanism to stop applications from using names of this form;
@@ -19369,7 +19220,7 @@ Default name for directory streams C:\Users:$I30:$INDEX_ALLOCATION
 
 \$Secure:$SII:$INDEX_ALLOCATION
 
-5.5  NTFS Stream Types
+### 5.5 NTFS Stream Types
 
 Names currently used are as follows:
 
@@ -19380,7 +19231,8 @@ Release: November 21, 2025
 
 218 / 243
 
-NTFS Stream Types
+
+NTFS Stream Types
 
 $DATA
 
@@ -19388,7 +19240,7 @@ $INDEX_ALLOCATION
 
 $BITMAP
 
-5.6  Known Alternate Stream Names
+### 5.6 Known Alternate Stream Names
 
 Selection of an alternate stream name, is in principle, identical to selection of a filename. An
 application might need to check whether a name is in use prior to attempting to use a name. When an
@@ -19397,7 +19249,7 @@ names that it might wish to use. It is advisable to use textual GUID (GUIDString
 in order to avoid conflicts. Injection of streams into files that an application does not completely own
 has the potential to cause unpredictable behavior and can be flagged by virus scanning software.
 
-5.6.1  Zone.Identifier Stream Name
+#### 5.6.1 Zone.Identifier Stream Name
 
 Windows Internet Explorer uses the stream name Zone.Identifier for storage of URL security zones.
 
@@ -19411,14 +19263,14 @@ ZoneId=3
 
 [MSDN-SECZONES] gives an explanation of security zones.
 
-5.6.2  Outlook Express Properties Stream Name
+#### 5.6.2 Outlook Express Properties Stream Name
 
 Outlook Express uses the stream name OECustomProperty for storage of custom properties related to
 email files.
 
 The fully qualified form is sample.eml:OECustomProperty:$DATA
 
-5.6.3  Document Properties Stream Name
+#### 5.6.3 Document Properties Stream Name
 
 Property sets, when applied to files, use a number of different stream names. The initial character is
 Unicode U+2663, known as (BLACK CLUB).
@@ -19441,7 +19293,8 @@ Release: November 21, 2025
 
 219 / 243
 
-5.6.4  Encryptable Thumbnails Stream Name
+
+#### 5.6.4 Encryptable Thumbnails Stream Name
 
 Windows Shell uses the stream name "encryptable" to store attributes relating to thumbnails in the
 thumbnails database.
@@ -19450,7 +19303,7 @@ The fully qualified name would be as follows:
 
 Thumbs.db:encryptable:$DATA
 
-5.6.5  Internet Explorer Favicon Stream Name
+#### 5.6.5 Internet Explorer Favicon Stream Name
 
 Internet Explorer uses the stream name "favicon" for storing favorite ICONs for web pages.
 
@@ -19458,7 +19311,7 @@ The fully qualified name would be as follows:
 
 Pages.url:favicon:$DATA
 
-5.6.6  Macintosh Supported Stream Names
+#### 5.6.6 Macintosh Supported Stream Names
 
 Two stream names exist for compatibility with Macintosh operating system property lists. These
 names are "AFP_AfpInfo" and "AFP_Resource".
@@ -19469,7 +19322,7 @@ Sample.txt:AFP_AfpInfo:$DATA
 
 Sample.txt:AFP_Resource:$DATA
 
-5.6.7  XPRESS Stream Name
+#### 5.6.7 XPRESS Stream Name
 
 The stream name "{59828bbb-3f72-4c1b-a420-b51ad66eb5d3}.XPRESS" is used during remote
 differential compression.
@@ -19485,7 +19338,8 @@ Release: November 21, 2025
 
 220 / 243
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -19554,7 +19408,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<2> Section 2.1.2.1: These are Microsoft reparse tags. Except where explicitly allowed, clients MUST
+
+<2> Section 2.1.2.1: These are Microsoft reparse tags. Except where explicitly allowed, clients MUST
 NOT process the Microsoft reparse tag data buffers.
 
 <3> Section 2.1.2.1: The Windows Home Server Drive Extender is part of the Windows Home Server
@@ -19657,7 +19512,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-though rare, that a different file can have the same 64-bit file ID as a file on that volume had in the
+
+though rare, that a different file can have the same 64-bit file ID as a file on that volume had in the
 past.
 
 ReFS maps a subset of the possible 128-bit file ID values to a 64-bit value using a reversible
@@ -19758,7 +19614,8 @@ Release: November 21, 2025
 
 223 / 243
 
-<15> Section 2.2: The following table lists FSCTLs that are not supported remotely and that, if
+
+<15> Section 2.2: The following table lists FSCTLs that are not supported remotely and that, if
 received by the object store, will respond with a status code other than
 STATUS_INVALID_DEVICE_REQUEST, as specified in section 2.2.
 
@@ -19868,7 +19725,8 @@ Release: November 21, 2025
 
 224 / 243
 
-<26> Section 2.3.18: The LZNT1 is the only compression algorithm implemented on Windows 2000,
+
+<26> Section 2.3.18: The LZNT1 is the only compression algorithm implemented on Windows 2000,
 Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7, and Windows
 Server 2008 R2.
 
@@ -19942,7 +19800,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<37> Section 2.3.41: Clients and servers cannot depend on the TokenTimeToLive field as a true
+
+<37> Section 2.3.41: Clients and servers cannot depend on the TokenTimeToLive field as a true
 timer, because vendors can choose to ignore the requested TTL value or can implement the TTL
 counter in a vendor-specific manner. The TokenTimeToLive field can be interpreted as a hint.
 
@@ -20019,7 +19878,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<46> Section 2.3.52: Windows does not track every piece of zero (0) or nonzero data. Because zero
+
+<46> Section 2.3.52: Windows does not track every piece of zero (0) or nonzero data. Because zero
 (0) is often perfectly legal data, it would be misleading. Instead, the system tracks ranges in which
 disk space is allocated. Where no disk space is allocated, all data bytes within that range for Length
 bytes from FileOffset are assumed to be zero (0) (when data is read, NTFS returns a zero for every
@@ -20162,7 +20022,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<57> Section 2.3.61: Currently supported values are 2 or 3. The MinMajorVersion is <=
+
+<57> Section 2.3.61: Currently supported values are 2 or 3. The MinMajorVersion is <=
 MaxMajorVersion.
 
 <58> Section 2.3.61: Currently supported values are 2 or 3. The MinMajorVersion is <=
@@ -20237,7 +20098,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<69> Section 2.3.71: Windows clears the ATTRIBUTE_FLAG_ENCRYPTED flag from the attribute
+
+<69> Section 2.3.71: Windows clears the ATTRIBUTE_FLAG_ENCRYPTED flag from the attribute
 header and invokes the EFS callback to free the encryption context for the stream.
 
 <70> Section 2.3.71: The Private field is a placeholder marking the beginning of the private portion
@@ -20305,7 +20167,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-conventional and integrity file streams in Windows 8.1 and later and Windows Server 2012 R2
+
+conventional and integrity file streams in Windows 8.1 and later and Windows Server 2012 R2
 operating system and later.
 
 Upon receipt of this message, ReFS might deallocate disk space in the file if the file is stored on a
@@ -20372,7 +20235,8 @@ Release: November 21, 2025
 
 230 / 243
 
-<98> Section 2.4: The CIFS, SMB, and SMB2 protocols do not directly call this information class but
+
+<98> Section 2.4: The CIFS, SMB, and SMB2 protocols do not directly call this information class but
 use the structures associated with it.
 
 <99> Section 2.4: FileRenameInformationEx information class is supported in Windows 10 v1607 and
@@ -20455,7 +20319,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-that the file system not update one or more of these members for I/O operations that are performed
+
+that the file system not update one or more of these members for I/O operations that are performed
 on the caller's file handle by setting the appropriate members to -1. A driver or application can
 subsequently request that the file system resume updating one or more of these members for I/O
 operations that are performed on the caller's file handle by setting the appropriate members to -2.
@@ -20552,7 +20417,8 @@ Windows 10 v1507 and later, and Windows Server
 
 232 / 243
 
-<107> Section 2.4.7: The file system updates the value of the ChangeTime member as appropriate
+
+<107> Section 2.4.7: The file system updates the value of the ChangeTime member as appropriate
 after an I/O operation is performed on a file. However, a driver or application can request that the file
 system not update one or more of these members for I/O operations that are performed on the
 caller's file handle by setting the appropriate members to -1. A driver or application can subsequently
@@ -20634,7 +20500,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<115> Section 2.4.15: When using ReFS or NTFS, the position of a file within the parent directory is
+
+<115> Section 2.4.15: When using ReFS or NTFS, the position of a file within the parent directory is
 not fixed and can be changed at any time. Windows sets this value to zero for files on ReFS and NTFS
 file systems.
 
@@ -20701,7 +20568,8 @@ Release: November 21, 2025
 
 234 / 243
 
-<132> Section 2.4.25: The NTFS, ReFS, FAT, and exFAT file systems return a FileId value of 0 for
+
+<132> Section 2.4.25: The NTFS, ReFS, FAT, and exFAT file systems return a FileId value of 0 for
 the entry named ".." in directory query operations.
 
 <133> Section 2.4.27: The NTFS, ReFS, FAT, and exFAT file systems return a FileId value of 0 for
@@ -20771,7 +20639,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<145> Section 2.4.41: Query and set operations are supported only by the NTFS file system and are
+
+<145> Section 2.4.41: Query and set operations are supported only by the NTFS file system and are
 valid only on handles opened to the NTFS metadata file "\$Extend\$Quota:$Q:$INDEX_ALLOCATION".
 
 <146> Section 2.4.43: FILE_RENAME_SUPPRESS_PIN_STATE_INHERITANCE is supported in Windows
@@ -20840,7 +20709,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-The FILE_READ_ONLY_VOLUME attribute is only available on Windows XP, Windows Server 2003,
+
+The FILE_READ_ONLY_VOLUME attribute is only available on Windows XP, Windows Server 2003,
 Windows Vista, Windows Server 2008, Windows 7, and Windows Server 2008 R2.
 
 The FILE_SUPPORT_INTEGRITY_STREAMS attribute is available only on ReFS/Windows 8.
@@ -20975,7 +20845,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<174> Section 2.5.5: A maximum length of 32 characters is imposed for any Windows file system,
+
+<174> Section 2.5.5: A maximum length of 32 characters is imposed for any Windows file system,
 though some file systems can impose a stricter limit. The Microsoft FAT file system supports volume
 labels that are 0 to 11 characters in length. ReFS and NTFS support volume labels that are 0 to 32
 characters in length. All Unicode characters are permitted in a volume label with the exception of
@@ -21061,7 +20932,8 @@ File System Control Codes
 Copyright © 2025 Microsoft Corporation
 Release: November 21, 2025
 
-<182> Section 2.5.8: In Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
+
+<182> Section 2.5.8: In Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
 Server 2008, Windows 7, and Windows Server 2008 R2, if per-user quotas are in use, this value can
 be less than the total number of allocation units on the disk. Non-Microsoft quota management
 software might display the same behavior as Windows 2000 if that software was implemented as a file
@@ -21115,7 +20987,8 @@ Release: November 21, 2025
 
 239 / 243
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -21178,7 +21051,8 @@ Release: November 21, 2025
 
 240 / 243
 
-8  Index
+
+## 8 Index
 A
 
 Allocate packet 53
@@ -21312,7 +21186,8 @@ FSCTL_CREATE_OR_GET_OBJECT_ID request 36
 
 241 / 243
 
-FSCTL_DELETE_OBJECT_ID reply 37
+
+FSCTL_DELETE_OBJECT_ID reply 37
 FSCTL_DELETE_OBJECT_ID request 37
 FSCTL_DELETE_REPARSE_POINT reply 38
 FSCTL_DELETE_REPARSE_POINT request 37
@@ -21468,7 +21343,8 @@ Overview (synopsis) 16
 
 242 / 243
 
-P
+
+P
 
 Parameter index - security 215
 Parameters - security index 215

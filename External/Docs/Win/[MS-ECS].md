@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 86
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -200,514 +201,203 @@ Release: April 23, 2024
 
 2 / 86
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-2.2.1.10
-2.2.1.11
-2.2.1.12
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-HTTP Headers ............................................................................................ 10
-x-ecs-request-error ............................................................................... 11
-x-ecs-devicename ................................................................................. 11
-x-ecs-share-type .................................................................................. 11
-x-ecs-changes-URL ............................................................................... 12
-x-ecs-partnershipID .............................................................................. 12
-x-ecs-admin-contact.............................................................................. 12
-x-ecs-session-id .................................................................................... 12
-x-ecs-continue ...................................................................................... 12
-x-ecs-metadata-version ......................................................................... 12
-x-ecs-domain ....................................................................................... 13
-x-ecs-server-os-version ......................................................................... 13
-x-ecs-server-rootdns-name .................................................................... 13
-Common Data Structures ............................................................................ 13
-SYNC_BLOB ......................................................................................... 15
-2.2.2.1
-QUOTA_USAGE_ENTRY .......................................................................... 15
-2.2.2.2
-POLICY_ENTRY ..................................................................................... 16
-2.2.2.3
-BATCH_LIMITS_ENTRY .......................................................................... 16
-2.2.2.4
-FILE_METADATA_ENTRY ........................................................................ 16
-2.2.2.5
-FILE_INFO_INPUT_ENTRY ...................................................................... 18
-2.2.2.6
-FILE_INFO_ENTRY ................................................................................ 19
-2.2.2.7
-FILE_STATUS_ENTRY ............................................................................ 20
-2.2.2.8
-2.2.2.9
-UPLOAD_ENTRY .................................................................................... 20
-2.2.2.10  UPLOAD_RESPONSE_ENTRY ................................................................... 21
-2.2.2.11  DOWNLOAD_ENTRY .............................................................................. 22
-2.2.2.12  DOWNLOAD_RESPONSE_ENTRY ............................................................. 22
-FILE_DOWNLOAD_INFO_ENTRY .............................................................. 23
-2.2.2.13
-SYNC_CHANGE_BATCH .......................................................................... 24
-2.2.2.14
-SYNC_MD5HASH ................................................................................... 25
-2.2.2.15
-VECTOR_POLICY_ENTRY ........................................................................ 25
-2.2.2.16
-VECTOR_FILE_METADATA_ENTRY ........................................................... 26
-2.2.2.17
-VECTOR_FILE_INFO_INPUT_ENTRY ......................................................... 26
-2.2.2.18
-VECTOR_FILE_INFO_ENTRY ................................................................... 26
-2.2.2.19
-VECTOR_FILE_STATUS_ENTRY ............................................................... 27
-2.2.2.20
-VECTOR_UPLOAD_ENTRY ....................................................................... 27
-2.2.2.21
-VECTOR_UPLOAD_RESPONSE_ENTRY ...................................................... 28
-2.2.2.22
-VECTOR_DOWNLOAD_ENTRY ................................................................. 28
-2.2.2.23
-VECTOR_DOWNLOAD_RESPONSE_ENTRY ................................................ 29
-2.2.2.24
-VECTOR_FILE_DOWNLOAD_INFO_ENTRY ................................................. 29
-2.2.2.25
-
-[MS-ECS] - v20240423
-Enterprise Client Synchronization Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 86
-
-2.2.2.26
-2.2.2.27
-2.2.2.28
-
-VECTOR_STRING .................................................................................. 29
-ECS_STRING ........................................................................................ 30
-Error Codes .......................................................................................... 30
-
-3.1
-
-3.2
-
-3.1.1
-
-3.1.5.2
-
-3.1.5.3
-
-3.1.1.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.5.3.1
-
-3.1.5.2.1
-
-3.1.6
-3.1.7
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.1.5.2.1.1
-3.1.5.2.1.2
-3.1.5.2.1.3
-
-3.1.5.3.1.1
-3.1.5.3.1.2
-3.1.5.3.1.3
-
-3  Protocol Details ..................................................................................................... 31
-ServiceDiscovery Server Details ......................................................................... 31
-Abstract Data Model .................................................................................... 31
-Per ClientRequestsCount ........................................................................ 31
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 31
-Higher-Layer Triggered Events ..................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-Server Discovery .................................................................................. 32
-GET ............................................................................................... 32
-Request Body ............................................................................ 33
-Response Body .......................................................................... 33
-Processing Details ...................................................................... 33
-Share Discovery .................................................................................... 33
-GET ............................................................................................... 34
-Request Body ............................................................................ 34
-Response Body .......................................................................... 34
-Processing Details ...................................................................... 35
-Server Capabilities ................................................................................ 35
-GET ............................................................................................... 35
-Request Body ............................................................................ 36
-Response Body .......................................................................... 36
-Processing Details ...................................................................... 37
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-DetectServerChanges Server Details .................................................................. 37
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-Detect Server Changes .......................................................................... 38
-HEAD ............................................................................................. 38
-Request Body ............................................................................ 38
-Response Body .......................................................................... 39
-Processing Details ...................................................................... 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-UserConfiguration Server Details ........................................................................ 39
-Abstract Data Model .................................................................................... 39
-Timers ...................................................................................................... 39
-Initialization ............................................................................................... 39
-Higher-Layer Triggered Events ..................................................................... 39
-Message Processing Events and Sequencing Rules .......................................... 39
-User Configuration ................................................................................ 40
-GET ............................................................................................... 40
-Request Body ............................................................................ 40
-Response Body .......................................................................... 40
-Processing Details ...................................................................... 41
-Timer Events .............................................................................................. 41
-Other Local Events ...................................................................................... 41
-PeerSynchronizationSession Server Details.......................................................... 41
-Abstract Data Model .................................................................................... 41
-Global.................................................................................................. 41
-
-3.3.5.1.1.1
-3.3.5.1.1.2
-3.3.5.1.1.3
-
-3.2.5.1.1.1
-3.2.5.1.1.2
-3.2.5.1.1.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-3.3.5
-
-3.3.6
-3.3.7
-
-3.2.6
-3.2.7
-
-3.3.5.1.1
-
-3.2.5.1.1
-
-3.4.1.1
-
-3.3.5.1
-
-3.2.5.1
-
-3.4.1
-
-3.4
-
-3.3
-
-[MS-ECS] - v20240423
-Enterprise Client Synchronization Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 86
-
-3.4.2
-3.4.3
-3.4.4
-3.4.5
-
-3.4.5.2.2
-
-3.4.1.2
-
-3.4.1.2.1
-3.4.1.2.2
-
-3.4.5.1
-
-3.4.5.1.1
-
-3.4.5.2
-
-3.4.5.2.1
-
-3.4.5.2.2.1
-3.4.5.2.2.2
-3.4.5.2.2.3
-
-3.4.5.2.1.1
-3.4.5.2.1.2
-3.4.5.2.1.3
-
-3.4.5.3.1.1
-3.4.5.3.1.2
-3.4.5.3.1.3
-
-3.4.5.1.1.1
-3.4.5.1.1.2
-3.4.5.1.1.3
-
-Per Session .......................................................................................... 41
-Per ChangeBatch ............................................................................. 42
-Per FileMetadata .............................................................................. 42
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 43
-Higher-Layer Triggered Events ..................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-Create Session ..................................................................................... 44
-PUT ............................................................................................... 44
-Request Body ............................................................................ 45
-Response Body .......................................................................... 45
-Processing Details ...................................................................... 45
-Sync Batch Parameters .......................................................................... 47
-GET ............................................................................................... 47
-Request Body ............................................................................ 48
-Response Body .......................................................................... 48
-Processing Details ...................................................................... 48
-PUT ............................................................................................... 48
-Request Body ............................................................................ 49
-Response Body .......................................................................... 49
-Processing Details ...................................................................... 49
-Prepare Batch ....................................................................................... 50
-PUT ............................................................................................... 50
-Request Body ............................................................................ 51
-Response Body .......................................................................... 51
-Processing Details ...................................................................... 51
-Upload Batch ........................................................................................ 52
-PUT ............................................................................................... 52
-Request Body ............................................................................ 53
-Response Body .......................................................................... 53
-Processing Details ...................................................................... 53
-Delete Session ...................................................................................... 54
-DELETE .......................................................................................... 54
-Request Body ............................................................................ 55
-Response Body .......................................................................... 55
-Processing Details ...................................................................... 55
-Download Batch .................................................................................... 55
-GET ............................................................................................... 55
-Request Body ............................................................................ 56
-Response Body .......................................................................... 56
-Processing Details ...................................................................... 56
-Timer Events .............................................................................................. 57
-Other Local Events ...................................................................................... 57
-ServerAPI Server Details ................................................................................... 57
-Abstract Data Model .................................................................................... 57
-Timers ...................................................................................................... 57
-Initialization ............................................................................................... 57
-Higher-Layer Triggered Events ..................................................................... 57
-Message Processing Events and Sequencing Rules .......................................... 57
-Upload Data ......................................................................................... 58
-PUT ............................................................................................... 58
-Request Body ............................................................................ 59
-Response Body .......................................................................... 59
-Processing Details ...................................................................... 59
-Download Data ..................................................................................... 59
-PUT ............................................................................................... 59
-Request Body ............................................................................ 60
-Response Body .......................................................................... 60
-
-3.5.5.1.1.1
-3.5.5.1.1.2
-3.5.5.1.1.3
-
-3.4.5.5.1.1
-3.4.5.5.1.2
-3.4.5.5.1.3
-
-3.4.5.4.1.1
-3.4.5.4.1.2
-3.4.5.4.1.3
-
-3.4.5.6.1.1
-3.4.5.6.1.2
-3.4.5.6.1.3
-
-3.5.5.2.1.1
-3.5.5.2.1.2
-
-3.4.5.3
-
-3.4.5.3.1
-
-3.4.5.4
-
-3.4.5.4.1
-
-3.4.5.5
-
-3.4.5.5.1
-
-3.4.5.6
-
-3.4.5.6.1
-
-3.5.5.1
-
-3.5.5.1.1
-
-3.5.5.2
-
-3.5.5.2.1
-
-3.5
-
-3.4.6
-3.4.7
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-
-[MS-ECS] - v20240423
-Enterprise Client Synchronization Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 86
-
-3.5.6
-3.5.7
-
-3.6
-
-3.6.1
-
-3.5.5.2.1.3
-
-Processing Details ...................................................................... 60
-Timer Events .............................................................................................. 61
-Other Local Events ...................................................................................... 61
-ECS Client Details ............................................................................................ 61
-Abstract Data Model .................................................................................... 61
-Global.................................................................................................. 61
-Per UploadFile ...................................................................................... 62
-Per Share ............................................................................................. 62
-Per DownloadFile .................................................................................. 62
-Per FileMetadata ................................................................................... 62
-Timers ...................................................................................................... 63
-Initialization ............................................................................................... 63
-Higher-Layer Triggering Events .................................................................... 65
-Application Requests Uploading Data To Sync Target ................................. 65
-Message Processing Events and Sequencing Rules .......................................... 65
-Upload Scenario .................................................................................... 65
-Download Scenario ................................................................................ 67
-Timer Events .............................................................................................. 69
-Other Local Events ...................................................................................... 69
-
-3.6.1.1
-3.6.1.2
-3.6.1.3
-3.6.1.4
-3.6.1.5
-
-3.6.2
-3.6.3
-3.6.4
-
-3.6.5
-
-3.6.4.1
-
-3.6.5.1
-3.6.5.2
-
-3.6.6
-3.6.7
-
-4  Protocol Examples ................................................................................................. 70
-Query User Configuration Information and Detect Server Changes ......................... 70
-Upload Scenario ............................................................................................... 75
-Download Scenario ........................................................................................... 79
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 81
-Security Considerations for Implementers ........................................................... 81
-Index of Security Parameters ............................................................................ 81
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 82
-
-7  Change Tracking .................................................................................................... 84
-
-8  Index ..................................................................................................................... 85
-
-[MS-ECS] - v20240423
-Enterprise Client Synchronization Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 86
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Headers](#221-http-headers)
+      - [2.2.1.1 x-ecs-request-error](#2211-x-ecs-request-error)
+      - [2.2.1.2 x-ecs-devicename](#2212-x-ecs-devicename)
+      - [2.2.1.3 x-ecs-share-type](#2213-x-ecs-share-type)
+      - [2.2.1.4 x-ecs-changes-URL](#2214-x-ecs-changes-url)
+      - [2.2.1.5 x-ecs-partnershipID](#2215-x-ecs-partnershipid)
+      - [2.2.1.6 x-ecs-admin-contact](#2216-x-ecs-admin-contact)
+      - [2.2.1.7 x-ecs-session-id](#2217-x-ecs-session-id)
+      - [2.2.1.8 x-ecs-continue](#2218-x-ecs-continue)
+      - [2.2.1.9 x-ecs-metadata-version](#2219-x-ecs-metadata-version)
+      - [2.2.1.10 x-ecs-domain](#22110-x-ecs-domain)
+      - [2.2.1.11 x-ecs-server-os-version](#22111-x-ecs-server-os-version)
+      - [2.2.1.12 x-ecs-server-rootdns-name](#22112-x-ecs-server-rootdns-name)
+    - [2.2.2 Common Data Structures](#222-common-data-structures)
+      - [2.2.2.2 The structure used to specify the current data usage](#2222-the-structure-used-to-specify-the-current-data-usage)
+      - [2.2.2.3 The structure used to specify the policies on how the](#2223-the-structure-used-to-specify-the-policies-on-how-the)
+      - [2.2.2.9 The structure used to specify the status of a file](#2229-the-structure-used-to-specify-the-status-of-a-file)
+      - [2.2.2.10 The structure used to specify the server response data](#22210-the-structure-used-to-specify-the-server-response-data)
+      - [2.2.2.11 DOWNLOAD_RESPONSE_ENTRY](#22211-downloadresponseentry)
+      - [2.2.2.12 FILE_DOWNLOAD_INFO_ENTRY](#22212-filedownloadinfoentry)
+      - [2.2.2.13 SYNC_CHANGE_BATCH](#22213-syncchangebatch)
+      - [2.2.2.14 The structure used to specify the information of the](#22214-the-structure-used-to-specify-the-information-of-the)
+      - [2.2.2.15 The structure that defines the serialization format](#22215-the-structure-that-defines-the-serialization-format)
+      - [2.2.2.16 VECTOR_FILE_METADATA_ENTRY](#22216-vectorfilemetadataentry)
+      - [2.2.2.17 VECTOR_FILE_INFO_INPUT_ENTRY](#22217-vectorfileinfoinputentry)
+      - [2.2.2.18 VECTOR_FILE_INFO_ENTRY](#22218-vectorfileinfoentry)
+      - [2.2.2.19 VECTOR_FILE_STATUS_ENTRY](#22219-vectorfilestatusentry)
+      - [2.2.2.20 VECTOR_UPLOAD_ENTRY](#22220-vectoruploadentry)
+      - [2.2.2.21 VECTOR_UPLOAD_RESPONSE_ENTRY](#22221-vectoruploadresponseentry)
+      - [2.2.2.22 VECTOR_DOWNLOAD_ENTRY](#22222-vectordownloadentry)
+      - [2.2.2.23 The structure representing a collection of](#22223-the-structure-representing-a-collection-of)
+      - [2.2.2.24 VECTOR_DOWNLOAD_RESPONSE_ENTRY](#22224-vectordownloadresponseentry)
+      - [2.2.2.25 VECTOR_FILE_DOWNLOAD_INFO_ENTRY](#22225-vectorfiledownloadinfoentry)
+      - [2.2.2.26 VECTOR_STRING](#22226-vectorstring)
+      - [2.2.2.27 ECS_STRING](#22227-ecsstring)
+      - [2.2.2.28 Error Codes](#22228-error-codes)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 ServiceDiscovery Server Details](#31-servicediscovery-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Per ClientRequestsCount](#3111-per-clientrequestscount)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Server Discovery](#3151-server-discovery)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+      - [3.1.5.2 Share Discovery](#3152-share-discovery)
+        - [3.1.5.2.1 GET](#31521-get)
+          - [3.1.5.2.1.1 Request Body](#315211-request-body)
+          - [3.1.5.2.1.2 Response Body](#315212-response-body)
+          - [3.1.5.2.1.3 Processing Details](#315213-processing-details)
+      - [3.1.5.3 Server Capabilities](#3153-server-capabilities)
+        - [3.1.5.3.1 GET](#31531-get)
+          - [3.1.5.3.1.1 Request Body](#315311-request-body)
+          - [3.1.5.3.1.2 Response Body](#315312-response-body)
+          - [3.1.5.3.1.3 Processing Details](#315313-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 DetectServerChanges Server Details](#32-detectserverchanges-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Detect Server Changes](#3251-detect-server-changes)
+        - [3.2.5.1.1 HEAD](#32511-head)
+          - [3.2.5.1.1.1 Request Body](#325111-request-body)
+          - [3.2.5.1.1.2 Response Body](#325112-response-body)
+          - [3.2.5.1.1.3 Processing Details](#325113-processing-details)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 UserConfiguration Server Details](#33-userconfiguration-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 User Configuration](#3351-user-configuration)
+        - [3.3.5.1.1 GET](#33511-get)
+          - [3.3.5.1.1.1 Request Body](#335111-request-body)
+          - [3.3.5.1.1.2 Response Body](#335112-response-body)
+          - [3.3.5.1.1.3 Processing Details](#335113-processing-details)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 PeerSynchronizationSession Server Details](#34-peersynchronizationsession-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+      - [3.4.1.1 Global](#3411-global)
+      - [3.4.1.2 Per Session](#3412-per-session)
+        - [3.4.1.2.1 Per ChangeBatch](#34121-per-changebatch)
+        - [3.4.1.2.2 Per FileMetadata](#34122-per-filemetadata)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Create Session](#3451-create-session)
+        - [3.4.5.1.1 PUT](#34511-put)
+          - [3.4.5.1.1.1 Request Body](#345111-request-body)
+          - [3.4.5.1.1.2 Response Body](#345112-response-body)
+          - [3.4.5.1.1.3 Processing Details](#345113-processing-details)
+      - [3.4.5.2 Sync Batch Parameters](#3452-sync-batch-parameters)
+        - [3.4.5.2.1 GET](#34521-get)
+          - [3.4.5.2.1.1 Request Body](#345211-request-body)
+          - [3.4.5.2.1.2 Response Body](#345212-response-body)
+          - [3.4.5.2.1.3 Processing Details](#345213-processing-details)
+        - [3.4.5.2.2 PUT](#34522-put)
+          - [3.4.5.2.2.1 Request Body](#345221-request-body)
+          - [3.4.5.2.2.2 Response Body](#345222-response-body)
+          - [3.4.5.2.2.3 Processing Details](#345223-processing-details)
+      - [3.4.5.3 Prepare Batch](#3453-prepare-batch)
+        - [3.4.5.3.1 PUT](#34531-put)
+          - [3.4.5.3.1.1 Request Body](#345311-request-body)
+          - [3.4.5.3.1.2 Response Body](#345312-response-body)
+          - [3.4.5.3.1.3 Processing Details](#345313-processing-details)
+      - [3.4.5.4 Upload Batch](#3454-upload-batch)
+        - [3.4.5.4.1 PUT](#34541-put)
+          - [3.4.5.4.1.1 Request Body](#345411-request-body)
+          - [3.4.5.4.1.2 Response Body](#345412-response-body)
+          - [3.4.5.4.1.3 Processing Details](#345413-processing-details)
+      - [3.4.5.5 Delete Session](#3455-delete-session)
+        - [3.4.5.5.1 DELETE](#34551-delete)
+          - [3.4.5.5.1.1 Request Body](#345511-request-body)
+          - [3.4.5.5.1.2 Response Body](#345512-response-body)
+          - [3.4.5.5.1.3 Processing Details](#345513-processing-details)
+      - [3.4.5.6 Download Batch](#3456-download-batch)
+        - [3.4.5.6.1 GET](#34561-get)
+          - [3.4.5.6.1.1 Request Body](#345611-request-body)
+          - [3.4.5.6.1.2 Response Body](#345612-response-body)
+          - [3.4.5.6.1.3 Processing Details](#345613-processing-details)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 ServerAPI Server Details](#35-serverapi-server-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Upload Data](#3551-upload-data)
+        - [3.5.5.1.1 PUT](#35511-put)
+          - [3.5.5.1.1.1 Request Body](#355111-request-body)
+          - [3.5.5.1.1.2 Response Body](#355112-response-body)
+          - [3.5.5.1.1.3 Processing Details](#355113-processing-details)
+      - [3.5.5.2 Download Data](#3552-download-data)
+        - [3.5.5.2.1 PUT](#35521-put)
+          - [3.5.5.2.1.1 Request Body](#355211-request-body)
+          - [3.5.5.2.1.2 Response Body](#355212-response-body)
+          - [3.5.5.2.1.3 Processing Details](#355213-processing-details)
+    - [3.5.6 Timer Events](#356-timer-events)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+  - [3.6 ECS Client Details](#36-ecs-client-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+      - [3.6.1.1 Global](#3611-global)
+      - [3.6.1.2 Per UploadFile](#3612-per-uploadfile)
+      - [3.6.1.3 Per Share](#3613-per-share)
+      - [3.6.1.4 Per DownloadFile](#3614-per-downloadfile)
+      - [3.6.1.5 Per FileMetadata](#3615-per-filemetadata)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggering Events](#364-higher-layer-triggering-events)
+      - [3.6.4.1 Application Requests Uploading Data To Sync Target](#3641-application-requests-uploading-data-to-sync-target)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Upload Scenario](#3651-upload-scenario)
+      - [3.6.5.2 Download Scenario](#3652-download-scenario)
+    - [3.6.6 Timer Events](#366-timer-events)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Query User Configuration Information and Detect Server Changes](#41-query-user-configuration-information-and-detect-server-changes)
+  - [4.2 Upload Scenario](#42-upload-scenario)
+  - [4.3 Download Scenario](#43-download-scenario)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Enterprise Client Synchronization (ECS) Protocol.
 
@@ -717,7 +407,7 @@ devices in an enterprise network.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -754,14 +444,14 @@ a document or resource on the World Wide Web. The format is as specified in [RFC
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -778,7 +468,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-FSVCA] Microsoft Corporation, "File Set Version Comparison Algorithms".
+
+[MS-FSVCA] Microsoft Corporation, "File Set Version Comparison Algorithms".
 
 [RFC1321] Rivest, R., "The MD5 Message-Digest Algorithm", RFC 1321, April 1992, https://www.rfc-
 editor.org/info/rfc1321
@@ -792,7 +483,7 @@ editor.org/info/rfc1321
 [RFC2818] Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000, https://www.rfc-
 editor.org/info/rfc2818
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-FSA] Microsoft Corporation, "File Attribute Constants", http://msdn.microsoft.com/en-
 us/library/windows/desktop/gg258117(v=vs.85).aspx
@@ -800,7 +491,7 @@ us/library/windows/desktop/gg258117(v=vs.85).aspx
 [MSKB-2891638] Microsoft Corporation, "Work Folders is available on Windows 7 client", April 2014,
 http://support.microsoft.com/kb/2891638
 
-1.3  Overview
+### 1.3 Overview
 
 The Enterprise Client Synchronization Protocol is used to access REST-based file sync services over
 web-based transport.
@@ -846,13 +537,14 @@ Release: April 23, 2024
 
 8 / 86
 
-5.  Delete session.
 
-1.4  Relationship to Other Protocols
+5.  Delete session.
+
+### 1.4 Relationship to Other Protocols
 
 None.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Enterprise Client Synchronization Protocol does not provide a mechanism for a client to discover
 the existence and location of a global sync URI for syncing a namespace. It is a prerequisite that the
@@ -863,12 +555,12 @@ The Enterprise Client Synchronization Protocol does not define an authentication
 scheme. Implementers of this protocol need to review the recommended security prerequisites in
 Security Considerations for Implementers (section 5.1) of this document.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable where file data is required to be synchronized across multiple devices in an
 enterprise network.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol currently supports one version (1.0). The server returns the supported versions in the
 response for Server Capabilities as specified in section 3.1.5.3. The protocol does not provide any
@@ -882,11 +574,11 @@ ECS Protocol version 1
 
 "1.0"
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -897,14 +589,15 @@ Release: April 23, 2024
 
 9 / 86
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Enterprise Client Synchronization Protocol uses HTTP or secure HTTP 1.1 as transport, as specified
 in [RFC2616] and [RFC2818].
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The following table summarizes the server-side resources used by the Enterprise Client
 Synchronization Protocol.
@@ -961,7 +654,7 @@ Download Data
 
 The resource used to receive file data from the server.
 
-2.2.1  HTTP Headers
+#### 2.2.1 HTTP Headers
 
 The following table summarizes the set of HTTP headers defined by this specification.
 
@@ -998,7 +691,8 @@ Release: April 23, 2024
 
 10 / 86
 
-Header
+
+Header
 
 Description
 
@@ -1036,7 +730,7 @@ name
 An anonymous opaque string ID for the organization or organizational unit to which
 the server belongs.
 
-2.2.1.1  x-ecs-request-error
+##### 2.2.1.1 x-ecs-request-error
 
 This header describes request failure information. The value for this header MUST be a string
 representation of the HRESULT in hexadecimal format.
@@ -1049,7 +743,7 @@ x-ecs-request-error: "0x8007005"
 / "e" / "f" / "A" / "B" / "C" / "D" / "E" / "F" / "x"
  x-ecs-request-error = 8 hexdigit
 
-2.2.1.2  x-ecs-devicename
+##### 2.2.1.2 x-ecs-devicename
 
 A string representing the name and operating system of the device issuing the request in the following
 format:
@@ -1076,49 +770,50 @@ Release: April 23, 2024
 
 11 / 86
 
-2.2.1.3  x-ecs-share-type
+
+##### 2.2.1.3 x-ecs-share-type
 
 A string representing the type of the share to discover.
 
  String = *(%x20-7E)
  x-ecs-share-type = String
 
-2.2.1.4  x-ecs-changes-URL
+##### 2.2.1.4 x-ecs-changes-URL
 
 This header provides the URL to be used by the client to poll for changes on the server.
 
  String = *(%x20-7E)
  x-ecs-changes-URL = String
 
-2.2.1.5  x-ecs-partnershipID
+##### 2.2.1.5 x-ecs-partnershipID
 
 A string representing the PartnershipId for a sync target. This value MUST be Base64-encoded.
 
  String = *(%x20-7E)
  x-ecs-partnershipID = String
 
-2.2.1.6  x-ecs-admin-contact
+##### 2.2.1.6 x-ecs-admin-contact
 
 A string representing the email contact of the server admin.
 
  String = *(%x20-7E)
  x-ecs-admin-contact = String
 
-2.2.1.7  x-ecs-session-id
+##### 2.2.1.7 x-ecs-session-id
 
 An implementation-specific string that identifies the session.
 
  String = *(%x20-7E)
  x-ecs-session-id = String
 
-2.2.1.8  x-ecs-continue
+##### 2.2.1.8 x-ecs-continue
 
 The opaque continuation token received from the server in a download batch operation.
 
  String = *(%x20-7E)
  x-ecs-continue = String
 
-2.2.1.9  x-ecs-metadata-version
+##### 2.2.1.9 x-ecs-metadata-version
 
 A string containing the version of the server metadata for the current sync replica.
 
@@ -1129,12 +824,13 @@ Release: April 23, 2024
 
 12 / 86
 
- String = *(%x20-7E)
+
+ String = *(%x20-7E)
  x-ecs-metadata-version = String
 
-2.2.1.10
+##### 2.2.1.10 x-ecs-domain
 
-x-ecs-domain
+
 
 When present, this header indicates that the client is part of an Active Directory domain and the
 header value contains the FQDN of the domain. If omitted, or if the value is an empty string, the
@@ -1143,18 +839,18 @@ client is considered to not be in a domain.
  String = *(%x20-7E)
  x-ecs-domain = String
 
-2.2.1.11
+##### 2.2.1.11 x-ecs-server-os-version
 
-x-ecs-server-os-version
+
 
 When present, this header indicates the operating-system build number of the server.
 
  String = *(%x20-7E)
  x-ecs-server-os-version = String
 
-2.2.1.12
+##### 2.2.1.12 x-ecs-server-rootdns-name
 
-x-ecs-server-rootdns-name
+
 
 When present, this header indicates an anonymous opaque string ID for the organization or
 organizational unit to which the server belongs.
@@ -1162,7 +858,7 @@ organizational unit to which the server belongs.
  String = *(%x20-7E)
  x-ecs-server-rootdns-name = String
 
-2.2.2  Common Data Structures
+#### 2.2.2 Common Data Structures
 
 The following table summarizes the set of common data structures defined by this specification.
 Common data types are specified in [MS-DTYP].
@@ -1201,16 +897,16 @@ The structure used to specify a binary stream of data.
 
 QUOTA_USAGE_ENTRY
 
-2.2.2.2
+##### 2.2.2.2 The structure used to specify the current data usage
 
-The structure used to specify the current data usage
+
 of a user on the sync target share.
 
 POLICY_ENTRY
 
-2.2.2.3
+##### 2.2.2.3 The structure used to specify the policies on how the
 
-The structure used to specify the policies on how the
+
 client is expected to set up its target directory.
 
 [MS-ECS] - v20240423
@@ -1220,7 +916,8 @@ Release: April 23, 2024
 
 13 / 86
 
-Structure Name
+
+Structure Name
 
 Section
 
@@ -1262,9 +959,9 @@ UPLOAD_ENTRY
 
 2.2.2.8
 
-2.2.2.9
+##### 2.2.2.9 The structure used to specify the status of a file
 
-The structure used to specify the status of a file
+
 commit in a sync process.
 
 The structure used to specify information of the data
@@ -1272,28 +969,28 @@ for a file that is being uploaded to the server.
 
 UPLOAD_RESPONSE_ENTRY
 
-2.2.2.10
+##### 2.2.2.10 The structure used to specify the server response data
 
-The structure used to specify the server response data
+
 for a file being uploaded.
 
 DOWNLOAD_ENTRY
 
-2.2.2.11
+##### 2.2.2.11 DOWNLOAD_RESPONSE_ENTRY
 
-DOWNLOAD_RESPONSE_ENTRY
 
-2.2.2.12
 
-FILE_DOWNLOAD_INFO_ENTRY
+##### 2.2.2.12 FILE_DOWNLOAD_INFO_ENTRY
 
-2.2.2.13
 
-SYNC_CHANGE_BATCH
 
-2.2.2.14
+##### 2.2.2.13 SYNC_CHANGE_BATCH
 
-The structure used to specify the information of the
+
+
+##### 2.2.2.14 The structure used to specify the information of the
+
+
 data for a file that is being downloaded from the
 server.
 
@@ -1308,44 +1005,44 @@ changes to be synchronized.
 
 SYNC_MD5HASH
 
-2.2.2.15
+##### 2.2.2.15 The structure that defines the serialization format
 
-The structure that defines the serialization format
+
 used by this protocol for MD5 hash data.
 
 VECTOR_POLICY_ENTRY
 
-2.2.2.16
+##### 2.2.2.16 VECTOR_FILE_METADATA_ENTRY
 
-VECTOR_FILE_METADATA_ENTRY
 
-2.2.2.17
 
-VECTOR_FILE_INFO_INPUT_ENTRY
+##### 2.2.2.17 VECTOR_FILE_INFO_INPUT_ENTRY
 
-2.2.2.18
 
-VECTOR_FILE_INFO_ENTRY
 
-2.2.2.19
+##### 2.2.2.18 VECTOR_FILE_INFO_ENTRY
 
-VECTOR_FILE_STATUS_ENTRY
 
-2.2.2.20
 
-VECTOR_UPLOAD_ENTRY
+##### 2.2.2.19 VECTOR_FILE_STATUS_ENTRY
 
-2.2.2.21
 
-VECTOR_UPLOAD_RESPONSE_ENTRY
 
-2.2.2.22
+##### 2.2.2.20 VECTOR_UPLOAD_ENTRY
 
-VECTOR_DOWNLOAD_ENTRY
 
-2.2.2.23
 
-The structure representing a collection of
+##### 2.2.2.21 VECTOR_UPLOAD_RESPONSE_ENTRY
+
+
+
+##### 2.2.2.22 VECTOR_DOWNLOAD_ENTRY
+
+
+
+##### 2.2.2.23 The structure representing a collection of
+
+
 POLICY_ENTRY structures.
 
 The structure representing a collection of
@@ -1376,7 +1073,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Structure Name
+
+Structure Name
 
 Section
 
@@ -1471,7 +1169,8 @@ Release: April 23, 2024
 
 15 / 86
 
-UserUsage (8 bytes): A 64-bit unsigned integer that contains the amount of data, in bytes, in the
+
+UserUsage (8 bytes): A 64-bit unsigned integer that contains the amount of data, in bytes, in the
 
 user's share.
 
@@ -1568,7 +1267,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 SyncVersion
 
@@ -1625,7 +1325,8 @@ Release: April 23, 2024
 
 17 / 86
 
-FileId (24 bytes): An identifier that uniquely identifies the file or directory. This MUST be in the
+
+FileId (24 bytes): An identifier that uniquely identifies the file or directory. This MUST be in the
 
 format specified in [MS-FSVCA] section 2.1.
 
@@ -1709,7 +1410,8 @@ Release: April 23, 2024
 
 18 / 86
 
-...
+
+...
 
 ...
 
@@ -1776,7 +1478,8 @@ Release: April 23, 2024
 
 19 / 86
 
-Uri (variable): An ECS_STRING structure containing the URI used to perform data transfer for this
+
+Uri (variable): An ECS_STRING structure containing the URI used to perform data transfer for this
 
 file. The string in this structure MUST be empty.
 
@@ -1861,7 +1564,8 @@ Release: April 23, 2024
 
 20 / 86
 
-…
+
+…
 
 Offset
 
@@ -1935,7 +1639,8 @@ Release: April 23, 2024
 
 21 / 86
 
-…
+
+…
 
 …
 
@@ -2006,7 +1711,8 @@ Release: April 23, 2024
 
 22 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2086,7 +1792,8 @@ Release: April 23, 2024
 
 23 / 86
 
-...
+
+...
 
 ...
 
@@ -2157,7 +1864,8 @@ Release: April 23, 2024
 
 24 / 86
 
-Files (variable): A VECTOR_FILE_METADATA_ENTRY structure containing metadata information for
+
+Files (variable): A VECTOR_FILE_METADATA_ENTRY structure containing metadata information for
 
 all files in the sync batch.
 
@@ -2238,7 +1946,8 @@ Release: April 23, 2024
 
 25 / 86
 
-2.2.2.17
+
+2.2.2.17
 
 VECTOR_FILE_METADATA_ENTRY
 
@@ -2316,7 +2025,8 @@ Release: April 23, 2024
 
 26 / 86
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2402,7 +2112,8 @@ Release: April 23, 2024
 
 27 / 86
 
-...
+
+...
 
 ...
 
@@ -2483,9 +2194,10 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.24
 
-VECTOR_DOWNLOAD_RESPONSE_ENTRY
+##### 2.2.2.24 VECTOR_DOWNLOAD_RESPONSE_ENTRY
+
+
 
 The VECTOR_DOWNLOAD_RESPONSE_ENTRY structure represents a collection of
 DOWNLOAD_RESPONSE_ENTRY structures, as specified in section 2.2.2.12, in the following format:
@@ -2511,9 +2223,9 @@ EntryStreamBytes (variable): An array of zero or more DOWNLOAD_RESPONSE_ENTRY st
 
 representing server response data for a file being downloaded.
 
-2.2.2.25
+##### 2.2.2.25 VECTOR_FILE_DOWNLOAD_INFO_ENTRY
 
-VECTOR_FILE_DOWNLOAD_INFO_ENTRY
+
 
 The VECTOR_FILE_DOWNLOAD_INFO_ENTRY structure represents a collection of
 FILE_DOWNLOAD_INFO_ENTRY structures, as specified in section 2.2.2.13, in the following format:
@@ -2543,9 +2255,9 @@ EntryStreamBytes (Vector): An array of zero or more FILE_DOWNLOAD_INFO_ENTRY str
 
 representing information that is required to download file content.
 
-2.2.2.26
+##### 2.2.2.26 VECTOR_STRING
 
-VECTOR_STRING
+
 
 The VECTOR_STRING structure represents a collection of strings in the following format:
 
@@ -2573,7 +2285,8 @@ Release: April 23, 2024
 
 29 / 86
 
-...
+
+...
 
 NumEntries (4 bytes): A 32-bit unsigned integer containing the number of ECS_STRING structures
 
@@ -2581,9 +2294,9 @@ in EntryStreamBytes.
 
 EntryStreamBytes (variable): An array of ECS_STRING structures, as specified in section 2.2.2.27.
 
-2.2.2.27
+##### 2.2.2.27 ECS_STRING
 
-ECS_STRING
+
 
 The ECS_STRING structure represents a string in the following format:
 
@@ -2612,9 +2325,9 @@ field.
 
 EntryStreamBytes (variable): A UTF-8 string.
 
-2.2.2.28
+##### 2.2.2.28 Error Codes
 
-Error Codes
+
 
 The following HRESULT codes are defined in this document.
 
@@ -2673,7 +2386,8 @@ Release: April 23, 2024
 
 30 / 86
 
-3  Protocol Details
+
+## 3 Protocol Details
 
   The resources defined by this protocol are categorized as follows:
 
@@ -2692,9 +2406,9 @@ this document.
 
 The following sections describe the processing of each resource in the above mentioned categories.
 
-3.1  ServiceDiscovery Server Details
+### 3.1 ServiceDiscovery Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
  This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in the Enterprise Client Synchronization Protocol. The described organization
@@ -2714,17 +2428,17 @@ ClientRequestsCountTable: A table of number of pending requests indexed by Partn
 
 specified in section 3.1.1.1.
 
-3.1.1.1  Per ClientRequestsCount
+##### 3.1.1.1 Per ClientRequestsCount
 
 UserId: An identifier that uniquely identifies a user.
 
 Count: A numeric value specifying the number of pending requests on the server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST initialize the following:
 
@@ -2739,13 +2453,14 @@ Release: April 23, 2024
 
 31 / 86
 
-PartnershipIdList MUST be set to empty.
 
-3.1.4  Higher-Layer Triggered Events
+PartnershipIdList MUST be set to empty.
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -2791,7 +2506,7 @@ Server Error
 
 Unexpected server error. Specific error code in the request error header.
 
-3.1.5.1  Server Discovery
+##### 3.1.5.1 Server Discovery
 
 The Server Discovery resource represents a list of servers that expose the synchronization
 namespace.
@@ -2804,7 +2519,7 @@ GET
 
 Enumerate a list of servers that expose the synchronization namespace.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 This operation is transported by an HTTP GET request.
 
@@ -2825,7 +2540,8 @@ Release: April 23, 2024
 
 32 / 86
 
-Request
+
+Request
 header
 
 x-ecs-
@@ -2885,11 +2601,11 @@ attribute or the AD schema does not support the attribute.
 
 Unexpected server error. Specific error code in the request error header.
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 None.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The response for this method contains the following:
 
@@ -2903,11 +2619,11 @@ ServerUrls: A list of host server URL prefixes that the client can connect to fo
 
 operations.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The server MUST fill the response body with the URLs from HostURLPrefixList.
 
-3.1.5.2  Share Discovery
+##### 3.1.5.2 Share Discovery
 
 This resource represents the sync share on the server for a user.
 
@@ -2920,13 +2636,14 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HTTP method  Description
+
+HTTP method  Description
 
 GET
 
 Query the properties of the sync share
 
-3.1.5.2.1 GET
+###### 3.1.5.2.1 GET
 
 This operation is transported by an HTTP GET request.
 
@@ -2994,11 +2711,11 @@ having access).
 
 Unexpected server error.
 
-3.1.5.2.1.1  Request Body
+###### 3.1.5.2.1.1 Request Body
 
 None.
 
-3.1.5.2.1.2  Response Body
+###### 3.1.5.2.1.2 Response Body
 
 The response for this method contains the following:
 
@@ -3009,7 +2726,8 @@ Release: April 23, 2024
 
 34 / 86
 
-Entry
+
+Entry
 
 Type
 
@@ -3033,7 +2751,7 @@ share.
 
 DataSize: Total size of the user data on the sync share for this user in bytes.
 
-3.1.5.2.1.3  Processing Details
+###### 3.1.5.2.1.3 Processing Details
 
 If the request contains x-ecs-share-type header and its value is not "User Data", the server MUST fail
 the request with a status code of 404.
@@ -3050,7 +2768,7 @@ The server MUST allocate a ClientRequestsCount object and MUST be inserted into
 ClientRequestsCountTable. ClientRequestsCount.UserId MUST be set in an implementation-
 specific manner and ClientRequestsCount.Count MUST be set to zero.
 
-3.1.5.3  Server Capabilities
+##### 3.1.5.3 Server Capabilities
 
 The Server Capabilities resource represents information about the protocol support on the server.
 
@@ -3062,7 +2780,7 @@ GET
 
 Query protocol support information from the server.
 
-3.1.5.3.1 GET
+###### 3.1.5.3.1 GET
 
 This operation is transported by an HTTP GET request.
 
@@ -3081,7 +2799,8 @@ Release: April 23, 2024
 
 35 / 86
 
-The request message for this operation contains the following HTTP headers.
+
+The request message for this operation contains the following HTTP headers.
 
 Request
 header
@@ -3149,11 +2868,11 @@ Success
 
 Unexpected server error.
 
-3.1.5.3.1.1  Request Body
+###### 3.1.5.3.1.1 Request Body
 
 None.
 
-3.1.5.3.1.2  Response Body
+###### 3.1.5.3.1.2 Response Body
 
 The response for this method contains the following:
 
@@ -3180,7 +2899,8 @@ Release: April 23, 2024
 
 36 / 86
 
-3.1.5.3.1.3  Processing Details
+
+###### 3.1.5.3.1.3 Processing Details
 
 If the server supports file batching for data transfer, the server MUST set the bit to 0x01 in
 ProtocolType in the response body.
@@ -3188,33 +2908,33 @@ ProtocolType in the response body.
 The server SHOULD<4> add x-ecs-server-os-version and x-ecs-server-rootdns-name in the response
 header.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  DetectServerChanges Server Details
+### 3.2 DetectServerChanges Server Details
 
-3.2.1  Abstract Data Model
-
-None.
-
-3.2.2  Timers
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.3  Initialization
+#### 3.2.2 Timers
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.3 Initialization
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -3245,7 +2965,8 @@ Release: April 23, 2024
 
 37 / 86
 
-3.2.5.1  Detect Server Changes
+
+##### 3.2.5.1 Detect Server Changes
 
 The Detect Server Changes resource allows the client to poll for the changes on the server.
 
@@ -3255,7 +2976,7 @@ HEAD
 
 Query the changes on the server.
 
-3.2.5.1.1 HEAD
+###### 3.2.5.1.1 HEAD
 
 This operation is transported by an HTTP HEAD request.
 
@@ -3321,7 +3042,7 @@ Server knowledge did not change.
 
 Request timeout.
 
-3.2.5.1.1.1  Request Body
+###### 3.2.5.1.1.1 Request Body
 
 None.
 
@@ -3332,11 +3053,12 @@ Release: April 23, 2024
 
 38 / 86
 
-3.2.5.1.1.2  Response Body
+
+###### 3.2.5.1.1.2 Response Body
 
 None.
 
-3.2.5.1.1.3  Processing Details
+###### 3.2.5.1.1.3 Processing Details
 
 If there is any change in the URL where the client polls, the server SHOULD<5> set the new URI in
 the x-ecs-changes-URL response header and send a response with status code 200.
@@ -3354,33 +3076,33 @@ PartnershipId in the ETag response header and MUST set the status code to 200.
 If the If-None-Match header is provided in the request and its value is same as the version of the data
 for the provided PartnershipId, the server MUST set the status code to 304.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  UserConfiguration Server Details
+### 3.3 UserConfiguration Server Details
 
-3.3.1  Abstract Data Model
-
-None.
-
-3.3.2  Timers
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.3  Initialization
+#### 3.3.2 Timers
 
 None.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.3 Initialization
 
 None.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -3395,7 +3117,8 @@ Release: April 23, 2024
 
 39 / 86
 
-3.3.5.1  User Configuration
+
+##### 3.3.5.1 User Configuration
 
 HTTP method  Description
 
@@ -3403,7 +3126,7 @@ GET
 
 Query user configuration information for a sync target share.
 
-3.3.5.1.1 GET
+###### 3.3.5.1.1 GET
 
 This operation is transported by an HTTP GET request.
 
@@ -3438,11 +3161,11 @@ if the client is not part of a domain.
 
 Optional  A string, as specified in section 2.2.1.2.
 
-3.3.5.1.1.1  Request Body
+###### 3.3.5.1.1.1 Request Body
 
 None.
 
-3.3.5.1.1.2  Response Body
+###### 3.3.5.1.1.2 Response Body
 
 The response for this method contains the following:
 
@@ -3479,11 +3202,12 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AdminInfo: A server-configured String value containing the server admin contact information. If the
+
+AdminInfo: A server-configured String value containing the server admin contact information. If the
 
 Length field is 0, this field is empty.
 
-3.3.5.1.1.3  Processing Details
+###### 3.3.5.1.1.3 Processing Details
 
 The server MUST query the QuotaUsage on the sync share in an implementation-specific manner,
 construct the QUOTA_USAGE_ENTRY structure as specified in section 2.2.2.2, and set the QuotaUsage
@@ -3496,17 +3220,17 @@ VECTOR_POLICY_ENTRY structure using each policy being applied. The server MUST s
 in the response body to the VECTOR_POLICY_ENTRY structure. The server MUST set AdminInfo in an
 implementation-specific manner.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  PeerSynchronizationSession Server Details
+### 3.4 PeerSynchronizationSession Server Details
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in the Enterprise Client Synchronization Protocol. The described organization
@@ -3514,7 +3238,7 @@ is provided to facilitate the explanation of how the protocol behaves. This docu
 that implementations adhere to this model as long as their external behavior is consistent with that
 described in this document.
 
-3.4.1.1  Global
+##### 3.4.1.1 Global
 
 The server implements the following:
 
@@ -3524,7 +3248,7 @@ FileMetadataTable: A table of file metadata indexed by ObjectStoreID, as specifi
 
 3.4.1.2.2.
 
-3.4.1.2  Per Session
+##### 3.4.1.2 Per Session
 
 SessionLocationURL: The URL prefix used to access this session.
 
@@ -3545,9 +3269,10 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SessionType: The type of session. This contains one of the values specified in section 3.4.5.1.1.1.
 
-3.4.1.2.1 Per ChangeBatch
+SessionType: The type of session. This contains one of the values specified in section 3.4.5.1.1.1.
+
+###### 3.4.1.2.1 Per ChangeBatch
 
 MetaData: Contains the metadata describing the changes to be synchronized, as specified in section
 
@@ -3557,7 +3282,7 @@ FileInfoList: Contains the collection of FILE_DOWNLOAD_INFO_ENTRY structures, as
 
 section 2.2.2.13.
 
-3.4.1.2.2 Per FileMetadata
+###### 3.4.1.2.2 Per FileMetadata
 
 ObjectStoreID: A file identifier used by the object store to uniquely identify the file in the share.
 
@@ -3618,7 +3343,7 @@ FileName: Name of the file or directory.
 
 OriginatingDeviceName: Name of the device where the last change to this file occurred.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
@@ -3629,7 +3354,8 @@ Release: April 23, 2024
 
 42 / 86
 
-3.4.3  Initialization
+
+#### 3.4.3 Initialization
 
 The server MUST set SessionList to empty.
 
@@ -3637,11 +3363,11 @@ The server MUST set LastSentToken and LastReceivedToken to empty.
 
 The server MUST set FileMetadataTable to empty.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 None.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 If x-ecs-partnershipID is not present in the request header, the server MUST set x-ecs-request-error
 to ECS_E_SYNC_REQUIRED_HTTP_HEADER_MISSING, as specified in section 2.2.2.28, and the HTTP
@@ -3708,7 +3434,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Status
+
+Status
 code
 
 Reason
@@ -3757,7 +3484,7 @@ Conflict
 
 Batch already received.
 
-3.4.5.1  Create Session
+##### 3.4.5.1 Create Session
 
 The Create Session resource facilitates a client to start a sync session on the server.
 
@@ -3767,7 +3494,7 @@ PUT
 
 Create a new sync session.
 
-3.4.5.1.1 PUT
+###### 3.4.5.1.1 PUT
 
 This operation is transported by an HTTP PUT request.
 
@@ -3818,7 +3545,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Response
+
+Response
 header
 
 Usage
@@ -3862,7 +3590,7 @@ The response contains the URI prefix for a newly created session.
 
 Invalid session type.
 
-3.4.5.1.1.1  Request Body
+###### 3.4.5.1.1.1 Request Body
 
 The request body for this method MUST contain the following.
 
@@ -3900,11 +3628,11 @@ Download with full enumeration
 
 ClientID: An identifier for the client.
 
-3.4.5.1.1.2  Response Body
+###### 3.4.5.1.1.2 Response Body
 
 None.
 
-3.4.5.1.1.3  Processing Details
+###### 3.4.5.1.1.3 Processing Details
 
 [MS-ECS] - v20240423
 Enterprise Client Synchronization Protocol
@@ -3913,7 +3641,8 @@ Release: April 23, 2024
 
 45 / 86
 
-If the Type field of the request body does not contain one of the listed values, the server MUST fail
+
+If the Type field of the request body does not contain one of the listed values, the server MUST fail
 the request with status code 400 and set x-ecs-request-error to
 ECS_E_SYNC_INVALID_SESSION_TYPE, as specified in section 2.2.2.28.
 
@@ -3988,9 +3717,10 @@ Release: April 23, 2024
 
 46 / 86
 
-The server MUST set the HTTP status code to 200 and MUST send the response to the client.
 
-3.4.5.2  Sync Batch Parameters
+The server MUST set the HTTP status code to 200 and MUST send the response to the client.
+
+##### 3.4.5.2 Sync Batch Parameters
 
 The Sync Batch Parameters resource represents synchronization batch parameters that are used to
 calculate the changes that need to be transmitted in an upload or download scenario.
@@ -4005,7 +3735,7 @@ Retrieve the synchronization batch parameters (that is, server knowledge) from t
 
 Update the client's synchronization batch parameters (that is, client knowledge) to the server.
 
-3.4.5.2.1 GET
+###### 3.4.5.2.1 GET
 
 The GET method on the Sync Batch Parameters resource is issued by the client to obtain the server's
 sync knowledge in an upload scenario.
@@ -4073,11 +3803,12 @@ Release: April 23, 2024
 
 47 / 86
 
-3.4.5.2.1.1  Request Body
+
+###### 3.4.5.2.1.1 Request Body
 
 None.
 
-3.4.5.2.1.2  Response Body
+###### 3.4.5.2.1.2 Response Body
 
 The response body for this method contains the following:
 
@@ -4097,14 +3828,14 @@ knowledge.
 
 BatchLimits: Parameters describing batch characteristics.
 
-3.4.5.2.1.3  Processing Details
+###### 3.4.5.2.1.3 Processing Details
 
 The server MUST query the sync knowledge, as specified in [MS-FSVCA] section 3.1.4.1. The server
 MUST set the received sync knowledge as SyncKnowledge, set BatchLimits.MaxFileDataSize and
 BatchLimits.MaxFileCount with implementation-specific<9> values in the response, and set the
 status code to 200.
 
-3.4.5.2.2 PUT
+###### 3.4.5.2.2 PUT
 
 The PUT method on the Sync Batch Parameters resource is issued by the client to update the client's
 sync knowledge to the server in a download scenario.
@@ -4152,7 +3883,8 @@ Release: April 23, 2024
 
 48 / 86
 
-Status code  Description
+
+Status code  Description
 
 404
 
@@ -4162,7 +3894,7 @@ No session exists with the specified ID.
 
 Client knowledge already received.
 
-3.4.5.2.2.1  Request Body
+###### 3.4.5.2.2.1 Request Body
 
 The request body for this method contains the following.
 
@@ -4190,7 +3922,7 @@ FullEnumerationLowerBound: The sync item ID that represents the lower bound of t
 be included in the change batch generated by the server. This value is ignored if the session is not
 a full enumeration one.
 
-3.4.5.2.2.2  Response Body
+###### 3.4.5.2.2.2 Response Body
 
 The response body for this method contains the following.
 
@@ -4208,7 +3940,7 @@ TotalFileCount: Total number of files that have changed on the server.
 
 TotalFileSize: Sum of the sizes of all the files that have changed on the server.
 
-3.4.5.2.2.3  Processing Details
+###### 3.4.5.2.2.3 Processing Details
 
 The server MUST check for the changes in the underlying object store and update FileMetadataTable
 as follows:
@@ -4236,7 +3968,8 @@ Release: April 23, 2024
 
 49 / 86
 
-
+
+
 
 Find an entry with the ObjectStoreID of the parent and set ParentId to FileId of this entry.
 
@@ -4280,7 +4013,7 @@ ChangeBatch.MetaData.Files to the generated VECTOR_FILE_METADATA_ENTRY.
 For each file in the generated change batch, if CHANGE_SET_ENTRY.SyncChange (as specified in
 [MS-FSVCA] section 2.16) is 0x00000000, add an entry in FileInfoList.
 
-3.4.5.3  Prepare Batch
+##### 3.4.5.3 Prepare Batch
 
 The Prepare Batch resource is used by the client to request server-side preparation for a file upload in
 a sync process.
@@ -4291,7 +4024,7 @@ PUT
 
 Update server with the file information necessary to prepare for the upload.
 
-3.4.5.3.1 PUT
+###### 3.4.5.3.1 PUT
 
 This operation is transported by an HTTP PUT request.
 
@@ -4309,7 +4042,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following is an example of a complete URI for this operation:
+
+The following is an example of a complete URI for this operation:
 
 https://contoso.com/Sync/1.0/Session/{60b8ca1d-59f3-4495-b299-f6cad89ada3b}/PrepareBatch/3
 
@@ -4362,7 +4096,7 @@ No session exists with the specified ID.
 
 Unexpected server error.
 
-3.4.5.3.1.1  Request Body
+###### 3.4.5.3.1.1 Request Body
 
 The request body for this method contains the following.
 
@@ -4374,7 +4108,7 @@ FileVector  VECTOR_FILE_INFO_INPUT_ENTRY
 
 FileVector: A list of file info input entries that need to be prepared for the synchronization process.
 
-3.4.5.3.1.2  Response Body
+###### 3.4.5.3.1.2 Response Body
 
 The response body for this method contains the following:
 
@@ -4386,7 +4120,7 @@ FileList  VECTOR_FILE_INFO_ENTRY
 
 FileList: A list of file status entries indicating the status of the change batch preparation.
 
-3.4.5.3.1.3  Processing Details
+###### 3.4.5.3.1.3 Processing Details
 
 If the FileExtension field of any FILE_INFO_INPUT_ENTRY entry in FileVector is greater than an
 implementation-specific maximum size<11>, the server MUST fail the request with status code 500.
@@ -4398,7 +4132,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Otherwise, for each FILE_INFO_INPUT_ENTRY structure in FileVector, the server constructs a
+
+Otherwise, for each FILE_INFO_INPUT_ENTRY structure in FileVector, the server constructs a
 FILE_INFO_ENTRY structure as follows:
 
 
@@ -4445,7 +4180,7 @@ structures constructed above.
 The server MUST set a FileList response header with the VECTOR_FILE_INFO_ENTRY structure
 constructed above and send a response with status code 200.
 
-3.4.5.4  Upload Batch
+##### 3.4.5.4 Upload Batch
 
 The Upload Batch resource is used by the client to commit a change batch on the server.
 
@@ -4455,7 +4190,7 @@ PUT
 
 Commit change batch.
 
-3.4.5.4.1 PUT
+###### 3.4.5.4.1 PUT
 
 This operation is transported by an HTTP PUT request.
 
@@ -4473,7 +4208,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following is an example of a complete URI for this operation:
+
+The following is an example of a complete URI for this operation:
 
 https://contoso.com/Sync/1.0/Session/{60b8ca1d-59f3-4495-b299-f6cad89ada3b}/ UploadBatch/3
 
@@ -4534,7 +4270,7 @@ Session not found.
 
 Batch already received.
 
-3.4.5.4.1.1  Request Body
+###### 3.4.5.4.1.1 Request Body
 
 The request body for this method contains the following.
 
@@ -4546,7 +4282,7 @@ SerializedSyncBatch  SYNC_CHANGE_BATCH
 
 SerializedSyncBatch: The metadata describing the changes to be synchronized.
 
-3.4.5.4.1.2  Response Body
+###### 3.4.5.4.1.2 Response Body
 
 The response body for this method contains the following.
 
@@ -4558,7 +4294,7 @@ FileStatusList  VECTOR_FILE_STATUS_ENTRY
 
 FileStatusList: A list of file status entries indicating the status of change batch commit operation.
 
-3.4.5.4.1.3  Processing Details
+###### 3.4.5.4.1.3 Processing Details
 
 [MS-ECS] - v20240423
 Enterprise Client Synchronization Protocol
@@ -4567,7 +4303,8 @@ Release: April 23, 2024
 
 53 / 86
 
-If the client is suspended from committing a change batch on the server, the server MUST set x-ecs-
+
+If the client is suspended from committing a change batch on the server, the server MUST set x-ecs-
 request-error to ECS_E_USER_SUSPENDED, as specified in section 2.2.2.28, and set the HTTP status
 code to 503. The server MUST send the response to the client.
 
@@ -4603,7 +4340,7 @@ The server MUST set the HTTP status code to 200.
 
 The server MUST send FileStatusList as the response to the client.
 
-3.4.5.5  Delete Session
+##### 3.4.5.5 Delete Session
 
 The Delete Session resource facilitates a client to remove a server session after a synchronization
 process is completed or aborted.
@@ -4614,7 +4351,7 @@ DELETE
 
 Delete server session.
 
-3.4.5.5.1 DELETE
+###### 3.4.5.5.1 DELETE
 
 This operation is transported by an HTTP DELETE request.
 
@@ -4646,7 +4383,8 @@ Release: April 23, 2024
 
 54 / 86
 
-Status code  Description
+
+Status code  Description
 
 200
 
@@ -4656,22 +4394,22 @@ The server will delete the session.
 
 Session not found.
 
-3.4.5.5.1.1  Request Body
+###### 3.4.5.5.1.1 Request Body
 
 None.
 
-3.4.5.5.1.2  Response Body
+###### 3.4.5.5.1.2 Response Body
 
 None.
 
-3.4.5.5.1.3  Processing Details
+###### 3.4.5.5.1.3 Processing Details
 
 The server MUST extract the session ID from the URI in an implementation-specific manner and verify
 whether there is a Session that exists in the global SessionList with a matching session ID. If no
 session is found, the server MUST return a status code of 404. Otherwise, the server MUST delete the
 Session entry from SessionList and return a status code of 200.
 
-3.4.5.6  Download Batch
+##### 3.4.5.6 Download Batch
 
 The Download Batch resource is used by the client to obtain change batch information from the server
 in a download scenario.
@@ -4682,7 +4420,7 @@ GET
 
 Query server knowledge on a change batch.
 
-3.4.5.6.1 GET
+###### 3.4.5.6.1 GET
 
 The GET method on the Download Batch resource is issued by the client to obtain metadata
 information for all files in a change batch.
@@ -4720,7 +4458,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Request
+
+Request
 header
 
 Usage
@@ -4766,11 +4505,11 @@ Invalid continuation token.
 
 No session exists with the specified ID.
 
-3.4.5.6.1.1  Request Body
+###### 3.4.5.6.1.1 Request Body
 
 None.
 
-3.4.5.6.1.2  Response Body
+###### 3.4.5.6.1.2 Response Body
 
 The response body for this method contains the following.
 
@@ -4790,7 +4529,7 @@ DownloadInfo: A collection of FILE_DOWNLOAD_INFO_ENTRY structures as specified i
 
 2.2.2.13.
 
-3.4.5.6.1.3  Processing Details
+###### 3.4.5.6.1.3 Processing Details
 
 The server MUST fail the request with a status code of 400 for the following conditions.
 
@@ -4817,7 +4556,8 @@ Release: April 23, 2024
 
 56 / 86
 
-If the x-ecs-continue token is not present, the server MUST return the first batch from
+
+If the x-ecs-continue token is not present, the server MUST return the first batch from
 Session.ChangeBatchList. The server MUST generate a token that points to the second batch. The
 server MUST additionally set x-ecs-continue in the response and LastSentToken to the newly
 generated token.
@@ -4841,33 +4581,33 @@ batch in Session.ChangeBatchList.
 The server MUST set LastReceivedToken to x-ecs-continue. The server MUST also set x-ecs-
 continue in the response and LastSentToken to the newly generated token.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
-3.5  ServerAPI Server Details
+### 3.5 ServerAPI Server Details
 
-3.5.1  Abstract Data Model
-
-None.
-
-3.5.2  Timers
+#### 3.5.1 Abstract Data Model
 
 None.
 
-3.5.3  Initialization
+#### 3.5.2 Timers
 
 None.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.3 Initialization
 
 None.
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -4884,7 +4624,8 @@ Release: April 23, 2024
 
 57 / 86
 
-Resource
+
+Resource
 
 Description
 
@@ -4920,7 +4661,7 @@ Satisfiable
 This is returned when a request is received to upload data that is out of
 order or is the wrong version of the batch.
 
-3.5.5.1  Upload Data
+##### 3.5.5.1 Upload Data
 
 The Upload Data resource facilitates the uploading of file data from client to server.
 
@@ -4930,7 +4671,7 @@ PUT
 
 Upload file data to server.
 
-3.5.5.1.1 PUT
+###### 3.5.5.1.1 PUT
 
 This operation is transported by an HTTP PUT request.
 
@@ -4979,7 +4720,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.5.5.1.1.1  Request Body
+
+###### 3.5.5.1.1.1 Request Body
 
 The request body for this method contains the following:
 
@@ -4993,7 +4735,7 @@ UploadEntryVector: A list of UPLOAD_ENTRY structures, as specified in section 2.
 
 being uploaded.
 
-3.5.5.1.1.2  Response Body
+###### 3.5.5.1.1.2 Response Body
 
 The response body for this method contains the following:
 
@@ -5006,13 +4748,13 @@ UploadResponseEntryVector  VECTOR_UPLOAD_RESPONSE_ENTRY
 UploadResponseEntryVector: A list of UPLOAD_RESPONSE_ENTRY structures, as specified in
 section 2.2.2.10, indicating the server's response for each file being uploaded by the client.
 
-3.5.5.1.1.3  Processing Details
+###### 3.5.5.1.1.3 Processing Details
 
 The server MUST extract the session ID from the URI in an implementation-specific manner and verify
 whether a Session exists in a global SessionList with a matching session ID. If no session is found,
 the server MUST return a status code of 404.
 
-3.5.5.2  Download Data
+##### 3.5.5.2 Download Data
 
 The Download Data resource facilitates downloading file data from server to client.
 
@@ -5022,7 +4764,7 @@ PUT
 
 Download file data from server.
 
-3.5.5.2.1 PUT
+###### 3.5.5.2.1 PUT
 
 This operation is transported by an HTTP PUT request.
 
@@ -5044,7 +4786,8 @@ Release: April 23, 2024
 
 59 / 86
 
-Request header  Usage
+
+Request header  Usage
 
 Value
 
@@ -5071,7 +4814,7 @@ Request completed.
 This is returned when a request is received to download data that is out of order or is the wrong
 version of the batch.
 
-3.5.5.2.1.1  Request Body
+###### 3.5.5.2.1.1 Request Body
 
 The request body for this method contains the following.
 
@@ -5086,7 +4829,7 @@ DownloadEntryVector:
 A list of DOWNLOAD_ENTRY structures, as specified in section 2.2.2.11, for each file to be downloaded
 from the server.
 
-3.5.5.2.1.2  Response Body
+###### 3.5.5.2.1.2 Response Body
 
 The response body for this method contains the following.
 
@@ -5099,7 +4842,7 @@ DownloadResponseEntryVector  VECTOR_DOWNLOAD_RESPONSE_ENTRY
 DownloadResponseEntryVector: A list of DOWNLOAD_RESPONSE_ENTRY structures, as specified in
 section 2.2.2.12, indicating the server's response for each file being downloaded by the client.
 
-3.5.5.2.1.3  Processing Details
+###### 3.5.5.2.1.3 Processing Details
 
 For each entry in DownloadEntryVector, the server MUST perform the following:
 
@@ -5126,7 +4869,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Set Hash to zero if the server is unable to retrieve the file data. Otherwise, the server MUST
+
+  Set Hash to zero if the server is unable to retrieve the file data. Otherwise, the server MUST
 
 generate an identifier by computing MD5 hash of the retrieved data as specified in [RFC1321].
 Server MUST serialize the identifier in SYNC_MD5HASH format as specified in section 2.2.2.15 and
@@ -5135,17 +4879,17 @@ set Hash to this identifier.
 The server MUST insert all the entries into DownloadResponseEntryVector in the response body. The
 server MUST set the HTTP status code to 200. The server MUST send the response to the client.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
 None.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
 None.
 
-3.6  ECS Client Details
+### 3.6 ECS Client Details
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in the Enterprise Client Synchronization Protocol. The described organization
@@ -5153,7 +4897,7 @@ is provided to facilitate the explanation of how the protocol behaves. This docu
 that implementations adhere to this model as long as their external behavior is consistent with that
 described in this document.
 
-3.6.1.1  Global
+##### 3.6.1.1 Global
 
 Client_ID: An identifier for the client.
 
@@ -5196,7 +4940,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SyncBatchClientKnowledge: An opaque serialized binary stream representing the version of the file
+
+SyncBatchClientKnowledge: An opaque serialized binary stream representing the version of the file
 
 data on the client.
 
@@ -5213,7 +4958,7 @@ This MUST be in the format of the BATCH_LIMITS_ENTRY structure as specified in s
 
 ContinueToken: This contains the last x-ecs-continue token that was sent by the server.
 
-3.6.1.2  Per UploadFile
+##### 3.6.1.2 Per UploadFile
 
 SyncId: An identifier of the file that is used to correlate the change batch information from the
 
@@ -5225,13 +4970,13 @@ CommitStatus: The status, as an HRESULT value, of the commit operation after fil
 
 uploaded.
 
-3.6.1.3  Per Share
+##### 3.6.1.3 Per Share
 
 EnterpriseId: An identifier that signifies the owning entity for all content synchronized with the
 
 share.
 
-3.6.1.4  Per DownloadFile
+##### 3.6.1.4 Per DownloadFile
 
 SyncId: An identifier of the file, in the format specified in [MS-FSVCA] section 2.1, that is used to
 
@@ -5241,7 +4986,7 @@ ConcurrencyInfo: An opaque stream of bytes that identifies the file version. Con
 
 be in the format specified in [MS-FSVCA] section 2.9.
 
-3.6.1.5  Per FileMetadata
+##### 3.6.1.5 Per FileMetadata
 
 ObjectStoreID: A file identifier used by the object store to uniquely identify the file in the share.
 
@@ -5276,7 +5021,8 @@ Release: April 23, 2024
 
 62 / 86
 
-Attribute
+
+Attribute
 
 Description
 
@@ -5313,11 +5059,11 @@ FileName: Name of the file or directory.
 
 OriginatingDeviceName: Name of the device where the last change to this file occurred.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 None.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 When the ECS client is started, it MUST do the following:
 
@@ -5356,7 +5102,8 @@ Release: April 23, 2024
 
 63 / 86
 
-For each host URL Prefix in the SyncTargetHostList:
+
+For each host URL Prefix in the SyncTargetHostList:
 
 The client MUST attempt to send a GET request on Share Discovery resource, as specified in section
 3.1.5.2.1, using the format "<host-url-prefix>/ Sync/ClientSyncVersion/Discover/Share".
@@ -5426,7 +5173,8 @@ Release: April 23, 2024
 
 64 / 86
 
-If the server responds with a status code of 200 and the x-ecs-changes-URL header is present, the
+
+If the server responds with a status code of 200 and the x-ecs-changes-URL header is present, the
 client MUST set SyncChangesURL to the value in x-ecs-changes-URL header. The client MUST poll
 for the server changes by sending a HEAD request using the new SyncChangesURL.
 
@@ -5446,12 +5194,12 @@ period of time to reissue the same request.
 If the server does not respond within an implementation-specific timeout<17>, the client MUST
 reissue the same request.
 
-3.6.4  Higher-Layer Triggering Events
+#### 3.6.4 Higher-Layer Triggering Events
 
 The following sections describe the operations performed by the ECS client in response to events
 triggered by higher-layer applications.
 
-3.6.4.1  Application Requests Uploading Data To Sync Target
+##### 3.6.4.1 Application Requests Uploading Data To Sync Target
 
 The application provides the following:
 
@@ -5465,12 +5213,12 @@ return an implementation-specific error to the calling application.
 The client MUST perform the steps as specified in section 3.6.5.1 to upload the file data to the sync
 server.
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
 The following sections describe the sequence of operations performed by the client in upload and
 download scenarios.
 
-3.6.5.1  Upload Scenario
+##### 3.6.5.1 Upload Scenario
 
 The client MUST do the following:
 
@@ -5492,7 +5240,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Commit entire list of SyncIds available on the client, if Type is set to 0x03.
+
+  Commit entire list of SyncIds available on the client, if Type is set to 0x03.
 
 If the server responds with a status code of 200, the client MUST construct the SessionLocationURL
 using the x-ecs-session-id header as follows:
@@ -5569,7 +5318,8 @@ Release: April 23, 2024
 
 66 / 86
 
-If the server responds with a status code of 200, the client MUST store the information in
+
+If the server responds with a status code of 200, the client MUST store the information in
 FILE_INFO_ENTRY structures in FileList in the response body as follows:
 
 
@@ -5607,7 +5357,7 @@ by using the URI format "SessionLocationURL".
 
 The client MUST clear all entries in the UploadFileList.
 
-3.6.5.2  Download Scenario
+##### 3.6.5.2 Download Scenario
 
 The client MUST do the following:
 
@@ -5639,7 +5389,8 @@ Release: April 23, 2024
 
 67 / 86
 
-The client MUST obtain the information on the version of files in an implementation-specific manner
+
+The client MUST obtain the information on the version of files in an implementation-specific manner
 and set it to SyncBatchClientKnowledge. The client MUST set DownloadBatchLimits to
 implementation-specific values.
 
@@ -5716,7 +5467,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  DOWNLOAD_ENTRY.FileVersion is set to DownloadFile.ConcurrencyInfo.
+
+  DOWNLOAD_ENTRY.FileVersion is set to DownloadFile.ConcurrencyInfo.
 
 If the server responds with a status code of 200, the client MUST verify the Result field of each
 DOWNLOAD_RESPONSE_ENTRY structure in the response body. If the Result is zero, the client MUST
@@ -5733,11 +5485,11 @@ Delete Session:
 The client MUST send a DELETE request on the Delete Session resource, as specified in section
 3.4.5.5.1, by using the URI format "SessionLocationURL".
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
 None.
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
 None.
 
@@ -5748,12 +5500,13 @@ Release: April 23, 2024
 
 69 / 86
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following section describes common scenarios that indicate normal traffic flow in order to illustrate
 the function of the Enterprise Client Synchronization (ECS) Protocol.
 
-4.1  Query User Configuration Information and Detect Server Changes
+### 4.1 Query User Configuration Information and Detect Server Changes
 
 The following diagram demonstrates the steps taken by the client to query user configuration
 information for a sync target share and to poll for URL changes on the server.
@@ -5765,7 +5518,8 @@ Release: April 23, 2024
 
 70 / 86
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-ECS].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
@@ -5790,7 +5544,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     UserAgent:  MS_WorkFoldersClient
+
+     UserAgent:  MS_WorkFoldersClient
    x-ecs-devicename:  HOMEPC,Windows,6,3,MS_WorkFoldersClient
    ContentLength:  0
      Host:  syncsvr.contoso.com
@@ -5859,7 +5614,8 @@ Release: April 23, 2024
 
 72 / 86
 
-5.  The client sends a HTTP GET request on Share Discovery resource to establish a sync partnership
+
+5.  The client sends a HTTP GET request on Share Discovery resource to establish a sync partnership
 
 with the server and receive an ID that allows it to sync with the sync share selected by the server.
 
@@ -5931,7 +5687,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   - Http: Response, HTTP/1.1, Status: Ok, URL: /sync/1.0/configuration
+
+   - Http: Response, HTTP/1.1, Status: Ok, URL: /sync/1.0/configuration
      ProtocolVersion: HTTP/1.1
      StatusCode: 200, Ok
      Reason: OK
@@ -5999,11 +5756,12 @@ Release: April 23, 2024
 
 74 / 86
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-ECS].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
-4.2  Upload Scenario
+### 4.2 Upload Scenario
 
 The following diagram demonstrates the steps taken to upload the data between client and server.
 
@@ -6024,7 +5782,8 @@ Release: April 23, 2024
 
 75 / 86
 
-   ProtocolVersion: HTTP/1.1
+
+   ProtocolVersion: HTTP/1.1
    Cache-Control:  no-cache
    Connection:  Keep-Alive
    Pragma:  no-cache
@@ -6095,7 +5854,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     Server:  Microsoft-IIS/8.5
+
+     Server:  Microsoft-IIS/8.5
    + N2HTPersistentAuth:
      Date:  Tue, 24 Dec 2013 08:36:08 GMT
      ContentLength:  217
@@ -6168,7 +5928,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   Command: PUT
+
+   Command: PUT
  + URI: /sync/1.0/session/%7B01ff313d-1be3-49c9-b7ba-1d668531e1ef%7D/uploadbatch/0
    ProtocolVersion: HTTP/1.1
    Cache-Control:  no-cache
@@ -6240,14 +6001,15 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-ECS].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
    ContentLength:  0
    HeaderEnd: CRLF
 
-4.3  Download Scenario
+### 4.3 Download Scenario
 
  The following diagram demonstrates the steps taken to download the data between client and server.
 
@@ -6264,7 +6026,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The server creates a new session and responds with session information.
+
+2.  The server creates a new session and responds with session information.
 
 3.  The client sends a HTTP PUT request on the Sync Batch Parameters resource, to upload its sync
 
@@ -6300,16 +6063,17 @@ Release: April 23, 2024
 
 80 / 86
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Enterprise Client Synchronization Protocol requires that all the requests from the client be
 authenticated. The client is expected to use an implementation-dependent authentication mechanism
 to obtain a security token and include that token in the standard HTTP Authorization header. The
 server will validate the token and use it to authorize the request.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -6320,7 +6084,8 @@ Release: April 23, 2024
 
 81 / 86
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6399,7 +6164,8 @@ Enterprise Client Synchronization Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<6> Section 3.2.5.1.1.3:  Windows Server 2012 R2 does not hold the request.
+
+<6> Section 3.2.5.1.1.3:  Windows Server 2012 R2 does not hold the request.
 
 <7> Section 3.4.5:  Windows Server 2012 R2 operating system and later limit the number of
 outstanding requests by a user to 25.
@@ -6435,7 +6201,8 @@ Release: April 23, 2024
 
 83 / 86
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6479,7 +6246,8 @@ Release: April 23, 2024
 
 84 / 86
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 9
@@ -6620,7 +6388,8 @@ Server
 
 85 / 86
 
-   UserConfiguration 39
+
+   UserConfiguration 39
 Serverapi server
    Abstract data model 57
    Higher-layer triggered events 57

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 42
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 42
 
-Date
+
+Date
 
 Revision
 History
@@ -517,227 +519,96 @@ Release: April 23, 2024
 
 3 / 42
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 GUID](#221-guid)
+    - [2.2.2 PROPID](#222-propid)
+      - [2.2.2.1 PROPID Constants](#2221-propid-constants)
+    - [2.2.3 PROPVALUE](#223-propvalue)
+      - [2.2.3.1 VT_I2](#2231-vti2)
+      - [2.2.3.2 VT_I4](#2232-vti4)
+      - [2.2.3.3 VT_BOOL](#2233-vtbool)
+      - [2.2.3.4 VT_I1](#2234-vti1)
+      - [2.2.3.5 VT_UI1](#2235-vtui1)
+      - [2.2.3.6 VT_UI2](#2236-vtui2)
+      - [2.2.3.7 VT_UI4](#2237-vtui4)
+      - [2.2.3.8 VT_I8](#2238-vti8)
+      - [2.2.3.9 VT_UI8](#2239-vtui8)
+      - [2.2.3.10 VT_LPWSTR](#22310-vtlpwstr)
+      - [2.2.3.11 VT_BLOB](#22311-vtblob)
+      - [2.2.3.12 VT_CLSID](#22312-vtclsid)
+      - [2.2.3.13 VT_UI4 | VT_VECTOR](#22313-vtui4-vtvector)
+      - [2.2.3.14 VT_CLSID | VT_VECTOR](#22314-vtclsid-vtvector)
+      - [2.2.3.15 VT_LPWSTR | VT_VECTOR](#22315-vtlpwstr-vtvector)
+    - [2.2.4 Change Notification Message](#224-change-notification-message)
+    - [2.2.5 Notification Body](#225-notification-body)
+    - [2.2.6 Notification Update](#226-notification-update)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Shared Data Elements](#3111-shared-data-elements)
+      - [3.1.1.2 Data Elements Mapping](#3112-data-elements-mapping)
+        - [3.1.1.2.1 Queue Manager Attributes Mapping](#31121-queue-manager-attributes-mapping)
+      - [3.1.1.3 Queue Attributes Mapping](#3113-queue-attributes-mapping)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 MQCN Server Details](#32-mqcn-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Shared Data Elements](#3211-shared-data-elements)
+      - [3.2.1.2 Local Data Elements](#3212-local-data-elements)
+        - [3.2.1.2.1 Change Notification Queue](#32121-change-notification-queue)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Processing a Change Notification Message Version 0x01](#3251-processing-a-change-notification-message-version-0x01)
+      - [3.2.5.2 Processing a Change Notification Message Version 0x02](#3252-processing-a-change-notification-message-version-0x02)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 MQCN Client Details](#33-mqcn-client-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Shared Data Elements](#3311-shared-data-elements)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Send Change Notification](#3341-send-change-notification)
+    - [3.3.5 Processing Events and Sequencing Rules](#335-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Preparing a Change Notification Message Version 0x02](#3351-preparing-a-change-notification-message-version-0x02)
+      - [3.3.5.2 Preparing a Change Notification Message Version 0x01](#3352-preparing-a-change-notification-message-version-0x01)
+      - [3.3.5.3 Sending a Change Notification Message](#3353-sending-a-change-notification-message)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Management Client Update Profile](#41-management-client-update-profile)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-GUID ........................................................................................................ 11
-PROPID ..................................................................................................... 11
-PROPID Constants ................................................................................. 11
-PROPVALUE ............................................................................................... 12
-VT_I2 .................................................................................................. 13
-VT_I4 .................................................................................................. 13
-VT_BOOL ............................................................................................. 13
-VT_I1 .................................................................................................. 13
-VT_UI1 ................................................................................................ 14
-VT_UI2 ................................................................................................ 14
-VT_UI4 ................................................................................................ 14
-VT_I8 .................................................................................................. 14
-VT_UI8 ................................................................................................ 15
-VT_LPWSTR ......................................................................................... 15
-VT_BLOB ............................................................................................. 15
-VT_CLSID ............................................................................................ 16
-VT_UI4 | VT_VECTOR ............................................................................ 16
-VT_CLSID | VT_VECTOR ........................................................................ 16
-VT_LPWSTR | VT_VECTOR ..................................................................... 16
-Change Notification Message ........................................................................ 17
-Notification Body ........................................................................................ 17
-Notification Update ..................................................................................... 18
-Directory Service Schema Elements ................................................................... 20
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-2.2.3.12
-2.2.3.13
-2.2.3.14
-2.2.3.15
-
-2.2.4
-2.2.5
-2.2.6
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.3
-
-3.1.1.2.1
-
-3.1.1.1
-3.1.1.2
-
-3  Protocol Details ..................................................................................................... 21
-Common Details .............................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Shared Data Elements ........................................................................... 21
-Data Elements Mapping ......................................................................... 21
-Queue Manager Attributes Mapping ................................................... 21
-Queue Attributes Mapping ...................................................................... 22
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 23
-Processing Events and Sequencing Rules ....................................................... 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-MQCN Server Details ........................................................................................ 23
-Abstract Data Model .................................................................................... 23
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-[MS-MQCN] - v20240423
-Message Queuing (MSMQ): Directory Service Change Notification Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 42
-
-3.3
-
-3.2.5.1
-3.2.5.2
-
-3.2.1.1
-3.2.1.2
-
-3.2.1.2.1
-
-Shared Data Elements ........................................................................... 23
-Local Data Elements .............................................................................. 23
-Change Notification Queue ............................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Processing Events and Sequencing Rules ....................................................... 24
-Processing a Change Notification Message Version 0x01 ............................ 25
-Processing a Change Notification Message Version 0x02 ............................ 27
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-MQCN Client Details ......................................................................................... 28
-Abstract Data Model .................................................................................... 28
-Shared Data Elements ........................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Send Change Notification ....................................................................... 29
-Processing Events and Sequencing Rules ....................................................... 30
-Preparing a Change Notification Message Version 0x02 .............................. 30
-Preparing a Change Notification Message Version 0x01 .............................. 30
-Sending a Change Notification Message ................................................... 32
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.6
-3.3.7
-
-3.3.4.1
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.1.1
-
-4  Protocol Examples ................................................................................................. 34
-Management Client Update Profile ...................................................................... 34
-
-4.1
-
-5  Security ................................................................................................................. 36
-Security Considerations for Implementers ........................................................... 36
-Index of Security Parameters ............................................................................ 36
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 37
-
-7  Change Tracking .................................................................................................... 40
-
-8  Index ..................................................................................................................... 41
-
-[MS-MQCN] - v20240423
-Message Queuing (MSMQ): Directory Service Change Notification Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 42
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Message Queuing (MSMQ): Directory Service Change Notification Protocol.
 Queue managers own and store objects that are also stored in the directory service. When an
@@ -753,7 +624,7 @@ within MSMQ messages.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -805,7 +676,8 @@ Release: April 23, 2024
 
 6 / 42
 
-enterprise: A unit of administration of a network of MSMQ queue managers. An enterprise
+
+enterprise: A unit of administration of a network of MSMQ queue managers. An enterprise
 
 consists of an MSMQ Directory Service, one or more connected networks, and one or more
 MSMQ sites.
@@ -881,7 +753,8 @@ Release: April 23, 2024
 
 7 / 42
 
-queue: An object that holds messages passed between applications or messages passed
+
+queue: An object that holds messages passed between applications or messages passed
 
 between Message Queuing and applications. In general, applications can send messages to
 queues and read messages from queues.
@@ -907,14 +780,14 @@ Directory-Integrated mode.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -949,17 +822,18 @@ Release: April 23, 2024
 
 8 / 42
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC3110] Eastlake III, D., "RSA/SHA-1 SIGs and RSA KEYs in the Domain Name System (DNS)", RFC
 3110, May 2001, https://www.rfc-editor.org/info/rfc3110
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQOD] Microsoft Corporation, "Message Queuing Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 Microsoft Message Queuing (MSMQ) is a communications service that provides asynchronous and
 reliable message passing between client applications running on different hosts. In MSMQ, clients
@@ -993,7 +867,7 @@ The types of notifications that can be performed by using this protocol include 
 manager that a queue object has been created, changed, or deleted; and notifying a queue manager
 that its machine object has been changed.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The MSMQ: Directory Service Change Notification Protocol is a queued protocol that uses the
 Microsoft Message Queuing (MSMQ): Message Queuing Binary Protocol [MS-MQQB] as its
@@ -1002,7 +876,7 @@ transport protocol.
  The MSMQ: Directory Service Change Notification Protocol uses shared state and processing rules
 defined in [MS-MQDMPR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 It is assumed that the protocol client has obtained the name of a server computer that supports this
 protocol and the name of the notification queue hosted on the server before this protocol is invoked.
@@ -1014,13 +888,14 @@ Message Queuing (MSMQ): Directory Service Change Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-How a client acquires this information is not addressed in this specification and is typically part of the
+
+How a client acquires this information is not addressed in this specification and is typically part of the
 interaction between the client application and the queue manager API.
 
 It is assumed that the protocol client has access to a private encryption key used to decrypt
 messages. A private key is typically stored in a secure location on the local client machine.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The server side of this protocol is applicable for implementation by a queue manager providing
 Microsoft Message Queuing (MSMQ) communication services to clients. The client side of this
@@ -1034,7 +909,7 @@ applicable for distributed applications that require notification messages withi
 time. Notification messages are sent and, once received, the destination queue manager schedules act
 on them at specific time intervals.<3>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1048,11 +923,11 @@ of the notification message. There are two notification message versions. Versio
 messages sent by an MSMQ Directory Service, and version 2 is for messages sent by a queue
 manager.<4>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This section specifies standard parameters within the context of MSMQ.
 
@@ -1071,14 +946,15 @@ Release: April 23, 2024
 
 10 / 42
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Notifications are sent within messages that are transported as MSMQ messages over the Message
 Queuing (MSMQ): Message Queuing Binary Protocol [MS-MQQB].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following table summarizes the types and messages defined in this specification.
 
@@ -1108,12 +984,12 @@ Notification Update
 
 Alternative body notification. Used by a directory service.
 
-2.2.1  GUID
+#### 2.2.1 GUID
 
 This specification uses a globally unique identifier (GUID). This information is as specified in [MS-
 DTYP] section 2.3.4.
 
-2.2.2  PROPID
+#### 2.2.2 PROPID
 
 Notification messages carry an array of property identifiers (a unique PROPID value). The associated
 property values are specified in a related array of property values.
@@ -1135,7 +1011,7 @@ Value (4 bytes):  A ULONG that specifies the identification of a property. This 
 
 with a valid property identifier, as specified in [MS-MQMQ] section 2.3.
 
-2.2.2.1  PROPID Constants
+##### 2.2.2.1 PROPID Constants
 
 This section contains a list of PROPID constants.
 
@@ -1158,7 +1034,8 @@ Release: April 23, 2024
 
 11 / 42
 
-PROPID Constant
+
+PROPID Constant
 
  Value
 
@@ -1283,14 +1160,15 @@ Release: April 23, 2024
 
 12 / 42
 
-2.2.3  PROPVALUE
+
+#### 2.2.3 PROPVALUE
 
 This section contains block diagrams for property values related to PROPVARIANT ([MS-MQMQ]
 section 2.2.12) types. A PROPVARIANT type is determined by the PROPID. [MS-MQMQ] section 2.3
 specifies the PROPVARIANT type for each PROPID. All numeric values within the block diagrams MUST
 be formatted in little-endian byte order. Values in an array are simply concatenated with no padding.
 
-2.2.3.1  VT_I2
+##### 2.2.3.1 VT_I2
 
 The value of a VT_I2 type property MUST be a 2-byte signed integer. It MUST be formatted in little-
 endian byte order.
@@ -1308,7 +1186,7 @@ endian byte order.
 
 Value
 
-2.2.3.2  VT_I4
+##### 2.2.3.2 VT_I4
 
 The value of a VT_I4 type property MUST be a 4-byte signed integer. It MUST be formatted in little-
 endian byte order.
@@ -1326,7 +1204,7 @@ endian byte order.
 
 Value
 
-2.2.3.3  VT_BOOL
+##### 2.2.3.3 VT_BOOL
 
 The value of a VT_BOOL type property MUST be a 16-bit value. It MUST be formatted in little-endian
 byte order.
@@ -1369,7 +1247,8 @@ Release: April 23, 2024
 
 13 / 42
 
-2.2.3.4  VT_I1
+
+##### 2.2.3.4 VT_I1
 
 The value of a VT_I1 type property MUST be a 1-byte signed integer.
 
@@ -1386,7 +1265,7 @@ The value of a VT_I1 type property MUST be a 1-byte signed integer.
 
 Value
 
-2.2.3.5  VT_UI1
+##### 2.2.3.5 VT_UI1
 
 The value of a VT_UI1 type property MUST be a 1-byte unsigned integer.
 
@@ -1403,7 +1282,7 @@ The value of a VT_UI1 type property MUST be a 1-byte unsigned integer.
 
 Value
 
-2.2.3.6  VT_UI2
+##### 2.2.3.6 VT_UI2
 
 The value of a VT_UI2 type property MUST be a 2-byte unsigned integer. It MUST be formatted in
 little-endian byte order.
@@ -1421,7 +1300,7 @@ little-endian byte order.
 
 Value
 
-2.2.3.7  VT_UI4
+##### 2.2.3.7 VT_UI4
 
 The value of a VT_UI4 type property MUST be a 4-byte unsigned integer. It MUST be formatted in
 little-endian byte order.
@@ -1439,7 +1318,7 @@ little-endian byte order.
 
 Value
 
-2.2.3.8  VT_I8
+##### 2.2.3.8 VT_I8
 
 The value of a VT_I8 type property MUST be an 8-byte signed integer. It MUST be formatted in little-
 endian byte order.
@@ -1451,7 +1330,8 @@ Release: April 23, 2024
 
 14 / 42
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1466,7 +1346,7 @@ Value
 
 ...
 
-2.2.3.9  VT_UI8
+##### 2.2.3.9 VT_UI8
 
 The value of a VT_UI8 type property MUST be an 8-byte unsigned integer. It MUST be formatted in
 little-endian byte order.
@@ -1486,9 +1366,9 @@ Value
 
 ...
 
-2.2.3.10
+##### 2.2.3.10 VT_LPWSTR
 
-VT_LPWSTR
+
 
 The value of a VT_LPWSTR type property MUST be a null-terminated string of 16-bit Unicode
 characters.
@@ -1518,9 +1398,9 @@ NullTerminator (2 bytes): Contains a Unicode character. This field MUST be set t
 
 0x0000.
 
-2.2.3.11
+##### 2.2.3.11 VT_BLOB
 
-VT_BLOB
+
 
 The value of a VT_BLOB property MUST be a counted array of unsigned bytes.
 
@@ -1546,7 +1426,8 @@ Release: April 23, 2024
 
 15 / 42
 
-...
+
+...
 
 Size (4 bytes): A ULONG that specifies the size of the array or vector of values. This field MUST be
 
@@ -1556,15 +1437,15 @@ Value (variable): Contains an array of unsigned bytes. This field MUST be set to
 
 Size, and each element MUST be an unsigned byte.
 
-2.2.3.12
+##### 2.2.3.12 VT_CLSID
 
-VT_CLSID
+
 
 The value of a VT_CLSID type property MUST be a GUID ([MS-DTYP] section 2.3.4.2) value.
 
-2.2.3.13
+##### 2.2.3.13 VT_UI4 | VT_VECTOR
 
-VT_UI4 | VT_VECTOR
+
 
 The value of a VT_UI4 | VT_VECTOR type property MUST be an array of VT_UI4 type property values.
 
@@ -1593,9 +1474,9 @@ Value (variable): MUST be filled with an array of property values of VT_UI4 type
 
 values MUST be equal to the Size field value.
 
-2.2.3.14
+##### 2.2.3.14 VT_CLSID | VT_VECTOR
 
-VT_CLSID | VT_VECTOR
+
 
 The value of a VT_CLSID | VT_VECTOR type property MUST be an array of VT_CLSID type property
 values.
@@ -1632,9 +1513,10 @@ Release: April 23, 2024
 
 16 / 42
 
-2.2.3.15
 
-VT_LPWSTR | VT_VECTOR
+##### 2.2.3.15 VT_LPWSTR | VT_VECTOR
+
+
 
 The value of a VT_LPWSTR | VT_VECTOR type property MUST be an array of VT_LPWSTR type
 property values.
@@ -1664,7 +1546,7 @@ Value (variable): MUST be filled with an array of property values of VT_LPWSTR t
 
 of values MUST be equal to the Size field value.
 
-2.2.4  Change Notification Message
+#### 2.2.4 Change Notification Message
 
 A Change Notification Message is used to encapsulate a single change Notification Body (section 2.2.5)
 sent by a queue manager or several change Notification Updates (section 2.2.6) sent by a directory
@@ -1723,7 +1605,8 @@ Release: April 23, 2024
 
 17 / 42
 
-2.2.5  Notification Body
+
+#### 2.2.5 Notification Body
 
 A Notification Body is used to encapsulate a change notification that indicates a change either on a
 queue or a machine object within a directory service. The change is expressed as a notification
@@ -1793,7 +1676,8 @@ Release: April 23, 2024
 
 18 / 42
 
-2.2.6  Notification Update
+
+#### 2.2.6 Notification Update
 
 A Notification Update is used to encapsulate a change notification that indicates a change either on
 a queue or a machine object within a directory service. The change is expressed as a notification
@@ -1874,7 +1758,8 @@ Release: April 23, 2024
 
 19 / 42
 
-UseGuid (1 byte): A UCHAR that indicates whether a Notification Update uses the PathName or
+
+UseGuid (1 byte): A UCHAR that indicates whether a Notification Update uses the PathName or
 the GuidIdentifier field. This field MUST be set to 0x01 to indicate that the GuidIdentifier field
 is being used. Otherwise, this field MUST be set to 0x00 to indicate that the PathName field is
 being used.
@@ -1924,7 +1809,7 @@ field. The format of each property value depends on the variant type, which is d
 corresponding property ID. Section 2.2.3 lists the formats for the variant types. Sections 2.2.3.1
 through 2.2.3.15 define the types for each property ID.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol uses ADM elements specified in section 3.1.1. A subset of these elements can be
 published in a directory. This protocol SHOULD<6> access the directory using the algorithm specified
@@ -1938,11 +1823,12 @@ Release: April 23, 2024
 
 20 / 42
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common Details
+
+#### 3.1.1 Abstract Data Model
 
 This conceptual model is common to both servers and clients of this protocol. The abstract data
 model, which is specific to either the server or client side of this protocol, is described in MQCN Server
@@ -1965,7 +1851,7 @@ protocol.
 
 Section 3.1.1.2 describes the mapping between property identifiers and attributes of ADM elements.
 
-3.1.1.1  Shared Data Elements
+##### 3.1.1.1 Shared Data Elements
 
 The server and client side of this protocol manipulate the following ADM elements from the shared
 abstract data model defined in [MS-MQDMPR] section 3.1.1.
@@ -1976,12 +1862,12 @@ Queue: [MS-MQDMPR] section 3.1.1.2.
 
 Message: [MS-MQDMPR] section 3.1.1.12.
 
-3.1.1.2  Data Elements Mapping
+##### 3.1.1.2 Data Elements Mapping
 
 This section describes the mapping between property identifiers and attributes of abstract data models
 elements.
 
-3.1.1.2.1 Queue Manager Attributes Mapping
+###### 3.1.1.2.1 Queue Manager Attributes Mapping
 
 The following section specifies the mapping between property identifiers and the ADM attributes of a
 QueueManager ([MS-MQDMPR] section 3.1.1.1) ADM element.
@@ -2003,7 +1889,8 @@ Release: April 23, 2024
 
 21 / 42
 
-QueueManager.JournalQuota: Defined in PROPID_QM_JOURNAL_QUOTA ([MS-MQMQ] section
+
+QueueManager.JournalQuota: Defined in PROPID_QM_JOURNAL_QUOTA ([MS-MQMQ] section
 
 2.3.2.14).
 
@@ -2021,7 +1908,7 @@ QueueManager.OperatingSystemType: Defined in PROPID_QM_OS ([MS-MQMQ] section
 
 2.3.2.19).
 
-3.1.1.3  Queue Attributes Mapping
+##### 3.1.1.3 Queue Attributes Mapping
 
 The ADM attributes of a Queue ([MS-MQDMPR] section 3.1.1.2) ADM element map to their respective
 property identifiers as follows.
@@ -2060,11 +1947,11 @@ Queue.DirectoryPath: PROPID_Q_ADS_PATH ([MS-MQMQ] section 2.3.1.24).
 
 Queue.Scope: PROPID_Q_SCOPE ([MS-MQMQ] section 2.3.1.14).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 There are no common timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There is no common initialization.
 
@@ -2075,25 +1962,26 @@ Release: April 23, 2024
 
 22 / 42
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no common higher-layer triggered events.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 There are no common message processing events and sequencing rules.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 There are no common timer events.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 There are no other local events.
 
-3.2  MQCN Server Details
+### 3.2 MQCN Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2112,16 +2000,16 @@ protocol.
 
 Section 3.2.1.2 describes the ADM elements that are specific to the server side of this protocol.
 
-3.2.1.1  Shared Data Elements
+##### 3.2.1.1 Shared Data Elements
 
 The server side of this protocol manipulates the shared ADM elements listed in section 3.1.1.1.
 
-3.2.1.2  Local Data Elements
+##### 3.2.1.2 Local Data Elements
 
 In addition to the shared ADM elements, the server side of this protocol manipulates the Change
 Notification Queue (section 3.2.1.2.1) ADM element.
 
-3.2.1.2.1 Change Notification Queue
+###### 3.2.1.2.1 Change Notification Queue
 
 The Change Notification Queue ADM element represents a local private notification queue. The
 following ABNF rule specifies the queue name format.
@@ -2137,11 +2025,12 @@ Release: April 23, 2024
 
 23 / 42
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The implementation of this protocol SHOULD<8> open the local private change notification queue.
 This queue MUST be opened by raising an Open Queue ([MS-MQDMPR] section 3.1.7.1.5) event with
@@ -2179,11 +2068,11 @@ the change notification queue.
 This event returns rMessage, a reference to the Message ([MS-MQDMPR] section 3.1.1.12) ADM
 element instance that was dequeued.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 The server MUST initialize the local private change notification queue as specified in section 3.2.3.
 When a Dequeue Message ([MS-MQDMPR] section 3.1.7.1.10) event is raised, the server MUST
@@ -2217,10 +2106,11 @@ Release: April 23, 2024
 
 24 / 42
 
-After a notification message is processed, another Dequeue Message event MUST be generated as
+
+After a notification message is processed, another Dequeue Message event MUST be generated as
 specified in section 3.2.3. This process is repeated for the lifetime of the queue manager.
 
-3.2.5.1  Processing a Change Notification Message Version 0x01
+##### 3.2.5.1 Processing a Change Notification Message Version 0x01
 
 For a Change Notification Message (section 2.2.4) with a Version field set to 0x01,
 NotificationMessage.Data is an array of Notification Updates (section 2.2.6). For each Notification
@@ -2313,7 +2203,8 @@ Release: April 23, 2024
 
 25 / 42
 
-
+
+
 
 JournalQuota := PropertyValue[ IndexOf(PROPID_Q_JOURNAL_QUOTA) ]
 
@@ -2402,7 +2293,8 @@ Message Queuing (MSMQ): Directory Service Change Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If the Command field equals 0x02 (deleted), the object type MUST be set to the value of
 PropertyValue[ 1 ]. If the object type does not equal MQDS_QUEUE, the server MUST
@@ -2427,7 +2319,7 @@ Section 3.2.1 specifies the abstract data model that can be used as a reference 
 specific to Queue and QueueManager ADM element instances in a queue manager that implements
 this protocol.
 
-3.2.5.2  Processing a Change Notification Message Version 0x02
+##### 3.2.5.2 Processing a Change Notification Message Version 0x02
 
 For a Change Notification Message (section 2.2.4) with a Version field set to 0x02,
 NotificationMessage.Data is a Notification Body (section 2.2.5). The server MUST update the state of
@@ -2498,7 +2390,8 @@ Release: April 23, 2024
 
 27 / 42
 
-  Update the corresponding Queue ADM element instance in the QueueCollection ADM
+
+  Update the corresponding Queue ADM element instance in the QueueCollection ADM
 
 attribute of the local QueueManager ([MS-MQDMPR] section 3.1.1.1) ADM element instance
 with the Queue ADM element instance returned by the Read Directory event.
@@ -2544,17 +2437,17 @@ element instance returned by the Read Directory event.
 Section 3.2.1 describes the abstract model that can be used as a reference to maintain data specific to
 the Queue and QueueManager ADM elements in a queue manager that implements this protocol.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 There are no timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 There are no other local events.
 
-3.3  MQCN Client Details
+### 3.3 MQCN Client Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2578,7 +2471,8 @@ Release: April 23, 2024
 
 28 / 42
 
-3.3.1.1  Shared Data Elements
+
+##### 3.3.1.1 Shared Data Elements
 
 The server side of this protocol manipulates the shared ADM elements listed in section 3.1.1.1. In
 addition, this protocol manipulates the following ADM elements from the shared abstract data model
@@ -2586,11 +2480,11 @@ defined in [MS-MQDMPR] section 3.1.1.
 
 OutgoingQueue: ([MS-MQDMPR] section 3.1.1.3).
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The implementation of the client side of MQCN SHOULD open the OutgoingQueue ADM element to
 send change notification messages. This queue MUST be opened by raising an Open Queue ([MS-
@@ -2616,14 +2510,14 @@ This event returns rStatus and rOpenQueueDescriptor. If rStatus is MQ_OK, the va
 rOpenQueueDescriptor is assigned to openNotifyQueueDescriptor to be used when enqueuing
 messages to this queue; otherwise, this protocol cannot work correctly.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The operation of this protocol is initiated and subsequently driven by the following higher-layer
 triggered event:
 
   Send Change Notification (section 3.3.4.1).
 
-3.3.4.1  Send Change Notification
+##### 3.3.4.1 Send Change Notification
 
 This event MUST be generated with the following arguments:
 
@@ -2659,15 +2553,16 @@ Message Queuing (MSMQ): Directory Service Change Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
  For a Version field value of 0x01, use the rules specified in section 3.3.5.2.
 
   Send the prepared Change Notification Message following the rules specified in section 3.3.5.3.
 
-3.3.5  Processing Events and Sequencing Rules
+#### 3.3.5 Processing Events and Sequencing Rules
 
-3.3.5.1  Preparing a Change Notification Message Version 0x02
+##### 3.3.5.1 Preparing a Change Notification Message Version 0x02
 
 The queue manager MUST create a Change Notification Message (section 2.2.4) containing a
 Notification Body (section 2.2.5).
@@ -2689,7 +2584,7 @@ Finally, the Change Notification Message MUST be included within a Message ([MS-
 section 3.1.1.12) ADM element instance and MUST be sent through MSMQ to the destination queue
 manager, as specified in section 3.3.5.3.
 
-3.3.5.2  Preparing a Change Notification Message Version 0x01
+##### 3.3.5.2 Preparing a Change Notification Message Version 0x01
 
 The directory service MUST create a Change Notification Message (section 2.2.4) that includes
 Notification Updates (section 2.2.6) as follows:
@@ -2744,7 +2639,8 @@ Message Queuing (MSMQ): Directory Service Change Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2875,7 +2771,8 @@ Message Queuing (MSMQ): Directory Service Change Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2956,7 +2853,7 @@ Finally, the Change Notification Message MUST be included within a Message ([MS-
 section 3.1.1.12) ADM element instance and MUST be sent through MSMQ to the destination queue
 manager, as specified in section 3.3.5.3.
 
-3.3.5.3  Sending a Change Notification Message
+##### 3.3.5.3 Sending a Change Notification Message
 
 The Change Notification Message (section 2.2.4) MUST be sent within a Message ([MS-MQDMPR]
 section 3.1.1.12) ADM element instance through MSMQ to the destination queue manager. This
@@ -2971,7 +2868,8 @@ Release: April 23, 2024
 
 32 / 42
 
-  Create a Message ADM element instance rMessage with the following ADM attributes:
+
+  Create a Message ADM element instance rMessage with the following ADM attributes:
 
   TimeToReachQueue := 300 seconds
 
@@ -3015,11 +2913,11 @@ instance created during the initialization phase in section 3.3.3.
 
 iMessage := rMessage
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -3030,13 +2928,14 @@ Release: April 23, 2024
 
 33 / 42
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-MQCN].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Management Client Update Profile
+### 4.1 Management Client Update Profile
 
 This example describes how an application can create a public queue on a remote queue manager.
 The application profile consists of the MSMQ Directory Service and two MSMQ management
@@ -3082,7 +2981,8 @@ Message Queuing (MSMQ): Directory Service Change Notification Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If Active Directory is used, the queue manager on System 1 informs the queue manager on
 System 3 via the MSMQ: Directory Service Change Notification Protocol, as shown in arrow
@@ -3095,15 +2995,16 @@ Release: April 23, 2024
 
 35 / 42
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol might allow denial-of-service (DoS) attacks to the server. An implementation of this
 protocol has to develop mechanisms to prevent such attacks. One of these mechanisms is to process
 notifications only every few minutes.<14>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -3114,7 +3015,8 @@ Release: April 23, 2024
 
 36 / 42
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -3181,7 +3083,8 @@ Release: April 23, 2024
 
 37 / 42
 
-<2> Section 1.6: On Windows NT and Windows 2000, the MSMQ Directory Service notifies the
+
+<2> Section 1.6: On Windows NT and Windows 2000, the MSMQ Directory Service notifies the
 destination queue manager via the MSMQ: Directory Service Change Notification Protocol. On all other
 Windows implementations of this protocol, the local queue manager notifies the destination queue
 manager via the MSMQ: Directory Service Change Notification Protocol. If an MSMQ routing server is
@@ -3247,7 +3150,8 @@ Release: April 23, 2024
 
 38 / 42
 
-<12> Section 3.3.5.3: MSMQ versions 1 and 2 use MD5, as specified in [RFC1321]; versions 2 and 4
+
+<12> Section 3.3.5.3: MSMQ versions 1 and 2 use MD5, as specified in [RFC1321]; versions 2 and 4
 use SHA1, as specified in [RFC3110].
 
 <13> Section 3.3.5.3: MSMQ version 1 sets this value to Sig10.
@@ -3270,7 +3174,8 @@ Release: April 23, 2024
 
 39 / 42
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3314,7 +3219,8 @@ Release: April 23, 2024
 
 40 / 42
 
-8  Index
+
+## 8 Index
 A
 
 I
@@ -3451,7 +3357,8 @@ Release: April 23, 2024
 
 41 / 42
 
-   client 29
+
+   client 29
    server 24
 
 V

@@ -63,7 +63,8 @@ Release: June 10, 2025
 
 1 / 253
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: June 10, 2025
 
 2 / 253
 
-Date
+
+Date
 
 Revision
 History
@@ -545,7 +547,8 @@ Release: June 10, 2025
 
 3 / 253
 
-Date
+
+Date
 
 Revision
 History
@@ -602,562 +605,229 @@ Release: June 10, 2025
 
 4 / 253
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 15
-Normative References ................................................................................. 15
-Informative References ............................................................................... 16
-Overview ........................................................................................................ 17
-Relationship to Other Protocols .......................................................................... 22
-Prerequisites/Preconditions ............................................................................... 24
-Applicability Statement ..................................................................................... 24
-Versioning and Capability Negotiation ................................................................. 25
-Vendor-Extensible Fields ................................................................................... 25
-Standards Assignments ..................................................................................... 25
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-2.2.1.1.4
-2.2.1.1.5
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-
-2  Messages ............................................................................................................... 26
-Transport ........................................................................................................ 26
-Common Data Types ........................................................................................ 26
-Constant Value Definitions ........................................................................... 30
-ACCESS_MASK ..................................................................................... 30
-ACCESS_MASK for All Objects ........................................................... 30
-ACCESS_MASK for Policy Objects ...................................................... 32
-ACCESS_MASK for Account Objects ................................................... 33
-ACCESS_MASK for Secret Objects ..................................................... 33
-ACCESS_MASK for Trusted Domain Objects ........................................ 33
-POLICY_SYSTEM_ACCESS_MODE ............................................................ 34
-SECURITY_INFORMATION ...................................................................... 35
-AEAD-AES-256-CBC-HMAC-SHA512 Constants ......................................... 36
-LSA Trust Record Flags .......................................................................... 37
-Basic Data Types ........................................................................................ 38
-LSAPR_HANDLE .................................................................................... 38
-PLSAPR_HANDLE .................................................................................. 38
-LSA_UNICODE_STRING ......................................................................... 38
-LSAPR_OBJECT_ATTRIBUTES ................................................................. 38
-LSAPR_SR_SECURITY_DESCRIPTOR ........................................................ 39
-LSAPR_REVISION_INFO_V1 ................................................................... 39
-LSAPR_REVISION_INFO ......................................................................... 40
-Data Types Referenced by Basic Data Types .................................................. 40
-STRING ............................................................................................... 40
-LSAPR_ACL .......................................................................................... 41
-SECURITY_DESCRIPTOR_CONTROL ......................................................... 41
-LSAPR_SECURITY_DESCRIPTOR ............................................................. 41
-SECURITY_IMPERSONATION_LEVEL ........................................................ 42
-SECURITY_CONTEXT_TRACKING_MODE .................................................. 43
-SECURITY_QUALITY_OF_SERVICE .......................................................... 43
-Policy Query/Set Data Types ........................................................................ 43
-POLICY_INFORMATION_CLASS ............................................................... 43
-LSAPR_POLICY_INFORMATION ............................................................... 45
-POLICY_AUDIT_LOG_INFO ..................................................................... 45
-LSAPR_POLICY_AUDIT_EVENTS_INFO ..................................................... 46
-LSAPR_POLICY_PRIMARY_DOM_INFO ...................................................... 47
-LSAPR_POLICY_ACCOUNT_DOM_INFO ..................................................... 47
-LSAPR_POLICY_PD_ACCOUNT_INFO ....................................................... 47
-POLICY_LSA_SERVER_ROLE ................................................................... 47
-POLICY_LSA_SERVER_ROLE_INFO .......................................................... 48
-LSAPR_POLICY_REPLICA_SRCE_INFO ...................................................... 48
-POLICY_MODIFICATION_INFO ................................................................ 48
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-2.2.4.10
-2.2.4.11
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-2.2.4
-
-2.2.3
-
-[MS-LSAD] - v20250610
-Local Security Authority (Domain Policy) Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: June 10, 2025
-
-5 / 253
-
-2.2.5
-
-2.2.6
-
-2.2.7
-
-2.2.6.1
-2.2.6.2
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-
-2.2.4.12
-2.2.4.13
-2.2.4.14
-2.2.4.15
-2.2.4.16
-2.2.4.17
-2.2.4.18
-2.2.4.19
-2.2.4.20
-2.2.4.21
-
-POLICY_AUDIT_FULL_SET_INFO ............................................................. 49
-POLICY_AUDIT_FULL_QUERY_INFO ......................................................... 49
-LSAPR_POLICY_DNS_DOMAIN_INFO ....................................................... 49
-POLICY_DOMAIN_INFORMATION_CLASS ................................................. 50
-LSAPR_POLICY_DOMAIN_INFORMATION .................................................. 50
-POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO ........................................ 50
-LSAPR_POLICY_DOMAIN_EFS_INFO ........................................................ 51
-POLICY_DOMAIN_KERBEROS_TICKET_INFO ............................................. 51
-POLICY_AUDIT_EVENT_TYPE .................................................................. 52
-LSAPR_POLICY_MACHINE_ACCT_INFO .................................................... 52
-Account Query/Set Data Types ..................................................................... 53
-LSAPR_ACCOUNT_INFORMATION ............................................................ 53
-LSAPR_ACCOUNT_ENUM_BUFFER ........................................................... 53
-LSAPR_USER_RIGHT_SET ...................................................................... 53
-LSAPR_LUID_AND_ATTRIBUTES ............................................................. 54
-LSAPR_PRIVILEGE_SET ......................................................................... 54
-Secret Query/Set Data Types ....................................................................... 55
-LSAPR_CR_CIPHER_VALUE .................................................................... 55
-LSAPR_AES_CIPHER_VALUE ................................................................... 55
-Trusted Domain Query/Set Data Types .......................................................... 55
-LSAPR_TRUST_INFORMATION ................................................................ 55
-TRUSTED_INFORMATION_CLASS ............................................................ 56
-LSAPR_TRUSTED_DOMAIN_INFO ............................................................ 57
-LSAPR_TRUSTED_DOMAIN_NAME_INFO .................................................. 59
-LSAPR_TRUSTED_CONTROLLERS_INFO ................................................... 59
-TRUSTED_POSIX_OFFSET_INFO ............................................................. 59
-LSAPR_TRUSTED_PASSWORD_INFO ....................................................... 59
-LSAPR_TRUSTED_DOMAIN_INFORMATION_BASIC .................................... 60
-LSAPR_TRUSTED_DOMAIN_INFORMATION_EX ......................................... 60
-LSAPR_TRUSTED_DOMAIN_INFORMATION_EX2........................................ 62
-LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION ..................................... 63
-LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL ..................... 63
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION ...................................... 63
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL ...................... 64
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION2 .................................... 64
-LSAPR_TRUSTED_DOMAIN_AUTH_BLOB .................................................. 65
-LSAPR_AUTH_INFORMATION .................................................................. 67
-TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES .............................. 68
-LSAPR_TRUSTED_ENUM_BUFFER ............................................................ 68
-LSAPR_TRUSTED_ENUM_BUFFER_EX ...................................................... 69
-LSA_FOREST_TRUST_RECORD ............................................................... 69
-LSA_FOREST_TRUST_RECORD_TYPE ....................................................... 70
-LSA_FOREST_TRUST_BINARY_DATA ....................................................... 70
-LSA_FOREST_TRUST_DOMAIN_INFO ....................................................... 70
-LSA_FOREST_TRUST_INFORMATION ....................................................... 71
-LSA_FOREST_TRUST_COLLISION_RECORD_TYPE ..................................... 71
-LSA_FOREST_TRUST_COLLISION_RECORD .............................................. 71
-LSA_FOREST_TRUST_COLLISION_INFORMATION ..................................... 72
-LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL_AES .............. 72
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL_AES ............... 73
-LSA_FOREST_TRUST_SCANNER_INFO ..................................................... 73
-LSA_FOREST_TRUST_RECORD2 .............................................................. 73
-LSA_FOREST_TRUST_INFORMATION2 ..................................................... 74
-Privilege Data Types ................................................................................... 74
-LSAPR_POLICY_PRIVILEGE_DEF ............................................................. 74
-LSAPR_PRIVILEGE_ENUM_BUFFER .......................................................... 75
-Directory Service Schema Elements ................................................................... 75
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-2.2.7.4
-2.2.7.5
-2.2.7.6
-2.2.7.7
-2.2.7.8
-2.2.7.9
-2.2.7.10
-2.2.7.11
-2.2.7.12
-2.2.7.13
-2.2.7.14
-2.2.7.15
-2.2.7.16
-2.2.7.17
-2.2.7.18
-2.2.7.19
-2.2.7.20
-2.2.7.21
-2.2.7.22
-2.2.7.23
-2.2.7.24
-2.2.7.25
-2.2.7.26
-2.2.7.27
-2.2.7.28
-2.2.7.29
-2.2.7.30
-2.2.7.31
-2.2.7.32
-2.2.7.33
-
-2.2.8.1
-2.2.8.2
-
-2.2.8
-
-2.3
-
-[MS-LSAD] - v20250610
-Local Security Authority (Domain Policy) Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: June 10, 2025
-
-6 / 253
-
-3.1
-
-3.1.1
-
-3.1.1.6.1
-
-3.1.1.10.1
-
-3.1.4.3
-3.1.4.4
-
-3.1.4.1
-3.1.4.2
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.2.1
-3.1.1.2.2
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-
-3.1.1.7
-3.1.1.8
-3.1.1.9
-3.1.1.10
-
-3  Protocol Details ..................................................................................................... 76
-Server Details .................................................................................................. 76
-Abstract Data Model .................................................................................... 76
-Policy Object Data Model ........................................................................ 76
-Accounts Rights Data Model ................................................................... 78
-Privilege Data Model ........................................................................ 78
-System Access Rights Data Model ...................................................... 81
-Account Object Data Model .................................................................... 82
-Secret Object Data Model ....................................................................... 82
-Trusted Domain Object Data Model ......................................................... 84
-Configuration Settings ........................................................................... 85
-Block Anonymous Access to Objects .................................................. 85
-LsaContextHandle Data Model ................................................................ 85
-Attribute Listing .................................................................................... 86
-Object Class Listing ............................................................................... 87
-Access for Public Abstract Data Model Elements ........................................ 87
-Example Patterns for Direct Access of Policy Object ADM Elements ........ 87
-3.1.1.10.1.1  Query Pattern for Policy Object ADM ............................................ 87
-Set Pattern for Policy Object ADM ................................................ 88
-3.1.1.10.1.2
-Timers ...................................................................................................... 88
-Initialization ............................................................................................... 88
-Message Processing Events and Sequencing Rules .......................................... 88
-Obtaining Handles ................................................................................. 95
-Access Rights and Access Checks ............................................................ 96
-Access Checks Applied on Handle Open .............................................. 97
-Access Checks Applied for Object Operations ...................................... 99
-Determining If Requestors Are Anonymous ......................................... 99
-Closing Handles .................................................................................... 99
-Policy Object Methods ............................................................................ 99
-LsarOpenPolicy2 (Opnum 44) ........................................................... 100
-LsarOpenPolicy (Opnum 6) .............................................................. 101
-LsarQueryInformationPolicy2 (Opnum 46) ......................................... 102
-LsarQueryInformationPolicy (Opnum 7) ............................................. 104
-LsarSetInformationPolicy2 (Opnum 47) ............................................. 105
-LsarSetInformationPolicy (Opnum 8) ................................................ 107
-LsarQueryDomainInformationPolicy (Opnum 53) ................................ 107
-LsarSetDomainInformationPolicy (Opnum 54) .................................... 109
-LsarOpenPolicy3 (Opnum 130) ......................................................... 110
-LsarOpenPolicyWithCreds (Opnum 135) ............................................ 112
-Account Object Methods ....................................................................... 112
-LsarCreateAccount (Opnum 10) ....................................................... 113
-LsarEnumerateAccounts (Opnum 11) ................................................ 114
-LsarOpenAccount (Opnum 17) ......................................................... 116
-LsarEnumeratePrivilegesAccount (Opnum 18) .................................... 117
-LsarAddPrivilegesToAccount (Opnum 19) ........................................... 118
-LsarRemovePrivilegesFromAccount (Opnum 20) ................................. 119
-LsarGetSystemAccessAccount (Opnum 23) ........................................ 119
-LsarSetSystemAccessAccount (Opnum 24) ........................................ 120
-LsarEnumerateAccountsWithUserRight (Opnum 35) ............................ 121
-LsarEnumerateAccountRights (Opnum 36) ......................................... 122
-LsarAddAccountRights (Opnum 37) ................................................... 123
-LsarRemoveAccountRights (Opnum 38) ............................................. 124
-Secret Object Methods .......................................................................... 125
-LsarCreateSecret (Opnum 16) .......................................................... 126
-LsarOpenSecret (Opnum 28) ........................................................... 127
-LsarSetSecret (Opnum 29) .............................................................. 129
-LsarQuerySecret (Opnum 30) .......................................................... 130
-LsarStorePrivateData (Opnum 42) .................................................... 131
-
-3.1.4.5.1
-3.1.4.5.2
-3.1.4.5.3
-3.1.4.5.4
-3.1.4.5.5
-3.1.4.5.6
-3.1.4.5.7
-3.1.4.5.8
-3.1.4.5.9
-3.1.4.5.10
-3.1.4.5.11
-3.1.4.5.12
-
-3.1.4.4.1
-3.1.4.4.2
-3.1.4.4.3
-3.1.4.4.4
-3.1.4.4.5
-3.1.4.4.6
-3.1.4.4.7
-3.1.4.4.8
-3.1.4.4.9
-3.1.4.4.10
-
-3.1.4.6.1
-3.1.4.6.2
-3.1.4.6.3
-3.1.4.6.4
-3.1.4.6.5
-
-3.1.4.6
-
-3.1.4.5
-
-[MS-LSAD] - v20250610
-Local Security Authority (Domain Policy) Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: June 10, 2025
-
-7 / 253
-
-3.1.4.7
-
-3.1.4.6.6
-3.1.4.6.7
-3.1.4.6.8
-3.1.4.6.9
-3.1.4.6.10
-3.1.4.6.11
-3.1.4.6.12
-
-3.1.4.7.1
-3.1.4.7.2
-3.1.4.7.3
-3.1.4.7.4
-3.1.4.7.5
-3.1.4.7.6
-3.1.4.7.7
-3.1.4.7.8
-3.1.4.7.9
-3.1.4.7.10
-3.1.4.7.11
-3.1.4.7.12
-3.1.4.7.13
-3.1.4.7.14
-3.1.4.7.15
-3.1.4.7.16
-
-LsarRetrievePrivateData (Opnum 43) ................................................ 132
-LsarOpenSecret2 (Opnum 136) ........................................................ 133
-LsarCreateSecret2 (Opnum 137) ...................................................... 133
-LsarSetSecret2 (Opnum 138) ........................................................... 134
-LsarQuerySecret2 (Opnum 139) ....................................................... 134
-LsarStorePrivateData2 (Opnum 140) ................................................ 135
-LsarRetrievePrivateData2 (Opnum 141) ............................................ 135
-Trusted Domain Object Methods ............................................................ 136
-LsarOpenTrustedDomain (Opnum 25) ............................................... 137
-LsarQueryTrustedDomainInfo (Opnum 39) ........................................ 138
-LsarSetTrustedDomainInfo (Opnum 40) ............................................ 139
-LsarDeleteTrustedDomain (Opnum 41) ............................................. 141
-LsarQueryTrustedDomainInfoByName (Opnum 48) ............................. 143
-LsarSetTrustedDomainInfoByName (Opnum 49) ................................. 143
-LsarEnumerateTrustedDomainsEx (Opnum 50) .................................. 144
-LsarEnumerateTrustedDomains (Opnum 13) ...................................... 146
-LsarOpenTrustedDomainByName (Opnum 55) ................................... 147
-LsarCreateTrustedDomainEx2 (Opnum 59) ........................................ 148
-LsarCreateTrustedDomainEx (Opnum 51) .......................................... 151
-LsarCreateTrustedDomain (Opnum 12) ............................................. 152
-LsarQueryInfoTrustedDomain (Opnum 26) ........................................ 154
-LsarSetInformationTrustedDomain (Opnum 27) ................................. 156
-LsarQueryForestTrustInformation (Opnum 73) ................................... 158
-LsarSetForestTrustInformation (Opnum 74) ....................................... 160
-Forest Trust Collision Generation ................................................ 162
-LsarCreateTrustedDomainEx3 (Opnum 129) ...................................... 163
-LsarQueryForestTrustInformation2 (Opnum 132) ............................... 164
-LsarSetForestTrustInformation2 (Opnum 133) ................................... 165
-Privilege Methods ................................................................................. 167
-LsarEnumeratePrivileges (Opnum 2) ................................................. 168
-LsarLookupPrivilegeValue (Opnum 31) .............................................. 169
-LsarLookupPrivilegeName (Opnum 32) .............................................. 170
-LsarLookupPrivilegeDisplayName (Opnum 33) .................................... 171
-Common Object Methods ...................................................................... 172
-LsarQuerySecurityObject (Opnum 3) ................................................. 173
-LsarSetSecurityObject (Opnum 4) .................................................... 174
-LsarDeleteObject (Opnum 34) .......................................................... 175
-LsarClose (Opnum 0) ...................................................................... 176
-3.1.4.10  Data Validation .................................................................................... 177
-Timer Events ............................................................................................. 181
-Other Local Events ..................................................................................... 182
-LSAPR_HANDLE_rundown ..................................................................... 182
-
-3.1.4.8.1
-3.1.4.8.2
-3.1.4.8.3
-3.1.4.8.4
-
-3.1.4.9.1
-3.1.4.9.2
-3.1.4.9.3
-3.1.4.9.4
-
-3.1.4.7.17
-3.1.4.7.18
-3.1.4.7.19
-
-3.1.4.7.16.1
-
-3.1.4.8
-
-3.1.4.9
-
-3.1.6.1
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ............................................................................................... 183
-Manipulating Account Objects ........................................................................... 183
-Manipulating Secret Objects ............................................................................. 186
-Manipulating Trusted Domain Objects ................................................................ 189
-Structure Example of LSAPR_TRUSTED_DOMAIN_AUTH_BLOB.............................. 191
-
-4.1
-4.2
-4.3
-4.4
-
-5.1
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-
-5  Security ............................................................................................................... 195
-Security Considerations for Implementers .......................................................... 195
-RC4 Cipher Usage ...................................................................................... 195
-Secret Encryption and Decryption ................................................................ 195
-DES-ECB-LM Cipher Definition ..................................................................... 197
-Encryption and Decryption Examples ............................................................ 197
-Encryption Example .............................................................................. 198
-Decryption Example ............................................................................. 198
-AES Cipher Usage ...................................................................................... 199
-Index of Security Parameters ........................................................................... 199
-
-5.1.4.1
-5.1.4.2
-
-5.1.5
-
-5.2
-
-[MS-LSAD] - v20250610
-Local Security Authority (Domain Policy) Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: June 10, 2025
-
-8 / 253
-
-6  Appendix A: Full IDL ............................................................................................ 201
-
-7  Appendix B: Product Behavior ............................................................................. 223
-
-8  Change Tracking .................................................................................................. 248
-
-9  Index ................................................................................................................... 250
-
-[MS-LSAD] - v20250610
-Local Security Authority (Domain Policy) Remote Protocol
-Copyright © 2025 Microsoft Corporation
-Release: June 10, 2025
-
-9 / 253
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Constant Value Definitions](#221-constant-value-definitions)
+      - [2.2.1.1 ACCESS_MASK](#2211-accessmask)
+        - [2.2.1.1.1 ACCESS_MASK for All Objects](#22111-accessmask-for-all-objects)
+        - [2.2.1.1.2 ACCESS_MASK for Policy Objects](#22112-accessmask-for-policy-objects)
+        - [2.2.1.1.3 ACCESS_MASK for Account Objects](#22113-accessmask-for-account-objects)
+        - [2.2.1.1.4 ACCESS_MASK for Secret Objects](#22114-accessmask-for-secret-objects)
+        - [2.2.1.1.5 ACCESS_MASK for Trusted Domain Objects](#22115-accessmask-for-trusted-domain-objects)
+      - [2.2.1.2 POLICY_SYSTEM_ACCESS_MODE](#2212-policysystemaccessmode)
+      - [2.2.1.3 SECURITY_INFORMATION](#2213-securityinformation)
+      - [2.2.1.4 AEAD-AES-256-CBC-HMAC-SHA512 Constants](#2214-aead-aes-256-cbc-hmac-sha512-constants)
+      - [2.2.1.5 LSA Trust Record Flags](#2215-lsa-trust-record-flags)
+    - [2.2.2 Basic Data Types](#222-basic-data-types)
+      - [2.2.2.1 LSAPR_HANDLE](#2221-lsaprhandle)
+      - [2.2.2.2 PLSAPR_HANDLE](#2222-plsaprhandle)
+      - [2.2.2.3 LSA_UNICODE_STRING](#2223-lsaunicodestring)
+      - [2.2.2.4 LSAPR_OBJECT_ATTRIBUTES](#2224-lsaprobjectattributes)
+      - [2.2.2.5 LSAPR_SR_SECURITY_DESCRIPTOR](#2225-lsaprsrsecuritydescriptor)
+      - [2.2.2.6 LSAPR_REVISION_INFO_V1](#2226-lsaprrevisioninfov1)
+      - [2.2.2.7 LSAPR_REVISION_INFO](#2227-lsaprrevisioninfo)
+    - [2.2.3 Data Types Referenced by Basic Data Types](#223-data-types-referenced-by-basic-data-types)
+      - [2.2.3.1 STRING](#2231-string)
+      - [2.2.3.2 LSAPR_ACL](#2232-lsapracl)
+      - [2.2.3.3 SECURITY_DESCRIPTOR_CONTROL](#2233-securitydescriptorcontrol)
+      - [2.2.3.4 LSAPR_SECURITY_DESCRIPTOR](#2234-lsaprsecuritydescriptor)
+      - [2.2.3.5 SECURITY_IMPERSONATION_LEVEL](#2235-securityimpersonationlevel)
+      - [2.2.3.6 SECURITY_CONTEXT_TRACKING_MODE](#2236-securitycontexttrackingmode)
+      - [2.2.3.7 SECURITY_QUALITY_OF_SERVICE](#2237-securityqualityofservice)
+    - [2.2.4 Policy Query/Set Data Types](#224-policy-queryset-data-types)
+      - [2.2.4.1 POLICY_INFORMATION_CLASS](#2241-policyinformationclass)
+      - [2.2.4.2 LSAPR_POLICY_INFORMATION](#2242-lsaprpolicyinformation)
+      - [2.2.4.3 POLICY_AUDIT_LOG_INFO](#2243-policyauditloginfo)
+      - [2.2.4.4 LSAPR_POLICY_AUDIT_EVENTS_INFO](#2244-lsaprpolicyauditeventsinfo)
+      - [2.2.4.5 LSAPR_POLICY_PRIMARY_DOM_INFO](#2245-lsaprpolicyprimarydominfo)
+      - [2.2.4.6 LSAPR_POLICY_ACCOUNT_DOM_INFO](#2246-lsaprpolicyaccountdominfo)
+      - [2.2.4.7 LSAPR_POLICY_PD_ACCOUNT_INFO](#2247-lsaprpolicypdaccountinfo)
+      - [2.2.4.8 POLICY_LSA_SERVER_ROLE](#2248-policylsaserverrole)
+      - [2.2.4.9 POLICY_LSA_SERVER_ROLE_INFO](#2249-policylsaserverroleinfo)
+      - [2.2.4.10 LSAPR_POLICY_REPLICA_SRCE_INFO](#22410-lsaprpolicyreplicasrceinfo)
+      - [2.2.4.11 POLICY_MODIFICATION_INFO](#22411-policymodificationinfo)
+      - [2.2.4.12 POLICY_AUDIT_FULL_SET_INFO](#22412-policyauditfullsetinfo)
+      - [2.2.4.13 POLICY_AUDIT_FULL_QUERY_INFO](#22413-policyauditfullqueryinfo)
+      - [2.2.4.14 LSAPR_POLICY_DNS_DOMAIN_INFO](#22414-lsaprpolicydnsdomaininfo)
+      - [2.2.4.15 POLICY_DOMAIN_INFORMATION_CLASS](#22415-policydomaininformationclass)
+      - [2.2.4.16 LSAPR_POLICY_DOMAIN_INFORMATION](#22416-lsaprpolicydomaininformation)
+      - [2.2.4.17 POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO](#22417-policydomainqualityofserviceinfo)
+      - [2.2.4.18 LSAPR_POLICY_DOMAIN_EFS_INFO](#22418-lsaprpolicydomainefsinfo)
+      - [2.2.4.19 POLICY_DOMAIN_KERBEROS_TICKET_INFO](#22419-policydomainkerberosticketinfo)
+      - [2.2.4.20 POLICY_AUDIT_EVENT_TYPE](#22420-policyauditeventtype)
+      - [2.2.4.21 LSAPR_POLICY_MACHINE_ACCT_INFO](#22421-lsaprpolicymachineacctinfo)
+    - [2.2.5 Account Query/Set Data Types](#225-account-queryset-data-types)
+      - [2.2.5.1 LSAPR_ACCOUNT_INFORMATION](#2251-lsapraccountinformation)
+      - [2.2.5.2 LSAPR_ACCOUNT_ENUM_BUFFER](#2252-lsapraccountenumbuffer)
+      - [2.2.5.3 LSAPR_USER_RIGHT_SET](#2253-lsapruserrightset)
+      - [2.2.5.4 LSAPR_LUID_AND_ATTRIBUTES](#2254-lsaprluidandattributes)
+      - [2.2.5.5 LSAPR_PRIVILEGE_SET](#2255-lsaprprivilegeset)
+    - [2.2.6 Secret Query/Set Data Types](#226-secret-queryset-data-types)
+      - [2.2.6.1 LSAPR_CR_CIPHER_VALUE](#2261-lsaprcrciphervalue)
+      - [2.2.6.2 LSAPR_AES_CIPHER_VALUE](#2262-lsapraesciphervalue)
+    - [2.2.7 Trusted Domain Query/Set Data Types](#227-trusted-domain-queryset-data-types)
+      - [2.2.7.1 LSAPR_TRUST_INFORMATION](#2271-lsaprtrustinformation)
+      - [2.2.7.2 TRUSTED_INFORMATION_CLASS](#2272-trustedinformationclass)
+      - [2.2.7.3 LSAPR_TRUSTED_DOMAIN_INFO](#2273-lsaprtrusteddomaininfo)
+      - [2.2.7.4 LSAPR_TRUSTED_DOMAIN_NAME_INFO](#2274-lsaprtrusteddomainnameinfo)
+      - [2.2.7.5 LSAPR_TRUSTED_CONTROLLERS_INFO](#2275-lsaprtrustedcontrollersinfo)
+      - [2.2.7.6 TRUSTED_POSIX_OFFSET_INFO](#2276-trustedposixoffsetinfo)
+      - [2.2.7.7 LSAPR_TRUSTED_PASSWORD_INFO](#2277-lsaprtrustedpasswordinfo)
+      - [2.2.7.8 LSAPR_TRUSTED_DOMAIN_INFORMATION_BASIC](#2278-lsaprtrusteddomaininformationbasic)
+      - [2.2.7.9 LSAPR_TRUSTED_DOMAIN_INFORMATION_EX](#2279-lsaprtrusteddomaininformationex)
+      - [2.2.7.10 LSAPR_TRUSTED_DOMAIN_INFORMATION_EX2](#22710-lsaprtrusteddomaininformationex2)
+      - [2.2.7.11 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION](#22711-lsaprtrusteddomainauthinformation)
+      - [2.2.7.12 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL](#22712-lsaprtrusteddomainauthinformationinternal)
+      - [2.2.7.13 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION](#22713-lsaprtrusteddomainfullinformation)
+      - [2.2.7.14 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL](#22714-lsaprtrusteddomainfullinformationinternal)
+      - [2.2.7.15 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION2](#22715-lsaprtrusteddomainfullinformation2)
+      - [2.2.7.16 LSAPR_TRUSTED_DOMAIN_AUTH_BLOB](#22716-lsaprtrusteddomainauthblob)
+      - [2.2.7.17 LSAPR_AUTH_INFORMATION](#22717-lsaprauthinformation)
+      - [2.2.7.18 TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES](#22718-trusteddomainsupportedencryptiontypes)
+      - [2.2.7.19 LSAPR_TRUSTED_ENUM_BUFFER](#22719-lsaprtrustedenumbuffer)
+      - [2.2.7.20 LSAPR_TRUSTED_ENUM_BUFFER_EX](#22720-lsaprtrustedenumbufferex)
+      - [2.2.7.21 LSA_FOREST_TRUST_RECORD](#22721-lsaforesttrustrecord)
+      - [2.2.7.22 LSA_FOREST_TRUST_RECORD_TYPE](#22722-lsaforesttrustrecordtype)
+      - [2.2.7.23 LSA_FOREST_TRUST_BINARY_DATA](#22723-lsaforesttrustbinarydata)
+      - [2.2.7.24 LSA_FOREST_TRUST_DOMAIN_INFO](#22724-lsaforesttrustdomaininfo)
+      - [2.2.7.25 LSA_FOREST_TRUST_INFORMATION](#22725-lsaforesttrustinformation)
+      - [2.2.7.26 LSA_FOREST_TRUST_COLLISION_RECORD_TYPE](#22726-lsaforesttrustcollisionrecordtype)
+      - [2.2.7.27 LSA_FOREST_TRUST_COLLISION_RECORD](#22727-lsaforesttrustcollisionrecord)
+      - [2.2.7.28 LSA_FOREST_TRUST_COLLISION_INFORMATION](#22728-lsaforesttrustcollisioninformation)
+      - [2.2.7.29 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL_AES](#22729-lsaprtrusteddomainauthinformationinternalaes)
+      - [2.2.7.30 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL_AES](#22730-lsaprtrusteddomainfullinformationinternalaes)
+      - [2.2.7.31 LSA_FOREST_TRUST_SCANNER_INFO](#22731-lsaforesttrustscannerinfo)
+      - [2.2.7.32 LSA_FOREST_TRUST_RECORD2](#22732-lsaforesttrustrecord2)
+      - [2.2.7.33 LSA_FOREST_TRUST_INFORMATION2](#22733-lsaforesttrustinformation2)
+    - [2.2.8 Privilege Data Types](#228-privilege-data-types)
+      - [2.2.8.1 LSAPR_POLICY_PRIVILEGE_DEF](#2281-lsaprpolicyprivilegedef)
+      - [2.2.8.2 LSAPR_PRIVILEGE_ENUM_BUFFER](#2282-lsaprprivilegeenumbuffer)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.10 for more details.](#31110-for-more-details)
+        - [3.1.1.10.1 Example Patterns for Direct Access of Policy Object ADM Elements](#311101-example-patterns-for-direct-access-of-policy-object-adm-elements)
+          - [3.1.1.10.1.1 Query Pattern for Policy Object ADM](#3111011-query-pattern-for-policy-object-adm)
+          - [3.1.1.10.1.2 Set Pattern for Policy Object ADM](#3111012-set-pattern-for-policy-object-adm)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Obtaining Handles](#3141-obtaining-handles)
+      - [3.1.4.2 Access Rights and Access Checks](#3142-access-rights-and-access-checks)
+        - [3.1.4.2.1 LsarOpenPolicy](#31421-lsaropenpolicy)
+        - [3.1.4.2.2 LsarQueryInformationPolicy2](#31422-lsarqueryinformationpolicy2)
+        - [3.1.4.2.3 Determining If Requestors Are Anonymous](#31423-determining-if-requestors-are-anonymous)
+      - [3.1.4.3 Closing Handles](#3143-closing-handles)
+      - [3.1.4.4 Policy Object Methods](#3144-policy-object-methods)
+        - [3.1.4.4.1 LsarOpenPolicy2 (Opnum 44)](#31441-lsaropenpolicy2-opnum-44)
+        - [3.1.4.4.2 LsarOpenPolicy (Opnum 6)](#31442-lsaropenpolicy-opnum-6)
+        - [3.1.4.4.3 LsarQueryInformationPolicy2 (Opnum 46)](#31443-lsarqueryinformationpolicy2-opnum-46)
+        - [3.1.4.4.4 LsarQueryInformationPolicy (Opnum 7)](#31444-lsarqueryinformationpolicy-opnum-7)
+        - [3.1.4.4.5 LsarSetInformationPolicy2 (Opnum 47)](#31445-lsarsetinformationpolicy2-opnum-47)
+        - [3.1.4.4.6 LsarSetInformationPolicy (Opnum 8)](#31446-lsarsetinformationpolicy-opnum-8)
+        - [3.1.4.4.7 LsarQueryDomainInformationPolicy (Opnum 53)](#31447-lsarquerydomaininformationpolicy-opnum-53)
+        - [3.1.4.4.8 LsarSetDomainInformationPolicy (Opnum 54)](#31448-lsarsetdomaininformationpolicy-opnum-54)
+        - [3.1.4.4.9 LsarOpenPolicy3 (Opnum 130)](#31449-lsaropenpolicy3-opnum-130)
+        - [3.1.4.4.10 LsarOpenPolicyWithCreds (Opnum 135)](#314410-lsaropenpolicywithcreds-opnum-135)
+      - [3.1.4.5 Account Object Methods](#3145-account-object-methods)
+        - [3.1.4.5.1 LsarCreateAccount (Opnum 10)](#31451-lsarcreateaccount-opnum-10)
+        - [3.1.4.5.2 LsarEnumerateAccounts (Opnum 11)](#31452-lsarenumerateaccounts-opnum-11)
+        - [3.1.4.5.3 LsarOpenAccount (Opnum 17)](#31453-lsaropenaccount-opnum-17)
+        - [3.1.4.5.4 LsarEnumeratePrivilegesAccount (Opnum 18)](#31454-lsarenumerateprivilegesaccount-opnum-18)
+        - [3.1.4.5.5 LsarAddPrivilegesToAccount (Opnum 19)](#31455-lsaraddprivilegestoaccount-opnum-19)
+        - [3.1.4.5.6 LsarRemovePrivilegesFromAccount (Opnum 20)](#31456-lsarremoveprivilegesfromaccount-opnum-20)
+        - [3.1.4.5.7 LsarGetSystemAccessAccount (Opnum 23)](#31457-lsargetsystemaccessaccount-opnum-23)
+        - [3.1.4.5.8 LsarSetSystemAccessAccount (Opnum 24)](#31458-lsarsetsystemaccessaccount-opnum-24)
+        - [3.1.4.5.9 LsarEnumerateAccountsWithUserRight (Opnum 35)](#31459-lsarenumerateaccountswithuserright-opnum-35)
+        - [3.1.4.5.10 LsarEnumerateAccountRights (Opnum 36)](#314510-lsarenumerateaccountrights-opnum-36)
+        - [3.1.4.5.11 LsarAddAccountRights (Opnum 37)](#314511-lsaraddaccountrights-opnum-37)
+        - [3.1.4.5.12 LsarRemoveAccountRights (Opnum 38)](#314512-lsarremoveaccountrights-opnum-38)
+      - [3.1.4.6 Secret Object Methods](#3146-secret-object-methods)
+        - [3.1.4.6.1 LsarCreateSecret (Opnum 16)](#31461-lsarcreatesecret-opnum-16)
+        - [3.1.4.6.2 LsarOpenSecret (Opnum 28)](#31462-lsaropensecret-opnum-28)
+        - [3.1.4.6.3 LsarSetSecret (Opnum 29)](#31463-lsarsetsecret-opnum-29)
+        - [3.1.4.6.4 LsarQuerySecret (Opnum 30)](#31464-lsarquerysecret-opnum-30)
+        - [3.1.4.6.5 LsarStorePrivateData (Opnum 42)](#31465-lsarstoreprivatedata-opnum-42)
+        - [3.1.4.6.6 LsarRetrievePrivateData (Opnum 43)](#31466-lsarretrieveprivatedata-opnum-43)
+        - [3.1.4.6.7 LsarOpenSecret2 (Opnum 136)](#31467-lsaropensecret2-opnum-136)
+        - [3.1.4.6.8 LsarCreateSecret2 (Opnum 137)](#31468-lsarcreatesecret2-opnum-137)
+        - [3.1.4.6.9 LsarSetSecret2 (Opnum 138)](#31469-lsarsetsecret2-opnum-138)
+        - [3.1.4.6.10 LsarQuerySecret2 (Opnum 139)](#314610-lsarquerysecret2-opnum-139)
+        - [3.1.4.6.11 LsarStorePrivateData2 (Opnum 140)](#314611-lsarstoreprivatedata2-opnum-140)
+        - [3.1.4.6.12 LsarRetrievePrivateData2 (Opnum 141)](#314612-lsarretrieveprivatedata2-opnum-141)
+      - [3.1.4.7 Trusted Domain Object Methods](#3147-trusted-domain-object-methods)
+        - [3.1.4.7.1 LsarOpenTrustedDomain (Opnum 25)](#31471-lsaropentrusteddomain-opnum-25)
+        - [3.1.4.7.2 LsarQueryTrustedDomainInfo (Opnum 39)](#31472-lsarquerytrusteddomaininfo-opnum-39)
+        - [3.1.4.7.3 LsarSetTrustedDomainInfo (Opnum 40)](#31473-lsarsettrusteddomaininfo-opnum-40)
+        - [3.1.4.7.4 LsarDeleteTrustedDomain (Opnum 41)](#31474-lsardeletetrusteddomain-opnum-41)
+        - [3.1.4.7.5 LsarQueryTrustedDomainInfoByName (Opnum 48)](#31475-lsarquerytrusteddomaininfobyname-opnum-48)
+        - [3.1.4.7.6 LsarSetTrustedDomainInfoByName (Opnum 49)](#31476-lsarsettrusteddomaininfobyname-opnum-49)
+        - [3.1.4.7.7 LsarEnumerateTrustedDomainsEx (Opnum 50)](#31477-lsarenumeratetrusteddomainsex-opnum-50)
+        - [3.1.4.7.8 LsarEnumerateTrustedDomains (Opnum 13)](#31478-lsarenumeratetrusteddomains-opnum-13)
+        - [3.1.4.7.9 LsarOpenTrustedDomainByName (Opnum 55)](#31479-lsaropentrusteddomainbyname-opnum-55)
+        - [3.1.4.7.10 LsarCreateTrustedDomainEx2 (Opnum 59)](#314710-lsarcreatetrusteddomainex2-opnum-59)
+        - [3.1.4.7.11 LsarCreateTrustedDomainEx (Opnum 51)](#314711-lsarcreatetrusteddomainex-opnum-51)
+        - [3.1.4.7.12 LsarCreateTrustedDomain (Opnum 12)](#314712-lsarcreatetrusteddomain-opnum-12)
+        - [3.1.4.7.13 LsarQueryInfoTrustedDomain (Opnum 26)](#314713-lsarqueryinfotrusteddomain-opnum-26)
+        - [3.1.4.7.14 LsarSetInformationTrustedDomain (Opnum 27)](#314714-lsarsetinformationtrusteddomain-opnum-27)
+        - [3.1.4.7.15 LsarQueryForestTrustInformation (Opnum 73)](#314715-lsarqueryforesttrustinformation-opnum-73)
+        - [3.1.4.7.16 LsarSetForestTrustInformation (Opnum 74)](#314716-lsarsetforesttrustinformation-opnum-74)
+          - [3.1.4.7.16.1 Forest Trust Collision Generation](#3147161-forest-trust-collision-generation)
+        - [3.1.4.7.17 LsarCreateTrustedDomainEx3 (Opnum 129)](#314717-lsarcreatetrusteddomainex3-opnum-129)
+        - [3.1.4.7.18 LsarQueryForestTrustInformation2 (Opnum 132)](#314718-lsarqueryforesttrustinformation2-opnum-132)
+        - [3.1.4.7.19 LsarSetForestTrustInformation2 (Opnum 133)](#314719-lsarsetforesttrustinformation2-opnum-133)
+      - [3.1.4.8 Privilege Methods](#3148-privilege-methods)
+        - [3.1.4.8.1 LsarEnumeratePrivileges (Opnum 2)](#31481-lsarenumerateprivileges-opnum-2)
+        - [3.1.4.8.2 LsarLookupPrivilegeValue (Opnum 31)](#31482-lsarlookupprivilegevalue-opnum-31)
+        - [3.1.4.8.3 LsarLookupPrivilegeName (Opnum 32)](#31483-lsarlookupprivilegename-opnum-32)
+        - [3.1.4.8.4 LsarLookupPrivilegeDisplayName (Opnum 33)](#31484-lsarlookupprivilegedisplayname-opnum-33)
+      - [3.1.4.9 Common Object Methods](#3149-common-object-methods)
+        - [3.1.4.9.1 LsarQuerySecurityObject (Opnum 3)](#31491-lsarquerysecurityobject-opnum-3)
+        - [3.1.4.9.2 LsarSetSecurityObject (Opnum 4)](#31492-lsarsetsecurityobject-opnum-4)
+        - [3.1.4.9.3 LsarDeleteObject (Opnum 34)](#31493-lsardeleteobject-opnum-34)
+        - [3.1.4.9.4 LsarClose (Opnum 0)](#31494-lsarclose-opnum-0)
+      - [3.1.4.10 Data Validation](#31410-data-validation)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 LSAPR_HANDLE_rundown](#3161-lsaprhandlerundown)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Manipulating Account Objects](#41-manipulating-account-objects)
+  - [4.2 Manipulating Secret Objects](#42-manipulating-secret-objects)
+  - [4.3 Manipulating Trusted Domain Objects](#43-manipulating-trusted-domain-objects)
+  - [4.4 Structure Example of LSAPR_TRUSTED_DOMAIN_AUTH_BLOB](#44-structure-example-of-lsaprtrusteddomainauthblob)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 RC4 Cipher Usage](#511-rc4-cipher-usage)
+    - [5.1.2 Secret Encryption and Decryption](#512-secret-encryption-and-decryption)
+    - [5.1.3 DES-ECB-LM Cipher Definition](#513-des-ecb-lm-cipher-definition)
+    - [5.1.4 Encryption and Decryption Examples](#514-encryption-and-decryption-examples)
+      - [5.1.4.1 Encryption Example](#5141-encryption-example)
+      - [5.1.4.2 Decryption Example](#5142-decryption-example)
+    - [5.1.5 AES Cipher Usage](#515-aes-cipher-usage)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Local Security Authority (Domain Policy) Remote Protocol is used to manage various machine and
 domain security policies. All versions of Windows NT operating system–based products, in all
@@ -1189,7 +859,7 @@ model.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1230,7 +900,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-backup domain controller (BDC): A domain controller (DC) that receives a copy of the
+
+backup domain controller (BDC): A domain controller (DC) that receives a copy of the
 domain directory database from the primary domain controller (PDC). This copy is
 synchronized periodically and automatically with the primary domain controller (PDC). BDCs
 also authenticate user logons and can be promoted to function as the PDC. There is only one
@@ -1304,7 +975,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-catalog (GC). A domain NC is hosted by one or more domain controllers (DCs) operating as
+
+catalog (GC). A domain NC is hosted by one or more domain controllers (DCs) operating as
 AD DS. In AD DS, a forest has one or more domain NCs. A domain NC cannot exist in AD LDS.
 The root of a domain NC is an object of class domainDNS; for directory replication [MS-DRSR],
 see domainDNS.
@@ -1377,7 +1049,8 @@ Release: June 10, 2025
 
 12 / 253
 
-opnum: An operation number or numeric identifier that is used to identify a specific remote
+
+opnum: An operation number or numeric identifier that is used to identify a specific remote
 
 procedure call (RPC) method or a method in an interface. For more information, see [C706]
 section 12.5.2.12 or [MS-RPCE].
@@ -1458,7 +1131,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-RPC transport: The underlying network services used by the remote procedure call (RPC) runtime
+
+RPC transport: The underlying network services used by the remote procedure call (RPC) runtime
 
 for communications between network nodes. For more information, see [C706] section 2.
 
@@ -1534,7 +1208,8 @@ Release: June 10, 2025
 
 14 / 253
 
-trusted forest: A forest that is trusted to make authentication statements for security principals in
+
+trusted forest: A forest that is trusted to make authentication statements for security principals in
 
 that forest. Assuming forest A trusts forest B, all domains belonging to forest A will trust all
 domains in forest B, subject to policy configuration.
@@ -1553,14 +1228,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1602,7 +1277,8 @@ Release: June 10, 2025
 
 15 / 253
 
-[MS-GPEF] Microsoft Corporation, "Group Policy: Encrypting File System Extension".
+
+[MS-GPEF] Microsoft Corporation, "Group Policy: Encrypting File System Extension".
 
 [MS-GPSB] Microsoft Corporation, "Group Policy: Security Protocol Extension".
 
@@ -1641,7 +1317,7 @@ Service (V5)", RFC 4120, July 2005, https://www.rfc-editor.org/rfc/rfc4120
 [RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
 by Microsoft Windows", RFC 4757, December 2006, https://www.rfc-editor.org/info/rfc4757
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DRSR] Microsoft Corporation, "Directory Replication Service (DRS) Remote Protocol".
 
@@ -1667,7 +1343,8 @@ Release: June 10, 2025
 
 16 / 253
 
-[MSFT-LSA-IDL] Microsoft Corporation, "Local Security Authority Merged IDL File", March 2018,
+
+[MSFT-LSA-IDL] Microsoft Corporation, "Local Security Authority Merged IDL File", March 2018,
 https://www.microsoft.com/en-us/download/details.aspx?id=3367
 
 [MSKB-3155495] Microsoft Corporation, "You can't use the Active Directory shadow principal groups
@@ -1684,7 +1361,7 @@ https://www.catalog.update.microsoft.com/Search.aspx?q=5060842
 [SCHNEIER] Schneier, B., "Applied Cryptography, Second Edition", John Wiley and Sons, 1996, ISBN:
 0471117099.
 
-1.3  Overview
+### 1.3 Overview
 
 The Local Security Authority (Domain Policy) Remote Protocol provides a remote procedure call
 (RPC) interface used for providing remote management for policy settings related to account
@@ -1734,7 +1411,8 @@ Release: June 10, 2025
 
 17 / 253
 
-(an RPC context handle) to one of these objects and then performs one or more actions on the
+
+(an RPC context handle) to one of these objects and then performs one or more actions on the
 object. The following is a brief listing of methods that operate on each of the respective object types.
 
 Policy object:
@@ -1860,7 +1538,8 @@ Release: June 10, 2025
 
 18 / 253
 
-
+
+
 
 LsarEnumerateAccountRights
 
@@ -1984,7 +1663,8 @@ Release: June 10, 2025
 
 19 / 253
 
-1.  Send LsarOpenPolicy3 request; receive LsarOpenPolicy3 reply.
+
+1.  Send LsarOpenPolicy3 request; receive LsarOpenPolicy3 reply.
 
 2.  Send LsarQueryDomainInformationPolicy request; receive LsarQueryDomainInformationPolicy
 
@@ -2075,7 +1755,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-
+
+
 
 
 
@@ -2191,7 +1872,8 @@ Release: June 10, 2025
 
 21 / 253
 
-
+
+
 
 
 
@@ -2254,7 +1936,7 @@ given here. See the message processing section for details.
 LsarClose: This method releases responder resources associated with the RPC context handle that
 is passed as a parameter.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Local Security Authority (Domain Policy) Remote Protocol is composed of a subset of opnums in
 an interface that also includes the Local Security Authority (Translation Methods) Remote Protocol
@@ -2283,7 +1965,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-LSAD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -2302,18 +1985,19 @@ Release: June 10, 2025
 
 23 / 253
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-LSAD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
 Figure 2: Server-side protocol relationships for a domain controller configuration
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol has the prerequisites specified in [MS-RPCE] as being common to protocols that depend
 on RPC.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable to the following two high-level scenarios:
 
@@ -2344,7 +2028,8 @@ Release: June 10, 2025
 
 24 / 253
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
   Supported transports: The protocol runs over RPC-named pipes and TCP/IP, as specified in
 
@@ -2362,13 +2047,13 @@ the structure. Only one version of those structures is used in this protocol.
 
 such strings are specified in section 3.1.1.2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses NTSTATUS values as specified in [MS-ERREF] section 2.3. Vendors are free to
 choose their own values for this field, provided that the C bit (0x20000000) is set, which indicates that
 it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments. It uses private allocations for the RPC interface
 universally unique identifier (UUID) and the RPC endpoint.
@@ -2396,11 +2081,12 @@ Release: June 10, 2025
 
 25 / 253
 
-2  Messages
+
+## 2 Messages
 
 This section describes the supported transports and details of the messages defined for this protocol.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol MUST use Server Message Block (SMB) RPC protocol sequences.
 
@@ -2445,7 +2131,7 @@ Additional details are available in [MS-RPCE] section 3.3.3.5.4. This configurat
 restrictions on the upper limits for the sizes of data types defined under section 2.2 when those data
 types are used in RPC messages.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support both the NDR and NDR64
 transfer syntaxes and provide a negotiation mechanism for determining which transfer syntax will be
@@ -2462,7 +2148,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-message processing. These values MUST be ignored on receipt and SHOULD be set to zero when sent,
+
+message processing. These values MUST be ignored on receipt and SHOULD be set to zero when sent,
 unless specified otherwise.
 
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], other data types are
@@ -2556,7 +2243,8 @@ Release: June 10, 2025
 
 27 / 253
 
-
+
+
 
 
 
@@ -2685,7 +2373,8 @@ Release: June 10, 2025
 
 28 / 253
 
-
+
+
 
 
 
@@ -2805,9 +2494,10 @@ Release: June 10, 2025
 
 29 / 253
 
-2.2.1  Constant Value Definitions
 
-2.2.1.1  ACCESS_MASK
+#### 2.2.1 Constant Value Definitions
+
+##### 2.2.1.1 ACCESS_MASK
 
 The ACCESS_MASK data type is a bitmask that defines the user rights that an object is to be granted.
 Access types are reconciled with the discretionary access control list (DACL) of the object to
@@ -2820,7 +2510,7 @@ This type is declared as follows:
 
  typedef unsigned long ACCESS_MASK;
 
-2.2.1.1.1 ACCESS_MASK for All Objects
+###### 2.2.1.1.1 ACCESS_MASK for All Objects
 
 Certain ACCESS_MASK flags apply equally to all types of objects. These flags are described in the
 following table.
@@ -2894,7 +2584,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-ACCESS_MASK
+
+ACCESS_MASK
 value to be
 translated
 
@@ -2988,7 +2679,8 @@ Release: June 10, 2025
 
 31 / 253
 
-ACCESS_MASK
+
+ACCESS_MASK
 value to be
 translated
 
@@ -3021,7 +2713,7 @@ WRITE_DAC | WRITE_OWNER
 
 0x000F007F
 
-2.2.1.1.2 ACCESS_MASK for Policy Objects
+###### 2.2.1.1.2 ACCESS_MASK for Policy Objects
 
 The following ACCESS_MASK flags apply to policy objects.
 
@@ -3104,7 +2796,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Value
+
+Value
 
 0x00000200
 
@@ -3128,7 +2821,7 @@ Access to be notified of policy changes.<11>
 
 0x00001000
 
-2.2.1.1.3 ACCESS_MASK for Account Objects
+###### 2.2.1.1.3 ACCESS_MASK for Account Objects
 
 The following ACCESS_MASK flags apply to account objects.
 
@@ -3160,7 +2853,7 @@ Change system access.
 
 0x00000008
 
-2.2.1.1.4 ACCESS_MASK for Secret Objects
+###### 2.2.1.1.4 ACCESS_MASK for Secret Objects
 
 The following ACCESS_MASK flags apply to secret objects.
 
@@ -3180,7 +2873,7 @@ Query secret value.
 
 0x00000002
 
-2.2.1.1.5 ACCESS_MASK for Trusted Domain Objects
+###### 2.2.1.1.5 ACCESS_MASK for Trusted Domain Objects
 
 The following ACCESS_MASK flags apply to trusted domain objects.<12>
 
@@ -3201,7 +2894,8 @@ Release: June 10, 2025
 
 33 / 253
 
-Value
+
+Value
 
 Meaning
 
@@ -3241,7 +2935,7 @@ View authentication information.
 
 0x00000040
 
-2.2.1.2  POLICY_SYSTEM_ACCESS_MODE
+##### 2.2.1.2 POLICY_SYSTEM_ACCESS_MODE
 
 The POLICY_SYSTEM_ACCESS_MODE data type determines the way in which a user (member of a
 group or alias) is allowed to access the system. All values can be combined in any way by using
@@ -3317,7 +3011,8 @@ Release: June 10, 2025
 
 34 / 253
 
-Value
+
+Value
 
 Meaning
 
@@ -3355,7 +3050,7 @@ This flag indicates all allowed bits.<14>
 
 The following citation contains a timeline of when each mode was introduced.<15>
 
-2.2.1.3  SECURITY_INFORMATION
+##### 2.2.1.3 SECURITY_INFORMATION
 
 The SECURITY_INFORMATION type is used to specify which portions of a security descriptor the
 caller would like to retrieve or set on an object.
@@ -3411,7 +3106,8 @@ Release: June 10, 2025
 
 35 / 253
 
-Security information access
+
+Security information access
 requested
 
 Rights required of caller on
@@ -3482,7 +3178,7 @@ Does not apply.
 
 Security privilege.
 
-2.2.1.4  AEAD-AES-256-CBC-HMAC-SHA512 Constants
+##### 2.2.1.4 AEAD-AES-256-CBC-HMAC-SHA512 Constants
 
 The following constants are used for wire encryption of sensitive data with the AEAD-AES-256-CBC-
 HMAC-SHA512 cipher<16>, as specified in [AES-CBC] and in section 5.1.5.
@@ -3544,13 +3240,14 @@ Release: June 10, 2025
 
 36 / 253
 
-Value
+
+Value
 
 (55)
 
 Meaning
 
-2.2.1.5  LSA Trust Record Flags
+##### 2.2.1.5 LSA Trust Record Flags
 
 This section provides a cross reference of Flag values with associated descriptions of the Forest record
 types that use such Flag values.<17>
@@ -3649,7 +3346,8 @@ record of type ForestTrustDomainInfo only
 
 37 / 253
 
-Value
+
+Value
 
 Meaning
 
@@ -3673,9 +3371,9 @@ This flag can be set and queried on
 ForestTrustScannerInfo records (sections 2.2.7.22
 and 2.2.7.31), but otherwise MUST be ignored.
 
-2.2.2  Basic Data Types
+#### 2.2.2 Basic Data Types
 
-2.2.2.1  LSAPR_HANDLE
+##### 2.2.2.1 LSAPR_HANDLE
 
 The LSAPR_HANDLE type defines a context handle (as specified in [C706] section 6) to the target
 server.
@@ -3687,7 +3385,7 @@ This type is declared as follows:
 Note  For information about the relevance of the context_handle attribute in this data type, see
 section 3.1.1.7.
 
-2.2.2.2  PLSAPR_HANDLE
+##### 2.2.2.2 PLSAPR_HANDLE
 
 The PLSAPR_HANDLE type defines a pointer to a context handle (as specified in [C706] section 6).
 
@@ -3695,7 +3393,7 @@ This type is declared as follows:
 
  typedef LSAPR_HANDLE* PLSAPR_HANDLE;
 
-2.2.2.3  LSA_UNICODE_STRING
+##### 2.2.2.3 LSA_UNICODE_STRING
 
 The LSA_UNICODE_STRING type is identical to RPC_UNICODE_STRING, as specified in [MS-DTYP]
 section 2.3.10.
@@ -3704,7 +3402,7 @@ This type is declared as follows:
 
  typedef RPC_UNICODE_STRING LSA_UNICODE_STRING, *PLSA_UNICODE_STRING;
 
-2.2.2.4  LSAPR_OBJECT_ATTRIBUTES
+##### 2.2.2.4 LSAPR_OBJECT_ATTRIBUTES
 
 The LSAPR_OBJECT_ATTRIBUTES structure specifies an object and its properties. This structure MUST
 be ignored except for the RootDirectory field, which MUST be NULL.<18>
@@ -3719,7 +3417,8 @@ Release: June 10, 2025
 
 38 / 253
 
-   unsigned char* RootDirectory;
+
+   unsigned char* RootDirectory;
    PSTRING ObjectName;
    unsigned long Attributes;
    PLSAPR_SECURITY_DESCRIPTOR SecurityDescriptor;
@@ -3748,7 +3447,7 @@ SecurityQualityOfService:  This field MUST be ignored. The content is unspecifie
 
 requirements are placed on its value because it is never used.
 
-2.2.2.5  LSAPR_SR_SECURITY_DESCRIPTOR
+##### 2.2.2.5 LSAPR_SR_SECURITY_DESCRIPTOR
 
 The LSAPR_SR_SECURITY_DESCRIPTOR structure is used to communicate a self-relative security
 descriptor, as specified in [MS-DTYP] section 2.4.6.
@@ -3765,7 +3464,7 @@ SecurityDescriptor:  The contiguous buffer containing the self-relative security
 MUST contain the Length number of bytes. If the Length field has a value other than 0, this field
 MUST NOT be NULL.
 
-2.2.2.6  LSAPR_REVISION_INFO_V1
+##### 2.2.2.6 LSAPR_REVISION_INFO_V1
 
 The LSAPR_REVISION_INFO_V1 structure is used to communicate the revision and capabilities of
 client and server. For related information, see LsarOpenPolicy3 (section 3.1.4.4.9).
@@ -3786,7 +3485,8 @@ Release: June 10, 2025
 
 39 / 253
 
-SupportedFeatures (4 bytes): A bit field. When sent from the client, this field MUST be zero and
+
+SupportedFeatures (4 bytes): A bit field. When sent from the client, this field MUST be zero and
 ignored upon receipt by the server. When returned from the server, the following fields are
 handled by the client; all other bits are ignored by the client and MUST be zero when returned
 from the server.
@@ -3817,7 +3517,7 @@ Upon receipt by the client, this value, when set, indicates that the client SHOU
 encryption with the LSAPR_AES_CIPHER_VALUE structure (section 2.2.6.2) to encrypt private
 data when sent over the wire. Also see AES Cipher Usage (section 5.1.5).<21>
 
-2.2.2.7  LSAPR_REVISION_INFO
+##### 2.2.2.7 LSAPR_REVISION_INFO
 
 The LSAPR_REVISION_INFO union holds revision information structures that are used in the
 LsarOpenPolicy3 method (section 3.1.4.4.9).
@@ -3828,9 +3528,9 @@ LsarOpenPolicy3 method (section 3.1.4.4.9).
 
 V1:  Version 1 revision information, as described in LSAPR_REVISION_INFO_V1 (section 2.2.2.6).
 
-2.2.3  Data Types Referenced by Basic Data Types
+#### 2.2.3 Data Types Referenced by Basic Data Types
 
-2.2.3.1  STRING
+##### 2.2.3.1 STRING
 
 The STRING structure holds a counted string encoded in the OEM code page.
 
@@ -3857,11 +3557,12 @@ Release: June 10, 2025
 
 40 / 253
 
-Buffer:  A pointer to the actual string. If Length is greater than 0, this field MUST contain a non-
+
+Buffer:  A pointer to the actual string. If Length is greater than 0, this field MUST contain a non-
 
 NULL value. If Length is 0, this field MUST be ignored.
 
-2.2.3.2  LSAPR_ACL
+##### 2.2.3.2 LSAPR_ACL
 
 The LSAPR_ACL structure defines the header of an access control list (ACL) that specifies a list of
 security protections applied to an object.
@@ -3892,7 +3593,7 @@ its value because it is never used.
 
 The ACL structure is specified in [MS-DTYP] section 2.4.5.
 
-2.2.3.3  SECURITY_DESCRIPTOR_CONTROL
+##### 2.2.3.3 SECURITY_DESCRIPTOR_CONTROL
 
 The SECURITY_DESCRIPTOR_CONTROL type contains a set of bit flags that qualify the meaning of a
 security descriptor or its components.
@@ -3906,7 +3607,7 @@ This type is declared as follows:
 The flags that are used with this type are as specified in [MS-DTYP] section 2.4.6, under the Control
 member of the SECURITY_DESCRIPTOR structure.
 
-2.2.3.4  LSAPR_SECURITY_DESCRIPTOR
+##### 2.2.3.4 LSAPR_SECURITY_DESCRIPTOR
 
 The LSAPR_SECURITY_DESCRIPTOR structure defines an object's security descriptor.
 
@@ -3927,7 +3628,8 @@ Release: June 10, 2025
 
 41 / 253
 
-   PLSAPR_ACL Dacl;
+
+   PLSAPR_ACL Dacl;
  } LSAPR_SECURITY_DESCRIPTOR,
   *PLSAPR_SECURITY_DESCRIPTOR;
 
@@ -3954,7 +3656,7 @@ Dacl:  A pointer to an ACL structure that contains a discretionary access contro
 
 The SECURITY_DESCRIPTOR structure is specified in [MS-DTYP] section 2.4.6.
 
-2.2.3.5  SECURITY_IMPERSONATION_LEVEL
+##### 2.2.3.5 SECURITY_IMPERSONATION_LEVEL
 
 The SECURITY_IMPERSONATION_LEVEL enumeration defines a set of values that specifies security
 impersonation levels. These levels govern the degree to which a server process can act on behalf of a
@@ -3995,7 +3697,8 @@ Release: June 10, 2025
 
 42 / 253
 
-2.2.3.6  SECURITY_CONTEXT_TRACKING_MODE
+
+##### 2.2.3.6 SECURITY_CONTEXT_TRACKING_MODE
 
 The SECURITY_CONTEXT_TRACKING_MODE type specifies whether the server is to be given a
 snapshot of the client's security context (called "static tracking") or is to be continually updated to
@@ -4021,7 +3724,7 @@ The server is continually updated with changes.
 
 All other values SHOULD be ignored.
 
-2.2.3.7  SECURITY_QUALITY_OF_SERVICE
+##### 2.2.3.7 SECURITY_QUALITY_OF_SERVICE
 
 The SECURITY_QUALITY_OF_SERVICE structure defines information used to support client
 impersonation.
@@ -4051,9 +3754,9 @@ EffectiveOnly:  This field specifies whether the server can enable or disable pr
 that the client's security context might include. This value MUST be TRUE (nonzero) if the server
 has this right; otherwise, it MUST be FALSE (0).
 
-2.2.4  Policy Query/Set Data Types
+#### 2.2.4 Policy Query/Set Data Types
 
-2.2.4.1  POLICY_INFORMATION_CLASS
+##### 2.2.4.1 POLICY_INFORMATION_CLASS
 
 The POLICY_INFORMATION_CLASS enumeration type contains values that specify the type of policy
 being queried or set by the client.
@@ -4065,7 +3768,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
- typedef  enum _POLICY_INFORMATION_CLASS
+
+ typedef  enum _POLICY_INFORMATION_CLASS
  {
    PolicyAuditLogInformation = 1,
    PolicyAuditEventsInformation,
@@ -4132,7 +3836,8 @@ Release: June 10, 2025
 
 44 / 253
 
-2.2.4.2  LSAPR_POLICY_INFORMATION
+
+##### 2.2.4.2 LSAPR_POLICY_INFORMATION
 
 The LSAPR_POLICY_INFORMATION union is defined as follows, where the structure depends on the
 POLICY_INFORMATION_CLASS specified in this message.
@@ -4171,7 +3876,7 @@ POLICY_INFORMATION_CLASS specified in this message.
  } LSAPR_POLICY_INFORMATION,
   *PLSAPR_POLICY_INFORMATION;
 
-2.2.4.3  POLICY_AUDIT_LOG_INFO
+##### 2.2.4.3 POLICY_AUDIT_LOG_INFO
 
 The POLICY_AUDIT_LOG_INFO structure contains information about the state of the audit log. The
 following structure corresponds to the PolicyAuditLogInformation information class.
@@ -4202,7 +3907,8 @@ Release: June 10, 2025
 
 45 / 253
 
-AuditLogFullShutdownInProgress:  A Boolean flag; indicates whether or not a system shutdown is
+
+AuditLogFullShutdownInProgress:  A Boolean flag; indicates whether or not a system shutdown is
 being initiated due to the security audit log becoming full. This condition occurs only if the system
 is configured to shut down when the log becomes full.
 
@@ -4221,7 +3927,7 @@ NextAuditRecordId:  Not in use. This field SHOULD be set to zero when sent, and 
 
 on receipt.
 
-2.2.4.4  LSAPR_POLICY_AUDIT_EVENTS_INFO
+##### 2.2.4.4 LSAPR_POLICY_AUDIT_EVENTS_INFO
 
 The LSAPR_POLICY_AUDIT_EVENTS_INFO structure contains auditing options on the server.
 
@@ -4290,7 +3996,8 @@ Release: June 10, 2025
 
 46 / 253
 
-2.2.4.5  LSAPR_POLICY_PRIMARY_DOM_INFO
+
+##### 2.2.4.5 LSAPR_POLICY_PRIMARY_DOM_INFO
 
 The LSAPR_POLICY_PRIMARY_DOM_INFO structure defines the server's primary domain.
 
@@ -4308,7 +4015,7 @@ external to this protocol) to identify the domain via the NetBIOS API, as specif
 
 Sid:  The SID of the primary domain.
 
-2.2.4.6  LSAPR_POLICY_ACCOUNT_DOM_INFO
+##### 2.2.4.6 LSAPR_POLICY_ACCOUNT_DOM_INFO
 
 The LSAPR_POLICY_ACCOUNT_DOM_INFO structure contains information about the server's account
 domain. The following structure corresponds to the PolicyAccountDomainInformation and
@@ -4326,7 +4033,7 @@ external to this protocol) to identify the domain  via the NetBIOS API, as speci
 
 DomainSid:  The SID of the account domain. This field MUST NOT be NULL.
 
-2.2.4.7  LSAPR_POLICY_PD_ACCOUNT_INFO
+##### 2.2.4.7 LSAPR_POLICY_PD_ACCOUNT_INFO
 
 The LSAPR_POLICY_PD_ACCOUNT_INFO structure is obsolete and exists for backward compatibility
 purposes only.
@@ -4340,7 +4047,7 @@ name/ID lookup requests.
  } LSAPR_POLICY_PD_ACCOUNT_INFO,
   *PLSAPR_POLICY_PD_ACCOUNT_INFO;
 
-2.2.4.8  POLICY_LSA_SERVER_ROLE
+##### 2.2.4.8 POLICY_LSA_SERVER_ROLE
 
 The POLICY_LSA_SERVER_ROLE enumeration takes one of two possible values, depending on which
 capacity the account domain database is in: primary or backup. Certain operations of the protocol
@@ -4354,7 +4061,8 @@ Release: June 10, 2025
 
 47 / 253
 
-domain controller (PDC) role owner, then the account domain database is in primary state;
+
+domain controller (PDC) role owner, then the account domain database is in primary state;
 otherwise, it is in backup state.
 
  typedef  enum _POLICY_LSA_SERVER_ROLE
@@ -4368,7 +4076,7 @@ PolicyServerRoleBackup:  A backup account database.
 
 PolicyServerRolePrimary:  A primary account database.
 
-2.2.4.9  POLICY_LSA_SERVER_ROLE_INFO
+##### 2.2.4.9 POLICY_LSA_SERVER_ROLE_INFO
 
 The POLICY_LSA_SERVER_ROLE_INFO structure is used to allow callers to query and set whether the
 account domain database acts as the primary copy or backup copy. The following structure
@@ -4381,9 +4089,9 @@ corresponds to the PolicyLsaServerRoleInformation information class.
 
 LsaServerRole:  One of the values of the POLICY_LSA_SERVER_ROLE enumeration on return.
 
-2.2.4.10
+##### 2.2.4.10 LSAPR_POLICY_REPLICA_SRCE_INFO
 
-LSAPR_POLICY_REPLICA_SRCE_INFO
+
 
 The LSAPR_POLICY_REPLICA_SRCE_INFO structure corresponds to the
 PolicyReplicaSourceInformation information class.
@@ -4398,9 +4106,9 @@ ReplicaSource:  A string.
 
 ReplicaAccountName:  A string.
 
-2.2.4.11
+##### 2.2.4.11 POLICY_MODIFICATION_INFO
 
-POLICY_MODIFICATION_INFO
+
 
 The POLICY_MODIFICATION_INFO structure is obsolete and exists for backward compatibility
 purposes only. Callers of this protocol MUST NOT be able to set or retrieve this structure.
@@ -4422,13 +4130,14 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-DatabaseCreationTime:  The date and time when the LSA database was created. It is a 64-bit value
+
+DatabaseCreationTime:  The date and time when the LSA database was created. It is a 64-bit value
 
 that represents the number of 100-nanosecond intervals since January 1, 1601, UTC.
 
-2.2.4.12
+##### 2.2.4.12 POLICY_AUDIT_FULL_SET_INFO
 
-POLICY_AUDIT_FULL_SET_INFO
+
 
 The POLICY_AUDIT_FULL_SET_INFO structure contains information to set on the server that is
 controlling audit log behavior. The following structure corresponds to the PolicyAuditFullSetInformation
@@ -4443,9 +4152,9 @@ ShutDownOnFull:  A nonzero value means that the system MUST shut down when the e
 
 full, while zero means that the system MUST NOT shut down when the event log is full.
 
-2.2.4.13
+##### 2.2.4.13 POLICY_AUDIT_FULL_QUERY_INFO
 
-POLICY_AUDIT_FULL_QUERY_INFO
+
 
 The POLICY_AUDIT_FULL_QUERY_INFO structure is used to query information about the state of the
 audit log on the server. The following structure corresponds to the PolicyAuditFullQueryInformation
@@ -4465,9 +4174,9 @@ full.
 
 LogIsFull:  This field indicates whether the event log is full or not.
 
-2.2.4.14
+##### 2.2.4.14 LSAPR_POLICY_DNS_DOMAIN_INFO
 
-LSAPR_POLICY_DNS_DOMAIN_INFO
+
 
 The LSAPR_POLICY_DNS_DOMAIN_INFO structure is used to allow callers to query and set the
 server's primary domain.<24>
@@ -4496,7 +4205,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-DnsDomainName:  The fully qualified DNS name of the domain.
+
+DnsDomainName:  The fully qualified DNS name of the domain.
 
 DnsForestName:  The fully qualified DNS name of the forest containing this domain.
 
@@ -4506,9 +4216,9 @@ the domain.
 
 Sid:  The SID of the domain.
 
-2.2.4.15
+##### 2.2.4.15 POLICY_DOMAIN_INFORMATION_CLASS
 
-POLICY_DOMAIN_INFORMATION_CLASS
+
 
 The POLICY_DOMAIN_INFORMATION_CLASS enumeration type contains values that specify the type
 of policy being queried or set by the client.
@@ -4524,9 +4234,9 @@ of policy being queried or set by the client.
 The values in this enumeration are used in defining the contents of the
 LSAPR_POLICY_DOMAIN_INFORMATION union.
 
-2.2.4.16
+##### 2.2.4.16 LSAPR_POLICY_DOMAIN_INFORMATION
 
-LSAPR_POLICY_DOMAIN_INFORMATION
+
 
 The LSAPR_POLICY_DOMAIN_INFORMATION union is defined as follows, where the structure depends
 on the POLICY_DOMAIN_INFORMATION_CLASS that is specified in the message.
@@ -4551,9 +4261,9 @@ PolicyDomainEfsInfo:  The complete description is as specified in section 2.2.4.
 
 PolicyDomainKerbTicketInfo:  The complete description is as specified in section 2.2.4.19.
 
-2.2.4.17
+##### 2.2.4.17 POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO
 
-POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO
+
 
 The POLICY_DOMAIN_QUALITY_OF_SERVICE_INFO structure is obsolete and exists for backward
 compatibility purposes only.
@@ -4569,15 +4279,16 @@ Release: June 10, 2025
 
 50 / 253
 
-  *PPOLICY_DOMAIN_QUALITY_OF_SERVICE_INFO;
+
+  *PPOLICY_DOMAIN_QUALITY_OF_SERVICE_INFO;
 
 QualityOfService:  Quality of service of the responder. MUST be set to zero when sent and MUST be
 
 ignored on receipt.
 
-2.2.4.18
+##### 2.2.4.18 LSAPR_POLICY_DOMAIN_EFS_INFO
 
-LSAPR_POLICY_DOMAIN_EFS_INFO
+
 
 The LSAPR_POLICY_DOMAIN_EFS_INFO structure communicates a counted binary byte array.
 
@@ -4593,9 +4304,9 @@ EfsBlob:  An array of bytes, of size InfoLength bytes. If the value of InfoLengt
 this field MUST NOT be NULL. The syntax of this blob SHOULD<26> conform to the layout
 specified in [MS-GPEF] section 2.2.1.2.1.
 
-2.2.4.19
+##### 2.2.4.19 POLICY_DOMAIN_KERBEROS_TICKET_INFO
 
-POLICY_DOMAIN_KERBEROS_TICKET_INFO
+
 
 The POLICY_DOMAIN_KERBEROS_TICKET_INFO structure communicates policy information about the
 Kerberos security provider.
@@ -4653,7 +4364,8 @@ Release: June 10, 2025
 
 51 / 253
 
-MaxServiceTicketAge:  This is in units of 10^(-7) seconds. It corresponds to Maximum ticket
+
+MaxServiceTicketAge:  This is in units of 10^(-7) seconds. It corresponds to Maximum ticket
 
 lifetime (as specified in [RFC4120] section 8.2) for service tickets only. The default value of this
 setting is 10 hours.
@@ -4672,9 +4384,9 @@ specified in [RFC4120] section 8.2. The default value of this setting is five mi
 
 Reserved:  The value of this field SHOULD be set to zero when sent or on receipt.
 
-2.2.4.20
+##### 2.2.4.20 POLICY_AUDIT_EVENT_TYPE
 
-POLICY_AUDIT_EVENT_TYPE
+
 
  typedef  enum _POLICY_AUDIT_EVENT_TYPE
  {
@@ -4711,9 +4423,9 @@ AuditCategoryAccountLogon:  Manages auditing of account logon events
 The values in this enumeration are used as indices into the EventAuditingOptions field of the
 LSAPR_POLICY_AUDIT_EVENTS_INFO structure (see section 2.2.4.4).
 
-2.2.4.21
+##### 2.2.4.21 LSAPR_POLICY_MACHINE_ACCT_INFO
 
-LSAPR_POLICY_MACHINE_ACCT_INFO
+
 
 The LSAPR_POLICY_MACHINE_ACCT_INFO structure is used to identify the machine account whose
 security policy is to be queried or set.
@@ -4729,16 +4441,17 @@ Release: June 10, 2025
 
 52 / 253
 
- } LSAPR_POLICY_MACHINE_ACCT_INFO,
+
+ } LSAPR_POLICY_MACHINE_ACCT_INFO,
   *PLSAPR_POLICY_MACHINE_ACCT_INFO;
 
 Rid: The RID of the machine account.
 
 Sid: The SID of the machine account.
 
-2.2.5  Account Query/Set Data Types
+#### 2.2.5 Account Query/Set Data Types
 
-2.2.5.1  LSAPR_ACCOUNT_INFORMATION
+##### 2.2.5.1 LSAPR_ACCOUNT_INFORMATION
 
 The LSAPR_ACCOUNT_INFORMATION structure specifies a security principal security identifier
 (SID).
@@ -4750,7 +4463,7 @@ The LSAPR_ACCOUNT_INFORMATION structure specifies a security principal security 
 
 Sid:  This field contains the SID of the security principal. This field MUST NOT be NULL.
 
-2.2.5.2  LSAPR_ACCOUNT_ENUM_BUFFER
+##### 2.2.5.2 LSAPR_ACCOUNT_ENUM_BUFFER
 
 The LSAPR_ACCOUNT_ENUM_BUFFER structure specifies a collection of security principal SIDs
 represented in an array of structures of type LSAPR_ACCOUNT_INFORMATION.
@@ -4767,7 +4480,7 @@ Information:  This field contains a set of structures that define the security p
 
 in section 2.2.5.1. If the EntriesRead field has a value other than 0, this field MUST NOT be NULL.
 
-2.2.5.3  LSAPR_USER_RIGHT_SET
+##### 2.2.5.3 LSAPR_USER_RIGHT_SET
 
 The LSAPR_USER_RIGHT_SET structure specifies a collection of user rights.
 
@@ -4790,7 +4503,8 @@ Release: June 10, 2025
 
 53 / 253
 
-2.2.5.4  LSAPR_LUID_AND_ATTRIBUTES
+
+##### 2.2.5.4 LSAPR_LUID_AND_ATTRIBUTES
 
 The LSAPR_LUID_AND_ATTRIBUTES structure is a tuple defining a locally unique identifier (LUID)
 and a field defining the attributes of the LUID.
@@ -4826,7 +4540,7 @@ E: The privilege is enabled.
 
 All other bits SHOULD be 0 and ignored upon receipt.
 
-2.2.5.5  LSAPR_PRIVILEGE_SET
+##### 2.2.5.5 LSAPR_PRIVILEGE_SET
 
 The LSAPR_PRIVILEGE_SET structure defines a set of privileges that belong to an account.
 
@@ -4870,9 +4584,10 @@ Release: June 10, 2025
 
 54 / 253
 
-2.2.6  Secret Query/Set Data Types
 
-2.2.6.1  LSAPR_CR_CIPHER_VALUE
+#### 2.2.6 Secret Query/Set Data Types
+
+##### 2.2.6.1 LSAPR_CR_CIPHER_VALUE
 
 The LSAPR_CR_CIPHER_VALUE structure is a counted buffer of bytes containing a secret object.
 
@@ -4893,7 +4608,7 @@ Buffer:  This field contains the actual secret data. If the value of the Maximum
 greater than 0, this field MUST contain a non-NULL value. This field is always encrypted using
 algorithms as specified in section 5.1.2.
 
-2.2.6.2  LSAPR_AES_CIPHER_VALUE
+##### 2.2.6.2 LSAPR_AES_CIPHER_VALUE
 
 The LSAPR_AES_CIPHER_VALUE structure is a buffer used to carry AES encrypted secret data and
 secret names.<31>
@@ -4921,9 +4636,9 @@ method-specific, while the algorithm is specified in AES Cipher Usage (section 5
 common for all methods that use this structure. If the value of cbCipher is greater than 0, this
 field must contain a non-NULL value.
 
-2.2.7  Trusted Domain Query/Set Data Types
+#### 2.2.7 Trusted Domain Query/Set Data Types
 
-2.2.7.1  LSAPR_TRUST_INFORMATION
+##### 2.2.7.1 LSAPR_TRUST_INFORMATION
 
 The LSAPR_TRUST_INFORMATION structure identifies a domain.
 
@@ -4937,7 +4652,8 @@ Release: June 10, 2025
 
 55 / 253
 
-   PRPC_SID Sid;
+
+   PRPC_SID Sid;
  } LSAPR_TRUST_INFORMATION,
   *PLSAPR_TRUST_INFORMATION;
 
@@ -4948,7 +4664,7 @@ protocol) to identify the domain via the NetBIOS, as specified in [RFC1088].
 
 Sid:  The SID of the domain. This field MUST NOT be NULL.
 
-2.2.7.2  TRUSTED_INFORMATION_CLASS
+##### 2.2.7.2 TRUSTED_INFORMATION_CLASS
 
 The TRUSTED_INFORMATION_CLASS enumeration type contains values that specify the type of
 trusted domain information queried or set by the client.
@@ -5009,7 +4725,8 @@ Release: June 10, 2025
 
 56 / 253
 
-TrustedDomainAuthInformationInternal: The trusted domain information contains the
+
+TrustedDomainAuthInformationInternal: The trusted domain information contains the
 
 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL structure specified in section
 2.2.7.12.
@@ -5046,7 +4763,7 @@ The following citation contains a timeline of when each enumeration value was in
 The values in this enumeration are used in defining the contents of the
 LSAPR_TRUSTED_DOMAIN_INFO union.
 
-2.2.7.3  LSAPR_TRUSTED_DOMAIN_INFO
+##### 2.2.7.3 LSAPR_TRUSTED_DOMAIN_INFO
 
 The LSAPR_TRUSTED_DOMAIN_INFO union is defined as follows, where the structure depends on the
 TRUSTED_INFORMATION_CLASS that is specified in the message.
@@ -5087,7 +4804,8 @@ Release: June 10, 2025
 
 57 / 253
 
-     TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES TrustedDomainSETs;
+
+     TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES TrustedDomainSETs;
    [case(TrustedDomainAuthInformationInternalAes)]
      LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL_AES TrustedAuthInfoInternalAes;
    [case(TrustedDomainFullInformationInternalAes)]
@@ -5165,7 +4883,8 @@ Release: June 10, 2025
 
 58 / 253
 
-2.2.7.4  LSAPR_TRUSTED_DOMAIN_NAME_INFO
+
+##### 2.2.7.4 LSAPR_TRUSTED_DOMAIN_NAME_INFO
 
 The LSAPR_TRUSTED_DOMAIN_NAME_INFO structure is used to communicate the name of a trusted
 domain. The following structure corresponds to the TrustedDomainNameInformation information
@@ -5181,7 +4900,7 @@ Name:  This field contains a name for the domain that is subject to the restrict
 name, as specified in [RFC1088]. This field SHOULD be used (by implementations external to this
 protocol) to identify the domain via the NetBIOS API, as specified in [RFC1088].
 
-2.2.7.5  LSAPR_TRUSTED_CONTROLLERS_INFO
+##### 2.2.7.5 LSAPR_TRUSTED_CONTROLLERS_INFO
 
 The LSAPR_TRUSTED_CONTROLLERS_INFO structure is used to communicate a set of names of
 domain controllers (DCs) in a trusted domain. The following structure corresponds to the
@@ -5201,7 +4920,7 @@ name, as specified in [RFC1088]. This field SHOULD be used (by implementations e
 protocol) to identify the DCs via the NetBIOS API, as specified in [RFC1088]. If the Entries field
 has a value other than 0, this field MUST NOT be NULL.
 
-2.2.7.6  TRUSTED_POSIX_OFFSET_INFO
+##### 2.2.7.6 TRUSTED_POSIX_OFFSET_INFO
 
 The TRUSTED_POSIX_OFFSET_INFO structure communicates any offset necessary for POSIX
 compliance. The following structure corresponds to the TrustedPosixOffsetInformation information
@@ -5216,7 +4935,7 @@ Offset:  The offset to use for the generation of POSIX IDs for users and groups,
 
 "trustPosixOffset" in [MS-ADTS] section 6.1.6.7.14.
 
-2.2.7.7  LSAPR_TRUSTED_PASSWORD_INFO
+##### 2.2.7.7 LSAPR_TRUSTED_PASSWORD_INFO
 
 The LSAPR_TRUSTED_PASSWORD_INFO structure is used to communicate trust-authentication
 material. The following structure corresponds to the TrustedPasswordInformation information class.
@@ -5231,7 +4950,8 @@ Release: June 10, 2025
 
 59 / 253
 
-   PLSAPR_CR_CIPHER_VALUE OldPassword;
+
+   PLSAPR_CR_CIPHER_VALUE OldPassword;
  } LSAPR_TRUSTED_PASSWORD_INFO,
   *PLSAPR_TRUSTED_PASSWORD_INFO;
 
@@ -5241,7 +4961,7 @@ OldPassword:  The version prior to the current version of the authentication mat
 
 2.2.6.1.
 
-2.2.7.8  LSAPR_TRUSTED_DOMAIN_INFORMATION_BASIC
+##### 2.2.7.8 LSAPR_TRUSTED_DOMAIN_INFORMATION_BASIC
 
 The LSAPR_TRUSTED_DOMAIN_INFORMATION_BASIC type is identical to the
 LSAPR_TRUST_INFORMATION structure. This type corresponds to the TrustedDomainInformationBasic
@@ -5251,7 +4971,7 @@ This type is declared as follows:
 
  typedef LSAPR_TRUST_INFORMATION LSAPR_TRUSTED_DOMAIN_INFORMATION_BASIC;
 
-2.2.7.9  LSAPR_TRUSTED_DOMAIN_INFORMATION_EX
+##### 2.2.7.9 LSAPR_TRUSTED_DOMAIN_INFORMATION_EX
 
 The LSAPR_TRUSTED_DOMAIN_INFORMATION_EX structure communicates properties of a trusted
 domain. The following structure corresponds to the TrustedDomainInformationEx information class.
@@ -5306,7 +5026,8 @@ Release: June 10, 2025
 
 60 / 253
 
-Maps to the Trust Direction field, as specified in section 3.1.1.5.
+
+Maps to the Trust Direction field, as specified in section 3.1.1.5.
 
 TrustType:  This field specifies the type of trust between the local domain and the named domain.
 
@@ -5459,7 +5180,8 @@ PrivilegedIdentityManagement
 
 61 / 253
 
-Value
+
+Value
 
 Mapping
 
@@ -5478,9 +5200,9 @@ Obsolete. SHOULD be set to 0.
 Reserved for future use.
 SHOULD be set to zero.
 
-2.2.7.10
+##### 2.2.7.10 LSAPR_TRUSTED_DOMAIN_INFORMATION_EX2
 
-LSAPR_TRUSTED_DOMAIN_INFORMATION_EX2
+
 
 The LSAPR_TRUSTED_DOMAIN_INFORMATION_EX2 structure communicates properties of a trusted
 domain. The following structure corresponds to the TrustedDomainInformationEx2Internal
@@ -5536,9 +5258,10 @@ Release: June 10, 2025
 
 62 / 253
 
-2.2.7.11
 
-LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION
+##### 2.2.7.11 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION
+
+
 
 The LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION structure communicates authentication material.
 The following structure corresponds to the TrustedDomainAuthInformation information class. Domain
@@ -5579,9 +5302,9 @@ OutgoingPreviousAuthenticationInformation:  Same as OutgoingAuthenticationInform
 
 but the data is the previous version of the authentication information.
 
-2.2.7.12
+##### 2.2.7.12 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL
 
-LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL
+
 
 The LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL structure communicates
 authentication material. The following structure corresponds to the
@@ -5595,9 +5318,9 @@ authentication material, see [MS-ADTS] section 6.1.6.9.1.
 
 AuthBlob:  An LSAPR_TRUSTED_DOMAIN_AUTH_BLOB.
 
-2.2.7.13
+##### 2.2.7.13 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION
 
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION
+
 
 The LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION structure communicates identification, POSIX
 compatibility, and authentication information for a trusted domain. The following structure
@@ -5610,7 +5333,8 @@ Release: June 10, 2025
 
 63 / 253
 
- typedef struct _LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION {
+
+ typedef struct _LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION {
    LSAPR_TRUSTED_DOMAIN_INFORMATION_EX Information;
    TRUSTED_POSIX_OFFSET_INFO PosixOffset;
    LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION AuthInformation;
@@ -5625,9 +5349,9 @@ PosixOffset:  Any offset required for POSIX compliance, as specified in section 
 
 AuthInformation:  Authentication material, as specified in section 2.2.7.11.
 
-2.2.7.14
+##### 2.2.7.14 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL
 
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL
+
 
 The LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL structure communicates identification
 and authentication information for a trusted domain. The following structure corresponds to the
@@ -5648,9 +5372,9 @@ PosixOffset:  Any offset required for POSIX compliance, as specified in section 
 
 AuthInformation:  Authentication material, as specified in section 2.2.7.12.
 
-2.2.7.15
+##### 2.2.7.15 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION2
 
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION2
+
 
 The LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION2 structure is used to communicate identification,
 POSIX compatibility, and authentication information for a trusted domain. The following structure
@@ -5678,9 +5402,10 @@ Release: June 10, 2025
 
 64 / 253
 
-2.2.7.16
 
-LSAPR_TRUSTED_DOMAIN_AUTH_BLOB
+##### 2.2.7.16 LSAPR_TRUSTED_DOMAIN_AUTH_BLOB
+
+
 
 The LSAPR_TRUSTED_DOMAIN_AUTH_BLOB structure contains a counted buffer of authentication
 material. Domain trust authentication is specified in [MS-ADTS] section 6.1.6.9.1.
@@ -5749,7 +5474,8 @@ Release: June 10, 2025
 
 65 / 253
 
-ByteOffsetPreviousIncomingAuthInfo
+
+ByteOffsetPreviousIncomingAuthInfo
 
 CurrentIncomingAuthInfos (variable)
 
@@ -5811,7 +5537,8 @@ Release: June 10, 2025
 
 66 / 253
 
-CurrentIncomingAuthInfos: Contains an array of CountIncomingAuthInfos
+
+CurrentIncomingAuthInfos: Contains an array of CountIncomingAuthInfos
 LSAPR_AUTH_INFORMATION entries in self-relative format. Each LSAPR_AUTH_INFORMATION
 entry in the array MUST be 4-byte aligned. When it is necessary to insert unused padding bytes
 into a buffer for data alignment, such bytes MUST be set to 0.
@@ -5830,9 +5557,9 @@ IncomingAuthInfoSize (4 bytes): Specifies the size, in bytes, of the sub-portion
 structure from the beginning of the CountIncomingAuthInfos field through the end of the of the
 PreviousIncomingAuthInfos field.
 
-2.2.7.17
+##### 2.2.7.17 LSAPR_AUTH_INFORMATION
 
-LSAPR_AUTH_INFORMATION
+
 
 The LSAPR_AUTH_INFORMATION structure communicates information about authentication between
 trusted domains. Domain trust authentication is specified in [MS-ADTS] section 6.1.6.9.1.
@@ -5883,7 +5610,8 @@ Release: June 10, 2025
 
 67 / 253
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5904,9 +5632,9 @@ AuthInfoLength
 
 AuthInfo [1 ... AuthInfoLength]
 
-2.2.7.18
+##### 2.2.7.18 TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES
 
-TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES
+
 
 The TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPES structure is used to present the encryption
 types that are allowed through a trust.
@@ -5945,9 +5673,9 @@ S: Supports HMAC-SHA1-96-AES256, as specified in [RFC3961] page 31.
 
 All other bits SHOULD be 0 and ignored upon receipt.
 
-2.2.7.19
+##### 2.2.7.19 LSAPR_TRUSTED_ENUM_BUFFER
 
-LSAPR_TRUSTED_ENUM_BUFFER
+
 
 The LSAPR_TRUSTED_ENUM_BUFFER structure specifies a collection of trust information structures of
 type LSAPR_TRUST_INFORMATION.
@@ -5964,16 +5692,17 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-  *PLSAPR_TRUSTED_ENUM_BUFFER;
+
+  *PLSAPR_TRUSTED_ENUM_BUFFER;
 
 EntriesRead:  This field contains the number of trust information structures.
 
 Information:  This field contains a set of structures that define the trust information, as specified in
 section 2.2.7.1. If the EntriesRead field has a value other than 0, this field MUST NOT be NULL.
 
-2.2.7.20
+##### 2.2.7.20 LSAPR_TRUSTED_ENUM_BUFFER_EX
 
-LSAPR_TRUSTED_ENUM_BUFFER_EX
+
 
 The LSAPR_TRUSTED_ENUM_BUFFER_EX structure specifies a collection of trust information
 structures of type LSAPR_TRUSTED_DOMAIN_INFORMATION_EX.
@@ -5991,9 +5720,9 @@ EnumerationBuffer:  This field contains a set of structures that define the trus
 specified in section 2.2.7.9. If the EntriesRead field has a value other than 0, this field MUST
 NOT be NULL.
 
-2.2.7.21
+##### 2.2.7.21 LSA_FOREST_TRUST_RECORD
 
-LSA_FOREST_TRUST_RECORD
+
 
 The LSA_FOREST_TRUST_RECORD structure is used to communicate the type, creation time, and data
 for a forest trust record. The data is determined by the trust type as follows in the definition of the
@@ -6038,9 +5767,10 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-2.2.7.22
 
-LSA_FOREST_TRUST_RECORD_TYPE
+##### 2.2.7.22 LSA_FOREST_TRUST_RECORD_TYPE
+
+
 
 The LSA_FOREST_TRUST_RECORD_TYPE enumeration specifies a type of forest trust record.
 
@@ -6077,9 +5807,9 @@ ForestTrustRecordTypeLast: The highest record value for this type is equal to th
 
 ForestTrustScannerInfo enum value (4).
 
-2.2.7.23
+##### 2.2.7.23 LSA_FOREST_TRUST_BINARY_DATA
 
-LSA_FOREST_TRUST_BINARY_DATA
+
 
 The LSA_FOREST_TRUST_BINARY_DATA structure is used to communicate a forest trust record. This
 structure is not used in the current version of the protocol.
@@ -6094,9 +5824,9 @@ Length:  The count of bytes in Buffer.<39>
 
 Buffer:  The trust record. If the Length field has a value other than 0, this field MUST NOT be NULL.
 
-2.2.7.24
+##### 2.2.7.24 LSA_FOREST_TRUST_DOMAIN_INFO
 
-LSA_FOREST_TRUST_DOMAIN_INFO
+
 
 The LSA_FOREST_TRUST_DOMAIN_INFO structure is used to communicate a forest trust record
 corresponding to the LSA_FOREST_TRUST_DOMAIN_INFO value of ForestTrustDomainInfo.
@@ -6115,15 +5845,16 @@ Release: June 10, 2025
 
 70 / 253
 
-Sid:  Domain SID for the trusted domain.
+
+Sid:  Domain SID for the trusted domain.
 
 DnsName:  The DNS name of the trusted domain.
 
 NetbiosName:  The NetBIOS name of the trusted domain, as specified in [RFC1088].
 
-2.2.7.25
+##### 2.2.7.25 LSA_FOREST_TRUST_INFORMATION
 
-LSA_FOREST_TRUST_INFORMATION
+
 
 The LSA_FOREST_TRUST_INFORMATION structure is a collection of
 LSA_FOREST_TRUST_RECORD (section 2.2.7.21) structures.
@@ -6140,9 +5871,9 @@ Entries:  An array of LSA_FOREST_TRUST_RECORD structures. If the RecordCount fie
 
 other than 0, this field MUST NOT be NULL.
 
-2.2.7.26
+##### 2.2.7.26 LSA_FOREST_TRUST_COLLISION_RECORD_TYPE
 
-LSA_FOREST_TRUST_COLLISION_RECORD_TYPE
+
 
 The LSA_FOREST_TRUST_COLLISION_RECORD_TYPE type specifies the type of a collision record in
 the message.
@@ -6168,9 +5899,9 @@ CollisionOther: A forest trust record that a caller attempted to set on a truste
 
 suffered a collision for an unknown reason.
 
-2.2.7.27
+##### 2.2.7.27 LSA_FOREST_TRUST_COLLISION_RECORD
 
-LSA_FOREST_TRUST_COLLISION_RECORD
+
 
 The LSA_FOREST_TRUST_COLLISION_RECORD structure is used to communicate forest trust
 collision information. For more information about trusted domain objects, see [MS-ADTS] section
@@ -6190,7 +5921,8 @@ Release: June 10, 2025
 
 71 / 253
 
-  *PLSA_FOREST_TRUST_COLLISION_RECORD;
+
+  *PLSA_FOREST_TRUST_COLLISION_RECORD;
 
 Index:  An ordinal number of a forest trust record in the forest trust information supplied by the
 
@@ -6206,9 +5938,9 @@ Name:  The name of the existing entity (a top-level name entry, a domain informa
 
 top-level name exclusion entry) that caused the collision.
 
-2.2.7.28
+##### 2.2.7.28 LSA_FOREST_TRUST_COLLISION_INFORMATION
 
-LSA_FOREST_TRUST_COLLISION_INFORMATION
+
 
 The LSA_FOREST_TRUST_COLLISION_INFORMATION structure is used to communicate a set of
 LSA_FOREST_TRUST_COLLISION_RECORD structures.
@@ -6225,9 +5957,9 @@ Entries:  An array of LSA_FOREST_TRUST_COLLISION_RECORD (section 2.2.7.27) struc
 
 RecordCount field has a value other than zero, this field MUST NOT be NULL.
 
-2.2.7.29
+##### 2.2.7.29 LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL_AES
 
-LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL_AES
+
 
 The LSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL_AES structure communicates
 authentication material. The cleartext password data is in the form of a
@@ -6263,9 +5995,10 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-2.2.7.30
 
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL_AES
+##### 2.2.7.30 LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL_AES
+
+
 
 The LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION_INTERNAL_AES structure communicates
 identification and authentication information for a trusted domain. The following structure corresponds
@@ -6286,9 +6019,9 @@ PosixOffset:  Consists of any offset required for POSIX compliance, as specified
 
 AuthInformation:  Contains authentication material, as specified in section 2.2.7.29.
 
-2.2.7.31
+##### 2.2.7.31 LSA_FOREST_TRUST_SCANNER_INFO
 
-LSA_FOREST_TRUST_SCANNER_INFO
+
 
 The LSA_FOREST_TRUST_SCANNER_INFO structure is used to communicate a scanner information
 record corresponding to the LSA_FOREST_TRUST_SCANNER_INFO value of ForestTrustScannerInfo
@@ -6310,9 +6043,9 @@ NetbiosName:  The NetBIOS name of the domain.
 
 For more information, see [MS-ADTS] section 3.1.1.6.4, PDC Forest Trust Update.
 
-2.2.7.32
+##### 2.2.7.32 LSA_FOREST_TRUST_RECORD2
 
-LSA_FOREST_TRUST_RECORD2
+
 
 The LSA_FOREST_TRUST_RECORD2 structure is used to communicate the type, creation time, and
 data for a forest trust record. The data is determined by the trust type in the union definition that is
@@ -6337,7 +6070,8 @@ Release: June 10, 2025
 
 73 / 253
 
-      LSA_FOREST_TRUST_BINARY_DATA BinaryData;
+
+      LSA_FOREST_TRUST_BINARY_DATA BinaryData;
     [case(ForestTrustScannerInfo)]
       LSA_FOREST_TRUST_SCANNER_INFO ScannerInfo;
   } ForestTrustData;
@@ -6360,9 +6094,9 @@ LSA_FOREST_TRUST_BINARY_DATA, or LSA_FOREST_TRUST_SCANNER_INFO structure,
 depending on the value of ForestTrustType, as specified in the structure definition for
 LSA_FOREST_TRUST_RECORD (section 2.2.7.21).
 
-2.2.7.33
+##### 2.2.7.33 LSA_FOREST_TRUST_INFORMATION2
 
-LSA_FOREST_TRUST_INFORMATION2
+
 
 The LSA_FOREST_TRUST_INFORMATION2 structure is a collection of LSA_FOREST_TRUST_RECORD2
 (section 2.2.7.32) structures.
@@ -6379,9 +6113,9 @@ Entries:  An array of LSA_FOREST_TRUST_RECORD2 structures (section 2.2.7.32). If
 
 RecordCount field has a value other than 0, it MUST NOT be NULL.
 
-2.2.8  Privilege Data Types
+#### 2.2.8 Privilege Data Types
 
-2.2.8.1  LSAPR_POLICY_PRIVILEGE_DEF
+##### 2.2.8.1 LSAPR_POLICY_PRIVILEGE_DEF
 
 The LSAPR_POLICY_PRIVILEGE_DEF structure specifies a privilege definition, which consists of a
 pairing of a human-readable name with a locally unique identifier (LUID).
@@ -6405,7 +6139,8 @@ Release: June 10, 2025
 
 74 / 253
 
-2.2.8.2  LSAPR_PRIVILEGE_ENUM_BUFFER
+
+##### 2.2.8.2 LSAPR_PRIVILEGE_ENUM_BUFFER
 
 The LSAPR_PRIVILEGE_ENUM_BUFFER structure specifies a collection of privilege definitions of type
 LSAPR_POLICY_PRIVILEGE_DEF.
@@ -6422,7 +6157,7 @@ Privileges:  This field contains a set of structures that define the privileges,
 
 2.2.8.1. If the Entries field has a value other than 0, this field MUST NOT be NULL.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol is part of the Active Directory core family of protocols. In order to be fully compliant
 with Active Directory, an implementation of this protocol MUST be used in conjunction with the full
@@ -6436,21 +6171,22 @@ Release: June 10, 2025
 
 75 / 253
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is a pass-through; that is, the client side requires no additional timers
 or other state. Calls made by the higher-layer protocol or application are passed directly to the
 transport, and the results returned by the transport are passed directly back to the higher-layer
 protocol or application.
 
-3.1  Server Details
+### 3.1 Server Details
 
 The Local Security Authority (Domain Policy) Remote Protocol server handles client requests for any of
 the messages described in section 3.1.4, and operates on the security policy settings stored on the
 server. For each message, the behavior of the server while processing messages is described in
 section 3.1.4.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The Local Security Authority (Domain Policy) Remote Protocol defines an abstract data model that
 contains information about three types of objects: account objects, secret objects, and trusted
@@ -6469,7 +6205,7 @@ accessed from outside this protocol, for the purpose of documentary convenience.
 MUST NOT be construed as a relaxation of the security constraints specified within this document;
 rather, the same authorization decisions that are applied when clients access such data elements
 using protocol primitives MUST also be applied during direct access of the elements. See section
-3.1.1.10 for more details.
+##### 3.1.1.10 for more details.
 
 3.1.1.1  Policy Object Data Model
 
@@ -6514,7 +6250,8 @@ Release: June 10, 2025
 
 76 / 253
 
-Name
+
+Name
 
 Type
 
@@ -6598,7 +6335,8 @@ Release: June 10, 2025
 
 77 / 253
 
-For domain-joined machines, Primary Domain Information and DNS Domain Information store
+
+For domain-joined machines, Primary Domain Information and DNS Domain Information store
 information about the domain to which the machine is joined. If the machine is not joined to a
 domain, these abstract data elements store information about the workgroup the machine is in.
 
@@ -6669,7 +6407,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-an operating system upgrade, takes place. The set of names identifying privileges and their LUIDs
+
+an operating system upgrade, takes place. The set of names identifying privileges and their LUIDs
 MUST be the same across all servers running the same revision of the operating system.
 
 Name
@@ -6802,7 +6541,8 @@ Release: June 10, 2025
 
 79 / 253
 
-Name
+
+Name
 
 LUID
 
@@ -6961,7 +6701,8 @@ Release: June 10, 2025
 
 80 / 253
 
-Name
+
+Name
 
 LUID
 
@@ -7063,7 +6804,8 @@ Release: June 10, 2025
 
 81 / 253
 
-Name
+
+Name
 
 Flag
 
@@ -7149,7 +6891,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Name
+
+Name
 
 Type
 
@@ -7269,7 +7012,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Local Secret: Can be accessed only by a client that is on the same machine as the server.
+
+Local Secret: Can be accessed only by a client that is on the same machine as the server.
 
 Global Secret: Replicates between domain controllers in the same domain, allowing each domain
 controller to be able to respond to secret requests of this type.
@@ -7379,7 +7123,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Name
+
+Name
 
 Type
 
@@ -7482,7 +7227,8 @@ Release: June 10, 2025
 
 85 / 253
 
-Name
+
+Name
 
 Type
 
@@ -7584,7 +7330,8 @@ Release: June 10, 2025
 
 86 / 253
 
-3.1.1.9  Object Class Listing
+
+3.1.1.9  Object Class Listing
 
 The following classes are referenced by this protocol (listed by ldapDisplayName). For a normative
 description of these classes, see [MS-ADSC].
@@ -7661,11 +7408,11 @@ TrustedDomain
 (section
 3.1.1.5)
 
-3.1.1.10.1
+###### 3.1.1.10.1 Example Patterns for Direct Access of Policy Object ADM Elements
 
-Example Patterns for Direct Access of Policy Object ADM Elements
 
-3.1.1.10.1.1  Query Pattern for Policy Object ADM
+
+###### 3.1.1.10.1.1 Query Pattern for Policy Object ADM
 
 Direct querying of any of the (Public) ADM elements listed in section 3.1.1 MUST be performed as
 follows:
@@ -7681,7 +7428,8 @@ Release: June 10, 2025
 
 87 / 253
 
-2.  The client MUST invoke LsarQueryInformationPolicy2 (section 3.1.4.4.3), specifying the policy
+
+2.  The client MUST invoke LsarQueryInformationPolicy2 (section 3.1.4.4.3), specifying the policy
 
 handle obtained in step 1 for the PolicyHandle parameter and PolicyDnsDomainInformation for the
 InformationClass parameter.
@@ -7695,7 +7443,7 @@ InformationClass parameter.
 LSAPR_POLICY_INFORMATION.PolicyDnsDomainInfo structure (section 2.2.4.14) that was
 returned in step 2.
 
-3.1.1.10.1.2  Set Pattern for Policy Object ADM
+###### 3.1.1.10.1.2 Set Pattern for Policy Object ADM
 
 Direct setting of any of the (Public) ADM elements listed in section 3.1.1 MUST be performed as
 follows:
@@ -7724,12 +7472,12 @@ obtained in step 1 for the PolicyHandle parameter.
 
 1 for the ObjectHandle parameter.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required other than those internal ones used in RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST start listening on the well-known named pipe for the RPC interface, as specified in
 section 2.1.
@@ -7737,7 +7485,7 @@ section 2.1.
 The ComputerNetBIOSName element (specified in section 3.1.1.1) MUST be copied into the
 DomainName field in Account Domain Information (also specified in section 3.1.1.1).
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This section contains detailed information about each protocol message and the steps taken by the
 server to process caller requests.<56> <57> <58>
@@ -7751,7 +7499,8 @@ Release: June 10, 2025
 
 88 / 253
 
-Method
+
+Method
 
 LsarClose
 
@@ -7870,7 +7619,8 @@ Release: June 10, 2025
 
 89 / 253
 
-Method
+
+Method
 
 Description
 
@@ -7988,7 +7738,8 @@ Release: June 10, 2025
 
 90 / 253
 
-Method
+
+Method
 
 Description
 
@@ -8110,7 +7861,8 @@ Release: June 10, 2025
 
 91 / 253
 
-Method
+
+Method
 
 Description
 
@@ -8238,7 +7990,8 @@ Release: June 10, 2025
 
 92 / 253
 
-Method
+
+Method
 
 Description
 
@@ -8377,7 +8130,8 @@ Release: June 10, 2025
 
 93 / 253
 
-Method
+
+Method
 
 Description
 
@@ -8507,7 +8261,8 @@ Release: June 10, 2025
 
 94 / 253
 
-Method
+
+Method
 
 Description
 
@@ -8574,7 +8329,7 @@ In the following sections, the first general idea behind the common operations i
 trusted domains, privileges, and common object methods. Section 3.1.4.10 explains the data
 validation rules.
 
-3.1.4.1  Obtaining Handles
+##### 3.1.4.1 Obtaining Handles
 
 The Local Security Authority (Domain Policy) Remote Protocol recognizes four types of handles: Policy,
 Account, Secret, and Trusted Domain. A handle of each type can be obtained only by calling one of a
@@ -8587,7 +8342,8 @@ Release: June 10, 2025
 
 95 / 253
 
-Handle type
+
+Handle type
 
 Methods that return this type of handle
 
@@ -8631,16 +8387,16 @@ The RPC protocol provides a mechanism to clean up any resources related to a con
 client that is holding the context handle exits, dies, disconnects, or reboots. See section 3.1.6.1 for
 this protocol's context handle rundown specification.
 
-3.1.4.2  Access Rights and Access Checks
+##### 3.1.4.2 Access Rights and Access Checks
 
 Methods in this protocol perform one or more of the access checks that are specified in the following
 sections.
 
 Access check (section)  Methods that use it
 
-3.1.4.2.1
+###### 3.1.4.2.1 LsarOpenPolicy
 
-LsarOpenPolicy
+
 
 LsarOpenPolicy2
 
@@ -8662,9 +8418,9 @@ LsarOpenTrustedDomainByName
 
 LsarCreateTrustedDomainEx2
 
-3.1.4.2.2
+###### 3.1.4.2.2 LsarQueryInformationPolicy2
 
-LsarQueryInformationPolicy2
+
 
 LsarQueryInformationPolicy
 
@@ -8683,7 +8439,8 @@ Release: June 10, 2025
 
 96 / 253
 
-Access check (section)  Methods that use it
+
+Access check (section)  Methods that use it
 
 LsarCreateAccount
 
@@ -8780,7 +8537,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-All methods that open handles (as specified in section 3.1.4.1) allow the caller to specify a "desired
+
+All methods that open handles (as specified in section 3.1.4.1) allow the caller to specify a "desired
 access" bitmask. The meaning of the bits within this bitmask depends on the type of object. The bits
 are documented in sections 2.2.1.1.1, 2.2.1.1.2, 2.2.1.1.3, 2.2.1.1.4, and 2.2.1.1.5. All methods that
 open handles (as specified in section 3.1.4.1) perform an access check based on the desired access
@@ -8865,7 +8623,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-
+
+
 
 
 
@@ -8894,7 +8653,7 @@ POLICY_VIEW_LOCAL_INFORMATION, the server MUST check that this bit is set in the
 field on the context handle. If the check is unsuccessful, the server MUST return
 STATUS_ACCESS_DENIED.
 
-3.1.4.2.3 Determining If Requestors Are Anonymous
+###### 3.1.4.2.3 Determining If Requestors Are Anonymous
 
  procedure IsRequestorAnonymous() : boolean
 
@@ -8909,7 +8668,7 @@ RPCE] section 3.3.3.4.3.1, specifying NULL for Input Parameter.
  Return RpcImpersonationAccessToken.Sids[RpcImpersonationAccessToken.UserIndex] equals
 AnonymousSid
 
-3.1.4.3  Closing Handles
+##### 3.1.4.3 Closing Handles
 
 A handle of any type can be closed by calling LsarClose. Successful calls to LsarDeleteObject, which
 deletes an object to which the caller has an open handle, MUST also close the handle. The fact that a
@@ -8919,7 +8678,7 @@ parameter, as specified in [C706] section 5.1.6.
 Closing one handle MUST NOT affect any other handle on the server; that is, handles obtained using a
 policy handle MUST continue to be valid after that policy handle is closed.
 
-3.1.4.4  Policy Object Methods
+##### 3.1.4.4 Policy Object Methods
 
 The message processing of methods in this section MUST use the abstract data model defined in
 section 3.1.1.1.
@@ -8931,7 +8690,8 @@ Release: June 10, 2025
 
 99 / 253
 
-Method (opnum)
+
+Method (opnum)
 
 Summary
 
@@ -8978,7 +8738,7 @@ LsarOpenPolicyWithCreds (opnum 135)  Opens a context handle to the RPC server us
 
 provided RPC binding handle.
 
-3.1.4.4.1 LsarOpenPolicy2 (Opnum 44)
+###### 3.1.4.4.1 LsarOpenPolicy2 (Opnum 44)
 
 The LsarOpenPolicy2 method opens a context handle to the RPC server. This is the first function that
 MUST be called to contact the Local Security Authority (Domain Policy) Remote Protocol database.
@@ -9025,7 +8785,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9086,7 +8847,7 @@ The return value MUST be set to STATUS_SUCCESS in this case.
 
 The LsarOpenPolicy3 method supersedes this message and MUST be used whenever possible.
 
-3.1.4.4.2 LsarOpenPolicy (Opnum 6)
+###### 3.1.4.4.2 LsarOpenPolicy (Opnum 6)
 
 The LsarOpenPolicy method is exactly the same as LsarOpenPolicy2, except that the SystemName
 parameter in this function, because of its syntactic definition, contains only one character instead of a
@@ -9107,7 +8868,8 @@ Release: June 10, 2025
 
 101 / 253
 
-SystemName: This parameter does not have any effect on message processing in any environment.
+
+SystemName: This parameter does not have any effect on message processing in any environment.
 
 It MUST be ignored on receipt.
 
@@ -9128,7 +8890,7 @@ Processing:
 The processing is the same as for LsarOpenPolicy2. LsarOpenPolicy2 supersedes this message and
 MUST be used when possible.
 
-3.1.4.4.3 LsarQueryInformationPolicy2 (Opnum 46)
+###### 3.1.4.4.3 LsarQueryInformationPolicy2 (Opnum 46)
 
 The LsarQueryInformationPolicy2 method is invoked to query values that represent the server's
 security policy.
@@ -9197,7 +8959,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-The server MUST verify that PolicyHandle grants access as specified in section 3.1.4.2.2. The following
+
+The server MUST verify that PolicyHandle grants access as specified in section 3.1.4.2.2. The following
 table specifies the RequiredAccess value to use in this access check for each InformationClass value or
 indicates if no processing is supported, regardless of access granted.
 
@@ -9313,7 +9076,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Value of InformationClass
+
+Value of InformationClass
 parameter
 
 Information returned to caller from abstract data model
@@ -9346,7 +9110,7 @@ PolicyMachineAccountInformation
 
 Machine Account Information
 
-3.1.4.4.4 LsarQueryInformationPolicy (Opnum 7)
+###### 3.1.4.4.4 LsarQueryInformationPolicy (Opnum 7)
 
 The LsarQueryInformationPolicy method is invoked to query values that represent the server's
 information policy.
@@ -9412,9 +9176,10 @@ Release: June 10, 2025
 
 104 / 253
 
-This message MUST be processed in an identical manner to LsarQueryInformationPolicy2.
 
-3.1.4.4.5 LsarSetInformationPolicy2 (Opnum 47)
+This message MUST be processed in an identical manner to LsarQueryInformationPolicy2.
+
+###### 3.1.4.4.5 LsarSetInformationPolicy2 (Opnum 47)
 
 The LsarSetInformationPolicy2 method is invoked to set a policy on the server.
 
@@ -9505,7 +9270,8 @@ Release: June 10, 2025
 
 105 / 253
 
-InformationClass value
+
+InformationClass value
 
 RequiredAccess value
 
@@ -9618,7 +9384,8 @@ Release: June 10, 2025
 
 106 / 253
 
-Value of InformationClass
+
+Value of InformationClass
 parameter
 
 PolicyAuditFullQueryInformation
@@ -9644,7 +9411,7 @@ PolicyMachineAccountInformation
 
 Machine Account Information.
 
-3.1.4.4.6 LsarSetInformationPolicy (Opnum 8)
+###### 3.1.4.4.6 LsarSetInformationPolicy (Opnum 8)
 
 The LsarSetInformationPolicy method is invoked to set a policy on the server.
 
@@ -9705,7 +9472,7 @@ Processing:
 
 This message MUST be processed in an identical manner to LsarSetInformationPolicy2.
 
-3.1.4.4.7 LsarQueryDomainInformationPolicy (Opnum 53)
+###### 3.1.4.4.7 LsarQueryDomainInformationPolicy (Opnum 53)
 
 107 / 253
 
@@ -9714,7 +9481,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-The LsarQueryDomainInformationPolicy method is invoked to retrieve policy settings in addition to
+
+The LsarQueryDomainInformationPolicy method is invoked to retrieve policy settings in addition to
 those exposed through LsarQueryInformationPolicy and LsarSetInformationPolicy2. Despite the term
 "Domain" in the name of the method, processing of this message occurs with local data, and
 furthermore, there is no requirement that this data have any relationship with the LSA information in
@@ -9800,7 +9568,8 @@ Release: June 10, 2025
 
 108 / 253
 
-InformationClass value
+
+InformationClass value
 
 RequiredAccess value
 
@@ -9833,7 +9602,7 @@ PolicyDomainKerberosTicketInformation
 
 Kerberos Policy Information
 
-3.1.4.4.8 LsarSetDomainInformationPolicy (Opnum 54)
+###### 3.1.4.4.8 LsarSetDomainInformationPolicy (Opnum 54)
 
 The LsarSetDomainInformationPolicy method is invoked to change policy settings in addition to those
 exposed through LsarQueryInformationPolicy and LsarSetInformationPolicy2. Despite the term
@@ -9885,7 +9654,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -9951,7 +9721,7 @@ If the abstract data model update succeeds and the InformationClass parameter is
 PolicyDomainKerberosTicketInformation, the server MUST invoke the KDC ConfigurationChange event
 (see [MS-KILE] section 3.3.4.1) and MUST ignore any errors that are returned.
 
-3.1.4.4.9 LsarOpenPolicy3 (Opnum 130)
+###### 3.1.4.4.9 LsarOpenPolicy3 (Opnum 130)
 
 The LsarOpenPolicy3 method, as specified below, opens a context handle to the RPC server. This is
 the first function that MUST be called to contact the Local Security Authority (Domain Policy) (LSAD)
@@ -9967,7 +9737,8 @@ Release: June 10, 2025
 
 110 / 253
 
-     [in,unique,string] PLSAPR_SERVER_NAME               SystemName,
+
+     [in,unique,string] PLSAPR_SERVER_NAME               SystemName,
      [in] PLSAPR_OBJECT_ATTRIBUTES                       ObjectAttributes,
      [in] ACCESS_MASK                                    DesiredAccess,
      [in] ULONG                                          InVersion,
@@ -10063,7 +9834,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-
+
+
 
 
 
@@ -10075,9 +9847,9 @@ OutRevisionInfo.SupportedFeatures field MUST be set to 4.
 
 Note: LsarOpenPolicy3 supersedes LsarOpenPolicy2 and MUST be used whenever possible.
 
-3.1.4.4.10
+###### 3.1.4.4.10 LsarOpenPolicyWithCreds (Opnum 135)
 
-LsarOpenPolicyWithCreds (Opnum 135)
+
 
 The LsarOpenPolicyWithCreds method, as specified below, opens a context handle to the RPC server
 using the credentials in the provided BindingHandle.<69>
@@ -10129,7 +9901,7 @@ data model of a policy object, as specified in section 3.1.1.1.
 
 The return values and server processing of this method is the same as LsarOpenPolicy3.
 
-3.1.4.5  Account Object Methods
+##### 3.1.4.5 Account Object Methods
 
 The message processing of methods in this section MUST use the abstract data model, as specified in
 section 3.1.1.3.
@@ -10141,7 +9913,8 @@ Release: June 10, 2025
 
 112 / 253
 
-Method (opnum)
+
+Method (opnum)
 
 Summary
 
@@ -10199,7 +9972,7 @@ LsarRemoveAccountRights (opnum 38)
 Removes rights from an account object in the server's policy
 database.
 
-3.1.4.5.1 LsarCreateAccount (Opnum 10)
+###### 3.1.4.5.1 LsarCreateAccount (Opnum 10)
 
 The LsarCreateAccount method is invoked to create a new account object in the server's database.
 
@@ -10241,7 +10014,8 @@ Release: June 10, 2025
 
 113 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10316,7 +10090,7 @@ same SID, and fail the request with STATUS_OBJECT_NAME_COLLISION if it does.
 The server MUST associate a security descriptor with a newly created account object. See section
 3.1.1.3 for the data model of this object type.
 
-3.1.4.5.2 LsarEnumerateAccounts (Opnum 11)
+###### 3.1.4.5.2 LsarEnumerateAccounts (Opnum 11)
 
 The LsarEnumerateAccounts method is invoked to request a list of account objects in the server's
 database. The method can be called multiple times to return its output in fragments.
@@ -10328,7 +10102,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
- NTSTATUS LsarEnumerateAccounts(
+
+ NTSTATUS LsarEnumerateAccounts(
    [in] LSAPR_HANDLE PolicyHandle,
    [in] [out] unsigned long *EnumerationContext,
    [out] PLSAPR_ACCOUNT_ENUM_BUFFER EnumerationBuffer,
@@ -10413,7 +10188,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-PreferedMaximumLength if the last object had not been added to EnumerationBuffer. If there are no
+
+PreferedMaximumLength if the last object had not been added to EnumerationBuffer. If there are no
 more objects than are returned in EnumerationBuffer, the server MUST return
 STATUS_NO_MORE_ENTRIES. If there are more database objects than are returned in
 EnumerationBuffer, the server MUST set the EnumerationContext value to the index value that would
@@ -10423,7 +10199,7 @@ return STATUS_MORE_ENTRIES. Note that this return value is not an error status.
 PreferedMaximumLength: An indication about the approximate size, in bytes, of the data to return.
 Any unsigned 32-bit value is valid for the PreferedMaximumLength parameter.
 
-3.1.4.5.3 LsarOpenAccount (Opnum 17)
+###### 3.1.4.5.3 LsarOpenAccount (Opnum 17)
 
 The LsarOpenAccount method is invoked to obtain a handle to an account object.
 
@@ -10497,7 +10273,8 @@ Release: June 10, 2025
 
 116 / 253
 
-AccountSid: The SID of the account to be opened. The server MUST verify that the SID is valid and fail
+
+AccountSid: The SID of the account to be opened. The server MUST verify that the SID is valid and fail
 the request with STATUS_INVALID_PARAMETER otherwise. The server MUST verify that the account
 object with this SID exists in its policy database and fail the request with
 STATUS_OBJECT_NAME_NOT_FOUND otherwise.
@@ -10528,7 +10305,7 @@ LsaContextHandle.Object = the account object
 
 LsaContextHandle.GrantedAccess = as specified in section 3.1.4.2.1
 
-3.1.4.5.4 LsarEnumeratePrivilegesAccount (Opnum 18)
+###### 3.1.4.5.4 LsarEnumeratePrivilegesAccount (Opnum 18)
 
 The LsarEnumeratePrivilegesAccount method is invoked to retrieve a list of privileges granted to an
 account on the server.
@@ -10583,7 +10360,8 @@ Release: June 10, 2025
 
 117 / 253
 
-Processing:
+
+Processing:
 
 This message takes two arguments:
 
@@ -10598,7 +10376,7 @@ privileges to be empty.
 The server MUST return STATUS_INSUFFICIENT_RESOURCES if it runs out of memory while
 processing this request.
 
-3.1.4.5.5 LsarAddPrivilegesToAccount (Opnum 19)
+###### 3.1.4.5.5 LsarAddPrivilegesToAccount (Opnum 19)
 
 The LsarAddPrivilegesToAccount method is invoked to add new privileges to an existing account
 object.
@@ -10665,10 +10443,11 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-privilege if one was associated with the account previously. Any LUID not recognized as valid by the
+
+privilege if one was associated with the account previously. Any LUID not recognized as valid by the
 server SHOULD cause the message to be rejected with STATUS_INVALID_PARAMETER.<71>
 
-3.1.4.5.6 LsarRemovePrivilegesFromAccount (Opnum 20)
+###### 3.1.4.5.6 LsarRemovePrivilegesFromAccount (Opnum 20)
 
 The LsarRemovePrivilegesFromAccount method is invoked to remove privileges from an account
 object.
@@ -10738,7 +10517,7 @@ Privileges: If AllPrivileges is FALSE (0), this parameter cannot be NULL. It wil
 Privileges from the account object. The server MUST verify that Privileges is not NULL and fail the
 request with STATUS_INVALID_PARAMETER otherwise.<72>
 
-3.1.4.5.7 LsarGetSystemAccessAccount (Opnum 23)
+###### 3.1.4.5.7 LsarGetSystemAccessAccount (Opnum 23)
 
 [MS-LSAD] - v20250610
 Local Security Authority (Domain Policy) Remote Protocol
@@ -10747,7 +10526,8 @@ Release: June 10, 2025
 
 119 / 253
 
-The LsarGetSystemAccessAccount method is invoked to retrieve system access account flags for an
+
+The LsarGetSystemAccessAccount method is invoked to retrieve system access account flags for an
 account object. System access account flags are described as part of the account object data model,
 as specified in section 3.1.1.3.
 
@@ -10799,7 +10579,7 @@ section 3.1.4.2.2 with RequiredAccess set to ACCOUNT_VIEW.
 
 SystemAccess: Used to return a bitmask of system access bits.
 
-3.1.4.5.8 LsarSetSystemAccessAccount (Opnum 24)
+###### 3.1.4.5.8 LsarSetSystemAccessAccount (Opnum 24)
 
 The LsarSetSystemAccessAccount method is invoked to set system access account flags for an
 account object.
@@ -10826,7 +10606,8 @@ Release: June 10, 2025
 
 120 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10868,7 +10649,7 @@ MUST verify that the bits do not fall outside the set of system access rights de
 and fail the request with STATUS_INVALID_PARAMETER otherwise. The new system access bits
 replace the old ones.
 
-3.1.4.5.9 LsarEnumerateAccountsWithUserRight (Opnum 35)
+###### 3.1.4.5.9 LsarEnumerateAccountsWithUserRight (Opnum 35)
 
 The LsarEnumerateAccountsWithUserRight method is invoked to return a list of account objects that
 have the user right equal to the passed-in value.
@@ -10918,7 +10699,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10957,9 +10739,9 @@ set of all account object SIDs that have that right or privilege.
 
 EnumerationBuffer: Used to return a set of account SIDs that have the specified UserRight.
 
-3.1.4.5.10
+###### 3.1.4.5.10 LsarEnumerateAccountRights (Opnum 36)
 
-LsarEnumerateAccountRights (Opnum 36)
+
 
 The LsarEnumerateAccountRights method is invoked to retrieve a list of rights associated with an
 existing account.
@@ -11009,7 +10791,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11045,9 +10828,9 @@ The server MUST return the string names of all the system access rights and priv
 with the account. It is valid for the server to return an empty set if the account object does not
 contain any rights.
 
-3.1.4.5.11
+###### 3.1.4.5.11 LsarAddAccountRights (Opnum 37)
 
-LsarAddAccountRights (Opnum 37)
+
 
 The LsarAddAccountRights method is invoked to add new rights to an account object. If the account
 object does not exist, the system will attempt to create one.
@@ -11097,7 +10880,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11136,9 +10920,9 @@ one does not exist.
 UserRights: A set of system access rights and privileges to be added to the account. If the server
 does not recognize any of the rights, it MUST return STATUS_NO_SUCH_PRIVILEGE.
 
-3.1.4.5.12
+###### 3.1.4.5.12 LsarRemoveAccountRights (Opnum 38)
 
-LsarRemoveAccountRights (Opnum 38)
+
 
 The LsarRemoveAccountRights method is invoked to remove rights from an account object.
 
@@ -11182,7 +10966,8 @@ Release: June 10, 2025
 
 124 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11247,7 +11032,7 @@ The server MUST NOT allow removal of "SeAuditPrivilege", "SeChangeNotifyPrivileg
 If the resulting set of access rights and privileges is empty, the server MUST delete the account object
 from its database.
 
-3.1.4.6  Secret Object Methods
+##### 3.1.4.6 Secret Object Methods
 
 The message processing of methods in this section MUST use the abstract data model defined in
 section 3.1.1.4.
@@ -11271,7 +11056,8 @@ Release: June 10, 2025
 
 125 / 253
 
-Method (opnum)
+
+Method (opnum)
 
 Summary
 
@@ -11311,7 +11097,7 @@ If the server does not support these methods, the server MUST respond with an RP
 server supports these methods, the server MUST perform the operations in the message processing
 section for each method.
 
-3.1.4.6.1 LsarCreateSecret (Opnum 16)
+###### 3.1.4.6.1 LsarCreateSecret (Opnum 16)
 
 The LsarCreateSecret method is invoked to create a new secret object in the server's database.
 
@@ -11368,7 +11154,8 @@ Release: June 10, 2025
 
 126 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11443,7 +11230,7 @@ the LsarSetSecret message.
 The server MUST check that the secret by the name SecretName does not already exist and fail the
 request with STATUS_OBJECT_NAME_COLLISION otherwise.<79>
 
-3.1.4.6.2 LsarOpenSecret (Opnum 28)
+###### 3.1.4.6.2 LsarOpenSecret (Opnum 28)
 
 127 / 253
 
@@ -11452,7 +11239,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-The LsarOpenSecret method is invoked to obtain a handle to an existing secret object.
+
+The LsarOpenSecret method is invoked to obtain a handle to an existing secret object.
 
  NTSTATUS LsarOpenSecret(
    [in] LSAPR_HANDLE PolicyHandle,
@@ -11536,7 +11324,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
- END IF
+
+ END IF
 
 The valid secret-rights bits are specified in section 2.2.1.1.4 and the security descriptor is specified
 in section 3.1.1.4. The IsRequestorAnonymous procedure is specified in section 3.1.4.2.3.
@@ -11556,7 +11345,7 @@ LsaContextHandle.Object = the secret object
 
 LsaContextHandle.GrantedAccess = as specified in section 3.1.4.2.1
 
-3.1.4.6.3 LsarSetSecret (Opnum 29)
+###### 3.1.4.6.3 LsarSetSecret (Opnum 29)
 
 The LsarSetSecret method is invoked to set the current and old values of the secret object.
 
@@ -11625,7 +11414,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-EncryptedCurrentValue: The version of the new secret value that is being set, encrypted as specified
+
+EncryptedCurrentValue: The version of the new secret value that is being set, encrypted as specified
 in section 5.1.2. It is valid for this parameter to be NULL, in which case the server MUST delete the
 current value in its database. If decryption fails, the server MUST return an implementation-specific
 error.<82>
@@ -11670,7 +11460,7 @@ Current server time
 
 Current server time
 
-3.1.4.6.4 LsarQuerySecret (Opnum 30)
+###### 3.1.4.6.4 LsarQuerySecret (Opnum 30)
 
 The LsarQuerySecret method is invoked to retrieve the current and old (or previous) value of the
 secret object.
@@ -11722,7 +11512,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -11753,7 +11544,7 @@ This parameter can be NULL if the caller is not interested in this information.<
 OldValueSetTime: The time corresponding to the instance that the old value was last changed. This
 parameter can be NULL if the caller is not interested in this information.
 
-3.1.4.6.5 LsarStorePrivateData (Opnum 42)
+###### 3.1.4.6.5 LsarStorePrivateData (Opnum 42)
 
 The LsarStorePrivateData method is invoked to store a secret value.
 
@@ -11808,7 +11599,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Processing:
+
+Processing:
 
 This message takes three arguments:
 
@@ -11831,7 +11623,7 @@ EncryptedData: The value of the secret to be stored. This value is encrypted as 
 5.1.2. As mentioned already, a caller that wants the secret to be deleted simply passes NULL for this
 value. If decryption fails, the server MUST return an implementation-specific error.<87>
 
-3.1.4.6.6 LsarRetrievePrivateData (Opnum 43)
+###### 3.1.4.6.6 LsarRetrievePrivateData (Opnum 43)
 
 The LsarRetrievePrivateData method is invoked to retrieve a secret value.
 
@@ -11892,7 +11684,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Processing:
+
+Processing:
 
 This message takes three arguments:
 
@@ -11909,7 +11702,7 @@ exist, the server MUST return STATUS_OBJECT_NAME_NOT_FOUND.
 EncryptedData: Used to return an encrypted version of the secret value. This value is encrypted as
 specified in section 5.1.2.
 
-3.1.4.6.7 LsarOpenSecret2 (Opnum 136)
+###### 3.1.4.6.7 LsarOpenSecret2 (Opnum 136)
 
 The LsarOpenSecret2 method is invoked to obtain a handle to an existing secret object.<88>
 
@@ -11937,7 +11730,7 @@ Processing:
 The processing is the same as LsarOpenSecret with the exception that the encrypted secret name is
 first decrypted.
 
-3.1.4.6.8 LsarCreateSecret2 (Opnum 137)
+###### 3.1.4.6.8 LsarCreateSecret2 (Opnum 137)
 
 The LsarCreateSecret2 method is invoked to create a new secret object in the server's database.<89>
 
@@ -11961,7 +11754,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-DesiredAccess: A bitmask that specifies the accesses to be granted to the newly created and opened
+
+DesiredAccess: A bitmask that specifies the accesses to be granted to the newly created and opened
 
 secret object at this time (section 2.2.1.1.4).
 
@@ -11974,7 +11768,7 @@ Processing:
 The processing is the same as LsarCreateSecret section (3.1.4.6.1) with the exception that the
 encrypted secret name is first decrypted.
 
-3.1.4.6.9 LsarSetSecret2 (Opnum 138)
+###### 3.1.4.6.9 LsarSetSecret2 (Opnum 138)
 
 The LsarSetSecret2 method is invoked to set the current and old values of the secret object.<90>
 
@@ -12002,9 +11796,9 @@ Processing:
 The processing is the same as LsarSetSecret (section 3.1.4.6.3) with the exception that, when non-
 NULL, the encrypted EncryptedCurrentValue and EncryptedOldValue are first decrypted.
 
-3.1.4.6.10
+###### 3.1.4.6.10 LsarQuerySecret2 (Opnum 139)
 
-LsarQuerySecret2 (Opnum 139)
+
 
 The LsarQuerySecret2 method is invoked to retrieve the current and old (or previous) value of the
 secret object.<91>
@@ -12031,7 +11825,8 @@ Release: June 10, 2025
 
 134 / 253
 
-CurrentValueSetTime: Used to return the time when the current value was set. It is valid for this
+
+CurrentValueSetTime: Used to return the time when the current value was set. It is valid for this
 
 parameter to be NULL, in which case no value is returned.
 
@@ -12052,9 +11847,9 @@ The processing is the same as LsarQuerySecret with the exception that, when non-
 encrypted EncryptedCurrentValue and EncryptedOldValue is encrypted to specification per AES Cipher
 Usage (section 5.1.5).
 
-3.1.4.6.11
+###### 3.1.4.6.11 LsarStorePrivateData2 (Opnum 140)
 
-LsarStorePrivateData2 (Opnum 140)
+
 
 The LsarStorePrivateData2 method is invoked to store a secret value.<92>
 
@@ -12083,9 +11878,9 @@ Processing:
 The processing is the same as LsarStorePrivateData with the exception that the encrypted
 EncryptedKeyName and EncryptedData are first decrypted.
 
-3.1.4.6.12
+###### 3.1.4.6.12 LsarRetrievePrivateData2 (Opnum 141)
 
-LsarRetrievePrivateData2 (Opnum 141)
+
 
 The LsarRetrievePrivateData2 method is invoked to retrieve a secret value.<93>
 
@@ -12110,7 +11905,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-EncryptedData: Receives the encrypted value of the secret object. This is encrypted to specification
+
+EncryptedData: Receives the encrypted value of the secret object. This is encrypted to specification
 
 per AES Cipher Usage (section 5.1.5).
 
@@ -12123,7 +11919,7 @@ Processing:
 The processing is the same as LsarRetrievePrivateData (section 3.1.4.6.6) with the exception that, the
 encrypted EncryptedKeyName and EncryptedData are encrypted.
 
-3.1.4.7  Trusted Domain Object Methods
+##### 3.1.4.7 Trusted Domain Object Methods
 
 Trusted domain objects SHOULD be created only on a server implementation that is in the domain
 controller configuration.<94>
@@ -12219,7 +12015,8 @@ Release: June 10, 2025
 
 136 / 253
 
-3.1.4.7.1 LsarOpenTrustedDomain (Opnum 25)
+
+###### 3.1.4.7.1 LsarOpenTrustedDomain (Opnum 25)
 
 The LsarOpenTrustedDomain method is invoked to obtain a handle to a trusted domain object.
 
@@ -12306,7 +12103,8 @@ Release: June 10, 2025
 
 137 / 253
 
-TrustedDomainSid: A SID of the trusted domain object. The server MUST verify that the SID is a valid
+
+TrustedDomainSid: A SID of the trusted domain object. The server MUST verify that the SID is a valid
 domain SID and reject the request with STATUS_INVALID_PARAMETER otherwise. If the trusted
 domain object with this SID does not exist, the server MUST fail the request with
 STATUS_NO_SUCH_DOMAIN error code.
@@ -12331,7 +12129,7 @@ LsaContextHandle.Object = the trusted domain object
 
 LsaContextHandle.GrantedAccess = as specified in section 3.1.4.2.1
 
-3.1.4.7.2 LsarQueryTrustedDomainInfo (Opnum 39)
+###### 3.1.4.7.2 LsarQueryTrustedDomainInfo (Opnum 39)
 
 The LsarQueryTrustedDomainInfo method is invoked to retrieve information on a trusted domain
 object.
@@ -12398,7 +12196,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12452,7 +12251,7 @@ trusted domain identified by the TrustedDomainSid parameter.
 
 TrustedDomainInformation: Used to return the requested information.
 
-3.1.4.7.3 LsarSetTrustedDomainInfo (Opnum 40)
+###### 3.1.4.7.3 LsarSetTrustedDomainInfo (Opnum 40)
 
 The LsarSetTrustedDomainInfo method is invoked to set information on a trusted domain object. In
 some cases, if the trusted domain object does not exist, it will be created.
@@ -12476,7 +12275,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-InformationClass: Identifies the type of information to be set on the trusted domain object.
+
+InformationClass: Identifies the type of information to be set on the trusted domain object.
 
 TrustedDomainInformation: Information to be set on the trusted domain object.
 
@@ -12567,7 +12367,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-
+
+
 
 TrustedPosixOffsetInformation: The server MUST verify that a trusted domain object with this SID
 exists in its policy database. If the object does not exist, the call MUST fail with
@@ -12634,7 +12435,7 @@ The server MUST return STATUS_INVALID_PARAMETER for all other InformationClass a
 TrustedDomainInformation: Contains the data supplied by the caller to be set on the trusted domain
 object.
 
-3.1.4.7.4 LsarDeleteTrustedDomain (Opnum 41)
+###### 3.1.4.7.4 LsarDeleteTrustedDomain (Opnum 41)
 
 The LsarDeleteTrustedDomain method is invoked to delete a trusted domain object (TDO).
 
@@ -12650,7 +12451,8 @@ Release: June 10, 2025
 
 141 / 253
 
-PolicyHandle: An RPC context handle obtained from either LsarOpenPolicy or LsarOpenPolicy2.
+
+PolicyHandle: An RPC context handle obtained from either LsarOpenPolicy or LsarOpenPolicy2.
 
 TrustedDomainSid: A security descriptor of the TDO to be deleted.
 
@@ -12745,11 +12547,12 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-The server MUST also check whether an interdomain trust account with name "<Trusted Domain
+
+The server MUST also check whether an interdomain trust account with name "<Trusted Domain
 NetBIOS Name>$" exists. If it exists, the server MUST delete that account along with the trusted
 domain.
 
-3.1.4.7.5 LsarQueryTrustedDomainInfoByName (Opnum 48)
+###### 3.1.4.7.5 LsarQueryTrustedDomainInfoByName (Opnum 48)
 
 The LsarQueryTrustedDomainInfoByName method is invoked to retrieve information about a trusted
 domain object by its string name.
@@ -12821,7 +12624,7 @@ The trusted domain object is located by matching the TrustedDomainName parameter
 trusted domain object in the server's policy database. The trailing period on DNS names is ignored
 for the purposes of comparison.
 
-3.1.4.7.6 LsarSetTrustedDomainInfoByName (Opnum 49)
+###### 3.1.4.7.6 LsarSetTrustedDomainInfoByName (Opnum 49)
 
 [MS-LSAD] - v20250610
 Local Security Authority (Domain Policy) Remote Protocol
@@ -12830,7 +12633,8 @@ Release: June 10, 2025
 
 143 / 253
 
-The LsarSetTrustedDomainInfoByName method is invoked to set information about a trusted domain
+
+The LsarSetTrustedDomainInfoByName method is invoked to set information about a trusted domain
 object by its string name.
 
  NTSTATUS LsarSetTrustedDomainInfoByName(
@@ -12900,7 +12704,7 @@ The trusted domain object is located by matching the TrustedDomainName parameter
 trusted domain object in the server's policy database. The trailing period on DNS names is ignored
 for the purposes of comparison.
 
-3.1.4.7.7 LsarEnumerateTrustedDomainsEx (Opnum 50)
+###### 3.1.4.7.7 LsarEnumerateTrustedDomainsEx (Opnum 50)
 
 The LsarEnumerateTrustedDomainsEx method is invoked to enumerate trusted domain objects in
 the server's database. The method is designed to be invoked multiple times to retrieve the data in
@@ -12917,7 +12721,8 @@ Release: June 10, 2025
 
 144 / 253
 
-   [out] PLSAPR_TRUSTED_ENUM_BUFFER_EX EnumerationBuffer,
+
+   [out] PLSAPR_TRUSTED_ENUM_BUFFER_EX EnumerationBuffer,
    [in] unsigned long PreferedMaximumLength
  );
 
@@ -13002,7 +12807,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-STATUS_NO_MORE_ENTRIES. If there are more database objects than are returned in
+
+STATUS_NO_MORE_ENTRIES. If there are more database objects than are returned in
 EnumerationBuffer, the server MUST set the EnumerationContext value to the index value that would
 allow it to resume enumeration correctly when this method is called again, and the server MUST
 return STATUS_MORE_ENTRIES. Note that this return value is not an error status.
@@ -13013,7 +12819,7 @@ returned. Any unsigned 32-bit value is valid for the PreferedMaximumLength param
 If Active Directory is not running on this machine, the server MUST fill 0 objects in
 EnumerationBuffer, and return STATUS_NO_MORE_ENTRIES.
 
-3.1.4.7.8 LsarEnumerateTrustedDomains (Opnum 13)
+###### 3.1.4.7.8 LsarEnumerateTrustedDomains (Opnum 13)
 
 The LsarEnumerateTrustedDomains method is invoked to request a list of trusted domain objects in
 the server's database. The method can be called multiple times to return its output in fragments.
@@ -13087,7 +12893,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-EnumerationContext: A number that indicates a starting index at which to begin the enumeration. The
+
+EnumerationContext: A number that indicates a starting index at which to begin the enumeration. The
 server MUST always return all trusted domain objects in the same order, starting at the object whose
 index is EnumerationContext. To initiate a new enumeration, the client sets EnumerationContext to
 zero; otherwise, the client sets EnumerationContext to a value returned by a previous call to the
@@ -13134,7 +12941,7 @@ returned. Any unsigned 32-bit value is valid for the PreferedMaximumLength param
 If Active Directory is not running on this machine, the server MUST fill 0 objects in EnumerationBuffer,
 and return STATUS_NO_MORE_ENTRIES.
 
-3.1.4.7.9 LsarOpenTrustedDomainByName (Opnum 55)
+###### 3.1.4.7.9 LsarOpenTrustedDomainByName (Opnum 55)
 
 The LsarOpenTrustedDomainByName method is invoked to open a trusted domain object handle by
 supplying the name of the trusted domain.
@@ -13155,7 +12962,8 @@ Release: June 10, 2025
 
 147 / 253
 
-TrustedDomainName: The name of the trusted domain object.
+
+TrustedDomainName: The name of the trusted domain object.
 
 DesiredAccess: The type of access requested by the caller.
 
@@ -13233,9 +13041,9 @@ LsaContextHandle.Object = the trusted domain object
 
 LsaContextHandle.GrantedAccess = as specified in section 3.1.4.2.1
 
-3.1.4.7.10
+###### 3.1.4.7.10 LsarCreateTrustedDomainEx2 (Opnum 59)
 
-LsarCreateTrustedDomainEx2 (Opnum 59)
+
 
 The LsarCreateTrustedDomainEx2 method is invoked to create a new trusted domain object
 (TDO).<100>
@@ -13247,7 +13055,8 @@ Release: June 10, 2025
 
 148 / 253
 
- NTSTATUS LsarCreateTrustedDomainEx2(
+
+ NTSTATUS LsarCreateTrustedDomainEx2(
    [in] LSAPR_HANDLE PolicyHandle,
    [in] PLSAPR_TRUSTED_DOMAIN_INFORMATION_EX TrustedDomainInformation,
    [in] PLSAPR_TRUSTED_DOMAIN_AUTH_INFORMATION_INTERNAL AuthenticationInformation,
@@ -13362,7 +13171,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Processing:
+
+Processing:
 
 If Active Directory is not running on this machine, the server MUST return
 STATUS_DIRECTORY_SERVICE_REQUIRED.<102> If the server is a read-only domain controller, it
@@ -13443,7 +13253,8 @@ Release: June 10, 2025
 
 150 / 253
 
-maps to a field in the TDO model, as specified in section 3.1.1.5. If the operation succeeds, the server
+
+maps to a field in the TDO model, as specified in section 3.1.1.5. If the operation succeeds, the server
 MUST update its database with a new TDO field populated from this input parameter.
 
 AuthenticationInformation: A structure containing an encrypted
@@ -13484,9 +13295,9 @@ If the trust being created is inbound or bidirectional as defined in the TrustDi
 TrustedDomainInformation parameter, then the server MUST also update its database with a new
 interdomain trust account populated as specified in [MS-ADTS] section 6.1.6.8.
 
-3.1.4.7.11
+###### 3.1.4.7.11 LsarCreateTrustedDomainEx (Opnum 51)
 
-LsarCreateTrustedDomainEx (Opnum 51)
+
 
 The LsarCreateTrustedDomainEx method is invoked to create a new trusted domain object (TDO).
 
@@ -13519,7 +13330,8 @@ Release: June 10, 2025
 
 151 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13615,9 +13427,9 @@ The authentication information is not encrypted, which makes this an insecure me
 result, callers SHOULD NOT invoke this message and SHOULD instead call
 LsarCreateTrustedDomainEx2.
 
-3.1.4.7.12
+###### 3.1.4.7.12 LsarCreateTrustedDomain (Opnum 12)
 
-LsarCreateTrustedDomain (Opnum 12)
+
 
 The LsarCreateTrustedDomain method is invoked to create an object of type trusted domain in the
 server's database.
@@ -13635,7 +13447,8 @@ Release: June 10, 2025
 
 152 / 253
 
- );
+
+ );
 
 PolicyHandle: An RPC context handle obtained from either LsarOpenPolicy or LsarOpenPolicy2.
 
@@ -13745,7 +13558,8 @@ Release: June 10, 2025
 
 153 / 253
 
-  Name: Comes from TrustedDomainInformation. Name input parameter.
+
+  Name: Comes from TrustedDomainInformation. Name input parameter.
 
   FlatName: Comes from TrustedDomainInformation. Name input parameter.
 
@@ -13763,9 +13577,9 @@ DesiredAccess: Same.
 
 TrustedDomainHandle: Same.
 
-3.1.4.7.13
+###### 3.1.4.7.13 LsarQueryInfoTrustedDomain (Opnum 26)
 
-LsarQueryInfoTrustedDomain (Opnum 26)
+
 
 The LsarQueryInfoTrustedDomain method is invoked to retrieve information about the trusted
 domain object.
@@ -13834,7 +13648,8 @@ Release: June 10, 2025
 
 154 / 253
 
-TrustedDomainHandle: An open handle to a trusted domain object. If the handle is not a valid context
+
+TrustedDomainHandle: An open handle to a trusted domain object. If the handle is not a valid context
 handle to a trusted domain object or TrustedDomainHandle.HandleType does not equal "Trusted
 Domain", the server MUST return STATUS_INVALID_HANDLE. The server MUST verify that
 TrustedDomainHandle grants access as specified in section 3.1.4.2.2. The following table specifies the
@@ -13935,7 +13750,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Value of InformationClass parameter   Information to return
+
+Value of InformationClass parameter   Information to return
 
 TrustedDomainFullInformation
 
@@ -13986,9 +13802,9 @@ If the server is not at DS_BEHAVIOR_WIN2003 forest functional level, the presenc
 TRUST_ATTRIBUTE_FOREST_TRANSITIVE bit in the Trust Attributes field of a trusted domain object
 MUST NOT be returned by the server.<106>
 
-3.1.4.7.14
+###### 3.1.4.7.14 LsarSetInformationTrustedDomain (Opnum 27)
 
-LsarSetInformationTrustedDomain (Opnum 27)
+
 
 The LsarSetInformationTrustedDomain method is invoked to set information on a trusted domain
 object.
@@ -14027,7 +13843,8 @@ Release: June 10, 2025
 
 156 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14131,7 +13948,8 @@ Release: June 10, 2025
 
 157 / 253
 
-TrustedDomainInformation: Contains information to be set, appropriate for the InformationClass
+
+TrustedDomainInformation: Contains information to be set, appropriate for the InformationClass
 parameter. The server MUST validate the TrustedDomainInformation parameter according to
 information class–specific rules. The rules for internal consistency checking of trusted domain objects
 are specified in [MS-ADTS] section 6.1.6.
@@ -14217,9 +14035,9 @@ specified in [MS-ADTS] section 6.1.6.8. The unicodePwd attribute of the account 
 specified in [MS-SAMR] section 3.1.1.8.7) with the clear text password (that is, the password value
 with AuthType being equal to 0x2) in the "Trust Incoming Passwords" information provided.
 
-3.1.4.7.15
+###### 3.1.4.7.15 LsarQueryForestTrustInformation (Opnum 73)
 
-LsarQueryForestTrustInformation (Opnum 73)
+
 
 [MS-LSAD] - v20250610
 Local Security Authority (Domain Policy) Remote Protocol
@@ -14228,7 +14046,8 @@ Release: June 10, 2025
 
 158 / 253
 
-The LsarQueryForestTrustInformation method is invoked to retrieve information about a trust
+
+The LsarQueryForestTrustInformation method is invoked to retrieve information about a trust
 relationship with another forest.
 
  NTSTATUS LsarQueryForestTrustInformation(
@@ -14319,7 +14138,8 @@ Release: June 10, 2025
 
 159 / 253
 
-
+
+
 
 
 
@@ -14352,9 +14172,9 @@ The server MUST verify that the caller has access to the trusted domain object a
 3.1.4.2.1 with DesiredAccess set to TRUSTED_QUERY_AUTH. There is no method-specific portion of
 this check.
 
-3.1.4.7.16
+###### 3.1.4.7.16 LsarSetForestTrustInformation (Opnum 74)
 
-LsarSetForestTrustInformation (Opnum 74)
+
 
 The LsarSetForestTrustInformation method is invoked to establish a trust relationship with another
 forest by attaching a set of records called the forest trust information to the trusted domain
@@ -14394,7 +14214,8 @@ Release: June 10, 2025
 
 160 / 253
 
-Return Values: The following is a summary of the return values that an implementation MUST return,
+
+Return Values: The following is a summary of the return values that an implementation MUST return,
 
 as specified by the message processing that follows.
 
@@ -14488,7 +14309,8 @@ Release: June 10, 2025
 
 161 / 253
 
-HighestRecordType: The caller sets this argument to the highest LSA_FOREST_TRUST_RECORD_TYPE
+
+HighestRecordType: The caller sets this argument to the highest LSA_FOREST_TRUST_RECORD_TYPE
 enumeration value recognized by the caller. If this argument is greater in value than the highest
 record type recognized by the server, the server MUST return STATUS_INVALID_PARAMETER.
 
@@ -14518,7 +14340,7 @@ collisions is returned. The rules for generating collision information are speci
 The server MUST store the generated ForestTrustInfo in the Forest Trust Information attribute
 specified in section 3.1.1.5.
 
-3.1.4.7.16.1  Forest Trust Collision Generation
+###### 3.1.4.7.16.1 Forest Trust Collision Generation
 
 This section describes the rules that the server MUST follow to compute a set of collisions when setting
 forest trust information on a trusted domain object.
@@ -14558,7 +14380,8 @@ Release: June 10, 2025
 
 162 / 253
 
-If any of these rules are violated, a top-level name is considered in conflict. In this case, a collision
+
+If any of these rules are violated, a top-level name is considered in conflict. In this case, a collision
 record is generated with the following values:
 
 Index: Ordinal number of a forest trust record supplied by the caller that generated the collision.
@@ -14606,9 +14429,9 @@ component of the record.
 Entries that have been disabled by administrative action or through conflict are not considered in
 computing consistency checks.
 
-3.1.4.7.17
+###### 3.1.4.7.17 LsarCreateTrustedDomainEx3 (Opnum 129)
 
-LsarCreateTrustedDomainEx3 (Opnum 129)
+
 
 The LsarCreateTrustedDomainEx3 method is invoked to create a new TDO.<109>
 
@@ -14640,7 +14463,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-TrustedDomainHandle: Used to return the handle for the newly created TDO.
+
+TrustedDomainHandle: Used to return the handle for the newly created TDO.
 
 Return Values: The same as LsarCreateTrustedDomainEx2 (section 3.1.4.7.10).
 
@@ -14661,9 +14485,9 @@ unmarshal the data inside this structure and store it in a structure, the format
 section 2.2.7.11. This structure MUST then be stored in Trust Incoming and Outgoing Password
 properties (section 3.1.1.5).
 
-3.1.4.7.18
+###### 3.1.4.7.18 LsarQueryForestTrustInformation2 (Opnum 132)
 
-LsarQueryForestTrustInformation2 (Opnum 132)
+
 
 The LsarQueryForestTrustInformation2 method is invoked to retrieve information about a trust
 relationship with another forest.<110>
@@ -14726,7 +14550,8 @@ Release: June 10, 2025
 
 164 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14800,9 +14625,9 @@ The server MUST verify that the caller has access to the trusted domain object a
 3.1.4.2.1 with DesiredAccess set to TRUSTED_QUERY_AUTH (section 2.2.1.1.5). There is no method-
 specific portion of this check.
 
-3.1.4.7.19
+###### 3.1.4.7.19 LsarSetForestTrustInformation2 (Opnum 133)
 
-LsarSetForestTrustInformation2 (Opnum 133)
+
 
 [MS-LSAD] - v20250610
 Local Security Authority (Domain Policy) Remote Protocol
@@ -14811,7 +14636,8 @@ Release: June 10, 2025
 
 165 / 253
 
-The LsarSetForestTrustInformation2 method is invoked to establish a trust relationship with another
+
+The LsarSetForestTrustInformation2 method is invoked to establish a trust relationship with another
 forest by attaching a set of records known as forest trust information to the trusted domain
 object.<111>
 
@@ -14906,7 +14732,8 @@ Release: June 10, 2025
 
 166 / 253
 
-PolicyHandle: Open handle to the policy object. If the handle is not a valid context handle to the policy
+
+PolicyHandle: Open handle to the policy object. If the handle is not a valid context handle to the policy
 object or PolicyHandle.HandleType does not equal "Policy", the server MUST return
 STATUS_INVALID_HANDLE. PolicyHandle.GrantedAccess MUST NOT be considered for this call because
 the access check MUST happen on the trusted domain object.
@@ -14963,7 +14790,7 @@ collisions is returned. The rules for generating collision information are speci
 The server MUST store the generated ForestTrustInfo in the Forest Trust Information attribute
 specified in section 3.1.1.5.
 
-3.1.4.8  Privilege Methods
+##### 3.1.4.8 Privilege Methods
 
 The message processing of methods in this section MUST use the abstract data model specified in
 section 3.1.1.2.1.
@@ -14975,7 +14802,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Method (opnum)
+
+Method (opnum)
 
 Summary
 
@@ -14999,7 +14827,7 @@ LsarLookupPrivilegeDisplayName
 Maps the well-known name of a privilege into a human-readable
 name in the caller's language.
 
-3.1.4.8.1 LsarEnumeratePrivileges (Opnum 2)
+###### 3.1.4.8.1 LsarEnumeratePrivileges (Opnum 2)
 
 The LsarEnumeratePrivileges method is invoked to enumerate all privileges known to the system.
 This method can be called multiple times to return its output in fragments.
@@ -15073,7 +14901,8 @@ Release: June 10, 2025
 
 168 / 253
 
-This method takes four arguments:
+
+This method takes four arguments:
 
 PolicyHandle: Open handle to the policy object. If the handle is not a valid context handle to the policy
 object or PolicyHandle.HandleType does not equal "Policy", the server MUST return
@@ -15103,7 +14932,7 @@ return STATUS_MORE_ENTRIES. Note that this return value is not an error status.
 PreferedMaximumLength: An indication about the approximate size, in bytes, of the data to return.
 Any unsigned 32-bit value is valid for the PreferedMaximumLength parameter.
 
-3.1.4.8.2 LsarLookupPrivilegeValue (Opnum 31)
+###### 3.1.4.8.2 LsarLookupPrivilegeValue (Opnum 31)
 
 The LsarLookupPrivilegeValue method is invoked to map the name of a privilege into a locally
 unique identifier (LUID) by which the privilege is known on the server. The locally unique value of
@@ -15147,7 +14976,8 @@ Release: June 10, 2025
 
 169 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15188,7 +15018,7 @@ If the value in the Name argument is not recognized by the server, the server MU
 with STATUS_NO_SUCH_PRIVILEGE. The privileges recognized by the server are specified in section
 3.1.1.2.1.
 
-3.1.4.8.3 LsarLookupPrivilegeName (Opnum 32)
+###### 3.1.4.8.3 LsarLookupPrivilegeName (Opnum 32)
 
 The LsarLookupPrivilegeName method is invoked to map the LUID of a privilege into a string name
 by which the privilege is known on the server.
@@ -15236,7 +15066,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15265,7 +15096,7 @@ If the LUID in the Value argument is not recognized by the server, the server MU
 with STATUS_NO_SUCH_PRIVILEGE. The privileges recognized by the server are specified in section
 3.1.1.2.1.
 
-3.1.4.8.4 LsarLookupPrivilegeDisplayName (Opnum 33)
+###### 3.1.4.8.4 LsarLookupPrivilegeDisplayName (Opnum 33)
 
 The LsarLookupPrivilegeDisplayName method is invoked to map the name of a privilege into a display
 text string in the caller's language.
@@ -15314,7 +15145,8 @@ Release: June 10, 2025
 
 171 / 253
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15370,7 +15202,7 @@ own language.
 LanguageReturned: Used to return the language ID of DisplayName. This might be different from the
 language ID that was requested.
 
-3.1.4.9  Common Object Methods
+##### 3.1.4.9 Common Object Methods
 
 The message processing of methods in this section MUST use the abstract data model defined in
 section 3.1.1.
@@ -15400,7 +15232,8 @@ Release: June 10, 2025
 
 172 / 253
 
-3.1.4.9.1 LsarQuerySecurityObject (Opnum 3)
+
+###### 3.1.4.9.1 LsarQuerySecurityObject (Opnum 3)
 
 The LsarQuerySecurityObject method is invoked to query security information that is assigned to a
 database object. It returns the security descriptor of the object.
@@ -15492,7 +15325,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-     RequiredAccess |= READ_CONTROL
+
+     RequiredAccess |= READ_CONTROL
  END IF
  IF (SecurityInformation & SACL_SECURITY_INFORMATION) THEN
      RequiredAccess |= ACCESS_SYSTEM_SECURITY
@@ -15509,7 +15343,7 @@ server MUST NOT put information into the security descriptor that the caller did
 It is valid for the server to not support this method for all object types. If an object does not support
 this method, the server MUST return STATUS_NOT_SUPPORTED.<113>
 
-3.1.4.9.2 LsarSetSecurityObject (Opnum 4)
+###### 3.1.4.9.2 LsarSetSecurityObject (Opnum 4)
 
 The LsarSetSecurityObject method is invoked to set a security descriptor on an object.
 
@@ -15582,7 +15416,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15637,7 +15472,7 @@ It is valid for the server to not support this method for all object types.<115>
 The server MUST return STATUS_INSUFFICIENT_RESOURCES if it runs out of memory while servicing
 the request.
 
-3.1.4.9.3 LsarDeleteObject (Opnum 34)
+###### 3.1.4.9.3 LsarDeleteObject (Opnum 34)
 
 The LsarDeleteObject method is invoked to delete an open account object, secret object, or
 trusted domain object.
@@ -15661,7 +15496,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15731,7 +15567,7 @@ that is represented by ObjectHandle, as specified in section 3.1.6.1, LSAPR_HAND
 The fact that a handle is no longer usable is communicated to the RPC transport by returning a NULL
 value in the handle parameter, as specified in [C706] section 5.1.6.
 
-3.1.4.9.4 LsarClose (Opnum 0)
+###### 3.1.4.9.4 LsarClose (Opnum 0)
 
 The LsarClose method frees the resources held by a context handle that was opened earlier. After
 response, the context handle will no longer be usable, and any subsequent uses of this handle will fail.
@@ -15749,7 +15585,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Return Values: The following is a summary of the return values that an implementation MUST return,
+
+Return Values: The following is a summary of the return values that an implementation MUST return,
 
 as specified by the message processing that follows.
 
@@ -15785,9 +15622,9 @@ the handle parameter, as specified in [C706] section 5.1.6.
 Closing one handle MUST NOT affect any other handle on the server; that is, handles obtained using a
 policy handle MUST continue to be valid after that policy handle is closed.
 
-3.1.4.10
+##### 3.1.4.10 Data Validation
 
-Data Validation
+
 
 Data types defined in section 2.2 are subject to a set of validation rules, in addition to any already
 noted. For structures that contain other structures or sets of other structures, the validation for those
@@ -15853,7 +15690,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Data type
+
+Data type
 
 Validations
 
@@ -15972,7 +15810,8 @@ Release: June 10, 2025
 
 178 / 253
 
-Data type
+
+Data type
 
 Validations
 
@@ -16098,7 +15937,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Data type
+
+Data type
 
 Validations
 
@@ -16212,7 +16052,8 @@ Release: June 10, 2025
 
 180 / 253
 
-Data type
+
+Data type
 
 Validations
 
@@ -16310,7 +16151,7 @@ validation.
 SID MUST be NULL or MUST satisfy RPC_SID validation
 including domain SID validation.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the RPC server other than the timers required in the
 underlying RPC transport.
@@ -16322,12 +16163,13 @@ Release: June 10, 2025
 
 181 / 253
 
-3.1.6  Other Local Events
+
+#### 3.1.6 Other Local Events
 
 No additional local events are used on the RPC server other than the events maintained in the
 underlying RPC transport.
 
-3.1.6.1  LSAPR_HANDLE_rundown
+##### 3.1.6.1 LSAPR_HANDLE_rundown
 
 This function implements the RPC context handle rundown routine for the LsaContextHandle context
 handle type (section 3.1.1.7). When invoked, the LSAPR_HANDLE_rundown procedure MUST free all
@@ -16344,13 +16186,14 @@ Release: June 10, 2025
 
 182 / 253
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several common scenarios from the client's perspective to illustrate the
 function of the Local Security Authority (Domain Policy) Remote Protocol. "Send" implies that the
 direction is from client to server, and "Receive" implies the opposite direction.
 
-4.1  Manipulating Account Objects
+### 4.1 Manipulating Account Objects
 
 This section illustrates a message exchange pertaining to account objects.
 
@@ -16465,7 +16308,8 @@ Release: June 10, 2025
 
 183 / 253
 
-Direction and method   Parameter field   Parameter value
+
+Direction and method   Parameter field   Parameter value
 
 Receive
 
@@ -16592,7 +16436,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Direction and
+
+Direction and
 method
 
 Parameter field
@@ -16717,7 +16562,8 @@ Release: June 10, 2025
 
 185 / 253
 
-Direction and method
+
+Direction and method
 
 Parameter
 field
@@ -16803,7 +16649,7 @@ Status
 
 STATUS_SUCCESS
 
-4.2  Manipulating Secret Objects
+### 4.2 Manipulating Secret Objects
 
 This section illustrates a message exchange pertaining to secret objects.
 
@@ -16824,7 +16670,8 @@ Release: June 10, 2025
 
 186 / 253
 
-Direction and method   Parameter field   Parameter value
+
+Direction and method   Parameter field   Parameter value
 
 LsarOpenPolicy2
 
@@ -16949,7 +16796,8 @@ Release: June 10, 2025
 
 187 / 253
 
-Direction and method   Parameter field   Parameter value
+
+Direction and method   Parameter field   Parameter value
 
 Receive
 
@@ -17062,7 +16910,8 @@ Release: June 10, 2025
 
 188 / 253
 
-4.3  Manipulating Trusted Domain Objects
+
+### 4.3 Manipulating Trusted Domain Objects
 
 This section illustrates a message exchange pertaining to trusted domain objects.
 
@@ -17187,7 +17036,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Direction and method
+
+Direction and method
 
 Parameter field
 
@@ -17327,7 +17177,8 @@ Release: June 10, 2025
 
 190 / 253
 
-Direction and method   Parameter field   Parameter value
+
+Direction and method   Parameter field   Parameter value
 
 Receive
 
@@ -17361,7 +17212,7 @@ Status
 
 STATUS_SUCCESS
 
-4.4  Structure Example of LSAPR_TRUSTED_DOMAIN_AUTH_BLOB
+### 4.4 Structure Example of LSAPR_TRUSTED_DOMAIN_AUTH_BLOB
 
 The following is an annotated dump of LSAPR_TRUSTED_DOMAIN_AUTH_BLOB.
 
@@ -17410,7 +17261,8 @@ Release: June 10, 2025
 
 191 / 253
 
- 00000250  41 75 74 68 49 6e 66 6f 00 00 00 00 01 00 00 00  AuthInfo........
+
+ 00000250  41 75 74 68 49 6e 66 6f 00 00 00 00 01 00 00 00  AuthInfo........
  00000260  0c 00 00 00 30 00 00 00 49 42 b8 1c b4 55 c9 01  ....0...IB...U..
  00000270  02 00 00 00 11 00 00 00 49 6e 63 6f 6d 69 6e 67  ........Incoming
  00000280  41 75 74 68 49 6e 66 6f 00 00 00 00 49 42 b8 1c  AuthInfo....IB..
@@ -17477,7 +17329,8 @@ Release: June 10, 2025
 
 192 / 253
 
-This means that the byte offset from the beginning of CountOutgoingAuthInfos to the start of the
+
+This means that the byte offset from the beginning of CountOutgoingAuthInfos to the start of the
 PreviousOutgoingAuthInfos field is 0x00000030, so the size of CurrentOutgoingAuthInfos is
 0x30 – 0xc = 0x24 bytes.
 
@@ -17536,7 +17389,8 @@ Release: June 10, 2025
 
 193 / 253
 
-This is an array of CountIncomingAuthInfos of LSAPR_AUTH_INFORMATION entries in self-relative
+
+This is an array of CountIncomingAuthInfos of LSAPR_AUTH_INFORMATION entries in self-relative
 format.
 
 The data following that is for PreviousIncomingAuthInfos; the last 3 padding bytes are for data
@@ -17573,9 +17427,10 @@ Release: June 10, 2025
 
 194 / 253
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Usage of RC4 is specified in section 5.1.1. This protocol employs an implementation that reuses RC4
 key stream, which subjects it to Xor and other cryptanalysis attacks. This vulnerability is applicable
@@ -17591,7 +17446,7 @@ The session key for sections 5.1.1 and 5.1.2 is obtained from the SMB transport,
 section 2.1. The session key is obtained from the SMB transport every time a message that needs
 encryption is to be sent or a message that needs decryption is to be received.
 
-5.1.1  RC4 Cipher Usage
+#### 5.1.1 RC4 Cipher Usage
 
 Implementations of this protocol protect the LSAPR_TRUSTED_DOMAIN_AUTH_BLOB structure by
 encrypting the data referenced by that structure's AuthBlob field. The RC4 algorithm is used to
@@ -17600,7 +17455,7 @@ runtime by the RC4 algorithm, is the 16-byte key specified by the method that us
 example, see section 3.1.4.7.10). The size of data (the AuthSize field of
 LSAPR_TRUSTED_DOMAIN_AUTH_BLOB) MUST remain unencrypted.
 
-5.1.2  Secret Encryption and Decryption
+#### 5.1.2 Secret Encryption and Decryption
 
 This cipher is used to provide confidentiality of wire traffic for operations that reference this section.
 
@@ -17641,7 +17496,8 @@ Release: June 10, 2025
 
 195 / 253
 
-     WHILE remaining > blocklen
+
+     WHILE remaining > blocklen
          CALL des_ecb_lm_enc(input->buffer,
              sessionkey[keyindex], output->buffer)
 
@@ -17716,7 +17572,8 @@ Release: June 10, 2025
 
 196 / 253
 
- ULONG AdvanceKey(pos : ULONG)
+
+ ULONG AdvanceKey(pos : ULONG)
  {
      LET KeyBlockLen be 7;
      DECLARE overrun as ULONG
@@ -17734,7 +17591,7 @@ Release: June 10, 2025
      RETURN currpos;
  }
 
-5.1.3  DES-ECB-LM Cipher Definition
+#### 5.1.3 DES-ECB-LM Cipher Definition
 
 des_ecb_lm_dec utilizes DES-ECB-LM in cipher-mode decryption.
 
@@ -17769,7 +17626,7 @@ DES-ECB-LM is defined as follows.
 The algorithm des_ecb is the Data Encryption Standard (DES) encryption in Electronic Code Book
 (ECB) mode, as specified in [FIPS81].
 
-5.1.4  Encryption and Decryption Examples
+#### 5.1.4 Encryption and Decryption Examples
 
 This section provides an encryption and decryption example of the algorithms specified in section
 5.1.2.
@@ -17781,7 +17638,8 @@ Release: June 10, 2025
 
 197 / 253
 
-5.1.4.1  Encryption Example
+
+##### 5.1.4.1 Encryption Example
 
 This section provides an example of how the encrypt_secret routine defined in section 5.1.2 encrypts a
 given cleartext value into a ciphertext using a session key, and given the following parameters:
@@ -17865,7 +17723,7 @@ output-
 
 0x20
 
-5.1.4.2  Decryption Example
+##### 5.1.4.2 Decryption Example
 
 This section provides an example of how the decrypt_secret routine defined in section 5.1.2 decrypts
 a given ciphertext value into cleartext using a session key, and given the following parameters:
@@ -17908,7 +17766,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-keyindex
+
+keyindex
 
 input
 
@@ -17964,7 +17823,7 @@ output->buffer  50 00 61 00 73 00 73 00 77 00 6f 00 72 00 64 00 31 00 32 00 33 0
 
 output->length  0x16
 
-5.1.5  AES Cipher Usage
+#### 5.1.5 AES Cipher Usage
 
 Advanced Encryption Standard (AES) encryption is achieved in this protocol by using the AEAD-
 AES-256-CBC-HMAC-SHA512 cipher<121>, as specified in [AES-CBC]. In order to use an
@@ -18005,7 +17864,7 @@ versionbyte_length)
 
 Note that enc_key is truncated to 32-bytes and the entire 64-byte mac_key is used.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -18028,14 +17887,16 @@ Release: June 10, 2025
 
 199 / 253
 
-[MS-LSAD] - v20250610
+
+[MS-LSAD] - v20250610
 Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
 200 / 253
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided, where ms-dtyp.idl is the IDL specified in [MS-
 DTYP] Appendix A.
@@ -18106,7 +17967,8 @@ Release: June 10, 2025
 
 201 / 253
 
- typedef enum _SECURITY_IMPERSONATION_LEVEL {
+
+ typedef enum _SECURITY_IMPERSONATION_LEVEL {
      SecurityAnonymous = 0,
      SecurityIdentification = 1,
      SecurityImpersonation = 2,
@@ -18182,7 +18044,8 @@ Release: June 10, 2025
 
 202 / 253
 
-     unsigned long MaximumLogSize;
+
+     unsigned long MaximumLogSize;
      LARGE_INTEGER AuditRetentionPeriod;
      unsigned char AuditLogFullShutdownInProgress;
      LARGE_INTEGER TimeToShutdown;
@@ -18259,7 +18122,8 @@ Release: June 10, 2025
 
 203 / 253
 
-     TrustedDomainFullInformationInternalAes
+
+     TrustedDomainFullInformationInternalAes
  } TRUSTED_INFORMATION_CLASS,
  *PTRUSTED_INFORMATION_CLASS;
 
@@ -18345,7 +18209,8 @@ Release: June 10, 2025
 
 204 / 253
 
- } LSA_FOREST_TRUST_RECORD2, * PLSA_FOREST_TRUST_RECORD2;
+
+ } LSA_FOREST_TRUST_RECORD2, * PLSA_FOREST_TRUST_RECORD2;
 
  typedef struct _LSA_FOREST_TRUST_INFORMATION {
      [range(0,4000)] unsigned long RecordCount;
@@ -18420,7 +18285,8 @@ Release: June 10, 2025
 
 205 / 253
 
-     [size_is(Entries)] PLSAPR_POLICY_PRIVILEGE_DEF Privileges;
+
+     [size_is(Entries)] PLSAPR_POLICY_PRIVILEGE_DEF Privileges;
  } LSAPR_PRIVILEGE_ENUM_BUFFER, *PLSAPR_PRIVILEGE_ENUM_BUFFER;
 
  typedef struct _LSAPR_CR_CIPHER_VALUE {
@@ -18496,7 +18362,8 @@ Release: June 10, 2025
 
 206 / 253
 
-         LSAPR_POLICY_PRIMARY_DOM_INFO PolicyPrimaryDomainInfo;
+
+         LSAPR_POLICY_PRIMARY_DOM_INFO PolicyPrimaryDomainInfo;
      [case(PolicyAccountDomainInformation)]
          LSAPR_POLICY_ACCOUNT_DOM_INFO PolicyAccountDomainInfo;
      [case(PolicyPdAccountInformation)]
@@ -18572,7 +18439,8 @@ Release: June 10, 2025
 
 207 / 253
 
- } LSAPR_TRUSTED_DOMAIN_INFORMATION_EX,
+
+ } LSAPR_TRUSTED_DOMAIN_INFORMATION_EX,
    *PLSAPR_TRUSTED_DOMAIN_INFORMATION_EX;
 
  typedef struct _LSAPR_AUTH_INFORMATION {
@@ -18648,7 +18516,8 @@ Release: June 10, 2025
 
 208 / 253
 
-     RPC_UNICODE_STRING Name;
+
+     RPC_UNICODE_STRING Name;
      RPC_UNICODE_STRING FlatName;
      PRPC_SID Sid;
      unsigned long TrustDirection;
@@ -18725,7 +18594,8 @@ Release: June 10, 2025
 
 209 / 253
 
- //
+
+ //
  // Methods
  //
  //
@@ -18800,7 +18670,8 @@ Release: June 10, 2025
 
 210 / 253
 
-     [out] LSAPR_HANDLE *PolicyHandle
+
+     [out] LSAPR_HANDLE *PolicyHandle
      );
 
  // Opnum 7
@@ -18877,7 +18748,8 @@ Release: June 10, 2025
 
 211 / 253
 
- NTSTATUS
+
+ NTSTATUS
  LsarCreateSecret(
      [in] LSAPR_HANDLE PolicyHandle,
      [in] PRPC_UNICODE_STRING SecretName,
@@ -18954,7 +18826,8 @@ Release: June 10, 2025
 
 212 / 253
 
- NTSTATUS
+
+ NTSTATUS
  LsarQueryInfoTrustedDomain(
      [in] LSAPR_HANDLE TrustedDomainHandle,
      [in] TRUSTED_INFORMATION_CLASS InformationClass,
@@ -19031,7 +18904,8 @@ Release: June 10, 2025
 
 213 / 253
 
-     );
+
+     );
 
  // Opnum 34
  NTSTATUS
@@ -19108,7 +18982,8 @@ Release: June 10, 2025
 
 214 / 253
 
- NTSTATUS
+
+ NTSTATUS
  LsarStorePrivateData(
      [in] LSAPR_HANDLE PolicyHandle,
      [in] PRPC_UNICODE_STRING KeyName,
@@ -19185,7 +19060,8 @@ Release: June 10, 2025
 
 215 / 253
 
-     [in] LSAPR_HANDLE PolicyHandle,
+
+     [in] LSAPR_HANDLE PolicyHandle,
      [in, out] unsigned long *EnumerationContext,
      [out] PLSAPR_TRUSTED_ENUM_BUFFER_EX EnumerationBuffer,
      [in] unsigned long PreferedMaximumLength
@@ -19262,7 +19138,8 @@ Release: June 10, 2025
 
 216 / 253
 
-     );
+
+     );
 
  // Opnum 60
  void Opnum60NotUsedOnWire(void);
@@ -19339,7 +19216,8 @@ Release: June 10, 2025
 
 217 / 253
 
- void Opnum77NotUsedOnWire(void);
+
+ void Opnum77NotUsedOnWire(void);
 
  // Opnum 78
  void Opnum78NotUsedOnWire(void);
@@ -19416,7 +19294,8 @@ Release: June 10, 2025
 
 218 / 253
 
- void Opnum100NotUsedOnWire(void);
+
+ void Opnum100NotUsedOnWire(void);
 
  // Opnum 101
  void Opnum101NotUsedOnWire(void);
@@ -19493,7 +19372,8 @@ Release: June 10, 2025
 
 219 / 253
 
- void Opnum123NotUsedOnWire(void);
+
+ void Opnum123NotUsedOnWire(void);
 
  // Opnum 124
  void Opnum124NotUsedOnWire(void);
@@ -19574,7 +19454,8 @@ ForestTrustInfo2
 
 220 / 253
 
- NTSTATUS LsarSetForestTrustInformation2(
+
+ NTSTATUS LsarSetForestTrustInformation2(
      [in] LSAPR_HANDLE
      [in] PLSA_UNICODE_STRING
      [in] LSA_FOREST_TRUST_RECORD_TYPE
@@ -19677,7 +19558,8 @@ Release: June 10, 2025
 
 221 / 253
 
-     );
+
+     );
 
  // Opnum 141
  NTSTATUS
@@ -19700,7 +19582,8 @@ Release: June 10, 2025
 
 222 / 253
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -19863,7 +19746,8 @@ Release: June 10, 2025
 
 223 / 253
 
-Windows Server releases
+
+Windows Server releases
 
 Client role
 
@@ -19943,7 +19827,8 @@ Release: June 10, 2025
 
 224 / 253
 
-<6> Section 2.1: Servers running Windows 2000, Windows XP, and Windows Server 2003 accept calls
+
+<6> Section 2.1: Servers running Windows 2000, Windows XP, and Windows Server 2003 accept calls
 at any authentication level. Without [MSKB-3149090] installed, servers running Windows Vista,
 Windows Server 2008, Windows 7, Windows Server 2008 R2, Windows 8, Windows Server 2012,
 Windows 8.1, Windows Server 2012 R2, Windows 10 v1507 operating system, or Windows 10 v1511
@@ -20056,7 +19941,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Data type
+
+Data type
 
 POLICY_INFORMATION_CLASS (section 2.2.4.1)
 
@@ -20192,7 +20078,8 @@ Release: June 10, 2025
 
 226 / 253
 
-Data type
+
+Data type
 
 Product
 
@@ -20301,7 +20188,8 @@ Release: June 10, 2025
 
 227 / 253
 
-Value
+
+Value
 
 Product
 
@@ -20416,7 +20304,8 @@ Release: June 10, 2025
 
 228 / 253
 
-Value
+
+Value
 
 Product
 
@@ -20528,7 +20417,8 @@ Release: June 10, 2025
 
 229 / 253
 
-Value
+
+Value
 
 Product
 
@@ -20625,7 +20515,8 @@ Release: June 10, 2025
 
 230 / 253
 
- Value
+
+ Value
 
  Product
 
@@ -20702,7 +20593,8 @@ Release: June 10, 2025
 
 231 / 253
 
-Value
+
+Value
 
 Product
 
@@ -20813,7 +20705,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Possible value
+
+Possible value
 
 TANC
 (TRUST_ATTRIBUTE_CROSS_ORGANIZATION_NO_TGT_DELEGATION)
@@ -20900,7 +20793,8 @@ Release: June 10, 2025
 
 233 / 253
 
-<40> Section 2.2.7.25: In Windows NT, Windows 2000, Windows XP, and Windows XP SP1, the
+
+<40> Section 2.2.7.25: In Windows NT, Windows 2000, Windows XP, and Windows XP SP1, the
 Windows RPC server and RPC client do not enforce restrictions on the RecordCount field of this
 structure (using the range primitive defined in [MS-RPCE]).
 
@@ -21017,7 +20911,8 @@ Release: June 10, 2025
 
 234 / 253
 
-Name
+
+Name
 
 Value
 
@@ -21104,7 +20999,8 @@ Release: June 10, 2025
 
 235 / 253
 
-O:BAG:SYD:(A;;GA;;;BA)(A;;GX;;;WD)(A;;0x0000801;;;AN)(A;;0x00001000;;;LS)
+
+O:BAG:SYD:(A;;GA;;;BA)(A;;GX;;;WD)(A;;0x0000801;;;AN)(A;;0x00001000;;;LS)
 (A;;0x00001000;;;NS)
 
 In Windows Vista and later and in Windows Server 2008 and later, the security descriptor can be
@@ -21206,7 +21102,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
- Name
+
+ Name
 
 "SeImpersonatePrivilege"
 
@@ -21333,7 +21230,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
- Name
+
+ Name
 
  Product
 
@@ -21433,7 +21331,8 @@ Release: June 10, 2025
 
 238 / 253
 
-Secret name or name pattern  Product
+
+Secret name or name pattern  Product
 
 Equal to "SANSC"
 
@@ -21526,7 +21425,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Changes made to this setting MUST take effect immediately.
+
+Changes made to this setting MUST take effect immediately.
 
 Note that the Boolean meaning of the TurnOffAnonymousBlock registry value is reversed from that of
 the LsaRestrictAnonymous setting in section 3.1.1.6.1.
@@ -21636,7 +21536,8 @@ Release: June 10, 2025
 
 240 / 253
 
- Method
+
+ Method
 
  Product
 
@@ -21771,7 +21672,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
- Method
+
+ Method
 
  Product
 
@@ -21882,7 +21784,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-<63> Section 3.1.4.4.3: Windows XP and later, and Windows Server 2003 and Windows Server 2003
+
+<63> Section 3.1.4.4.3: Windows XP and later, and Windows Server 2003 and Windows Server 2003
 R2 and later return STATUS_INVALID_PARAMETER for this information class.
 
 <64> Section 3.1.4.4.3: In the case of Windows 2000 Professional and later, and Windows 2000
@@ -21950,7 +21853,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-"G$$" to be created, and return STATUS_INVALID_PARAMETER to indicate this constraint failure to
+
+"G$$" to be created, and return STATUS_INVALID_PARAMETER to indicate this constraint failure to
 the caller.
 
 <78> Section 3.1.4.6.1: Windows Server 2003 and Windows Server 2003 R2 and later, and Windows
@@ -22015,7 +21919,8 @@ Release: June 10, 2025
 
 244 / 253
 
-Windows Server 2008 and later set the value of EncryptedOldValue to NULL.
+
+Windows Server 2008 and later set the value of EncryptedOldValue to NULL.
 
 <87> Section 3.1.4.6.5: If decryption of EncryptedData fails, Windows NT 4.0, Windows 2000,
 Windows XP, Windows Server 2003, Windows Server 2003 R2, and Windows Vista return
@@ -22084,7 +21989,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-<103> Section 3.1.4.7.10: Read-only domain controllers are supported on servers running Windows
+
+<103> Section 3.1.4.7.10: Read-only domain controllers are supported on servers running Windows
 Server 2008 and later. They return the STATUS_OBJECT_NAME_NOT_FOUND error.
 
 <104> Section 3.1.4.7.11: The operation is not supported on Windows Server 2003 for Small
@@ -22151,7 +22057,8 @@ Release: June 10, 2025
 
 246 / 253
 
-the string is allowed to not be a multiple of 2. If Length is not a multiple of 2, the length of the
+
+the string is allowed to not be a multiple of 2. If Length is not a multiple of 2, the length of the
 Unicode string will be assumed to be Length – 1.
 
 <117> Section 3.1.4.10: Windows NT, Windows 2000, Windows XP, Windows Server 2003, and
@@ -22180,7 +22087,8 @@ Release: June 10, 2025
 
 247 / 253
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -22308,7 +22216,8 @@ Local Security Authority (Domain Policy) Remote Protocol
 Copyright © 2025 Microsoft Corporation
 Release: June 10, 2025
 
-Section
+
+Section
 
 Description
 
@@ -22335,7 +22244,8 @@ Release: June 10, 2025
 
 249 / 253
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 76
@@ -22476,7 +22386,8 @@ TERNAL structure 63
 
 250 / 253
 
-LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION
+
+LSAPR_TRUSTED_DOMAIN_FULL_INFORMATION
 
 structure 63
 
@@ -22626,7 +22537,8 @@ PLSAPR_POLICY_PRIVILEGE_DEF 74
 
 251 / 253
 
-PLSAPR_POLICY_REPLICA_SRCE_INFO 48
+
+PLSAPR_POLICY_REPLICA_SRCE_INFO 48
 PLSAPR_PRIVILEGE_ENUM_BUFFER 75
 PLSAPR_PRIVILEGE_SET 54
 PLSAPR_SECURITY_DESCRIPTOR 41
@@ -22781,7 +22693,8 @@ Trusted domain objects
 
 252 / 253
 
-TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPE
+
+TRUSTED_DOMAIN_SUPPORTED_ENCRYPTION_TYPE
 
 S structure 68
 

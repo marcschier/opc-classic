@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 96
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -290,7 +291,8 @@ Release: April 23, 2024
 
 2 / 96
 
-Date
+
+Date
 
 Revision
 History
@@ -347,395 +349,177 @@ Release: April 23, 2024
 
 3 / 96
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Firewall and Advanced Security Extension Encoding Overview](#132-firewall-and-advanced-security-extension-encoding-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Global Policy Configuration Options](#221-global-policy-configuration-options)
+      - [2.2.1.1 Disable Stateful FTP](#2211-disable-stateful-ftp)
+      - [2.2.1.2 Disable Stateful PPTP](#2212-disable-stateful-pptp)
+      - [2.2.1.3 Security Associations Idle Time](#2213-security-associations-idle-time)
+      - [2.2.1.4 Preshared Key Encoding](#2214-preshared-key-encoding)
+      - [2.2.1.5 IPsec Exemptions](#2215-ipsec-exemptions)
+      - [2.2.1.6 Certificate Revocation List Check](#2216-certificate-revocation-list-check)
+      - [2.2.1.7 IPsec Through NATs](#2217-ipsec-through-nats)
+      - [2.2.1.8 Policy Version](#2218-policy-version)
+      - [2.2.1.9 Tunnel Remote Machine Authorization List](#2219-tunnel-remote-machine-authorization-list)
+      - [2.2.1.10 Tunnel Remote User Authorization List](#22110-tunnel-remote-user-authorization-list)
+      - [2.2.1.11 Opportunistically Match Authentication Set Per Key Module](#22111-opportunistically-match-authentication-set-per-key-module)
+      - [2.2.1.12 Transport Remote Machine Authorization List](#22112-transport-remote-machine-authorization-list)
+      - [2.2.1.13 Transport Remote User Authorization List](#22113-transport-remote-user-authorization-list)
+      - [2.2.1.14 Packet Queue](#22114-packet-queue)
+    - [2.2.2 Firewall Rule Messages](#222-firewall-rule-messages)
+      - [2.2.2.1 Profile Tokens](#2221-profile-tokens)
+      - [2.2.2.2 Port and Port Range Rules](#2222-port-and-port-range-rules)
+      - [2.2.2.3 Port Keyword Rules](#2223-port-keyword-rules)
+      - [2.2.2.4 Direction Tokens](#2224-direction-tokens)
+      - [2.2.2.5 Action Tokens](#2225-action-tokens)
+      - [2.2.2.6 IfSecure Tokens](#2226-ifsecure-tokens)
+      - [2.2.2.7 Interfaces](#2227-interfaces)
+      - [2.2.2.8 Interface Types](#2228-interface-types)
+      - [2.2.2.9 IPV4 Address Ranges Rules](#2229-ipv4-address-ranges-rules)
+      - [2.2.2.10 IPV4 Address Subnet Rules](#22210-ipv4-address-subnet-rules)
+      - [2.2.2.11 IPV6 Address Range Rules](#22211-ipv6-address-range-rules)
+      - [2.2.2.12 IPV6 Address Subnet Rules](#22212-ipv6-address-subnet-rules)
+      - [2.2.2.13 Address Keyword Rules](#22213-address-keyword-rules)
+      - [2.2.2.14 Boolean Rules](#22214-boolean-rules)
+      - [2.2.2.15 Edge Defer Rules](#22215-edge-defer-rules)
+      - [2.2.2.16 ICMP Type - Code Rules](#22216-icmp-type-code-rules)
+      - [2.2.2.17 Platform Validity Rules](#22217-platform-validity-rules)
+      - [2.2.2.18 Platform Validity Operators Rules](#22218-platform-validity-operators-rules)
+      - [2.2.2.19 Firewall Rule and the Firewall Rule Grammar Rule](#22219-firewall-rule-and-the-firewall-rule-grammar-rule)
+      - [2.2.2.20 Trust Tuple Keyword Rules](#22220-trust-tuple-keyword-rules)
+    - [2.2.3 Per-Profile Policy Configuration Options](#223-per-profile-policy-configuration-options)
+      - [2.2.3.1 Enable Firewall](#2231-enable-firewall)
+      - [2.2.3.2 Disable Stealth Mode](#2232-disable-stealth-mode)
+      - [2.2.3.3 Shield Up Mode](#2233-shield-up-mode)
+      - [2.2.3.4 Disable Unicast Responses to Multicast and Broadcast Traffic](#2234-disable-unicast-responses-to-multicast-and-broadcast-traffic)
+      - [2.2.3.5 Log Dropped Packets](#2235-log-dropped-packets)
+      - [2.2.3.6 Log Successful Connections](#2236-log-successful-connections)
+      - [2.2.3.7 Log Ignored Rules](#2237-log-ignored-rules)
+      - [2.2.3.8 Maximum Log File Size](#2238-maximum-log-file-size)
+      - [2.2.3.9 Log File Path](#2239-log-file-path)
+      - [2.2.3.10 Disable Inbound Notifications](#22310-disable-inbound-notifications)
+      - [2.2.3.11 Allow Authenticated Applications User Preference Merge](#22311-allow-authenticated-applications-user-preference-merge)
+      - [2.2.3.12 Allow Globally Open Ports User Preference Merge](#22312-allow-globally-open-ports-user-preference-merge)
+      - [2.2.3.13 Allow Local Firewall Rule Policy Merge](#22313-allow-local-firewall-rule-policy-merge)
+      - [2.2.3.14 Allow Local IPsec Policy Merge](#22314-allow-local-ipsec-policy-merge)
+      - [2.2.3.15 Disabled Interfaces](#22315-disabled-interfaces)
+      - [2.2.3.16 Default Outbound Action](#22316-default-outbound-action)
+      - [2.2.3.17 Default Inbound Action](#22317-default-inbound-action)
+      - [2.2.3.18 Disable Stealth Mode for IPsec Secured Packets](#22318-disable-stealth-mode-for-ipsec-secured-packets)
+    - [2.2.4 Authentication Sets](#224-authentication-sets)
+      - [2.2.4.1 Version](#2241-version)
+      - [2.2.4.2 Name](#2242-name)
+      - [2.2.4.3 Description](#2243-description)
+      - [2.2.4.4 EmbeddedContext](#2244-embeddedcontext)
+      - [2.2.4.5 Suite Keys](#2245-suite-keys)
+      - [2.2.4.6 Phase 1 and Phase 2 Auth Suite Methods](#2246-phase-1-and-phase-2-auth-suite-methods)
+      - [2.2.4.7 Phase 1 and Phase 2 Auth Suite Certificate Authority Names](#2247-phase-1-and-phase-2-auth-suite-certificate-authority-names)
+      - [2.2.4.8 Phase 1 Auth Suite Preshared Key](#2248-phase-1-auth-suite-preshared-key)
+      - [2.2.4.9 Phase 1 and Phase 2 Auth Suite Certificate Account Mapping](#2249-phase-1-and-phase-2-auth-suite-certificate-account-mapping)
+      - [2.2.4.10 Phase 1 Auth Suite Exclude CA Name](#22410-phase-1-auth-suite-exclude-ca-name)
+      - [2.2.4.11 Phase 1 and Phase 2 Auth Suite Health Cert](#22411-phase-1-and-phase-2-auth-suite-health-cert)
+      - [2.2.4.12 Phase 1 and Phase 2 Auth Suite Skip Version](#22412-phase-1-and-phase-2-auth-suite-skip-version)
+      - [2.2.4.13 Phase 1 and Phase 2 Auth Suite Other Certificate Signing](#22413-phase-1-and-phase-2-auth-suite-other-certificate-signing)
+      - [2.2.4.14 Phase 1 and Phase 2 Auth Suite Intermediate CA](#22414-phase-1-and-phase-2-auth-suite-intermediate-ca)
+      - [2.2.4.15 Certificate Criteria Type Tokens](#22415-certificate-criteria-type-tokens)
+      - [2.2.4.16 Certificate Criteria Name Type Tokens](#22416-certificate-criteria-name-type-tokens)
+      - [2.2.4.17 Phase 1 and Phase 2 Auth Suite Certificate Criteria](#22417-phase-1-and-phase-2-auth-suite-certificate-criteria)
+      - [2.2.4.18 Phase 1 and Phase 2 Auth Suite Allow Kerberos Proxy](#22418-phase-1-and-phase-2-auth-suite-allow-kerberos-proxy)
+      - [2.2.4.19 Phase 1 and Phase 2 Auth Suite Kerberos Proxy Server](#22419-phase-1-and-phase-2-auth-suite-kerberos-proxy-server)
+    - [2.2.5 Cryptographic Sets](#225-cryptographic-sets)
+      - [2.2.5.1 Version](#2251-version)
+      - [2.2.5.2 Name](#2252-name)
+      - [2.2.5.3 Description](#2253-description)
+      - [2.2.5.4 EmbeddedContext](#2254-embeddedcontext)
+      - [2.2.5.5 Phase 1 - Do Not Skip Deffie Hellman](#2255-phase-1-do-not-skip-deffie-hellman)
+      - [2.2.5.6 Phase 1 - Time Out in Minutes](#2256-phase-1-time-out-in-minutes)
+      - [2.2.5.7 Phase 1 - Time Out in Sessions](#2257-phase-1-time-out-in-sessions)
+      - [2.2.5.8 Phase 2 - Perfect Forward Secrecy](#2258-phase-2-perfect-forward-secrecy)
+      - [2.2.5.9 Phase 1 - Suite Keys](#2259-phase-1-suite-keys)
+      - [2.2.5.10 Phase 1 Suite - Key Exchange Algorithm](#22510-phase-1-suite-key-exchange-algorithm)
+      - [2.2.5.11 Phase 1 Suite - Encryption Algorithm](#22511-phase-1-suite-encryption-algorithm)
+      - [2.2.5.12 Phase 1 Suite - Hash Algorithm](#22512-phase-1-suite-hash-algorithm)
+      - [2.2.5.13 Phase 1 Suite Skip Version](#22513-phase-1-suite-skip-version)
+      - [2.2.5.14 Phase 1 Suite - 2.1 Hash Algorithm](#22514-phase-1-suite-21-hash-algorithm)
+      - [2.2.5.15 Phase 1 Suite - 2.16 Key Exchange Algorithm](#22515-phase-1-suite-216-key-exchange-algorithm)
+      - [2.2.5.16 Phase 2 - Suite Keys](#22516-phase-2-suite-keys)
+      - [2.2.5.17 Phase 2 Suite - Protocol](#22517-phase-2-suite-protocol)
+      - [2.2.5.18 Phase 2 Suite - Encryption Algorithm](#22518-phase-2-suite-encryption-algorithm)
+      - [2.2.5.19 Phase 2 Suite - AH Protocol Hash Algorithm](#22519-phase-2-suite-ah-protocol-hash-algorithm)
+      - [2.2.5.20 Phase 2 Suite - ESP Protocol Hash Algorithm](#22520-phase-2-suite-esp-protocol-hash-algorithm)
+      - [2.2.5.21 Phase 2 Suite - Time Out in Minutes](#22521-phase-2-suite-time-out-in-minutes)
+      - [2.2.5.22 Phase 2 Suite - Time Out in Kilobytes](#22522-phase-2-suite-time-out-in-kilobytes)
+      - [2.2.5.23 Phase 2 Suite - Skip Version](#22523-phase-2-suite-skip-version)
+      - [2.2.5.24 Phase 2 Suite - 2.1 Encryption Algorithm](#22524-phase-2-suite-21-encryption-algorithm)
+      - [2.2.5.25 Phase 2 Suite - 2.1 AH Hash Algorithm](#22525-phase-2-suite-21-ah-hash-algorithm)
+      - [2.2.5.26 Phase 2 Suite - 2.1 ESP Hash Algorithm](#22526-phase-2-suite-21-esp-hash-algorithm)
+      - [2.2.5.27 Phase 2 Suite - 2.9 Protocol](#22527-phase-2-suite-29-protocol)
+      - [2.2.5.28 Phase 2 - 2.16 Perfect Forward Secrecy](#22528-phase-2-216-perfect-forward-secrecy)
+    - [2.2.6 Connection Security Rule Messages](#226-connection-security-rule-messages)
+      - [2.2.6.1 Connection Security Action Tokens](#2261-connection-security-action-tokens)
+      - [2.2.6.2 Connection Security Rule and the Connection Security Rule Grammar Rule](#2262-connection-security-rule-and-the-connection-security-rule-grammar-rule)
+      - [2.2.6.3 Keying Module Rules](#2263-keying-module-rules)
+    - [2.2.7 Main Mode Rule Messages](#227-main-mode-rule-messages)
+      - [2.2.7.1 Main Mode Rule and the Main Mode Rule Grammar Rule](#2271-main-mode-rule-and-the-main-mode-rule-grammar-rule)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Plug-in Details](#31-administrative-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Policy Administration Load Message Sequencing](#3151-policy-administration-load-message-sequencing)
+      - [3.1.5.2 Policy Administration Update Message Sequencing](#3152-policy-administration-update-message-sequencing)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Policy Application Event](#3271-policy-application-event)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Configuration Options Messages](#41-configuration-options-messages)
+  - [4.2 Firewall Rule Message](#42-firewall-rule-message)
+  - [4.3 Connection Security Rule Message](#43-connection-security-rule-message)
+  - [4.4 Authentication Set Messages](#44-authentication-set-messages)
+    - [4.4.1 Authentication Set { 212D4E36-DB6E-4EAE-A65F-1C4615EBFDDB }](#441-authentication-set-212d4e36-db6e-4eae-a65f-1c4615ebfddb)
+    - [4.4.2 Authentication Set { D842F406-E895-406A-AC35-9837B6D499F4 }](#442-authentication-set-d842f406-e895-406a-ac35-9837b6d499f4)
+    - [4.4.3 Authentication Set { A75A5046-E377-45CC-BD25-EC0F8E601CE1 }](#443-authentication-set-a75a5046-e377-45cc-bd25-ec0f8e601ce1)
+    - [4.4.4 Authentication Set { 967F0367-F879-42EC-938B-C89FE8289B26 }](#444-authentication-set-967f0367-f879-42ec-938b-c89fe8289b26)
+    - [4.4.5 Cryptographic Set Messages](#445-cryptographic-set-messages)
+      - [4.4.5.1 Cryptographic Set { CD863A4F-CD94-4763-AD25-69A1378D51EB }](#4451-cryptographic-set-cd863a4f-cd94-4763-ad25-69a1378d51eb)
+      - [4.4.5.2 Cryptographic Set { E9A15CB6-DFC4-41F8-8D14-CA62A4EC708F }](#4452-cryptographic-set-e9a15cb6-dfc4-41f8-8d14-ca62a4ec708f)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Appendix B: Full ABNF Grammar](#7-appendix-b-full-abnf-grammar)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Protocol Overview (Synopsis) ............................................................................ 10
-Background ............................................................................................... 10
-Firewall and Advanced Security Extension Encoding Overview .......................... 10
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Global Policy Configuration Options ............................................................... 14
-Disable Stateful FTP .............................................................................. 14
-2.2.1.1
-Disable Stateful PPTP............................................................................. 14
-2.2.1.2
-Security Associations Idle Time ............................................................... 15
-2.2.1.3
-Preshared Key Encoding......................................................................... 15
-2.2.1.4
-IPsec Exemptions .................................................................................. 15
-2.2.1.5
-Certificate Revocation List Check ............................................................ 16
-2.2.1.6
-IPsec Through NATs .............................................................................. 16
-2.2.1.7
-Policy Version ....................................................................................... 16
-2.2.1.8
-Tunnel Remote Machine Authorization List ............................................... 17
-2.2.1.9
-2.2.1.10
-Tunnel Remote User Authorization List..................................................... 17
-2.2.1.11  Opportunistically Match Authentication Set Per Key Module ........................ 17
-Transport Remote Machine Authorization List ........................................... 17
-2.2.1.12
-Transport Remote User Authorization List ................................................ 18
-2.2.1.13
-Packet Queue ....................................................................................... 18
-2.2.1.14
-Firewall Rule Messages ................................................................................ 18
-Profile Tokens ....................................................................................... 18
-Port and Port Range Rules ...................................................................... 18
-Port Keyword Rules ............................................................................... 19
-Direction Tokens ................................................................................... 20
-Action Tokens ....................................................................................... 20
-IfSecure Tokens .................................................................................... 20
-Interfaces ............................................................................................ 21
-Interface Types..................................................................................... 21
-IPV4 Address Ranges Rules .................................................................... 21
-IPV4 Address Subnet Rules .................................................................... 22
-IPV6 Address Range Rules ..................................................................... 22
-IPV6 Address Subnet Rules .................................................................... 23
-Address Keyword Rules .......................................................................... 23
-Boolean Rules ....................................................................................... 24
-Edge Defer Rules .................................................................................. 24
-ICMP Type - Code Rules ......................................................................... 24
-Platform Validity Rules ........................................................................... 24
-Platform Validity Operators Rules ............................................................ 25
-Firewall Rule and the Firewall Rule Grammar Rule ..................................... 25
-Trust Tuple Keyword Rules ..................................................................... 31
-Per-Profile Policy Configuration Options ......................................................... 32
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-2.2.2.16
-2.2.2.17
-2.2.2.18
-2.2.2.19
-2.2.2.20
-
-2.2.3
-
-[MS-GPFAS] - v20240423
-Group Policy: Firewall and Advanced Security Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 96
-
-2.2.4
-
-2.2.5
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-2.2.4.10
-2.2.4.11
-2.2.4.12
-2.2.4.13
-2.2.4.14
-2.2.4.15
-2.2.4.16
-2.2.4.17
-2.2.4.18
-2.2.4.19
-
-Enable Firewall ..................................................................................... 32
-2.2.3.1
-Disable Stealth Mode ............................................................................. 32
-2.2.3.2
-Shield Up Mode ..................................................................................... 33
-2.2.3.3
-Disable Unicast Responses to Multicast and Broadcast Traffic ..................... 33
-2.2.3.4
-Log Dropped Packets ............................................................................. 33
-2.2.3.5
-Log Successful Connections .................................................................... 34
-2.2.3.6
-Log Ignored Rules ................................................................................. 34
-2.2.3.7
-Maximum Log File Size .......................................................................... 34
-2.2.3.8
-2.2.3.9
-Log File Path ........................................................................................ 35
-2.2.3.10  Disable Inbound Notifications ................................................................. 35
-Allow Authenticated Applications User Preference Merge ............................ 35
-2.2.3.11
-Allow Globally Open Ports User Preference Merge ...................................... 36
-2.2.3.12
-Allow Local Firewall Rule Policy Merge ...................................................... 36
-2.2.3.13
-2.2.3.14
-Allow Local IPsec Policy Merge ................................................................ 36
-2.2.3.15  Disabled Interfaces ............................................................................... 37
-2.2.3.16  Default Outbound Action ........................................................................ 37
-2.2.3.17  Default Inbound Action .......................................................................... 37
-2.2.3.18  Disable Stealth Mode for IPsec Secured Packets ........................................ 38
-Authentication Sets ..................................................................................... 38
-Version ................................................................................................ 39
-Name .................................................................................................. 39
-Description ........................................................................................... 39
-EmbeddedContext ................................................................................. 40
-Suite Keys ........................................................................................... 40
-Phase 1 and Phase 2 Auth Suite Methods ................................................. 40
-Phase 1 and Phase 2 Auth Suite Certificate Authority Names ...................... 41
-Phase 1 Auth Suite Preshared Key ........................................................... 41
-Phase 1 and Phase 2 Auth Suite Certificate Account Mapping ...................... 42
-Phase 1 Auth Suite Exclude CA Name ...................................................... 42
-Phase 1 and Phase 2 Auth Suite Health Cert ............................................. 42
-Phase 1 and Phase 2 Auth Suite Skip Version ........................................... 43
-Phase 1 and Phase 2 Auth Suite Other Certificate Signing .......................... 43
-Phase 1 and Phase 2 Auth Suite Intermediate CA ...................................... 43
-Certificate Criteria Type Tokens .............................................................. 44
-Certificate Criteria Name Type Tokens ..................................................... 44
-Phase 1 and Phase 2 Auth Suite Certificate Criteria ................................... 44
-Phase 1 and Phase 2 Auth Suite Allow Kerberos Proxy ............................... 46
-Phase 1 and Phase 2 Auth Suite Kerberos Proxy Server ............................. 46
-Cryptographic Sets ..................................................................................... 46
-Version ................................................................................................ 47
-Name .................................................................................................. 47
-Description ........................................................................................... 47
-EmbeddedContext ................................................................................. 48
-Phase 1 - Do Not Skip Deffie Hellman ...................................................... 48
-Phase 1 - Time Out in Minutes ................................................................ 48
-Phase 1 - Time Out in Sessions ............................................................... 49
-Phase 2 - Perfect Forward Secrecy .......................................................... 49
-Phase 1 - Suite Keys ............................................................................. 50
-Phase 1 Suite - Key Exchange Algorithm .................................................. 50
-Phase 1 Suite - Encryption Algorithm ....................................................... 50
-Phase 1 Suite - Hash Algorithm .............................................................. 51
-Phase 1 Suite Skip Version ..................................................................... 51
-Phase 1 Suite - 2.1 Hash Algorithm ......................................................... 52
-Phase 1 Suite - 2.16 Key Exchange Algorithm........................................... 52
-Phase 2 - Suite Keys ............................................................................. 53
-Phase 2 Suite - Protocol ......................................................................... 53
-Phase 2 Suite - Encryption Algorithm ....................................................... 53
-Phase 2 Suite - AH Protocol Hash Algorithm ............................................. 54
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-2.2.5.6
-2.2.5.7
-2.2.5.8
-2.2.5.9
-2.2.5.10
-2.2.5.11
-2.2.5.12
-2.2.5.13
-2.2.5.14
-2.2.5.15
-2.2.5.16
-2.2.5.17
-2.2.5.18
-2.2.5.19
-
-[MS-GPFAS] - v20240423
-Group Policy: Firewall and Advanced Security Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 96
-
-2.2.5.20
-2.2.5.21
-2.2.5.22
-2.2.5.23
-2.2.5.24
-2.2.5.25
-2.2.5.26
-2.2.5.27
-2.2.5.28
-
-2.2.6
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-
-2.2.7
-
-2.2.7.1
-
-Phase 2 Suite - ESP Protocol Hash Algorithm ............................................ 54
-Phase 2 Suite - Time Out in Minutes ........................................................ 54
-Phase 2 Suite - Time Out in Kilobytes ...................................................... 54
-Phase 2 Suite - Skip Version ................................................................... 55
-Phase 2 Suite - 2.1 Encryption Algorithm ................................................. 55
-Phase 2 Suite - 2.1 AH Hash Algorithm .................................................... 56
-Phase 2 Suite - 2.1 ESP Hash Algorithm ................................................... 56
-Phase 2 Suite - 2.9 Protocol ................................................................... 56
-Phase 2 - 2.16 Perfect Forward Secrecy ................................................... 57
-Connection Security Rule Messages............................................................... 57
-Connection Security Action Tokens .......................................................... 57
-Connection Security Rule and the Connection Security Rule Grammar Rule .. 58
-Keying Module Rules ............................................................................. 63
-Main Mode Rule Messages ............................................................................ 64
-Main Mode Rule and the Main Mode Rule Grammar Rule ............................ 64
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 67
-Administrative Plug-in Details ............................................................................ 67
-Abstract Data Model .................................................................................... 67
-Timers ...................................................................................................... 67
-Initialization ............................................................................................... 67
-Higher-Layer Triggered Events ..................................................................... 67
-Message Processing Events and Sequencing Rules .......................................... 68
-Policy Administration Load Message Sequencing ....................................... 68
-Policy Administration Update Message Sequencing .................................... 68
-Timer Events .............................................................................................. 69
-Other Local Events ...................................................................................... 69
-Client Details ................................................................................................... 69
-Abstract Data Model .................................................................................... 69
-Timers ...................................................................................................... 69
-Initialization ............................................................................................... 69
-Higher-Layer Triggered Events ..................................................................... 69
-Message Processing Events and Sequencing Rules .......................................... 69
-Timer Events .............................................................................................. 69
-Other Local Events ...................................................................................... 70
-Policy Application Event ......................................................................... 70
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2.7.1
-
-3.2
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ................................................................................................. 71
-Configuration Options Messages ......................................................................... 71
-Firewall Rule Message ....................................................................................... 71
-Connection Security Rule Message ..................................................................... 71
-Authentication Set Messages ............................................................................. 72
-Authentication Set { 212D4E36-DB6E-4EAE-A65F-1C4615EBFDDB } ................ 72
-Authentication Set { D842F406-E895-406A-AC35-9837B6D499F4 } ................. 74
-Authentication Set { A75A5046-E377-45CC-BD25-EC0F8E601CE1 } ................. 75
-Authentication Set { 967F0367-F879-42EC-938B-C89FE8289B26 } .................. 75
-Cryptographic Set Messages ........................................................................ 77
-Cryptographic Set { CD863A4F-CD94-4763-AD25-69A1378D51EB } ........... 77
-Cryptographic Set { E9A15CB6-DFC4-41F8-8D14-CA62A4EC708F } ............ 79
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-4.4.5
-
-4.4.5.1
-4.4.5.2
-
-5  Security ................................................................................................................. 84
-Security Considerations for Implementers ........................................................... 84
-Index of Security Parameters ............................................................................ 84
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 85
-
-7  Appendix B: Full ABNF Grammar ........................................................................... 88
-
-8  Change Tracking .................................................................................................... 92
-
-9  Index ..................................................................................................................... 93
-
-6 / 96
-
-[MS-GPFAS] - v20240423
-Group Policy: Firewall and Advanced Security Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-[MS-GPFAS] - v20240423
-Group Policy: Firewall and Advanced Security Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 96
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Group Policy: Firewall and Advanced Security Data Structure extension to
 the Group Policy: Registry Extension Encoding, as specified in [MS-GPREG], and provides a
@@ -745,7 +529,7 @@ using Group Policy settings.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -805,7 +589,8 @@ Release: April 23, 2024
 
 8 / 96
 
-policy setting: A statement of the possible behaviors of an element of a domain member
+
+policy setting: A statement of the possible behaviors of an element of a domain member
 
 computer's behavior that can be configured by an administrator.
 
@@ -832,14 +617,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -870,18 +655,19 @@ Release: April 23, 2024
 
 9 / 96
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MSDN-RegisterGPNotification] Microsoft Corporation, "RegisterGPNotification function",
 http://msdn.microsoft.com/en-us/library/aa374404(VS.85).aspx
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The Group Policy: Firewall and Advanced Security Data Structure provides a mechanism for an
 administrator to control Firewall and Advanced Security behavior of the client through Group Policy
 using the Group Policy: Registry Extension Encoding specified in [MS-GPREG].
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol (as specified in [MS-GPOL]) allows clients to discover and retrieve
 policy settings created by administrators of a domain. These settings are persisted within Group
@@ -918,7 +704,7 @@ settings can be implemented using a custom user-interface that does not rely on 
 templates. One example of such registry-based settings is those belonging to the Firewall and
 Advanced Security component, which are described in this document.
 
-1.3.2  Firewall and Advanced Security Extension Encoding Overview
+#### 1.3.2 Firewall and Advanced Security Extension Encoding Overview
 
 Firewall and Advanced Security policies are configurable from a GPO through the Group Policy:
 Firewall and Advanced Security Data Structure. The Firewall and Advanced Security component has
@@ -935,7 +721,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This protocol provides mechanisms both for Group Policy administrators to deploy policies and for
+
+This protocol provides mechanisms both for Group Policy administrators to deploy policies and for
 clients to obtain the applicable policies to enforce them. Thus, the protocol consists of two
 components: an administrative plug-in and a client.
 
@@ -1005,7 +792,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GPFAS].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1015,7 +803,7 @@ The client then passes these settings to the Group Policy: Firewall and Advanced
 Structure server for enforcement by invoking the SetGroupPolicyRSoPStore abstract interface, as
 specified in [MS-FASP] section 3.1.6.4.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Group Policy: Core Protocol (as specified in [MS-GPOL]) to provide a list
 of applicable GPOs.
@@ -1035,7 +823,7 @@ Data Structure has an indirect dependency on remote file access.
 Figure 1: Group Policy: Firewall and Advanced Security Data Structure protocol relationship
 diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Registry Extension
 Encoding.
@@ -1050,7 +838,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 Group Policy: Firewall and Advanced Security Data Structure is applicable only while transported under
 the Group Policy: Registry Extension Encoding and within the Group Policy: Core Protocol framework.
@@ -1064,7 +853,7 @@ instead.
 
 Do not use the protocol in any other context.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning and capability negotiation issues in the following areas:
 
@@ -1083,11 +872,11 @@ needs to be parsed and what needs to be ignored. The settings in section 2.2 are
 of these policy versions when appropriate. No other negotiation capabilities, version-specific or
 otherwise, are present in this protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol defines the administrative tool's extension GUID standards assignments, as specified in
 [MS-GPOL] section 1.8. It also defines a base registry key where the settings of this protocol are
@@ -1114,9 +903,10 @@ Release: April 23, 2024
 
 13 / 96
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Firewall and Advanced Security Data Structure's administrative plug-in uses the
 transport specified in [MS-GPOL] to read and modify settings in the central policy store. Specifically, it
@@ -1124,9 +914,9 @@ uses remote file access for reading, updating, creating, and deleting the Group 
 Information is retrieved from the policy store and written to the client's registry by the Group Policy:
 Registry Extension Encoding ([MS-GPREG] section 3.2), using remote file access.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Global Policy Configuration Options
+#### 2.2.1 Global Policy Configuration Options
 
 The Global Policy Configuration Options are values that represent the enumeration values of the
 FW_GLOBAL_CONFIG enumeration type as defined in [MS-FASP] section 2.2.42. Note that the
@@ -1145,7 +935,7 @@ FW_GLOBAL_CONFIG_CURRENT_PROFILE
 
 FW_GLOBAL_CONFIG_BINARY_VERSION_SUPPORTED
 
-2.2.1.1  Disable Stateful FTP
+##### 2.2.1.1 Disable Stateful FTP
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1161,7 +951,7 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_DISABLE_STATEFUL_FTP enumeration value as defined in [MS-FASP]
 section 2.2.42.
 
-2.2.1.2  Disable Stateful PPTP
+##### 2.2.1.2 Disable Stateful PPTP
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1184,7 +974,8 @@ Release: April 23, 2024
 
 14 / 96
 
-2.2.1.3  Security Associations Idle Time
+
+##### 2.2.1.3 Security Associations Idle Time
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1199,7 +990,7 @@ Data: This field is an unsigned 32-bit integer value.
 This value represents the contents assigned to the configuration option represented by the
 FW_GLOBAL_CONFIG_SA_IDLE_TIME enumeration value as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.4  Preshared Key Encoding
+##### 2.2.1.4 Preshared Key Encoding
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1224,7 +1015,7 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_PRESHARED_KEY_ENCODING enumeration value as defined in [MS-FASP]
 section 2.2.42.
 
-2.2.1.5  IPsec Exemptions
+##### 2.2.1.5 IPsec Exemptions
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1263,10 +1054,11 @@ Release: April 23, 2024
 
 15 / 96
 
-This value represents the contents assigned to the configuration option represented by the
+
+This value represents the contents assigned to the configuration option represented by the
 FW_GLOBAL_CONFIG_IPSEC_EXEMPT enumeration value as defined in [MS-FASP] section 2.2.39.
 
-2.2.1.6  Certificate Revocation List Check
+##### 2.2.1.6 Certificate Revocation List Check
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1281,7 +1073,7 @@ Data: This field is a 32-bit value.
 This value represents the contents assigned to the configuration option represented by the
 FW_GLOBAL_CONFIG_CRL_CHECK enumeration value as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.7  IPsec Through NATs
+##### 2.2.1.7 IPsec Through NATs
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1315,7 +1107,7 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT enumeration value as defined in [MS-FASP] section
 2.2.42.
 
-2.2.1.8  Policy Version
+##### 2.2.1.8 Policy Version
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1338,7 +1130,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.9  Tunnel Remote Machine Authorization List
+
+##### 2.2.1.9 Tunnel Remote Machine Authorization List
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1354,9 +1147,9 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_IPSEC_TUNNEL_REMOTE_MACHINE_AUTHORIZATION_LIST
 enumeration value as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.10
+##### 2.2.1.10 Tunnel Remote User Authorization List
 
-Tunnel Remote User Authorization List
+
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1372,9 +1165,9 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_IPSEC_TUNNEL_REMOTE_USER_AUTHORIZATION_LIST enumeration
 value as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.11
+##### 2.2.1.11 Opportunistically Match Authentication Set Per Key Module
 
-Opportunistically Match Authentication Set Per Key Module
+
 
 Key: Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1390,9 +1183,9 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_OPPORTUNISTICALLY_MATCH_AUTH_SET_PER_KM enumeration value
 as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.12
+##### 2.2.1.12 Transport Remote Machine Authorization List
 
-Transport Remote Machine Authorization List
+
 
 Key: Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1411,13 +1204,14 @@ Release: April 23, 2024
 
 17 / 96
 
-This value represents the contents assigned to the configuration option represented by the
+
+This value represents the contents assigned to the configuration option represented by the
 FW_GLOBAL_CONFIG_IPSEC_TRANSPORT_REMOTE_MACHINE_AUTHORIZATION_LIST
 enumeration value as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.13
+##### 2.2.1.13 Transport Remote User Authorization List
 
-Transport Remote User Authorization List
+
 
 Key: Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1433,9 +1227,9 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_IPSEC_TRANSPORT_REMOTE_USER_AUTHORIZATION_LIST
 enumeration value as defined in [MS-FASP] section 2.2.42.
 
-2.2.1.14
+##### 2.2.1.14 Packet Queue
 
-Packet Queue
+
 
 Key:  Software\Policies\Microsoft\WindowsFirewall\
 
@@ -1451,11 +1245,11 @@ This value represents the contents assigned to the configuration option represen
 FW_GLOBAL_CONFIG_ENABLE_PACKET_QUEUE enumeration value as defined in [MS-FASP] section
 2.2.42.
 
-2.2.2  Firewall Rule Messages
+#### 2.2.2 Firewall Rule Messages
 
 This section defines the grammars used to encode different portions of the firewall rules.
 
-2.2.2.1  Profile Tokens
+##### 2.2.2.1 Profile Tokens
 
 This grammar, as specified in [RFC4234], is used to identify profile types.
 
@@ -1470,7 +1264,7 @@ Private: This token value represents the FW_PROFILE_TYPE_PRIVATE enumeration val
 
 Public: This token value represents the FW_PROFILE_TYPE_PUBLIC enumeration value.
 
-2.2.2.2  Port and Port Range Rules
+##### 2.2.2.2 Port and Port Range Rules
 
 This grammar is used to identify ports.
 
@@ -1481,7 +1275,8 @@ Release: April 23, 2024
 
 18 / 96
 
- PORT-RANGE-VAL = BEGINPORT "-" ENDPORT
+
+ PORT-RANGE-VAL = BEGINPORT "-" ENDPORT
  PORT-VAL = SINGLEPORT
 
  BEGINPORT = PORT
@@ -1511,7 +1306,7 @@ PORT-VAL: This rule describes a FW_PORT_RANGE structure as defined in [MS-FASP] 
 
 2.2.12. The structure MUST comply with all requirements defined in that section.
 
-2.2.2.3  Port Keyword Rules
+##### 2.2.2.3 Port Keyword Rules
 
 This grammar is used to identify port keywords.<2>
 
@@ -1555,13 +1350,14 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CortanaOut: This token represents the FW_PORT_KEYWORD_CORTANA_OUT enumeration value.
+
+CortanaOut: This token represents the FW_PORT_KEYWORD_CORTANA_OUT enumeration value.
 
 TcpCDPSvc: This token represents the FW_PORT_KEYWORD_PROXIMAL_TCP_CDP enumeration
 
 value.
 
-2.2.2.4  Direction Tokens
+##### 2.2.2.4 Direction Tokens
 
 This grammar is used to identify the direction of a network traffic flow.
 
@@ -1575,7 +1371,7 @@ Out: This token value represents the FW_DIR_OUT enumeration value as defined in 
 
 section 2.2.19.
 
-2.2.2.5  Action Tokens
+##### 2.2.2.5 Action Tokens
 
 This grammar is used to identify the actions available for firewall rules.
 
@@ -1590,7 +1386,7 @@ Block: This token value represents the FW_RULE_ACTION_BLOCK enumeration value.
 
 ByPass: This token value represents the FW_RULE_ACTION_ALLOW_BYPASS enumeration value.
 
-2.2.2.6  IfSecure Tokens
+##### 2.2.2.6 IfSecure Tokens
 
 This grammar is used to identify the security flags on firewall rules described in [MS-FASP] section
 2.2.35.
@@ -1623,7 +1419,8 @@ Release: April 23, 2024
 
 20 / 96
 
-2.2.2.7  Interfaces
+
+##### 2.2.2.7 Interfaces
 
 This grammar is used to identify the interfaces on firewall rules described in [MS-FASP] section
 2.2.18.
@@ -1634,7 +1431,7 @@ IF-VAL: This grammar rule represents a GUID that identifies an interface ([MS-FA
 
 2.2.18).
 
-2.2.2.8  Interface Types
+##### 2.2.2.8 Interface Types
 
 This grammar is used to identify the types of network adapters described in [MS-FASP] section 2.2.20.
 
@@ -1650,7 +1447,7 @@ RemoteAccess: This token value represents the FW_INTERFACE_TYPE_REMOTE_ACCESS
 
 enumeration value.
 
-2.2.2.9  IPV4 Address Ranges Rules
+##### 2.2.2.9 IPV4 Address Ranges Rules
 
 This grammar is used to identify IPv4 address ranges.
 
@@ -1689,9 +1486,10 @@ Release: April 23, 2024
 
 21 / 96
 
-2.2.2.10
 
-IPV4 Address Subnet Rules
+##### 2.2.2.10 IPV4 Address Subnet Rules
+
+
 
 This grammar is used to identify IPv4 subnets.
 
@@ -1723,9 +1521,9 @@ represents it is a shortcut as it describes the number of high order consecutive
 ADDRESSV4-SUBNET-VAL: This rule represents a FW_IPV4_SUBNET structure as defined in [MS-
 FASP] section 2.2.4. The structure MUST comply with all requirements defined in that section.
 
-2.2.2.11
+##### 2.2.2.11 IPV6 Address Range Rules
 
-IPV6 Address Range Rules
+
 
 This grammar is used to identify IPv6 address ranges.
 
@@ -1764,9 +1562,10 @@ Release: April 23, 2024
 
 22 / 96
 
-2.2.2.12
 
-IPV6 Address Subnet Rules
+##### 2.2.2.12 IPV6 Address Subnet Rules
+
+
 
 This grammar is used to identify IPv6 subnets.
 
@@ -1790,9 +1589,9 @@ represents the dwNumPrefixBits field of a FW_IPV6_SUBNET structure.
 ADDRESSV6-SUBNET-VAL: This rule represents a FW_IPV6_SUBNET structure as defined in [MS-
 FASP] section 2.2.6. The structure MUST comply with all requirements defined in that section.
 
-2.2.2.13
+##### 2.2.2.13 Address Keyword Rules
 
-Address Keyword Rules
+
 
 This grammar is used to identify address keywords.
 
@@ -1838,9 +1637,10 @@ Release: April 23, 2024
 
 23 / 96
 
-2.2.2.14
 
-Boolean Rules
+##### 2.2.2.14 Boolean Rules
+
+
 
 This grammar is used to identify Boolean values.
 
@@ -1852,9 +1652,9 @@ FALSE: This token represents a decimal value of 0 which has the meaning of the B
 
 false.
 
-2.2.2.15
+##### 2.2.2.15 Edge Defer Rules
 
-Edge Defer Rules
+
 
 This grammar is used to identify Edge defer flags.
 
@@ -1868,9 +1668,9 @@ User: This token represents the FW_RULE_FLAGS_ROUTEABLE_ADDRS_TRAVERSE_DEFER_USE
 as defined in [MS-FASP] section 2.2.35. The meaning of the appearance of this token is a Boolean
 true.
 
-2.2.2.16
+##### 2.2.2.16 ICMP Type - Code Rules
 
-ICMP Type - Code Rules
+
 
 This grammar is used to identify ICMP protocol type and codes.
 
@@ -1894,9 +1694,9 @@ meaning is the same as a value of 0x100 in the wCode field.
 ICMP-TYPE-CODE-VAL: This rule represents a FW_ICMP_TYPE_CODE structure as defined in [MS-
 FASP] section 2.2.16. The structure MUST comply with all requirements defined in that section.
 
-2.2.2.17
+##### 2.2.2.17 Platform Validity Rules
 
-Platform Validity Rules
+
 
 This grammar is used to identify platform validity objects.
 
@@ -1912,7 +1712,8 @@ Release: April 23, 2024
 
 24 / 96
 
- OS-MINOR-VER = 1*3DIGIT
+
+ OS-MINOR-VER = 1*3DIGIT
 
 PLATFORM: This grammar rule represents the 3 least significant bits of the bPlatform field of the
 FW_OS_PLATFORM structure as defined in [MS-FASP] section 2.2.30. The grammar rule
@@ -1931,9 +1732,9 @@ PLATFORM-VAL: This rule represents a FW_OS_PLATFORM structure as defined in [MS-
 section 2.2.30, with the exception of the 5 most significant bits of the bPlatform field. The
 structure MUST comply with all requirements defined in that section.
 
-2.2.2.18
+##### 2.2.2.18 Platform Validity Operators Rules
 
-Platform Validity Operators Rules
+
 
 This grammar is used to identify platform validity objects.
 
@@ -1948,9 +1749,9 @@ last FW_OS_PLATFORM structure entry (as defined in [MS-FASP] section 2.2.30), of
 pPlatforms field of the FW_OS_PLATFORM_LIST structure as defined in [MS-FASP] section
 2.2.31.
 
-2.2.2.19
+##### 2.2.2.19 Firewall Rule and the Firewall Rule Grammar Rule
 
-Firewall Rule and the Firewall Rule Grammar Rule
+
 
 Firewall rules are stored under the Software\Policies\Microsoft\WindowsFirewall\FirewallRules key.
 
@@ -1984,7 +1785,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- TYPE-VALUE =/ "App=" APP-VAL
+
+ TYPE-VALUE =/ "App=" APP-VAL
  TYPE-VALUE =/ "Svc=" SVC-VAL
  TYPE-VALUE =/ "LA4=" ( ADDRESSV4-RANGE-VAL / ADDRESSV4-SUBNET-VAL )
  TYPE-VALUE =/ "RA4=" ( ADDRESSV4-RANGE-VAL / ADDRESSV4-SUBNET-VAL / ADDRESS-KEYWORD-VAL )
@@ -2058,7 +1860,8 @@ Release: April 23, 2024
 
 26 / 96
 
-Dir=: This token value represents the Direction field of the FW_RULE structure. The DIR-VAL
+
+Dir=: This token value represents the Direction field of the FW_RULE structure. The DIR-VAL
 
 grammar rule represents the value contents of this field. This token MUST appear at most once in
 a rule string.
@@ -2131,7 +1934,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IFType=: This token represents the dwLocalInterfaceType field of the FW_RULE structure.
+
+IFType=: This token represents the dwLocalInterfaceType field of the FW_RULE structure.
 
 App=: This token represents the wszLocalApplication field of the FW_RULE structure. The
 
@@ -2200,7 +2004,8 @@ Release: April 23, 2024
 
 28 / 96
 
-Desc=: This token represents the wszDescription field of the FW_RULE structure. The STR-VAL
+
+Desc=: This token represents the wszDescription field of the FW_RULE structure. The STR-VAL
 grammar rule represents a Unicode string that represents the contents of such field. This token
 MUST appear at most once in a rule string.
 
@@ -2272,7 +2077,8 @@ Release: April 23, 2024
 
 29 / 96
 
-AuthByPassOut=: This token represents the FW_RULE_FLAGS_AUTHENTICATE_BYPASS_OUTBOUND
+
+AuthByPassOut=: This token represents the FW_RULE_FLAGS_AUTHENTICATE_BYPASS_OUTBOUND
 flag (as defined in [MS-FASP] section 2.2.35) of the wFlags field of the FW_RULE structure. The
 BOOL-VAL grammar rule represents the Boolean meaning of such flag as defined in section
 2.2.2.14. If the "AuthByPassOut=" token does not appear in the rule a Boolean value of false is
@@ -2345,7 +2151,8 @@ Release: April 23, 2024
 
 30 / 96
 
-TTK=: This token value represents the dwTrustTupleKeywords field of the FW_RULE structure.
+
+TTK=: This token value represents the dwTrustTupleKeywords field of the FW_RULE structure.
 
 The TRUST-TUPLE-KEYWORD-VAL grammar rule represents a flag in the
 dwTrustTupleKeywords field. If the "TTK=" token appears multiple times in the rule string, then
@@ -2390,9 +2197,9 @@ cannot appear in a rule string where a "ICMP4=" or a "ICMP6=" token appears and 
 The semantic checks described in [MS-FASP] section 2.2.37 are also applicable to the firewall rules
 described in this section after following the mapping in each of the preceding tokens.
 
-2.2.2.20
+##### 2.2.2.20 Trust Tuple Keyword Rules
 
-Trust Tuple Keyword Rules
+
 
 This grammar SHOULD<6> be used to identify trust tuple keywords.
 
@@ -2416,7 +2223,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WFDPrint: This token represents the FW_TRUST_TUPLE_KEYWORD_WFD_Print enumeration
+
+WFDPrint: This token represents the FW_TRUST_TUPLE_KEYWORD_WFD_Print enumeration
 
 value.
 
@@ -2438,7 +2246,7 @@ WFDCDPSvc: This token represents the FW_TRUST_TUPLE_KEYWORD_WFD_CDP
 
 enumeration value.
 
-2.2.3  Per-Profile Policy Configuration Options
+#### 2.2.3 Per-Profile Policy Configuration Options
 
 The Per-Profile Configuration Options are values that represent the enumeration values of the
 FW_PROFILE_CONFIG enumeration type as defined in [MS-FASP] section 2.2.38. If neither the
@@ -2453,7 +2261,7 @@ Software\Policies\Microsoft\WindowsFirewall\PublicProfile key apply to the netwo
 corresponding FW_PROFILE_TYPE_PRIVATE and the FW_PROFILE_TYPE_PUBLIC enumeration
 values as defined in [MS-FASP] section 2.2.2.
 
-2.2.3.1  Enable Firewall
+##### 2.2.3.1 Enable Firewall
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2471,7 +2279,7 @@ Data: An unsigned, 32-bit integer value for which possible values are 0x00000000
 This value represents the contents assigned to the configuration option represented by the
 FW_PROFILE_CONFIG_ENABLE_FW enumeration value as defined in [MS-FASP] section 2.2.38.
 
-2.2.3.2  Disable Stealth Mode
+##### 2.2.3.2 Disable Stealth Mode
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2487,7 +2295,8 @@ Release: April 23, 2024
 
 32 / 96
 
-Type: REG_DWORD.
+
+Type: REG_DWORD.
 
 Size: Equal to size of the Data field.
 
@@ -2497,7 +2306,7 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DISABLE_STEALTH_MODE enumeration value as defined in [MS-FASP]
 section 2.2.38.
 
-2.2.3.3  Shield Up Mode
+##### 2.2.3.3 Shield Up Mode
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2515,7 +2324,7 @@ Data: An unsigned, 32-bit integer value for which possible values are 0x00000000
 This value represents the contents assigned to the configuration option represented by the
 FW_PROFILE_CONFIG_SHIELDED enumeration value as defined in [MS-FASP] section 2.2.38.
 
-2.2.3.4  Disable Unicast Responses to Multicast and Broadcast Traffic
+##### 2.2.3.4 Disable Unicast Responses to Multicast and Broadcast Traffic
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2534,7 +2343,7 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DISABLE_UNICAST_RESPONSES_TO_MULTICAST_BROADCAST
 enumeration value as defined in [MS-FASP] section 2.2.38.
 
-2.2.3.5  Log Dropped Packets
+##### 2.2.3.5 Log Dropped Packets
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging,
@@ -2554,13 +2363,14 @@ Release: April 23, 2024
 
 33 / 96
 
-Data: An unsigned, 32-bit integer value for which possible values are 0x00000000 or 0x00000001.
+
+Data: An unsigned, 32-bit integer value for which possible values are 0x00000000 or 0x00000001.
 
 This value represents the contents assigned to the configuration option represented by the
 FW_PROFILE_CONFIG_LOG_DROPPED_PACKETS enumeration value as defined in [MS-FASP]
 section 2.2.38.
 
-2.2.3.6  Log Successful Connections
+##### 2.2.3.6 Log Successful Connections
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging,
@@ -2579,7 +2389,7 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_LOG_SUCCESS_CONNECTIONS enumeration value as defined in [MS-
 FASP] section 2.2.38.
 
-2.2.3.7  Log Ignored Rules
+##### 2.2.3.7 Log Ignored Rules
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging,
@@ -2598,7 +2408,7 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_LOG_IGNORED_RULES enumeration value as defined in [MS-FASP]
 section 2.2.38.
 
-2.2.3.8  Maximum Log File Size
+##### 2.2.3.8 Maximum Log File Size
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging,
@@ -2620,11 +2430,12 @@ Release: April 23, 2024
 
 34 / 96
 
-This value represents the contents assigned to the configuration option represented by the
+
+This value represents the contents assigned to the configuration option represented by the
 FW_PROFILE_CONFIG_LOG_MAX_FILE_SIZE enumeration value as defined in [MS-FASP] section
 2.2.38.
 
-2.2.3.9  Log File Path
+##### 2.2.3.9 Log File Path
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\Logging,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\Logging,
@@ -2643,9 +2454,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_LOG_FILE_PATH enumeration value as defined in [MS-FASP] section
 2.2.38.
 
-2.2.3.10
+##### 2.2.3.10 Disable Inbound Notifications
 
-Disable Inbound Notifications
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2664,9 +2475,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS enumeration value as defined in
 [MS-FASP] section 2.2.38.
 
-2.2.3.11
+##### 2.2.3.11 Allow Authenticated Applications User Preference Merge
 
-Allow Authenticated Applications User Preference Merge
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\AuthorizedApplications,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\AuthorizedApplications,
@@ -2688,13 +2499,14 @@ Release: April 23, 2024
 
 35 / 96
 
-This value represents the contents assigned to the configuration option represented by the
+
+This value represents the contents assigned to the configuration option represented by the
 FW_PROFILE_CONFIG_AUTH_APPS_ALLOW_USER_PREF_MERGE enumeration value as defined
 in [MS-FASP] section 2.2.38.
 
-2.2.3.12
+##### 2.2.3.12 Allow Globally Open Ports User Preference Merge
 
-Allow Globally Open Ports User Preference Merge
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile\GloballyOpenPorts,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile\GloballyOpenPorts,
@@ -2713,9 +2525,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_GLOBAL_PORTS_ALLOW_USER_PREF_MERGE enumeration value as
 defined in [MS-FASP] section 2.2.38.
 
-2.2.3.13
+##### 2.2.3.13 Allow Local Firewall Rule Policy Merge
 
-Allow Local Firewall Rule Policy Merge
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2734,9 +2546,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_ALLOW_LOCAL_POLICY_MERGE enumeration value as defined in [MS-
 FASP] section 2.2.38.
 
-2.2.3.14
+##### 2.2.3.14 Allow Local IPsec Policy Merge
 
-Allow Local IPsec Policy Merge
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2758,13 +2570,14 @@ Release: April 23, 2024
 
 36 / 96
 
-This value represents the contents assigned to the configuration option represented by the
+
+This value represents the contents assigned to the configuration option represented by the
 FW_PROFILE_CONFIG_ALLOW_LOCAL_IPSEC_POLICY_MERGE enumeration value as defined in
 [MS-FASP] section 2.2.38.
 
-2.2.3.15
+##### 2.2.3.15 Disabled Interfaces
 
-Disabled Interfaces
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2790,9 +2603,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DISABLED_INTERFACES enumeration value as defined in [MS-FASP]
 section 2.2.38.
 
-2.2.3.16
+##### 2.2.3.16 Default Outbound Action
 
-Default Outbound Action
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2811,9 +2624,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DEFAULT_OUTBOUND_ACTION enumeration value as defined in [MS-
 FASP] section 2.2.38.
 
-2.2.3.17
+##### 2.2.3.17 Default Inbound Action
 
-Default Inbound Action
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2829,7 +2642,8 @@ Release: April 23, 2024
 
 37 / 96
 
-Type: REG_DWORD.
+
+Type: REG_DWORD.
 
 Size: Equal to size of the Data field.
 
@@ -2839,9 +2653,9 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DEFAULT_INBOUND_ACTION enumeration value as defined in [MS-FASP]
 section 2.2.38.
 
-2.2.3.18
+##### 2.2.3.18 Disable Stealth Mode for IPsec Secured Packets
 
-Disable Stealth Mode for IPsec Secured Packets
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\DomainProfile,
 Software\Policies\Microsoft\WindowsFirewall\PrivateProfile,
@@ -2860,7 +2674,7 @@ This value represents the contents assigned to the configuration option represen
 FW_PROFILE_CONFIG_DISABLE_STEALTH_MODE_IPSEC_SECURED_PACKET_EXEMPTION
 enumeration value as defined in [MS-FASP] section 2.2.38.
 
-2.2.4  Authentication Sets
+#### 2.2.4 Authentication Sets
 
 The Authentication Set represents FW_AUTH_SET structures (as defined in [MS-FASP] section
 2.2.65). These objects are encoded under the
@@ -2898,7 +2712,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value: "{E5A5D32A-4BCE-4E4D-B07F-4AB1BA7E5FE3}"
+
+Value: "{E5A5D32A-4BCE-4E4D-B07F-4AB1BA7E5FE3}"
 
 Type: REG_SZ.
 
@@ -2918,7 +2733,7 @@ Size: Equal to size of the Data field.
 Data: this value encodes a Unicode string containing the set id value to which a phase 2 set with an
 original set id of "{E5A5D32A-4BCE-4E4D-B07F-4AB1BA7E5FE4}" had to rename itself to.
 
-2.2.4.1  Version
+##### 2.2.4.1 Version
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2AuthenticationSet\<wszSetId>.
@@ -2935,7 +2750,7 @@ Data: this value encodes a Unicode string using the VERSION grammar rule defined
 This value represents the values of the wSchemaVersion field of the FW_AUTH_SET structure as
 defined in [MS-FASP] section 2.2.65.
 
-2.2.4.2  Name
+##### 2.2.4.2 Name
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2AuthenticationSet\<wszSetId>,
@@ -2951,7 +2766,7 @@ Data: a Unicode string.
 This value represents the wszName field of the FW_AUTH_SET structure as defined in [MS-FASP]
 section 2.2.65.
 
-2.2.4.3  Description
+##### 2.2.4.3 Description
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2AuthenticationSet\<wszSetId>,
@@ -2965,7 +2780,8 @@ Release: April 23, 2024
 
 39 / 96
 
-Type: REG_SZ.
+
+Type: REG_SZ.
 
 Size: Equal to size of the Data field.
 
@@ -2974,7 +2790,7 @@ Data: a Unicode string.
 This value represents the wszDescription field of the FW_AUTH_SET structure as defined in [MS-
 FASP] section 2.2.65.
 
-2.2.4.4  EmbeddedContext
+##### 2.2.4.4 EmbeddedContext
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2AuthenticationSet\<wszSetId>,
@@ -2990,7 +2806,7 @@ Data: a Unicode string.
 This value represents the wszEmbeddedContext field of the FW_AUTH_SET structure as defined in
 [MS-FASP] section 2.2.65.
 
-2.2.4.5  Suite Keys
+##### 2.2.4.5 Suite Keys
 
 Each authentication set contains a list of suites corresponding to the authentication proposals that will
 be negotiated. These suites can be stored in
@@ -3006,7 +2822,7 @@ following sections describe how these suites are encoded. The semantic checks de
 FASP] section 2.2.63 are also applicable to the authentication suites described in this section after
 following the mapping of the following registry values and tokens.
 
-2.2.4.6  Phase 1 and Phase 2 Auth Suite Methods
+##### 2.2.4.6 Phase 1 and Phase 2 Auth Suite Methods
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>,
@@ -3032,7 +2848,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Anonymous - this token represents the FW_AUTH_METHOD_ANONYMOUS enumeration value as
+
+Anonymous - this token represents the FW_AUTH_METHOD_ANONYMOUS enumeration value as
 defined in [MS-FASP] section 2.2.60. The remaining tokens can be found in the same Protocol
 specification section.
 
@@ -3059,7 +2876,7 @@ section 2.2.63. If the value is read from a phase 1 key then the PHASE1-AUTH-MET
 rule MUST be used. If the value is read from a phase 2 key then the PHASE2-AUTH-METHOD-VAL
 grammar rule MUST be used.
 
-2.2.4.7  Phase 1 and Phase 2 Auth Suite Certificate Authority Names
+##### 2.2.4.7 Phase 1 and Phase 2 Auth Suite Certificate Authority Names
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>,
@@ -3076,7 +2893,7 @@ This value represents the wszCAName field of the FW_AUTH_SUITE structure as defi
 FASP] section 2.2.63. If this value appears in the Suite Key, then the SHKey value defined in the next
 section MUST NOT appear.
 
-2.2.4.8  Phase 1 Auth Suite Preshared Key
+##### 2.2.4.8 Phase 1 Auth Suite Preshared Key
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>.
 
@@ -3098,7 +2915,8 @@ Release: April 23, 2024
 
 41 / 96
 
-2.2.4.9  Phase 1 and Phase 2 Auth Suite Certificate Account Mapping
+
+##### 2.2.4.9 Phase 1 and Phase 2 Auth Suite Certificate Account Mapping
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>,
@@ -3117,9 +2935,9 @@ defined in [MS-FASP] section 2.2.61) of the wFlags field of the FW_AUTH_SUITE st
 defined in [MS-FASP] section 2.2.63. If this value appears under the suite key, then the SHKey value
 defined in section 2.2.4.5.3 MUST NOT appear.
 
-2.2.4.10
+##### 2.2.4.10 Phase 1 Auth Suite Exclude CA Name
 
-Phase 1 Auth Suite Exclude CA Name
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>.
 
@@ -3137,9 +2955,9 @@ This value represents the FW_AUTH_SUITE_FLAGS_CERT_EXCLUDE_CA_NAME flag (as defi
 FASP] section 2.2.63. If this value appears in the Suite Key, then the SHKey value defined in section
 2.2.4.5.3 MUST NOT appear.
 
-2.2.4.11
+##### 2.2.4.11 Phase 1 and Phase 2 Auth Suite Health Cert
 
-Phase 1 and Phase 2 Auth Suite Health Cert
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>,
@@ -3165,9 +2983,10 @@ Release: April 23, 2024
 
 42 / 96
 
-2.2.4.12
 
-Phase 1 and Phase 2 Auth Suite Skip Version
+##### 2.2.4.12 Phase 1 and Phase 2 Auth Suite Skip Version
+
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>,
@@ -3184,9 +3003,9 @@ section 2.2.2.19.
 If the Firewall and Advanced Security component parsing this suite key has a schema version smaller
 than or equal to the version value in this value, then it MUST skip this suite altogether.
 
-2.2.4.13
+##### 2.2.4.13 Phase 1 and Phase 2 Auth Suite Other Certificate Signing
 
-Phase 1 and Phase 2 Auth Suite Other Certificate Signing
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>,
@@ -3215,9 +3034,9 @@ if the schema version of the authentication set, as defined in section 2.2.4.1, 
 0x0201 or higher. Whenever this value is found in the suite key, a SkipVersion value MUST also be
 present, and MUST contain a version of 0x0200.
 
-2.2.4.14
+##### 2.2.4.14 Phase 1 and Phase 2 Auth Suite Intermediate CA
 
-Phase 1 and Phase 2 Auth Suite Intermediate CA
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>, or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>.
@@ -3238,15 +3057,16 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This value represents the FW_AUTH_SUITE_FLAGS_INTERMEDIATE_CA flag (as defined in [MS-FASP]
+
+This value represents the FW_AUTH_SUITE_FLAGS_INTERMEDIATE_CA flag (as defined in [MS-FASP]
 section 2.2.61) of the wFlags field of the FW_AUTH_SUITE structure as defined in [MS-FASP]
 section 2.2.63. This value MUST be present only if the schema version of the authentication set as
 defined in section 2.2.4.1 contains a version of 0x020A or higher. Whenever this value is found in the
 suite key, a SkipVersion value MUST also be present, and MUST contain a version of 0x0208.
 
-2.2.4.15
+##### 2.2.4.15 Certificate Criteria Type Tokens
 
-Certificate Criteria Type Tokens
+
 
 This grammar is used to identify the types of certificate criteria.
 
@@ -3261,9 +3081,9 @@ Select: This token value represents the FW_CERT_CRITERIA_TYPE_SELECTION enumerat
 Validate: This token value represents the FW_CERT_CRITERIA_TYPE_VALIDATION enumeration
 value.
 
-2.2.4.16
+##### 2.2.4.16 Certificate Criteria Name Type Tokens
 
-Certificate Criteria Name Type Tokens
+
 
 This grammar is used to identify the type of a name used in certificate criteria.
 
@@ -3285,9 +3105,9 @@ O: This token value represents the FW_CERT_CRITERIA_NAME_O enumeration value.
 
 DC: This token value represents the FW_CERT_CRITERIA_NAME_DC enumeration value.
 
-2.2.4.17
+##### 2.2.4.17 Phase 1 and Phase 2 Auth Suite Certificate Criteria
 
-Phase 1 and Phase 2 Auth Suite Certificate Criteria
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex> or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>
@@ -3308,7 +3128,8 @@ Release: April 23, 2024
 
 44 / 96
 
- VERSION = MAJOR-VER "." MINOR-VER
+
+ VERSION = MAJOR-VER "." MINOR-VER
 
  MAJOR-VER = 1*3DIGIT
  MINOR-VER = 1*3DIGIT
@@ -3377,9 +3198,10 @@ Release: April 23, 2024
 
 45 / 96
 
-2.2.4.18
 
-Phase 1 and Phase 2 Auth Suite Allow Kerberos Proxy
+##### 2.2.4.18 Phase 1 and Phase 2 Auth Suite Allow Kerberos Proxy
+
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex> or
 Software\Policies\...\Phase2AuthenticationSet\<wszSetId>\<SuiteIndex>
@@ -3397,9 +3219,9 @@ This value represents the FW_AUTH_SUITE_FLAGS_ALLOW_PROXY flag (as defined in [M
 section 2.2.61) of the wFlags field of the FW_AUTH_SUITE structure as defined in [MS-
 FASP]section 2.2.63.
 
-2.2.4.19
+##### 2.2.4.19 Phase 1 and Phase 2 Auth Suite Kerberos Proxy Server
 
-Phase 1 and Phase 2 Auth Suite Kerberos Proxy Server
+
 
 Keys: Software\Policies\...\Phase1AuthenticationSet\<wszSetId>\<SuiteIndex>
 
@@ -3414,7 +3236,7 @@ Data: A Unicode string.
 This value represents the wszProxyServer field of the FW_AUTH_SUITE structure as defined in
 [MS-FASP] section 2.2.63.
 
-2.2.5  Cryptographic Sets
+#### 2.2.5 Cryptographic Sets
 
 The Cryptographic Sets represents FW_CRYPTO_SET structures as defined in [MS-FASP] section
 2.2.74. These objects are encoded under the
@@ -3447,7 +3269,8 @@ Release: April 23, 2024
 
 46 / 96
 
-Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet
+
+Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet
 
 Value: "{E5A5D32A-4BCE-4E4D-B07F-4AB1BA7E5FE1}"
 
@@ -3469,7 +3292,7 @@ Size: Equal to size of the Data field.
 Data: this value encodes a Unicode string containing the set id value to which a phase 2 set with an
 original set id of "{E5A5D32A-4BCE-4E4D-B07F-4AB1BA7E5FE2}" had to rename itself to.
 
-2.2.5.1  Version
+##### 2.2.5.1 Version
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\<wszSetId>.
@@ -3486,7 +3309,7 @@ Data: this value encodes a Unicode string using the VERSION grammar rule defined
 This value represents the values of the wSchemaVersion field of the FW_CRYPTO_SET structure as
 defined in [MS-FASP] section 2.2.74.
 
-2.2.5.2  Name
+##### 2.2.5.2 Name
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\<wszSetId>.
@@ -3502,7 +3325,7 @@ Data: a Unicode string.
 This value represents the wszName field of the FW_CRYPTO_SET structure as defined in [MS-FASP]
 section 2.2.74.
 
-2.2.5.3  Description
+##### 2.2.5.3 Description
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\<wszSetId>.
@@ -3514,7 +3337,8 @@ Release: April 23, 2024
 
 47 / 96
 
-Value: "Description"
+
+Value: "Description"
 
 Type: REG_SZ.
 
@@ -3525,7 +3349,7 @@ Data: a Unicode string.
 This value represents the wszDescription field of the FW_CRYPTO_SET structure as defined in
 [MS-FASP] section 2.2.74.
 
-2.2.5.4  EmbeddedContext
+##### 2.2.5.4 EmbeddedContext
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>, or
 Software\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\<wszSetId>.
@@ -3541,7 +3365,7 @@ Data: a Unicode string.
 This value represents the wszEmbeddedContext field of the FW_CRYPTO_SET structure as defined
 in [MS-FASP] section 2.2.74.
 
-2.2.5.5  Phase 1 - Do Not Skip Deffie Hellman
+##### 2.2.5.5 Phase 1 - Do Not Skip Deffie Hellman
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>.
 
@@ -3558,7 +3382,7 @@ This value represents the FW_PHASE1_CRYPTO_FLAGS_DO_NOT_SKIP_DH enumeration flag
 defined in [MS-FASP] section 2.2.72) of the wFlags field of the FW_CRYPTO_SET structure as
 defined in [MS-FASP] section 2.2.74.
 
-2.2.5.6  Phase 1 - Time Out in Minutes
+##### 2.2.5.6 Phase 1 - Time Out in Minutes
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>.
 
@@ -3579,13 +3403,14 @@ Release: April 23, 2024
 
 48 / 96
 
-TIMEOUT-MIN-VAL = the decimal value of this grammar rule MUST NOT be bigger than the decimal
+
+TIMEOUT-MIN-VAL = the decimal value of this grammar rule MUST NOT be bigger than the decimal
 value of 71582788.
 
 This value represents the dwTimeoutMinutes field of the FW_CRYPTO_SET structure as defined in
 [MS-FASP] section 2.2.74.
 
-2.2.5.7  Phase 1 - Time Out in Sessions
+##### 2.2.5.7 Phase 1 - Time Out in Sessions
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase1CryptoSet\<wszSetId>.
 
@@ -3606,7 +3431,7 @@ decimal value of 2147483647.
 This value represents the dwTimeoutSessions field of the FW_CRYPTO_SET structure as defined
 in [MS-FASP] section 2.2.74.
 
-2.2.5.8  Phase 2 - Perfect Forward Secrecy
+##### 2.2.5.8 Phase 2 - Perfect Forward Secrecy
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\<wszSetId>.
 
@@ -3648,14 +3473,15 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ReKeyECDH384: This token represents the FW_PHASE2_CRYPTO_PFS_ECDH384 enumeration
+
+ReKeyECDH384: This token represents the FW_PHASE2_CRYPTO_PFS_ECDH384 enumeration
 
 value.
 
 This value represents the Pfs field of the FW_CRYPTO_SET structure as defined in [MS-FASP]
 section 2.2.74.
 
-2.2.5.9  Phase 1 - Suite Keys
+##### 2.2.5.9 Phase 1 - Suite Keys
 
 Each authentication set can contain a list of suites corresponding to the cryptographic proposals that
 will be negotiated. These suites are stored in
@@ -3670,9 +3496,9 @@ following sections describe how these phase 1 cryptographic suites are encoded. 
 described in [MS-FASP] section 2.2.70 are also applicable to the cryptographic phase 1 suites
 described in this section after following the mapping of the registry values and tokens.
 
-2.2.5.10
+##### 2.2.5.10 Phase 1 Suite - Key Exchange Algorithm
 
-Phase 1 Suite - Key Exchange Algorithm
+
 
 Keys: Software\Policies\...\Phase1CryptoSet\<wszSetId>\<SuiteIndex>.
 
@@ -3708,9 +3534,9 @@ value.
 This value represents the KeyExchange field of the FW_PHASE1_CRYPTO_SUITE structure as
 defined in [MS-FASP] section 2.2.70.
 
-2.2.5.11
+##### 2.2.5.11 Phase 1 Suite - Encryption Algorithm
 
-Phase 1 Suite - Encryption Algorithm
+
 
 Keys: Software\Policies\...\Phase1CryptoSet\<wszSetId>\<SuiteIndex>.
 
@@ -3723,7 +3549,8 @@ Release: April 23, 2024
 
 50 / 96
 
-Type: REG_SZ.
+
+Type: REG_SZ.
 
 Size: Equal to size of the Data field.
 
@@ -3746,9 +3573,9 @@ AES-256: This token represents the FW_CRYPTO_ENCRYPTION_AES256 enumeration value
 This value represents the Encryption field of the FW_PHASE1_CRYPTO_SUITE structure as defined
 in [MS-FASP] section 2.2.70.
 
-2.2.5.12
+##### 2.2.5.12 Phase 1 Suite - Hash Algorithm
 
-Phase 1 Suite - Hash Algorithm
+
 
 Keys: Software\Policies\...\Phase1CryptoSet\<wszSetId>\<SuiteIndex>.
 
@@ -3773,9 +3600,9 @@ SHA1: This token represents the FW_CRYPTO_HASH_SHA1 enumeration value as defined
 This value represents the Hash field of the FW_PHASE1_CRYPTO_SUITE structure as defined in
 [MS-FASP] section 2.2.70.
 
-2.2.5.13
+##### 2.2.5.13 Phase 1 Suite Skip Version
 
-Phase 1 Suite Skip Version
+
 
 Keys: Software\Policies\...\Phase1CryptoSet\<wszSetId>\<SuiteIndex>.
 
@@ -3795,12 +3622,13 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the Firewall and Advanced Security component parsing this suite key has a schema version smaller
+
+If the Firewall and Advanced Security component parsing this suite key has a schema version smaller
 than or equal to the version value in this value, then it MUST skip this suite altogether.
 
-2.2.5.14
+##### 2.2.5.14 Phase 1 Suite - 2.1 Hash Algorithm
 
-Phase 1 Suite - 2.1 Hash Algorithm
+
 
 Keys: Software\Policies\...\Phase1CryptoSet\<wszSetId>\<SuiteIndex>.
 
@@ -3826,9 +3654,9 @@ This value represents the Hash field of the FW_PHASE1_CRYPTO_SUITE structure as 
 [MS-FASP] section 2.2.70. If this value appears in the suite key, then a SkipVersion value with a
 version of 0x0200 or higher MUST be present.
 
-2.2.5.15
+##### 2.2.5.15 Phase 1 Suite - 2.16 Key Exchange Algorithm
 
-Phase 1 Suite - 2.16 Key Exchange Algorithm
+
 
 Keys: Software\Policies\...\Phase1CryptoSet\<wszSetId>\<SuiteIndex>.
 
@@ -3870,12 +3698,13 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This value represents the KeyExchange field of the FW_PHASE1_CRYPTO_SUITE structure as
+
+This value represents the KeyExchange field of the FW_PHASE1_CRYPTO_SUITE structure as
 defined in [MS-FASP] section 2.2.70.
 
-2.2.5.16
+##### 2.2.5.16 Phase 2 - Suite Keys
 
-Phase 2 - Suite Keys
+
 
 Each authentication set could contain a list of suites which express cryptographic proposals that will be
 negotiated. These suites can be stored in
@@ -3890,9 +3719,9 @@ following sections describe how these phase 2 cryptographic suites are encoded. 
 described in [MS-FASP] section 2.2.71 are also applicable to the cryptographic phase 2 suites
 described in this section after following the mapping of the registry values and tokens.
 
-2.2.5.17
+##### 2.2.5.17 Phase 2 Suite - Protocol
 
-Phase 2 Suite - Protocol
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -3917,9 +3746,9 @@ AH&ESP: This token represents the FW_CRYPTO_PROTOCOL_BOTH enumeration value.
 This value represents the Protocol field of the FW_PHASE2_CRYPTO_SUITE structure as defined in
 [MS-FASP] section 2.2.71.
 
-2.2.5.18
+##### 2.2.5.18 Phase 2 Suite - Encryption Algorithm
 
-Phase 2 Suite - Encryption Algorithm
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -3942,9 +3771,10 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5.19
 
-Phase 2 Suite - AH Protocol Hash Algorithm
+##### 2.2.5.19 Phase 2 Suite - AH Protocol Hash Algorithm
+
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -3960,9 +3790,9 @@ Data: this value is a Unicode string encoded using the HASH-VAL grammar rule def
 This value represents the AhHash field of the FW_PHASE2_CRYPTO_SUITE structure as defined in
 [MS-FASP] section 2.2.71.
 
-2.2.5.20
+##### 2.2.5.20 Phase 2 Suite - ESP Protocol Hash Algorithm
 
-Phase 2 Suite - ESP Protocol Hash Algorithm
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -3978,9 +3808,9 @@ Data: this value is a Unicode string encoded using the HASH-VAL grammar rule def
 This value represents the EspHash field of the FW_PHASE2_CRYPTO_SUITE structure as defined in
 [MS-FASP] section 2.2.71.
 
-2.2.5.21
+##### 2.2.5.21 Phase 2 Suite - Time Out in Minutes
 
-Phase 2 Suite - Time Out in Minutes
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4000,9 +3830,9 @@ than the decimal value of 2880.
 This value represents the dwTimeoutMinutes field of the FW_PHASE2_CRYPTO_SUITE structure
 as defined in [MS-FASP] section 2.2.71.
 
-2.2.5.22
+##### 2.2.5.22 Phase 2 Suite - Time Out in Kilobytes
 
-Phase 2 Suite - Time Out in Kilobytes
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4017,7 +3847,8 @@ Release: April 23, 2024
 
 54 / 96
 
-Size: Equal to size of the Data field.
+
+Size: Equal to size of the Data field.
 
 Data: this value is a Unicode string that encodes a decimal number using the following grammar rule:
 
@@ -4029,9 +3860,9 @@ than the decimal value of 2147483647.
 This value represents the dwTimeoutKBytes field of the FW_PHASE2_CRYPTO_SUITE structure
 as defined in [MS-FASP] section 2.2.71.
 
-2.2.5.23
+##### 2.2.5.23 Phase 2 Suite - Skip Version
 
-Phase 2 Suite - Skip Version
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4047,9 +3878,9 @@ section 2.2.2.19.
 If the Firewall and Advanced Security component parsing this suite key has a schema version smaller
 than or equal to the version value in this value, then it MUST skip this suite altogether.
 
-2.2.5.24
+##### 2.2.5.24 Phase 2 Suite - 2.1 Encryption Algorithm
 
-Phase 2 Suite - 2.1 Encryption Algorithm
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4086,9 +3917,10 @@ Release: April 23, 2024
 
 55 / 96
 
-2.2.5.25
 
-Phase 2 Suite - 2.1 AH Hash Algorithm
+##### 2.2.5.25 Phase 2 Suite - 2.1 AH Hash Algorithm
+
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4122,9 +3954,9 @@ This value represents the AhHash field of the FW_PHASE2_CRYPTO_SUITE structure a
 [MS-FASP] section 2.2.71. If this value appears in the suite key, then a SkipVersion value with a
 version of 0x0200 MUST be present.
 
-2.2.5.26
+##### 2.2.5.26 Phase 2 Suite - 2.1 ESP Hash Algorithm
 
-Phase 2 Suite - 2.1 ESP Hash Algorithm
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4141,9 +3973,9 @@ This value represents the EspHash field of the FW_PHASE2_CRYPTO_SUITE structure 
 [MS-FASP] section 2.2.71. If this value appears in the suite key, then a SkipVersion value with a
 version of 0x0200 MUST be present.
 
-2.2.5.27
+##### 2.2.5.27 Phase 2 Suite - 2.9 Protocol
 
-Phase 2 Suite - 2.9 Protocol
+
 
 Keys: Software\Policies\...\Phase2CryptoSets\<wszSetId>\<SuiteIndex>.
 
@@ -4162,7 +3994,8 @@ Release: April 23, 2024
 
 56 / 96
 
- PROTOCOL2-9-VAL = "AUTH_NO_ENCAP"
+
+ PROTOCOL2-9-VAL = "AUTH_NO_ENCAP"
 
 AUTH_NO_ENCAP: This token represents the FW_CRYPTO_PROTOCOL_AUTH_NO_ENCAP
 
@@ -4172,9 +4005,9 @@ This value represents the Protocol field of the FW_PHASE2_CRYPTO_SUITE structure
 [MS-FASP] section 2.2.71. If this value appears in the suite key, then a SkipVersion value with a
 version of 0x0209 MUST be present.
 
-2.2.5.28
+##### 2.2.5.28 Phase 2 - 2.16 Perfect Forward Secrecy
 
-Phase 2 - 2.16 Perfect Forward Secrecy
+
 
 Keys: Software\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\<wszSetId>.
 
@@ -4218,11 +4051,11 @@ ReKeyDH24: This token represents the FW_PHASE2_CRYPTO_PFS_DH24 enumeration value
 This value represents the Pfs field of the FW_CRYPTO_SET structure as defined in [MS-FASP] section
 2.2.74.
 
-2.2.6  Connection Security Rule Messages
+#### 2.2.6 Connection Security Rule Messages
 
 This section defines the grammars used to encode different portions of the Connection Security rules.
 
-2.2.6.1  Connection Security Action Tokens
+##### 2.2.6.1 Connection Security Action Tokens
 
 This grammar is used to identify the actions available for firewall rules.
 
@@ -4233,7 +4066,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- CS-ACTION-VAL = "SecureServer" / "Boundary" / "Secure" / "DoNotSecure"
+
+ CS-ACTION-VAL = "SecureServer" / "Boundary" / "Secure" / "DoNotSecure"
 
 SecureServer: This token value represents the FW_CS_RULE_ACTION_SECURE_SERVER
 enumeration value as defined in [MS-FASP] section 2.2.52. The remaining token values in this list can
@@ -4247,7 +4081,7 @@ Secure: This token value represents the FW_CS_RULE_ACTION_SECURE enumeration val
 DoNotSecure: This token value represents the FW_CS_RULE_ACTION_DO_NOT_SECURE
 enumeration value.
 
-2.2.6.2  Connection Security Rule and the Connection Security Rule Grammar Rule
+##### 2.2.6.2 Connection Security Rule and the Connection Security Rule Grammar Rule
 
 Connection security rules are stored under the
 Software\Policies\Microsoft\WindowsFirewall\ConSecRules key.
@@ -4304,7 +4138,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- TYPE-VALUE =/ "RTunEndpts4=" ( ADDRESSV4-RANGE-VAL / ADDRESSV4-SUBNET-VAL / ADDRESS-KEYWORD-
+
+ TYPE-VALUE =/ "RTunEndpts4=" ( ADDRESSV4-RANGE-VAL / ADDRESSV4-SUBNET-VAL / ADDRESS-KEYWORD-
 VAL )
  TYPE-VALUE =/ "RTunEndpts6=" ( ADDRESSV6-RANGE-VAL / ADDRESSV6-SUBNET-VAL / ADDRESS-KEYWORD-
 VAL )
@@ -4376,7 +4211,8 @@ Release: April 23, 2024
 
 59 / 96
 
-EP1_4=: This token value represents the Endpoint1 field of the FW_CS_RULE structure, specifically
+
+EP1_4=: This token value represents the Endpoint1 field of the FW_CS_RULE structure, specifically
 
 the v4 fields. As such defined Endpoint1 is of type FW_ADDRESSES, it contains the following 3
 fields: a dwV4AddressKeyword field, a V4Ranges field of type FW_IPV4_RANGE_LIST,
@@ -4449,7 +4285,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Active=: This token represents the FW_CS_RULE_FLAGS_ACTIVE flag (as defined in [MS-FASP]
+
+Active=: This token represents the FW_CS_RULE_FLAGS_ACTIVE flag (as defined in [MS-FASP]
 
 section 2.2.51) of the wFlags field of the FW_CS_RULE structure. The BOOL-VAL grammar rule
 represents the Boolean meaning of such flag as defined in section 2.2.2.14. If the "Active=" token
@@ -4517,7 +4354,8 @@ Release: April 23, 2024
 
 61 / 96
 
-RTunnel6=: This token represents the LocalTunnelEndpointV6 field of the FW_CS_RULE
+
+RTunnel6=: This token represents the LocalTunnelEndpointV6 field of the FW_CS_RULE
 
 structure. The ADDRV6-VAL grammar rule represents the contents of such field. This token MUST
 appear at most once in a rule string.
@@ -4594,7 +4432,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The ADDRESSV6-RANGE-VAL grammar rule represents an entry in the pRanges field. The
+
+The ADDRESSV6-RANGE-VAL grammar rule represents an entry in the pRanges field. The
 ADDRESSV6-SUBNET-VAL grammar rule represents an entry in the pSubNets field. The
 ADDRESS-KEYWORD-VAL grammar rule, however, represents the dwV6AddressKeywords field.
 If the "RTunEndpts6=" token appears multiple times in the rule string, then all the respective
@@ -4644,7 +4483,7 @@ FALSE is assumed. This token MUST appear only once in a rule string.
 The semantic checks defined in [MS-FASP] section 2.2.55 are also applicable to the connection
 security rules described in this section after following the mapping in each of the preceding tokens.
 
-2.2.6.3  Keying Module Rules
+##### 2.2.6.3 Keying Module Rules
 
 This grammar is used to identify keying modules.
 
@@ -4664,16 +4503,17 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AuthIP: This token represents the FW_KEY_MODULE_AUTHIP enumeration value.
+
+AuthIP: This token represents the FW_KEY_MODULE_AUTHIP enumeration value.
 
 IkeV2: This token represents the FW_KEY_MODULE_IKEv2 enumeration value.
 
-2.2.7  Main Mode Rule Messages
+#### 2.2.7 Main Mode Rule Messages
 
 This section defines the grammars used to encode different portions of the Main Mode rules. Main
 Mode rules are available on schema version 0x0208 and later.
 
-2.2.7.1  Main Mode Rule and the Main Mode Rule Grammar Rule
+##### 2.2.7.1 Main Mode Rule and the Main Mode Rule Grammar Rule
 
 Main mode rules are stored under the Software\Policies\Microsoft\WindowsFirewall\MainModeRules
 key.
@@ -4733,7 +4573,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EP2_4=: This token value represents the Endpoint2 field of the FW_MM_RULE structure,
+
+EP2_4=: This token value represents the Endpoint2 field of the FW_MM_RULE structure,
 
 specifically the v4 fields, as defined in [MS-FASP] section 2.2.85. As such defined Endpoint2 is of
 type FW_ADDRESSES, it contains the following 3 fields: a dwV4AddressKeyword field, a
@@ -4806,7 +4647,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the rule string, then all the respective PLATFORM-VAL grammar rules of such appearances are
+
+the rule string, then all the respective PLATFORM-VAL grammar rules of such appearances are
 allowed.
 
 SkipVer=: The VERSION grammar rule following this token represents the highest inherent version of
@@ -4840,16 +4682,17 @@ Release: April 23, 2024
 
 66 / 96
 
-3  Protocol Details
 
-3.1  Administrative Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative Plug-in Details
 
 The administrative plug-in mediates between the user interface (UI) and a remote data store that
 contains the Firewall and advanced security Group Policy extension settings. Its purpose is to receive
 Firewall and Advanced Security policy information from a UI and to write the same policy information
 to a remote data store.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -4875,15 +4718,15 @@ implement such data using any method.<8>
 This protocol also includes one ADM element, Administered GPO (Public), which is directly accessed
 from Group Policy: Core Protocol, as specified in [MS-GPOL] section 3.3.1.3.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The Firewall and Advanced Security Group Policy administrative plug-in is invoked when an
 administrator launches the Group Policy Protocol Administrative Tool, as specified in [MS-GPOL]
@@ -4908,7 +4751,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter  Description
+
+Parameter  Description
 
 Policy
 
@@ -4924,7 +4768,7 @@ also make sure all references necessary for an object to work are appropriately 
 example: ensure that non-default sets, which a connection security rule references, are also
 configured in the policy).
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The Firewall and Advanced Security (FASP) Group Policy administrative plug-in reads extension-
 specific data from the Administered GPO (as defined in section 3.1.1) and will then pass that
@@ -4948,13 +4792,13 @@ policy files are accessed by this plug-in. The plug-in MUST use the registry pol
 in [MS-GPREG] section 2.2.1 to query and update the policy entries described in section 2.2 in the
 "registry.pol" file.
 
-3.1.5.1  Policy Administration Load Message Sequencing
+##### 3.1.5.1 Policy Administration Load Message Sequencing
 
 The Group Policy: Firewall and Advanced Security Data Structure invokes the Load Policy Settings
 Event ([MS-GPREG], section 3.1.4.1), computer-scoped Group Policy Object path of the
 Administered GPO, and receives a Policy Setting State ([MS-GPREG], section 3.2.1.1).
 
-3.1.5.2  Policy Administration Update Message Sequencing
+##### 3.1.5.2 Policy Administration Update Message Sequencing
 
 To update the Group Policy: Firewall and Advanced Security Data Structure settings, the
 administrative plug-in MUST perform the following operations, in order:
@@ -4979,7 +4823,8 @@ Release: April 23, 2024
 
 68 / 96
 
-
+
+
 
 
 
@@ -4993,27 +4838,27 @@ GPREG] section 1.9).
 "TOOL GUID" is set to the Group Policy: Firewall and Advanced Security Data Structure Tool
 extension GUID (defined in section 1.9).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The Group Policy: Firewall and Advanced Security Data Structure client maintains no state. However,
 it directly accesses the Policy Setting State from the Group Policy: Registry Extension Encoding, as
 specified in [MS-GPREG] section 3.2.1.1.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
  The Group Policy: Firewall and Advanced Security Data Structure client initializes when the host
 machine starts. The client MUST use an implementation-specific<10> method to register for
@@ -5024,15 +4869,15 @@ the values when necessary. Based on the data retrieved for these settings, the c
 abstract interface SetGroupPolicyRSoPStore() (as specified in [MS-FASP] section 3.1.6.4) to modify
 the internal state of the Firewall and Advanced Security component.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -5043,9 +4888,10 @@ Release: April 23, 2024
 
 69 / 96
 
-3.2.7  Other Local Events
 
-3.2.7.1  Policy Application Event
+#### 3.2.7 Other Local Events
+
+##### 3.2.7.1 Policy Application Event
 
 When Group Policy: Core Protocol signals the Policy Application event, the Group Policy: Firewall and
 Advanced Security Data Structure client MUST query the registry using the key and value names
@@ -5062,9 +4908,10 @@ Release: April 23, 2024
 
 70 / 96
 
-4  Protocol Examples
 
-4.1  Configuration Options Messages
+## 4 Protocol Examples
+
+### 4.1 Configuration Options Messages
 
 The following is an example of options that are configured to both enable the firewall and block
 inbound connections by default on the public profile.
@@ -5087,7 +4934,7 @@ Size: 4
 
 Data: 00000001
 
-4.2  Firewall Rule Message
+### 4.2 Firewall Rule Message
 
 The following is an example of a settings message that encodes a firewall rule object to be applied on
 client computers.
@@ -5105,7 +4952,7 @@ Data:
 2.168.1.0/255.255.255.0|LA4=192.168.0.0/255.255.255.0|RA4=LocalSubnet|RA6=LocalSubnet|App
 =c:\\path\\foo.exe|Name=Firewall Rule Test|Security=Authenticate|Security2_9=An-NoEncap|"
 
-4.3  Connection Security Rule Message
+### 4.3 Connection Security Rule Message
 
 The following is an example of a settings message that encodes connection security rule objects to be
 applied on client computers.
@@ -5129,7 +4976,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2001:4898:ffff:ffff:ffff:ffff:ffff:ffff|RTunnel6_2=2001:4898:e0:3084::2|Name=Tunnel From Internet
+
+2001:4898:ffff:ffff:ffff:ffff:ffff:ffff|RTunnel6_2=2001:4898:e0:3084::2|Name=Tunnel From Internet
 To Corp|Desc=|Auth1Set={D842F406-E895-406A-AC35-9837B6D499F4}|Auth2Set={A75A5046-
 E377-45CC-BD25-EC0F8E601CE1}|Crypto2Set={CD863A4F-CD94-4763-AD25-
 69A1378D51EB}|EmbedCtxt=|"
@@ -5159,12 +5007,12 @@ Data: "v2.10|Action=SecureServer|Active=TRUE|Name=Domain Isolation Rule|Desc=Aut
 policy|Auth1Set={212D4E36-DB6E-4EAE-A65F-1C4615EBFDDB}|Auth2Set={967F0367-F879-42EC-
 938B-C89FE8289B26}|Crypto2Set={E9A15CB6-DFC4-41F8-8D14-CA62A4EC708F}|"
 
-4.4  Authentication Set Messages
+### 4.4 Authentication Set Messages
 
 The following are an example of a settings message that encodes authentication set objects to be
 applied on client computers and used by the connection security rule example in section 4.3.
 
-4.4.1  Authentication Set { 212D4E36-DB6E-4EAE-A65F-1C4615EBFDDB }
+#### 4.4.1 Authentication Set { 212D4E36-DB6E-4EAE-A65F-1C4615EBFDDB }
 
 The following messages encode a phase 1 authentication set with set id {212D4E36-DB6E-4EAE-A65F-
 1C4615EBFDDB}:
@@ -5198,7 +5046,8 @@ Release: April 23, 2024
 
 72 / 96
 
-Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSets\{212D4E36-DB6E-
+
+Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSets\{212D4E36-DB6E-
 4EAE-A65F-1C4615EBFDDB}\0000
 
 Value: "Method"
@@ -5269,9 +5118,10 @@ Release: April 23, 2024
 
 73 / 96
 
-Data: "FALSE"
 
-4.4.2  Authentication Set { D842F406-E895-406A-AC35-9837B6D499F4 }
+Data: "FALSE"
+
+#### 4.4.2 Authentication Set { D842F406-E895-406A-AC35-9837B6D499F4 }
 
 The following messages encode a phase 1 authentication set with set id {D842F406-E895-406A-AC35-
 9837B6D499F4}:
@@ -5338,7 +5188,8 @@ Release: April 23, 2024
 
 74 / 96
 
-Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSets\{D842F406-E895-
+
+Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase1AuthenticationSets\{D842F406-E895-
 406A-AC35-9837B6D499F4}\0000
 
 Value: "ExcludeCAName"
@@ -5349,7 +5200,7 @@ Size: 12
 
 Data: "FALSE"
 
-4.4.3  Authentication Set { A75A5046-E377-45CC-BD25-EC0F8E601CE1 }
+#### 4.4.3 Authentication Set { A75A5046-E377-45CC-BD25-EC0F8E601CE1 }
 
 The following messages encode a phase 2 authentication set with set id {A75A5046-E377-45CC-
 BD25-EC0F8E601CE1}:
@@ -5376,7 +5227,7 @@ Size: 18
 
 Data: "UserKerb"
 
-4.4.4  Authentication Set { 967F0367-F879-42EC-938B-C89FE8289B26 }
+#### 4.4.4 Authentication Set { 967F0367-F879-42EC-938B-C89FE8289B26 }
 
 The following messages encode a phase 2 authentication set with set id {967F0367-F879-42EC-938B-
 C89FE8289B26}:
@@ -5406,7 +5257,8 @@ Release: April 23, 2024
 
 75 / 96
 
-Size: 96
+
+Size: 96
 
 Data: "AuthIP Domain Isolation Rule - Phase 2 Auth Set"
 
@@ -5477,18 +5329,19 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Type: REG_SZ.
+
+Type: REG_SZ.
 
 Size: 20
 
 Data: "Anonymous"
 
-4.4.5  Cryptographic Set Messages
+#### 4.4.5 Cryptographic Set Messages
 
 The following are an example of a settings message that encodes authentication set objects to be
 applied on client computers and used by the connection security rule example in section 4.3.
 
-4.4.5.1  Cryptographic Set { CD863A4F-CD94-4763-AD25-69A1378D51EB }
+##### 4.4.5.1 Cryptographic Set { CD863A4F-CD94-4763-AD25-69A1378D51EB }
 
 The following messages encode a phase 2 cryptographic set with set id {CD863A4F-CD94-4763-AD25-
 69A1378D51EB}:
@@ -5544,7 +5397,8 @@ Release: April 23, 2024
 
 77 / 96
 
-Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\{CD863A4F-CD94-4763-AD25-
+
+Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\{CD863A4F-CD94-4763-AD25-
 69A1378D51EB}\0000
 
 Value: "Encryption"
@@ -5615,7 +5469,8 @@ Release: April 23, 2024
 
 78 / 96
 
-Data: "3DES"
+
+Data: "3DES"
 
 Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\{CD863A4F-CD94-4763-AD25-
 69A1378D51EB}\0001
@@ -5650,7 +5505,7 @@ Size: 14
 
 Data: "100000"
 
-4.4.5.2  Cryptographic Set { E9A15CB6-DFC4-41F8-8D14-CA62A4EC708F }
+##### 4.4.5.2 Cryptographic Set { E9A15CB6-DFC4-41F8-8D14-CA62A4EC708F }
 
 The following messages encode a phase 2 cryptographic set with set id {E9A15CB6-DFC4-41F8-8D14-
 CA62A4EC708F}:
@@ -5684,7 +5539,8 @@ Release: April 23, 2024
 
 79 / 96
 
-Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\{E9A15CB6-DFC4-41F8-8D14-
+
+Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\{E9A15CB6-DFC4-41F8-8D14-
 CA62A4EC708F}.
 
 Value: "PFS"
@@ -5755,7 +5611,8 @@ Release: April 23, 2024
 
 80 / 96
 
-Data: "ESP"
+
+Data: "ESP"
 
 Key: SOFTWARE\Policies\Microsoft\WindowsFirewall\Phase2CryptoSets\{E9A15CB6-DFC4-41F8-8D14-
 CA62A4EC708F}\0001
@@ -5826,7 +5683,8 @@ Release: April 23, 2024
 
 81 / 96
 
-Size: 10
+
+Size: 10
 
 Data: "SHA1"
 
@@ -5897,7 +5755,8 @@ Group Policy: Firewall and Advanced Security Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Type: REG_SZ.
+
+Type: REG_SZ.
 
 Size: 6
 
@@ -5921,9 +5780,10 @@ Release: April 23, 2024
 
 83 / 96
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Do not transmit passwords or other sensitive data through this protocol. The primary reason for this
 restriction is that the protocol provides no encryption, and therefore sensitive data transmitted
@@ -5935,7 +5795,7 @@ A person gaining unauthorized access, intercepting the protocol's network packet
 then discover the password for that resource that would then be unprotected from the unauthorized
 person.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5946,7 +5806,8 @@ Release: April 23, 2024
 
 84 / 96
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6009,7 +5870,8 @@ Release: April 23, 2024
 
 85 / 96
 
-Windows Client Release
+
+Windows Client Release
 
 Windows Server Release
 
@@ -6095,7 +5957,8 @@ Release: April 23, 2024
 
 86 / 96
 
-Windows Client Release
+
+Windows Client Release
 
 Windows Server Release
 
@@ -6146,7 +6009,8 @@ Release: April 23, 2024
 
 87 / 96
 
-7  Appendix B: Full ABNF Grammar
+
+## 7 Appendix B: Full ABNF Grammar
 
 The following section list the complete grammar rules of the policy setting that are encoded using
 ABNF syntax for implementers of Group Policy: Firewall and Advanced Security Group Policy Extension
@@ -6211,7 +6075,8 @@ Release: April 23, 2024
 
 88 / 96
 
-ADDRESSV6-SUBNET-VAL = SUBNET-ADDRV6 "/" V6PREFIX-LENGTH
+
+ADDRESSV6-SUBNET-VAL = SUBNET-ADDRV6 "/" V6PREFIX-LENGTH
 
 V6PREFIX-LENGTH = 1*3DIGIT
 
@@ -6278,7 +6143,8 @@ Release: April 23, 2024
 
 89 / 96
 
-TYPE-VALUE =/ "ICMP6=" ICMP-TYPE-CODE-VAL
+
+TYPE-VALUE =/ "ICMP6=" ICMP-TYPE-CODE-VAL
 TYPE-VALUE =/ "Platform=" PLATFORM-VAL
 TYPE-VALUE =/ "RMauth=" STR-VAL
 TYPE-VALUE =/ "RUAuth=" STR-VAL
@@ -6346,7 +6212,8 @@ Release: April 23, 2024
 
 90 / 96
 
-TYPE-VALUE =/ "EP2_4=" ( ADDRESSV4-RANGE-VAL / ADDRESSV4-SUBNET-VAL / ADDRESS-
+
+TYPE-VALUE =/ "EP2_4=" ( ADDRESSV4-RANGE-VAL / ADDRESSV4-SUBNET-VAL / ADDRESS-
 KEYWORD-VAL )
 TYPE-VALUE =/ "EP1_6=" ( ADDRESSV6-RANGE-VAL / ADDRESSV6-SUBNET-VAL / ADDRESS-
 KEYWORD-VAL )
@@ -6397,7 +6264,8 @@ Release: April 23, 2024
 
 91 / 96
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6441,7 +6309,8 @@ Release: April 23, 2024
 
 92 / 96
 
-9  Index
+
+## 9 Index
 A
 
 ABNF grammars 88
@@ -6577,7 +6446,8 @@ Higher-layer triggered events
 
 93 / 96
 
-   administrative plug-in 67
+
+   administrative plug-in 67
    client 69
 
 I
@@ -6720,7 +6590,8 @@ Release: April 23, 2024
 
 94 / 96
 
-      time out in sessions 49
+
+      time out in sessions 49
    phase 1 auth suite
       certificate account mapping 42
       certificate authority names 41
@@ -6861,7 +6732,8 @@ Policy version 16
 
 95 / 96
 
-Port and port range rules 18
+
+Port and port range rules 18
 Port keyword rules 19
 Preconditions 12
 Prerequisites 12

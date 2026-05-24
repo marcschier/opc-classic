@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 31
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -174,167 +175,71 @@ Release: April 23, 2024
 
 2 / 31
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 RPC Server Settings](#211-rpc-server-settings)
+    - [2.1.2 RPC Client Settings](#212-rpc-client-settings)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Data Types](#221-data-types)
+      - [2.2.1.1 PSESSION_HANDLE](#2211-psessionhandle)
+    - [2.2.2 Structures](#222-structures)
+      - [2.2.2.1 EVENT_BUFFER](#2221-eventbuffer)
+  - [2.3 Message Syntax](#23-message-syntax)
+    - [2.3.1 Managed Object Format (MOF) Structures](#231-managed-object-format-mof-structures)
+      - [2.3.1.1 MSFT_NetEventSession Class](#2311-msftneteventsession-class)
+      - [2.3.1.2 MSFT_NetEventProvider Class](#2312-msftneteventprovider-class)
+    - [2.3.2 RPC Structures](#232-rpc-structures)
+      - [2.3.2.1 EventRecord Structure](#2321-eventrecord-structure)
+      - [2.3.2.2 NET_EVENT_DATA_HEADER Structure](#2322-neteventdataheader-structure)
+      - [2.3.2.3 NET_EVENT_LOST Structure](#2323-neteventlost-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 NetEventForwarder Server Details](#31-neteventforwarder-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 WS-Management Method Calls](#3141-ws-management-method-calls)
+        - [3.1.4.1.1 MSFT_NetEventSession CreateInstance](#31411-msftneteventsession-createinstance)
+        - [3.1.4.1.2 MSFT_NetEventSession Start](#31412-msftneteventsession-start)
+        - [3.1.4.1.3 MSFT_NetEventSession Stop](#31413-msftneteventsession-stop)
+        - [3.1.4.1.4 MSFT_NetEventSession DeleteInstance](#31414-msftneteventsession-deleteinstance)
+        - [3.1.4.1.5 MSFT_NetEventProvider CreateInstance](#31415-msftneteventprovider-createinstance)
+        - [3.1.4.1.6 MSFT_NetEventProvider ModifyInstance](#31416-msftneteventprovider-modifyinstance)
+        - [3.1.4.1.7 MSFT_NetEventProvider DeleteInstance](#31417-msftneteventprovider-deleteinstance)
+      - [3.1.4.2 RPC Opnum Method Calls](#3142-rpc-opnum-method-calls)
+        - [3.1.4.2.1 RpcNetEventOpenSession (Opnum 0)](#31421-rpcneteventopensession-opnum-0)
+        - [3.1.4.2.2 RpcNetEventReceiveData (Opnum 1)](#31422-rpcneteventreceivedata-opnum-1)
+        - [3.1.4.2.3 RpcNetEventCloseSession (Opnum 2)](#31423-rpcneteventclosesession-opnum-2)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 RPC Connection Termination](#3161-rpc-connection-termination)
+      - [3.1.6.2 Accumulating Events](#3162-accumulating-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Full MOF](#7-appendix-b-full-mof)
+- [8 Appendix C: Product Behavior](#8-appendix-c-product-behavior)
+- [9 Change Tracking](#9-change-tracking)
+- [10 Index](#10-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.2
-
-2.2.1
-
-2.2.1.1
-
-2.1.1
-2.1.2
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-RPC Server Settings .................................................................................... 10
-RPC Client Settings ..................................................................................... 10
-Common Data Types ........................................................................................ 10
-Data Types ................................................................................................ 10
-PSESSION_HANDLE .............................................................................. 11
-Structures ................................................................................................. 11
-EVENT_BUFFER..................................................................................... 11
-Message Syntax ............................................................................................... 11
-Managed Object Format (MOF) Structures ..................................................... 11
-MSFT_NetEventSession Class ................................................................. 11
-MSFT_NetEventProvider Class ................................................................ 12
-RPC Structures ........................................................................................... 13
-EventRecord Structure ........................................................................... 13
-NET_EVENT_DATA_HEADER Structure ..................................................... 14
-NET_EVENT_LOST Structure ................................................................... 15
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-
-2.3.1.1
-2.3.1.2
-
-2.2.2.1
-
-2.3.1
-
-2.3.2
-
-2.3
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 16
-NetEventForwarder Server Details ...................................................................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-WS-Management Method Calls ................................................................ 17
-MSFT_NetEventSession CreateInstance .............................................. 17
-MSFT_NetEventSession Start ............................................................ 17
-MSFT_NetEventSession Stop ............................................................. 18
-MSFT_NetEventSession DeleteInstance .............................................. 18
-MSFT_NetEventProvider CreateInstance ............................................. 18
-MSFT_NetEventProvider ModifyInstance ............................................. 19
-MSFT_NetEventProvider DeleteInstance ............................................. 19
-RPC Opnum Method Calls ....................................................................... 19
-RpcNetEventOpenSession (Opnum 0)................................................. 19
-RpcNetEventReceiveData (Opnum 1) ................................................. 20
-RpcNetEventCloseSession (Opnum 2) ................................................ 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 22
-RPC Connection Termination................................................................... 22
-Accumulating Events ............................................................................. 22
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-
-3.1.6.1
-3.1.6.2
-
-3.1.5
-3.1.6
-
-3.1.4.2
-
-4  Protocol Examples ................................................................................................. 23
-
-3 / 31
-
-[MS-LREC] - v20240423
-Live Remote Event Capture (LREC) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 26
-
-7  Appendix B: Full MOF ............................................................................................. 27
-
-8  Appendix C: Product Behavior ............................................................................... 28
-
-9  Change Tracking .................................................................................................... 29
-
-10  Index ..................................................................................................................... 30
-
-[MS-LREC] - v20240423
-Live Remote Event Capture (LREC) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 31
-
-1  Introduction
+## 1 Introduction
 
 The Live Remote Event Capture (LREC) Protocol allows a management station to monitor events on a
 target system across a network. The protocol consists of two components:
@@ -352,7 +257,7 @@ ability to locally log events.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -411,7 +316,8 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-defined in [DMTF-DSP0004] section 3. The MOF text encoding is only used for illustrative
+
+defined in [DMTF-DSP0004] section 3. The MOF text encoding is only used for illustrative
 purposes. The binary encoding can be translated to and from the MOF format.
 
 opnum: An operation number or numeric identifier that is used to identify a specific remote
@@ -466,7 +372,7 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -480,7 +386,8 @@ Release: April 23, 2024
 
 6 / 31
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -514,7 +421,7 @@ http://dmtf.org/sites/default/files/standards/documents/DSP0226_1.0.0.pdf
 [RFC4122] Leach, P., Mealling, M., and Salz, R., "A Universally Unique Identifier (UUID) URN
 Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-DefiningEventData] Microsoft Corporation, "Defining Event Data Templates",
 http://msdn.microsoft.com/en-us/library/dd996913(v=vs.85).aspx
@@ -525,7 +432,7 @@ http://msdn.microsoft.com/en-us/library/aa363759(v=VS.85).aspx
 [MSDN-EvntManifest] Microsoft Corporation, "EventManifest Schema", http://msdn.microsoft.com/en-
 us/library/aa384043(v=vs.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Live Remote Event Capture (LREC) protocol allows a client to connect to a server to monitor
 critical information and detect issues as they occur on the server. For example, to detect under-
@@ -546,7 +453,8 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-LREC].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -580,7 +488,7 @@ connects to the server using the RPC endpoint to receive reported events. When t
 observing reported events, the client stops the session using the WS-Management-based control
 channel. When all event sessions are stopped, the RPC endpoint is removed.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The LREC protocol uses the WS-Management protocol [DMTF-DSP0226] as a transport for its control
 channel for event session configuration. The LREC protocol uses RPC [MS-RPCE] as a transport for
@@ -596,13 +504,14 @@ Release: April 23, 2024
 
 8 / 31
 
-The LREC protocol is related to the EventLog Remoting Protocol [MS-EVEN] and EventLog Remoting
+
+The LREC protocol is related to the EventLog Remoting Protocol [MS-EVEN] and EventLog Remoting
 Protocol Version 6.0 [MS-EVEN6], but the LREC protocol is designed for a different purpose. The event
 log protocols specified in [MS-EVEN] and [MS-EVEN6] are designed for accessing event log files on a
 remote computer. The LREC protocol is designed for configuration and remote monitoring of live event
 sessions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol has the prerequisites specified in [MS-RPCE] which are common to protocols that depend
 on RPC.
@@ -611,7 +520,7 @@ The prerequisites for the WS-Management protocol are specified in [DMTF-DSP0226]
 LREC protocol requires the client to have the provider manifests available before attempting to de-
 serialize event messages.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The LREC protocol is used for monitoring events on a remote computer. For example, for monitoring
 service deployments to ensure administrators can immediately react to configuration errors, or for
@@ -624,7 +533,7 @@ The LREC protocol is only applicable in scenarios where a given event session is
 single client. The protocol is not applicable in cases where multiple management stations require
 simultaneous management of the same event stream.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Protocol Version:  The RPC interface for the LREC protocol is version 1.0. The protocol can be
 
@@ -638,13 +547,13 @@ Security and Authentication Methods:  The LREC protocol supports the following a
 
 methods: NTLM and Kerberos as specified in [MS-RPCE] section 1.7.
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 The LREC protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2 and Vendors SHOULD
 reuse these values with their indicated meaning. Specifying any other value runs the risk of a future
 collision.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The LREC protocol has no standards assignments. It uses private allocations for the RPC interface
 universally unique identifier (UUID).
@@ -666,9 +575,10 @@ Release: April 23, 2024
 
 9 / 31
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All implementations MUST use the RPC over TCP protocol sequence (ncacn_ip_tcp), as specified in
 [MS-RPCE] section 2.1.1.1, with dynamic endpoints.
@@ -680,7 +590,7 @@ The protocol MUST use an Interface Definition Language (IDL) version of 1.0.
 WS-Management [DMTF-DSP0226] MUST be used as the transport provider for the LREC protocol
 control channel.
 
-2.1.1  RPC Server Settings
+#### 2.1.1 RPC Server Settings
 
 The LREC protocol uses Security Support Provider Interface (SSPI) security provided by RPC, as
 specified in [MS-RPCE] section 3.3.1.5.2, for sessions using TCP as the transport protocol. The server
@@ -692,7 +602,7 @@ anonymous RPC clients.
 The server MUST limit access only to clients that negotiate an authentication level equal or higher than
 that of RPC_C_AUTHN_LEVEL_PKT (see [MS-RPCE] section 2.2.1.1.8).
 
-2.1.2  RPC Client Settings
+#### 2.1.2 RPC Client Settings
 
 The RPC client MUST use security support provider (SSP) security provided over RPC as specified
 in [MS-RPCE], for sessions using TCP as the RPC transport protocol. A client MUST authenticate
@@ -704,7 +614,7 @@ A client SHOULD<1> request the RPC_C_AUTHN_LEVEL_PKT_PRIVACY authentication leve
 MAY request RPC_C_AUTHN_LEVEL_PKT_INTEGRITY authentication level instead, when data
 encryption is not required.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the RPC-based data types and definitions specified in [C706], [MS-RPCE], and [MS-
 DTYP], additional data types are defined below.
@@ -712,7 +622,7 @@ DTYP], additional data types are defined below.
 All multi-byte integer values in the messages declared in this section use little-endian byte order
 unless otherwise noted.
 
-2.2.1  Data Types
+#### 2.2.1 Data Types
 
 The LREC protocol defines the following data types.
 
@@ -731,7 +641,8 @@ Release: April 23, 2024
 
 10 / 31
 
-2.2.1.1  PSESSION_HANDLE
+
+##### 2.2.1.1 PSESSION_HANDLE
 
 The PSESSION_HANDLE data type is an RPC client context handle that identifies the current event
 session. A client receives this handle using the RpcNetEventOpenSession (section 3.1.4.2.1)
@@ -739,7 +650,7 @@ method.
 
  typedef [context_handle] void* PSESSION_HANDLE;
 
-2.2.2  Structures
+#### 2.2.2 Structures
 
 The LREC protocol defines the following structures.
 
@@ -751,7 +662,7 @@ EVENT_BUFFER
 
 An event record from a server.
 
-2.2.2.1  EVENT_BUFFER
+##### 2.2.2.1 EVENT_BUFFER
 
 The EVENT_BUFFER structure defines a data structure for transferring a generic payload. The LREC
 protocol uses this structure to pass event records in the RpcNetEventReceiveData (section
@@ -768,14 +679,14 @@ Buffer: This property specifies a collection of one or more NET_EVENT_DATA_HEADE
 
 2.3.2.2) structures each followed by an event payload.
 
-2.3  Message Syntax
+### 2.3 Message Syntax
 
-2.3.1  Managed Object Format (MOF) Structures
+#### 2.3.1 Managed Object Format (MOF) Structures
 
 The following sections specify the Managed Object Format (MOF) classes implemented by the LREC
 protocol.
 
-2.3.1.1  MSFT_NetEventSession Class
+##### 2.3.1.1 MSFT_NetEventSession Class
 
 The MSFT_NetEventSession MOF class is used for configuring and starting an event session on a
 remote computer. After an instance is created, all properties are read-only via WS-Management
@@ -796,7 +707,8 @@ Release: April 23, 2024
 
 11 / 31
 
-     uint8 MaxNumberOfBuffers;
+
+     uint8 MaxNumberOfBuffers;
      uint8 SessionStatus;
      uint8 Start();
      uint8 Stop();
@@ -854,7 +766,7 @@ Stop:  A method that is used to stop a previously started event session. The met
 
 section 3.1.4.1.3.
 
-2.3.1.2  MSFT_NetEventProvider Class
+##### 2.3.1.2 MSFT_NetEventProvider Class
 
 The MSFT_NetEventProvider MOF class is used for configuring an event session on a remote
 computer. A client can add event providers to a session by creating MSFT_NetEventProvider objects
@@ -876,7 +788,8 @@ Release: April 23, 2024
 
 12 / 31
 
-     string SessionName;
+
+     string SessionName;
      uint8 Level;
      uint64 MatchAnyKeyword;
      uint64 MatchAllKeyword;
@@ -948,11 +861,11 @@ for an event satisfies the conditions specified in the MatchAnyKeyword property,
 included in the event session only if all of the bits in the MatchAllKeyword mask exist in the
 keyword. This mask is not used when the MatchAnyKeyword property is set to zero.
 
-2.3.2  RPC Structures
+#### 2.3.2 RPC Structures
 
 The following sections specify the RPC structures implemented by the LREC protocol.
 
-2.3.2.1  EventRecord Structure
+##### 2.3.2.1 EventRecord Structure
 
 The EventRecord structure provides the payload in an EVENT_BUFFER (section 2.2.2.1) structure.
 The structure defines an event recorded by an event provider.
@@ -964,7 +877,8 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1033,7 +947,7 @@ corresponds to the event identified by the Header.EventDescriptor.Id field. The 
 template is defined in the provider manifest corresponding to the provider ID from the
 Header.ProviderId field.
 
-2.3.2.2  NET_EVENT_DATA_HEADER Structure
+##### 2.3.2.2 NET_EVENT_DATA_HEADER Structure
 
 The NET_EVENT_DATA_HEADER structure specifies the size and type of the message payload in an
 EVENT_BUFFER (section 2.2.2.1) structure. The buffer contains one or more
@@ -1046,7 +960,8 @@ Release: April 23, 2024
 
 14 / 31
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1097,7 +1012,7 @@ A (1 bit):  If set, this field indicates the last data item in the buffer.
 
 Reserved2 (8 bits):  This field MUST be set to zero when sent and ignored upon receipt.
 
-2.3.2.3  NET_EVENT_LOST Structure
+##### 2.3.2.3 NET_EVENT_LOST Structure
 
 The NET_EVENT_LOST structure provides payload in an EVENT_BUFFER (section 2.2.2.1) structure
 and contains the number of events lost due to slow event retrieval.
@@ -1126,7 +1041,8 @@ Release: April 23, 2024
 
 15 / 31
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The LREC protocol is used for monitoring an event session on a remote computer over a network.
 Therefore, a client configures and starts an event session by first creating an instance of the
@@ -1135,9 +1051,9 @@ to the newly created session using the RpcNetEventOpenSession (section 3.1.4.2.1
 start retrieving events from the session using the RpcNetEventReceiveData (section 3.1.4.2.2)
 method.
 
-3.1  NetEventForwarder Server Details
+### 3.1 NetEventForwarder Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1201,11 +1117,12 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Outstanding RpcNetEventReceiveData Call: Either empty, or holds a pending call to the
+
+  Outstanding RpcNetEventReceiveData Call: Either empty, or holds a pending call to the
 
 RpcNetEventReceiveData method to be completed later.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Each event session contains the following:
 
@@ -1214,15 +1131,15 @@ Data Completion Timer: A timer that is used to control completion of the
 RpcNetEventReceiveData (section 3.1.4.2.2) method. The exact value of the timeout is
 implementation-specific, but it MUST be between 100 and 1000 milliseconds.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  WS-Management Method Calls
+##### 3.1.4.1 WS-Management Method Calls
 
-3.1.4.1.1 MSFT_NetEventSession CreateInstance
+###### 3.1.4.1.1 MSFT_NetEventSession CreateInstance
 
 CreateInstance is an intrinsic method of the MSFT_NetEventSession Class (section 2.3.1.1) that
 is used to create a new instance of an MSFT_NetEventSession object on the server. The method
@@ -1241,7 +1158,7 @@ in the Session Table.
 When the server is able to create the entry, the Associated Provider List and Queued Event List
 MUST be initialized as empty and the CreateInstance method MUST be completed successfully.
 
-3.1.4.1.2 MSFT_NetEventSession Start
+###### 3.1.4.1.2 MSFT_NetEventSession Start
 
 The client calls the Start method of an MSFT_NetEventSession object (section 2.3.1.1) to start an
 event session that has been previously associated with at least one MSFT_NetEventProvider
@@ -1266,10 +1183,11 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When the server is able to initialize the RPC endpoint, the Session State MUST be set to Running,
+
+When the server is able to initialize the RPC endpoint, the Session State MUST be set to Running,
 and the server MUST return success.
 
-3.1.4.1.3 MSFT_NetEventSession Stop
+###### 3.1.4.1.3 MSFT_NetEventSession Stop
 
 The client calls the Stop method of an MSFT_NetEventSession object (section 2.3.1.1) to stop a
 previously started event session.
@@ -1287,7 +1205,7 @@ The server MUST set the Session State to Stopped.
 When there are no event sessions present in the Session Table in the Running state, the server
 MUST stop the RPC endpoint.
 
-3.1.4.1.4 MSFT_NetEventSession DeleteInstance
+###### 3.1.4.1.4 MSFT_NetEventSession DeleteInstance
 
 DeleteInstance is an intrinsic method of the MSFT_NetEventSessionClass (section 2.3.1.1) and is
 used to delete an instance of an MSFT_NetEventSession object on the server. For more information,
@@ -1299,7 +1217,7 @@ Running, and if it is, stop accumulating events.
 The server MUST then remove the event session entry from its Session Table and free all associated
 resources.
 
-3.1.4.1.5 MSFT_NetEventProvider CreateInstance
+###### 3.1.4.1.5 MSFT_NetEventProvider CreateInstance
 
 CreateInstance is an intrinsic method of the MSFT_NetEventProviderClass (section 2.3.1.2) and
 is used to create a new instance of a MSFT_NetEventProvider class on the server. This method
@@ -1332,7 +1250,8 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.6 MSFT_NetEventProvider ModifyInstance
+
+###### 3.1.4.1.6 MSFT_NetEventProvider ModifyInstance
 
 ModifyInstance is an intrinsic method of the MSFT_NetEventProvider Class (section 2.3.1.2) and
 is used to modify the Level, Match Any Keyword, and Match All Keywords properties of an
@@ -1345,7 +1264,7 @@ associated event session and fail the call if the state is Running.
 Otherwise, the server MUST update the properties of the entry in the Associated Provider List and
 complete the call successfully.
 
-3.1.4.1.7 MSFT_NetEventProvider DeleteInstance
+###### 3.1.4.1.7 MSFT_NetEventProvider DeleteInstance
 
 DeleteInstance is an intrinsic method of the MSFT_NetEventProvider Class (section 2.3.1.2) and
 is used to delete an instance of an MSFT_NetEventProvider object on the server. For more
@@ -1357,7 +1276,7 @@ event session and fail the call if the state is Running.
 Otherwise, the server MUST find the corresponding event session in the Session Table and remove
 the provider from its Associated Provider List.
 
-3.1.4.2  RPC Opnum Method Calls
+##### 3.1.4.2 RPC Opnum Method Calls
 
 The NetEventForwarder interface provides methods for remote monitoring of an event session.
 The version for this interface is 1.0.
@@ -1395,7 +1314,7 @@ RpcNetEventOpenSession method.
 
 Opnum: 2
 
-3.1.4.2.1 RpcNetEventOpenSession (Opnum 0)
+###### 3.1.4.2.1 RpcNetEventOpenSession (Opnum 0)
 
 The RpcNetEventOpenSession method opens a context handle to a running event session.
 
@@ -1411,7 +1330,8 @@ Release: April 23, 2024
 
 19 / 31
 
- );
+
+ );
 
 BindingHandle:  An RPC binding handle to the server. Details concerning binding handles are
 
@@ -1455,7 +1375,7 @@ Exceptions Thrown: Exceptions SHOULD NOT be thrown beyond those thrown by the un
 
 protocol specified in [MS-RPCE].
 
-3.1.4.2.2 RpcNetEventReceiveData (Opnum 1)
+###### 3.1.4.2.2 RpcNetEventReceiveData (Opnum 1)
 
 The RpcNetEventReceiveData method retrieves a buffer with one or more
 NET_EVENT_DATA_HEADER structures, followed by the event payload. The size of the buffer is
@@ -1487,7 +1407,8 @@ Release: April 23, 2024
 
 20 / 31
 
-  When the RpcNetEventReceiveData method is called, the server MUST first check its
+
+  When the RpcNetEventReceiveData method is called, the server MUST first check its
 
 Session Table for an event session object where the Session Handle matches the value
 supplied in the SessionHandle member, and if a match cannot be found, fail the call.
@@ -1513,7 +1434,7 @@ Exceptions Thrown: Exceptions SHOULD NOT be thrown beyond those thrown by the un
 
 protocol specified in [MS-RPCE].
 
-3.1.4.2.3 RpcNetEventCloseSession (Opnum 2)
+###### 3.1.4.2.3 RpcNetEventCloseSession (Opnum 2)
 
 The RpcNetEventCloseSession method closes the RPC binding handle returned by the
 RpcNetEventOpenSession (section 3.1.4.2.1) method.
@@ -1543,7 +1464,7 @@ Exceptions Thrown: Exceptions SHOULD NOT be thrown beyond those thrown by the un
 
 protocol specified in [MS-RPCE].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 When a Data Completion Timer for the event session expires, the server MUST complete the
 outstanding call to the RpcNetEventReceiveData (section 3.1.4.2.2) method stored in the
@@ -1558,14 +1479,15 @@ Release: April 23, 2024
 
 21 / 31
 
-3.1.6  Other Local Events
 
-3.1.6.1  RPC Connection Termination
+#### 3.1.6 Other Local Events
+
+##### 3.1.6.1 RPC Connection Termination
 
 The server MUST treat an RPC connection termination the same as a call to the
 MSFT_NetEventSession Stop (section 3.1.4.1.3) method.
 
-3.1.6.2  Accumulating Events
+##### 3.1.6.2 Accumulating Events
 
 When an event provider provides an event, the server MUST, for each event session with that
 event provider associated, check whether the event meets the filter criteria in the Level, Match Any
@@ -1605,7 +1527,8 @@ Release: April 23, 2024
 
 22 / 31
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following example, a client requests to receive critical events from two providers on a given
 remote machine that queues a maximum of 10 events per session.
@@ -1679,7 +1602,8 @@ Live Remote Event Capture (LREC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-14. The client determines that the call to RpcNetEventReceiveData has completed and then calls
+
+14. The client determines that the call to RpcNetEventReceiveData has completed and then calls
 
 the MSFT_NetEventSession Stop (section 3.1.4.1.3) method.
 
@@ -1698,9 +1622,10 @@ Release: April 23, 2024
 
 24 / 31
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The LREC protocol allows a user to establish a connection to an RPC server. The LREC protocol uses
 the underlying RPC protocol to retrieve the identity of the caller that made the method call as specified
@@ -1711,7 +1636,7 @@ The client can request data channel encryption by specifying the RPC_C_AUTHN_LEV
 RPC authentication level.  When it is possible for events to contain confidential information, it is
 important for clients to either access the server over a secure network or use data channel encryption.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security Parameter
 
@@ -1728,7 +1653,8 @@ Release: April 23, 2024
 
 25 / 31
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL found
 in [MS-DTYP] Appendix A. The syntax uses the IDL syntax extensions defined in [MS-RPCE] sections
@@ -1772,7 +1698,8 @@ Release: April 23, 2024
 
 26 / 31
 
-7  Appendix B: Full MOF
+
+## 7 Appendix B: Full MOF
 
 For ease of implementation, the following is the full MOF syntax for this protocol.
 
@@ -1835,7 +1762,8 @@ Release: April 23, 2024
 
 27 / 31
 
-8  Appendix C: Product Behavior
+
+## 8 Appendix C: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1877,7 +1805,8 @@ Release: April 23, 2024
 
 28 / 31
 
-9  Change Tracking
+
+## 9 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1921,7 +1850,8 @@ Release: April 23, 2024
 
 29 / 31
 
-10  Index
+
+## 10 Index
 A
 
 Abstract data model
@@ -2054,7 +1984,8 @@ T
 
 30 / 31
 
-Timer events
+
+Timer events
    server 21
       NetEventForwarder 21
 Timers

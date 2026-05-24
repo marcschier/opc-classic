@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 23
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ ICertPassage Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -536,7 +538,8 @@ Release: April 23, 2024
 
 3 / 23
 
-Date
+
+Date
 
 Revision
 History
@@ -569,117 +572,54 @@ Release: April 23, 2024
 
 4 / 23
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites and Preconditions](#15-prerequisites-and-preconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Request Format](#221-request-format)
+    - [2.2.2 Response Format](#222-response-format)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 ICertPassage Client Details](#31-icertpassage-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing and Sequencing Rules](#314-message-processing-and-sequencing-rules)
+      - [3.1.4.1 Processing ICertPassage:: CertServerRequest](#3141-processing-icertpassage-certserverrequest)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 ICertPassage Server Details](#32-icertpassage-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing and Sequencing Rules](#324-message-processing-and-sequencing-rules)
+      - [3.2.4.1 ICertPassage Interface](#3241-icertpassage-interface)
+        - [3.2.4.1.1 CertServerRequest (Opnum 0)](#32411-certserverrequest-opnum-0)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites and Preconditions ............................................................................ 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Data Types ........................................................................................ 11
-Request Format .......................................................................................... 11
-Response Format ........................................................................................ 11
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.4.1
-
-3.1.5
-3.1.6
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 12
-ICertPassage Client Details ................................................................................ 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Message Processing and Sequencing Rules .................................................... 12
-Processing ICertPassage:: CertServerRequest .......................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-ICertPassage Server Details .............................................................................. 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Message Processing and Sequencing Rules .................................................... 13
-ICertPassage Interface .......................................................................... 13
-CertServerRequest (Opnum 0) .......................................................... 13
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-3.2.4.1.1
-
-3.2.4.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 16
-
-5  Security ................................................................................................................. 17
-Security Considerations for Implementers ........................................................... 17
-Index of Security Parameters ............................................................................ 17
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 18
-
-7  Appendix B: Product Behavior ............................................................................... 19
-
-8  Change Tracking .................................................................................................... 21
-
-9  Index ..................................................................................................................... 22
-
-[MS-ICPR] - v20240423
-ICertPassage Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 23
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the ICertPassage Remote Protocol. This protocol is a subset of the Windows
 Client Certificate Enrollment Protocol, as specified in [MS-WCCE]. The difference between this protocol
@@ -692,7 +632,7 @@ Protocol, as specified in [MS-WCCE], is essential to understanding the ICertPass
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -750,7 +690,8 @@ ICertPassage Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-endpoint: A network-specific address of a remote procedure call (RPC) server process for remote
+
+endpoint: A network-specific address of a remote procedure call (RPC) server process for remote
 
 procedure calls. The actual name and type of the endpoint depends on the RPC protocol
 sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
@@ -811,7 +752,7 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -823,10 +764,11 @@ ICertPassage Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -887,15 +829,16 @@ Release: April 23, 2024
 
 8 / 23
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-ICPR].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The ICertPassage Remote Protocol exposes a Remote Procedure Call (RPC) (as specified in [MS-
 RPCE]) interface that allows a client to interact with a certification authority (CA) to request and
@@ -907,7 +850,7 @@ configuration information. The certificate enrollment process and protocol overv
 
 The ICertPassage interface defines one method: CertServerRequest (section 3.2.4.1.1).
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The ICertPassage Remote Protocol depends on the Remote Procedure Call Protocol Extensions, as
 specified in [MS-RPCE]. No other Windows protocol depends on the ICertPassage Remote Protocol.
@@ -921,7 +864,7 @@ Protocol, the Certificate Services Remote Administration Protocol, and the Windo
 Enrollment Protocol use a common list of configuration data elements, defined in [MS-WCCE] section
 3.2.1.1.4.
 
-1.5  Prerequisites and Preconditions
+### 1.5 Prerequisites and Preconditions
 
 The ICertPassage Remote Protocol has the same prerequisites as the Windows Client Certificate
 Enrollment Protocol, as specified in [MS-WCCE] section 1.5.
@@ -931,7 +874,7 @@ Remote Administration Protocol specified in [MS-CSRA] or the Windows Client Cert
 Protocol specified in [MS-WCCE] use the same configuration data elements, defined in [MS-WCCE]
 section 3.2.1.1.4 as "public", for those implementations.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol applies to legacy clients that have to use RPC (as specified in [MS-RPCE]) to interact
 with a CA for the purpose of enrolling or managing X.509 (as specified in [X509]) certificates.
@@ -947,15 +890,16 @@ Release: April 23, 2024
 
 9 / 23
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 Version and capability negotiation is not provided in this protocol.<1>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -966,12 +910,13 @@ Release: April 23, 2024
 
 10 / 23
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how ICertPassage Remote Protocol messages are transported and
 ICertPassage Remote Protocol message syntax.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol uses the following RPC protocol sequence: RPC over named pipe and RPC over TCP/IP,
 as specified in [MS-RPCE].
@@ -987,7 +932,7 @@ Initialization (section 3.2.3).
 
 This protocol MUST use the universal unique identifier (UUID), as specified in section 3.2.4.1.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
  The ICertPassage interface uses the CERTTRANSBLOB structure, as specified in [MS-WCCE] section
 2.2.2.2.
@@ -995,7 +940,7 @@ This protocol MUST use the universal unique identifier (UUID), as specified in s
 This protocol specification makes use of the wchar_t and DWORD datatypes defined in [MS-DTYP]
 sections 2.1.6 and 2.2.9.
 
-2.2.1  Request Format
+#### 2.2.1 Request Format
 
 The ICertPassage Remote Protocol is a simple request-response pattern between the client and the
 server. The client MUST send the certificate request using one of the following ASN.1 DER encoded
@@ -1012,7 +957,7 @@ PKCS #10 as specified in [RFC2986].
 Details are as specified in [MS-WCCE] section 2.2.2.6. Each format contains a set of attributes and
 extensions describing the request.<2>
 
-2.2.2  Response Format
+#### 2.2.2 Response Format
 
 Responses are returned by the ICertPassage Remote Protocol in either CMS format or CMC format.
 Details are as specified in [MS-WCCE] section 2.2.2.8. The format of the response is determined by
@@ -1025,7 +970,8 @@ Release: April 23, 2024
 
 11 / 23
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The ICertPassage Remote Protocol is a simple request-response protocol. The client sends a
 certificate request, and the server responds with a signed certificate or a detailed disposition
@@ -1033,20 +979,20 @@ message. In almost all cases, the protocol is a single message followed by a sin
 the flow and sequencing of the certificate enrollment protocol are as specified in [MS-WCCE] section
 3.
 
-3.1  ICertPassage Client Details
+### 3.1 ICertPassage Client Details
 
 Details of the client role are exactly as specified in [MS-WCCE] section 3.1.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The client abstract data model is as specified in the abstract data model subsections of the [MS-
 WCCE] section 3.1.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The client creates an RPC association (or binding) to the server RPC endpoint (as specified in
 section 2.1) when an RPC method is called. The client SHOULD create a separate association for each
@@ -1057,22 +1003,22 @@ level. RPC authentication levels are as specified in [MS-RPCE].<3> Because the R
 is dynamic, the client MUST use the RPC endpoint mapper services (as specified in [MS-RPCE]
 section 2.2.1.2) to locate the endpoint at which the server is registered.
 
-3.1.4  Message Processing and Sequencing Rules
+#### 3.1.4 Message Processing and Sequencing Rules
 
-3.1.4.1  Processing ICertPassage:: CertServerRequest
+##### 3.1.4.1 Processing ICertPassage:: CertServerRequest
 
 Details of the client processing rules are exactly as specified in [MS-WCCE] section 3.1.1.4.3.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 The ICertPassage interface CertServerRequest method is invoked to obtain certificates whenever
 they are required by the client.
 
-3.2  ICertPassage Server Details
+### 3.2 ICertPassage Server Details
 
 Details of the server processing rules are exactly as specified in [MS-WCCE] section 3.2.
 
@@ -1083,7 +1029,8 @@ Release: April 23, 2024
 
 12 / 23
 
-3.2.1  Abstract Data Model
+
+#### 3.2.1 Abstract Data Model
 
 As specified in [MS-WCCE] section 3.2.1.1.
 
@@ -1095,11 +1042,11 @@ Administration Protocol or Windows Client Certificate Enrollment Protocol or bot
 implemented, access to the configuration data elements from either or both of these protocols
 SHOULD be serialized.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Interface initialization: The CA MUST listen on the well-known endpoint specified for this RPC
 interface for the RPC over named pipes binding. The CA also MUST register with the RPC endpoint
@@ -1110,7 +1057,7 @@ Cryptographic initialization: The CA SHOULD obtain the certificates, the signing
 the exchange private key. The CA also MUST validate the CA signing certificates and its chain. The
 validation is based on chain validation, as specified in [RFC3280] section 6.<4>
 
-3.2.4  Message Processing and Sequencing Rules
+#### 3.2.4 Message Processing and Sequencing Rules
 
 The ICertPassage Remote Protocol defines the following interface:
 
@@ -1118,7 +1065,7 @@ ICertPassage (section 3.2.4.1): A method that enables a client to request certif
 
 certification authority.
 
-3.2.4.1  ICertPassage Interface
+##### 3.2.4.1 ICertPassage Interface
 
 The ICertPassage RPC interface permits the client to submit a certificate enrollment request to the
 CA and receive a signed X.509 certificate (as specified in [X509]) as the response.
@@ -1136,7 +1083,7 @@ Description
 
 CertServerRequest  Opnum: 0
 
-3.2.4.1.1 CertServerRequest (Opnum 0)
+###### 3.2.4.1.1 CertServerRequest (Opnum 0)
 
 The CertServerRequest method processes a certificate enrollment request from the client.<6>
 
@@ -1149,7 +1096,8 @@ Release: April 23, 2024
 
 13 / 23
 
-   [in] handle_t h,
+
+   [in] handle_t h,
    [in] DWORD dwFlags,
    [in, string, unique] const wchar_t* pwszAuthority,
    [in, out, ref] DWORD* pdwRequestId,
@@ -1225,14 +1173,15 @@ ICertPassage Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-IF_NOREMOTEICERTREQUEST, these values are ignored and the request is processed as though the
+
+IF_NOREMOTEICERTREQUEST, these values are ignored and the request is processed as though the
 values were absent.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -1243,7 +1192,8 @@ Release: April 23, 2024
 
 15 / 23
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 A client is typically configured in such a manner that it is able to determine when it requires a
 certificate. A common scenario is that a user has been instructed to enroll for a certificate that will
@@ -1303,13 +1253,14 @@ Release: April 23, 2024
 
 16 / 23
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations for implementation of this protocol are as specified in [MS-WCCE] section 5.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -1330,7 +1281,8 @@ Release: April 23, 2024
 
 17 / 23
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] Appendix A and "ms-wcce.idl" is the IDL found in [MS-WCCE] Appendix A.
@@ -1366,7 +1318,8 @@ Release: April 23, 2024
 
 18 / 23
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1436,7 +1389,8 @@ ICertPassage Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.7: The ICertPassage Interface is supported by all applicable Windows releases.
@@ -1482,7 +1436,8 @@ Release: April 23, 2024
 
 20 / 23
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1526,7 +1481,8 @@ Release: April 23, 2024
 
 21 / 23
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1658,7 +1614,8 @@ Release: April 23, 2024
 
 22 / 23
 
-S
+
+S
 
 Security
    implementer considerations 17

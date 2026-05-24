@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 113
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 113
 
-Date
+
+Date
 
 Revision
 History
@@ -531,7 +533,8 @@ Release: April 23, 2024
 
 3 / 113
 
-Date
+
+Date
 
 Revision
 History
@@ -588,650 +591,263 @@ Release: April 23, 2024
 
 4 / 113
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 13
-Overview ........................................................................................................ 13
-Quick Discovery .......................................................................................... 14
-Topology Discovery Tests ............................................................................ 14
-QoS Diagnostics: Network Test..................................................................... 15
-QoS Diagnostics: Cross-Traffic Analysis ......................................................... 15
-Charge ...................................................................................................... 16
-Frame Summary ................................................................................... 17
-Tracking Charge ................................................................................... 17
-Accumulating Charge ............................................................................. 17
-Charge Requirements ............................................................................ 18
-Consuming Charge ................................................................................ 18
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3.5.1
-1.3.5.2
-1.3.5.3
-1.3.5.4
-1.3.5.5
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Message Syntax ............................................................................................... 20
-Common Data Types ................................................................................... 20
-Attributes ............................................................................................. 20
-End-of-Property List Marker .............................................................. 21
-2.2.1.1.1
-Host ID .......................................................................................... 21
-2.2.1.1.2
-Characteristics ................................................................................ 22
-2.2.1.1.3
-Physical Medium .............................................................................. 22
-2.2.1.1.4
-Wireless Mode ................................................................................. 23
-2.2.1.1.5
-802.11 BSSID ................................................................................. 23
-2.2.1.1.6
-802.11 SSID ................................................................................... 24
-2.2.1.1.7
-IPv4 Address .................................................................................. 24
-2.2.1.1.8
-IPv6 Address .................................................................................. 24
-2.2.1.1.9
-802.11 Maximum Operational Rate .................................................... 25
-2.2.1.1.10
-Performance Counter Frequency ........................................................ 25
-2.2.1.1.11
-Link Speed ..................................................................................... 26
-2.2.1.1.12
-802.11 RSSI ................................................................................... 26
-2.2.1.1.13
-2.2.1.1.14
-Icon Image ..................................................................................... 26
-2.2.1.1.15  Machine Name ................................................................................ 27
-Support Information ........................................................................ 27
-2.2.1.1.16
-Friendly Name ................................................................................. 28
-2.2.1.1.17
-2.2.1.1.18  Device UUID ................................................................................... 28
-2.2.1.1.19  Hardware ID ................................................................................... 28
-2.2.1.1.20  QoS Characteristics ......................................................................... 29
-2.2.1.1.21
-802.11 Physical Medium ................................................................... 29
-AP Association Table ........................................................................ 30
-2.2.1.1.22
-2.2.1.1.23  Detailed Icon Image ........................................................................ 30
-Sees-List Working Set ...................................................................... 30
-2.2.1.1.24
-Component Table ............................................................................ 31
-2.2.1.1.25
-Repeater AP Lineage ........................................................................ 31
-2.2.1.1.26
-Repeater AP Table ........................................................................... 31
-2.2.1.1.27
-
-[MS-LLTD] - v20240423
-Link Layer Topology Discovery (LLTD) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 113
-
-2.2.2
-
-2.2.3
-
-2.2.4
-
-2.2.3.1
-
-2.2.2.7
-
-2.2.2.6.1
-
-2.2.2.6.1.1
-2.2.2.6.1.2
-2.2.2.6.1.3
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-
-Large Data Properties .................................................................................. 32
-Icon Image .......................................................................................... 32
-Friendly Name ...................................................................................... 32
-Hardware ID ......................................................................................... 32
-AP Association Table .............................................................................. 33
-Detailed Icon Image .............................................................................. 33
-Component Table .................................................................................. 33
-Component Descriptors .................................................................... 34
-Bridge Component Descriptor ...................................................... 34
-802.11 Access Point Component Descriptor ................................... 34
-Built-in Switch Component Descriptor ........................................... 35
-Repeater AP Table ................................................................................. 35
-Base Specification ....................................................................................... 36
-Demultiplex Header Format .................................................................... 36
-Topology Discovery Tests and Quick Discovery ............................................... 37
-Base Header Format .............................................................................. 37
-2.2.4.1
-Discover Upper-Level Header Format ....................................................... 38
-2.2.4.2
-Hello Upper-Level Header Format ............................................................ 39
-2.2.4.3
-Emit Upper-Level Header Format ............................................................ 39
-2.2.4.4
-Train Upper-Level Header Format............................................................ 40
-2.2.4.5
-Probe Upper-Level Header Format ........................................................... 40
-2.2.4.6
-Ack Upper-Level Header Format .............................................................. 40
-2.2.4.7
-Query Upper-Level Header Format .......................................................... 41
-2.2.4.8
-QueryResp Upper-Level Header Format ................................................... 41
-2.2.4.9
-Reset Upper-Level Header Format ........................................................... 42
-2.2.4.10
-Charge Upper-Level Header Format ......................................................... 42
-2.2.4.11
-2.2.4.12
-Flat Upper-Level Header Format ............................................................. 42
-2.2.4.13  QueryLargeTlv Upper-Level Header Format .............................................. 43
-2.2.4.14  QueryLargeTlvResp Upper-Level Header Format ....................................... 43
-QoS Diagnostics Specification for Network Test .............................................. 44
-Base Header Format .............................................................................. 44
-QosInitializeSink Upper-Level Header Format ........................................... 45
-QosReady Upper-Level Header Format ..................................................... 45
-QosProbe Upper-Level Header Format ..................................................... 45
-QosQuery Upper-Level Header Format ..................................................... 47
-QosQueryResp Upper-Level Header Format .............................................. 47
-QosReset Upper-Level Header Format ..................................................... 48
-QosError Upper-Level Header Format ...................................................... 48
-QosAck Upper-Level Header Format ........................................................ 48
-QoS Diagnostics Specification for Cross-Traffic Analysis ................................... 49
-Base Header Format .............................................................................. 49
-QosCounterSnapshot Upper-Level Header Format ..................................... 49
-QosCounterResult Upper-Level Header Format .......................................... 49
-QosCounterLease Upper-Level Header Format .......................................... 50
-
-2.2.5.1
-2.2.5.2
-2.2.5.3
-2.2.5.4
-2.2.5.5
-2.2.5.6
-2.2.5.7
-2.2.5.8
-2.2.5.9
-
-2.2.6.1
-2.2.6.2
-2.2.6.3
-2.2.6.4
-
-2.2.5
-
-2.2.6
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 51
-Enumerator Details .......................................................................................... 51
-Abstract Data Model .................................................................................... 52
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Higher-Layer Triggered Events ..................................................................... 53
-Quick Discovery Startup......................................................................... 53
-Quick Discovery Shutdown ..................................................................... 54
-Message Processing Events and Sequencing Rules .......................................... 54
-Receiving a Hello Frame ......................................................................... 54
-Enumerator Also Functioning in the Mapper Role ................................. 54
-Timer Events .............................................................................................. 55
-Block Timer Expiry ................................................................................ 55
-
-3.1.4.1
-3.1.4.2
-
-3.1.5.1.1
-
-3.1.6.1
-
-3.1.5.1
-
-3.1.6
-
-3.1.5
-
-[MS-LLTD] - v20240423
-Link Layer Topology Discovery (LLTD) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 113
-
-3.1.6.1.1
-
-3.1.9.1
-
-3.1.7
-3.1.8
-3.1.9
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-Enumerator Also Functioning in the Mapper Role ................................. 55
-Resetting Quick Discovery ........................................................................... 55
-Shutting Down Quick Discovery and Returning Results .................................... 56
-Other Local Events ...................................................................................... 56
-Media Connect/Disconnect Event ............................................................ 56
-Mapper Details ................................................................................................. 56
-Abstract Data Model .................................................................................... 57
-Timers ...................................................................................................... 57
-Initialization ............................................................................................... 58
-Higher-Layer Triggered Events ..................................................................... 58
-Startup Trigger ..................................................................................... 58
-Retrieve a Large Data Property ............................................................... 58
-Perform a Network Topology Test ........................................................... 58
-Perform a Test Result Query ................................................................... 60
-Query for Responder Charge .................................................................. 60
-Shutdown Trigger ................................................................................. 61
-Message Processing Events and Sequencing Rules .......................................... 61
-Receiving an Ack Frame ......................................................................... 61
-Receiving a Flat Frame .......................................................................... 61
-Receiving a QueryResp Frame ................................................................ 62
-Receiving a QueryLargeTlvResp Frame .................................................... 62
-Timer Events .............................................................................................. 63
-Per-Responder Response Timer Expiry ..................................................... 63
-Other Local Events ...................................................................................... 63
-Enumerator Finishes Enumerating Responders .......................................... 63
-Media Connect/Disconnect Event ............................................................ 63
-QoS Controller Details ...................................................................................... 63
-Abstract Data Model .................................................................................... 63
-Timers ...................................................................................................... 64
-Initialization ............................................................................................... 65
-Higher-Layer Triggered Events ..................................................................... 65
-Start Network Test Session .................................................................... 65
-Stop Network Test Session ..................................................................... 66
-Message Processing Events and Sequencing Rules .......................................... 66
-Receiving a QosProbe Frame .................................................................. 66
-Receiving a QosQueryResp Frame ........................................................... 67
-Receiving a QosError Frame ................................................................... 67
-Receiving a QosReady Frame .................................................................. 67
-Receiving a QosAck Frame ..................................................................... 67
-Timer Events .............................................................................................. 67
-Per-QosInitializeSink Response Timer Expiry ............................................ 67
-Per-QosProbe Response Timer Expiry ...................................................... 68
-Per-QosQuery Response Timer Expiry ...................................................... 68
-Per-QosReset Response Timer Expiry ...................................................... 68
-Other Local Events ...................................................................................... 68
-Media Connect/Disconnect Event ............................................................ 68
-Cross-Traffic Analysis Initiator Details ................................................................. 68
-Abstract Data Model .................................................................................... 68
-Timers ...................................................................................................... 69
-Initialization ............................................................................................... 69
-Higher-Layer Triggered Events ..................................................................... 69
-Start Cross-Traffic Analysis .................................................................... 69
-Request Counters.................................................................................. 70
-Stop Cross-Traffic Analysis ..................................................................... 70
-Message Processing Events and Sequencing Rules .......................................... 70
-Receiving a QosCounterResult Frame ...................................................... 70
-Timer Events .............................................................................................. 70
-Per-Interface Lease Renewal Timer Expiry ................................................ 70
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.5
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-3.2.7.1
-3.2.7.2
-
-3.3
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.3.4.1
-3.3.4.2
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-
-3.3.6.1
-3.3.6.2
-3.3.6.3
-3.3.6.4
-
-3.3.6
-
-3.3.7
-
-3.3.7.1
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.4.1
-3.4.4.2
-3.4.4.3
-
-3.4.5
-
-3.4.6
-
-3.4.5.1
-
-3.4.6.1
-
-[MS-LLTD] - v20240423
-Link Layer Topology Discovery (LLTD) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 113
-
-3.5.5.1
-
-3.5.5.1.1
-
-3.4.6.2
-
-3.4.7
-
-3.4.7.1
-
-3.5
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-3.5.5
-
-3.5.5.1.1.1
-3.5.5.1.1.2
-3.5.5.1.1.3
-
-Per-Snapshot Response Timer Expiry ...................................................... 70
-Other Local Events ...................................................................................... 71
-Media Connect/Disconnect Event ............................................................ 71
-Responder (Quick Discovery) Details .................................................................. 71
-Abstract Data Model .................................................................................... 73
-Timers ...................................................................................................... 74
-Initialization ............................................................................................... 74
-Higher-Layer Triggered Events ..................................................................... 75
-Message Processing Events and Sequencing Rules .......................................... 75
-Receiving a Discover Frame .................................................................... 75
-Network Load Control ...................................................................... 75
-Load Initialization ...................................................................... 76
-Dynamic Behavior ...................................................................... 76
-Effect of Discover over Network Load Control ................................ 76
-Receiving a Hello Frame ......................................................................... 76
-Receiving a Reset Frame ........................................................................ 76
-State Transition Rules ............................................................................ 77
-Timer Events .............................................................................................. 77
-Session Inactivity Timer Expiry ............................................................... 77
-Block Timer Expiry ................................................................................ 77
-Hello Timer Expiry ................................................................................. 78
-Other Local Events ...................................................................................... 78
-Media Disconnect Event ......................................................................... 78
-Entering Quiescent State ....................................................................... 78
-Entering Pausing State .......................................................................... 78
-Entering Wait State ............................................................................... 78
-Responder (Topology Discovery) Details ............................................................. 79
-Abstract Data Model .................................................................................... 80
-Timers ...................................................................................................... 82
-Initialization ............................................................................................... 82
-Higher-Layer Triggered Events ..................................................................... 83
-Message Processing Events and Sequencing Rules .......................................... 83
-Receiving a Charge Frame ...................................................................... 83
-Receiving an Emit Frame ....................................................................... 84
-Receiving a Probe Frame ........................................................................ 86
-Receiving a Query Frame ....................................................................... 86
-Receiving a QueryLargeTlv Frame ........................................................... 87
-Timer Events .............................................................................................. 87
-Charge Timer Expiry .............................................................................. 87
-Emit Timer Expiry ................................................................................. 88
-Other Local Events ...................................................................................... 88
-Media Disconnect Event ......................................................................... 88
-Entering Quiescent State ....................................................................... 88
-Entering Command State ....................................................................... 88
-Leaving Command State ........................................................................ 88
-QoS Sink Details .............................................................................................. 89
-Abstract Data Model .................................................................................... 89
-Timers ...................................................................................................... 90
-Initialization ............................................................................................... 90
-Higher-Layer Triggered Events ..................................................................... 90
-Message Processing Events and Sequencing Rules .......................................... 90
-Receiving a QosInitializeSink Frame ........................................................ 90
-Receiving a QosProbe Frame .................................................................. 91
-Receiving a QosQuery Frame .................................................................. 92
-Receiving a QosReset Frame .................................................................. 92
-Timer Events .............................................................................................. 93
-Inactivity Timer Expiry ........................................................................... 93
-Other Local Events ...................................................................................... 93
-
-3.5.6
-
-3.5.7
-
-3.5.5.2
-3.5.5.3
-3.5.5.4
-
-3.5.6.1
-3.5.6.2
-3.5.6.3
-
-3.5.7.1
-3.5.7.2
-3.5.7.3
-3.5.7.4
-
-3.6
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-3.6.5
-
-3.6.5.1
-3.6.5.2
-3.6.5.3
-3.6.5.4
-3.6.5.5
-
-3.6.6.1
-3.6.6.2
-
-3.6.7.1
-3.6.7.2
-3.6.7.3
-3.6.7.4
-
-3.6.6
-
-3.6.7
-
-3.7
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-3.7.5
-
-3.7.5.1
-3.7.5.2
-3.7.5.3
-3.7.5.4
-
-3.7.6
-
-3.7.7
-
-3.7.6.1
-
-[MS-LLTD] - v20240423
-Link Layer Topology Discovery (LLTD) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 113
-
-3.7.7.1
-
-3.8
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-3.8.5
-
-Media Disconnect Event ......................................................................... 93
-Responder (QoS Cross-Traffic) Details ................................................................ 93
-Abstract Data Model .................................................................................... 93
-Timers ...................................................................................................... 94
-Initialization ............................................................................................... 94
-Higher-Layer Triggered Events ..................................................................... 95
-Message Processing Events and Sequencing Rules .......................................... 95
-Receiving a QosCounterLease Frame ....................................................... 95
-Receiving a QosCounterSnapshot Frame .................................................. 95
-Timer Events .............................................................................................. 96
-Lease Timer Expiry ................................................................................ 96
-Snapshot Timer Expiry ........................................................................... 96
-Other Local Events ...................................................................................... 96
-Media Disconnect Event ......................................................................... 96
-
-3.8.5.1
-3.8.5.2
-
-3.8.6
-
-3.8.6.1
-3.8.6.2
-
-3.8.7
-
-3.8.7.1
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ................................................................................................. 97
-Example 1: Mapping a Network .......................................................................... 97
-Example 2: Measuring Network Capacity ............................................................ 100
-Example 3: Charging a Responder ..................................................................... 103
-Example 4: RepeatBAND Algorithm ................................................................... 104
-Scenario 1: No Hello/Discover Frames Received After Initial Discover Frame Moves
-Responder into the Pausing State ................................................................ 104
-Scenario 2: Small Network - A Few Hello/Discover Frames Received During Each
-Round ...................................................................................................... 104
-Scenario 3: Large Network - A Steady Flow of a Few Hello/Discover Frames
-Received During Each Round ....................................................................... 105
-
-4.4.1
-
-4.4.3
-
-4.4.2
-
-5  Security ............................................................................................................... 106
-Security Considerations for Implementers .......................................................... 106
-Index of Security Parameters ........................................................................... 106
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 107
-
-7  Change Tracking .................................................................................................. 109
-
-8  Index ................................................................................................................... 110
-
-[MS-LLTD] - v20240423
-Link Layer Topology Discovery (LLTD) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 113
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Quick Discovery](#131-quick-discovery)
+    - [1.3.2 Topology Discovery Tests](#132-topology-discovery-tests)
+    - [1.3.3 QoS Diagnostics: Network Test](#133-qos-diagnostics-network-test)
+    - [1.3.4 QoS Diagnostics: Cross-Traffic Analysis](#134-qos-diagnostics-cross-traffic-analysis)
+    - [1.3.5 Charge](#135-charge)
+      - [1.3.5.1 Frame Summary](#1351-frame-summary)
+      - [1.3.5.2 Tracking Charge](#1352-tracking-charge)
+      - [1.3.5.3 Accumulating Charge](#1353-accumulating-charge)
+      - [1.3.5.4 Charge Requirements](#1354-charge-requirements)
+      - [1.3.5.5 Consuming Charge](#1355-consuming-charge)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 Attributes](#2211-attributes)
+        - [2.2.1.1.1 End-of-Property List Marker](#22111-end-of-property-list-marker)
+        - [2.2.1.1.2 Host ID](#22112-host-id)
+        - [2.2.1.1.3 Characteristics](#22113-characteristics)
+        - [2.2.1.1.4 Physical Medium](#22114-physical-medium)
+        - [2.2.1.1.5 Wireless Mode](#22115-wireless-mode)
+        - [2.2.1.1.6 802.11 BSSID](#22116-80211-bssid)
+        - [2.2.1.1.7 802.11 SSID](#22117-80211-ssid)
+        - [2.2.1.1.8 IPv4 Address](#22118-ipv4-address)
+        - [2.2.1.1.9 IPv6 Address](#22119-ipv6-address)
+        - [2.2.1.1.11 Performance Counter Frequency](#221111-performance-counter-frequency)
+        - [2.2.1.1.12 Link Speed](#221112-link-speed)
+        - [2.2.1.1.14 Icon Image](#221114-icon-image)
+        - [2.2.1.1.15 Machine Name](#221115-machine-name)
+        - [2.2.1.1.16 Support Information](#221116-support-information)
+        - [2.2.1.1.17 Friendly Name](#221117-friendly-name)
+        - [2.2.1.1.18 Device UUID](#221118-device-uuid)
+        - [2.2.1.1.19 Hardware ID](#221119-hardware-id)
+        - [2.2.1.1.20 QoS Characteristics](#221120-qos-characteristics)
+        - [2.2.1.1.22 AP Association Table](#221122-ap-association-table)
+        - [2.2.1.1.23 Detailed Icon Image](#221123-detailed-icon-image)
+        - [2.2.1.1.24 Sees-List Working Set](#221124-sees-list-working-set)
+        - [2.2.1.1.25 Component Table](#221125-component-table)
+        - [2.2.1.1.26 Repeater AP Lineage](#221126-repeater-ap-lineage)
+        - [2.2.1.1.27 Repeater AP Table](#221127-repeater-ap-table)
+    - [2.2.2 Large Data Properties](#222-large-data-properties)
+      - [2.2.2.1 Icon Image](#2221-icon-image)
+      - [2.2.2.2 Friendly Name](#2222-friendly-name)
+      - [2.2.2.3 Hardware ID](#2223-hardware-id)
+      - [2.2.2.4 AP Association Table](#2224-ap-association-table)
+      - [2.2.2.5 Detailed Icon Image](#2225-detailed-icon-image)
+      - [2.2.2.6 Component Table](#2226-component-table)
+        - [2.2.2.6.1 Component Descriptors](#22261-component-descriptors)
+          - [2.2.2.6.1.1 Bridge Component Descriptor](#222611-bridge-component-descriptor)
+          - [2.2.2.6.1.2 802.11 Access Point Component Descriptor](#222612-80211-access-point-component-descriptor)
+          - [2.2.2.6.1.3 Built-in Switch Component Descriptor](#222613-built-in-switch-component-descriptor)
+      - [2.2.2.7 Repeater AP Table](#2227-repeater-ap-table)
+    - [2.2.3 Base Specification](#223-base-specification)
+      - [2.2.3.1 Demultiplex Header Format](#2231-demultiplex-header-format)
+    - [2.2.4 Topology Discovery Tests and Quick Discovery](#224-topology-discovery-tests-and-quick-discovery)
+      - [2.2.4.1 Base Header Format](#2241-base-header-format)
+      - [2.2.4.2 Discover Upper-Level Header Format](#2242-discover-upper-level-header-format)
+      - [2.2.4.3 Hello Upper-Level Header Format](#2243-hello-upper-level-header-format)
+      - [2.2.4.4 Emit Upper-Level Header Format](#2244-emit-upper-level-header-format)
+      - [2.2.4.5 Train Upper-Level Header Format](#2245-train-upper-level-header-format)
+      - [2.2.4.6 Probe Upper-Level Header Format](#2246-probe-upper-level-header-format)
+      - [2.2.4.7 Ack Upper-Level Header Format](#2247-ack-upper-level-header-format)
+      - [2.2.4.8 Query Upper-Level Header Format](#2248-query-upper-level-header-format)
+      - [2.2.4.9 QueryResp Upper-Level Header Format](#2249-queryresp-upper-level-header-format)
+      - [2.2.4.10 Reset Upper-Level Header Format](#22410-reset-upper-level-header-format)
+      - [2.2.4.11 Charge Upper-Level Header Format](#22411-charge-upper-level-header-format)
+      - [2.2.4.12 Flat Upper-Level Header Format](#22412-flat-upper-level-header-format)
+      - [2.2.4.13 QueryLargeTlv Upper-Level Header Format](#22413-querylargetlv-upper-level-header-format)
+      - [2.2.4.14 QueryLargeTlvResp Upper-Level Header Format](#22414-querylargetlvresp-upper-level-header-format)
+    - [2.2.5 QoS Diagnostics Specification for Network Test](#225-qos-diagnostics-specification-for-network-test)
+      - [2.2.5.1 Base Header Format](#2251-base-header-format)
+      - [2.2.5.2 QosInitializeSink Upper-Level Header Format](#2252-qosinitializesink-upper-level-header-format)
+      - [2.2.5.3 QosReady Upper-Level Header Format](#2253-qosready-upper-level-header-format)
+      - [2.2.5.4 QosProbe Upper-Level Header Format](#2254-qosprobe-upper-level-header-format)
+      - [2.2.5.5 QosQuery Upper-Level Header Format](#2255-qosquery-upper-level-header-format)
+      - [2.2.5.6 QosQueryResp Upper-Level Header Format](#2256-qosqueryresp-upper-level-header-format)
+      - [2.2.5.7 QosReset Upper-Level Header Format](#2257-qosreset-upper-level-header-format)
+      - [2.2.5.8 QosError Upper-Level Header Format](#2258-qoserror-upper-level-header-format)
+      - [2.2.5.9 QosAck Upper-Level Header Format](#2259-qosack-upper-level-header-format)
+    - [2.2.6 QoS Diagnostics Specification for Cross-Traffic Analysis](#226-qos-diagnostics-specification-for-cross-traffic-analysis)
+      - [2.2.6.1 Base Header Format](#2261-base-header-format)
+      - [2.2.6.2 QosCounterSnapshot Upper-Level Header Format](#2262-qoscountersnapshot-upper-level-header-format)
+      - [2.2.6.3 QosCounterResult Upper-Level Header Format](#2263-qoscounterresult-upper-level-header-format)
+      - [2.2.6.4 QosCounterLease Upper-Level Header Format](#2264-qoscounterlease-upper-level-header-format)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Enumerator Details](#31-enumerator-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Quick Discovery Startup](#3141-quick-discovery-startup)
+      - [3.1.4.2 Quick Discovery Shutdown](#3142-quick-discovery-shutdown)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a Hello Frame](#3151-receiving-a-hello-frame)
+        - [3.1.5.1.1 Enumerator Also Functioning in the Mapper Role](#31511-enumerator-also-functioning-in-the-mapper-role)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Block Timer Expiry](#3161-block-timer-expiry)
+        - [3.1.6.1.1 Enumerator Also Functioning in the Mapper Role](#31611-enumerator-also-functioning-in-the-mapper-role)
+    - [3.1.7 Resetting Quick Discovery](#317-resetting-quick-discovery)
+    - [3.1.8 Shutting Down Quick Discovery and Returning Results](#318-shutting-down-quick-discovery-and-returning-results)
+    - [3.1.9 Other Local Events](#319-other-local-events)
+      - [3.1.9.1 Media Connect/Disconnect Event](#3191-media-connectdisconnect-event)
+  - [3.2 Mapper Details](#32-mapper-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Startup Trigger](#3241-startup-trigger)
+      - [3.2.4.2 Retrieve a Large Data Property](#3242-retrieve-a-large-data-property)
+      - [3.2.4.3 Perform a Network Topology Test](#3243-perform-a-network-topology-test)
+      - [3.2.4.4 Perform a Test Result Query](#3244-perform-a-test-result-query)
+      - [3.2.4.5 Query for Responder Charge](#3245-query-for-responder-charge)
+      - [3.2.4.6 Shutdown Trigger](#3246-shutdown-trigger)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an Ack Frame](#3251-receiving-an-ack-frame)
+      - [3.2.5.2 Receiving a Flat Frame](#3252-receiving-a-flat-frame)
+      - [3.2.5.3 Receiving a QueryResp Frame](#3253-receiving-a-queryresp-frame)
+      - [3.2.5.4 Receiving a QueryLargeTlvResp Frame](#3254-receiving-a-querylargetlvresp-frame)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Per-Responder Response Timer Expiry](#3261-per-responder-response-timer-expiry)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Enumerator Finishes Enumerating Responders](#3271-enumerator-finishes-enumerating-responders)
+      - [3.2.7.2 Media Connect/Disconnect Event](#3272-media-connectdisconnect-event)
+  - [3.3 QoS Controller Details](#33-qos-controller-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Start Network Test Session](#3341-start-network-test-session)
+      - [3.3.4.2 Stop Network Test Session](#3342-stop-network-test-session)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving a QosProbe Frame](#3351-receiving-a-qosprobe-frame)
+      - [3.3.5.2 Receiving a QosQueryResp Frame](#3352-receiving-a-qosqueryresp-frame)
+      - [3.3.5.3 Receiving a QosError Frame](#3353-receiving-a-qoserror-frame)
+      - [3.3.5.4 Receiving a QosReady Frame](#3354-receiving-a-qosready-frame)
+      - [3.3.5.5 Receiving a QosAck Frame](#3355-receiving-a-qosack-frame)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Per-QosInitializeSink Response Timer Expiry](#3361-per-qosinitializesink-response-timer-expiry)
+      - [3.3.6.2 Per-QosProbe Response Timer Expiry](#3362-per-qosprobe-response-timer-expiry)
+      - [3.3.6.3 Per-QosQuery Response Timer Expiry](#3363-per-qosquery-response-timer-expiry)
+      - [3.3.6.4 Per-QosReset Response Timer Expiry](#3364-per-qosreset-response-timer-expiry)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Media Connect/Disconnect Event](#3371-media-connectdisconnect-event)
+  - [3.4 Cross-Traffic Analysis Initiator Details](#34-cross-traffic-analysis-initiator-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 Start Cross-Traffic Analysis](#3441-start-cross-traffic-analysis)
+      - [3.4.4.2 Request Counters](#3442-request-counters)
+      - [3.4.4.3 Stop Cross-Traffic Analysis](#3443-stop-cross-traffic-analysis)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Receiving a QosCounterResult Frame](#3451-receiving-a-qoscounterresult-frame)
+    - [3.4.6 Timer Events](#346-timer-events)
+      - [3.4.6.1 Per-Interface Lease Renewal Timer Expiry](#3461-per-interface-lease-renewal-timer-expiry)
+      - [3.4.6.2 Per-Snapshot Response Timer Expiry](#3462-per-snapshot-response-timer-expiry)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+      - [3.4.7.1 Media Connect/Disconnect Event](#3471-media-connectdisconnect-event)
+  - [3.5 Responder (Quick Discovery) Details](#35-responder-quick-discovery-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Receiving a Discover Frame](#3551-receiving-a-discover-frame)
+        - [3.5.5.1.1 Network Load Control](#35511-network-load-control)
+          - [3.5.5.1.1.1 Load Initialization](#355111-load-initialization)
+          - [3.5.5.1.1.2 Dynamic Behavior](#355112-dynamic-behavior)
+          - [3.5.5.1.1.3 Effect of Discover over Network Load Control](#355113-effect-of-discover-over-network-load-control)
+      - [3.5.5.2 Receiving a Hello Frame](#3552-receiving-a-hello-frame)
+      - [3.5.5.3 Receiving a Reset Frame](#3553-receiving-a-reset-frame)
+      - [3.5.5.4 State Transition Rules](#3554-state-transition-rules)
+    - [3.5.6 Timer Events](#356-timer-events)
+      - [3.5.6.1 Session Inactivity Timer Expiry](#3561-session-inactivity-timer-expiry)
+      - [3.5.6.2 Block Timer Expiry](#3562-block-timer-expiry)
+      - [3.5.6.3 Hello Timer Expiry](#3563-hello-timer-expiry)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+      - [3.5.7.1 Media Disconnect Event](#3571-media-disconnect-event)
+      - [3.5.7.2 Entering Quiescent State](#3572-entering-quiescent-state)
+      - [3.5.7.3 Entering Pausing State](#3573-entering-pausing-state)
+      - [3.5.7.4 Entering Wait State](#3574-entering-wait-state)
+  - [3.6 Responder (Topology Discovery) Details](#36-responder-topology-discovery-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggered Events](#364-higher-layer-triggered-events)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Receiving a Charge Frame](#3651-receiving-a-charge-frame)
+      - [3.6.5.2 Receiving an Emit Frame](#3652-receiving-an-emit-frame)
+      - [3.6.5.3 Receiving a Probe Frame](#3653-receiving-a-probe-frame)
+      - [3.6.5.4 Receiving a Query Frame](#3654-receiving-a-query-frame)
+      - [3.6.5.5 Receiving a QueryLargeTlv Frame](#3655-receiving-a-querylargetlv-frame)
+    - [3.6.6 Timer Events](#366-timer-events)
+      - [3.6.6.1 Charge Timer Expiry](#3661-charge-timer-expiry)
+      - [3.6.6.2 Emit Timer Expiry](#3662-emit-timer-expiry)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+      - [3.6.7.1 Media Disconnect Event](#3671-media-disconnect-event)
+      - [3.6.7.2 Entering Quiescent State](#3672-entering-quiescent-state)
+      - [3.6.7.3 Entering Command State](#3673-entering-command-state)
+      - [3.6.7.4 Leaving Command State](#3674-leaving-command-state)
+  - [3.7 QoS Sink Details](#37-qos-sink-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+    - [3.7.5 Message Processing Events and Sequencing Rules](#375-message-processing-events-and-sequencing-rules)
+      - [3.7.5.1 Receiving a QosInitializeSink Frame](#3751-receiving-a-qosinitializesink-frame)
+      - [3.7.5.2 Receiving a QosProbe Frame](#3752-receiving-a-qosprobe-frame)
+      - [3.7.5.3 Receiving a QosQuery Frame](#3753-receiving-a-qosquery-frame)
+      - [3.7.5.4 Receiving a QosReset Frame](#3754-receiving-a-qosreset-frame)
+    - [3.7.6 Timer Events](#376-timer-events)
+      - [3.7.6.1 Inactivity Timer Expiry](#3761-inactivity-timer-expiry)
+    - [3.7.7 Other Local Events](#377-other-local-events)
+      - [3.7.7.1 Media Disconnect Event](#3771-media-disconnect-event)
+  - [3.8 Responder (QoS Cross-Traffic) Details](#38-responder-qos-cross-traffic-details)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Higher-Layer Triggered Events](#384-higher-layer-triggered-events)
+    - [3.8.5 Message Processing Events and Sequencing Rules](#385-message-processing-events-and-sequencing-rules)
+      - [3.8.5.1 Receiving a QosCounterLease Frame](#3851-receiving-a-qoscounterlease-frame)
+      - [3.8.5.2 Receiving a QosCounterSnapshot Frame](#3852-receiving-a-qoscountersnapshot-frame)
+    - [3.8.6 Timer Events](#386-timer-events)
+      - [3.8.6.1 Lease Timer Expiry](#3861-lease-timer-expiry)
+      - [3.8.6.2 Snapshot Timer Expiry](#3862-snapshot-timer-expiry)
+    - [3.8.7 Other Local Events](#387-other-local-events)
+      - [3.8.7.1 Media Disconnect Event](#3871-media-disconnect-event)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example 1: Mapping a Network](#41-example-1-mapping-a-network)
+  - [4.2 Example 2: Measuring Network Capacity](#42-example-2-measuring-network-capacity)
+  - [4.3 Example 3: Charging a Responder](#43-example-3-charging-a-responder)
+  - [4.4 Example 4: RepeatBAND Algorithm](#44-example-4-repeatband-algorithm)
+    - [4.4.1 Scenario 1: No Hello/Discover Frames Received After Initial Discover Frame](#441-scenario-1-no-hellodiscover-frames-received-after-initial-discover-frame)
+    - [4.4.2 Scenario 2: Small Network - A Few Hello/Discover Frames Received During](#442-scenario-2-small-network-a-few-hellodiscover-frames-received-during)
+    - [4.4.3 Scenario 3: Large Network - A Steady Flow of a Few Hello/Discover Frames](#443-scenario-3-large-network-a-steady-flow-of-a-few-hellodiscover-frames)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Link Layer Topology Discovery (LLTD) Protocol, which an application or
 higher-layer protocol can use to facilitate discovery of link-layer topology and to diagnose various
@@ -1240,7 +856,7 @@ problems that are associated with a network's signal strength and bandwidth.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1307,7 +923,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-frames that are sent to or from all other stations on that hub. Compare this term with router
+
+frames that are sent to or from all other stations on that hub. Compare this term with router
 and switch.
 
 interrupt moderation: The process of delaying central processing unit (CPU) interrupts generated
@@ -1384,7 +1001,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-switch see only those frames destined for their segments. Compare this term with hub and
+
+switch see only those frames destined for their segments. Compare this term with hub and
 router.
 
 topology discovery test: A test that an application or higher-layer protocol can use to facilitate
@@ -1420,14 +1038,14 @@ wireless band.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1456,7 +1074,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[IEEE802.1Q] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
+
+[IEEE802.1Q] Institute of Electrical and Electronics Engineers, "IEEE Standard for Local and
 Metropolitan Area Networks: Virtual Bridged Local Area Networks", IEEE Std 802.1Q, May 2003,
 https://ieeexplore.ieee.org/document/1203093
 
@@ -1490,7 +1109,7 @@ November 1982, https://www.rfc-editor.org/info/rfc826
 
 [UPnP] UPnP Forum, "Standards", http://upnp.org/sdcps-and-certification/standards/sdcps/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [BAND] Black, R., Donnelly, A., Gavrilescu, A., and Thaler, D., "Fast Scalable Robust Node
 Enumeration", http://research.microsoft.com/~dthaler/BAND.pdf
@@ -1501,7 +1120,7 @@ us/library/ms997538.aspx
 [RALLY] Microsoft Corporation, "Windows Rally: Link Layer Topology Discovery protocol (LLTD)",
 https://msdn.microsoft.com/en-us/library/windows/desktop/dn594471(v=vs.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies the Link Layer Topology Discovery (LLTD) Protocol, which operates over
 Ethernet-like media, including both wired (802.3 Ethernet) and wireless (802.11) media. As the
@@ -1523,7 +1142,8 @@ Release: April 23, 2024
 
 13 / 113
 
-  Topology discovery test.
+
+  Topology discovery test.
 
   QoS diagnostics for network tests.
 
@@ -1534,7 +1154,7 @@ discovery test requires that quick discovery is performed first.
 
 Additionally, the concept of charge is central to this protocol. Charge is described in section 1.3.5.
 
-1.3.1  Quick Discovery
+#### 1.3.1 Quick Discovery
 
 Quick discovery is the method of enumerating LLTD-capable stations on the network and their
 various properties. Throughout this document, these LLTD-capable stations are referred to as
@@ -1553,7 +1173,7 @@ of this algorithm which did not accommodate multiple simultaneous enumerators, s
 frames each contain a set of properties (or Type-Length-Values (TLVs)) that the responders are
 advertising to the enumerator.
 
-1.3.2  Topology Discovery Tests
+#### 1.3.2 Topology Discovery Tests
 
 In topology discovery tests, the roles of stations are as the mapper and the responders.
 Topology discovery tests are an extension of quick discovery, and they can only be performed after
@@ -1588,7 +1208,8 @@ Release: April 23, 2024
 
 14 / 113
 
-wire by using different source and destination MAC addresses and ask the other responder which of
+
+wire by using different source and destination MAC addresses and ask the other responder which of
 the Ethernet frames it received. The MAC addresses used are dedicated for use by this protocol.
 
 The choice of which responder to use and the parameters of the topology discovery test are up to the
@@ -1622,7 +1243,7 @@ where one is functioning as an enumerator and the other is functioning as a mapp
 In addition, this service also allows the mapper to ask a responder for additional property data that is
 too large to fit into the quick discovery responses.
 
-1.3.3  QoS Diagnostics: Network Test
+#### 1.3.3 QoS Diagnostics: Network Test
 
 QoS diagnostics for network tests facilitates the determination of a network path's bottleneck
 bandwidth (or "capacity"), its available bandwidth, and the existence of a prioritization mechanism in
@@ -1640,7 +1261,7 @@ controllers to have sinks manipulate the 802.1q tag header for returning test fr
 and 802.1p value in the QosProbe frame defined in section 2.2.5.4). For more information on how the
 tag header influences Ethernet frame routing, see [IEEE802.1Q].
 
-1.3.4  QoS Diagnostics: Cross-Traffic Analysis
+#### 1.3.4 QoS Diagnostics: Cross-Traffic Analysis
 
 QoS diagnostics for cross-traffic analysis facilitates the detection of network traffic congestion by
 means of analyzing network packet counters. An application can analyze these packet counters by
@@ -1654,7 +1275,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the responders via quick discovery, or any other method. Hence, this service does not necessarily
+
+the responders via quick discovery, or any other method. Hence, this service does not necessarily
 require that quick discovery be performed first.) The initiator's role is simply to make these counters
 available to the application, where possible.
 
@@ -1686,7 +1308,7 @@ wireless area network (WAN) admission decisions.
 It is assumed that the bottleneck point for an AP is always the wireless link. As such, APs are not
 required to provide the wired local area network (LAN) counters.
 
-1.3.5  Charge
+#### 1.3.5 Charge
 
 A mapper's requests have the potential to trigger non-trivial amounts of network traffic originating
 from the responders. If the requests are carried out too frequently, they could contribute to network
@@ -1720,7 +1342,8 @@ Release: April 23, 2024
 
 16 / 113
 
-1.3.5.1  Frame Summary
+
+##### 1.3.5.1 Frame Summary
 
 The frames described in this section convey or consume charge. Charge frames and Emit frames can
 be unacknowledged or acknowledged. Charge frames and Emit frames are considered acknowledged if
@@ -1757,7 +1380,7 @@ Ack frames: Ack frames are sent by a responder back to a mapper when it has fini
 of the commands in an acknowledged Emit frame. Ack frames consume charge; Emit frames
 always carry enough implicit charge to send one Ack frame.
 
-1.3.5.2  Tracking Charge
+##### 1.3.5.2 Tracking Charge
 
 Charge is represented by using two counters:
 
@@ -1771,7 +1394,7 @@ number).
 
 These counters are collectively referred to as the Current Transmit Credit (CTC).
 
-1.3.5.3  Accumulating Charge
+##### 1.3.5.3 Accumulating Charge
 
 Charge is accumulated by responders on receipt of a Charge frame or Emit frame. The Frame
 Charge (FC) is incremented by 1 (representing the 1 frame received). The Byte Charge (BC) is
@@ -1790,10 +1413,11 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-on the amount of FC and BC which can be accumulated. For more information about the
+
+on the amount of FC and BC which can be accumulated. For more information about the
 implementation of these limits, see sections 3.6.5.1 and 3.6.5.2.
 
-1.3.5.4  Charge Requirements
+##### 1.3.5.4 Charge Requirements
 
 Charge requirements are based on how many frames are to be sent and how many bytes are in those
 frames. Charge requirements for each frame are: one Frame Charge (FC), and Byte Charge (BC)
@@ -1810,7 +1434,7 @@ frames and 1 Ack frame. Probe frames and Ack frames are both 32 bytes in size. T
 charge required would be 6 FC and 192 BC. (For details about how this example was calculated, see
 section 4.3.)
 
-1.3.5.5  Consuming Charge
+##### 1.3.5.5 Consuming Charge
 
 If the responder is sending a Flat frame (which it does when failing an acknowledged Emit request or
 responding to an acknowledged Charge request), the amount of charge consumed from the Current
@@ -1824,7 +1448,7 @@ to be sent.
 As noted in section 3.2.4.3, unacknowledged Charge frames elicit no response and consume no
 charge.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol operates directly over Ethernet (including media such as 802.11 that support Ethernet
 encapsulation and hence appear as Ethernet to protocols) and is not used as a transport for other
@@ -1837,7 +1461,7 @@ This protocol is part of the Windows Rally technologies for enhancing the user e
 and device interaction (for more information about Vista Rally, see [RALLY]). This protocol does not
 depend on any of the other Rally technologies, nor do other Rally technologies depend on it.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the implementation have a random number generator whose seed value
 does not depend solely on the current time because the time could be synchronized on the network.
@@ -1854,7 +1478,8 @@ Release: April 23, 2024
 
 18 / 113
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol operates at Layer 2 (the link-layer) in the OSI reference model and is therefore not
 routable. The protocol is suitable only for discovering the link-layer topology of networks that
@@ -1869,12 +1494,12 @@ is less than the safeguards built into the protocol. For example, the timer peri
 procedure as specified in section 3.1.7 or the timers of the RepeatBAND algorithm specified in
 section 3.5.6.2. If the latency is higher, unexpected results might occur.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol has no capability negotiation or versioning aspects, except that messages include a
 version number for future extensibility.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol defines a range of special MAC addresses that applications can use when they conduct
 network topology tests. This range is 0x000D3AD7F140 through 0x000D3AFFFFFF. These MAC
@@ -1886,7 +1511,7 @@ construct such MAC addresses by using the OUI, followed by a random number in th
 0xFFFF, and leaving 8 bits that can be used to give 256 MAC addresses. This protocol contains a
 generation number field that can be used as a seed in a pseudo-random number generator.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1911,17 +1536,18 @@ Release: April 23, 2024
 
 19 / 113
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how messages associated with this protocol are encapsulated on the
 wire, and common data types associated with this protocol.
 
-2.1  Transport
+### 2.1 Transport
 
 Messages associated with this protocol MUST be transported over raw Ethernet, as specified in
 [IEEE802.3], with the value of the Ethernet Header Ethertype field set to 0x88D9.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following diagram shows the position of each layer of header in this protocol.
 
@@ -1964,9 +1590,9 @@ LLTD_Base_and_Upper_Layer_Header (variable): Service and message-specific framin
 
 as specified in sections 2.2.4, 2.2.5, and 2.2.6.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  Attributes
+##### 2.2.1.1 Attributes
 
 Attributes are used in Hello frames (as specified in section 2.2.4.3) that responders send to
 enumerators during quick discovery.
@@ -1999,7 +1625,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Type (1 byte): The Type field identifies each attribute. Legal values are specified in the following
+
+Type (1 byte): The Type field identifies each attribute. Legal values are specified in the following
 
 table, and each attribute is specified in its own subsection.
 
@@ -2118,7 +1745,7 @@ Value (variable):  This field specifies information that is specific to the attr
 
 corresponding subsection.
 
-2.2.1.1.1 End-of-Property List Marker
+###### 2.2.1.1.1 End-of-Property List Marker
 
 The End-of-Property List Marker attribute signals the end of the TLV list. All responders MUST
 include this marker in every Hello frame.
@@ -2138,7 +1765,7 @@ Type
 
 Type (1 byte): This field MUST be set to 0x00.
 
-2.2.1.1.2 Host ID
+###### 2.2.1.1.2 Host ID
 
 [MS-LLTD] - v20240423
 Link Layer Topology Discovery (LLTD) Protocol
@@ -2147,7 +1774,8 @@ Release: April 23, 2024
 
 21 / 113
 
-The Host ID attribute uniquely identifies the host on which the responder is running. All responders
+
+The Host ID attribute uniquely identifies the host on which the responder is running. All responders
 MUST include this attribute in all Hello frames.
 
 0  1  2  3  4  5  6  7  8  9
@@ -2178,7 +1806,7 @@ MAC_address (6 bytes):  This field MUST be the MAC address of the host upon whic
 responder is running. On a host with multiple network interfaces, this field SHOULD be the lowest
 MAC address across the network interfaces.
 
-2.2.1.1.3 Characteristics
+###### 2.2.1.1.3 Characteristics
 
 The Characteristics attribute identifies various characteristics of the responder host and network
 interface. This attribute is mandatory. All responders MUST include this attribute in all Hello frames.
@@ -2229,7 +1857,7 @@ protocols bound to the interface to receive the packet).
 
 Reserved (11 bits): MUST be set to zero when sent and ignored on receipt.
 
-2.2.1.1.4 Physical Medium
+###### 2.2.1.1.4 Physical Medium
 
 The Physical Medium attribute identifies the physical medium of a network interface by using one of
 the IANA-published ifType object enumeration values. This attribute is mandatory. All responders
@@ -2242,7 +1870,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2270,7 +1899,7 @@ Physical Medium (4 bytes): This field MUST be set to the physical medium type of
 interface that the responder is using. The values are published by the Internet Assigned Numbers
 Authority (IANA) for the ifType object, as specified in [IANAifType].
 
-2.2.1.1.5 Wireless Mode
+###### 2.2.1.1.5 Wireless Mode
 
 The Wireless Mode attribute identifies how an Institute of Electrical and Electronics Engineers (IEEE)
 802.11, as specified in [IEEE802.11-2007], network interface connects to the network.
@@ -2311,7 +1940,7 @@ Value  Meaning
 
 802.11 infrastructure mode, as specified in [IEEE802.11-2007].
 
-2.2.1.1.6 802.11 BSSID
+###### 2.2.1.1.6 802.11 BSSID
 
 The 802.11 BSSID attribute specifies an IEEE 802.11 network interface's associated AP.
 Implementations with responders in 802.11 stations MUST include this attribute in all Hello frames.
@@ -2346,11 +1975,12 @@ Release: April 23, 2024
 
 23 / 113
 
-BSSID (6 bytes):  This field specifies the MAC address of the AP with which a wireless responder's
+
+BSSID (6 bytes):  This field specifies the MAC address of the AP with which a wireless responder's
 
 wireless network interface is associated.
 
-2.2.1.1.7 802.11 SSID
+###### 2.2.1.1.7 802.11 SSID
 
 The 802.11 SSID attribute specifies an IEEE 802.11 network interface's associated AP.
 Implementations with responders in 802.11 stations MUST include this attribute in all Hello frames.
@@ -2383,7 +2013,7 @@ wireless responder's wireless network interface associates. Note that the string
 null-terminated and MUST be treated as case-sensitive. The maximum length of the string is 32
 characters.
 
-2.2.1.1.8 IPv4 Address
+###### 2.2.1.1.8 IPv4 Address
 
 The IPv4 Address attribute specifies an IPv4 network address of the responder. This attribute is
 optional; implementations SHOULD include it in Hello frames if they have an IPv4 address.
@@ -2420,7 +2050,7 @@ if the responder sets the M bit in the Characteristics attribute, the address MU
 reachable via the interface over which the frame is sent. If no such address exists, the responder
 MUST NOT include the IPv4 Address attribute.
 
-2.2.1.1.9 IPv6 Address
+###### 2.2.1.1.9 IPv6 Address
 
 The IPv6 Address attribute specifies an IPv6 network address of the responder. This attribute is
 optional; implementations SHOULD include it in all Hello frames if they have an IPv6 address.
@@ -2432,7 +2062,8 @@ Release: April 23, 2024
 
 24 / 113
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2501,9 +2132,9 @@ Rate (2 bytes): This field specifies the maximum data rate, in network byte orde
 
 802.11 interface can run, in units of 0.5 megabits per second (Mbps).
 
-2.2.1.1.11
+###### 2.2.1.1.11 Performance Counter Frequency
 
-Performance Counter Frequency
+
 
 The Performance Counter Frequency attribute specifies how fast the time stamp counters run in ticks
 per second. This information is particularly useful for deciphering the results from timed probe and
@@ -2536,7 +2167,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Type (1 byte): This field MUST be set to 0x0A.
 
@@ -2546,9 +2178,9 @@ Perf Counter Frequency (8 bytes): This field specifies the number of ticks per s
 
 byte order, at which the responder's time stamp counters function.
 
-2.2.1.1.12
+###### 2.2.1.1.12 Link Speed
 
-Link Speed
+
 
 The Link Speed attribute specifies the network interface's maximum speed in units of 100 bits per
 second (bps). This attribute is optional; implementations SHOULD include it in all Hello frames.
@@ -2622,9 +2254,9 @@ If the actual RSSI value is not available, but the implementation has some other
 signal strength,<2> this field MUST be a value in the range 0 to 100, where a value of 50 means
 an "average" link quality and a value of 100 means a "perfect" link.
 
-2.2.1.1.14
+###### 2.2.1.1.14 Icon Image
 
-Icon Image
+
 
 [MS-LLTD] - v20240423
 Link Layer Topology Discovery (LLTD) Protocol
@@ -2633,7 +2265,8 @@ Release: April 23, 2024
 
 26 / 113
 
-The Icon Image attribute specifies that the responder has an icon image that represents the host
+
+The Icon Image attribute specifies that the responder has an icon image that represents the host
 running the responder and is willing to provide it if a QueryLargeTLV frame requests it. This attribute
 is optional; implementations MAY include it in all Hello frames.
 
@@ -2656,7 +2289,7 @@ Type (1 byte): This field MUST be set to 0x0E.
 
 Length (1 byte): This field MUST be set to 0x00.
 
-2.2.1.1.15  Machine Name
+###### 2.2.1.1.15 Machine Name
 
 The Machine Name attribute specifies an unterminated UCS-2LE string that identifies the device's
 host name. This attribute is mandatory; implementations MUST include it in Hello frames.
@@ -2690,9 +2323,9 @@ Device Host Name (variable): This field specifies a UCS-2LE string that specifie
 name, where host name SHOULD be a non-fully qualified domain name. The string MUST NOT be
 null-terminated.
 
-2.2.1.1.16
+###### 2.2.1.1.16 Support Information
 
-Support Information
+
 
 The Support Information attribute specifies the device manufacturer's support information (for
 example, telephone number and support URL). This attribute is optional; implementations MAY include
@@ -2735,9 +2368,10 @@ Release: April 23, 2024
 
 27 / 113
 
-2.2.1.1.17
 
-Friendly Name
+###### 2.2.1.1.17 Friendly Name
+
+
 
 The Friendly Name attribute indicates that the device has a friendly name and is willing to provide it if
 a QueryLargeTLV frame requests it. This attribute is optional; implementations MAY include it in Hello
@@ -2762,7 +2396,7 @@ Type (1 byte): This field MUST be set to 0x11.
 
 Length (1 byte): This field MUST be set to 0x00.
 
-2.2.1.1.18  Device UUID
+###### 2.2.1.1.18 Device UUID
 
 The Device UUID attribute specifies a UUID and uniquely identifies a device that supports Universal
 Plug and Play (UPnP) [UPnP]. This attribute is used to identify a responder residing on a UPnP device.
@@ -2801,7 +2435,7 @@ Device UUID (16 bytes): This field specifies the UUID that is found in the devic
 name (USN) portion of an Simple Service Discovery Protocol (SSDP) discovery response (as
 specified in [UPnP] section 1.2.3) in UUID binary format.
 
-2.2.1.1.19  Hardware ID
+###### 2.2.1.1.19 Hardware ID
 
 The Hardware ID attribute is used by a responder to indicate that it has a Hardware ID property (see
 section 2.2.2.3) and is willing to provide it if a QueryLargeTLV frame requests it. This attribute is
@@ -2834,7 +2468,8 @@ Release: April 23, 2024
 
 28 / 113
 
-2.2.1.1.20  QoS Characteristics
+
+###### 2.2.1.1.20 QoS Characteristics
 
 The QoS Characteristics attribute specifies various QoS–related characteristics of the responder host
 and network interface. This attribute is mandatory for responders that support layer 2 forwarding,
@@ -2951,7 +2586,8 @@ Release: April 23, 2024
 
 29 / 113
 
-2.2.1.1.22  AP Association Table
+
+###### 2.2.1.1.22 AP Association Table
 
 The AP Association Table attribute indicates that the responder is an AP with an AP Association
 Table that lists wireless hosts that are associated with it and is willing to provide it if a QueryLargeTLV
@@ -2977,7 +2613,7 @@ Type (1 byte): This field MUST be set to 0x16.
 
 Length (1 byte): This field MUST be set to 0x00.
 
-2.2.1.1.23  Detailed Icon Image
+###### 2.2.1.1.23 Detailed Icon Image
 
 The presence of a Detailed Icon Image attribute indicates that the responder has a Detailed Icon
 Image and is willing to provide it if a QueryLargeTLV requests it. A Detailed Icon Image is a high-
@@ -3012,9 +2648,9 @@ Type (1 byte): This field MUST be set to 0x18.
 
 Length (1 byte): This field MUST be set to 0x00.
 
-2.2.1.1.24
+###### 2.2.1.1.24 Sees-List Working Set
 
-Sees-List Working Set
+
 
 The Sees-List Working Set attribute specifies the maximum entry count in the responder's sees-list
 database. This attribute is mandatory for responders that can only maintain a list of less than 2^16
@@ -3050,13 +2686,14 @@ Release: April 23, 2024
 
 30 / 113
 
-Max Entries (2 bytes): The maximum count, in network byte order, of RecveeDesc entries (as
+
+Max Entries (2 bytes): The maximum count, in network byte order, of RecveeDesc entries (as
 
 specified in section 2.2.4.9) that can be stored in its sees-list database.
 
-2.2.1.1.25
+###### 2.2.1.1.25 Component Table
 
-Component Table
+
 
 The presence of the Component Table attribute indicates that the responder has a Component Table
 that specifies a responder's internal components, allowing the mapper to generate a more accurate
@@ -3082,7 +2719,7 @@ Type (1 byte): This field MUST be set to 0x1A.
 
 Length (1 byte): This field MUST be set to 0x00.
 
-2.2.1.1.26  Repeater AP Lineage
+###### 2.2.1.1.26 Repeater AP Lineage
 
 The Repeater AP Lineage attribute specifies the address of the parent, and optionally holds the chain
 of parents up to the root of the 802.11 Distribution System, as specified in [IEEE802.11-2007] section
@@ -3133,7 +2770,7 @@ field MUST be empty (not present). Otherwise, it MUST contain a list of up to si
 where the first address is the parent AP address, the second address is that AP's parent, and so
 forth until either the root MAC address is reached or six addresses have been included.
 
-2.2.1.1.27  Repeater AP Table
+###### 2.2.1.1.27 Repeater AP Table
 
 [MS-LLTD] - v20240423
 Link Layer Topology Discovery (LLTD) Protocol
@@ -3142,7 +2779,8 @@ Release: April 23, 2024
 
 31 / 113
 
-The Repeater AP Table attribute indicates that the responder has the routing table that a responder
+
+The Repeater AP Table attribute indicates that the responder has the routing table that a responder
 is using for packets to addresses that are not directly associated, and that the responder is willing to
 provide it if a QueryLargeTLV requests it. If the access point is a repeater AP as part of a Wireless
 Distribution System, this information permits the mapper to generate a more accurate topology map.
@@ -3168,12 +2806,12 @@ Type (1 byte): This field MUST be set to 0x1C.
 
 Length (1 byte): This field MUST be set to 0x00.
 
-2.2.2  Large Data Properties
+#### 2.2.2 Large Data Properties
 
 The QueryLargeTlvResp frame, as specified in 2.2.4.14, is used to return (portions of) data
 properties that are declared as zero length in Hello frames.
 
-2.2.2.1  Icon Image
+##### 2.2.2.1 Icon Image
 
 The property data MUST be an icon image, at most 32,768 bytes long. The image MUST be in any
 image format that has a unique signature at the beginning, so that the receiver can detect the image
@@ -3183,13 +2821,13 @@ mapper MAY<4> recognize any such formats it chooses. If the image is not in a fo
 mapper recognizes, the mapper MUST use a default image that it has, in place of the one it received
 from the responder.
 
-2.2.2.2  Friendly Name
+##### 2.2.2.2 Friendly Name
 
 The Friendly Name property contains a non-NULL-terminated UCS-2LE string that identifies the
 device's friendly name. This property's value MUST be between 2 and 64 bytes (1 and 32 characters)
 in length.
 
-2.2.2.3  Hardware ID
+##### 2.2.2.3 Hardware ID
 
 The Hardware ID property contains a non-NULL-terminated UCS-2LE string. This information MUST
 come from the UPnP device description phase, as specified in [UPnP] section 2.1.<5>
@@ -3216,7 +2854,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.4  AP Association Table
+
+##### 2.2.2.4 AP Association Table
 
 A wireless access point responder uses this data object to report the wireless hosts that are
 associated with it. This information is particularly useful for discovering legacy wireless devices that do
@@ -3265,12 +2904,12 @@ If the size of the actual AP Association Table exceeds 409 entries, the responde
 409 entries available in this data object. It is up to the implementer to choose which stations to
 make available in that case.
 
-2.2.2.5  Detailed Icon Image
+##### 2.2.2.5 Detailed Icon Image
 
  The Detailed Icon Image property's data MUST be a high-resolution icon image, at most 262,144
 bytes in length. The image format requirements are the same as specified in section 2.2.2.1.
 
-2.2.2.6  Component Table
+##### 2.2.2.6 Component Table
 
 The Component Tabledata object is used by multifunction devices such as APs to report their internal
 components.
@@ -3304,7 +2943,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.6.1 Component Descriptors
+
+###### 2.2.2.6.1 Component Descriptors
 
 The Component Table header MUST be followed by an arbitrary number of component descriptors,
 each carrying a mandatory header.
@@ -3348,7 +2988,7 @@ Length (1 byte): This field specifies the length (in octets) of the descriptor p
 
 following this header.
 
-2.2.2.6.1.1  Bridge Component Descriptor
+###### 2.2.2.6.1.1 Bridge Component Descriptor
 
 A bridge component descriptor with Type value 0x00 MUST have the following format.
 
@@ -3397,7 +3037,7 @@ Packets transitioning through the bridge are seen on the responder; however, the
 bridge learns addresses like a switch, provided that they initiate on components
 other than the responder.
 
-2.2.2.6.1.2  802.11 Access Point Component Descriptor
+###### 2.2.2.6.1.2 802.11 Access Point Component Descriptor
 
 An 802.11 AP component descriptor with Type value 0x01 MUST have the following format.
 
@@ -3408,7 +3048,8 @@ Release: April 23, 2024
 
 34 / 113
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3451,7 +3092,7 @@ defined in section 2.2.1.1.5.
 
 BSSID (6 bytes): The MAC address of the AP that is hosting the SSID.
 
-2.2.2.6.1.3  Built-in Switch Component Descriptor
+###### 2.2.2.6.1.3 Built-in Switch Component Descriptor
 
 A built-in switch component descriptor with Type value 0x02 MUST have the following format.
 
@@ -3482,7 +3123,7 @@ Link_Speed (4 bytes): The maximum speed of the switch, in units of 100 bps in ne
 
 order.
 
-2.2.2.7  Repeater AP Table
+##### 2.2.2.7 Repeater AP Table
 
 The Repeater AP Table  data object is used by repeater access points to report station routing
 information.
@@ -3510,7 +3151,8 @@ Release: April 23, 2024
 
 35 / 113
 
-...
+
+...
 
 MAC_address_of_next_hop_access_point
 
@@ -3528,11 +3170,11 @@ If the size of the actual Repeater AP Table exceeds 256 entries, the responder M
 256 entries available in this property. It is up to the implementer to choose which host and AP
 pairs are made available in that case.
 
-2.2.3  Base Specification
+#### 2.2.3 Base Specification
 
  All implementations of this protocol MUST use and accept the following base specification format.
 
-2.2.3.1  Demultiplex Header Format
+##### 2.2.3.1 Demultiplex Header Format
 
 The Demultiplex header format is defined as follows.
 
@@ -3622,7 +3264,8 @@ Release: April 23, 2024
 
 36 / 113
 
-Value  Meaning
+
+Value  Meaning
 
 0x07
 
@@ -3712,9 +3355,9 @@ QosCounterResult
 
 QosCounterLease
 
-2.2.4  Topology Discovery Tests and Quick Discovery
+#### 2.2.4 Topology Discovery Tests and Quick Discovery
 
-2.2.4.1  Base Header Format
+##### 2.2.4.1 Base Header Format
 
 This base header MUST be used when the Type of Service value in the Demultiplex header is set to
 0x00 (Topology discovery) or 0x01 (Quick discovery).
@@ -3749,7 +3392,8 @@ Release: April 23, 2024
 
 37 / 113
 
-Real_Destination_Address (6 bytes):  This field specifies the intended destination's real MAC
+
+Real_Destination_Address (6 bytes):  This field specifies the intended destination's real MAC
 
 address.
 
@@ -3782,7 +3426,7 @@ previous XID value for topology discovery; without stable storage, XID values MA
 random. For a Reset frame, the XID MUST be set to zero. Sequential XIDs are preferable, because
 they reduce the probability of incorrect association with a previous session.
 
-2.2.4.2  Discover Upper-Level Header Format
+##### 2.2.4.2 Discover Upper-Level Header Format
 
 A Discover frame is broadcast by an enumerator to all responders to initiate quick discovery and
 cause responders to start responding with Hello frames.
@@ -3831,7 +3475,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.4.3  Hello Upper-Level Header Format
+
+##### 2.2.4.3 Hello Upper-Level Header Format
 
 Hello frames MUST be sent to the Ethernet all-ones broadcast address so all switches can learn the
 source port of all responders. The Real Destination Address field in the Base header of the Hello
@@ -3882,7 +3527,7 @@ TLV_List (variable): This field specifies properties (as specified in section 2.
 responder knows about the network interface on which it is running. A TLV MUST NOT occur in the
 list more than once.
 
-2.2.4.4  Emit Upper-Level Header Format
+##### 2.2.4.4 Emit Upper-Level Header Format
 
 A mapper sends an Emit frame to a responder to request that the responder transmit a set of Train
 or Probe frames, each with specified source and destination MAC addresses, after a specified pause
@@ -3919,7 +3564,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Num_Descs (2 bytes): This field specifies the unsigned integer count, in network byte order, of the
+
+Num_Descs (2 bytes): This field specifies the unsigned integer count, in network byte order, of the
 number of EmiteeDesc items in the EmiteeDescs field. This field's value MUST be in the range 1
 to 105.
 
@@ -3976,7 +3622,7 @@ Destination_Address (6 bytes):  This field specifies the destination MAC address
 emit. The destination address MUST NOT be a multicast address because these addresses could
 amplify traffic.
 
-2.2.4.5  Train Upper-Level Header Format
+##### 2.2.4.5 Train Upper-Level Header Format
 
 A mapper sends an Emit request to a responder, sometimes commanding it to send the Train frame.
 This Train frame is intended to allow a switch that is connected to the responder to learn the origin of
@@ -3984,14 +3630,14 @@ a MAC address. The Train frame is ignored by all responders on reception.
 
 The Train frame has no upper-level header other than the Base header itself.
 
-2.2.4.6  Probe Upper-Level Header Format
+##### 2.2.4.6 Probe Upper-Level Header Format
 
 A mapper sends an Emit request to a responder, sometimes commanding it to send a Probe frame
 to another responder. This Probe frame is meant to be seen and recorded by that responder.
 
 The Probe frame has no upper-level header other than the Base header itself.
 
-2.2.4.7  Ack Upper-Level Header Format
+##### 2.2.4.7 Ack Upper-Level Header Format
 
 A responder sends an Ack frame to a mapper in response to an Emit request that contains a
 nonzero sequence number.
@@ -4003,12 +3649,13 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Ack frames are not acknowledged, but the Sequence Number field in the Base header MUST be
+
+Ack frames are not acknowledged, but the Sequence Number field in the Base header MUST be
 nonzero; that is, the sequence number of the request that is being acknowledged.
 
 The Ack frame has no upper-level header other than the Base header itself.
 
-2.2.4.8  Query Upper-Level Header Format
+##### 2.2.4.8 Query Upper-Level Header Format
 
 A mapper sends a Query frame to a responder to retrieve Probe events that the responder has
 observed on the wire.
@@ -4019,7 +3666,7 @@ The sequence number in the base header MUST be nonzero for Query frames, because
 the Query frame is to elicit a QueryResp frame response from a responder. Responders ignore Query
 frames with the sequence number set to zero.
 
-2.2.4.9  QueryResp Upper-Level Header Format
+##### 2.2.4.9 QueryResp Upper-Level Header Format
 
 A responder sends a QueryResp frame to a mapper in response to a Query request. It lists which
 recordable events (such as Ethernet source and Ethernet destination addresses from Probe frames
@@ -4091,7 +3738,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Ethernet_Destination_Address
 
@@ -4129,18 +3777,18 @@ Ethernet_Destination_Address (6 bytes): This field specifies the destination MAC
 
 Ethernet frame.
 
-2.2.4.10
+##### 2.2.4.10 Reset Upper-Level Header Format
 
-Reset Upper-Level Header Format
+
 
 A mapper broadcasts a Reset frame to all responders to abort a mapping generation either because
 someone else is mapping or because mapping is over.
 
 The Reset frame has no upper-level header other than the Base header itself.
 
-2.2.4.11
+##### 2.2.4.11 Charge Upper-Level Header Format
 
-Charge Upper-Level Header Format
+
 
 A mapper sends a Charge frame to a responder to match the number of frames and amount of
 bytes that is to be requested in an upcoming Emit frame. This action is intended to prevent bandwidth
@@ -4150,9 +3798,9 @@ frame be transmitted.
 
 The Charge frame has no upper-level header other than the Base header itself.
 
-2.2.4.12
+##### 2.2.4.12 Flat Upper-Level Header Format
 
-Flat Upper-Level Header Format
+
 
 A responder sends a Flat frame to a mapper in response to the following:
 
@@ -4175,7 +3823,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Flat frame following a Base header MUST have the following format.
+
+The Flat frame following a Base header MUST have the following format.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -4200,9 +3849,9 @@ CTC_in_Packets (1 byte): This field specifies the value of the CTC packet counte
 
 in network byte order.
 
-2.2.4.13
+##### 2.2.4.13 QueryLargeTlv Upper-Level Header Format
 
-QueryLargeTlv Upper-Level Header Format
+
 
 The QueryLargeTlv frame allows the mapper to query a responder for TLV data that is too large to
 be included in a Hello frame. The inclusion of a zero-length TLV in the Hello frame indicates that such
@@ -4270,9 +3919,9 @@ Offset (3 bytes):  This field specifies the offset in octets, in network byte or
 
 to query.
 
-2.2.4.14
+##### 2.2.4.14 QueryLargeTlvResp Upper-Level Header Format
 
-QueryLargeTlvResp Upper-Level Header Format
+
 
 A responder sends the QueryLargeTlvResp frame to a mapper in response to a QueryLargeTlv
 request. It returns up to the maximum number of octets that fit into a response frame over the
@@ -4285,7 +3934,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The QueryLargeTlvResp header MUST immediately follow the Base header and have the following
+
+The QueryLargeTlvResp header MUST immediately follow the Base header and have the following
 format.
 
 0  1  2  3  4  5  6  7  8  9
@@ -4330,9 +3980,9 @@ The format of the data objects are specified in section 2.2.2. This field MUST c
 the requested data object, starting at the offset requested in the QueryLargeTlv frame, and
 contain as many bytes of the data object as will fit in the frame.
 
-2.2.5  QoS Diagnostics Specification for Network Test
+#### 2.2.5 QoS Diagnostics Specification for Network Test
 
-2.2.5.1  Base Header Format
+##### 2.2.5.1 Base Header Format
 
 This Base header MUST be used when the Type of Service value in the Demultiplex header is set to
 0x02 (QoS diagnostics) and the Function value is in the range 0x00 (QosInitializeSink) to 0x07
@@ -4377,7 +4027,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-devices rewrite the Source Address and Destination Address fields of the Ethernet header and
+
+devices rewrite the Source Address and Destination Address fields of the Ethernet header and
 thus might not survive an end-to-end transmission.
 
 Sequence_Number (2 bytes): This field specifies the sequence number that correlates a response
@@ -4386,7 +4037,7 @@ Sequence_Number (2 bytes): This field specifies the sequence number that correla
 QosProbe, QosQuery, or QosReset). The correlation provided by the sequence number enables
 request senders to ensure a response is received for a given request.
 
-2.2.5.2  QosInitializeSink Upper-Level Header Format
+##### 2.2.5.2 QosInitializeSink Upper-Level Header Format
 
 A controller sends the QosInitializeSink frame to a sink to set up a network test session.
 
@@ -4419,7 +4070,7 @@ Disable interrupt moderation.
 
 Use the existing interrupt moderation setting.
 
-2.2.5.3  QosReady Upper-Level Header Format
+##### 2.2.5.3 QosReady Upper-Level Header Format
 
 A sink sends a QosReady frame to a controller, in reply to a QosInitializeSink frame, to notify the
 controller that a network test session is successfully established.
@@ -4451,7 +4102,7 @@ Performance_Counter_Frequency (8 bytes): This field allows a responder to identi
 
 time stamp counters run in ticks per second in network byte order.
 
-2.2.5.4  QosProbe Upper-Level Header Format
+##### 2.2.5.4 QosProbe Upper-Level Header Format
 
 A controller sends a QosProbe frame to a sink and by a sink back to a controller. It carries time
 stamp values that an application can use on the controller to calculate network bandwidth.
@@ -4463,7 +4114,8 @@ Release: April 23, 2024
 
 45 / 113
 
-The QosProbe header that follows the Base header MUST have the following format.
+
+The QosProbe header that follows the Base header MUST have the following format.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -4557,7 +4209,8 @@ Release: April 23, 2024
 
 46 / 113
 
-9 for each QosProbe packet that is reflected to the controller in the case of a probegap test. If the
+
+9 for each QosProbe packet that is reflected to the controller in the case of a probegap test. If the
 T flag is not set, this field MUST be set to zero when sent and MUST be ignored on receipt.
 
 Payload (5 bytes):  This field specifies arbitrary data that is used to pad the frame to the correct
@@ -4565,7 +4218,7 @@ Payload (5 bytes):  This field specifies arbitrary data that is used to pad the 
 frame size. In a probegap experiment, the payload content that a sink receives MUST be
 duplicated on the sink's send path.
 
-2.2.5.5  QosQuery Upper-Level Header Format
+##### 2.2.5.5 QosQuery Upper-Level Header Format
 
 A controller sends a QosQuery frame to a sink following the last QosProbe frame in a timed probe
 test.
@@ -4573,7 +4226,7 @@ test.
 The QosQuery frame has no upper-level header other than the Base header itself. The sequence
 number MUST be nonzero.
 
-2.2.5.6  QosQueryResp Upper-Level Header Format
+##### 2.2.5.6 QosQueryResp Upper-Level Header Format
 
 A sink sends the QosQueryResp frame to the controller, in response to a QosQuery frame. It lists
 QosProbe events (also known as QosEventDesc structures) that have been observed since the
@@ -4644,7 +4297,8 @@ Release: April 23, 2024
 
 47 / 113
 
-Packet_ID
+
+Packet_ID
 
 Reserved
 
@@ -4663,13 +4317,13 @@ Reserved (1 byte): This field is not currently used, but it exists only to pad t
 
 size. This field MUST be set to 0 on transmit and ignored on receipt.
 
-2.2.5.7  QosReset Upper-Level Header Format
+##### 2.2.5.7 QosReset Upper-Level Header Format
 
 A controller sends a QosReset frame to a sink to terminate a network test session.
 
 The QosReset frame has no upper-level header other than the Base header itself.
 
-2.2.5.8  QosError Upper-Level Header Format
+##### 2.2.5.8 QosError Upper-Level Header Format
 
 A sink sends the QosError frame to notify a controller that a network test session cannot be
 initiated.
@@ -4708,7 +4362,7 @@ Busy; try again later. The responder has reached its session limit.
 Interrupt moderation not available. The interrupt moderation requirement cannot be satisfied, or
 the ability to control it is not available.
 
-2.2.5.9  QosAck Upper-Level Header Format
+##### 2.2.5.9 QosAck Upper-Level Header Format
 
 A sink sends the QosAck frame to a controller to notify it that a QosReset request has been
 processed.
@@ -4722,9 +4376,10 @@ Release: April 23, 2024
 
 48 / 113
 
-2.2.6  QoS Diagnostics Specification for Cross-Traffic Analysis
 
-2.2.6.1  Base Header Format
+#### 2.2.6 QoS Diagnostics Specification for Cross-Traffic Analysis
+
+##### 2.2.6.1 Base Header Format
 
 This Base header MUST be used when the Type of Service value in the Demultiplex header is set to
 0x02 (QoS diagnostics) and the Function value is in the range 0x08 (QosCounterSnapshot) to 0x0A
@@ -4768,7 +4423,7 @@ a specific request.
 
 For function value 0x08, this field MUST be nonzero.
 
-2.2.6.2  QosCounterSnapshot Upper-Level Header Format
+##### 2.2.6.2 QosCounterSnapshot Upper-Level Header Format
 
 A cross-traffic analysis initiator sends a QosCounterSnapshot frame to a responder to retrieve its
 history of network performance counters.
@@ -4793,7 +4448,7 @@ History_Size (1 byte): This field specifies the maximum number of most recent fu
 
 return from the history.
 
-2.2.6.3  QosCounterResult Upper-Level Header Format
+##### 2.2.6.3 QosCounterResult Upper-Level Header Format
 
 A responder sends a QosCounterResult frame to a cross-traffic analysis initiator in response to a
 QosCounterSnapshot frame.
@@ -4805,7 +4460,8 @@ Release: April 23, 2024
 
 49 / 113
 
-At most, each QosCounterResult frame reports as many full 4-tuple snapshots (see Snapshot_List
+
+At most, each QosCounterResult frame reports as many full 4-tuple snapshots (see Snapshot_List
 definition following the QosCounterResult header illustration) as are requested in the preceding
 QosCounterSnapshot request. The sub-second snapshot (section 3.8.5.2) is also returned in the
 QosCounterResult frame.
@@ -4882,7 +4538,7 @@ Packets_Sent
 Note  A 1,500-byte Ethernet frame is large enough to fit 184 entries, which is more than 3
 minutes of historical data.
 
-2.2.6.4  QosCounterLease Upper-Level Header Format
+##### 2.2.6.4 QosCounterLease Upper-Level Header Format
 
 A cross-traffic analysis initiator broadcasts a QosCounterLease frame to all responders to request
 that they start collecting the network performance counters that are returned in the QosCounterResult
@@ -4897,7 +4553,8 @@ Release: April 23, 2024
 
 50 / 113
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 As described in section 1.3, this protocol defines the following roles:
 
@@ -4948,7 +4605,7 @@ ensure that all roles maintain a consistent state. However, error conditions in 
 the functionality of other roles, including the ability to discover all LLTD-capable stations on the
 network.
 
-3.1  Enumerator Details
+### 3.1 Enumerator Details
 
 This section details the role of an enumerator that is used in quick discovery. An enumerator seeks
 to discover all stations (responders) on the network that are capable of using this protocol. The
@@ -4969,7 +4626,8 @@ Release: April 23, 2024
 
 51 / 113
 
-An enumerator MAY support multiple network interfaces. Quick discovery is a networking protocol that
+
+An enumerator MAY support multiple network interfaces. Quick discovery is a networking protocol that
 is bound to a specific network interface. If an enumerator supports multiple network interfaces, it
 MUST create a separate protocol instance for each supported network interface and the higher-layer
 protocol or application MUST specify the network interface to use for quick discovery. It is
@@ -4992,7 +4650,7 @@ Hello
 
 N/A
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5051,7 +4709,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 The Enumerator role has the following timer:
 
@@ -5059,7 +4718,7 @@ The Enumerator role has the following timer:
 
 SHOULD be set to fire at 300-millisecond intervals.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
  During initialization, the following conditions must be met:
 
@@ -5101,9 +4760,9 @@ connected to a network medium; otherwise it is set to FALSE.
 The Network Interface Identifier is set to identify the network interface that the enumerator
 instance is handling during its lifetime.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Quick Discovery Startup
+##### 3.1.4.1 Quick Discovery Startup
 
 When a higher-layer protocol or application requests startup of the quick discovery process, the
 Network Medium Connected Flag is checked first. If the network is currently disconnected, the request
@@ -5142,13 +4801,14 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.2  Quick Discovery Shutdown
+
+##### 3.1.4.2 Quick Discovery Shutdown
 
 When a higher-layer protocol requests a shutdown of the quick discovery process, and the
 Cancelled flag is FALSE, the enumerator MUST set the Cancelled flag to TRUE and quick discovery
 shutdown MUST be initiated as specified in section 3.1.8.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The enumerator only processes messages received on the network interface identified by the
 Network Interface Identifier. It ignores all other messages.
@@ -5158,7 +4818,7 @@ whether it is a valid Hello frame, and it must also check whether the DiscoverFr
 TRUE, which indicates that the enumerator has solicited a response from responders. If either
 condition is not met, the message MUST be ignored.
 
-3.1.5.1  Receiving a Hello Frame
+##### 3.1.5.1 Receiving a Hello Frame
 
 The source Ethernet MAC address of the Hello frame (that is, the responder's MAC address from the
 Ethernet header) MUST first be recorded in the Last-Seen Station List, if it is not already listed.
@@ -5175,7 +4835,7 @@ Hello frames received by the enumerator while the block timer is not running MUS
 packets either do not belong to the current session (since a discover packet has not yet been sent by
 the enumerator) or have arrived after the enumerator has stopped the discovery session.
 
-3.1.5.1.1 Enumerator Also Functioning in the Mapper Role
+###### 3.1.5.1.1 Enumerator Also Functioning in the Mapper Role
 
 If the enumerator is also functioning as a mapper, it MUST also do the following.
 
@@ -5205,15 +4865,16 @@ Release: April 23, 2024
 
 54 / 113
 
-This process permits a mapper to select a generation number before knowing that all possible
+
+This process permits a mapper to select a generation number before knowing that all possible
 responders have sent a Hello frame. The mapper MUST follow this process because it cannot
 determine when it will receive a late Hello frame.
 
 For more information about generation numbers, see section 3.2.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Block Timer Expiry
+##### 3.1.6.1 Block Timer Expiry
 
 When the Block timer fires, the enumerator MUST construct a Discover frame by filling the Station
 List field with entries from the Last-Seen Station List. If there are more entries in the list than will
@@ -5236,13 +4897,13 @@ down quick discovery as specified in section 3.1.8.
 The enumerator MUST set the Generation Number field in the Discover header to zero, unless the
 enumerator is also functioning in the Mapper role (as specified in section 3.1.6.1.1).
 
-3.1.6.1.1 Enumerator Also Functioning in the Mapper Role
+###### 3.1.6.1.1 Enumerator Also Functioning in the Mapper Role
 
 If the enumerator is also functioning as a mapper, it MUST populate the Generation Number field
 in the Discover header with the current generation number. Otherwise, the field MUST be set to
 zero.
 
-3.1.7  Resetting Quick Discovery
+#### 3.1.7 Resetting Quick Discovery
 
 Resetting quick discovery involves resetting session state on each responder. This is accomplished
 by the enumerator broadcasting a Reset frame.
@@ -5272,7 +4933,8 @@ Release: April 23, 2024
 
 55 / 113
 
-3.1.8  Shutting Down Quick Discovery and Returning Results
+
+#### 3.1.8 Shutting Down Quick Discovery and Returning Results
 
 When Quick Discovery has finished (either success or failure) or has been aborted, the results need to
 be communicated back to the higher-layer applications or protocols.
@@ -5297,17 +4959,17 @@ The Application Request List MUST be cleared after returning the results.
 
 The DiscoveryInProgress flag MUST be set to FALSE.
 
-3.1.9  Other Local Events
+#### 3.1.9 Other Local Events
 
 None.
 
-3.1.9.1  Media Connect/Disconnect Event
+##### 3.1.9.1 Media Connect/Disconnect Event
 
 When a Media Connect Event or Media Disconnect Event is received for the network interface
 identified by the Network Interface Identifier, the Network Medium Connected Flag is set
 accordingly.
 
-3.2  Mapper Details
+### 3.2 Mapper Details
 
 This section details the role of a mapper station that is used in topology discovery tests of this
 protocol. A station MUST NOT have more than one instance of a mapper operational at any time. In
@@ -5356,10 +5018,11 @@ Release: April 23, 2024
 
 56 / 113
 
-* If the request frame does not contain a nonzero sequence number, the responder does not send a
+
+* If the request frame does not contain a nonzero sequence number, the responder does not send a
 response.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5406,7 +5069,7 @@ connected to a network medium.
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way it pleases.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The Mapper role has one timer:
 
@@ -5425,7 +5088,8 @@ Release: April 23, 2024
 
 57 / 113
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
  During initialization, the following conditions MUST be met:
 
@@ -5436,16 +5100,16 @@ Release: April 23, 2024
 The Network Medium Connected Flag is set to TRUE if the network interface is currently connected
 to a network medium; otherwise it is set to FALSE.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Startup Trigger
+##### 3.2.4.1 Startup Trigger
 
 When a higher-layer application or protocol triggers startup of topology discovery tests, the
 Network Medium Connected Flag is checked first. If the network is currently disconnected, the request
 is rejected. Otherwise the mapper MUST assume the role of an enumerator and begin quick discovery,
 as specified in section 3.1.4.1.
 
-3.2.4.2  Retrieve a Large Data Property
+##### 3.2.4.2 Retrieve a Large Data Property
 
 When an application or higher-layer protocol requests a large data property for a given Type and
 responder MAC address, the mapper MUST check the Network Topology Test Session List for the
@@ -5458,7 +5122,7 @@ to that responder using the sequence number in the Sequence Number field of the 
 frame as the Pended Request in the Network Topology Test Session List entry, and set the Per-
 Responder Response timer to expire in 350 milliseconds.
 
-3.2.4.3  Perform a Network Topology Test
+##### 3.2.4.3 Perform a Network Topology Test
 
 A higher-layer application or protocol requests that LLTD perform a network topology test by supplying
 the mapper with the following:
@@ -5492,7 +5156,8 @@ Release: April 23, 2024
 
 58 / 113
 
-entry does not meet the criteria, including that of the cumulative Pause fields from all of the
+
+entry does not meet the criteria, including that of the cumulative Pause fields from all of the
 commands not exceeding 1 second, then the mapper MUST ignore the request.
 
 If AcknowledgementRequired is TRUE and the Network Topology Test Session List does not have
@@ -5602,7 +5267,8 @@ Release: April 23, 2024
 
 59 / 113
 
-  Sequence_Number_or_XID: MUST be zero unless querying for the current charge (see section
+
+  Sequence_Number_or_XID: MUST be zero unless querying for the current charge (see section
 
 3.2.4.5)
 
@@ -5624,7 +5290,7 @@ If AcknowledgementRequired is TRUE, then after sending the Emit frame the mapper
 the frame in the Pended Request field of the responder's entry in the Network Topology Test Session
 List.
 
-3.2.4.4  Perform a Test Result Query
+##### 3.2.4.4 Perform a Test Result Query
 
 When a higher-layer application or protocol directs this protocol to request a list of Probe frames seen
 by a given responder, the mapper MUST check the Network Topology Test Session List for the entry
@@ -5640,7 +5306,7 @@ timer to expire in 350 milliseconds.
 Query frames are intended to elicit a response from the responder, so they MUST contain a nonzero
 sequence number; otherwise, the frame will be ignored by the responder.
 
-3.2.4.5  Query for Responder Charge
+##### 3.2.4.5 Query for Responder Charge
 
 Charge is abstracted away from higher-layer applications and protocols. There is no direct higher-
 layer event to query for the responder charge. However, a mapper MAY query for responder charge
@@ -5666,7 +5332,8 @@ Release: April 23, 2024
 
 60 / 113
 
-3.2.4.6  Shutdown Trigger
+
+##### 3.2.4.6 Shutdown Trigger
 
 When the higher-layer application or protocol that initially triggered the startup shuts down the
 topology discovery tests, the mapper MUST shut down quick discovery as specified in section
@@ -5675,12 +5342,12 @@ topology discovery tests, the mapper MUST shut down quick discovery as specified
 Any outstanding per-responder response timers MUST be stopped, and the Network Topology Test
 Session List MUST be cleared.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the mapper MUST first check whether it is a valid Ack, Flat, QueryResp, or
 QueryLargeTlvResp frame or not. If not, it MUST be dropped.
 
-3.2.5.1  Receiving an Ack Frame
+##### 3.2.5.1 Receiving an Ack Frame
 
 Upon receipt of an Ack frame, the mapper MUST first validate the Ack frame by verifying that all of
 the following statements are true:
@@ -5708,7 +5375,7 @@ with a nonzero sequence number.
 If the Ack frame completes the last test that the application requests, the mapper MUST delete the old
 Pended request and indicate to the application that the network tests have been completed.
 
-3.2.5.2  Receiving a Flat Frame
+##### 3.2.5.2 Receiving a Flat Frame
 
 Upon receiving a Flat Frame, the mapper MUST validate it by verifying that the following are true:
 
@@ -5740,7 +5407,8 @@ Release: April 23, 2024
 
 61 / 113
 
-3.2.5.3  Receiving a QueryResp Frame
+
+##### 3.2.5.3 Receiving a QueryResp Frame
 
 A responder sends a QueryResp frame in response to a valid Query request with a nonzero sequence
 number. The mapper MUST validate the QueryResp frame by verifying that the following are true:
@@ -5776,7 +5444,7 @@ that the mapping information is incomplete or inaccurate.
 The Pended Request entry for the Query frame that solicited the QueryResp frame response MUST
 be cleared.
 
-3.2.5.4  Receiving a QueryLargeTlvResp Frame
+##### 3.2.5.4 Receiving a QueryLargeTlvResp Frame
 
 Upon receiving a QueryLargeTlvResp, the mapper MUST first validate it by verifying that the following
 are true:
@@ -5819,12 +5487,13 @@ Release: April 23, 2024
 
 62 / 113
 
-350 milliseconds. Otherwise, the mapper MUST pass the retrieved data back to the application or
+
+350 milliseconds. Otherwise, the mapper MUST pass the retrieved data back to the application or
 higher-layer protocol.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Per-Responder Response Timer Expiry
+##### 3.2.6.1 Per-Responder Response Timer Expiry
 
 When a Per-Responder Response Timer fires, the mapper MUST retransmit the pended request frame
 (the sequence number MUST be unchanged), and the timer MUST be restarted in that case.
@@ -5834,9 +5503,9 @@ than once. If the mapper opts to continue with the topology discovery tests, it 
 communicate with this responder for the duration of the discovery process since the sequence
 numbering is likely tainted, and the responder will likely not respond.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Enumerator Finishes Enumerating Responders
+##### 3.2.7.1 Enumerator Finishes Enumerating Responders
 
 After the Enumerator role is fulfilled (that is, when the Block timer is stopped, as specified in section
 3.1.6.1), an entry in the Network Topology Test Session List MUST be created for each responder
@@ -5848,12 +5517,12 @@ the initialized entry MUST be empty.
 At this point, the mapper MUST indicate to the application or higher-layer protocol that it is ready to
 perform network topology tests.
 
-3.2.7.2  Media Connect/Disconnect Event
+##### 3.2.7.2 Media Connect/Disconnect Event
 
 When a Media Connect Event or Media Disconnect Event is received, the Network Medium Connected
 Flag is set accordingly.
 
-3.3  QoS Controller Details
+### 3.3 QoS Controller Details
 
 This section details the role of a controller station that is used in the QoS network test type of
 service that is associated with this protocol.
@@ -5883,7 +5552,7 @@ QosAck
 * If the request frame does not contain a nonzero sequence number, the sink does not send a
 response.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The specified organization is provided to facilitate the
@@ -5895,7 +5564,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-explanation of how the protocol behaves. This document does not mandate that implementations
+
+explanation of how the protocol behaves. This document does not mandate that implementations
 adhere to this model as long as their external behaviors are consistent with those specified in this
 document.
 
@@ -5941,7 +5611,7 @@ connected to a network medium.
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way it pleases.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 Each Network Test session has the following timers:
 
@@ -5972,7 +5642,8 @@ Release: April 23, 2024
 
 64 / 113
 
-corresponding entry in the Probegap Request Table. In other words, as long as the sink has not
+
+corresponding entry in the Probegap Request Table. In other words, as long as the sink has not
 responded to the QosProbe frame, the timer MUST remain active.
 
 Each entry in a Timed-Probe Request Table has the following timer:
@@ -5984,7 +5655,7 @@ a QosQuery request. This timer MUST be tied to the originating QosQuery frame by
 corresponding entry in the Timed-Probe Request Table. In other words, as long as the sink has
 not responded to the QosQuery frame, the timer MUST remain active.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
  During initialization, the following conditions MUST be met:
 
@@ -5995,9 +5666,9 @@ not responded to the QosQuery frame, the timer MUST remain active.
 The Network Medium Connected Flag is set to TRUE if the network interface is currently connected
 to a network medium; otherwise it is set to FALSE.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Start Network Test Session
+##### 3.3.4.1 Start Network Test Session
 
 A higher-layer application or protocol must first instantiate a network test session with a sink
 before it can request subsequent timed probe or probegap tests with the sink.
@@ -6043,7 +5714,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-that were created MUST be deleted. The frames MUST be sent only after the appropriate entry can be
+
+that were created MUST be deleted. The frames MUST be sent only after the appropriate entry can be
 created and placed in the Probegap Request Table. After the QosQuery frame is sent, the Per-
 QosQuery Response timer must be enabled and set to expire after 100 milliseconds.
 
@@ -6071,7 +5743,7 @@ notify the higher-layer application or protocol of the failure. The details that
 notification are up to the implementation. It is recommended that the controller implementation
 consider the nature of the failure to enable diagnostics by the higher-layer application or protocol.
 
-3.3.4.2  Stop Network Test Session
+##### 3.3.4.2 Stop Network Test Session
 
 When the higher-layer application or protocol for a previously-established network test session
 requests that the session be stopped, the Per-QosReset Response timer MUST be set to expire in 100
@@ -6079,12 +5751,12 @@ milliseconds and its logic (see section 3.3.6.4) invoked immediately. The reques
 session MUST always succeed, even if the QosAck response is not received from the sink. The next
 available sequence number MUST be used by all of these QosReset frames.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the controller MUST first check whether or not it is a valid QosError,
 QosReady, QosProbe, QosQueryResp, or QosAck frame. If not, it MUST be dropped.
 
-3.3.5.1  Receiving a QosProbe Frame
+##### 3.3.5.1 Receiving a QosProbe Frame
 
 When a QosProbe frame is received, the controller MUST first verify that the Test Type field in the
 QosProbe header is set to 0x02 (that is, the sink returns the probegap test result). If not, the frame
@@ -6108,7 +5780,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.5.2  Receiving a QosQueryResp Frame
+
+##### 3.3.5.2 Receiving a QosQueryResp Frame
 
 When a QosQueryResp frame is received, the controller MUST attempt to match the sequence
 number of this QosQueryResp to the identifier of an entry in the Timed-Probe Request Table. If one
@@ -6124,7 +5797,7 @@ higher-layer application or protocol that initiated the timed probe test.
 If the QosQueryResp is processed successfully, the associated Per-QosQuery Response timer MUST be
 stopped and the corresponding entry MUST be removed from the Timed-Probe Request Table.
 
-3.3.5.3  Receiving a QosError Frame
+##### 3.3.5.3 Receiving a QosError Frame
 
 When a QosError frame is received, the controller MUST attempt to match the Sequence Number
 field in the Base header and the Source MAC address field in the Ethernet header of the received
@@ -6135,7 +5808,7 @@ Otherwise, the Error Code field in the QosError header MUST be used to inform th
 application or protocol of why the request failed. The Per-QosInitializeSink Response timer MUST be
 stopped, and the corresponding network test session MUST be deleted.
 
-3.3.5.4  Receiving a QosReady Frame
+##### 3.3.5.4 Receiving a QosReady Frame
 
 When a QosReady frame is received, the controller MUST attempt to match the Sequence Number
 field in the Base header and the Source MAC address field in the Ethernet header of the received
@@ -6145,7 +5818,7 @@ ignored.
 Otherwise, the controller MUST notify the higher-layer application or protocol that the network test
 session has been established. The Per-QosInitializeSink Response timer MUST be stopped.
 
-3.3.5.5  Receiving a QosAck Frame
+##### 3.3.5.5 Receiving a QosAck Frame
 
 When a QosAck frame is received, the controller MUST attempt to match the Sequence Number
 field in the Base header and the Source MAC address field in the Ethernet header of the received
@@ -6155,9 +5828,9 @@ ignored.
 Otherwise, the controller MUST delete the associated network test session and MUST stop the Per-
 QosReset Response timer.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  Per-QosInitializeSink Response Timer Expiry
+##### 3.3.6.1 Per-QosInitializeSink Response Timer Expiry
 
 When this timer fires, the controller SHOULD attempt to send another QosInitializeSink frame to the
 sink and restart the timer to expire after 100 milliseconds. The fifth consecutive time that the timer
@@ -6172,13 +5845,14 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.3.6.2  Per-QosProbe Response Timer Expiry
+
+##### 3.3.6.2 Per-QosProbe Response Timer Expiry
 
 When this timer fires, the controller MUST NOT attempt to resend the associated QosProbe frame.
 Instead, it MUST return a time-out error result to the higher-layer application or protocol that initiated
 the probegap test and the associated entry from the Probegap Request Table MUST be deleted.
 
-3.3.6.3  Per-QosQuery Response Timer Expiry
+##### 3.3.6.3 Per-QosQuery Response Timer Expiry
 
 When this timer fires, the controller SHOULD attempt to send another QosQuery frame to the sink
 and restart the timer to expire after 100 milliseconds. The fifth consecutive time the timer expires, the
@@ -6186,22 +5860,22 @@ controller MUST instead stop and return a time-out error result to the higher-la
 protocol that initiated the timed probe test, and the associated entry from the Timed-Probe Request
 Table MUST be deleted.
 
-3.3.6.4  Per-QosReset Response Timer Expiry
+##### 3.3.6.4 Per-QosReset Response Timer Expiry
 
 When this timer fires, the controller SHOULD attempt to send another QosReset frame to the sink
 and restart the timer to expire after 100 milliseconds. The fifth consecutive time the timer expires, it
 MUST stop sending the QosReset and delete the associated network test session.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.3.7.1  Media Connect/Disconnect Event
+##### 3.3.7.1 Media Connect/Disconnect Event
 
 When a Media Connect Event or Media Disconnect Event is received, the Network Medium Connected
 Flag is set accordingly.
 
-3.4  Cross-Traffic Analysis Initiator Details
+### 3.4 Cross-Traffic Analysis Initiator Details
 
 This section details the role of a controller station used in the QoS cross-traffic analysis type of
 service associated with this protocol.  A station MUST NOT have more than one instance of a Cross-
@@ -6219,7 +5893,7 @@ QosCounterLease
 
 N/A
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol on a per-interface basis. The described organization is
@@ -6241,7 +5915,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Sequence Number: Each time a higher-layer application or protocol requests the values of the
+
+  Sequence Number: Each time a higher-layer application or protocol requests the values of the
 
 cross-traffic analysis counters from a responder, the initiator MUST generate a unique sequence
 number for the QosCounterSnapshot request that it sends to the responder. This sequence
@@ -6258,7 +5933,7 @@ network medium,
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 The Cross-Traffic Analysis Initiator role has one timer per network interface —the Per-Interface Lease
 Renewal timer. This recurring timer broadcasts the QosCounterLease frame. This timer remains active
@@ -6269,7 +5944,7 @@ histories.
 Each entry in the Snapshot Request Table has a Per-Snapshot Response timer. This one-shot timer
 ensures a timely response (or non-response) to a QosCounterSnapshot request.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
  During initialization, the following conditions must be met:
 
@@ -6280,9 +5955,9 @@ ensures a timely response (or non-response) to a QosCounterSnapshot request.
 The Network Medium Connected Flag is set to TRUE if the network interface is currently connected
 to a network medium; otherwise it is set to FALSE.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
-3.4.4.1  Start Cross-Traffic Analysis
+##### 3.4.4.1 Start Cross-Traffic Analysis
 
 When a higher-layer application or protocol requests cross-traffic analysis on a given interface, the
 Network Medium Connected Flag is checked first. If the network is currently disconnected, the request
@@ -6316,7 +5991,8 @@ Release: April 23, 2024
 
 69 / 113
 
-3.4.4.2  Request Counters
+
+##### 3.4.4.2 Request Counters
 
 When a higher-layer application or protocol requests the values of the cross-traffic analysis
 counters for a specific responder (specified by the responder's MAC address and the initiator's
@@ -6335,7 +6011,7 @@ If the cross-traffic analysis counters are requested by a higher-layer applicati
 request to start cross-traffic analysis has been received (see section 3.4.4.1), then the Cross-Traffic
 Analysis Initiator MUST fail the request.
 
-3.4.4.3  Stop Cross-Traffic Analysis
+##### 3.4.4.3 Stop Cross-Traffic Analysis
 
 When a higher-layer application or protocol indicates that it is finished with cross-traffic analysis on
 a given interface, the initiator MUST stop the interface's Lease Renewal timer.
@@ -6343,12 +6019,12 @@ a given interface, the initiator MUST stop the interface's Lease Renewal timer.
 If an initiator supports multiple higher-layer application or protocol requests simultaneously, it MUST
 stop the Lease Renewal timer only if all higher-layer applications or protocols have finished.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the initiator MUST first check whether it is a valid QosCounterResult frame
 or not. If not, it MUST be dropped.
 
-3.4.5.1  Receiving a QosCounterResult Frame
+##### 3.4.5.1 Receiving a QosCounterResult Frame
 
 When a QosCounterResult frame is received, the Sequence Number field in the Base header of the
 received frame MUST be used to look up a matching sequence number identifier in the Snapshot
@@ -6358,13 +6034,13 @@ Otherwise, the result MUST be passed back to the higher-layer application or pro
 the snapshot in the first place. The associated entry in the Snapshot Request Table MUST then be
 deleted, and the Per-Snapshot Response timer MUST be disabled.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
-3.4.6.1  Per-Interface Lease Renewal Timer Expiry
+##### 3.4.6.1 Per-Interface Lease Renewal Timer Expiry
 
 When this timer fires, a QosCounterLease frame MUST be broadcast over the network.
 
-3.4.6.2  Per-Snapshot Response Timer Expiry
+##### 3.4.6.2 Per-Snapshot Response Timer Expiry
 
 When this timer fires, the controller SHOULD attempt to send another QosCounterSnapshot frame to
 the responder and reset the timer to expire after 100 milliseconds. The fifth consecutive time the
@@ -6379,16 +6055,17 @@ Release: April 23, 2024
 
 70 / 113
 
-3.4.7  Other Local Events
+
+#### 3.4.7 Other Local Events
 
 None.
 
-3.4.7.1  Media Connect/Disconnect Event
+##### 3.4.7.1 Media Connect/Disconnect Event
 
 When a Media Connect Event or Media Disconnect Event is received, the Network Medium Connected
 Flag is set accordingly.
 
-3.5  Responder (Quick Discovery) Details
+### 3.5 Responder (Quick Discovery) Details
 
 A responder MAY support multiple network interfaces. If a responder supports multiple network
 interfaces, it MUST create a separate instance of the responder protocol specified in this section for
@@ -6404,7 +6081,8 @@ Release: April 23, 2024
 
 71 / 113
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-LLTD].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -6426,7 +6104,8 @@ Release: April 23, 2024
 
 72 / 113
 
-Quiescent state when all enumerators have either timed out due to inactivity or have successfully sent
+
+Quiescent state when all enumerators have either timed out due to inactivity or have successfully sent
 the Reset command.
 
 Message request/response pairs applicable to quick discovery are defined as follows.
@@ -6441,7 +6120,7 @@ Hello (as BROADCAST)
 
 Reset (as either UNICAST or BROADCAST)  N/A
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6512,7 +6191,8 @@ Release: April 23, 2024
 
 73 / 113
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-LLTD].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -6536,7 +6216,7 @@ constant and it MUST be set to 4.
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way it pleases.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 The Responder (Quick Discovery) role has three timers:
 
@@ -6550,7 +6230,7 @@ The Responder (Quick Discovery) role has three timers:
 
 3.5.6.2) determines that it is time to send one.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
  During initialization, the following conditions must be met:
 
@@ -6561,7 +6241,8 @@ Release: April 23, 2024
 
 74 / 113
 
-  All timers MUST be disabled.
+
+  All timers MUST be disabled.
 
 
 
@@ -6571,16 +6252,16 @@ The enumeration state engine MUST be in Quiescent state.
 
 The Session Table MUST be empty.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
 None.
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
 The enumeration state engine MUST ignore any arriving message that is not explicitly identified in the
 following sections and pass them on to the topology discovery state engine, as detailed in section 3.6.
 
-3.5.5.1  Receiving a Discover Frame
+##### 3.5.5.1 Receiving a Discover Frame
 
 A responder MUST first check if the frame's destination address matches either its own MAC
 address or the broadcast address, because its network interface might have been set to
@@ -6615,7 +6296,7 @@ indicated in section 3.5.5.4.
 For each Discover frame that is not discarded according to the above rules, the responder MUST
 increment r by one. For further specifications about the use of this counter, see section 3.5.5.1.1.2.
 
-3.5.5.1.1 Network Load Control
+###### 3.5.5.1.1 Network Load Control
 
 Network load control and scalability of the enumeration process are handled by an algorithm called
 RepeatBAND (see section 3.5.6.2). Responders send Hello frames in the Pausing state, but they do
@@ -6631,7 +6312,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.5.5.1.1.1  Load Initialization
+
+###### 3.5.5.1.1.1 Load Initialization
 
 When the enumeration state engine transitions to the Pausing state, it MUST initialize N to Nmax and
 set r to 0. It then MUST begin the first block round.
@@ -6639,7 +6321,7 @@ set r to 0. It then MUST begin the first block round.
 The responder MUST NOT begin to monitor the network load until it is ready to transmit; otherwise,
 many similar machines might think that the network load is low and become ready simultaneously.
 
-3.5.5.1.1.2  Dynamic Behavior
+###### 3.5.5.1.1.2 Dynamic Behavior
 
 At the start of each round (triggered by the expiration of the Block timer) in the Pausing state, a
 responder MUST sample its random number generator and choose a time that is uniformly
@@ -6652,7 +6334,7 @@ During the block, the responder MUST count the Hello and Discover messages on th
 use this information to update its estimate of the number of active responders, as specified in section
 3.5.6.2.
 
-3.5.5.1.1.3  Effect of Discover over Network Load Control
+###### 3.5.5.1.1.3 Effect of Discover over Network Load Control
 
 Discover frames are handled differently, depending on whether the enumerator is known to the
 responder (that is, a session already exists in the Session Table) and the responder is
@@ -6673,7 +6355,7 @@ state (see section 3.5.5.4 for how a new session impacts the state), the load co
 initialized as specified in section 3.5.5.1.1.1. If this new session is not causing a transition to Pausing
 state, the Begun flag MUST be set, which impacts load control at the end of the current block.
 
-3.5.5.2  Receiving a Hello Frame
+##### 3.5.5.2 Receiving a Hello Frame
 
 A responder MUST first check if the frame's destination address matches either its own MAC
 address or the broadcast address, because its network interface might have been set to
@@ -6683,7 +6365,7 @@ these addresses MUST be discarded.
 For each Hello frame that is not discarded, the responder MUST increment r by one. For further
 specifications about the use of this counter, see section 3.5.5.1.1.2.
 
-3.5.5.3  Receiving a Reset Frame
+##### 3.5.5.3 Receiving a Reset Frame
 
 A responder MUST first check if the destination address matches either its own MAC address or the
 broadcast address, because its network interface might have been set to promiscuous mode by the
@@ -6697,7 +6379,8 @@ Release: April 23, 2024
 
 76 / 113
 
-When a Reset frame is received, the responder MUST first look for a corresponding session entry in
+
+When a Reset frame is received, the responder MUST first look for a corresponding session entry in
 the Session Table by matching the Real Source Address field from the Base header to the
 enumerator's MAC address and the Type of Service field from the Demultiplex header to the entry's
 type of service identifier.
@@ -6713,7 +6396,7 @@ be reset to the Quiescent state. This constitutes the Reset command for the topo
 engine (see section 3.6). In addition, all sessions of the Session Table of the Quick Discovery
 Responder that are in the Temporary state MUST be reset.
 
-3.5.5.4  State Transition Rules
+##### 3.5.5.4 State Transition Rules
 
 When a new Session Table entry is created, or an existing Session Table entry is modified, or an
 existing Session Table entry is deleted, the topology state machine state MUST be updated according
@@ -6727,9 +6410,9 @@ Temporary state), the enumeration state engine MUST proceed to the Pausing state
 If the enumeration state engine changes its state, the rules for entering a new state (see sections
 3.5.7.2, 3.5.7.3, and 3.5.7.4) MUST be followed.
 
-3.5.6  Timer Events
+#### 3.5.6 Timer Events
 
-3.5.6.1  Session Inactivity Timer Expiry
+##### 3.5.6.1 Session Inactivity Timer Expiry
 
 When this timer fires, each entry in the Session Table MUST be checked for inactivity as follows. If the
 session is not in the temporary state and its type of service identifier is topology discovery, and the
@@ -6743,7 +6426,7 @@ MUST be updated as specified in section 3.5.5.4.
 This timer MUST be reset so it continues firing until the enumeration state engine transitions back to
 the Quiescent state.
 
-3.5.6.2  Block Timer Expiry
+##### 3.5.6.2 Block Timer Expiry
 
 When the Block timer fires (signaling the end of the block), the responder MUST update the estimate
 of the number of active responders on the network based on the count of frames during the block and
@@ -6762,7 +6445,8 @@ Release: April 23, 2024
 
 77 / 113
 
-If the implementation is accomplished carefully, this value is never zero or negative and can be
+
+If the implementation is accomplished carefully, this value is never zero or negative and can be
 implemented entirely in integer arithmetic.
 
 The responder then MUST check the Begun flag. If it is set, then the estimate N MUST be doubled. If
@@ -6773,7 +6457,7 @@ Finally, the responder MUST set r to zero and begin the next round.
 
 See section 4.4 for several examples of the RepeatBAND algorithm in effect during different scenarios.
 
-3.5.6.3  Hello Timer Expiry
+##### 3.5.6.3 Hello Timer Expiry
 
 After this timer fires, a Hello frame MUST be sent, the Txc counter MUST be decremented for each
 pending session in the Session Table, and each session in the temporary state MUST be deleted.
@@ -6784,20 +6468,20 @@ The generation number used in the Hello frame must be the current generation num
 responder. If a stored generation number is not defined, the generation number SHOULD be set to
 zero.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
-3.5.7.1  Media Disconnect Event
+##### 3.5.7.1 Media Disconnect Event
 
  When the Media Disconnect event is received, all timers MUST be disabled. The enumeration state
 engine MUST transition to the Quiescent state. The Session Table MUST be cleared. If the topology
 discovery state engine is not already in Quiescent state, it MUST transition to the Quiescent state.
 
-3.5.7.2  Entering Quiescent State
+##### 3.5.7.2 Entering Quiescent State
 
 When the enumeration state engine enters the Quiescent state, all timers MUST be disabled. It is
 assumed that the Session Table is already empty before entering this state.
 
-3.5.7.3  Entering Pausing State
+##### 3.5.7.3 Entering Pausing State
 
  When the enumeration state engine enters the Pausing State, the Begun flag MUST be set to false. N
 MUST be set to Nmax. The Block timer MUST be started and set to expire after 300 milliseconds. The
@@ -6806,7 +6490,7 @@ Session Inactivity timer MUST also be started and SHOULD be set to expire after 
 The enumeration state engine MUST immediately decide, as specified in section 3.5.5.1.1.2, if a Hello
 timer is to be set.
 
-3.5.7.4  Entering Wait State
+##### 3.5.7.4 Entering Wait State
 
  When the enumeration state engine enters the Wait State, the Block timer and any pending Hello
 timer MUST be disabled.
@@ -6818,11 +6502,12 @@ Release: April 23, 2024
 
 78 / 113
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-LLTD].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
-3.6  Responder (Topology Discovery) Details
+### 3.6 Responder (Topology Discovery) Details
 
 A responder MAY support multiple network interfaces. If a responder supports multiple network
 interfaces, it MUST create a separate instance of the responder protocol specified in this section for
@@ -6854,7 +6539,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-process Discover, Hello, and Reset frames. Moreover, when the topology discovery state engine is not
+
+process Discover, Hello, and Reset frames. Moreover, when the topology discovery state engine is not
 in the Quiescent state, upon receipt of a Charge, Emit, Query, or QueryLargeTlv frame from the
 currently associated mapper, it MUST update the current topology discovery session's active time
 field in the enumeration state engine's Session Table.
@@ -6883,7 +6569,7 @@ QueryLargeTlvResp
 
 *If the request frame has a sequence number of zero, the responder does not send a response.
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -6905,7 +6591,8 @@ Release: April 23, 2024
 
 80 / 113
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-LLTD].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
@@ -6928,7 +6615,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Sees-List: This list MUST hold all of the information that is required to construct one or more
+
+  Sees-List: This list MUST hold all of the information that is required to construct one or more
 RecveeDesc structures that are returned in the QueryResp packet (as specified in section
 2.2.4.9). Entries in the list MUST be stored in such a way that the oldest entry can be returned
 first. A responder SHOULD support up to 10,000 entries in the Sees-List.
@@ -6979,7 +6667,7 @@ updated, the current mapper MUST be updated accordingly.
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 The Responder (Topology Discovery) role has two timers:
 
@@ -6991,7 +6679,7 @@ milliseconds after being started.
 
 Emit timer: This one-shot timer processes each EmiteeDesc field in an Emit request.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
  During initialization, the following conditions MUST be met:
 
@@ -7014,7 +6702,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -7022,11 +6711,11 @@ The Last-Sent response MUST be zeroed.
 
 The Next Sequence Number MUST be zeroed.
 
-3.6.4  Higher-Layer Triggered Events
+#### 3.6.4 Higher-Layer Triggered Events
 
 None.
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the responder MUST first check whether it is a valid Charge, Emit, Query,
 or QueryLargeTlv frame or not. If not, it MUST be dropped.
@@ -7036,7 +6725,7 @@ the Real Source Address of the Base Header with the Current Mapper. If the addre
 match, the responder MUST drop the message. Otherwise, the frame is processed as described in the
 following sections.
 
-3.6.5.1  Receiving a Charge Frame
+##### 3.6.5.1 Receiving a Charge Frame
 
 If the responder is in the Quiescent state, the Charge frame MUST be ignored.
 
@@ -7083,7 +6772,8 @@ Release: April 23, 2024
 
 83 / 113
 
-The fields in the Flat frame MUST be as follows:
+
+The fields in the Flat frame MUST be as follows:
 
   Real_Source_Address: Set to the Real_Destination_Address field of the Charge frame.
 
@@ -7114,7 +6804,7 @@ by one using ones-complement arithmetic (that is, it MUST advance from 0xFFFF to
 If the Charge frame is an unacknowledged Charge frame (that is, it contains a zero sequence
 number), then the responder MUST NOT send a Flat frame in response.
 
-3.6.5.2  Receiving an Emit Frame
+##### 3.6.5.2 Receiving an Emit Frame
 
 A responder in the Quiescent state MUST ignore the Emit frame.
 
@@ -7161,7 +6851,8 @@ Release: April 23, 2024
 
 84 / 113
 
-If sequence number in the frame is nonzero, the responder MUST validate this sequence number
+
+If sequence number in the frame is nonzero, the responder MUST validate this sequence number
 against Next Sequence Number.  If the sequence number of the frame is zero, no validation is
 required.
 
@@ -7252,7 +6943,8 @@ Release: April 23, 2024
 
 85 / 113
 
-If enough CTC exists, the Last-Sent Response and the CTC counters MUST then be zeroed, whether or
+
+If enough CTC exists, the Last-Sent Response and the CTC counters MUST then be zeroed, whether or
 not the Emit frame is acknowledged (has a nonzero sequence number). The topology discovery state
 engine MUST then transition into the Emit state (by setting the topology state to Emit) while the Emit
 frame is being processed. The responder MUST attempt to copy the entire EmiteeDescs field in the
@@ -7261,7 +6953,7 @@ Value (even if it is zero). The Emit timer MUST be started, with the expiration 
 Pause value in the first quadruple in the Emit header. If the responder fails to copy the EmiteeDescs
 field, it MUST silently ignore the Emit frame and the CTC counters MUST be zeroed.
 
-3.6.5.3  Receiving a Probe Frame
+##### 3.6.5.3 Receiving a Probe Frame
 
 Upon receiving a Probe frame, if the topology state is not in the Command or Emit state, the Probe
 frame MUST be ignored.
@@ -7278,7 +6970,7 @@ The responder MUST record the following information in the Sees-List entry:
 
   Destination Address field from the Ethernet header.
 
-3.6.5.4  Receiving a Query Frame
+##### 3.6.5.4 Receiving a Query Frame
 
 When a Query frame is received, the Active Time of the current mapping session MUST be updated to
 the current time, notwithstanding any other rule to ignore the frame in the remainder of this section.
@@ -7317,10 +7009,11 @@ Release: April 23, 2024
 
 86 / 113
 
-When the responder sends the QueryResp frame, it MUST record this information in the Last-Sent
+
+When the responder sends the QueryResp frame, it MUST record this information in the Last-Sent
 Response.
 
-3.6.5.5  Receiving a QueryLargeTlv Frame
+##### 3.6.5.5 Receiving a QueryLargeTlv Frame
 
 Some TLV pairs can be too large to return in a single Hello frame. These TLVs are returned by using
 the QueryLargeTlv header. For a list of these TLVs, see the Hello and QueryLargeTlv frame formats in
@@ -7368,9 +7061,9 @@ frame SHOULD be set to the real source address.
 When the responder sends the QueryLargeTlvResp frame, it MUST record this information in the Last-
 Sent Response.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
-3.6.6.1  Charge Timer Expiry
+##### 3.6.6.1 Charge Timer Expiry
 
 When the Charge Timer expires, the responder MUST zero out the CTC counters.
 
@@ -7381,7 +7074,8 @@ Release: April 23, 2024
 
 87 / 113
 
-3.6.6.2  Emit Timer Expiry
+
+##### 3.6.6.2 Emit Timer Expiry
 
 When the Emit timer expires, the first EmiteeDesc entry (as specified in section 2.2.4.4) in the Emit
 List MUST be processed, which results in the sending of either a Train or Probe frame, as specified in
@@ -7413,27 +7107,27 @@ If at any time the topology state transitions to the Command state, and if Emit 
 nonzero, it MUST be incremented by one using ones-complement arithmetic (that is, it MUST advance
 from 0xFFFF to 0x0001 and skip 0x0000) and stored in Next Sequence Number.
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
-3.6.7.1  Media Disconnect Event
+##### 3.6.7.1 Media Disconnect Event
 
  When the Media Disconnect event is received, the topology discovery state engine MUST transition to
 the Quiescent state. All the side effects of entering this state MUST be observed as specified in section
 3.6.7.2.
 
-3.6.7.2  Entering Quiescent State
+##### 3.6.7.2 Entering Quiescent State
 
  When the topology discovery state engine enters the Quiescent state, all timers MUST be disabled.
 CTC byte and frame counters MUST be zero. The Sees-List MUST be cleared. The Error flag MUST be
 cleared. The Last-Sent Response MUST be zeroed. The Next Sequence Number MUST be zeroed.
 
-3.6.7.3  Entering Command State
+##### 3.6.7.3 Entering Command State
 
 When the topology discovery state engine enters the Command state, the Emit timer MUST be
 stopped, the Emit List MUST be emptied, and the BC and FC counters from the CTC MUST be set to
 zero.
 
-3.6.7.4  Leaving Command State
+##### 3.6.7.4 Leaving Command State
 
 When the topology discovery state engine leaves the Command state, the Charge timer MUST be
 stopped.
@@ -7445,7 +7139,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.7  QoS Sink Details
+
+### 3.7 QoS Sink Details
 
 A responder MAY support multiple network interfaces. If a responder supports multiple network
 interfaces, it MUST create a separate instance of the responder protocol specified in this section for
@@ -7478,7 +7173,7 @@ QosAck
 *If the request frame does not contain a nonzero sequence number, the responder does not send a
 response.
 
-3.7.1  Abstract Data Model
+#### 3.7.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -7534,7 +7229,8 @@ Release: April 23, 2024
 
 89 / 113
 
-
+
+
 
 Interrupt Mod: This field contains the interrupt moderation setting specified in the
 QosInitializeSink frame that started this network test session. It is used to determine when
@@ -7544,12 +7240,12 @@ completed.
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 The QoS Sink role has one timer - the Inactivity timer. This is a periodic timer that MUST operate at a
 period of 30 seconds. It is used to expire inactive network test sessions.
 
-3.7.3  Initialization
+#### 3.7.3 Initialization
 
 During initialization, the following conditions must be met:
 
@@ -7563,11 +7259,11 @@ The Session List MUST be initialized to empty.
 
   Current Interrupt Mod MUST be set to the same value as Original Interrupt Mod.
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
 None.
 
-3.7.5  Message Processing Events and Sequencing Rules
+#### 3.7.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the sink MUST first check whether it is valid according to the following
 criteria:
@@ -7596,7 +7292,7 @@ the subsequent sections.
 
 If the message is not valid, it MUST be ignored.
 
-3.7.5.1  Receiving a QosInitializeSink Frame
+##### 3.7.5.1 Receiving a QosInitializeSink Frame
 
 When a sink receives a QosInitializeSink frame, it MUST first check that the Sequence Number field
 in the Base header is nonzero. If it is zero, the QosInitializeSink frame MUST be ignored. Then the sink
@@ -7608,7 +7304,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MUST find a matching network test session that already exists in the sink's Session List. If one
+
+MUST find a matching network test session that already exists in the sink's Session List. If one
 exists, it MUST immediately reply with a QosReady frame. Otherwise, processing continues as follows.
 
 The Interrupt_Mod field in the QosInitializeSink header specifies the interrupt moderation mode
@@ -7633,7 +7330,7 @@ Otherwise, the sink MUST return a QosReady frame.
 If the Inactivity timer has not already been started, it MUST be started as soon as the Session List is
 not empty.
 
-3.7.5.2  Receiving a QosProbe Frame
+##### 3.7.5.2 Receiving a QosProbe Frame
 
 After a network test session is established, the controller sends one or more QosProbe frames to
 the sink over a period of time. The exact action the sink takes in response to this frame depends on
@@ -7686,7 +7383,8 @@ Release: April 23, 2024
 
 91 / 113
 
-If the value of the Test Type field is 0x00, the controller has requested that the sink participate in a
+
+If the value of the Test Type field is 0x00, the controller has requested that the sink participate in a
 timed probe test. This test requires that a sink receive and record up to 82 consecutive QosProbe
 frames, all of the same sequence number. All timed probe frames following the eighty-second frame
 MUST be ignored completely. The collection of QosProbe records for a specific sequence number is
@@ -7712,7 +7410,7 @@ the Error bit in the QosQueryResp header when replying to a QosQuery request.
 
 The applicable network test session's last active time MUST be updated on receipt of this frame.
 
-3.7.5.3  Receiving a QosQuery Frame
+##### 3.7.5.3 Receiving a QosQuery Frame
 
 Upon receipt of a QosQuery frame, the sink MUST first match the Real Source Address field in the
 Base header against an existing network test session's controller MAC address. If one cannot be
@@ -7734,7 +7432,7 @@ The sink MUST not clear the sequence bucket after sending a QosQueryResp frame i
 QosQuery frame is resent by the controller. The sequence bucket will eventually be reused if needed
 (see section 3.7.5.2).
 
-3.7.5.4  Receiving a QosReset Frame
+##### 3.7.5.4 Receiving a QosReset Frame
 
 Upon receipt of a QosReset frame, the sink MUST first check that the Sequence Number field in the
 Base header is nonzero. If it is zero, the OosReset frame MUST be ignored. The sink MUST attempt to
@@ -7753,7 +7451,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Real_Destination_Address - Real_Source_Address of the QosReset frame
+
+  Real_Destination_Address - Real_Source_Address of the QosReset frame
 
   Sequence_Number - Sequence_Number of the QosReset frame
 
@@ -7764,9 +7463,9 @@ table entry set to 0xFF, and if Current Interrupt Mod does not equal Original In
 the interrupt moderation mode on the network interface MUST be restored to Original Interrupt
 Mod. Current Interrupt Mod MUST then be reset to Original Interrupt Mod.
 
-3.7.6  Timer Events
+#### 3.7.6 Timer Events
 
-3.7.6.1  Inactivity Timer Expiry
+##### 3.7.6.1 Inactivity Timer Expiry
 
 When the Inactivity timer expires, the sink SHOULD<14> remove any network test sessions that
 have had at least 2 minutes of inactivity as computed from the last active time.
@@ -7779,16 +7478,16 @@ table entry set to 0xFF, and if Current Interrupt Mod does not equal Original In
 the interrupt moderation mode on the network interface MUST be restored to Original Interrupt
 Mod. Current Interrupt Mod MUST then be reset to Original Interrupt Mod.
 
-3.7.7  Other Local Events
+#### 3.7.7 Other Local Events
 
-3.7.7.1  Media Disconnect Event
+##### 3.7.7.1 Media Disconnect Event
 
 When the Media Disconnect event is received, the sink MUST remove all sessions from the Session
 List. All timers MUST be disabled. The interrupt moderation mode on the network interface MUST be
 restored to Original Interrupt Mod. Current Interrupt Mod MUST then be reset to Original
 Interrupt Mod.
 
-3.8  Responder (QoS Cross-Traffic) Details
+### 3.8 Responder (QoS Cross-Traffic) Details
 
 This section details the workings of a responder's QoS cross-traffic engine.
 
@@ -7808,7 +7507,7 @@ QosCounterLease
 
 N/A
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -7821,7 +7520,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-adhere to this model as long as their external behaviors are consistent with those described in this
+
+adhere to this model as long as their external behaviors are consistent with those described in this
 document.
 
 The data elements required in any responder implementation are:
@@ -7860,7 +7560,7 @@ section 3.8.2).
 Note  The previous conceptual data can be implemented by using a variety of techniques. An
 implementer can implement such data in any way.
 
-3.8.2  Timers
+#### 3.8.2 Timers
 
 The Responder (QoS Cross-Traffic) role has two timers:
 
@@ -7879,7 +7579,7 @@ A responder SHOULD use one set of timers and one counter history to serve multip
 is transparent to the controllers as each controller has to ensure that the lease period is active at least
 as long as the controller intends to query the responder for the current history.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
  During initialization, the following conditions must be met:
 
@@ -7892,21 +7592,22 @@ Release: April 23, 2024
 
 94 / 113
 
-
+
+
 
 The counter history MUST be empty.
 
-3.8.4  Higher-Layer Triggered Events
+#### 3.8.4 Higher-Layer Triggered Events
 
 None.
 
-3.8.5  Message Processing Events and Sequencing Rules
+#### 3.8.5 Message Processing Events and Sequencing Rules
 
 When a message arrives, the responder MUST first check whether it is a valid QosCounterLease or
 QosCounterSnapshot frame or not. If not, it MUST be dropped. The subsequent sections contain the
 validation and processing steps for these frames.
 
-3.8.5.1  Receiving a QosCounterLease Frame
+##### 3.8.5.1 Receiving a QosCounterLease Frame
 
 On receipt of this request, a responder MUST set the Lease timer to expire after 5 minutes. If the
 timer is already running, it is restarted. If the Snapshot timer is not already running, it MUST be
@@ -7921,7 +7622,7 @@ the responder implements per-controller contexts, the frame MUST be ignored.
 The Real Destination Address and Sequence Number fields of the Base header are not used in
 processing the QosCounterLease frame, and MUST be ignored.
 
-3.8.5.2  Receiving a QosCounterSnapshot Frame
+##### 3.8.5.2 Receiving a QosCounterSnapshot Frame
 
 When a responder receives a QosCounterSnapshot frame, it SHOULD respond to the frame even if a
 Lease Period is not in effect because the server failed to send QosCounterLease frames in time to
@@ -7958,7 +7659,8 @@ Release: April 23, 2024
 
 95 / 113
 
-If the responder is not an access point device and the Real Destination Address field in the Base
+
+If the responder is not an access point device and the Real Destination Address field in the Base
 header does not match the Ethernet destination MAC address, the responder SHOULD ignore the
 frame. If the responder is an access point, the responder SHOULD return only the relevant counter
 history given the specified BSSID specified by the Real Destination Address, or in the case of the
@@ -7966,25 +7668,25 @@ special address, return the aggregate of the counter histories for all of its ne
 the wireless bands it supports. If the address is not recognizable, the QosCounterSnapshot request
 MUST be ignored.
 
-3.8.6  Timer Events
+#### 3.8.6 Timer Events
 
-3.8.6.1  Lease Timer Expiry
+##### 3.8.6.1 Lease Timer Expiry
 
 When the Lease timer fires, the Snapshot timer MUST be stopped. Any existing counter history MUST
 be cleared.
 
-3.8.6.2  Snapshot Timer Expiry
+##### 3.8.6.2 Snapshot Timer Expiry
 
 When the Snapshot timer fires, the responder MUST take a snapshot of the current number of bytes
 and packets that were sent and received for each network interface that is available on the device. It
 MUST then add this value to the appropriate counter history. If a history reaches its maximum size,
 the oldest snapshot MUST be removed to make room for the new snapshot.
 
-3.8.7  Other Local Events
+#### 3.8.7 Other Local Events
 
 None.
 
-3.8.7.1  Media Disconnect Event
+##### 3.8.7.1 Media Disconnect Event
 
 The responder does not take any special action if an interface is disconnected. If the snapshot timer is
 running, it will continue accumulating for all interfaces. Upon disconnection, interfaces will not have
@@ -7999,16 +7701,17 @@ Release: April 23, 2024
 
 96 / 113
 
-<!-- Extracted images from page 97 -->
+
+<!-- Extracted images from page 97 -->
 ![Extracted image 1 from page 97]([MS-LLTD].images/page097-img01.png)
 <!-- /Extracted images from page 97 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of this protocol.
 
-4.1  Example 1: Mapping a Network
+### 4.1 Example 1: Mapping a Network
 
 The following figure shows a typical network that interconnects two computers and a printer. The user
 might have connection problems between the two computers or between a computer and the printer
@@ -8030,7 +7733,8 @@ Release: April 23, 2024
 
 97 / 113
 
-<!-- Extracted images from page 98 -->
+
+<!-- Extracted images from page 98 -->
 ![Extracted image 1 from page 98]([MS-LLTD].images/page098-img01.png)
 <!-- /Extracted images from page 98 -->
 
@@ -8057,7 +7761,8 @@ Release: April 23, 2024
 
 98 / 113
 
-4.  Responder 2 (R2) broadcasts a Hello frame that indicates its current Generation Number of zero,
+
+4.  Responder 2 (R2) broadcasts a Hello frame that indicates its current Generation Number of zero,
 and basic information, such as Host ID, Characteristics, and Physical Medium (Ethernet in this
 case) in its TLV_List.
 
@@ -8135,7 +7840,8 @@ Release: April 23, 2024
 
 99 / 113
 
-20. The application asks this protocol to perform another test from R2, and the Mapper sends an Emit
+
+20. The application asks this protocol to perform another test from R2, and the Mapper sends an Emit
 to R2 with a Sequence Number of zero and a request for R2 to send a Probe using R2's MAC
 address for the source and R1's MAC address for the destination.
 
@@ -8193,7 +7899,7 @@ Mapper completes the application's request from step 29.
 
 Mapper broadcasts a Reset to indicate that the mapping session is complete.
 
-4.2  Example 2: Measuring Network Capacity
+### 4.2 Example 2: Measuring Network Capacity
 
 The following figure shows the layout of an example network that interconnects a media server and a
 TV with an integrated media player.
@@ -8205,7 +7911,8 @@ Release: April 23, 2024
 
 100 / 113
 
-<!-- Extracted images from page 101 -->
+
+<!-- Extracted images from page 101 -->
 ![Extracted image 1 from page 101]([MS-LLTD].images/page101-img01.png)
 <!-- /Extracted images from page 101 -->
 
@@ -8227,7 +7934,8 @@ Release: April 23, 2024
 
 101 / 113
 
-<!-- Extracted images from page 102 -->
+
+<!-- Extracted images from page 102 -->
 ![Extracted image 1 from page 102]([MS-LLTD].images/page102-img01.png)
 <!-- /Extracted images from page 102 -->
 
@@ -8259,7 +7967,8 @@ Release: April 23, 2024
 
 102 / 113
 
-5.  The controller immediately creates a third QosProbe frame, time stamps it, and transmits it to the
+
+5.  The controller immediately creates a third QosProbe frame, time stamps it, and transmits it to the
 sink using the same parameters as in step 3. The sink time stamps this frame when it arrives and
 saves it for returning the header information to the controller when the controller requests it.
 
@@ -8275,7 +7984,7 @@ The QosProbe headers with both the controller and sink time stamps are included 
 
 9.  The sink confirms reception of the QosReset header with a QosAck header.
 
-4.3  Example 3: Charging a Responder
+### 4.3 Example 3: Charging a Responder
 
 Mappers charge a responder with enough charge to fulfill an upcoming Emit request. There has to
 be enough Frame Charge (FC) and Byte Charge (BC) for each frame that would be generated by such
@@ -8353,7 +8062,8 @@ Release: April 23, 2024
 
 103 / 113
 
-FC  BC
+
+FC  BC
 
 Frame Received
 
@@ -8378,7 +8088,7 @@ Frame Received
 *The Emit frame is 32 bytes, plus 2 bytes for the number of EmiteeDesc entries, plus 5 EmiteeDesc
 entries at 14 bytes each. 32 + 2 + 5 × 14 = 104.
 
-4.4  Example 4: RepeatBAND Algorithm
+### 4.4 Example 4: RepeatBAND Algorithm
 
 This example shows the values calculated by the RepeatBAND algorithm for a number of rounds
 under various scenarios.
@@ -8391,7 +8101,7 @@ Refer to section 3.5.6.2 for the formulas used to calculate the new value of N i
 Block Timer Expiry. Section 3.5.5.1.1.2 describes how the new value of N is used to determine
 whether or not the Hello timer is started.
 
-4.4.1  Scenario 1: No Hello/Discover Frames Received After Initial Discover Frame
+#### 4.4.1 Scenario 1: No Hello/Discover Frames Received After Initial Discover Frame
 
 Moves Responder into the Pausing State
 
@@ -8474,7 +8184,7 @@ Notice that when no Hello/Discover packets are observed by a responder, it will 
 Hello timer after round 3 at the latest. Round 3 will take place approximately 600 milliseconds after
 the initial Discover was received.
 
-4.4.2  Scenario 2: Small Network - A Few Hello/Discover Frames Received During
+#### 4.4.2 Scenario 2: Small Network - A Few Hello/Discover Frames Received During
 
 Each Round
 
@@ -8560,11 +8270,12 @@ Release: April 23, 2024
 
 104 / 113
 
-In this scenario, the small number of frames seen during each block does not have any overall effect
+
+In this scenario, the small number of frames seen during each block does not have any overall effect
 in slowing down the sending of the Hello frame. This is acceptable since the chance of congesting the
 network is small with the low volume of traffic being generated.
 
-4.4.3  Scenario 3: Large Network - A Steady Flow of a Few Hello/Discover Frames
+#### 4.4.3 Scenario 3: Large Network - A Steady Flow of a Few Hello/Discover Frames
 
 Received During Each Round
 
@@ -8707,11 +8418,12 @@ Release: April 23, 2024
 
 105 / 113
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of this protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 While this protocol performs no security checks, it includes measures (the RepeatBAND mechanism,
 as specified in section 3.5.6.2, and the Charge mechanism, as specified in section 3.6) to prevent
@@ -8719,7 +8431,7 @@ traffic amplification that could be used in a DoS attack. The intent is that an 
 harm using this protocol than the attacker could do by simply sending Ethernet frames in an
 environment that does not use this protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -8730,7 +8442,8 @@ Release: April 23, 2024
 
 106 / 113
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8799,7 +8512,8 @@ Link Layer Topology Discovery (LLTD) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<5> Section 2.2.2.3: For a UPnP device, the required information comes from the UPnP device
+
+<5> Section 2.2.2.3: For a UPnP device, the required information comes from the UPnP device
 description phase that has the XML elements that Plug and Play Extension uses to derive the PnP
 hardware ID string. This property is the string that Plug and Play uses to match a device with an INF
 file on a Windows-based computer.
@@ -8834,7 +8548,8 @@ Release: April 23, 2024
 
 108 / 113
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -8878,7 +8593,8 @@ Release: April 23, 2024
 
 109 / 113
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -9013,7 +8729,8 @@ Higher-layer triggered events
 
 110 / 113
 
-   QoS controller 65
+
+   QoS controller 65
    QoS sink 90
    responder (QoS cross-traffic) 95
    responder (quick discovery) 75
@@ -9160,7 +8877,8 @@ QoS controller
 
 111 / 113
 
-   initialization 65
+
+   initialization 65
    local events 68
    message processing 66
    overview 63
@@ -9311,7 +9029,8 @@ Syntax 20
 
 112 / 113
 
-   data types 20
+
+   data types 20
    large data properties 32
    QoS diagnostics - cross-traffic analysis 49
    QoS diagnostics - network test 44

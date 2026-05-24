@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -186,200 +187,84 @@ Release: April 23, 2024
 
 2 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+    - [2.2.9 Common Data Structures](#229-common-data-structures)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 ms-DS-Issuer-Certificates](#231-ms-ds-issuer-certificates)
+    - [2.3.2 ms-DS-Issuer-Public-Certificates](#232-ms-ds-issuer-public-certificates)
+    - [2.3.3 Alt-Security-Identities](#233-alt-security-identities)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IWindowsDeviceEnrollmentService Server Details](#31-iwindowsdeviceenrollmentservice-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 RequestSecurityToken](#3141-requestsecuritytoken)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 IWindowsDeviceEnrollmentService_RequestSecurityToken_InputMessag](#314111-iwindowsdeviceenrollmentservicerequestsecuritytokeninputmessag)
+          - [3.1.4.1.1.2 IWindowsDeviceEnrollmentService_RequestSecurityToken_OutputMessa](#314112-iwindowsdeviceenrollmentservicerequestsecuritytokenoutputmessa)
+          - [3.1.4.1.1.3 IWindowsDeviceEnrollmentService_RequestSecurityToken_WindowsDev](#314113-iwindowsdeviceenrollmentservicerequestsecuritytokenwindowsdev)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 WindowsDeviceEnrollmentServiceError](#314121-windowsdeviceenrollmentserviceerror)
+          - [3.1.4.1.2.2 wsse:Security](#314122-wssesecurity)
+          - [3.1.4.1.2.3 wsse:BinarySecurityToken](#314123-wssebinarysecuritytoken)
+          - [3.1.4.1.2.4 wst:RequestSecurityToken](#314124-wstrequestsecuritytoken)
+          - [3.1.4.1.2.5 wst:RequestType](#314125-wstrequesttype)
+          - [3.1.4.1.2.6 wst:TokenType](#314126-wsttokentype)
+          - [3.1.4.1.2.7 ac:AdditionalContext](#314127-acadditionalcontext)
+          - [3.1.4.1.2.8 ac:ContextItem](#314128-accontextitem)
+          - [3.1.4.1.2.9 wst:RequestSecurityTokenResponseCollection](#314129-wstrequestsecuritytokenresponsecollection)
+          - [3.1.4.1.2.10 wst:RequestSecurityTokenResponse](#3141210-wstrequestsecuritytokenresponse)
+          - [3.1.4.1.2.11 wst:RequestedSecurityToken](#3141211-wstrequestedsecuritytoken)
+          - [3.1.4.1.2.12 Provisioning Document Schema](#3141212-provisioning-document-schema)
+        - [3.1.4.1.3 Complex Types](#31413-complex-types)
+          - [3.1.4.1.3.1 WindowsDeviceEnrollmentServiceError](#314131-windowsdeviceenrollmentserviceerror)
+        - [3.1.4.1.4 Simple Types](#31414-simple-types)
+          - [3.1.4.1.4.1 WinDeviceEnrollmentServiceErrorType](#314141-windeviceenrollmentserviceerrortype)
+      - [3.1.4.2 Processing Rules](#3142-processing-rules)
+        - [3.1.4.2.1 New Request Processing](#31421-new-request-processing)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 RequestSecurityToken Request/Response Message Sequence](#41-requestsecuritytoken-requestresponse-message-sequence)
+    - [4.1.1 Client RequestSecurityToken Message](#411-client-requestsecuritytoken-message)
+    - [4.1.2 Server RequestSecurityToken Response](#412-server-requestsecuritytoken-response)
+    - [4.1.3 SOAP Fault](#413-soap-fault)
+    - [4.1.4 Provisioning Document Example](#414-provisioning-document-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Message Syntax ................................................................................. 11
-Namespaces .............................................................................................. 11
-Messages ................................................................................................... 11
-Elements ................................................................................................... 12
-Complex Types ........................................................................................... 12
-Simple Types ............................................................................................. 12
-Attributes .................................................................................................. 12
-Groups ...................................................................................................... 12
-Attribute Groups ......................................................................................... 12
-Common Data Structures ............................................................................ 12
-Directory Service Schema Elements ................................................................... 12
-ms-DS-Issuer-Certificates ............................................................................ 13
-ms-DS-Issuer-Public-Certificates .................................................................. 13
-Alt-Security-Identities ................................................................................. 13
-
-2.3.1
-2.3.2
-2.3.3
-
-2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 14
-IWindowsDeviceEnrollmentService Server Details ................................................ 14
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-RequestSecurityToken ........................................................................... 16
-Messages ....................................................................................... 17
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1
-
-3.1.4.1
-
-3.1.4.1.1.1
-
-3.1.4.1.1.2
-
-3.1.4.1.1.3
-
-IWindowsDeviceEnrollmentService_RequestSecurityToken_InputMessag
-e Message ................................................................................ 17
-
-IWindowsDeviceEnrollmentService_RequestSecurityToken_OutputMessa
-ge Message ............................................................................... 19
-
-3.1.4.1.2
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-3.1.4.1.2.3
-3.1.4.1.2.4
-3.1.4.1.2.5
-3.1.4.1.2.6
-3.1.4.1.2.7
-
-IWindowsDeviceEnrollmentService_RequestSecurityToken_WindowsDev
-iceEnrollmentServiceErrorFault_FaultMessage Message .................. 20
-Elements ........................................................................................ 20
-WindowsDeviceEnrollmentServiceError ......................................... 21
-wsse:Security ............................................................................ 21
-wsse:BinarySecurityToken .......................................................... 21
-wst:RequestSecurityToken .......................................................... 21
-wst:RequestType ....................................................................... 21
-wst:TokenType .......................................................................... 21
-ac:AdditionalContext .................................................................. 21
-
-3 / 37
-
-[MS-DVRE] - v20240423
-Device Registration Enrollment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.1.4.1.3
-
-3.1.4.1.4
-
-ac:ContextItem ......................................................................... 21
-3.1.4.1.2.8
-3.1.4.1.2.9
-wst:RequestSecurityTokenResponseCollection ............................... 21
-3.1.4.1.2.10  wst:RequestSecurityTokenResponse ............................................. 21
-3.1.4.1.2.11  wst:RequestedSecurityToken ....................................................... 22
-Provisioning Document Schema ................................................... 22
-3.1.4.1.2.12
-Complex Types ............................................................................... 22
-WindowsDeviceEnrollmentServiceError ......................................... 22
-Simple Types .................................................................................. 23
-WinDeviceEnrollmentServiceErrorType ......................................... 23
-Processing Rules ................................................................................... 23
-New Request Processing ................................................................... 24
-Timer Events .............................................................................................. 25
-Other Local Events ...................................................................................... 25
-
-3.1.4.1.4.1
-
-3.1.4.1.3.1
-
-3.1.4.2
-
-3.1.4.2.1
-
-3.1.5
-3.1.6
-
-4.1
-
-4  Protocol Examples ................................................................................................. 26
-RequestSecurityToken Request/Response Message Sequence ................................ 26
-Client RequestSecurityToken Message ........................................................... 26
-Server RequestSecurityToken Response ........................................................ 28
-SOAP Fault ................................................................................................ 29
-Provisioning Document Example ................................................................... 30
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 32
-
-7  Appendix B: Product Behavior ............................................................................... 34
-
-8  Change Tracking .................................................................................................... 35
-
-9  Index ..................................................................................................................... 36
-
-[MS-DVRE] - v20240423
-Device Registration Enrollment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 37
-
-1  Introduction
+## 1 Introduction
 
 The Device Registration Enrollment Protocol provides a lightweight mechanism for registering personal
 or corporate-owned devices with a workplace.
@@ -391,7 +276,7 @@ this specification, makes use of that information to register a device in the de
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -453,7 +338,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain) and a smaller integer representing an identity relative to the account authority, termed
+
+domain) and a smaller integer representing an identity relative to the account authority, termed
 the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a string
 representation of SIDs is specified in [MS-DTYP] section 2.4.2 and [MS-AZOD] section 1.1.1.2.
 
@@ -494,14 +380,14 @@ provider.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -524,7 +410,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-ADA3] Microsoft Corporation, "Active Directory Schema Attributes N-Z".
+
+[MS-ADA3] Microsoft Corporation, "Active Directory Schema Attributes N-Z".
 
 [MS-ADSC] Microsoft Corporation, "Active Directory Schema Classes".
 
@@ -589,7 +476,8 @@ Release: April 23, 2024
 
 7 / 37
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-DVRE].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -600,11 +488,11 @@ Release: April 23, 2024
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DVRD] Microsoft Corporation, "Device Registration Discovery Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The Device Registration Enrollment Protocol provides for issuance of X.509v3 digital certificates, and is
 intended for use as a lightweight device registration server. The server is known in WS-Trust
@@ -619,7 +507,7 @@ information for the server.
 
 Figure 1: Typical sequence diagram for Device Registration
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure shows the Device Registration Enrollment protocol stack diagram.
 
@@ -630,7 +518,8 @@ Release: April 23, 2024
 
 8 / 37
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-DVRE].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -639,7 +528,7 @@ Figure 2: Device Registration Enrollment protocol stack
 The Device Registration Enrollment protocol makes use of the Hypertext Transfer Protocol over
 Secure Sockets Layer (HTTPS) and SOAP protocols for messaging and security.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Device Registration Enrollment protocol issues X.509v3 certificates that have a corresponding
 relationship with a device object represented in a directory server.  A server implementation of the
@@ -674,7 +563,8 @@ Release: April 23, 2024
 
 9 / 37
 
-4.  Set the ms-DS-Device-Location attribute of the ms-DS-Device-Registration-Service
+
+4.  Set the ms-DS-Device-Location attribute of the ms-DS-Device-Registration-Service
 
 object to a distinguished name (DN) of a container location in the directory. The container
 is of class ms-DS-Device-Container.
@@ -692,19 +582,19 @@ of the ms-DS-Device-Registration-Service object. See section 2.3.2.
 
 2.  Grant the server read/write access to ms-DS-Device objects.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Device Registration Enrollment protocol is applicable only for requests for device registration.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Device Registration Enrollment protocol does not include any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -715,9 +605,10 @@ Release: April 23, 2024
 
 10 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Device Registration Enrollment protocol operates over the following transports:
 
@@ -735,13 +626,13 @@ Enrollment Web Service  https://<server>:<server port>/EnrollmentServer/DeviceEn
 
 The protocol MUST use the HTTPS transport.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses the
 XML schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and the Web Services Description
 Language as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces by using the mechanisms specified
 in [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -808,7 +699,7 @@ http://docs.oasis-open.org/ws-sx/ws-trust/200512
 
 [WSTrust1.3]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML schema message definitions.
 
@@ -819,35 +710,36 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  Elements
+
+#### 2.2.3 Elements
 
 This specification does not define any common XML schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
-2.2.9  Common Data Structures
+#### 2.2.9 Common Data Structures
 
 This specification does not define any common XML schema data structures.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The protocol accesses the following Directory Service schema classes and attributes listed in the
 following table.
@@ -897,7 +789,8 @@ Release: April 23, 2024
 
 12 / 37
 
-Class
+
+Class
 
 Attribute
 
@@ -921,7 +814,7 @@ objectGuid
 
 invocationId
 
-2.3.1  ms-DS-Issuer-Certificates
+#### 2.3.1 ms-DS-Issuer-Certificates
 
 The ms-DS-Issuer-Certificates attribute is a multi-valued OCTET_STRING attribute (see the
 String(Octet) syntax in [MS-ADTS] section 3.1.1.2.2). Each value of the attribute is stored as a Binary
@@ -934,12 +827,12 @@ intervals that have elapsed since 12:00:00 midnight, January 1, 0001 and [binary
 X.509 certificate] is the contents of an X.509 certificate [RFC5280] stored as an encrypted binary
 blob.
 
-2.3.2  ms-DS-Issuer-Public-Certificates
+#### 2.3.2 ms-DS-Issuer-Public-Certificates
 
 The ms-DS-Issuer-Public-Certificates attribute is a multi-valued OCTET_STRING attribute.  Each
 value of the attribute is stored as a binary blob containing an X.509 certificate [RFC5280].
 
-2.3.3  Alt-Security-Identities
+#### 2.3.3 Alt-Security-Identities
 
 The Alt-Security-Identities attribute is a multi-valued UNICODE_STRING attribute (see the
 String(Unicode) syntax in [MS-ADTS] section 3.1.1.2.2.2). The value is formatted as:
@@ -956,9 +849,10 @@ Release: April 23, 2024
 
 13 / 37
 
-3  Protocol Details
 
-3.1  IWindowsDeviceEnrollmentService Server Details
+## 3 Protocol Details
+
+### 3.1 IWindowsDeviceEnrollmentService Server Details
 
 The IWindowsDeviceEnrollmentService hosts a message endpoint that receives
 RequestSecurityToken messages (section 3.1.4.1). When received, the server processes the client
@@ -974,7 +868,8 @@ Release: April 23, 2024
 
 14 / 37
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-DVRE].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -997,24 +892,25 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Token Authentication
 
 The token credential is provided in a request message by using the WS-Trust BinarySecurityToken
 definition as defined in section 3.1.4.1.2.3.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 StaleDeviceCleanup: A periodic timer that is used to remove unused devices. This timer triggers
 
 activity at a random time, once every 24 hours.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The following initialization steps MUST be performed each time the server service starts:
 
@@ -1024,7 +920,7 @@ the value is FALSE, the server service MUST shut down.
 
 2.  The web service on the server MUST be listening for requests from the client.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of all WSDL operations as defined by this specification.
 
@@ -1036,7 +932,7 @@ RequestSecurityToken  The RequestSecurityToken operation is the sole operation i
 
 Enrollment Protocol. It provides the mechanism for device registration requests.
 
-3.1.4.1  RequestSecurityToken
+##### 3.1.4.1 RequestSecurityToken
 
 The client calls the RequestSecurityToken method to register a device.
 
@@ -1068,7 +964,8 @@ Release: April 23, 2024
 
 16 / 37
 
-3.1.4.1.1 Messages
+
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -1099,9 +996,9 @@ An error
 message
 object.
 
-3.1.4.1.1.1
+###### 3.1.4.1.1.1 IWindowsDeviceEnrollmentService_RequestSecurityToken_InputMessag
 
-IWindowsDeviceEnrollmentService_RequestSecurityToken_InputMessag
+
 
 e Message
 
@@ -1149,7 +1046,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Claim
+
+Claim
 
 http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn
 
@@ -1234,9 +1132,10 @@ Release: April 23, 2024
 
 18 / 37
 
-3.1.4.1.1.2
 
-IWindowsDeviceEnrollmentService_RequestSecurityToken_OutputMessa
+###### 3.1.4.1.1.2 IWindowsDeviceEnrollmentService_RequestSecurityToken_OutputMessa
+
+
 
 ge Message
 
@@ -1304,7 +1203,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name attribute
+
+Name attribute
 
 Description
 
@@ -1315,9 +1215,9 @@ The <ac:Value> element contains the value of the
 http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn claim in the JWT that
 was sent to the server (section 3.1.4.1.1.1).
 
-3.1.4.1.1.3
+###### 3.1.4.1.1.3 IWindowsDeviceEnrollmentService_RequestSecurityToken_WindowsDev
 
-IWindowsDeviceEnrollmentService_RequestSecurityToken_WindowsDev
+
 
 iceEnrollmentServiceErrorFault_FaultMessage Message
 
@@ -1349,7 +1249,7 @@ WindowsDeviceEnrollmentServiceError:  Defined in section 3.1.4.1.2.1. The object
 included in the <s:Detail> element of a SOAP fault, and clients MUST ignore the entire
 WindowsDeviceEnrollmentServiceError node in the SOAP fault response.
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 The following table summarizes the WSDL element definitions that are specific to this operation.
 
@@ -1396,7 +1296,8 @@ Release: April 23, 2024
 
 20 / 37
 
-Element
+
+Element
 
 Description
 
@@ -1415,49 +1316,49 @@ Provisioning Document
 An XML document containing a configuration profile for a mobile
 device.
 
-3.1.4.1.2.1  WindowsDeviceEnrollmentServiceError
+###### 3.1.4.1.2.1 WindowsDeviceEnrollmentServiceError
 
  <xsd:element name="WindowsDeviceEnrollmentServiceError" nillable="true"
 type="q2:WindowsDeviceEnrollmentServiceError"/>
 
-3.1.4.1.2.2  wsse:Security
+###### 3.1.4.1.2.2 wsse:Security
 
 The <wsse:Security> element is defined in [WSS].
 
-3.1.4.1.2.3  wsse:BinarySecurityToken
+###### 3.1.4.1.2.3 wsse:BinarySecurityToken
 
 The <wsse:BinarySecurityToken> element is defined in [WSS].
 
-3.1.4.1.2.4  wst:RequestSecurityToken
+###### 3.1.4.1.2.4 wst:RequestSecurityToken
 
 The <wst:RequestSecurityToken> element is defined in WS-Trust 1.3 [WSTrust1.3], section 3.1.
 
-3.1.4.1.2.5  wst:RequestType
+###### 3.1.4.1.2.5 wst:RequestType
 
 The <wst:RequestType> element is defined in [WSTrust1.3] section 3.1. It is an instance of a
 <wst:RequestTypeOpenEnum> object as defined in [WSTrust1.3] XML schema definition (XSD).
 
-3.1.4.1.2.6  wst:TokenType
+###### 3.1.4.1.2.6 wst:TokenType
 
 The <wst:TokenType> element is defined in [WSTrust1.3], section 3.1.
 
-3.1.4.1.2.7  ac:AdditionalContext
+###### 3.1.4.1.2.7 ac:AdditionalContext
 
 The <ac:AdditionalContext> element is defined in [WSFederation]. It is used to provide additional
 information in a wst:RequestSecurityToken and wst:RequestSecurityTokenResponseCollection
 messages.
 
-3.1.4.1.2.8  ac:ContextItem
+###### 3.1.4.1.2.8 ac:ContextItem
 
 The <ac:ContextItem> element is defined in [WSFederation]. It is a child element of
 <ac:AdditionalContext> and is used to provide additional information in a wst:RequestSecurityToken
 message. See sections 3.1.4.1.1.1 and 3.1.4.1.1.2 for additional requirements.
 
-3.1.4.1.2.9  wst:RequestSecurityTokenResponseCollection
+###### 3.1.4.1.2.9 wst:RequestSecurityTokenResponseCollection
 
 The <wst:RequestSecurityTokenResponseCollection> element is defined in [WSTrust1.3], section 3.1.
 
-3.1.4.1.2.10  wst:RequestSecurityTokenResponse
+###### 3.1.4.1.2.10 wst:RequestSecurityTokenResponse
 
 The <wst:RequestSecurityTokenResponse> element is defined in [WSTrust1.3], section 3.1.
 
@@ -1468,11 +1369,12 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.2.11  wst:RequestedSecurityToken
+
+###### 3.1.4.1.2.11 wst:RequestedSecurityToken
 
 The <wst:RequestedSecurityToken> element is defined in [WSTrust1.3], section 3.1.
 
-3.1.4.1.2.12  Provisioning Document Schema
+###### 3.1.4.1.2.12 Provisioning Document Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -1509,7 +1411,7 @@ xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
    </xs:element>
  </xs:schema>
 
-3.1.4.1.3 Complex Types
+###### 3.1.4.1.3 Complex Types
 
 The following table summarizes the XML Schema complex type definitions that are specific to this
 operation.
@@ -1520,7 +1422,7 @@ Description
 
 WindowsDeviceEnrollmentServiceError  An object returned by the web service when an error occurs.
 
-3.1.4.1.3.1  WindowsDeviceEnrollmentServiceError
+###### 3.1.4.1.3.1 WindowsDeviceEnrollmentServiceError
 
 Namespace: http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration
 
@@ -1540,14 +1442,15 @@ Release: April 23, 2024
 
 22 / 37
 
-ErrorType: Indicates the type of error that occurred. MUST be a value from the
+
+ErrorType: Indicates the type of error that occurred. MUST be a value from the
 WinDeviceEnrollmentServiceErrorType enumeration (section 3.1.4.1.4.1).
 
 Message: A string that provides details about the specific error that occurred. The content of this
 
 string is implementation-specific.
 
-3.1.4.1.4 Simple Types
+###### 3.1.4.1.4 Simple Types
 
 The following table summarizes the XML Schema simple type definitions that are specific to this
 operation.
@@ -1558,7 +1461,7 @@ Description
 
 WinDeviceEnrollmentServiceErrorType  An object returned by the web service when an error occurs.
 
-3.1.4.1.4.1  WinDeviceEnrollmentServiceErrorType
+###### 3.1.4.1.4.1 WinDeviceEnrollmentServiceErrorType
 
 An object returned by the web service when an error occurs.
 
@@ -1608,7 +1511,7 @@ UnknownError
 
 An unknown error occurred.
 
-3.1.4.2  Processing Rules
+##### 3.1.4.2 Processing Rules
 
 An incoming SOAP message MUST be processed to evaluate the SOAP actions and authentication
 information.
@@ -1620,12 +1523,13 @@ Release: April 23, 2024
 
 23 / 37
 
-If the user has authenticated successfully by using the provided authentication information, message
+
+If the user has authenticated successfully by using the provided authentication information, message
 processing MUST continue. If the authentication fails, the server MUST respond with a SOAP fault.
 
 If any other SOAP action is defined, the server MUST respond with a SOAP fault.
 
-3.1.4.2.1 New Request Processing
+###### 3.1.4.2.1 New Request Processing
 
 For this type of message, a server has syntax constraints on the request message.
 
@@ -1705,7 +1609,8 @@ Release: April 23, 2024
 
 24 / 37
 
-
+
+
 
 
 
@@ -1736,7 +1641,7 @@ The friendly name of the device that corresponds to the display name sent in the
 
 response.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 StaleDeviceCleanup: (section 3.1.2)
 
@@ -1754,7 +1659,7 @@ Inactivity-Period attribute of the ms-DS-Device-Registration-Service and the loc
 time is greater than the time stored in the ms-DS-Approximate-Last-Logon-Time-Stamp attribute
 of the ms-DS-Device object, the server MUST delete the ms-DS-Device object.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -1765,14 +1670,15 @@ Release: April 23, 2024
 
 25 / 37
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following message sequence, the token authentication headers have been included in the
 message sequences for clarity.
 
-4.1  RequestSecurityToken Request/Response Message Sequence
+### 4.1 RequestSecurityToken Request/Response Message Sequence
 
-4.1.1  Client RequestSecurityToken Message
+#### 4.1.1 Client RequestSecurityToken Message
 
  <s:Envelope
    xmlns:s="http://www.w3.org/2003/05/soap-envelope"
@@ -1839,7 +1745,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         lqb2lWMFZEVDA1VVQxTlBYRnhrWVc0aUxDSm9kSFJ3T2k4dmMyTm9
+
+         lqb2lWMFZEVDA1VVQxTlBYRnhrWVc0aUxDSm9kSFJ3T2k4dmMyTm9
          aVzFoY3k1dGFXTnliM052Wm5RdVkyOXRMM2R6THpJd01USXZNVEl2
          WTJ4aGFXMXpMMkZrWkdsMGFXOXVZV3hoZFhSb2RtVnlhV1pwWTJGM
          GFXOXViV1YwYUc5a2N5STZJbWgwZEhBNkx5OXpZMmhsYldGekxtMX
@@ -1916,11 +1823,12 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     </wst:RequestSecurityToken>
+
+     </wst:RequestSecurityToken>
    </s:Body>
  </s:Envelope>
 
-4.1.2  Server RequestSecurityToken Response
+#### 4.1.2 Server RequestSecurityToken Response
 
 Note   The ActivityId element is defined in [MS-NETTR] section 2.2.3.
 
@@ -1990,7 +1898,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             YrMU94ai9ZR1NtY2lKdlpIMlkwU3RPZXl3N21BaWpUYzFkb
+
+             YrMU94ai9ZR1NtY2lKdlpIMlkwU3RPZXl3N21BaWpUYzFkb
              1JYY1pFL05UMkw1NXFHQ3duamFXRFVpVTBmeG4yR0RKRTA5
              eEdWVzZNVGZLRXdGMEM4SDZsQ24yRVRiekFnTUJBQUdCRVF
              CKzB0SXJ5dEZ2UlpLT1IzT3V1d1ZSZ2hFQVVWT0tFSno0V2
@@ -2032,7 +1941,7 @@ xmlns="http://schemas.microsoft.com/windows/pki/2009/01/enrollment">0</RequestID
    </s:Body>
  </s:Envelope>
 
-4.1.3  SOAP Fault
+#### 4.1.3 SOAP Fault
 
  <s:Envelope
    xmlns:s="http://www.w3.org/2003/05/soap-envelope"
@@ -2065,7 +1974,8 @@ Release: April 23, 2024
 
 29 / 37
 
-           <s:Value>
+
+           <s:Value>
              s:DeviceCapReached
            </s:Value>
          </s:Subcode>
@@ -2092,7 +2002,7 @@ Release: April 23, 2024
    </s:Body>
  </s:Envelope>
 
-4.1.4  Provisioning Document Example
+#### 4.1.4 Provisioning Document Example
 
  <wap-provisioningdoc version="1.1">
    <characteristic type="CertificateStore">
@@ -2128,9 +2038,10 @@ Release: April 23, 2024
 
 30 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Device Registration Enrollment Protocol uses HTTPS as a transport. Using Secure Sockets Layer
 (SSL) server certificate verification ensures that the client is communicating with the real server and
@@ -2140,7 +2051,7 @@ The input message uses an OAuth 2.0 JSON Web Token for both authentication and a
 The server must validate that the security token is signed by a trusted identity provider and is within
 the token validity period, and that the target audience of the token is the server.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -2155,7 +2066,8 @@ Release: April 23, 2024
 
 31 / 37
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 For ease of implementation, the full WSDL and schema are provided in this appendix.
 
@@ -2229,7 +2141,8 @@ Device Registration Enrollment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   </wsdl:portType>
+
+   </wsdl:portType>
    <wsdl:binding name="IWindowsDeviceEnrollmentServiceSoap12"
 type="tns:IWindowsDeviceEnrollmentService">
      <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -2269,7 +2182,8 @@ Release: April 23, 2024
 
 33 / 37
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2305,7 +2219,8 @@ Release: April 23, 2024
 
 34 / 37
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2349,7 +2264,8 @@ Release: April 23, 2024
 
 35 / 37
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2480,7 +2396,8 @@ Timer events
 
 36 / 37
 
-   server 25
+
+   server 25
 Timers
    server 16
 Tracking changes 35

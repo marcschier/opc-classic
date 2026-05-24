@@ -63,7 +63,8 @@ Release: April 27, 2026
 
 1 / 90
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -313,7 +314,8 @@ Release: April 27, 2026
 
 2 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -556,7 +558,8 @@ Release: April 27, 2026
 
 3 / 90
 
-Date
+
+Date
 
 Revision
 History
@@ -677,405 +680,172 @@ Release: April 27, 2026
 
 4 / 90
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 15
-Security Background ................................................................................... 15
-Kerberos Network Authentication Service (V5) Synopsis .................................. 15
-FAST ......................................................................................................... 17
-Compound Identity ..................................................................................... 17
-KILE Synopsis ............................................................................................ 17
-Relationship to Other Protocols .......................................................................... 18
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 19
-Versioning and Capability Negotiation ................................................................. 19
-Pre-Authentication ...................................................................................... 19
-Encryption Types ........................................................................................ 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-Use of Constants Assigned Elsewhere ............................................................ 19
-
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-1.9.1
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Message Syntax ............................................................................................... 20
-KERB-EXT-ERROR ....................................................................................... 20
-KERB-ERROR-DATA..................................................................................... 20
-KERB-PA-PAC-REQUEST .............................................................................. 21
-KERB_AUTH_DATA_LOOPBACK .................................................................... 21
-LSAP_TOKEN_INFO_INTEGRITY .................................................................... 21
-KERB-AD-RESTRICTION-ENTRY .................................................................... 22
-Supported Encryption Types Bit Flags ............................................................ 22
-PA-SUPPORTED-ENCTYPES .......................................................................... 23
-OCTET STRING ........................................................................................... 23
-PA-PAC-OPTIONS ....................................................................................... 24
-KERB-KEY-LIST-REQ ................................................................................... 24
-KERB-KEY-LIST-REP .................................................................................... 24
-KERB-SUPERSEDED-BY-USER ...................................................................... 24
-KERB-DMSA-KEY-PACKAGE .......................................................................... 25
-Directory Service Schema Elements ................................................................... 25
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-2.2.13
-2.2.14
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-
-3  Protocol Details ..................................................................................................... 26
-Common Details .............................................................................................. 26
-Abstract Data Model .................................................................................... 26
-Replay Cache ....................................................................................... 26
-Cryptographic Material ........................................................................... 26
-Ticket Cache......................................................................................... 27
-PerBootMachineID ................................................................................. 27
-CrossBootMachineID.............................................................................. 27
-SupportedEncryptionTypes ..................................................................... 27
-Kerberos OID ....................................................................................... 27
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 27
-Higher-Layer Triggered Events ..................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Pre-authentication Data ......................................................................... 28
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-[MS-KILE] - v20260427
-Kerberos Protocol Extensions
-Copyright © 2026 Microsoft Corporation
-Release: April 27, 2026
-
-5 / 90
-
-3.2
-
-3.1.6
-3.1.7
-3.1.8
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-
-Encryption Types .................................................................................. 29
-3.1.5.2
-Encryption Checksum Types ................................................................... 29
-3.1.5.3
-Ticket Flag Details ................................................................................. 30
-3.1.5.4
-Other Elements and Options ................................................................... 30
-3.1.5.5
-Addressing ........................................................................................... 30
-3.1.5.6
-Internationalization and Case Sensitivity .................................................. 31
-3.1.5.7
-Key Version Numbers ............................................................................ 31
-3.1.5.8
-Key Usage Numbers .............................................................................. 31
-3.1.5.9
-3.1.5.10
-Referrals .............................................................................................. 31
-3.1.5.11  Naming ................................................................................................ 31
-Password Change and Set ...................................................................... 32
-3.1.5.12
-Timer Events .............................................................................................. 32
-Other Local Events ...................................................................................... 32
-Implementing Public Keys ............................................................................ 32
-Client Details ................................................................................................... 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Initial Logon ......................................................................................... 34
-Authentication to Services ...................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 35
-Request Flags Details ............................................................................ 35
-Authenticator Checksum Flags ................................................................ 35
-Locate a DS_BEHAVIOR_WIN2012 DC ..................................................... 36
-Using FAST When the Realm Supports FAST ............................................. 36
-AS Exchange ........................................................................................ 37
-Forwardable TGT Request ...................................................................... 37
-TGS Exchange ...................................................................................... 37
-AP Exchange ........................................................................................ 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-KDC Details ..................................................................................................... 39
-Abstract Data Model .................................................................................... 39
-Account Database Extensions ................................................................. 40
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 42
-Higher-Layer Triggered Events ..................................................................... 43
-KDC Configuration Changes .................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-Request Flag Ticket-issuing Behavior ....................................................... 43
-Server Principal Lookup .................................................................... 44
-Canonicalization of Server Principals .................................................. 45
-User Account Objects Without UPN .......................................................... 45
-PAC Generation .................................................................................... 46
-Determining Authentication Policy Silo Membership ................................... 46
-Determining Authentication Policy Settings............................................... 46
-AS Exchange ........................................................................................ 48
-Client Principal Lookup ..................................................................... 49
-Referrals ........................................................................................ 50
-Check Account Policy for Every TGT Request ....................................... 51
-Initial Population of the PAC .............................................................. 51
-KERB_VALIDATION_INFO Structure ............................................. 51
-PAC_CLIENT_INFO Structure ....................................................... 53
-Server Signature ....................................................................... 53
-KDC Signatures ......................................................................... 54
-UPN_DNS_INFO Structure ........................................................... 54
-PAC_CLIENT_CLAIMS_INFO Structure .......................................... 54
-
-3.3.5.6.4.1
-3.3.5.6.4.2
-3.3.5.6.4.3
-3.3.5.6.4.4
-3.3.5.6.4.5
-3.3.5.6.4.6
-
-3.3.5.6.1
-3.3.5.6.2
-3.3.5.6.3
-3.3.5.6.4
-
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-
-3.3.5.1.1
-3.3.5.1.2
-
-3.3.1.1
-
-3.3.4.1
-
-3.3.5.1
-
-[MS-KILE] - v20260427
-Kerberos Protocol Extensions
-Copyright © 2026 Microsoft Corporation
-Release: April 27, 2026
-
-6 / 90
-
-3.3.5.7
-
-3.3.5.8
-
-3.3.5.8.1
-
-3.3.5.7.1
-3.3.5.7.2
-3.3.5.7.3
-3.3.5.7.4
-3.3.5.7.5
-3.3.5.7.6
-3.3.5.7.7
-3.3.5.7.8
-3.3.5.7.9
-
-3.3.5.6.4.7
-3.3.5.6.4.8
-
-PAC_ATTRIBUTES_INFO Structure ............................................... 55
-PAC_REQUESTOR SID ................................................................ 55
-TGS Exchange ...................................................................................... 55
-Check Account Policy for Every Session Ticket Request ........................ 57
-TGT without a PAC ........................................................................... 57
-Domain Local Group Membership ...................................................... 57
-Compound Identity .......................................................................... 58
-Cross-Domain Trust and Referrals ..................................................... 59
-FORWARDED TGT etype ................................................................... 60
-Read-only Domain Controller (RODC) ................................................. 60
-Key List Request ............................................................................. 60
-PAC Requestor and Attributes Info Structures ..................................... 60
-Network Ticket Logon ............................................................................ 61
-Key Distribution Center Processes Request ......................................... 61
-Timer Events .............................................................................................. 62
-Other Local Events ...................................................................................... 62
-Application Server Details ................................................................................. 62
-Abstract Data Model .................................................................................... 62
-Timers ...................................................................................................... 62
-Initialization ............................................................................................... 62
-msDS-SupportedEncryptionTypes attribute .............................................. 63
-Higher-Layer Triggered Events ..................................................................... 63
-Message Processing Events and Sequencing Rules .......................................... 63
-Three-Leg DCE-Style Mutual Authentication ............................................. 64
-Datagram-Style Authentication ............................................................... 64
-Processing Authorization Data ................................................................ 65
-GSS_WrapEx() Call ............................................................................... 66
-Kerberos Binding of GSS_WrapEx() ................................................... 67
-GSS_UnwrapEx() Call ............................................................................ 68
-GSS_GetMICEx() Call ............................................................................ 69
-GSS_VerifyMICEx() Call ......................................................................... 69
-Timer Events .............................................................................................. 70
-Other Local Events ...................................................................................... 70
-
-3.4.5.4.1
-
-3.4.5.1
-3.4.5.2
-3.4.5.3
-3.4.5.4
-
-3.4.5.5
-3.4.5.6
-3.4.5.7
-
-3.4.3.1
-
-3.4.6
-3.4.7
-
-3.4
-
-3.3.6
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-
-3.4.4
-3.4.5
-
-4  Protocol Examples ................................................................................................. 71
-Interactive Logon Using Passwords ..................................................................... 71
-Network Logon ................................................................................................ 72
-GSS_WrapEx with AES128-CTS-HMAC-SHA1-96 .................................................. 73
-AES 128 Key Creation ....................................................................................... 75
-RC4 GSS_WrapEx ............................................................................................ 76
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5.1
-
-5  Security ................................................................................................................. 78
-Security Considerations for Implementers ........................................................... 78
-RODC Key Version Numbers ......................................................................... 78
-SPNs with Serviceclass Equal to "RestrictedKrbHost" ....................................... 78
-Account Revocation Checking ....................................................................... 78
-FORWARDED TGT etype .............................................................................. 78
-DES Downgrade Protection .......................................................................... 78
-Index of Security Parameters ............................................................................ 79
-
-5.1.1
-5.1.2
-5.1.3
-5.1.4
-5.1.5
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 80
-
-7  Change Tracking .................................................................................................... 87
-
-8  Index ..................................................................................................................... 88
-
-[MS-KILE] - v20260427
-Kerberos Protocol Extensions
-Copyright © 2026 Microsoft Corporation
-Release: April 27, 2026
-
-7 / 90
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Security Background](#131-security-background)
+    - [1.3.2 Kerberos Network Authentication Service (V5) Synopsis](#132-kerberos-network-authentication-service-v5-synopsis)
+    - [1.3.3 FAST](#133-fast)
+    - [1.3.4 Compound Identity](#134-compound-identity)
+    - [1.3.5 KILE Synopsis](#135-kile-synopsis)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Pre-Authentication](#171-pre-authentication)
+    - [1.7.2 Encryption Types](#172-encryption-types)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+    - [1.9.1 Use of Constants Assigned Elsewhere](#191-use-of-constants-assigned-elsewhere)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 KERB-EXT-ERROR](#221-kerb-ext-error)
+    - [2.2.2 KERB-ERROR-DATA](#222-kerb-error-data)
+    - [2.2.3 KERB-PA-PAC-REQUEST](#223-kerb-pa-pac-request)
+    - [2.2.4 KERB_AUTH_DATA_LOOPBACK](#224-kerbauthdataloopback)
+    - [2.2.5 LSAP_TOKEN_INFO_INTEGRITY](#225-lsaptokeninfointegrity)
+    - [2.2.6 KERB-AD-RESTRICTION-ENTRY](#226-kerb-ad-restriction-entry)
+    - [2.2.7 Supported Encryption Types Bit Flags](#227-supported-encryption-types-bit-flags)
+    - [2.2.8 PA-SUPPORTED-ENCTYPES](#228-pa-supported-enctypes)
+    - [2.2.9 OCTET STRING](#229-octet-string)
+    - [2.2.10 PA-PAC-OPTIONS](#2210-pa-pac-options)
+    - [2.2.11 KERB-KEY-LIST-REQ](#2211-kerb-key-list-req)
+    - [2.2.12 KERB-KEY-LIST-REP](#2212-kerb-key-list-rep)
+    - [2.2.13 KERB-SUPERSEDED-BY-USER](#2213-kerb-superseded-by-user)
+    - [2.2.14 KERB-DMSA-KEY-PACKAGE](#2214-kerb-dmsa-key-package)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Replay Cache](#3111-replay-cache)
+      - [3.1.1.2 Cryptographic Material](#3112-cryptographic-material)
+      - [3.1.1.3 Ticket Cache](#3113-ticket-cache)
+      - [3.1.1.4 PerBootMachineID](#3114-perbootmachineid)
+      - [3.1.1.5 CrossBootMachineID](#3115-crossbootmachineid)
+      - [3.1.1.6 SupportedEncryptionTypes](#3116-supportedencryptiontypes)
+      - [3.1.1.7 Kerberos OID](#3117-kerberos-oid)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Pre-authentication Data](#3151-pre-authentication-data)
+      - [3.1.5.2 Encryption Types](#3152-encryption-types)
+      - [3.1.5.3 Encryption Checksum Types](#3153-encryption-checksum-types)
+      - [3.1.5.4 Ticket Flag Details](#3154-ticket-flag-details)
+      - [3.1.5.5 Other Elements and Options](#3155-other-elements-and-options)
+      - [3.1.5.6 Addressing](#3156-addressing)
+      - [3.1.5.7 Internationalization and Case Sensitivity](#3157-internationalization-and-case-sensitivity)
+      - [3.1.5.8 Key Version Numbers](#3158-key-version-numbers)
+      - [3.1.5.9 Key Usage Numbers](#3159-key-usage-numbers)
+      - [3.1.5.10 Referrals](#31510-referrals)
+      - [3.1.5.11 Naming](#31511-naming)
+      - [3.1.5.12 Password Change and Set](#31512-password-change-and-set)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 Implementing Public Keys](#318-implementing-public-keys)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Initial Logon](#3241-initial-logon)
+      - [3.2.4.2 Authentication to Services](#3242-authentication-to-services)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Request Flags Details](#3251-request-flags-details)
+      - [3.2.5.2 Authenticator Checksum Flags](#3252-authenticator-checksum-flags)
+      - [3.2.5.3 Locate a DS_BEHAVIOR_WIN2012 DC](#3253-locate-a-dsbehaviorwin2012-dc)
+      - [3.2.5.4 Using FAST When the Realm Supports FAST](#3254-using-fast-when-the-realm-supports-fast)
+      - [3.2.5.5 AS Exchange](#3255-as-exchange)
+      - [3.2.5.6 Forwardable TGT Request](#3256-forwardable-tgt-request)
+      - [3.2.5.7 TGS Exchange](#3257-tgs-exchange)
+      - [3.2.5.8 AP Exchange](#3258-ap-exchange)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 KDC Details](#33-kdc-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Account Database Extensions](#3311-account-database-extensions)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 KDC Configuration Changes](#3341-kdc-configuration-changes)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Request Flag Ticket-issuing Behavior](#3351-request-flag-ticket-issuing-behavior)
+        - [3.3.5.1.1 Server Principal Lookup](#33511-server-principal-lookup)
+        - [3.3.5.1.2 Canonicalization of Server Principals](#33512-canonicalization-of-server-principals)
+      - [3.3.5.2 User Account Objects Without UPN](#3352-user-account-objects-without-upn)
+      - [3.3.5.3 PAC Generation](#3353-pac-generation)
+      - [3.3.5.4 Determining Authentication Policy Silo Membership](#3354-determining-authentication-policy-silo-membership)
+      - [3.3.5.5 Determining Authentication Policy Settings](#3355-determining-authentication-policy-settings)
+      - [3.3.5.6 AS Exchange](#3356-as-exchange)
+        - [3.3.5.6.1 Client Principal Lookup](#33561-client-principal-lookup)
+        - [3.3.5.6.2 Referrals](#33562-referrals)
+        - [3.3.5.6.3 Check Account Policy for Every TGT Request](#33563-check-account-policy-for-every-tgt-request)
+        - [3.3.5.6.4 Initial Population of the PAC](#33564-initial-population-of-the-pac)
+          - [3.3.5.6.4.1 KERB_VALIDATION_INFO Structure](#335641-kerbvalidationinfo-structure)
+          - [3.3.5.6.4.2 PAC_CLIENT_INFO Structure](#335642-pacclientinfo-structure)
+          - [3.3.5.6.4.3 Server Signature](#335643-server-signature)
+          - [3.3.5.6.4.4 KDC Signatures](#335644-kdc-signatures)
+          - [3.3.5.6.4.5 UPN_DNS_INFO Structure](#335645-upndnsinfo-structure)
+          - [3.3.5.6.4.6 PAC_CLIENT_CLAIMS_INFO Structure](#335646-pacclientclaimsinfo-structure)
+          - [3.3.5.6.4.7 PAC_ATTRIBUTES_INFO Structure](#335647-pacattributesinfo-structure)
+          - [3.3.5.6.4.8 PAC_REQUESTOR SID](#335648-pacrequestor-sid)
+      - [3.3.5.7 TGS Exchange](#3357-tgs-exchange)
+        - [3.3.5.7.1 Check Account Policy for Every Session Ticket Request](#33571-check-account-policy-for-every-session-ticket-request)
+        - [3.3.5.7.2 TGT without a PAC](#33572-tgt-without-a-pac)
+        - [3.3.5.7.3 Domain Local Group Membership](#33573-domain-local-group-membership)
+        - [3.3.5.7.4 Compound Identity](#33574-compound-identity)
+        - [3.3.5.7.5 Cross-Domain Trust and Referrals](#33575-cross-domain-trust-and-referrals)
+        - [3.3.5.7.6 FORWARDED TGT etype](#33576-forwarded-tgt-etype)
+        - [3.3.5.7.7 Read-only Domain Controller (RODC)](#33577-read-only-domain-controller-rodc)
+        - [3.3.5.7.8 Key List Request](#33578-key-list-request)
+        - [3.3.5.7.9 PAC Requestor and Attributes Info Structures](#33579-pac-requestor-and-attributes-info-structures)
+      - [3.3.5.8 Network Ticket Logon](#3358-network-ticket-logon)
+        - [3.3.5.8.1 Key Distribution Center Processes Request](#33581-key-distribution-center-processes-request)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 Application Server Details](#34-application-server-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+      - [3.4.3.1 msDS-SupportedEncryptionTypes attribute](#3431-msds-supportedencryptiontypes-attribute)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Three-Leg DCE-Style Mutual Authentication](#3451-three-leg-dce-style-mutual-authentication)
+      - [3.4.5.2 Datagram-Style Authentication](#3452-datagram-style-authentication)
+      - [3.4.5.3 Processing Authorization Data](#3453-processing-authorization-data)
+      - [3.4.5.4 GSS_WrapEx() Call](#3454-gsswrapex-call)
+        - [3.4.5.4.1 Kerberos Binding of GSS_WrapEx()](#34541-kerberos-binding-of-gsswrapex)
+      - [3.4.5.5 GSS_UnwrapEx() Call](#3455-gssunwrapex-call)
+      - [3.4.5.6 GSS_GetMICEx() Call](#3456-gssgetmicex-call)
+      - [3.4.5.7 GSS_VerifyMICEx() Call](#3457-gssverifymicex-call)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Interactive Logon Using Passwords](#41-interactive-logon-using-passwords)
+  - [4.2 Network Logon](#42-network-logon)
+  - [4.3 GSS_WrapEx with AES128-CTS-HMAC-SHA1-96](#43-gsswrapex-with-aes128-cts-hmac-sha1-96)
+  - [4.4 AES 128 Key Creation](#44-aes-128-key-creation)
+  - [4.5 RC4 GSS_WrapEx](#45-rc4-gsswrapex)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 RODC Key Version Numbers](#511-rodc-key-version-numbers)
+    - [5.1.2 SPNs with Serviceclass Equal to "RestrictedKrbHost"](#512-spns-with-serviceclass-equal-to-restrictedkrbhost)
+    - [5.1.3 Account Revocation Checking](#513-account-revocation-checking)
+    - [5.1.4 FORWARDED TGT etype](#514-forwarded-tgt-etype)
+    - [5.1.5 DES Downgrade Protection](#515-des-downgrade-protection)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 Kerberos Network Authentication Service V5 Extensions apply to the Kerberos Network Authentication
 Service (V5) protocol [RFC4120] referred to simply as Kerberos V5 throughout the remainder of this
@@ -1085,7 +855,7 @@ group memberships, interactive logon information, and integrity levels.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1146,7 +916,8 @@ Release: April 27, 2026
 
 8 / 90
 
-directory: The database that stores information about objects such as users, groups, computers,
+
+directory: The database that stores information about objects such as users, groups, computers,
 
 printers, and the directory service that makes this information available to users and
 applications.
@@ -1222,7 +993,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-authenticator is recently constructed; and to help the two parties select additional session keys
+
+authenticator is recently constructed; and to help the two parties select additional session keys
 for a particular connection authenticated by Kerberos. The use of authenticators, including how
 authenticators are validated, is specified in [RFC4120] section 5.5.1. For more information, see
 [KAUFMAN].
@@ -1298,7 +1070,8 @@ Release: April 27, 2026
 
 10 / 90
 
-security identifier (SID): An identifier for security principals that is used to identify an account
+
+security identifier (SID): An identifier for security principals that is used to identify an account
 or a group. Conceptually, the SID is composed of an account authority portion (typically a
 domain) and a smaller integer representing an identity relative to the account authority,
 termed the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a
@@ -1372,7 +1145,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-track of the individual units of data (called packets) that a message is divided into for efficient
+
+track of the individual units of data (called packets) that a message is divided into for efficient
 routing through the Internet.
 
 trusted domain object (TDO): A collection of properties that define a trust relationship with
@@ -1393,14 +1167,14 @@ userPrincipalName attribute of the account object, as described in [MS-ADTS].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1441,7 +1215,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-[MS-NRPC] Microsoft Corporation, "Netlogon Remote Protocol".
+
+[MS-NRPC] Microsoft Corporation, "Netlogon Remote Protocol".
 
 [MS-PAC] Microsoft Corporation, "Privilege Attribute Certificate Data Structure".
 
@@ -1509,7 +1284,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-[RFC4556] Zhu, L., and Tung, B., "Public Key Cryptography for Initial Authentication in Kerberos", RFC
+
+[RFC4556] Zhu, L., and Tung, B., "Public Key Cryptography for Initial Authentication in Kerberos", RFC
 4556, June 2006, https://www.rfc-editor.org/info/rfc4556
 
 [RFC4757] Jaganathan, K., Zhu, L., and Brezak, J., "The RC4-HMAC Kerberos Encryption Types Used
@@ -1532,7 +1308,7 @@ Recommendation X.680, July 2002, http://www.itu.int/rec/T-REC-X.680/en
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DIALOGUE] Bryant, B., and Ts'o, T., "Designing an Authentication System: A Dialogue in Four
 Scenes", February 1997, http://web.mit.edu/kerberos/www/dialogue.html
@@ -1573,7 +1349,8 @@ Release: April 27, 2026
 
 14 / 90
 
-[MSKB-5064081] Microsoft Corporation, "August 29, 2025—KB5064081", August 2025,
+
+[MSKB-5064081] Microsoft Corporation, "August 29, 2025—KB5064081", August 2025,
 https://support.microsoft.com/en-us/topic/august-29-2025-kb5064081-os-build-26100-5074-
 preview-3f9eb9e1-72ca-4b42-af97-39aace788d93
 
@@ -1595,7 +1372,7 @@ Generic Syntax", RFC 2396, August 1998, https://www.rfc-editor.org/info/rfc2396
 [UUKA-GSSAPI] Swift, M., Brezak, J., and Moore, P., "User to User Kerberos Authentication using
 GSS-API", October 2001, https://tools.ietf.org/html/draft-swift-win2k-krb-user2user-03
 
-1.3  Overview
+### 1.3 Overview
 
 Kerberos Network Authentication Service V5 Extensions (KILE) is a security protocol that
 authenticates entities on a network and provides additional services after the parties are
@@ -1604,7 +1381,7 @@ Service (AS) (V5) protocol [RFC4120] hereafter referred to as Kerberos V5. These
 additional capability for authorization information including group memberships, interactive logon
 information, and integrity levels.
 
-1.3.1  Security Background
+#### 1.3.1 Security Background
 
 Because KILE is a security protocol, the normative references (section 1.2.1) and this specification use
 terms that are commonly used in the security field. In this specification, every effort was made to use
@@ -1623,7 +1400,7 @@ Finally, there are descriptions in [RFC4120] and [RFC4121], and the predecessor 
 has to study carefully how Generic Security Services (GSS) [RFC2743] and the Kerberos
 implementation of GSS [RFC4121] tie together.
 
-1.3.2  Kerberos Network Authentication Service (V5) Synopsis
+#### 1.3.2 Kerberos Network Authentication Service (V5) Synopsis
 
 The Kerberos V5 protocol provides a mechanism for mutual authentication between a client and a
 server before application data is transmitted between them. Kerberos V5 is composed of three
@@ -1636,7 +1413,8 @@ Release: April 27, 2026
 
 15 / 90
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-KILE].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1680,7 +1458,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-The Client/Server Authentication Protocol (AP) exchange ([RFC4120] section 3.2):
+
+The Client/Server Authentication Protocol (AP) exchange ([RFC4120] section 3.2):
 
   Kerberos application server request message (KRB_AP_REQ) ([RFC4120] section 5.5.1): The
 client requests access to the server. The client presents the ticket ([RFC4120] section 5.3) and a
@@ -1701,7 +1480,7 @@ Most applications use the Generic Security Service Application Program Interface
 even be wrapped by higher-level abstractions such as Simple Authentication and Security Layer
 (SASL) [RFC2222], which allows for "kerberized" connections to mail servers.
 
-1.3.3  FAST
+#### 1.3.3 FAST
 
 Flexible Authentication Secure Tunneling (FAST) provides a protected channel between the client
 and the Key Distribution Center (KDC). FAST is only available for Authentication Service (AS)
@@ -1711,7 +1490,7 @@ FAST armor uses a ticket-granting ticket (TGT) for the computer to protect Authe
 Service (AS) exchanges with the KDC, so the computer’s AS exchange is not armored. The user’s
 TGT is used to protect its TGS exchanges with the KDC.
 
-1.3.4  Compound Identity
+#### 1.3.4 Compound Identity
 
 KILE extends FAST to support compound identity in the following manner. The client sends a
 compound identity TGS-REQ which is a FAST TGS-REQ by using explicit armoring with the
@@ -1721,7 +1500,7 @@ attribute certificate (PAC). By providing authorization data for the computer in
 application server can create a compound identity for the caller which is a combination of the user's
 and computer's authorization data.
 
-1.3.5  KILE Synopsis
+#### 1.3.5 KILE Synopsis
 
 By extending the authorization data ([RFC4120] section 5.2.6), KILE provides the server with
 additional information such as:
@@ -1752,10 +1531,11 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-How authorization is accomplished using Privilege Attribute Certificate (PAC) data is described in
+
+How authorization is accomplished using Privilege Attribute Certificate (PAC) data is described in
 [MS-PAC].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Kerberos V5 Authentication Service (AS) and TGS exchanges rely on either the User Datagram
 Protocol (UDP) or the Transmission Control Protocol (TCP) ([RFC4120] section 7.2.1) as a
@@ -1797,7 +1577,7 @@ PKCA]
 
   User to User Kerberos Authentication using GSS-API [UUKA-GSSAPI]
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Kerberos V5 protocol assumes the following:
 
@@ -1829,7 +1609,8 @@ Release: April 27, 2026
 
 18 / 90
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Kerberos V5 protocol provides suitable authentication for clients and servers on a network that
 receives some level of management. The Kerberos V5 protocol is not applicable for stand-alone
@@ -1840,12 +1621,12 @@ KILE is applicable to any application protocol that also requires integrated aut
 management. These extensions are also applicable to any other use for which the Kerberos V5
 protocol alone is suitable.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Kerberos Network Authentication Service (V5) Extensions do not extend the Kerberos V5 [RFC4120]
 protocol version number.
 
-1.7.1  Pre-Authentication
+#### 1.7.1 Pre-Authentication
 
 The Kerberos V5 protocol supports pre-authentication, which takes place during the AS exchange
 and occurs when the client first authenticates to the KDC. A client pre-authenticates if it supplies
@@ -1853,14 +1634,14 @@ additional information that proves it knows the key it shares with the KDC befor
 See Pre-authentication Data (section 3.1.5.1) for a complete specification of these types supported
 by KILE.
 
-1.7.2  Encryption Types
+#### 1.7.2 Encryption Types
 
 The Kerberos V5 protocol supports multiple encryption types, which are the actual algorithms for
 encrypting the tickets or other data. The Kerberos V5 protocol negotiates which encryption type to
 use for a particular connection ([RFC4120] section 3.1.3). See Encryption Types (section 3.1.5.2)
 for a complete specification of these types supported by KILE.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Kerberos V5 protocol includes several areas for vendor extension.
 
@@ -1869,13 +1650,13 @@ vendor extension.
 
 KILE does not provide vendor extensibility beyond what is specified in [RFC4120] and [RFC6113].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Assignment of Kerberos V5 IANA numbers is as specified in [RFC4120] section 9 and [RFC6113]
 sections 6 and 7. UDP port 88 and TCP port 88 are used when communication between the client and
 the KDC occurs.
 
-1.9.1  Use of Constants Assigned Elsewhere
+#### 1.9.1 Use of Constants Assigned Elsewhere
 
 Kerberos V5 protocol has been assigned the following object identifier (OID): iso.member-
 body.United States.mit.infosys.gssapi.krb5<2> (1.2.840.113554.1.2.2).
@@ -1887,9 +1668,10 @@ Release: April 27, 2026
 
 19 / 90
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Kerberos V5 protocol uses UDP and TCP for transport ([RFC4120] section 7.2). KILE uses UDP by
 default; however, if the message size exceeds a specific configurable value (message size threshold),
@@ -1899,7 +1681,7 @@ exchange messages because the transport is controlled by the application protoco
 KILE MUST have a working DNS infrastructure. KILE SHOULD NOT use the Internet Protocol (IP)
 addresses of the KDCs. DC SRV records registration is defined in [MS-ADTS] section 6.3.2.3.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 KILE does not alter the syntax of any Kerberos V5 messages ([RFC4120] sections 5.4 through 5.9).
 KILE extensions provide platform-specific data to support encoding of authorization data ([MS-PAC]
@@ -1911,7 +1693,7 @@ which means that it is ignored by implementations that do not understand the for
 Kerberos V5 messages are defined using Abstract Syntax Notation One (ASN.1), as specified in
 [X680], and encoded using Distinguished Encoding Rules (DER), as specified in [X690] section 10.
 
-2.2.1  KERB-EXT-ERROR
+#### 2.2.1 KERB-EXT-ERROR
 
 The KERB-EXT-ERROR structure SHOULD<4> be returned by the KDC to provide extended error
 information.
@@ -1928,7 +1710,7 @@ Reserved: Set to zero and MUST be ignored on receipt.
 
 Flags: Set to 0x00000001. Other bit values SHOULD be ignored on receipt.
 
-2.2.2  KERB-ERROR-DATA
+#### 2.2.2 KERB-ERROR-DATA
 
 The KERB-ERROR-DATA structure SHOULD<5> be returned by the application server in the e-data
 field in the KRB-ERROR message ([RFC4120] section 5.9.1) when clock skew recovery is attempted,
@@ -1948,7 +1730,8 @@ Release: April 27, 2026
 
 20 / 90
 
-Integer Value
+
+Integer Value
 
 Meaning
 
@@ -1977,7 +1760,7 @@ KERB_ERR_TYPE_EXTENDED
 
 A KERB-EXT-ERROR structure (section 2.2.1).
 
-2.2.3  KERB-PA-PAC-REQUEST
+#### 2.2.3 KERB-PA-PAC-REQUEST
 
 The KERB-PA-PAC-REQUEST structure is a padata type that is defined to explicitly request to
 include or exclude a PAC in the ticket. Its structure is defined using ASN.1 notation and the syntax is
@@ -1998,7 +1781,7 @@ TRUE: no PAC is present, include the PAC.
 
 FALSE: a PAC is present, exclude or remove the PAC.
 
-2.2.4  KERB_AUTH_DATA_LOOPBACK
+#### 2.2.4 KERB_AUTH_DATA_LOOPBACK
 
 The KERB_AUTH_DATA_LOOPBACK structure SHOULD<6> contain implementation-specific data
 used when the Kerberos client and application server are on the same host. Its structure is defined
@@ -2007,7 +1790,7 @@ using ASN.1 notation, and the syntax is as follows.
  KERB_AUTH_DATA_LOOPBACK ::= OCTET STRING -- Implementation-specific data which MUST be
                                           -- ignored if Kerberos client is not local.
 
-2.2.5  LSAP_TOKEN_INFO_INTEGRITY
+#### 2.2.5 LSAP_TOKEN_INFO_INTEGRITY
 
 The LSAP_TOKEN_INFO_INTEGRITY structure specifies the integrity level information for the
 client.<7>
@@ -2026,7 +1809,8 @@ Release: April 27, 2026
 
 21 / 90
 
-  *PLSAP_TOKEN_INFO_INTEGRITY;
+
+  *PLSAP_TOKEN_INFO_INTEGRITY;
 
 Flags:  A 32-bit unsigned integer indicating the token information type. This value MUST be one of the
 
@@ -2068,7 +1852,7 @@ CrossBootMachineID:  A 32-byte string (section 3.1.1.5) that uniquely identifies
 
 and persists on disk.<8>
 
-2.2.6  KERB-AD-RESTRICTION-ENTRY
+#### 2.2.6 KERB-AD-RESTRICTION-ENTRY
 
 The KERB-AD-RESTRICTION-ENTRY structure SHOULD<9> specify additional restrictions for the
 client. Its structure is defined using ASN.1 notation and the syntax is as follows:
@@ -2084,7 +1868,7 @@ restriction: An LSAP_TOKEN_INFO_INTEGRITY structure (section 2.2.5) that contain
 
 integrity information for the client.
 
-2.2.7  Supported Encryption Types Bit Flags
+#### 2.2.7 Supported Encryption Types Bit Flags
 
 The data in the msDS-SupportedEncryptionTypes attribute ([MS-ADA2] section 2.481), and in
 fields that specify which encryption types are supported, contains a 32-bit unsigned integer in little-
@@ -2099,7 +1883,8 @@ Release: April 27, 2026
 
 22 / 90
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2176,14 +1961,14 @@ All other bits MUST be set to zero when sent and MUST be ignored when they are r
 
 For more details see section 3.1.5.2 Encryption Types, and sections thereafter.
 
-2.2.8  PA-SUPPORTED-ENCTYPES
+#### 2.2.8 PA-SUPPORTED-ENCTYPES
 
 The PA-SUPPORTED-ENCTYPES structure SHOULD<16> specify the encryption types supported and
 contains a bit field of the supported encryption types bit flags (section 2.2.7).
 
  PA-SUPPORTED-ENCTYPES ::= Int32 – Supported Encryption Types Bit Field --
 
-2.2.9  OCTET STRING
+#### 2.2.9 OCTET STRING
 
 An ASN.1 OCTET STRING, which is binary data whose length is a multiple of eight, as defined in
 [X680] section 22.
@@ -2195,7 +1980,8 @@ Release: April 27, 2026
 
 23 / 90
 
-2.2.10 PA-PAC-OPTIONS
+
+#### 2.2.10 PA-PAC-OPTIONS
 
 The PA-PAC-OPTIONS structure SHOULD<17> specify explicitly requested options in the PAC. Its
 structure is defined using ASN.1 notation. The syntax is as follows:
@@ -2209,7 +1995,7 @@ structure is defined using ASN.1 notation. The syntax is as follows:
  Note: KerberosFlags   ::= BIT STRING (SIZE (32..MAX))
          -- minimum number of bits shall be sent, but no fewer than 32
 
-2.2.11 KERB-KEY-LIST-REQ
+#### 2.2.11 KERB-KEY-LIST-REQ
 
 The KERB-KEY-LIST-REQ structure<18> is used to request a list of key types the KDC can supply to
 the client to support single sign-on capabilities in legacy protocols. Its structure is defined using ASN.1
@@ -2217,7 +2003,7 @@ notation. The syntax is as follows:
 
  KERB-KEY-LIST-REQ ::= SEQUENCE OF Int32 -- encryption type --
 
-2.2.12 KERB-KEY-LIST-REP
+#### 2.2.12 KERB-KEY-LIST-REP
 
 The KERB-KEY-LIST-REP structure<19> contains a list of key types the KDC has supplied to the
 client to support single sign-on capabilities in legacy protocols. Its structure is defined using ASN.1
@@ -2225,7 +2011,7 @@ notation. The syntax is as follows:
 
  KERB-KEY-LIST-REP ::= SEQUENCE OF EncryptionKey
 
-2.2.13 KERB-SUPERSEDED-BY-USER
+#### 2.2.13 KERB-SUPERSEDED-BY-USER
 
 The KERB-SUPERSEDED-BY-USER structure contains the name and the realm of a Kerberos
 principal that supersedes the existing principal, [RFC4120] section 5.2.2.
@@ -2255,7 +2041,8 @@ Release: April 27, 2026
 
 24 / 90
 
-2.2.14 KERB-DMSA-KEY-PACKAGE
+
+#### 2.2.14 KERB-DMSA-KEY-PACKAGE
 
 The KERB-DMSA-KEY-PACKAGE structure contains a list of keys supplied by the KDC to an
 authorized client when the client sends KDC-REQ-BODY as per [RFC4120] with the ticket granting
@@ -2290,7 +2077,7 @@ and the legacy user account used to run service). It is pre-authentication data 
 in PA-DATA structure within PA-FX-FAST. It is authorization data (not pre-auth data) when embedded
 in authorization-data field within the TGT issued by KDC.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 KILE accesses the directory service schema classes and attributes listed in the following table.
 
@@ -2324,7 +2111,8 @@ Release: April 27, 2026
 
 25 / 90
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section specifies details of KILE, including abstract data models and message processing rules, as
 follows:
@@ -2343,9 +2131,9 @@ requests.
 
 exchange requests.
 
-3.1  Common Details
+### 3.1 Common Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2369,14 +2157,14 @@ KILE specifies the following extensions to common elements:
 
   Kerberos OID
 
-3.1.1.1  Replay Cache
+##### 3.1.1.1 Replay Cache
 
 Kerberos V5 specifies that servers MUST utilize a replay cache unless the application server provides
 replay protection ([RFC4120] section 3.2.3).
 
 KILE MUST implement a replay cache regardless of the application server replay functionality.
 
-3.1.1.2  Cryptographic Material
+##### 3.1.1.2 Cryptographic Material
 
 Kerberos V5 establishes a secret key that is shared by a principal and the KDC and a session key
 that forms the basis for privacy or integrity in the communication channel between client and server.
@@ -2393,7 +2181,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  Computer accounts: < DNS name of the realm, converted to uppercase > | "host" | < computer
+
+  Computer accounts: < DNS name of the realm, converted to uppercase > | "host" | < computer
 
 name, converted to lower case with trailing "$" stripped off > | "." | < DNS name of the realm,
 converted to lower case >
@@ -2411,36 +2200,36 @@ KRB_AP_REP message. However, when AES is used (see [RFC4121]), the subkeys are d
 the subkey in the KRB_AP_REP message is used. (The KRB_AP_REQ message is defined in
 [RFC4120] section 5.5.1).
 
-3.1.1.3  Ticket Cache
+##### 3.1.1.3 Ticket Cache
 
 Kerberos V5 specifies that clients can cache TGTs ([RFC4120] section 3.3.1).
 
 KILE implements a ticket cache that preserves service tickets and TGTs.<20>
 
-3.1.1.4  PerBootMachineID
+##### 3.1.1.4 PerBootMachineID
 
 KILE implements a 32-byte binary random string machine identifier.<21>
 
-3.1.1.5  CrossBootMachineID
+##### 3.1.1.5 CrossBootMachineID
 
 KILE implements a 32-byte string that uniquely identifies the calling machine.<22> This value MUST
 NOT change at computer startup.
 
-3.1.1.6  SupportedEncryptionTypes
+##### 3.1.1.6 SupportedEncryptionTypes
 
 KILE implements a 32-bit unsigned integer that contains a combination of flags that specify what
 encryption types (section 2.2.7) are supported by Kerberos.<23> The default is 0000001C.<24>
 
-3.1.1.7  Kerberos OID
+##### 3.1.1.7 Kerberos OID
 
 Kerberos V5 specifies the Kerberos principal name form ([RFC1964] section 2.1.1). KILE also
 implements a truncated Kerberos OID value: (1.2.840.48018.1.2.2)
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The random number generator for keys and nonces is initialized by other components but complies
 with [FIPS140] section 4.7.1.
@@ -2454,16 +2243,17 @@ Release: April 27, 2026
 
 27 / 90
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following sections detail variations in tickets and naming that are common to all parts of the
 Kerberos protocol.
 
-3.1.5.1  Pre-authentication Data
+##### 3.1.5.1 Pre-authentication Data
 
 Pre-authentication ([RFC4120] sections 3.1.1, 5.4.1, and 5.2.7) is an extensibility point for the
 Kerberos V5 protocol. Pre-authentication is performed by supplying one or more pre-authentication
@@ -2554,7 +2344,8 @@ Release: April 27, 2026
 
 28 / 90
 
-When clients perform a password-based initial authentication, they MUST supply the PA-ENC-
+
+When clients perform a password-based initial authentication, they MUST supply the PA-ENC-
 TIMESTAMP [2] pre-authentication type when they construct the initial AS request. They can request,
 via the PA-PAC-REQUEST [128] pre-authentication type, that a privilege attribute certificate
 (PAC) be included in issued tickets.
@@ -2563,7 +2354,7 @@ If the KDC does not receive the required pre-authentication message in the AS ex
 MUST be returned to the client. The exact error depends on what pre-authentication types were
 supplied.
 
-3.1.5.2  Encryption Types
+##### 3.1.5.2 Encryption Types
 
 KILE MUST<27> support the Advanced Encryption Standard (AES) encryption types:
 
@@ -2583,7 +2374,7 @@ strength:
 All other Encryption Types SHOULD<29> be rejected. Kerberos V5 encryption type assigned numbers
 are specified in [RFC3961] section 8, [RFC4757] section 5, and [RFC3962] section 7.<30>
 
-3.1.5.3  Encryption Checksum Types
+##### 3.1.5.3 Encryption Checksum Types
 
 KILE supports the following checksum types. Each checksum type is described, and a number is
 specified, in the corresponding RFC.
@@ -2641,7 +2432,8 @@ Release: April 27, 2026
 
 29 / 90
 
-3.1.5.4  Ticket Flag Details
+
+##### 3.1.5.4 Ticket Flag Details
 
 The Kerberos V5 protocol specifies a number of options and behaviors with regard to the flags
 ([RFC4120] section 2) that are encoded in a ticket.
@@ -2687,7 +2479,7 @@ flag. For details on decoding a cross-realm TGT and crealm filtering see [MS-PAC
 The OK-AS-DELEGATE flag ([RFC4120] section 2.8): The KDC MUST set the OK-AS-DELEGATE flag
 if the service account is trusted for delegation (section 3.3.1.1).
 
-3.1.5.5  Other Elements and Options
+##### 3.1.5.5 Other Elements and Options
 
 The Kerberos V5 protocol defines optional authorization data elements ([RFC4120] section 5.2.6).
 
@@ -2716,7 +2508,7 @@ generate an error; instead, it ignores the unknown data and proceeds to authenti
 
 KILE MUST support the KRB_ERR_RESPONSE_TOO_BIG error message ([RFC4120] section 7.2.1).
 
-3.1.5.6  Addressing
+##### 3.1.5.6 Addressing
 
 KILE SHOULD<31> support IPv6 addresses ([RFC4120] section 7.1).
 
@@ -2727,10 +2519,11 @@ Release: April 27, 2026
 
 30 / 90
 
-KILE MUST NOT support directional addresses ([RFC4120] section 7.1). If the directional addresses
+
+KILE MUST NOT support directional addresses ([RFC4120] section 7.1). If the directional addresses
 are present, they MUST be ignored.
 
-3.1.5.7  Internationalization and Case Sensitivity
+##### 3.1.5.7 Internationalization and Case Sensitivity
 
 The Kerberos V5 protocol specifies rules for encoding and processing names, both for character set
 and case ([RFC4120] section 6).
@@ -2739,7 +2532,7 @@ Name comparisons, whether for users or domains, MUST NOT be case sensitive in KI
 use UTF-8 encoding of these names [RFC2279]. Normalization MUST NOT be performed and
 surrogates MUST NOT be supported. Names SHOULD<32> match.
 
-3.1.5.8  Key Version Numbers
+##### 3.1.5.8 Key Version Numbers
 
 The Kerberos V5 protocol specifies key version numbers ([RFC4120] section 5.2.9). Key version
 numbers are used in the Kerberos V5 protocol to distinguish between different keys in the same
@@ -2753,7 +2546,7 @@ The key version number consists of 32 bits. The first 16 bits, including the mos
 unsigned 16-bit number that identifies the RODC. The remaining 16 bits are the version number of the
 key.
 
-3.1.5.9  Key Usage Numbers
+##### 3.1.5.9 Key Usage Numbers
 
 The Kerberos V5 protocol specifies key usage numbers ([RFC4120] section 7.5.1).
 
@@ -2764,9 +2557,9 @@ numbers:
 
   KERB_NON_KERB_CKSUM_SALT [17]
 
-3.1.5.10
+##### 3.1.5.10 Referrals
 
-Referrals
+
 
 The Kerberos V5 protocol specifies cross-realm behavior and the nature of referrals ([RFC4120]
 section 1.2).
@@ -2774,9 +2567,9 @@ section 1.2).
 KILE MUST support cross-realm referrals ([RFC4120] sections 1.2 and 3.3.1) and extended referrals
 [Referrals-11].
 
-3.1.5.11
+##### 3.1.5.11 Naming
 
-Naming
+
 
 Kerberos V5 specifies a variety of name types ([RFC4120] section 7.5.8) for specifying the name of
 the server during a TGS request.
@@ -2795,7 +2588,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-An SPN is a string of the following format.
+
+An SPN is a string of the following format.
 
 SPN = serviceclass "/" hostname [":"port] ["/" servicename]
 
@@ -2831,9 +2625,9 @@ provided the hostname but not the correct SPN for the service. Applications MAY<
 5.1.2. Applications calling GSS-API directly MUST provide a target name that is an SPN for their
 service applications for Kerberos authentication.
 
-3.1.5.12
+##### 3.1.5.12 Password Change and Set
 
-Password Change and Set
+
 
 [RFC3244] describes the message flow for the Windows extension to the password change mechanism
 which enables setting passwords. [RFC3244] section 2 shows that targname and targrealm are
@@ -2841,21 +2635,21 @@ optional fields, but does not describe when they should be set. If the fields ar
 request to set a password and the initial flag is not required. If the fields are absent, then this is a
 password change.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.1.8  Implementing Public Keys
+#### 3.1.8 Implementing Public Keys
 
 The use of public keys in KILE is specified in [MS-PKCA].
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2868,7 +2662,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-adhere to this model as long as their external behavior is consistent with that described in this
+
+adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
 The KILE client has the following configuration setting for claims, compound authentication, and
@@ -2952,7 +2747,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-MutualAuthentication: A Boolean setting that indicates that the client requires authentication of the
+
+MutualAuthentication: A Boolean setting that indicates that the client requires authentication of the
 server. Even with this flag, mutual authentication cannot be assured until the first message is
 passed by the application protocol and the message is signed or encrypted.
 
@@ -2971,12 +2767,12 @@ UseSessionKey: A Boolean setting that indicates that the caller requests user-to
 
 exchanges ([RFC4120] section 3.7).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 When the client sends an AS-REQ or TGS-REQ to the KDC, it uses a timer to determine when to
 retry. The operation of this timer, along with its default values, is as specified in section 3.2.6.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Before the client can send an AS or TGS message, it MUST discover the KDC to which the AS or TGS
 message will be sent. Clients use SRV record discovery ([RFC4120] section 7.2.3.2) by default. When
@@ -2987,9 +2783,9 @@ If the client has a ticket cache, the ticket cache MUST be initialized to an emp
 All parameters that are specified in section 3.2.1 are reset and then set according to the higher-layer
 protocols request.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Initial Logon
+##### 3.2.4.1 Initial Logon
 
 Initial logon is the process by which a user first authenticates to the KDC. The client engages in an AS
 exchange (see section 1.3.2) with the KDC, using domain password or smartcard authentication and
@@ -3004,7 +2800,7 @@ Kerberos requires that the user principal name (UPN) refers to a valid domain th
 example, user@windows.example.com). KILE allows authentication with valid Active Directory DS
 UPNs ([MS-ADTS] section 5.1.1.1.1).
 
-3.2.4.2  Authentication to Services
+##### 3.2.4.2 Authentication to Services
 
 When the initial authentication is complete and the TGT is obtained, the user typically wants to use a
 network resource. For a Kerberos-aware application, the Kerberos client initiates a TGS exchange
@@ -3020,7 +2816,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-KILE provides no support for direct access to the Kerberos KRB_SAFE or KRB_PRIV messages.
+
+KILE provides no support for direct access to the Kerberos KRB_SAFE or KRB_PRIV messages.
 
 The client application then takes the AP exchange message and supplies it, in band with the
 application protocol, to the server. The Kerberos server processes the message as specified in
@@ -3029,9 +2826,9 @@ application protocol, to the server. The Kerberos server processes the message a
 Note: The KRB_SAFE and KRB_PRIV messages are part of the KRB_SAFE exchange and KRB_PRIV
 exchange, respectively.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Request Flags Details
+##### 3.2.5.1 Request Flags Details
 
 Kerberos V5 specifies Kerberos ticket-issuing behavior defined by a set of options that are passed to
 the KDC during the AS exchange or TGS exchange.
@@ -3070,7 +2867,7 @@ If Output_kerb_message is returned, then process the KRB_AS_REP, KRB_TGS_REP, or
 KRB_ERROR message contained in Output_kerb_message.kerb-message. Otherwise, the
 Kerberos client fails.
 
-3.2.5.2  Authenticator Checksum Flags
+##### 3.2.5.2 Authenticator Checksum Flags
 
 If the following variables are set to TRUE, the client sets the corresponding GSS flag ([RFC4121]
 section 4.1.1) to TRUE in the authenticator's checksum:
@@ -3094,13 +2891,14 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-MutualAuthentication: GSS_C_MUTUAL_FLAG ([RFC1964] section 1.1.1).
+
+MutualAuthentication: GSS_C_MUTUAL_FLAG ([RFC1964] section 1.1.1).
 
 ReplayDetect: GSS_C_REPLAY_FLAG ([RFC1964] section 1.1.1).
 
 SequenceDetect: GSS_C_SEQUENCE_FLAG ([RFC1964] section 1.1.1).
 
-3.2.5.3  Locate a DS_BEHAVIOR_WIN2012 DC
+##### 3.2.5.3 Locate a DS_BEHAVIOR_WIN2012 DC
 
 When a DS_BEHAVIOR_WIN2012 ([MS-ADTS] section 3.1.1.3.2.25) Domain Controller (DC) is
 required, DsrGetDcNameEx2 method ([MS-NRPC] section 3.5.4.3.1) is called where:
@@ -3120,7 +2918,7 @@ Flags has bits G, H, and U set.
 The IP address of the DS_BEHAVIOR_WIN2012 DC is returned in
 DomainControllerInfo.DomainControllerAddress.
 
-3.2.5.4  Using FAST When the Realm Supports FAST
+##### 3.2.5.4 Using FAST When the Realm Supports FAST
 
 In addition to the RFC behavior ([RFC6113]), the Kerberos client SHOULD use the PA-SUPPORTED-
 ENCTYPES [165] structure (section 2.2.8) from the TGT obtained from a realm to determine if a
@@ -3171,12 +2969,13 @@ Release: April 27, 2026
 
 36 / 90
 
-If a DS_BEHAVIOR_WIN2012 DC is found, the client uses the TGT obtained in step 1 to armor
+
+If a DS_BEHAVIOR_WIN2012 DC is found, the client uses the TGT obtained in step 1 to armor
 the message it is creating ([RFC6113] sections 5.4.2, 5.4.3 and 5.4.4) to the
 DS_BEHAVIOR_WIN2012 DC. If the request fails without an authenticated Kerberos error
 message and RequireFAST is TRUE, then the client fails the request.
 
-3.2.5.5  AS Exchange
+##### 3.2.5.5 AS Exchange
 
 The Kerberos V5 protocol specifies the AS exchange ([RFC4120] section 3.1). KILE also supports
 extensions to the AS exchange as specified in [Referrals-11], [RFC5349], [RFC4556], and [MS-PKCA].
@@ -3200,7 +2999,7 @@ If EnableCBACandArmor is TRUE, the principal is not the computer account, and th
 running on a domain-joined computer, the Kerberos client SHOULD<39> use FAST [RFC6113] when
 the principal’s Realm supports FAST (section 3.2.5.4).
 
-3.2.5.6  Forwardable TGT Request
+##### 3.2.5.6 Forwardable TGT Request
 
 When the client requests a forwardable TGT ([RFC4120] Section 2.6) for the application server, the
 client SHOULD:<40>
@@ -3217,7 +3016,7 @@ the session key with the delegated TGT. The client uses the KDC encryption types
 AS-REP from the KDC and the application server encryption types provided in the previous TGS-
 REP message for the application server.
 
-3.2.5.7  TGS Exchange
+##### 3.2.5.7 TGS Exchange
 
 When the server name is not Krbtgt, the client sends an authorization data field ([RFC4120] section
 5.2.6) with ad-type KERB_AUTH_DATA_LOOPBACK (142) and ad-data containing
@@ -3241,7 +3040,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-If EnableCBACandArmor is TRUE, the Kerberos client SHOULD<41> use FAST [RFC6113] when the
+
+If EnableCBACandArmor is TRUE, the Kerberos client SHOULD<41> use FAST [RFC6113] when the
 realm supports FAST (section 3.2.5.4).
 
 If EnableCBACandArmor is TRUE and the application server's realm TGT's PA-SUPPORTED-
@@ -3249,7 +3049,7 @@ ENCTYPES [165] structure (section 2.2.8) Compound Identity bit is set, the Kerbe
 SHOULD<42> send a compound identity TGS-REQ by using FAST with explicit armoring, using the
 computer's TGT.
 
-3.2.5.8  AP Exchange
+##### 3.2.5.8 AP Exchange
 
 If UseSessionKey is set to TRUE, the client sets the USE-SESSION-KEY flag to TRUE in the ap-
 options field of the AP-REQ ([RFC4120] section 5.5.1).
@@ -3290,7 +3090,7 @@ DATA structure (section 2.2.2) in the e-data field of the KRB-ERROR message ([RF
 5.9.1), the client retries the AP-REQ using the time in the KRB-ERROR message to create the
 authenticator.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The Kerberos V5 protocol requires the client to contact the KDC and recognizes that a specific KDC
 could be offline or unavailable to service the request. The actual behavior is not specified in
@@ -3298,7 +3098,7 @@ could be offline or unavailable to service the request. The actual behavior is n
 to reply requires a timer. Clients can use the initial time-out and increase the time-out by some
 interval to retry multiple times before failing the AS-REQ or TGS-REQ message.<44>
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -3309,9 +3109,10 @@ Release: April 27, 2026
 
 38 / 90
 
-3.3  KDC Details
 
-3.3.1  Abstract Data Model
+### 3.3 KDC Details
+
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3392,7 +3193,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  NetbiosDomainName: The NetBIOS domain name for the domain to which the server belongs.
+
+  NetbiosDomainName: The NetBIOS domain name for the domain to which the server belongs.
 
 This Abstract Data Model element is shared with DomainName.NetBIOS ([MS-WKST] section
 3.2.1.6).
@@ -3401,7 +3203,7 @@ This Abstract Data Model element is shared with DomainName.NetBIOS ([MS-WKST] se
 
 shared with DomainSid ([MS-WKST] section 3.2.1.6).
 
-3.3.1.1  Account Database Extensions
+##### 3.3.1.1 Account Database Extensions
 
 The Kerberos V5 protocol specifies which KDCs MUST maintain a database of principals with their
 secret keys and corresponding supported encryption types:
@@ -3473,7 +3275,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  AssignedSilo.msDS-AuthNPolicyEnforced ([MS-ADSC] section 2.121), or
+
+  AssignedSilo.msDS-AuthNPolicyEnforced ([MS-ADSC] section 2.121), or
 
 
 
@@ -3553,7 +3356,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-Directory for the account database generate the value with the same method as the SAM ([MS-
+
+Directory for the account database generate the value with the same method as the SAM ([MS-
 SAMR] section 3.1.5.14.4). The default is 0.
 
   Pre-AuthenticationNotRequired: A Boolean setting to control when pre-authentication data
@@ -3600,11 +3404,11 @@ TA flag: TrustedToAuthenticationForDelegation
 
 TD flag: TrustedForDelegation
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Kerberos V5 specifies that all KDCs in a domain MUST have the same key, and the name of the
 service for the TGS is "krbtgt/domain-name" SPN ([RFC4120] section 6.2).
@@ -3630,7 +3434,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  AuthenticationOptions (section 3.3.1) to the value of the AuthenticationOptions field.
+
+  AuthenticationOptions (section 3.3.1) to the value of the AuthenticationOptions field.
 
 Implementations of KILE KDCs which use Active Directory for the account database MUST use the
 krbtgt account in the Active Directory.
@@ -3649,13 +3454,13 @@ KerbSupportedEncryptionTypes.
 
 KerbSupportedEncryptionTypes.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 For KILE implementations which use the LSAD for the configuration database, a KDC
 ConfigurationChange event ([MS-LSAD] section 3.1.4.4.8) is triggered whenever the KDC
 configuration policy is changed in the LSAD database.
 
-3.3.4.1  KDC Configuration Changes
+##### 3.3.4.1 KDC Configuration Changes
 
 If an implementation supports multiple KDCs for a realm, then it needs a mechanism for keeping the
 KDC configuration database consistent across all the KDCs. KDC configuration change details are
@@ -3677,9 +3482,9 @@ settings are set as follows:
 
   AuthenticationOptions (section 3.3.1) to the value of the AuthenticationOptions field.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Request Flag Ticket-issuing Behavior
+##### 3.3.5.1 Request Flag Ticket-issuing Behavior
 
 Kerberos V5 specifies Kerberos ticket-issuing behavior defined by the kdc-options ([RFC4120] section
 5.4.1) that are passed to the KDC during the AS or TGS exchange.
@@ -3701,7 +3506,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-PROTECTED_USERS ([MS-DTYP] section 2.4.2.4)), the KILE KDC MUST NOT set the PROXIABLE or
+
+PROTECTED_USERS ([MS-DTYP] section 2.4.2.4)), the KILE KDC MUST NOT set the PROXIABLE or
 FORWARDABLE ticket flags ([RFC4120] sections 2.5 and 2.6).
 
 
@@ -3726,7 +3532,7 @@ return PA-FX-FAST [136] in the KRB_ERROR.
 without FAST. Otherwise, the KDC returns KDC_ERR_PREAUTH_REQUIRED and return PA-FX-FAST
 [136] ([RFC6113] section 5.4.2).<49>
 
-3.3.5.1.1 Server Principal Lookup
+###### 3.3.5.1.1 Server Principal Lookup
 
 This section is relevant only for KILE implementations that use Active Directory for the account
 database.
@@ -3778,7 +3584,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  Attribute is set to sAMAccountName.
+
+  Attribute is set to sAMAccountName.
 
 3.  If STATUS_NOT_FOUND or STATUS_NO_SUCH_USER is returned, then the KDC MUST return
 
@@ -3824,7 +3631,7 @@ KDC_ERR_S_PRINCIPAL_UNKNOWN.
 
 In all cases, if the call succeeds, the Active Directory account for the requested principal was found.
 
-3.3.5.1.2 Canonicalization of Server Principals
+###### 3.3.5.1.2 Canonicalization of Server Principals
 
 For initial TGTs and referral TGTs, KILE KDCs SHOULD return the krbtgt/FQDN for the server
 principal.
@@ -3840,7 +3647,7 @@ The server principal is kadmin/changepw.
 
 The server principal’s account has UseDESOnly set to TRUE.
 
-3.3.5.2  User Account Objects Without UPN
+##### 3.3.5.2 User Account Objects Without UPN
 
 If the user account object does not have the userPrincipalName attribute ([MS-ADA3] section
 2.349) set, the KDC SHOULD<50> send a UPN_DNS_INFO structure ([MS-PAC] section 2.10)
@@ -3854,7 +3661,8 @@ Release: April 27, 2026
 
 45 / 90
 
-3.3.5.3  PAC Generation
+
+##### 3.3.5.3 PAC Generation
 
 In either of the following two cases, a PAC [MS-PAC] MUST be generated and included in the response
 by the KDC:<51>
@@ -3873,7 +3681,7 @@ Otherwise, the response will not contain a PAC.
 
 Note  Population of the PAC is covered in the corresponding KDC details sections.
 
-3.3.5.4  Determining Authentication Policy Silo Membership
+##### 3.3.5.4 Determining Authentication Policy Silo Membership
 
 If domainControllerFunctionality returns a value < 6 ([MS-ADTS] section 3.1.1.3.2.25), the KDC
 SHOULD<52> set BelongsToSilo to FALSE. See section 3.3.1.1 for the following KDC pseudo variable
@@ -3900,7 +3708,7 @@ contain the account, the KDC sets BelongsToSilo to FALSE.
 If the AssignedSilo is not NULL and AssignedSilo.msDS-AuthNPolicySiloMembers contains
 the account, the KDC sets BelongsToSilo to TRUE.
 
-3.3.5.5  Determining Authentication Policy Settings
+##### 3.3.5.5 Determining Authentication Policy Settings
 
 If domainControllerFunctionality returns a value < 6 ([MS-ADTS] section 3.1.1.3.2.25), the KDC
 SHOULD<53> set PolicyName to NULL. See section 3.3.1.1 for the following KDC pseudo variable
@@ -3929,7 +3737,8 @@ Release: April 27, 2026
 
 46 / 90
 
-  AllowedToAuthenticateTo to AssignedSilo.msDS-UserAuthNPolicy.msDS-
+
+  AllowedToAuthenticateTo to AssignedSilo.msDS-UserAuthNPolicy.msDS-
 
 UserAllowedToAuthenticateTo
 
@@ -4012,7 +3821,8 @@ Release: April 27, 2026
 
 47 / 90
 
-  TGTLifetime to AssignedPolicy.msDS-ComputerAuthNPolicy.msDS-ComputerTGTLifetime
+
+  TGTLifetime to AssignedPolicy.msDS-ComputerAuthNPolicy.msDS-ComputerTGTLifetime
 
   AllowedToAuthenticateTo to AssignedPolicy.msDS-ComputerAuthNPolicy.msDS-
 
@@ -4020,7 +3830,7 @@ ComputerAllowedToAuthenticateTo
 
   AllowedToAuthenticateFrom to NULL
 
-3.3.5.6  AS Exchange
+##### 3.3.5.6 AS Exchange
 
 Kerberos V5 specifies the AS exchange ([RFC4120] section 3.1). KILE also supports extensions to
 the AS exchange specified in [Referrals-11], [RFC5349], [RFC4556], and [MS-PKCA].
@@ -4093,12 +3903,13 @@ Release: April 27, 2026
 
 48 / 90
 
-  >= 3: the KDC, in the encrypted pre-auth data part of the AS-REP message, includes a PA-DATA
+
+  >= 3: the KDC, in the encrypted pre-auth data part of the AS-REP message, includes a PA-DATA
 
 structure with padata-type set to PA-SUPPORTED-ENCTYPES [165], and padata-value is set to
 0x1F (section 2.2.7).
 
-3.3.5.6.1 Client Principal Lookup
+###### 3.3.5.6.1 Client Principal Lookup
 
 This section is relevant only for KILE implementations that use Active Directory for the account
 database.
@@ -4176,7 +3987,8 @@ Release: April 27, 2026
 
 49 / 90
 
-
+
+
 
 If realm is present, cname@realm.
 
@@ -4242,7 +4054,7 @@ KDC_ERR_C_PRINCIPAL_UNKNOWN.
 
 In all cases, if the call succeeds, the Active Directory account for the requested principal was found.
 
-3.3.5.6.2 Referrals
+###### 3.3.5.6.2 Referrals
 
 The KDC supports referral processing [Referrals-11] sending a KDC and domain to use to answer a
 client's request.
@@ -4256,7 +4068,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-
+
+
 
 Inbound trusts: <all uppercase name of the remote realm> | "krbtgt" | <all uppercase name of
 the local realm>
@@ -4265,7 +4078,7 @@ the local realm>
 
 remote realm>
 
-3.3.5.6.3 Check Account Policy for Every TGT Request
+###### 3.3.5.6.3 Check Account Policy for Every TGT Request
 
 Kerberos V5 does not enforce revocation of accounts prior to the expiration of issued tickets.
 
@@ -4304,7 +4117,7 @@ If the KILE implementation uses Active Directory for the account database and th
 userAccountControl attribute ([MS-ADTS] section 2.2.16) SR flag is set to TRUE, because this is
 a password-based logon the KDC MUST return STATUS_SMARTCARD_LOGON_REQUIRED.
 
-3.3.5.6.4 Initial Population of the PAC
+###### 3.3.5.6.4 Initial Population of the PAC
 
 For KILE implementations that use Active Directory for the account database, the KDC will create a
 PAC. During processing of the AS request, the KDC searches Active Directory for the user or
@@ -4313,7 +4126,7 @@ creates the PAC structure [MS-PAC] and encodes that into the TGT using the AD-IF
 element ([RFC4120] section 5.2.6.1). The KDC MUST ensure that the PAC structure does not end with
 a zero-length buffer.
 
-3.3.5.6.4.1  KERB_VALIDATION_INFO Structure
+###### 3.3.5.6.4.1 KERB_VALIDATION_INFO Structure
 
 For KILE implementations that use Active Directory for the account database, KDCs retrieve the
 following attributes from local directory service instance with the same processing rules as defined
@@ -4344,7 +4157,8 @@ Release: April 27, 2026
 
 51 / 90
 
-2.  Starting at the offset determined in step 1, examine the remaining entries in the
+
+2.  Starting at the offset determined in step 1, examine the remaining entries in the
 
 Buffer.SAMPR_USER_ALL_INFORMATION.LogonHours. If the value at the initial offset is
 disabled for authentication, the KDC MUST return Kerb Error KDC_ERROR_CLIENT_REVOKED
@@ -4442,7 +4256,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-
+
+
 
 The UserAccountControl field is set to the
 Buffer.SAMPR_USER_ALL_INFORMATION.UserAccountControl field of the
@@ -4509,7 +4324,7 @@ The ResourceGroupCount field contains the number of SIDs in the ResourceGroupIds
 
 The ResourceGroupIds field MUST be set to NULL.
 
-3.3.5.6.4.2  PAC_CLIENT_INFO Structure
+###### 3.3.5.6.4.2 PAC_CLIENT_INFO Structure
 
 The KDC populates the returned PAC_CLIENT_INFO structure ([MS-PAC] section 2.7) fields as
 follows:
@@ -4527,7 +4342,7 @@ The NameLength field is the length of the Name field, in bytes.
 
 The Name field is set to cname.
 
-3.3.5.6.4.3  Server Signature
+###### 3.3.5.6.4.3 Server Signature
 
 The KDC creates a keyed hash ([RFC4757]) of the entire PAC message with the Signature fields of
 both PAC_SIGNATURE_DATA structures set to zero using the server account key with the strongest
@@ -4541,7 +4356,8 @@ Release: April 27, 2026
 
 53 / 90
 
-
+
+
 
 
 
@@ -4551,7 +4367,7 @@ checksum.
 The Signature field is the keyed hash of the entire PAC message with the Signature fields of both
 PAC_SIGNATURE_DATA structures set to zero.
 
-3.3.5.6.4.4  KDC Signatures
+###### 3.3.5.6.4.4 KDC Signatures
 
 The KDC creates a keyed hash ([RFC4757]) of the Server Signature field using the strongest "krbtgt"
 account key and populates the returned PAC_SIGNATURE_DATA structure field ([MS-PAC] section
@@ -4566,7 +4382,7 @@ checksum.
 
 The Signature field is the keyed hash of the Server Signature field in the PAC message.
 
-3.3.5.6.4.5  UPN_DNS_INFO Structure
+###### 3.3.5.6.4.5 UPN_DNS_INFO Structure
 
 The KDC SHOULD<61> populate the returned UPN_DNS_INFO structure ([MS-PAC] section 2.10)
 fields as follows:
@@ -4598,7 +4414,7 @@ The KDC inserts the DNS and UPN information after the UPN_DNS_INFO structure fol
 header and starting with the corresponding offset in a consecutive buffer. The UPN and FQDN are
 encoded using a two-byte UTF16 scheme, in little-endian order.
 
-3.3.5.6.4.6  PAC_CLIENT_CLAIMS_INFO Structure
+###### 3.3.5.6.4.6 PAC_CLIENT_CLAIMS_INFO Structure
 
 If ClaimsCompIdFASTSupport is set to:
 
@@ -4630,7 +4446,8 @@ Release: April 27, 2026
 
 54 / 90
 
-For KILE implementations that use Active Directory for the account database, KDCs retrieve
+
+For KILE implementations that use Active Directory for the account database, KDCs retrieve
 the claims from the local directory service instance with the same processing rules as
 defined in GetClaimsForPrincipal procedure ([MS-ADTS] section 3.1.1.11.2.1) for message
 processing. The KDC populates the returned PAC_CLIENT_CLAIMS_INFO structure fields as
@@ -4640,7 +4457,7 @@ follows:
 
 The Claims field SHOULD be set to the ClaimsBlob.
 
-3.3.5.6.4.7  PAC_ATTRIBUTES_INFO Structure
+###### 3.3.5.6.4.7 PAC_ATTRIBUTES_INFO Structure
 
 The KDC SHOULD<63> include the PAC_ATTRIBUTES_INFO structure ([MS-PAC] section 2.14) only
 in TGTs (including referrals and tickets to RODCs).
@@ -4659,7 +4476,7 @@ TRUE:
 PAC_WAS_GIVEN_IMPLICITLY is set if the ticket was issued in a different transaction where PACs
 are mandatory, such as delegation ticket issued as specified in [MS-SFU].
 
-3.3.5.6.4.8  PAC_REQUESTOR SID
+###### 3.3.5.6.4.8 PAC_REQUESTOR SID
 
 The KDC SHOULD<64> include the PAC_REQUESTOR SID ([MS-PAC] section 2.15) only in TGTs
 (including referrals and tickets to RODCs).
@@ -4668,7 +4485,7 @@ The KDC SHOULD populate the PAC_REQUESTOR SID with the SID of the account that r
 ticket. This will be the same as the account named in the cname ([MS-SFU] section 2.2.2) except in
 delegation scenarios as documented in [MS-SFU], where this will be the delegating service.
 
-3.3.5.7  TGS Exchange
+##### 3.3.5.7 TGS Exchange
 
 Kerberos V5 specifies the TGS exchange ([RFC4120] section 3.3).
 
@@ -4706,7 +4523,8 @@ Release: April 27, 2026
 
 55 / 90
 
-
+
+
 
 
 
@@ -4783,7 +4601,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-3.3.5.7.1 Check Account Policy for Every Session Ticket Request
+
+###### 3.3.5.7.1 Check Account Policy for Every Session Ticket Request
 
 Kerberos V5 does not enforce revocation of accounts prior to the expiration of issued tickets.
 
@@ -4812,7 +4631,7 @@ If Locked is TRUE, then the KDC MUST return KDC_ERR_CLIENT_REVOKED.
 If current time is not within the LogonHours, then the KDC MUST return
 KDC_ERR_CLIENT_REVOKED.
 
-3.3.5.7.2 TGT without a PAC
+###### 3.3.5.7.2 TGT without a PAC
 
 If a TGS request includes a TGT without a PAC, the KDC SHOULD add a PAC before issuing the
 service ticket. This occurs when the TGT was issued by a pure realm [RFC4120] that is trusted by
@@ -4834,7 +4653,7 @@ AuthorizationDataNotRequired is set to FALSE, the KDC MUST use that account to c
 and insert it into the resulting service ticket. Otherwise, the service ticket MUST be issued without a
 PAC.
 
-3.3.5.7.3 Domain Local Group Membership
+###### 3.3.5.7.3 Domain Local Group Membership
 
 Groups can be created so that they are only visible to servers in the same domain. For every service
 ticket that is issued during a TGS request, except for cross-realm TGTs, the KDC MUST populate the
@@ -4871,7 +4690,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-Then the KDC MUST copy the populated fields from the PAC in the TGT to the newly created PAC and
+
+Then the KDC MUST copy the populated fields from the PAC in the TGT to the newly created PAC and
 add to the KERB_VALIDATION_INFO structure ([MS-PAC] section 2.5) of the new PAC the domain
 local groups that are returned by the GetResourceDomainInfo procedure to the existing fields as
 follows:
@@ -4919,7 +4739,7 @@ PAC] section 2.2.1) where:
 
   Attributes has the A, B, C, and E bits set to 1, and all other bits set to zero.
 
-3.3.5.7.4 Compound Identity
+###### 3.3.5.7.4 Compound Identity
 
 If a compound identity TGS-REQ (FAST TGS-REQ explicitly armored with the computer's TGT is
 received and a Compound-Identity-supported bit is set in the application server's service account’s
@@ -4950,7 +4770,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-  UserId: from the UserId field
+
+  UserId: from the UserId field
 
   PrimaryGroupId: from the PrimaryGroupId field
 
@@ -5013,7 +4834,7 @@ TGT:
 
   Claims: Claims field.
 
-3.3.5.7.5 Cross-Domain Trust and Referrals
+###### 3.3.5.7.5 Cross-Domain Trust and Referrals
 
 The KDC derives its knowledge of cross-domain trusts from trusted domain objects (TDOs) in
 Active Directory.
@@ -5032,7 +4853,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-KERB_VALIDATION_INFO.ExtraSids and the SidCount field MUST be incremented in the user's
+
+KERB_VALIDATION_INFO.ExtraSids and the SidCount field MUST be incremented in the user's
 PAC. The KDC MUST perform an ACL check while processing the TGS request as follows.
 
 
@@ -5063,7 +4885,7 @@ TRUST_ATTRIBUTE_CROSS_ORGANIZATION_ENABLE_TGT_DELEGATION.<76>
 
 If EnableConditions and not DisableConditions then set ok-as-delegate flag.
 
-3.3.5.7.6 FORWARDED TGT etype
+###### 3.3.5.7.6 FORWARDED TGT etype
 
 When the KDC receives a TGS-REQ message, it will create the random session key as specified in
 [RFC4120] section 3.1.3. If a TGS-REQ message requesting a FORWARDED ([RFC4120] section 2.6)
@@ -5074,7 +4896,7 @@ in the PA-SUPPORTED-ENCTYPES [165] structure (section 2.2.8) and supported by th
 generate the random session key. See section 3.1.5.2 for the relative strengths of KILE-supported
 encryption types.
 
-3.3.5.7.7 Read-only Domain Controller (RODC)
+###### 3.3.5.7.7 Read-only Domain Controller (RODC)
 
 When a Key Distribution Center (KDC) which is a read-only domain controller (RODC)
 receives:
@@ -5089,7 +4911,7 @@ Aware bit set, and the application server (sname) is not in its database, the RO
 principal unknown with the substatus message of NTSTATUS STATUS_NO_SECRETS ([MS-ERREF]
 section 2.3.1).
 
-3.3.5.7.8 Key List Request
+###### 3.3.5.7.8 Key List Request
 
 When a Key Distribution Center (KDC) receives a TGS-REQ message for the krbtgt service name
 (sname) containing a KERB-KEY-LIST-REQ [161] (section 3.1.5.1) padata type the KDC SHOULD
@@ -5097,7 +4919,7 @@ include the long-term secrets of the client for the requested encryption types i
 REP [162] response message and insert it into the encrypted-pa-data of the EncKDCRepPart
 structure, as defined in [RFC6806].<78>
 
-3.3.5.7.9 PAC Requestor and Attributes Info Structures
+###### 3.3.5.7.9 PAC Requestor and Attributes Info Structures
 
 60 / 90
 
@@ -5106,11 +4928,12 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-When issuing a service ticket for which Domain Local Group Membership is processed (as in section
+
+When issuing a service ticket for which Domain Local Group Membership is processed (as in section
 3.3.5.7.3), the KDC MUST remove the PAC_REQUESTOR and PAC_ATTRIBUTES_INFO structures
 from the PAC in the resulting ticket.
 
-3.3.5.8  Network Ticket Logon
+##### 3.3.5.8 Network Ticket Logon
 
 Network ticket logon is offered as a replacement for PAC validation and makes use of Kerberos. For
 description of the process, see [MS-NRPC] section 3.2.4.2. This and the following section concern the
@@ -5123,7 +4946,7 @@ validation and the client should use the PAC form of validation.
 Note: If, at any point in processing, required bits of the response message are unrecognized, the
 request fails.
 
-3.3.5.8.1 Key Distribution Center Processes Request
+###### 3.3.5.8.1 Key Distribution Center Processes Request
 
 The key distribution center (KDC) returns validation information in the form of a
 NETLOGON_VALIDATION_TICKET_LOGON message (see [MS-NRPC] section 2.2.1.4.20).
@@ -5170,7 +4993,8 @@ Release: April 27, 2026
 
 61 / 90
 
-If the PAC device groups are included and there are device claims, then the KDC must check the
+
+If the PAC device groups are included and there are device claims, then the KDC must check the
 device groups for the claims sentinel SID. Only if it is present will the KDC copy the device claims to
 the DeviceClaims field of the validation information and set the SourceDeviceClaims to true.
 
@@ -5179,15 +5003,15 @@ filters the UserInformation and DeviceInformation (if present) in the validation
 remove all groups with the SE_GROUP_RESOURCE attribute.  Once done, the KDC sets the
 ResourceGroupsRemoved bit in the validation information.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  Application Server Details
+### 3.4 Application Server Details
 
 Kerberos V5 defines a protocol subordinate to some other application protocol, via GSS-API
 [RFC4121]. KILE extends GSS-API (see GSS_WrapEx (section 3.4.5.4) and
@@ -5196,7 +5020,7 @@ GSS_UnwrapEx (section 3.4.5.5)).
 The AP exchange is controlled by several logical parameters that are passed in by the higher-layer
 application protocol that is invoking KILE.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5218,11 +5042,11 @@ maintains the following parameter:
 ImpersonationAccessToken (Public): A Token/Authorization Context (see [MS-DTYP] section
 2.5.2).
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 All parameters that are specified in section 3.4.1 are reset and then set according to the higher-layer
 protocols request.
@@ -5236,7 +5060,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-3.4.3.1  msDS-SupportedEncryptionTypes attribute
+
+##### 3.4.3.1 msDS-SupportedEncryptionTypes attribute
 
 If the realm is a KILE implementation that uses Active Directory for the account database, the
 server SHOULD ensure that the msDS-SupportedEncryptionTypes attribute ([MS-ADA2] section
@@ -5255,7 +5080,7 @@ is not equal to SupportedEncryptionTypes (section 3.1.1.6), then LDAP is used to
 ADA2] section 2.481) of the computer account object to the value of SupportedEncryptionTypes
 (section 3.1.1.6).
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
 The AP exchange is triggered by a higher-layer application protocol that requests security services
 for a connection or message exchange. The higher-layer application protocol MUST specify the name
@@ -5267,7 +5092,7 @@ Optionally, certain higher-layer protocols, such as Simple and Protected Generic
 Application Program Interface Negotiation Mechanism (SPNEGO) [MS-SPNG], will also specify the
 parameters.
 
-3.4.5  Message Processing Events and Sequencing Rules
+#### 3.4.5 Message Processing Events and Sequencing Rules
 
 Kerberos V5 specifies several additional messages ([RFC4120] sections 3.4 through 3.6) that are
 associated with the session after the AP exchange has completed.
@@ -5303,7 +5128,8 @@ Release: April 27, 2026
 
 63 / 90
 
-When the checksum field is not present, the application server processes the requests as though none
+
+When the checksum field is not present, the application server processes the requests as though none
 of the flags ([RFC4121] section 4.1.1.1) are set and does not check channel binding information
 ([RFC4121] section 4.1.1.2) as it is likewise not present.
 
@@ -5320,7 +5146,7 @@ section 5.2.6.1) KERB_AP_OPTIONS_CBT.
 If the service ticket received for the computer's principal is encrypted with DES, the KILE server
 MUST return KRB_AP_ERR_MODIFIED regardless of supporting DES.<83>
 
-3.4.5.1  Three-Leg DCE-Style Mutual Authentication
+##### 3.4.5.1 Three-Leg DCE-Style Mutual Authentication
 
 An application protocol using the Kerberos protocol must exchange application protocol messages with
 Kerberos signing or encryption applied in order to verify mutual authentication. DCE, in the
@@ -5357,7 +5183,7 @@ constructed correctly ([RFC4120] section 3.2.5).
 
 The GSS_Wrap() and GSS_WrapEx() methods are not supported with DCE Style authentication.
 
-3.4.5.2  Datagram-Style Authentication
+##### 3.4.5.2 Datagram-Style Authentication
 
 Datagram-style authentication is another DCE RPC-inspired variation. In summary, datagram style
 initializes the security context but does not transmit the authentication message. Instead, the first
@@ -5378,11 +5204,12 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-application protocol message. For DCE RPC the application packet is not retransmitted. Therefore, the
+
+application protocol message. For DCE RPC the application packet is not retransmitted. Therefore, the
 session key that will be used MUST be decided by the client before any communication with the
 server. This precludes the sub-session key option of the Kerberos V5 protocol.
 
-3.4.5.3  Processing Authorization Data
+##### 3.4.5.3 Processing Authorization Data
 
 Kerberos V5 specifies rules for processing the authorization data field in [RFC4120] section 5.2.6.
 
@@ -5454,7 +5281,8 @@ Release: April 27, 2026
 
 65 / 90
 
-  Concatenate LogonDomainId and UserId [MS-PAC] section 2.5), add to the
+
+  Concatenate LogonDomainId and UserId [MS-PAC] section 2.5), add to the
 
 ImpersonationAccessToken.Sids array, and set the ImpersonationAccessToken.UserIndex
 field to this index.
@@ -5528,7 +5356,7 @@ ImpersonationAccessToken.
 Other SIDs can be added to the ImpersonationAccessToken following authentication (see [MS-DTYP]
 section 2.7.1).
 
-3.4.5.4  GSS_WrapEx() Call
+##### 3.4.5.4 GSS_WrapEx() Call
 
 This call is an extension to GSS_Wrap ([RFC2743] section 2.3.3) that passes multiple buffers.
 
@@ -5541,7 +5369,8 @@ Release: April 27, 2026
 
 66 / 90
 
-
+
+
 
 
 
@@ -5595,7 +5424,7 @@ This call is identical to GSS_Wrap, except that it supports multiple input buffe
 which conf_req_flag==TRUE are encrypted in output_message. Input data buffers for which
 sign==TRUE are included in the message, as specified in section 3.4.5.4.1.
 
-3.4.5.4.1 Kerberos Binding of GSS_WrapEx()
+###### 3.4.5.4.1 Kerberos Binding of GSS_WrapEx()
 
 Kerberos GSS_WrapEx() depends on the encryption type of the session key for the context. The
 algorithms depend on which Kerberos encryption ciphers are negotiated by the Kerberos protocol.
@@ -5633,7 +5462,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-concatenation in order of all the input buffers including those that are only marked with sign ==
+
+concatenation in order of all the input buffers including those that are only marked with sign ==
 TRUE.
 
 Pad: For AES-SHA1 ciphers using GSS_WrapEx, the extra count (EC) must not be zero. The sender
@@ -5687,7 +5517,7 @@ The data (excluding the conf_req_flag set to FALSE) is encrypted in place.
 The "to-be-signed data" is a concatenation of all the input buffers for which sign==TRUE. The
 InitialContextToken pseudo ASN.1 header is included at the beginning of the token header.
 
-3.4.5.5  GSS_UnwrapEx() Call
+##### 3.4.5.5 GSS_UnwrapEx() Call
 
 This call is an extension to GSS_Unwrap ([RFC2743] section 2.3.4) that passes multiple buffers.
 
@@ -5726,7 +5556,8 @@ Release: April 27, 2026
 
 68 / 90
 
-
+
+
 
 qop_req INTEGER, -- 0 specifies default QOP
 
@@ -5750,7 +5581,7 @@ This call is identical to GSS_Unwrap, except that it supports multiple input buf
 for which conf_state==TRUE are decrypted in output_message. The signature is verified for the input
 data buffers where signed==TRUE, that are concatenated as specified in section 3.4.5.4.1.
 
-3.4.5.6  GSS_GetMICEx() Call
+##### 3.4.5.6 GSS_GetMICEx() Call
 
 Inputs:
 
@@ -5802,7 +5633,7 @@ STRING is signed as specified by the following RFCs, depending on the session ke
 
   AES128-CTS-HMAC-SHA1-96 or AES256-CTS-HMAC-SHA1-96 [RFC3961] [RFC4121]
 
-3.4.5.7  GSS_VerifyMICEx() Call
+##### 3.4.5.7 GSS_VerifyMICEx() Call
 
 Inputs:
 
@@ -5819,7 +5650,8 @@ Release: April 27, 2026
 
 69 / 90
 
-
+
+
 
 
 
@@ -5845,11 +5677,11 @@ This call is identical to GSS_VerifyMIC ([RFC2743] section 2.3.2), except that i
 input buffers. Input data buffers where signed==TRUE are concatenated together and the signature is
 verified against the resulting concatenated buffer.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
@@ -5860,15 +5692,16 @@ Release: April 27, 2026
 
 70 / 90
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-KILE].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe four common scenarios to illustrate the function of the KILE.
 
-4.1  Interactive Logon Using Passwords
+### 4.1 Interactive Logon Using Passwords
 
 Figure 2: Interactive logon that uses passwords
 
@@ -5907,7 +5740,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-KILE].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -5943,7 +5777,7 @@ Release: April 27, 2026
 
   UserAccountControl
 
-4.2  Network Logon
+### 4.2 Network Logon
 
 Figure 3: Network Logon
 
@@ -5961,7 +5795,8 @@ Release: April 27, 2026
 
 72 / 90
 
-Step 5: When the service ticket to the application server is obtained, the client authenticates itself to
+
+Step 5: When the service ticket to the application server is obtained, the client authenticates itself to
 the server by sending an AP-REQ wrapped in Generic Security Services (GSS) formatting (section
 3.4 and [RFC1964]).
 
@@ -5974,7 +5809,7 @@ server-side Kerberos runtime validates the ticket and authenticator, it makes th
 from the ticket available to the service, typically through an access token, which is used with
 authorization functions.
 
-4.3  GSS_WrapEx with AES128-CTS-HMAC-SHA1-96
+### 4.3 GSS_WrapEx with AES128-CTS-HMAC-SHA1-96
 
 This is an example of using the encryption type AES128-CTS-HMAC-SHA1-96 with GSS_WrapEx()
 called with an input_message with four buffers:
@@ -6004,7 +5839,8 @@ Release: April 27, 2026
 
 73 / 90
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-KILE].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -6048,7 +5884,8 @@ Release: April 27, 2026
 
 74 / 90
 
-
+
+
 
 
 
@@ -6062,7 +5899,7 @@ split
 
 The extra count (EC) is generated during the encryption process ([RFC4121] section 4.2.4).
 
-4.4  AES 128 Key Creation
+### 4.4 AES 128 Key Creation
 
 The following values are used during AES 128 key creation:
 
@@ -6122,7 +5959,8 @@ Release: April 27, 2026
 
 75 / 90
 
- 00000e0: bf ef bf bf ef bf bf ef bf bf ef bf bf ef bf bf   ................
+
+ 00000e0: bf ef bf bf ef bf bf ef bf bf ef bf bf ef bf bf   ................
  00000f0: ef bf bf ef bf bf ef bf bf ef bf bf ef bf bf ef   ................
  0000100: bf bf ef bf bf ef bf bf ef bf bf ef bf bf ef bf   ................
  0000110: bf ef bf bf ef bf bf ef bf bf ef bf bf ef bf bf   ................
@@ -6152,7 +5990,7 @@ This results in a 128-bit key:
 
  0000000: b8 2e e1 22 53 1c 2d 94 82 1a c7 55 bc cb 58 79   ..."S.-....U..Xy
 
-4.5  RC4 GSS_WrapEx
+### 4.5 RC4 GSS_WrapEx
 
 The GSS_WrapEx() is specified in section 3.4.5.4.1. The RC4-HMAC usage is specified in [RFC4757]
 and corresponding errata. The following data is part of the security context state for the Kerberos
@@ -6181,7 +6019,8 @@ Release: April 27, 2026
 
 76 / 90
 
- 0000000: 81 a2 cb 90 af 7f c2 d1 95 54 a1 50 d8 18 53 59   üó╦É»⌂┬╤òTíP╪·SY
+
+ 0000000: 81 a2 cb 90 af 7f c2 d1 95 54 a1 50 d8 18 53 59   üó╦É»⌂┬╤òTíP╪·SY
  Encrypt == TRUE
  Direction == sender_is_initiator
  Export == FALSE
@@ -6219,7 +6058,8 @@ Release: April 27, 2026
 
 77 / 90
 
-5  Security
+
+## 5 Security
 
 Older versions of MIT Kerberos do not support RC4, and therefore, the only common option for
 interoperability is DES. To obtain the security benefits of a stronger 128-bit key, upgrade to the latest
@@ -6227,7 +6067,7 @@ version of MIT Kerberos.
 
 Other general Kerberos security considerations are specified in [RFC4120] section 10.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 KILE has the same security considerations as Kerberos V5 ([RFC4120], [RFC3961], [RFC3962], and
 [RFC4757]) and GSS-API ([RFC2743], [RFC1964], and [RFC4121]).
@@ -6236,13 +6076,13 @@ The encryption types AES128-CTC-HMAC-SHA1-96/AES256-CTC-HMAC-SHA1-96 or includin
 CTS-HMAC-SHA1-96-SK if RC4 encryption types is selected is recommended. Setting RC4/DES only is
 weak and not recommended. For more information see section 2.2.7.
 
-5.1.1  RODC Key Version Numbers
+#### 5.1.1 RODC Key Version Numbers
 
 Because read-only domain controllers (RODCs) can be deployed in less secure locations, RODCs
 have different key version numbers (section 3.1.5.8) to ensure they are using a different key than the
 domain's DCs. This protects the domain if an RODC is compromised.
 
-5.1.2  SPNs with Serviceclass Equal to "RestrictedKrbHost"
+#### 5.1.2 SPNs with Serviceclass Equal to "RestrictedKrbHost"
 
 Supporting the "RestrictedKrbHost" service class allows client applications to use Kerberos
 authentication when they do not have the identity of the service but have the server name. This does
@@ -6251,7 +6091,7 @@ authentication. Services of different privilege levels have the same session key
 each other's data if the underlying service does not ensure that data cannot be accessed by higher
 services.
 
-5.1.3  Account Revocation Checking
+#### 5.1.3 Account Revocation Checking
 
 Kerberos V5 does not provide account revocation checking for TGS requests, which allows TGT
 renewals and service tickets to be issued as long as the TGT is valid even if the account has been
@@ -6260,12 +6100,12 @@ time. KILE KDCs in the account domain are required to check accounts when the TG
 20 minutes. This limits the period that a client can get a ticket with a revoked account while limiting
 the performance cost for Active Directory queries.
 
-5.1.4  FORWARDED TGT etype
+#### 5.1.4 FORWARDED TGT etype
 
 When the KDC can determine the etype in accordance with [RFC4120] section 3.1.3, PA-
 SUPPORTED-ENCTYPES [165] is not used because the field is not protected.
 
-5.1.5  DES Downgrade Protection
+#### 5.1.5 DES Downgrade Protection
 
 Since KILE has the ability to configure a principal as supporting only DES, and unarmored AS
 exchanges are vulnerable to downgrade attacks, the KDC can protect against DES downgrade
@@ -6279,7 +6119,8 @@ Release: April 27, 2026
 
 78 / 90
 
-5.2  Index of Security Parameters
+
+### 5.2 Index of Security Parameters
 
 There are no security parameters for this protocol extension.
 
@@ -6290,7 +6131,8 @@ Release: April 27, 2026
 
 79 / 90
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6356,7 +6198,8 @@ Release: April 27, 2026
 
 80 / 90
 
-<1> Section 1.3.2: Added a PA-Data request in the TGS-REQ message and an encrypted PA-Data
+
+<1> Section 1.3.2: Added a PA-Data request in the TGS-REQ message and an encrypted PA-Data
 response in the TGS-REP message that includes the NTLM hash for the authenticated user in Windows
 10 v1607 operating system client version and in Windows Server 2016 server version and later.
 
@@ -6430,7 +6273,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-<16> Section 2.2.8: The PA-SUPPORTED-ENCTYPES structure is not supported by Windows 2000,
+
+<16> Section 2.2.8: The PA-SUPPORTED-ENCTYPES structure is not supported by Windows 2000,
 Windows XP, or Windows Server 2003.
 
 <17> Section 2.2.10: The PA-PAC-OPTIONS structure is not supported in Windows 2000, Windows
@@ -6499,7 +6343,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-<31> Section 3.1.5.6: IPv6 addresses are not supported in Windows 2000, Windows XP and Windows
+
+<31> Section 3.1.5.6: IPv6 addresses are not supported in Windows 2000, Windows XP and Windows
 Server 2003.
 
 <32> Section 3.1.5.7: To match names, the GetWindowsSortKey algorithm ([MS-UCODEREF]
@@ -6569,7 +6414,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-<45> Section 3.3.1: Claims, compound identity, FAST, and mixed mode are not supported in
+
+<45> Section 3.3.1: Claims, compound identity, FAST, and mixed mode are not supported in
 Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows
 7, or Windows Server 2008 R2.
 
@@ -6638,7 +6484,8 @@ Release: April 27, 2026
 
 84 / 90
 
-<54> Section 3.3.5.6: DES downgrade protection is not supported in Windows 2000, Windows Server
+
+<54> Section 3.3.5.6: DES downgrade protection is not supported in Windows 2000, Windows Server
 2003, Windows Server 2008, Windows Server 2008 R2, or Windows Server 2012 KDCs.
 
 <55> Section 3.3.5.6: Not supported in Windows 2000 and Windows Server 2003.
@@ -6706,7 +6553,8 @@ Kerberos Protocol Extensions
 Copyright © 2026 Microsoft Corporation
 Release: April 27, 2026
 
-<73> Section 3.3.5.7.3: Resource SID compression is not supported in Windows 2000, Windows
+
+<73> Section 3.3.5.7.3: Resource SID compression is not supported in Windows 2000, Windows
 Server 2003, Windows Server 2008, or Windows Server 2008 R2 KDCs.
 
 <74> Section 3.3.5.7.4: Compound identity is not supported in Windows 2000, Windows Server 2003,
@@ -6753,7 +6601,8 @@ Release: April 27, 2026
 
 86 / 90
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6797,7 +6646,8 @@ Release: April 27, 2026
 
 87 / 90
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6947,7 +6797,8 @@ Higher-layer triggered events
 
 88 / 90
 
-   server 63
+
+   server 63
 
 I
 
@@ -7098,7 +6949,8 @@ Overview (synopsis) 15
 
 89 / 90
 
-P
+
+P
 
 PAC generation 46
 PA-PAC-OPTIONS message 24

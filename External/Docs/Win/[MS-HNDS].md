@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 13
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -291,7 +292,8 @@ Release: April 23, 2024
 
 2 / 13
 
-Date
+
+Date
 
 Revision
 History
@@ -447,54 +449,28 @@ Release: April 23, 2024
 
 3 / 13
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Extended Host Name](#21-extended-host-name)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Structures ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Versioning and Localization ................................................................................. 6
-Vendor-Extensible Fields ..................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2  Structures ............................................................................................................... 8
-Extended Host Name .......................................................................................... 8
-
-2.1
-
-3  Structure Examples ................................................................................................. 9
-
-4  Security Considerations ......................................................................................... 10
-
-5  Appendix A: Product Behavior ............................................................................... 11
-
-6  Change Tracking .................................................................................................... 12
-
-7  Index ..................................................................................................................... 13
-
-[MS-HNDS] - v20240423
-Host Name Data Structure Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 13
-
-1  Introduction
+## 1 Introduction
 
 The Host Name Data Structure Extension Protocol specifies the extension to the allowable host names
 that can be assigned to a computer.
@@ -502,7 +478,7 @@ that can be assigned to a computer.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -536,14 +512,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -559,7 +535,8 @@ Release: April 23, 2024
 
 5 / 13
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC3629] Yergeau, F., "UTF-8, A Transformation Format of ISO 10646", STD 63, RFC 3629,
@@ -571,7 +548,7 @@ November 2003, https://www.rfc-editor.org/info/rfc3629
 [RFC952] Harrenstien, K., Stahl, M., and Feinler, E., "DOD Internet Host Table Specification", RFC
 952, October 1985, https://www.rfc-editor.org/info/rfc952
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ICANN] Internet Corporation for Assigned Names and Numbers, "DNS Stability: The Effect of New
 Generic Top Level Domains on the Internet Domain Name System", February 2008,
@@ -591,7 +568,7 @@ https://www.rfc-editor.org/info/rfc2181
 [RFC3493] Gilligan, R., Thomson, S., Bound, J., McCann, J., and Stevens, W., "Basic Socket Interface
 Extensions for IPv6", RFC 3493, February 2003, https://www.rfc-editor.org/info/rfc3493
 
-1.3  Overview
+### 1.3 Overview
 
 A host name is a string assigned to a computer to identify itself and to differentiate itself from other
 hosts on the network. The syntax for a host name was first defined in [RFC952] and was subsequently
@@ -599,7 +576,7 @@ updated in [RFC1123] section 2.1.
 
 This document extends that syntax to allow underscores and non-ASCII characters.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Various protocols use host names in their own protocols and it is the responsibility of those protocols
 to state whether they use the standard host name syntax, or this extended syntax.
@@ -610,7 +587,7 @@ hence inherently supports host names as well as names that would not be legal ho
 
 Note  This document does not apply to NetBIOS names, which are instead discussed in [MS-NBTE].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 A computer is typically configured with a host name which is used to uniquely identify that computer.
 That is, hosts can identify one another through the host names.
@@ -622,11 +599,12 @@ Release: April 23, 2024
 
 6 / 13
 
-1.6  Versioning and Localization
+
+### 1.6 Versioning and Localization
 
 There is no versioning or localization support in this structure.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The host name structure does not contain any vendor-extensible fields.
 
@@ -637,9 +615,10 @@ Release: April 23, 2024
 
 7 / 13
 
-2  Structures
 
-2.1  Extended Host Name
+## 2 Structures
+
+### 2.1 Extended Host Name
 
 The extended host name syntax is a UTF-8 [RFC3629] string specified by the following ABNF
 [RFC5234].
@@ -661,7 +640,8 @@ Release: April 23, 2024
 
 8 / 13
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following strings are all examples of extended host names.
 
@@ -679,7 +659,8 @@ Release: April 23, 2024
 
 9 / 13
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 Because the string "0x123" is a valid extended host name, there might be security issues depending
 on how client software interprets such strings. For example, as discussed in [ICANN], the inet_addr()
@@ -697,7 +678,8 @@ Release: April 23, 2024
 
 10 / 13
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -761,7 +743,8 @@ Release: April 23, 2024
 
 11 / 13
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -805,7 +788,8 @@ Release: April 23, 2024
 
 12 / 13
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 6

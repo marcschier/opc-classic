@@ -63,7 +63,8 @@ Release: September 9, 2025
 
 1 / 287
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: September 9, 2025
 
 2 / 287
 
-Date
+
+Date
 
 Revision
 History
@@ -475,465 +477,228 @@ Release: September 9, 2025
 
 3 / 287
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Standards Assignments](#16-standards-assignments)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+- [2 Algorithm Details](#2-algorithm-details)
+  - [2.1 Object Store Details](#21-object-store-details)
+    - [2.1.1 Abstract Data Model](#211-abstract-data-model)
+      - [2.1.1.1 Per Volume](#2111-per-volume)
+      - [2.1.1.2 providing metadata about recently deleted or renamed files. The list could be empty if the](#2112-providing-metadata-about-recently-deleted-or-renamed-files-the-list-could-be-empty-if-the)
+      - [2.1.1.8 describing outstanding change notify requests for the volume.](#2118-describing-outstanding-change-notify-requests-for-the-volume)
+      - [2.1.1.9 Per NotifyEventEntry](#2119-per-notifyevententry)
+      - [2.1.1.10 Per Oplock](#21110-per-oplock)
+      - [2.1.1.11 Per RHOpContext](#21111-per-rhopcontext)
+      - [2.1.1.12 Per CancelableOperations](#21112-per-cancelableoperations)
+      - [2.1.1.13 Per SecurityContext](#21113-per-securitycontext)
+      - [2.1.1.14 Constants](#21114-constants)
+    - [2.1.2 Timers](#212-timers)
+    - [2.1.3 Initialization](#213-initialization)
+    - [2.1.4 Common Algorithms](#214-common-algorithms)
+      - [2.1.4.1 Algorithm for Reporting a Change Notification for a Directory or View Index](#2141-algorithm-for-reporting-a-change-notification-for-a-directory-or-view-index)
+      - [2.1.4.2 Algorithm for Detecting If Open Files Exist Under a Directory](#2142-algorithm-for-detecting-if-open-files-exist-under-a-directory)
+      - [2.1.4.3 Algorithm for Determining If a Character Is a Wildcard](#2143-algorithm-for-determining-if-a-character-is-a-wildcard)
+      - [2.1.4.4 Algorithm for Determining if a FileName Is in an Expression](#2144-algorithm-for-determining-if-a-filename-is-in-an-expression)
+      - [2.1.4.5 BlockAlign -- Macro to Round a Value Up to the Next Nearest Multiple of](#2145-blockalign-macro-to-round-a-value-up-to-the-next-nearest-multiple-of)
+      - [2.1.4.6 BlockAlignTruncate -- Macro to Round a Value Down to the Next Nearest](#2146-blockaligntruncate-macro-to-round-a-value-down-to-the-next-nearest)
+      - [2.1.4.7 ClustersFromBytes -- Macro to Determine How Many Clusters a Given Number](#2147-clustersfrombytes-macro-to-determine-how-many-clusters-a-given-number)
+      - [2.1.4.8 ClustersFromBytesTruncate -- Macro to Determine How Many Whole Clusters a](#2148-clustersfrombytestruncate-macro-to-determine-how-many-whole-clusters-a)
+      - [2.1.4.9 SidLength -- Macro to Provide the Length of a SID](#2149-sidlength-macro-to-provide-the-length-of-a-sid)
+      - [2.1.4.10 Algorithm for Determining If a Range Access Conflicts with Byte-Range](#21410-algorithm-for-determining-if-a-range-access-conflicts-with-byte-range)
+      - [2.1.4.11 Algorithm for Posting a USN Change for a File](#21411-algorithm-for-posting-a-usn-change-for-a-file)
+      - [2.1.4.12 Algorithm to Check for an Oplock Break](#21412-algorithm-to-check-for-an-oplock-break)
+        - [2.1.4.12.1 Algorithm for Request Processing After an Oplock Breaks](#214121-algorithm-for-request-processing-after-an-oplock-breaks)
+        - [2.1.4.12.2 Algorithm to Compare Oplock Keys](#214122-algorithm-to-compare-oplock-keys)
+      - [2.1.4.13 Algorithm to Recompute the State of a Shared Oplock](#21413-algorithm-to-recompute-the-state-of-a-shared-oplock)
+      - [2.1.4.14 AccessCheck -- Algorithm to Perform a General Access Check](#21414-accesscheck-algorithm-to-perform-a-general-access-check)
+      - [2.1.4.15 BuildRelativeName -- Algorithm for Building the Relative Path Name for a](#21415-buildrelativename-algorithm-for-building-the-relative-path-name-for-a)
+      - [2.1.4.16 FindAllFiles: Algorithm for Finding All Files Under a Directory](#21416-findallfiles-algorithm-for-finding-all-files-under-a-directory)
+      - [2.1.4.17 Algorithm for Noting That a File Modification Time is Updated](#21417-algorithm-for-noting-that-a-file-modification-time-is-updated)
+      - [2.1.4.18 Algorithm for Noting That a File Change Time is Updated](#21418-algorithm-for-noting-that-a-file-change-time-is-updated)
+      - [2.1.4.19 Algorithm for Updating Duplicated Information](#21419-algorithm-for-updating-duplicated-information)
+      - [2.1.4.20 Algorithm for Noting That a File Has Been Accessed](#21420-algorithm-for-noting-that-a-file-has-been-accessed)
+    - [2.1.5 Higher-Layer Triggered Events](#215-higher-layer-triggered-events)
+      - [2.1.5.1 Server Requests an Open of a File](#2151-server-requests-an-open-of-a-file)
+        - [2.1.5.1.1 Creation of a New File](#21511-creation-of-a-new-file)
+        - [2.1.5.1.2 Open of an Existing File](#21512-open-of-an-existing-file)
+          - [2.1.5.1.2.1 Algorithm to Check Access to an Existing File](#215121-algorithm-to-check-access-to-an-existing-file)
+          - [2.1.5.1.2.2 Algorithm to Check Sharing Access to an Existing Stream or Directory](#215122-algorithm-to-check-sharing-access-to-an-existing-stream-or-directory)
+      - [2.1.5.2 Server Requests an Open of a Named Pipe](#2152-server-requests-an-open-of-a-named-pipe)
+      - [2.1.5.3 Server Requests a Read](#2153-server-requests-a-read)
+      - [2.1.5.4 Server Requests a Write](#2154-server-requests-a-write)
+      - [2.1.5.5 Server Requests Closing an Open](#2155-server-requests-closing-an-open)
+      - [2.1.5.6 Server Requests Querying a Directory](#2156-server-requests-querying-a-directory)
+        - [2.1.5.6.1 FileObjectIdInformation](#21561-fileobjectidinformation)
+        - [2.1.5.6.2 FileReparsePointInformation](#21562-filereparsepointinformation)
+        - [2.1.5.6.3 Directory Information Queries](#21563-directory-information-queries)
+          - [2.1.5.6.3.1 FileBothDirectoryInformation](#215631-filebothdirectoryinformation)
+          - [2.1.5.6.3.2 FileDirectoryInformation](#215632-filedirectoryinformation)
+          - [2.1.5.6.3.3 FileFullDirectoryInformation](#215633-filefulldirectoryinformation)
+          - [2.1.5.6.3.4 FileId64ExtdBothDirectoryInformation](#215634-fileid64extdbothdirectoryinformation)
+          - [2.1.5.6.3.5 FileId64ExtdDirectoryInformation](#215635-fileid64extddirectoryinformation)
+          - [2.1.5.6.3.6 FileIdAllExtdBothDirectoryInformation](#215636-fileidallextdbothdirectoryinformation)
+          - [2.1.5.6.3.7 FileIdAllExtdDirectoryInformation](#215637-fileidallextddirectoryinformation)
+          - [2.1.5.6.3.8 FileIdBothDirectoryInformation](#215638-fileidbothdirectoryinformation)
+          - [2.1.5.6.3.9 FileIdExtdDirectoryInformation](#215639-fileidextddirectoryinformation)
+          - [2.1.5.6.3.10 FileIdFullDirectoryInformation](#2156310-fileidfulldirectoryinformation)
+          - [2.1.5.6.3.11 FileNamesInformation](#2156311-filenamesinformation)
+      - [2.1.5.7 Server Requests Flushing Cached Data](#2157-server-requests-flushing-cached-data)
+      - [2.1.5.8 Server Requests a Byte-Range Lock](#2158-server-requests-a-byte-range-lock)
+      - [2.1.5.9 Server Requests an Unlock of a Byte-Range](#2159-server-requests-an-unlock-of-a-byte-range)
+      - [2.1.5.10 Server Requests an FsControl Request](#21510-server-requests-an-fscontrol-request)
+        - [2.1.5.10.1 FSCTL_CREATE_OR_GET_OBJECT_ID](#215101-fsctlcreateorgetobjectid)
+        - [2.1.5.10.2 FSCTL_DELETE_OBJECT_ID](#215102-fsctldeleteobjectid)
+        - [2.1.5.10.3 FSCTL_DELETE_REPARSE_POINT](#215103-fsctldeletereparsepoint)
+        - [2.1.5.10.4 FSCTL_DUPLICATE_EXTENTS_TO_FILE](#215104-fsctlduplicateextentstofile)
+        - [2.1.5.10.5 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX](#215105-fsctlduplicateextentstofileex)
+        - [2.1.5.10.6 FSCTL_FILE_LEVEL_TRIM](#215106-fsctlfileleveltrim)
+        - [2.1.5.10.7 FSCTL_FILESYSTEM_GET_STATISTICS](#215107-fsctlfilesystemgetstatistics)
+        - [2.1.5.10.8 FSCTL_FIND_FILES_BY_SID](#215108-fsctlfindfilesbysid)
+        - [2.1.5.10.9 FSCTL_GET_COMPRESSION](#215109-fsctlgetcompression)
+        - [2.1.5.10.10 FSCTL_GET_INTEGRITY_INFORMATION](#2151010-fsctlgetintegrityinformation)
+        - [2.1.5.10.11 FSCTL_GET_NTFS_VOLUME_DATA](#2151011-fsctlgetntfsvolumedata)
+        - [2.1.5.10.12 FSCTL_GET_REFS_VOLUME_DATA](#2151012-fsctlgetrefsvolumedata)
+        - [2.1.5.10.13 FSCTL_GET_OBJECT_ID](#2151013-fsctlgetobjectid)
+        - [2.1.5.10.14 FSCTL_GET_REPARSE_POINT](#2151014-fsctlgetreparsepoint)
+        - [2.1.5.10.15 FSCTL_GET_RETRIEVAL_POINTERS](#2151015-fsctlgetretrievalpointers)
+        - [2.1.5.10.16 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT](#2151016-fsctlgetretrievalpointersandrefcount)
+        - [2.1.5.10.17 FSCTL_GET_RETRIEVAL_POINTER_COUNT](#2151017-fsctlgetretrievalpointercount)
+        - [2.1.5.10.18 FSCTL_IS_PATHNAME_VALID](#2151018-fsctlispathnamevalid)
+        - [2.1.5.10.19 FSCTL_MARK_HANDLE](#2151019-fsctlmarkhandle)
+        - [2.1.5.10.20 FSCTL_OFFLOAD_READ](#2151020-fsctloffloadread)
+        - [2.1.5.10.21 FSCTL_OFFLOAD_WRITE](#2151021-fsctloffloadwrite)
+        - [2.1.5.10.22 FSCTL_QUERY_ALLOCATED_RANGES](#2151022-fsctlqueryallocatedranges)
+        - [2.1.5.10.23 FSCTL_QUERY_FAT_BPB](#2151023-fsctlqueryfatbpb)
+        - [2.1.5.10.24 FSCTL_QUERY_FILE_REGIONS](#2151024-fsctlqueryfileregions)
+        - [2.1.5.10.25 FSCTL_QUERY_ON_DISK_VOLUME_INFO](#2151025-fsctlqueryondiskvolumeinfo)
+        - [2.1.5.10.26 FSCTL_QUERY_SPARING_INFO](#2151026-fsctlquerysparinginfo)
+        - [2.1.5.10.27 FSCTL_READ_FILE_USN_DATA](#2151027-fsctlreadfileusndata)
+        - [2.1.5.10.28 FSCTL_RECALL_FILE](#2151028-fsctlrecallfile)
+        - [2.1.5.10.29 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT](#2151029-fsctlrefsstreamsnapshotmanagement)
+          - [2.1.5.10.29.1 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_CREATE](#21510291-algorithm-for-refsstreamsnapshotoperationcreate)
+          - [2.1.5.10.29.2 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_LIST](#21510292-algorithm-for-refsstreamsnapshotoperationlist)
+          - [2.1.5.10.29.3 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS](#21510293-algorithm-for-refsstreamsnapshotoperationquerydeltas)
+          - [2.1.5.10.29.4 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_REVERT](#21510294-algorithm-for-refsstreamsnapshotoperationrevert)
+          - [2.1.5.10.29.5 Algorithm for](#21510295-algorithm-for)
+          - [2.1.5.10.29.6 Algorithm for](#21510296-algorithm-for)
+        - [2.1.5.10.30 FSCTL_SET_COMPRESSION](#2151030-fsctlsetcompression)
+        - [2.1.5.10.31 FSCTL_SET_DEFECT_MANAGEMENT](#2151031-fsctlsetdefectmanagement)
+        - [2.1.5.10.32 FSCTL_SET_ENCRYPTION](#2151032-fsctlsetencryption)
+        - [2.1.5.10.33 FSCTL_SET_INTEGRITY_INFORMATION](#2151033-fsctlsetintegrityinformation)
+        - [2.1.5.10.34 FSCTL_SET_INTEGRITY_INFORMATION_EX](#2151034-fsctlsetintegrityinformationex)
+        - [2.1.5.10.35 FSCTL_SET_OBJECT_ID](#2151035-fsctlsetobjectid)
+        - [2.1.5.10.36 FSCTL_SET_OBJECT_ID_EXTENDED](#2151036-fsctlsetobjectidextended)
+        - [2.1.5.10.37 FSCTL_SET_REPARSE_POINT](#2151037-fsctlsetreparsepoint)
+        - [2.1.5.10.38 FSCTL_SET_SPARSE](#2151038-fsctlsetsparse)
+        - [2.1.5.10.39 FSCTL_SET_ZERO_DATA](#2151039-fsctlsetzerodata)
+          - [2.1.5.10.39.1 Algorithm to Zero Data Beyond ValidDataLength](#21510391-algorithm-to-zero-data-beyond-validdatalength)
+        - [2.1.5.10.40 FSCTL_SET_ZERO_ON_DEALLOCATION](#2151040-fsctlsetzeroondeallocation)
+        - [2.1.5.10.41 FSCTL_SIS_COPYFILE](#2151041-fsctlsiscopyfile)
+        - [2.1.5.10.42 FSCTL_WRITE_USN_CLOSE_RECORD](#2151042-fsctlwriteusncloserecord)
+      - [2.1.5.11 Server Requests Change Notifications for a Directory](#21511-server-requests-change-notifications-for-a-directory)
+        - [2.1.5.11.1 Waiting for Change Notification to be Reported](#215111-waiting-for-change-notification-to-be-reported)
+      - [2.1.5.12 Server Requests a Query of File Information](#21512-server-requests-a-query-of-file-information)
+        - [2.1.5.12.1 FileAccessInformation](#215121-fileaccessinformation)
+        - [2.1.5.12.2 FileAlignmentInformation](#215122-filealignmentinformation)
+        - [2.1.5.12.3 FileAllInformation](#215123-fileallinformation)
+        - [2.1.5.12.4 FileAlternateNameInformation](#215124-filealternatenameinformation)
+        - [2.1.5.12.5 FileAttributeTagInformation](#215125-fileattributetaginformation)
+        - [2.1.5.12.6 FileBasicInformation](#215126-filebasicinformation)
+        - [2.1.5.12.7 FileBothDirectoryInformation](#215127-filebothdirectoryinformation)
+        - [2.1.5.12.8 FileCompressionInformation](#215128-filecompressioninformation)
+        - [2.1.5.12.9 FileDirectoryInformation](#215129-filedirectoryinformation)
+        - [2.1.5.12.10 FileEaInformation](#2151210-fileeainformation)
+        - [2.1.5.12.11 FileFullDirectoryInformation](#2151211-filefulldirectoryinformation)
+        - [2.1.5.12.12 FileFullEaInformation](#2151212-filefulleainformation)
+        - [2.1.5.12.13 FileHardLinkInformation](#2151213-filehardlinkinformation)
+        - [2.1.5.12.14 FileIdBothDirectoryInformation](#2151214-fileidbothdirectoryinformation)
+        - [2.1.5.12.15 FileIdFullDirectoryInformation](#2151215-fileidfulldirectoryinformation)
+        - [2.1.5.12.16 FileIdGlobalTxDirectoryInformation](#2151216-fileidglobaltxdirectoryinformation)
+        - [2.1.5.12.17 FileInternalInformation](#2151217-fileinternalinformation)
+        - [2.1.5.12.18 FileModeInformation](#2151218-filemodeinformation)
+        - [2.1.5.12.19 FileNameInformation](#2151219-filenameinformation)
+        - [2.1.5.12.20 FileNamesInformation](#2151220-filenamesinformation)
+        - [2.1.5.12.21 FileNetworkOpenInformation](#2151221-filenetworkopeninformation)
+        - [2.1.5.12.22 FileObjectIdInformation](#2151222-fileobjectidinformation)
+        - [2.1.5.12.23 FilePositionInformation](#2151223-filepositioninformation)
+        - [2.1.5.12.24 FileQuotaInformation](#2151224-filequotainformation)
+        - [2.1.5.12.25 FileReparsePointInformation](#2151225-filereparsepointinformation)
+        - [2.1.5.12.26 FileSfioReserveInformation](#2151226-filesfioreserveinformation)
+        - [2.1.5.12.27 FileStandardInformation](#2151227-filestandardinformation)
+        - [2.1.5.12.28 FileStandardLinkInformation](#2151228-filestandardlinkinformation)
+        - [2.1.5.12.29 FileStreamInformation](#2151229-filestreaminformation)
+        - [2.1.5.12.30 FileNormalizedNameInformation](#2151230-filenormalizednameinformation)
+        - [2.1.5.12.31 FileIdInformation](#2151231-fileidinformation)
+      - [2.1.5.13 Server Requests a Query of File System Information](#21513-server-requests-a-query-of-file-system-information)
+        - [2.1.5.13.1 FileFsVolumeInformation](#215131-filefsvolumeinformation)
+        - [2.1.5.13.2 FileFsLabelInformation](#215132-filefslabelinformation)
+        - [2.1.5.13.3 FileFsSizeInformation](#215133-filefssizeinformation)
+        - [2.1.5.13.4 FileFsDeviceInformation](#215134-filefsdeviceinformation)
+        - [2.1.5.13.5 FileFsAttributeInformation](#215135-filefsattributeinformation)
+        - [2.1.5.13.6 FileFsControlInformation](#215136-filefscontrolinformation)
+        - [2.1.5.13.7 FileFsFullSizeInformation](#215137-filefsfullsizeinformation)
+        - [2.1.5.13.8 FileFsObjectIdInformation](#215138-filefsobjectidinformation)
+        - [2.1.5.13.9 FileFsDriverPathInformation](#215139-filefsdriverpathinformation)
+        - [2.1.5.13.10 FileFsSectorSizeInformation](#2151310-filefssectorsizeinformation)
+      - [2.1.5.14 Server Requests a Query of Security Information](#21514-server-requests-a-query-of-security-information)
+        - [2.1.5.14.1 Algorithm for Copying Audit or Label ACEs Into a Buffer](#215141-algorithm-for-copying-audit-or-label-aces-into-a-buffer)
+      - [2.1.5.15 Server Requests Setting of File Information](#21515-server-requests-setting-of-file-information)
+        - [2.1.5.15.1 FileAllocationInformation](#215151-fileallocationinformation)
+        - [2.1.5.15.2 FileBasicInformation](#215152-filebasicinformation)
+        - [2.1.5.15.3 FileDispositionInformation](#215153-filedispositioninformation)
+        - [2.1.5.15.4 FileDispositionInformationEx](#215154-filedispositioninformationex)
+        - [2.1.5.15.5 FileEndOfFileInformation](#215155-fileendoffileinformation)
+        - [2.1.5.15.6 FileFullEaInformation](#215156-filefulleainformation)
+        - [2.1.5.15.7 FileLinkInformation](#215157-filelinkinformation)
+        - [2.1.5.15.8 FileModeInformation](#215158-filemodeinformation)
+        - [2.1.5.15.9 FileObjectIdInformation](#215159-fileobjectidinformation)
+        - [2.1.5.15.10 FilePositionInformation](#2151510-filepositioninformation)
+        - [2.1.5.15.11 FileQuotaInformation](#2151511-filequotainformation)
+        - [2.1.5.15.12 FileRenameInformation](#2151512-filerenameinformation)
+          - [2.1.5.15.12.1 Algorithm for Performing Stream Rename](#21515121-algorithm-for-performing-stream-rename)
+        - [2.1.5.15.13 FileSfioReserveInformation](#2151513-filesfioreserveinformation)
+        - [2.1.5.15.14 FileShortNameInformation](#2151514-fileshortnameinformation)
+        - [2.1.5.15.15 FileValidDataLengthInformation](#2151515-filevaliddatalengthinformation)
+      - [2.1.5.16 Server Requests Setting of File System Information](#21516-server-requests-setting-of-file-system-information)
+        - [2.1.5.16.1 FileFsVolumeInformation](#215161-filefsvolumeinformation)
+        - [2.1.5.16.2 FileFsLabelInformation](#215162-filefslabelinformation)
+        - [2.1.5.16.3 FileFsSizeInformation](#215163-filefssizeinformation)
+        - [2.1.5.16.4 FileFsDeviceInformation](#215164-filefsdeviceinformation)
+        - [2.1.5.16.5 FileFsAttributeInformation](#215165-filefsattributeinformation)
+        - [2.1.5.16.6 FileFsControlInformation](#215166-filefscontrolinformation)
+        - [2.1.5.16.7 FileFsFullSizeInformation](#215167-filefsfullsizeinformation)
+        - [2.1.5.16.8 FileFsObjectIdInformation](#215168-filefsobjectidinformation)
+        - [2.1.5.16.9 FileFsDriverPathInformation](#215169-filefsdriverpathinformation)
+        - [2.1.5.16.10 FileFsSectorSizeInformation](#2151610-filefssectorsizeinformation)
+      - [2.1.5.17 Server Requests Setting of Security Information](#21517-server-requests-setting-of-security-information)
+      - [2.1.5.18 Server Requests an Oplock](#21518-server-requests-an-oplock)
+        - [2.1.5.18.1 Algorithm to Request an Exclusive Oplock](#215181-algorithm-to-request-an-exclusive-oplock)
+        - [2.1.5.18.2 Algorithm to Request a Shared Oplock](#215182-algorithm-to-request-a-shared-oplock)
+        - [2.1.5.18.3 Indicating an Oplock Break to the Server](#215183-indicating-an-oplock-break-to-the-server)
+      - [2.1.5.19 Server Acknowledges an Oplock Break](#21519-server-acknowledges-an-oplock-break)
+      - [2.1.5.20 Server Requests Canceling an Operation](#21520-server-requests-canceling-an-operation)
+      - [2.1.5.21 Server Requests Querying Quota Information](#21521-server-requests-querying-quota-information)
+      - [2.1.5.22 Server Requests Setting Quota Information](#21522-server-requests-setting-quota-information)
+- [3 Algorithm Examples](#3-algorithm-examples)
+- [4 Security](#4-security)
+  - [4.1 Security Considerations for Implementers](#41-security-considerations-for-implementers)
+  - [4.2 Index of Security Parameters](#42-index-of-security-parameters)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 11
-Applicability Statement ..................................................................................... 12
-Standards Assignments ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-
-2.1
-
-2.1.1
-
-2.1.2
-2.1.3
-2.1.4
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-2.1.1.4
-2.1.1.5
-2.1.1.6
-2.1.1.7
-2.1.1.8
-2.1.1.9
-2.1.1.10
-2.1.1.11
-2.1.1.12
-2.1.1.13
-2.1.1.14
-
-2  Algorithm Details................................................................................................... 13
-Object Store Details ......................................................................................... 13
-Abstract Data Model .................................................................................... 13
-Per Volume .......................................................................................... 13
-Per TunnelCacheEntry ........................................................................... 17
-Per File ................................................................................................ 17
-Per Link ............................................................................................... 19
-Per Stream ........................................................................................... 20
-Per Open ............................................................................................. 21
-Per ByteRangeLock ............................................................................... 23
-Per ChangeNotifyEntry ........................................................................... 23
-Per NotifyEventEntry ............................................................................. 23
-Per Oplock ........................................................................................... 23
-Per RHOpContext .................................................................................. 25
-Per CancelableOperations ....................................................................... 25
-Per SecurityContext .............................................................................. 25
-Constants ............................................................................................ 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 26
-Common Algorithms ................................................................................... 26
-Algorithm for Reporting a Change Notification for a Directory or View Index . 26
-Algorithm for Detecting If Open Files Exist Under a Directory...................... 27
-Algorithm for Determining If a Character Is a Wildcard .............................. 28
-Algorithm for Determining if a FileName Is in an Expression ....................... 28
-BlockAlign -- Macro to Round a Value Up to the Next Nearest Multiple of
-Another Value ...................................................................................... 29
-BlockAlignTruncate -- Macro to Round a Value Down to the Next Nearest
-Multiple of Another Value ....................................................................... 29
-ClustersFromBytes -- Macro to Determine How Many Clusters a Given Number
-of Bytes Occupies ................................................................................. 30
-ClustersFromBytesTruncate -- Macro to Determine How Many Whole Clusters a
-Given Number of Bytes Occupies ............................................................ 30
-SidLength -- Macro to Provide the Length of a SID .................................... 30
-Algorithm for Determining If a Range Access Conflicts with Byte-Range Locks31
-Algorithm for Posting a USN Change for a File .......................................... 32
-Algorithm to Check for an Oplock Break ................................................... 32
-Algorithm for Request Processing After an Oplock Breaks ..................... 48
-Algorithm to Compare Oplock Keys .................................................... 48
-Algorithm to Recompute the State of a Shared Oplock ............................... 49
-AccessCheck -- Algorithm to Perform a General Access Check .................... 50
-BuildRelativeName -- Algorithm for Building the Relative Path Name for a Link
- .......................................................................................................... 51
-FindAllFiles: Algorithm for Finding All Files Under a Directory ...................... 52
-
-2.1.4.1
-2.1.4.2
-2.1.4.3
-2.1.4.4
-2.1.4.5
-
-2.1.4.9
-2.1.4.10
-2.1.4.11
-2.1.4.12
-
-2.1.4.13
-2.1.4.14
-2.1.4.15
-
-2.1.4.12.1
-2.1.4.12.2
-
-2.1.4.16
-
-2.1.4.8
-
-2.1.4.7
-
-2.1.4.6
-
-[MS-FSA] - v20250909
-File System Algorithms
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-4 / 287
-
-2.1.4.17
-2.1.4.18
-2.1.4.19
-2.1.4.20
-
-2.1.5
-
-2.1.5.1
-
-2.1.5.2
-2.1.5.3
-2.1.5.4
-2.1.5.5
-2.1.5.6
-
-2.1.5.1.1
-2.1.5.1.2
-
-2.1.5.1.2.1
-2.1.5.1.2.2
-
-2.1.5.6.1
-2.1.5.6.2
-2.1.5.6.3
-
-2.1.5.6.3.1
-2.1.5.6.3.2
-2.1.5.6.3.3
-2.1.5.6.3.4
-2.1.5.6.3.5
-2.1.5.6.3.6
-2.1.5.6.3.7
-2.1.5.6.3.8
-2.1.5.6.3.9
-2.1.5.6.3.10
-2.1.5.6.3.11
-
-Algorithm for Noting That a File Modification Time is Updated ..................... 53
-Algorithm for Noting That a File Change Time is Updated ........................... 53
-Algorithm for Updating Duplicated Information ......................................... 53
-Algorithm for Noting That a File Has Been Accessed .................................. 54
-Higher-Layer Triggered Events ..................................................................... 54
-Server Requests an Open of a File ........................................................... 54
-Creation of a New File ...................................................................... 61
-Open of an Existing File .................................................................... 66
-Algorithm to Check Access to an Existing File ................................ 73
-Algorithm to Check Sharing Access to an Existing Stream or Directory75
-Server Requests an Open of a Named Pipe ............................................... 76
-Server Requests a Read ......................................................................... 78
-Server Requests a Write ........................................................................ 81
-Server Requests Closing an Open ............................................................ 83
-Server Requests Querying a Directory ..................................................... 89
-FileObjectIdInformation .................................................................... 90
-FileReparsePointInformation ............................................................. 90
-Directory Information Queries ........................................................... 92
-FileBothDirectoryInformation ....................................................... 95
-FileDirectoryInformation ............................................................. 96
-FileFullDirectoryInformation ........................................................ 96
-FileId64ExtdBothDirectoryInformation .......................................... 97
-FileId64ExtdDirectoryInformation................................................. 99
-FileIdAllExtdBothDirectoryInformation ......................................... 100
-FileIdAllExtdDirectoryInformation ................................................ 101
-FileIdBothDirectoryInformation ................................................... 102
-FileIdExtdDirectoryInformation ................................................... 104
-FileIdFullDirectoryInformation .................................................... 105
-FileNamesInformation ............................................................... 106
-Server Requests Flushing Cached Data ................................................... 106
-Server Requests a Byte-Range Lock ....................................................... 107
-Server Requests an Unlock of a Byte-Range ............................................ 109
-Server Requests an FsControl Request .................................................... 110
-FSCTL_CREATE_OR_GET_OBJECT_ID ............................................... 110
-2.1.5.10.1
-FSCTL_DELETE_OBJECT_ID ............................................................. 111
-2.1.5.10.2
-FSCTL_DELETE_REPARSE_POINT ..................................................... 112
-2.1.5.10.3
-FSCTL_DUPLICATE_EXTENTS_TO_FILE ............................................. 113
-2.1.5.10.4
-FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX ........................................ 117
-2.1.5.10.5
-FSCTL_FILE_LEVEL_TRIM ................................................................ 120
-2.1.5.10.6
-FSCTL_FILESYSTEM_GET_STATISTICS .............................................. 122
-2.1.5.10.7
-FSCTL_FIND_FILES_BY_SID ............................................................ 123
-2.1.5.10.8
-2.1.5.10.9
-FSCTL_GET_COMPRESSION ............................................................. 125
-2.1.5.10.10  FSCTL_GET_INTEGRITY_INFORMATION ............................................ 126
-2.1.5.10.11  FSCTL_GET_NTFS_VOLUME_DATA .................................................... 127
-2.1.5.10.12  FSCTL_GET_REFS_VOLUME_DATA .................................................... 128
-2.1.5.10.13  FSCTL_GET_OBJECT_ID .................................................................. 129
-2.1.5.10.14  FSCTL_GET_REPARSE_POINT .......................................................... 129
-2.1.5.10.15  FSCTL_GET_RETRIEVAL_POINTERS .................................................. 130
-2.1.5.10.16  FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT ......................... 131
-2.1.5.10.17  FSCTL_GET_RETRIEVAL_POINTER_COUNT ........................................ 132
-2.1.5.10.18  FSCTL_IS_PATHNAME_VALID ........................................................... 133
-2.1.5.10.19  FSCTL_MARK_HANDLE .................................................................... 133
-2.1.5.10.20  FSCTL_OFFLOAD_READ ................................................................... 134
-2.1.5.10.21  FSCTL_OFFLOAD_WRITE ................................................................. 137
-2.1.5.10.22  FSCTL_QUERY_ALLOCATED_RANGES ................................................ 140
-2.1.5.10.23  FSCTL_QUERY_FAT_BPB ................................................................. 143
-2.1.5.10.24  FSCTL_QUERY_FILE_REGIONS ......................................................... 144
-2.1.5.10.25  FSCTL_QUERY_ON_DISK_VOLUME_INFO .......................................... 146
-
-2.1.5.7
-2.1.5.8
-2.1.5.9
-2.1.5.10
-
-[MS-FSA] - v20250909
-File System Algorithms
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-5 / 287
-
-2.1.5.10.26  FSCTL_QUERY_SPARING_INFO ........................................................ 147
-2.1.5.10.27  FSCTL_READ_FILE_USN_DATA......................................................... 148
-2.1.5.10.28  FSCTL_RECALL_FILE ....................................................................... 150
-2.1.5.10.29  FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT .............................. 151
-2.1.5.10.29.1  Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_CREATE ...... 154
-2.1.5.10.29.2  Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_LIST ........... 154
-2.1.5.10.29.3  Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS
- .............................................................................................. 155
-2.1.5.10.29.4  Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_REVERT ...... 156
-2.1.5.10.29.5  Algorithm for
-
-REFS_STREAM_SNAPSHOT_OPERATION_SET_SHADOW_BTREE ..... 156
-
-2.1.5.11
-
-2.1.5.12
-
-2.1.5.10.29.6  Algorithm for
-
-REFS_STREAM_SNAPSHOT_OPERATION_CLEAR_SHADOW_BTREE .. 156
-2.1.5.10.30  FSCTL_SET_COMPRESSION ............................................................. 157
-2.1.5.10.31  FSCTL_SET_DEFECT_MANAGEMENT ................................................. 158
-2.1.5.10.32  FSCTL_SET_ENCRYPTION ................................................................ 159
-2.1.5.10.33  FSCTL_SET_INTEGRITY_INFORMATION ............................................. 162
-2.1.5.10.34  FSCTL_SET_INTEGRITY_INFORMATION_EX ....................................... 163
-2.1.5.10.35  FSCTL_SET_OBJECT_ID .................................................................. 164
-2.1.5.10.36  FSCTL_SET_OBJECT_ID_EXTENDED ................................................. 166
-2.1.5.10.37  FSCTL_SET_REPARSE_POINT ........................................................... 167
-2.1.5.10.38  FSCTL_SET_SPARSE ....................................................................... 168
-2.1.5.10.39  FSCTL_SET_ZERO_DATA ................................................................. 169
-2.1.5.10.39.1  Algorithm to Zero Data Beyond ValidDataLength ........................... 173
-2.1.5.10.40  FSCTL_SET_ZERO_ON_DEALLOCATION............................................. 174
-2.1.5.10.41  FSCTL_SIS_COPYFILE ..................................................................... 175
-2.1.5.10.42  FSCTL_WRITE_USN_CLOSE_RECORD ............................................... 177
-Server Requests Change Notifications for a Directory ............................... 178
-2.1.5.11.1  Waiting for Change Notification to be Reported .................................. 178
-Server Requests a Query of File Information............................................ 179
-FileAccessInformation ..................................................................... 179
-2.1.5.12.1
-FileAlignmentInformation ................................................................ 180
-2.1.5.12.2
-FileAllInformation ........................................................................... 180
-2.1.5.12.3
-FileAlternateNameInformation .......................................................... 181
-2.1.5.12.4
-FileAttributeTagInformation ............................................................. 181
-2.1.5.12.5
-FileBasicInformation ....................................................................... 182
-2.1.5.12.6
-FileBothDirectoryInformation ........................................................... 183
-2.1.5.12.7
-FileCompressionInformation............................................................. 183
-2.1.5.12.8
-FileDirectoryInformation .................................................................. 185
-2.1.5.12.9
-2.1.5.12.10  FileEaInformation ........................................................................... 185
-2.1.5.12.11  FileFullDirectoryInformation ............................................................. 185
-2.1.5.12.12  FileFullEaInformation ...................................................................... 185
-2.1.5.12.13  FileHardLinkInformation .................................................................. 186
-2.1.5.12.14  FileIdBothDirectoryInformation ........................................................ 186
-2.1.5.12.15  FileIdFullDirectoryInformation .......................................................... 186
-2.1.5.12.16  FileIdGlobalTxDirectoryInformation ................................................... 186
-2.1.5.12.17  FileInternalInformation ................................................................... 186
-2.1.5.12.18  FileModeInformation ....................................................................... 186
-2.1.5.12.19  FileNameInformation ...................................................................... 187
-2.1.5.12.20  FileNamesInformation ..................................................................... 187
-2.1.5.12.21  FileNetworkOpenInformation ............................................................ 187
-2.1.5.12.22  FileObjectIdInformation ................................................................... 189
-2.1.5.12.23  FilePositionInformation .................................................................... 189
-2.1.5.12.24  FileQuotaInformation ...................................................................... 189
-2.1.5.12.25  FileReparsePointInformation ............................................................ 189
-2.1.5.12.26  FileSfioReserveInformation .............................................................. 189
-2.1.5.12.27  FileStandardInformation .................................................................. 189
-2.1.5.12.28  FileStandardLinkInformation ............................................................ 190
-
-[MS-FSA] - v20250909
-File System Algorithms
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-6 / 287
-
-2.1.5.13
-
-2.1.5.14
-
-2.1.5.15
-
-2.1.5.14.1
-
-2.1.5.12.29  FileStreamInformation .................................................................... 190
-2.1.5.12.30  FileNormalizedNameInformation ....................................................... 191
-2.1.5.12.31  FileIdInformation ............................................................................ 192
-Server Requests a Query of File System Information ................................ 192
-FileFsVolumeInformation ................................................................. 193
-2.1.5.13.1
-FileFsLabelInformation .................................................................... 193
-2.1.5.13.2
-FileFsSizeInformation ...................................................................... 194
-2.1.5.13.3
-FileFsDeviceInformation .................................................................. 195
-2.1.5.13.4
-FileFsAttributeInformation ............................................................... 195
-2.1.5.13.5
-FileFsControlInformation ................................................................. 196
-2.1.5.13.6
-FileFsFullSizeInformation ................................................................. 196
-2.1.5.13.7
-FileFsObjectIdInformation................................................................ 197
-2.1.5.13.8
-2.1.5.13.9
-FileFsDriverPathInformation ............................................................. 198
-2.1.5.13.10  FileFsSectorSizeInformation ............................................................. 198
-Server Requests a Query of Security Information ..................................... 200
-Algorithm for Copying Audit or Label ACEs Into a Buffer ...................... 204
-Server Requests Setting of File Information ............................................. 205
-2.1.5.15.1
-FileAllocationInformation ................................................................. 205
-2.1.5.15.2
-FileBasicInformation ....................................................................... 207
-2.1.5.15.3
-FileDispositionInformation ............................................................... 210
-2.1.5.15.4
-FileDispositionInformationEx ............................................................ 211
-2.1.5.15.5
-FileEndOfFileInformation ................................................................. 213
-2.1.5.15.6
-FileFullEaInformation ...................................................................... 214
-2.1.5.15.7
-FileLinkInformation ......................................................................... 215
-2.1.5.15.8
-FileModeInformation ....................................................................... 218
-FileObjectIdInformation ................................................................... 219
-2.1.5.15.9
-2.1.5.15.10  FilePositionInformation .................................................................... 219
-2.1.5.15.11  FileQuotaInformation ...................................................................... 219
-2.1.5.15.12  FileRenameInformation ................................................................... 220
-2.1.5.15.12.1  Algorithm for Performing Stream Rename .................................... 230
-2.1.5.15.13  FileSfioReserveInformation .............................................................. 232
-2.1.5.15.14  FileShortNameInformation ............................................................... 232
-2.1.5.15.15  FileValidDataLengthInformation ........................................................ 235
-Server Requests Setting of File System Information ................................. 235
-FileFsVolumeInformation ................................................................. 236
-2.1.5.16.1
-FileFsLabelInformation .................................................................... 236
-2.1.5.16.2
-FileFsSizeInformation ...................................................................... 236
-2.1.5.16.3
-FileFsDeviceInformation .................................................................. 236
-2.1.5.16.4
-FileFsAttributeInformation ............................................................... 236
-2.1.5.16.5
-FileFsControlInformation ................................................................. 236
-2.1.5.16.6
-FileFsFullSizeInformation ................................................................. 236
-2.1.5.16.7
-FileFsObjectIdInformation................................................................ 237
-2.1.5.16.8
-2.1.5.16.9
-FileFsDriverPathInformation ............................................................. 237
-2.1.5.16.10  FileFsSectorSizeInformation ............................................................. 237
-Server Requests Setting of Security Information ...................................... 237
-Server Requests an Oplock .................................................................... 239
-Algorithm to Request an Exclusive Oplock ......................................... 242
-Algorithm to Request a Shared Oplock .............................................. 246
-Indicating an Oplock Break to the Server ........................................... 250
-Server Acknowledges an Oplock Break .................................................... 250
-Server Requests Canceling an Operation ................................................. 258
-Server Requests Querying Quota Information .......................................... 258
-Server Requests Setting Quota Information ............................................. 260
-
-2.1.5.18.1
-2.1.5.18.2
-2.1.5.18.3
-
-2.1.5.17
-2.1.5.18
-
-2.1.5.19
-2.1.5.20
-2.1.5.21
-2.1.5.22
-
-2.1.5.16
-
-3  Algorithm Examples ............................................................................................ 262
-
-4  Security ............................................................................................................... 263
-Security Considerations for Implementers .......................................................... 263
-Index of Security Parameters ........................................................................... 263
-
-4.1
-4.2
-
-7 / 287
-
-[MS-FSA] - v20250909
-File System Algorithms
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-5  Appendix A: Product Behavior ............................................................................. 264
-
-6  Change Tracking .................................................................................................. 285
-
-7  Index ................................................................................................................... 286
-
-[MS-FSA] - v20250909
-File System Algorithms
-Copyright © 2025 Microsoft Corporation
-Release: September 9, 2025
-
-8 / 287
-
-1  Introduction
+## 1 Introduction
 
 This document defines an abstract model for how an object store can be implemented to support the
 Common Internet File System (CIFS) Protocol, the Server Message Block (SMB) Protocol, and the
@@ -943,7 +708,7 @@ SMB2], respectively).
 Sections 1.6 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1004,7 +769,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a string
+
+the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a string
 representation of SIDs is specified in [MS-DTYP] section 2.4.2 and [MS-AZOD] section 1.1.1.2.
 
 server: A computer on which the remote procedure call (RPC) server is executing.
@@ -1040,14 +806,14 @@ on one or more partitions.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1072,13 +838,14 @@ Release: September 9, 2025
 
 10 / 287
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [RFC4122] Leach, P., Mealling, M., and Salz, R., "A Universally Unique Identifier (UUID) URN
 Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FSBO] Microsoft Corporation, "File System Behavior in the Microsoft Windows Environment", June
 2008, http://download.microsoft.com/download/4/3/8/43889780-8d45-4b2e-9d3a-
@@ -1119,11 +886,11 @@ https://support.microsoft.com/en-us/topic/june-14-2022-kb5014710-os-build-10240-
 
 [PIPE] Microsoft Corporation, "Named Pipes", http://msdn.microsoft.com/en-us/library/aa365590.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 None.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This is an algorithms document describing wire-visible behavior of a backing object store that is
 referenced by the following protocol documents:
@@ -1139,7 +906,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -1147,19 +915,19 @@ The Server Message Block (SMB) Protocol Specification [MS-SMB]
 
 The Server Message Block (SMB) Versions 2 and 3 Protocol Specification [MS-SMB2]
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 None.
 
-1.6  Standards Assignments
+### 1.6 Standards Assignments
 
 None.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This algorithm uses NTSTATUS values as defined in [MS-ERREF] section 2.3. Vendors are free to
 choose their own values for this field, as long as the C bit (0x20000000) is set, indicating it is a
@@ -1172,11 +940,12 @@ Release: September 9, 2025
 
 12 / 287
 
-2  Algorithm Details
 
-2.1  Object Store Details
+## 2 Algorithm Details
 
-2.1.1  Abstract Data Model
+### 2.1 Object Store Details
+
+#### 2.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this algorithm. The described organization is provided to facilitate the
@@ -1228,7 +997,7 @@ ViewIndexStream: A Stream object with a StreamType of ViewIndexStream.
 
 Plural forms of all these object types are also used.
 
-2.1.1.1  Per Volume
+##### 2.1.1.1 Per Volume
 
 The object store MUST implement the following persistent attributes:
 
@@ -1239,7 +1008,8 @@ Release: September 9, 2025
 
 13 / 287
 
-  RootDirectory: The DirectoryFile for the root of this volume.
+
+  RootDirectory: The DirectoryFile for the root of this volume.
 
 
 
@@ -1329,7 +1099,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  CompressionUnitSize: A 32-bit unsigned integer specifying the compression unit size in bytes,
+
+  CompressionUnitSize: A 32-bit unsigned integer specifying the compression unit size in bytes,
 which is the granularity used when compressing, encrypting, or sparsifying portions of a stream
 independent of other portions of the same stream. Not all file systems support these features, and
 implementation of this field is optional. If one or more of these features are supported, the value
@@ -1347,13 +1118,13 @@ field is optional.<6>
 
   TunnelCacheList: A list of zero or more TunnelCacheEntry structures as defined in section
 
-2.1.1.2 providing metadata about recently deleted or renamed files. The list could be empty if the
+##### 2.1.1.2 providing metadata about recently deleted or renamed files. The list could be empty if the
 object store does not implement tunnel caching or if there are no recently deleted or renamed files
 on this volume.
 
   ChangeNotifyList: A list of zero or more ChangeNotifyEntry structures as defined in section
 
-2.1.1.8 describing outstanding change notify requests for the volume.
+##### 2.1.1.8 describing outstanding change notify requests for the volume.
 
   GenerateShortNames: A Boolean that is TRUE if short name creation support is enabled on this
 
@@ -1413,7 +1184,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  MaxFileSize: A 64-bit unsigned integer that denotes the maximum file size, in bytes, supported
+
+  MaxFileSize: A 64-bit unsigned integer that denotes the maximum file size, in bytes, supported
 
 by the object store.<10>
 
@@ -1494,7 +1266,8 @@ Release: September 9, 2025
 
 16 / 287
 
-  OpenFileList: A list of all the File objects opened on Volume.
+
+  OpenFileList: A list of all the File objects opened on Volume.
 
 2.1.1.2  Per TunnelCacheEntry
 
@@ -1570,7 +1343,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  LastModificationTime: The time that identifies when the file contents were last modified in the
+
+  LastModificationTime: The time that identifies when the file contents were last modified in the
 
 FILETIME format specified in [MS-FSCC] section 2.1.1.<15>
 
@@ -1651,7 +1425,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  UserCertificateList: A list of ENCRYPTION_CERTIFICATE structures as specified in [MS-EFSR]
+
+  UserCertificateList: A list of ENCRYPTION_CERTIFICATE structures as specified in [MS-EFSR]
 section 2.2.8, used to determine which users can access the contents of any encrypted streams in
 the file.<25>
 
@@ -1725,7 +1500,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  ReparseTag: A 32-bit unsigned integer containing the type of the reparse point, as defined in
+
+  ReparseTag: A 32-bit unsigned integer containing the type of the reparse point, as defined in
 
 [MS-FSCC] section 2.1.2.1. If this member is empty, there is no reparse point associated with this
 file.
@@ -1810,7 +1586,8 @@ Release: September 9, 2025
 
 20 / 287
 
-  ExtentAndRefCountList: A list containing zero or more EXTENT_AND_REFCOUNTS elements and
+
+  ExtentAndRefCountList: A list containing zero or more EXTENT_AND_REFCOUNTS elements and
 
 their reference counts as defined by [MS-FSCC] section 2.3.34.1, ordered by NextVcn.
 
@@ -1894,7 +1671,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  HasManageVolumeAccess: A Boolean that is TRUE if the Open was performed by a user who is
+
+  HasManageVolumeAccess: A Boolean that is TRUE if the Open was performed by a user who is
 
 allowed to manage the volume.
 
@@ -1973,7 +1751,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-considered equal to anything other than itself. In other words, given two Open values,
+
+considered equal to anything other than itself. In other words, given two Open values,
 ParentOpen on a directory and ChildOpen on a child (either file or directory), such that
 ParentOpen.TargetOplockKey and/or ChildOpen.ParentOplockKey are empty, ParentOpen.
 TargetOplockKey MUST NOT be considered equal to ChildOpen.ParentOplockKey.
@@ -2011,7 +1790,7 @@ monitor as specified in [MS-SMB2] section 2.2.35.
 
 representing change events that were not yet reported to the user.
 
-2.1.1.9  Per NotifyEventEntry
+##### 2.1.1.9 Per NotifyEventEntry
 
   Action: A 32-bit unsigned integer composed of flags indicating the type of change events that
 occurred, as specified in the Action member of the FILE_NOTIFY_INFORMATION structure
@@ -2023,9 +1802,9 @@ structure containing information specific to the ViewIndexFile being monitored.
 
   FileNameLength: The length, in bytes, of FileName.
 
-2.1.1.10
+##### 2.1.1.10 Per Oplock
 
-Per Oplock
+
 
   ExclusiveOpen: The Open used to request the opportunistic lock.
 
@@ -2051,7 +1830,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  RHBreakQueue: A list of zero or more RHOpContext objects. This queue is used to track
+
+  RHBreakQueue: A list of zero or more RHOpContext objects. This queue is used to track
 
 (READ_CACHING|HANDLE_CACHING) oplocks as they are breaking.
 
@@ -2131,7 +1911,8 @@ Release: September 9, 2025
 
 24 / 287
 
-  BREAK_TO_WRITE_CACHING - Indicates that this Oplock represents an oplock that is
+
+  BREAK_TO_WRITE_CACHING - Indicates that this Oplock represents an oplock that is
 
 currently breaking to an oplock that provides caching of writes; the oplock has broken but the
 break has not yet been acknowledged.
@@ -2145,9 +1926,9 @@ the break has not yet been acknowledged.
 breaking to None (that is, no oplock); the oplock has broken but the break has not yet been
 acknowledged.
 
-2.1.1.11
+##### 2.1.1.11 Per RHOpContext
 
-Per RHOpContext
+
 
   Open: The Open used to request this LEVEL_GRANULAR(RequestedOplockLevel:
 
@@ -2156,17 +1937,17 @@ Per RHOpContext
   BreakingToRead: A Boolean value that is TRUE if this oplock is breaking to READ_CACHING,
 FALSE if it is breaking to None (that is, no oplock; the oplock is being broken completely).
 
-2.1.1.12
+##### 2.1.1.12 Per CancelableOperations
 
-Per CancelableOperations
+
 
   CancelableOperationList: A global list of cancelable operations currently being processed by the
 object store. Items in this list are looked up via their IORequest Identifier as defined in section
 2.1.5.20. Operations are inserted into this list when a cancelable operation waits.
 
-2.1.1.13
+##### 2.1.1.13 Per SecurityContext
 
-Per SecurityContext
+
 
   SIDs: An array of SID structures, as specified in [MS-DTYP] section 2.4.2, representing the
 
@@ -2185,9 +1966,9 @@ DACL assigned to new files created by the user.
 
 the privileges held by the user.
 
-2.1.1.14
+##### 2.1.1.14 Constants
 
-Constants
+
 
 The section provides constants used for algorithm processing.
 
@@ -2201,7 +1982,7 @@ Meaning
 
 All possible access rights for a file.
 
-2.1.2  Timers
+#### 2.1.2 Timers
 
 The object store has no timers.
 
@@ -2212,16 +1993,17 @@ Release: September 9, 2025
 
 25 / 287
 
-2.1.3  Initialization
+
+#### 2.1.3 Initialization
 
 On initialization, one or more Volume objects are initialized based on the data stored in the persistent
 store. This involves instantiating one or more File objects contained within the volume.
 
-2.1.4  Common Algorithms
+#### 2.1.4 Common Algorithms
 
 This section describes internal algorithms that are common across multiple triggered events.
 
-2.1.4.1  Algorithm for Reporting a Change Notification for a Directory or View Index
+##### 2.1.4.1 Algorithm for Reporting a Change Notification for a Directory or View Index
 
 The inputs for this algorithm are:
 
@@ -2302,7 +2084,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  NotifyEventEntry.Action set to Action.
+
+  NotifyEventEntry.Action set to Action.
 
 
 
@@ -2344,7 +2127,7 @@ EndIf
 
 EndFor
 
-2.1.4.2  Algorithm for Detecting If Open Files Exist Under a Directory
+##### 2.1.4.2 Algorithm for Detecting If Open Files Exist Under a Directory
 
 The inputs for this algorithm are:
 
@@ -2400,7 +2183,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OpParams equal to this algorithm's OpParams.
+
+  OpParams equal to this algorithm's OpParams.
 
 
 
@@ -2465,13 +2249,13 @@ EndFor
 
   Return TRUE  // No opens remaining.
 
-2.1.4.3  Algorithm for Determining If a Character Is a Wildcard
+##### 2.1.4.3 Algorithm for Determining If a Character Is a Wildcard
 
 The following set of characters MUST be treated as wildcards by the object store:
 
 " * < > ?
 
-2.1.4.4  Algorithm for Determining if a FileName Is in an Expression
+##### 2.1.4.4 Algorithm for Determining if a FileName Is in an Expression
 
 The inputs for this algorithm are:
 
@@ -2497,7 +2281,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Pseudocode for the algorithm is as follows:
+
+Pseudocode for the algorithm is as follows:
 
 
 
@@ -2553,7 +2338,7 @@ of name string, advances the expression to the end of the set of contiguous DOS_
 
 the final . in the name.
 
-2.1.4.5  BlockAlign -- Macro to Round a Value Up to the Next Nearest Multiple of
+##### 2.1.4.5 BlockAlign -- Macro to Round a Value Up to the Next Nearest Multiple of
 
 Another Value
 
@@ -2572,7 +2357,7 @@ Pseudocode for the algorithm is as follows:
 
   BlockAlign(Value, Boundary) = (Value + (Boundary - 1)) & -(Boundary)
 
-2.1.4.6  BlockAlignTruncate -- Macro to Round a Value Down to the Next Nearest
+##### 2.1.4.6 BlockAlignTruncate -- Macro to Round a Value Down to the Next Nearest
 
 Multiple of Another Value
 
@@ -2587,7 +2372,8 @@ Release: September 9, 2025
 
 29 / 287
 
-  Boundary - Value is to be rounded down to a multiple of this value.Boundary MUST be a power
+
+  Boundary - Value is to be rounded down to a multiple of this value.Boundary MUST be a power
 
 of 2.
 
@@ -2597,7 +2383,7 @@ Pseudocode for the algorithm is as follows:
 
   BlockAlignTruncate(Value, Boundary) = Value & -(Boundary)
 
-2.1.4.7  ClustersFromBytes -- Macro to Determine How Many Clusters a Given Number
+##### 2.1.4.7 ClustersFromBytes -- Macro to Determine How Many Clusters a Given Number
 
 of Bytes Occupies
 
@@ -2618,7 +2404,7 @@ ThisVolume.ClusterSize.
 The value returned is the total number of clusters required to hold the specified number of bytes
 that start at a cluster boundary, including any remainder that does not fill a whole cluster.
 
-2.1.4.8  ClustersFromBytesTruncate -- Macro to Determine How Many Whole Clusters a
+##### 2.1.4.8 ClustersFromBytesTruncate -- Macro to Determine How Many Whole Clusters a
 
 Given Number of Bytes Occupies
 
@@ -2638,7 +2424,7 @@ The value returned is the number of clusters that would be fully occupied by the
 number of bytes that start at a cluster boundary. Any remainder that does not fill a whole cluster
 is discarded.
 
-2.1.4.9  SidLength -- Macro to Provide the Length of a SID
+##### 2.1.4.9 SidLength -- Macro to Provide the Length of a SID
 
 The inputs for this algorithm are:
 
@@ -2659,9 +2445,10 @@ Release: September 9, 2025
 
 30 / 287
 
-2.1.4.10
 
-Algorithm for Determining If a Range Access Conflicts with Byte-Range
+##### 2.1.4.10 Algorithm for Determining If a Range Access Conflicts with Byte-Range
+
+
 
 Locks
 
@@ -2766,7 +2553,8 @@ Release: September 9, 2025
 
 31 / 287
 
-  Overlapping exclusive byte-range locks are not allowed even by the same
+
+  Overlapping exclusive byte-range locks are not allowed even by the same
 
 owner.
 
@@ -2805,9 +2593,9 @@ EndFor
 
   Return FALSE.
 
-2.1.4.11
+##### 2.1.4.11 Algorithm for Posting a USN Change for a File
 
-Algorithm for Posting a USN Change for a File
+
 
 The inputs for this algorithm are:
 
@@ -2846,9 +2634,9 @@ needed to persist the USN change to the store.
 
   Set File.Usn to File.Volume.LastUsn.
 
-2.1.4.12
+##### 2.1.4.12 Algorithm to Check for an Oplock Break
 
-Algorithm to Check for an Oplock Break
+
 
 The inputs for this algorithm are:
 
@@ -2861,7 +2649,8 @@ Release: September 9, 2025
 
 32 / 287
 
-  Oplock: The Oplock being checked.
+
+  Oplock: The Oplock being checked.
 
   Operation: A code describing the operation being processed.
 
@@ -2948,7 +2737,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If OpParams.CreateDisposition is FILE_SUPERSEDE, FILE_OVERWRITE, or
 FILE_OVERWRITE_IF:
@@ -3053,7 +2843,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BreakingOplockOpen equal to ThisOpen.
+
+  BreakingOplockOpen equal to ThisOpen.
 
   NewOplockLevel equal to LEVEL_NONE.
 
@@ -3156,7 +2947,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndFor
 
@@ -3258,7 +3050,8 @@ Release: September 9, 2025
 
 36 / 287
 
-  Set Oplock.ExclusiveOpen to NULL.
+
+  Set Oplock.ExclusiveOpen to NULL.
 
   Set Oplock.State to NO_OPLOCK.
 
@@ -3347,7 +3140,8 @@ Release: September 9, 2025
 
 37 / 287
 
-  Set BreakCacheState to HANDLE_CACHING.
+
+  Set BreakCacheState to HANDLE_CACHING.
 
 
 
@@ -3451,7 +3245,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  NewOplockLevel equal to LEVEL_TWO.
+
+  NewOplockLevel equal to LEVEL_TWO.
 
   AcknowledgeRequired equal to TRUE.
 
@@ -3552,7 +3347,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 For each Open ThisOpen in Oplock.IIOplocks:
 
@@ -3658,7 +3454,8 @@ Release: September 9, 2025
 
 40 / 287
 
-
+
+
 
 If Oplock.ExclusiveOpen is not empty, call the algorithm in section 2.1.4.12.2, passing
 Open as the OperationOpen parameter, Oplock.ExclusiveOpen as the OplockOpen
@@ -3760,7 +3557,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If ThisOpen.OplockKey does not equal Open.OplockKey:
 
@@ -3857,7 +3655,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BreakingOplockOpen equal to ThisOpen.
+
+  BreakingOplockOpen equal to ThisOpen.
 
   NewOplockLevel equal to LEVEL_NONE.
 
@@ -3964,7 +3763,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndIf
 
@@ -4075,7 +3875,8 @@ Release: September 9, 2025
 
 44 / 287
 
-
+
+
 
 EndIf
 
@@ -4168,7 +3969,8 @@ Release: September 9, 2025
 
 45 / 287
 
-  AcknowledgeRequired equal to TRUE.
+
+  AcknowledgeRequired equal to TRUE.
 
   OplockCompletionStatus equal to STATUS_SUCCESS.
 
@@ -4257,7 +4059,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If BreakCacheState contains READ_CACHING:
 
@@ -4362,7 +4165,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndIf
 
@@ -4436,7 +4240,7 @@ EndIf
 
 EndIf
 
-2.1.4.12.1  Algorithm for Request Processing After an Oplock Breaks
+###### 2.1.4.12.1 Algorithm for Request Processing After an Oplock Breaks
 
 The inputs for this algorithm are:
 
@@ -4449,7 +4253,7 @@ Pseudocode for the algorithm is as follows:
 The request corresponding to OpenToRelease MUST resume from the point where it broke the
 oplock (that is, called section 2.1.4.12).
 
-2.1.4.12.2  Algorithm to Compare Oplock Keys
+###### 2.1.4.12.2 Algorithm to Compare Oplock Keys
 
 The inputs for this algorithm are:
 
@@ -4462,7 +4266,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OplockOpen: The Open originally used to request the oplock, as specified in section 2.1.5.17.
+
+  OplockOpen: The Open originally used to request the oplock, as specified in section 2.1.5.17.
 
   Flags: If unspecified it is considered to contain 0. Valid nonzero values are:
 
@@ -4548,9 +4353,9 @@ EndIf
 
 EndIf
 
-2.1.4.13
+##### 2.1.4.13 Algorithm to Recompute the State of a Shared Oplock
 
-Algorithm to Recompute the State of a Shared Oplock
+
 
 The inputs for this algorithm are:
 
@@ -4561,7 +4366,8 @@ Release: September 9, 2025
 
 49 / 287
 
-  ThisOplock: The Oplock on whose state is being recomputed.
+
+  ThisOplock: The Oplock on whose state is being recomputed.
 
 Pseudocode for the algorithm is as follows:
 
@@ -4645,9 +4451,9 @@ EndIf
 
 EndIf
 
-2.1.4.14
+##### 2.1.4.14 AccessCheck -- Algorithm to Perform a General Access Check
 
-AccessCheck -- Algorithm to Perform a General Access Check
+
 
 The inputs for this algorithm are:
 
@@ -4660,7 +4466,8 @@ Release: September 9, 2025
 
 50 / 287
 
-  SecurityDescriptor: The security descriptor of the object to which access is requested, in the
+
+  SecurityDescriptor: The security descriptor of the object to which access is requested, in the
 
 format specified in [MS-DTYP] section 2.4.6.
 
@@ -4716,9 +4523,9 @@ with input values as follows:
 
 If the access check returns success, return TRUE; otherwise return FALSE.
 
-2.1.4.15
+##### 2.1.4.15 BuildRelativeName -- Algorithm for Building the Relative Path Name for a
 
-BuildRelativeName -- Algorithm for Building the Relative Path Name for a
+
 
 Link
 
@@ -4748,7 +4555,8 @@ Release: September 9, 2025
 
 51 / 287
 
-  Return "\".
+
+  Return "\".
 
 
 
@@ -4788,9 +4596,9 @@ EndIf
 
 EndIf
 
-2.1.4.16
+##### 2.1.4.16 FindAllFiles: Algorithm for Finding All Files Under a Directory
 
-FindAllFiles: Algorithm for Finding All Files Under a Directory
+
 
 The inputs for this algorithm are:
 
@@ -4854,11 +4662,12 @@ Release: September 9, 2025
 
 52 / 287
 
-  Return FoundFiles.
 
-2.1.4.17
+  Return FoundFiles.
 
-Algorithm for Noting That a File Modification Time is Updated
+##### 2.1.4.17 Algorithm for Noting That a File Modification Time is Updated
+
+
 
 The inputs for this algorithm are as follows:
 
@@ -4887,9 +4696,9 @@ system time.
 
   Set Open.File.FileAttributes.FILE_ATTRIBUTE_ARCHIVE to TRUE.
 
-2.1.4.18
+##### 2.1.4.18 Algorithm for Noting That a File Change Time is Updated
 
-Algorithm for Noting That a File Change Time is Updated
+
 
 The inputs for this algorithm are as follows:
 
@@ -4913,9 +4722,9 @@ system time.
 If UpdateArchive is TRUE, set Open.File.FileAttributes.FILE_ATTRIBUTE_ARCHIVE to
 TRUE.
 
-2.1.4.19
+##### 2.1.4.19 Algorithm for Updating Duplicated Information
 
-Algorithm for Updating Duplicated Information
+
 
 The inputs for this algorithm are as follows:
 
@@ -4942,7 +4751,8 @@ Release: September 9, 2025
 
 53 / 287
 
-  Set DefaultStream to the entry in Link.File.StreamList where DefaultStream.Name is empty
+
+  Set DefaultStream to the entry in Link.File.StreamList where DefaultStream.Name is empty
 
 (locate the default stream for the given file).
 
@@ -4960,9 +4770,9 @@ EndIf
 
   Set Link.ReparseTag to Link.File.ReparseTag.
 
-2.1.4.20
+##### 2.1.4.20 Algorithm for Noting That a File Has Been Accessed
 
-Algorithm for Noting That a File Has Been Accessed
+
 
 The inputs for this algorithm are as follows:
 
@@ -4979,7 +4789,7 @@ The object store SHOULD<44>:
 If Open.UserSetAccessTime is FALSE, set Open.File.LastAccessTime to the current
 system time.
 
-2.1.5  Higher-Layer Triggered Events
+#### 2.1.5 Higher-Layer Triggered Events
 
 This section describes operations the object store performs in response to events triggered by higher-
 layer applications. The higher-layer application for this document is generally a server application that
@@ -4998,7 +4808,7 @@ IORequest parameter is used to support operation cancellation, as specified in s
 When an operation completes or is canceled the object store MUST remove the associated IORequest
 operation from CancelableOperations.CancelableOperationList.
 
-2.1.5.1  Server Requests an Open of a File
+##### 2.1.5.1 Server Requests an Open of a File
 
 The server provides:
 
@@ -5021,7 +4831,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  ShareAccess: A bitmask indicating sharing access for the open, as specified in [MS-SMB2]
+
+  ShareAccess: A bitmask indicating sharing access for the open, as specified in [MS-SMB2]
 
 section 2.2.13.
 
@@ -5113,7 +4924,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -5210,7 +5022,8 @@ Release: September 9, 2025
 
 56 / 287
 
-  Open.HasCreateSymbolicLinkAccess set to TRUE if SecurityContext.PrivilegeSet
+
+  Open.HasCreateSymbolicLinkAccess set to TRUE if SecurityContext.PrivilegeSet
 
 contains "SeCreateSymbolicLinkPrivilege".
 
@@ -5306,7 +5119,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-object store MUST further split each PathNamei into a file name component FileNamei, stream
+
+object store MUST further split each PathNamei into a file name component FileNamei, stream
 name component StreamNamei, and stream type name component StreamTypeNamei, using the
 colon (":") character as a delimiter (FileNamei:StreamNamei:StreamTypeNamei). If StreamNamei
 or StreamTypeNamei is not present in the name, the value MUST be set to an empty string.
@@ -5404,7 +5218,8 @@ Release: September 9, 2025
 
 58 / 287
 
-
+
+
 
 If StreamTypeNameToOpen is non-empty and StreamTypeNameToOpen is not equal to one of
 the stream type names recognized by the object store<46> (using case-insensitive string
@@ -5508,7 +5323,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If StreamNameToOpen has a value other than an empty string or "$I30", the operation
 SHOULD<47> be failed with STATUS_INVALID_PARAMETER.
@@ -5627,7 +5443,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-2.1.5.1.1 Creation of a New File
+
+###### 2.1.5.1.1 Creation of a New File
 
 Pseudocode for the operation is as follows:
 
@@ -5720,7 +5537,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.Mode.FILE_DELETE_ON_CLOSE is set and File.FileType != DataFile
 
@@ -5807,7 +5625,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndIf
 
@@ -5911,7 +5730,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -6006,7 +5826,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Build a new Stream object with all fields initially set to zero.
+
+  Build a new Stream object with all fields initially set to zero.
 
   Set Stream.StreamType to DirectoryStream.
 
@@ -6114,7 +5935,8 @@ Release: September 9, 2025
 
 65 / 287
 
-
+
+
 
 The object store MUST send directory change notification as specified in section 2.1.4.1 with
 Volume equal to File.Volume, Action equal to FILE_ACTION_ADDED, FilterMatch equal to
@@ -6145,7 +5967,7 @@ The object store MUST return:
 
 The Open object created previously.
 
-2.1.5.1.2 Open of an Existing File
+###### 2.1.5.1.2 Open of an Existing File
 
 Files that require knowledge of extended attributes cannot be opened by applications that do not
 understand extended attributes. If CreateOptions.FILE_NO_EA_KNOWLEDGE is set and
@@ -6209,7 +6031,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 ElseIf this fails with any other status code:
 
@@ -6324,7 +6147,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set Open.Stream to Stream.
+
+  Set Open.Stream to Stream.
 
 
 
@@ -6420,7 +6244,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 The request MUST be failed with the same status.
 
@@ -6518,7 +6343,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 Else:
 
@@ -6622,7 +6448,8 @@ Release: September 9, 2025
 
 70 / 287
 
-
+
+
 
 Else: // Stream not found.
 
@@ -6725,7 +6552,8 @@ Release: September 9, 2025
 
 71 / 287
 
-
+
+
 
 If CreateAction is one of FILE_OVERWRITTEN or FILE_SUPERSEDED, then:
 
@@ -6843,7 +6671,8 @@ Release: September 9, 2025
 
 72 / 287
 
-
+
+
 
 
 
@@ -6899,7 +6728,7 @@ The object store MUST return:
 
 The Open object created previously.
 
-2.1.5.1.2.1  Algorithm to Check Access to an Existing File
+###### 2.1.5.1.2.1 Algorithm to Check Access to an Existing File
 
 The inputs to the algorithm are:
 
@@ -6940,7 +6769,8 @@ Release: September 9, 2025
 
 73 / 287
 
-
+
+
 
 
 
@@ -7043,7 +6873,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndFor
 
@@ -7053,7 +6884,7 @@ EndIf
 
   Return STATUS_SUCCESS.
 
-2.1.5.1.2.2  Algorithm to Check Sharing Access to an Existing Stream or Directory
+###### 2.1.5.1.2.2 Algorithm to Check Sharing Access to an Existing Stream or Directory
 
 The inputs to the algorithm are:
 
@@ -7144,7 +6975,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Open equal to this operation's Open
+
+  Open equal to this operation's Open
 
   Oplock equal to Open.Stream.Oplock
 
@@ -7162,7 +6994,7 @@ EndIf
 
   Return STATUS_SUCCESS.
 
-2.1.5.2  Server Requests an Open of a Named Pipe
+##### 2.1.5.2 Server Requests an Open of a Named Pipe
 
 The server provides:
 
@@ -7227,7 +7059,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -7328,7 +7161,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.RemainingDesiredAccess.MAXIMUM_ALLOWED is TRUE:
 
@@ -7401,7 +7235,7 @@ The Open object created previously.
 
 For more information on named pipes, see [PIPE].
 
-2.1.5.3  Server Requests a Read
+##### 2.1.5.3 Server Requests a Read
 
 The server provides:
 
@@ -7426,7 +7260,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-On completion, the object store MUST return:
+
+On completion, the object store MUST return:
 
   Status: An NTSTATUS code that specifies the result.
 
@@ -7520,7 +7355,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -7618,13 +7454,14 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Status set to STATUS_SUCCESS.
+
+  Status set to STATUS_SUCCESS.
 
 
 
 EndIf
 
-2.1.5.4  Server Requests a Write
+##### 2.1.5.4 Server Requests a Write
 
 The server provides:
 
@@ -7714,7 +7551,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -7814,7 +7652,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-either write to the disk failed, the operation MUST be failed with the corresponding error
+
+either write to the disk failed, the operation MUST be failed with the corresponding error
 status.
 
 EndIf
@@ -7853,7 +7692,7 @@ Open equal to Open.
 
   Status to STATUS_SUCCESS.
 
-2.1.5.5  Server Requests Closing an Open
+##### 2.1.5.5 Server Requests Closing an Open
 
 The server provides:
 
@@ -7901,7 +7740,8 @@ Release: September 9, 2025
 
 83 / 287
 
-
+
+
 
 
 
@@ -8011,7 +7851,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Remove Open.Link from Open.Link.ParentFile.DirectoryList.
+
+  Remove Open.Link from Open.Link.ParentFile.DirectoryList.
 
   Add Open.Link to a file system metadata directory that is used to track deleted files that
 
@@ -8117,7 +7958,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.Stream.StreamType is DirectoryStream:
 
@@ -8211,7 +8053,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set Open.Stream.PendingNotifications to zero.
+
+  Set Open.Stream.PendingNotifications to zero.
 
 
 
@@ -8318,7 +8161,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -8429,7 +8273,8 @@ Release: September 9, 2025
 
 88 / 287
 
-
+
+
 
 Phase 9 -- Byte Range Locks:
 
@@ -8470,7 +8315,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.6  Server Requests Querying a Directory
+##### 2.1.5.6 Server Requests Querying a Directory
 
 The server provides:
 
@@ -8518,7 +8363,8 @@ Release: September 9, 2025
 
 89 / 287
 
-2.1.5.6.1 FileObjectIdInformation
+
+###### 2.1.5.6.1 FileObjectIdInformation
 
 The following local variable is used:
 
@@ -8599,7 +8445,7 @@ MUST be empty and RestartScan MUST be FALSE.
 
   ByteCount set to the number of bytes filled in OutputBuffer.
 
-2.1.5.6.2 FileReparsePointInformation
+###### 2.1.5.6.2 FileReparsePointInformation
 
 90 / 287
 
@@ -8608,7 +8454,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-The following local variable is used:
+
+The following local variable is used:
 
   Boolean value (initialized to FALSE): EmptyPattern
 
@@ -8705,7 +8552,8 @@ Release: September 9, 2025
 
 91 / 287
 
-2.1.5.6.3 Directory Information Queries
+
+###### 2.1.5.6.3 Directory Information Queries
 
 Directory queries return requested information about files contained in the directory, based on the
 Link structures in Open.DirectoryList. Note that for performance reasons an object store MAY delay
@@ -8811,7 +8659,8 @@ Release: September 9, 2025
 
 92 / 287
 
-
+
+
 
 
 
@@ -8913,7 +8762,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -9015,9 +8865,10 @@ Release: September 9, 2025
 
 94 / 287
 
-  BytesReturned containing the number of bytes filled in OutputBuffer.
 
-2.1.5.6.3.1  FileBothDirectoryInformation
+  BytesReturned containing the number of bytes filled in OutputBuffer.
+
+###### 2.1.5.6.3.1 FileBothDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_BOTH_DIR_INFORMATION structures as described in
 [MS-FSCC] section 2.4.8. Entry is a parameter to this routine that points to the current
@@ -9138,7 +8989,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 Else:
 
@@ -9158,7 +9010,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.2  FileDirectoryInformation
+###### 2.1.5.6.3.2 FileDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_DIRECTORY_INFORMATION structures as described in
 [MS-FSCC] section 2.4.10. Entry is a parameter to this routine that points to the current
@@ -9244,7 +9096,7 @@ EndIf
 
 Entry.FileNameLength set to the length, in bytes, of Link.Name
 
-2.1.5.6.3.3  FileFullDirectoryInformation
+###### 2.1.5.6.3.3 FileFullDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_FULL_DIR_INFORMATION structures as described in
 [MS-FSCC] section 2.4.15. Entry is a parameter to this routine that points to the current
@@ -9256,7 +9108,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-FILE_FULL_DIR_INFORMATION structure to fill out. Note that the FileName field is not set in this
+
+FILE_FULL_DIR_INFORMATION structure to fill out. Note that the FileName field is not set in this
 section.
 
 Pseudocode for the operation is as follows:
@@ -9358,7 +9211,7 @@ EndIf
 
 Entry.FileNameLength set to the length, in bytes, of Link.Name
 
-2.1.5.6.3.4  FileId64ExtdBothDirectoryInformation
+###### 2.1.5.6.3.4 FileId64ExtdBothDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_64_EXTD_BOTH_DIR_INFORMATION structures as
 described in [MS-FSCC] section 2.4.18. Entry is a parameter to this routine that points to the current
@@ -9374,7 +9227,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -9504,7 +9358,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 Else:
 
@@ -9524,7 +9379,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.5  FileId64ExtdDirectoryInformation
+###### 2.1.5.6.3.5 FileId64ExtdDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_64_EXTD_DIR_INFORMATION structures as
 described in [MS-FSCC] section 2.4.19. Entry is a parameter to this routine that points to the current
@@ -9626,7 +9481,8 @@ Release: September 9, 2025
 
 99 / 287
 
-
+
+
 
 Entry.FileID set to Open.File.FileId64
 
@@ -9655,7 +9511,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.6  FileIdAllExtdBothDirectoryInformation
+###### 2.1.5.6.3.6 FileIdAllExtdBothDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_ALL_EXTD_BOTH_DIR_INFORMATION structures as
 described in [MS-FSCC] section 2.4.20. Entry is a parameter to this routine that points to the current
@@ -9745,7 +9601,8 @@ Release: September 9, 2025
 
 100 / 287
 
-
+
+
 
 
 
@@ -9827,7 +9684,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.7  FileIdAllExtdDirectoryInformation
+###### 2.1.5.6.3.7 FileIdAllExtdDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_ALL_EXTD_DIR_INFORMATION structures as
 described in [MS-FSCC] section 2.4.21. Entry is a parameter to this routine that points to the current
@@ -9865,7 +9722,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -9971,7 +9829,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.8  FileIdBothDirectoryInformation
+###### 2.1.5.6.3.8 FileIdBothDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_BOTH_DIR_INFORMATION structures as described
 in [MS-FSCC] section 2.4.22. Entry is a parameter to this routine that points to the current
@@ -9987,7 +9845,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -10119,7 +9978,8 @@ Release: September 9, 2025
 
 103 / 287
 
-
+
+
 
 Entry.FileID set to Open.File.FileId64
 
@@ -10148,7 +10008,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.9  FileIdExtdDirectoryInformation
+###### 2.1.5.6.3.9 FileIdExtdDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_EXTD_DIR_INFORMATION structures as described in
 [MS-FSCC] section 2.4.23. Entry is a parameter to this routine that points to the current
@@ -10241,7 +10101,8 @@ Release: September 9, 2025
 
 104 / 287
 
-
+
+
 
 
 
@@ -10278,7 +10139,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.10  FileIdFullDirectoryInformation
+###### 2.1.5.6.3.10 FileIdFullDirectoryInformation
 
 OutputBuffer is an array of one or more FILE_ID_FULL_DIR_INFORMATION structures as described
 in [MS-FSCC] section 2.4.24. Entry is a parameter to this routine that points to the current
@@ -10363,7 +10224,8 @@ Release: September 9, 2025
 
 105 / 287
 
-
+
+
 
 
 
@@ -10420,7 +10282,7 @@ Entry.FileNameLength set to the length, in bytes, of Link.Name
 
 
 
-2.1.5.6.3.11  FileNamesInformation
+###### 2.1.5.6.3.11 FileNamesInformation
 
 OutputBuffer is an array of one or more FILE_NAMES_INFORMATION structures as described in [MS-
 FSCC] section 2.4.33. Entry is a parameter to this routine that points to the current
@@ -10453,7 +10315,7 @@ Entry.FileIndex set to zero
 
 Entry.FileNameLength set to the length, in bytes, of Link.Name
 
-2.1.5.7  Server Requests Flushing Cached Data
+##### 2.1.5.7 Server Requests Flushing Cached Data
 
 The server provides:
 
@@ -10472,7 +10334,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -10536,7 +10399,7 @@ Flush the underlying physical storage.
 
 
 
-2.1.5.8  Server Requests a Byte-Range Lock
+##### 2.1.5.8 Server Requests a Byte-Range Lock
 
 The server provides:
 
@@ -10575,7 +10438,8 @@ Release: September 9, 2025
 
 107 / 287
 
-
+
+
 
 If Open.Stream.StreamType is DirectoryStream, return STATUS_INVALID_PARAMETER, as byte
 range locks are not permitted on directories.
@@ -10677,9 +10541,10 @@ Release: September 9, 2025
 
 108 / 287
 
-  Complete this operation with STATUS_SUCCESS.
 
-2.1.5.9  Server Requests an Unlock of a Byte-Range
+  Complete this operation with STATUS_SUCCESS.
+
+##### 2.1.5.9 Server Requests an Unlock of a Byte-Range
 
 The server provides:
 
@@ -10775,20 +10640,21 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndIf
 
-2.1.5.10
+##### 2.1.5.10 Server Requests an FsControl Request
 
-Server Requests an FsControl Request
+
 
 The following section describes various File System Control (FSCTLs) operations that are implemented
 by the Object Store. Not all of these operations are implemented by all file systems.
 
-2.1.5.10.1
+###### 2.1.5.10.1 FSCTL_CREATE_OR_GET_OBJECT_ID
 
-FSCTL_CREATE_OR_GET_OBJECT_ID
+
 
 The server provides:
 
@@ -10870,7 +10736,8 @@ Release: September 9, 2025
 
 110 / 287
 
-
+
+
 
 
 
@@ -10919,9 +10786,9 @@ Upon successful completion of the operation, the object store MUST return:
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.2
+###### 2.1.5.10.2 FSCTL_DELETE_OBJECT_ID
 
-FSCTL_DELETE_OBJECT_ID
+
 
 The server provides:
 
@@ -10948,7 +10815,8 @@ Release: September 9, 2025
 
 111 / 287
 
-
+
+
 
 If Volume.IsReadOnly is TRUE, the operation MUST be failed with
 STATUS_MEDIA_WRITE_PROTECTED.
@@ -10990,9 +10858,9 @@ ObjectIdInfo, and NotifyDataLength equal to sizeof(FILE_OBJECTID_INFORMATION).
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.3
+###### 2.1.5.10.3 FSCTL_DELETE_REPARSE_POINT
 
-FSCTL_DELETE_REPARSE_POINT
+
 
 The server provides:
 
@@ -11034,7 +10902,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -11084,9 +10953,9 @@ TRUE.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.4
+###### 2.1.5.10.4 FSCTL_DUPLICATE_EXTENTS_TO_FILE
 
-FSCTL_DUPLICATE_EXTENTS_TO_FILE
+
 
 The server provides:
 
@@ -11126,7 +10995,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-target stream's extent list such that, the same clusters are pointed to by both the source and target
+
+target stream's extent list such that, the same clusters are pointed to by both the source and target
 streams' extent lists for the region being copied.
 
 Support for FSCTL_DUPLICATE_EXTENTS_TO_FILE is optional. If the object store does not implement
@@ -11220,7 +11090,8 @@ Release: September 9, 2025
 
 114 / 287
 
-
+
+
 
 The object store MUST modify Open.Stream.ExtentList so that all LCNs in the applicable VCN
 range match the LCNs in Source.ExtentList in the same VCN range, taking care to adjust the
@@ -11328,7 +11199,8 @@ Release: September 9, 2025
 
 115 / 287
 
-
+
+
 
 
 
@@ -11427,9 +11299,10 @@ Release: September 9, 2025
 
 116 / 287
 
-2.1.5.10.5
 
-FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX
+###### 2.1.5.10.5 FSCTL_DUPLICATE_EXTENTS_TO_FILE_EX
+
+
 
 The server provides:
 
@@ -11513,7 +11386,8 @@ Release: September 9, 2025
 
 117 / 287
 
-
+
+
 
 
 
@@ -11612,7 +11486,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Source.ExtentList[SourceIndex].Lcn == 0xffffffffffffffff (indicating an unallocated
 extent as specified in [MS-FSCC] section 2.3.32.1):
@@ -11719,7 +11594,8 @@ Release: September 9, 2025
 
 119 / 287
 
-
+
+
 
 If (TargetVcn != Open.Stream.ExtentList[TargetIndex].NextVcn - 1), the object
 store MUST initialize a new EXTENTS element NewNextExtent as follows:
@@ -11776,9 +11652,9 @@ EndFor
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.6
+###### 2.1.5.10.6 FSCTL_FILE_LEVEL_TRIM
 
-FSCTL_FILE_LEVEL_TRIM
+
 
 The server provides:
 
@@ -11814,7 +11690,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  64-bit unsigned integers (initialized to zero): AlignmentAdjust, TempOffLen, TrimRange,
+
+  64-bit unsigned integers (initialized to zero): AlignmentAdjust, TempOffLen, TrimRange,
 
 TrimOffset.
 
@@ -11911,7 +11788,8 @@ Release: September 9, 2025
 
 121 / 287
 
-
+
+
 
 If TempOffLen overflows 64-bits, the operation MUST be failed with
 STATUS_INTEGER_OVERFLOW.
@@ -11983,9 +11861,9 @@ otherwise
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.7
+###### 2.1.5.10.7 FSCTL_FILESYSTEM_GET_STATISTICS
 
-FSCTL_FILESYSTEM_GET_STATISTICS
+
 
 The server provides:
 
@@ -12010,7 +11888,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-This operation also uses the following local variables:
+
+This operation also uses the following local variables:
 
   An array of bytes (initially empty): FileSystemStatistics.
 
@@ -12070,9 +11949,9 @@ Upon successful completion of the operation, the object store MUST return:
 
   Return Status set to STATUS_SUCCESS.
 
-2.1.5.10.8
+###### 2.1.5.10.8 FSCTL_FIND_FILES_BY_SID
 
-FSCTL_FIND_FILES_BY_SID
+
 
 The server provides:
 
@@ -12100,7 +11979,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BytesReturned: The number of bytes written to OutputBuffer.
+
+  BytesReturned: The number of bytes written to OutputBuffer.
 
 This operation also uses the following local variables:
 
@@ -12197,7 +12077,8 @@ Release: September 9, 2025
 
 124 / 287
 
-
+
+
 
 The operation MUST be failed with STATUS_BUFFER_TOO_SMALL.
 
@@ -12232,9 +12113,9 @@ EndFor
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.9
+###### 2.1.5.10.9 FSCTL_GET_COMPRESSION
 
-FSCTL_GET_COMPRESSION
+
 
 The server provides:
 
@@ -12295,7 +12176,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 Else:
 
@@ -12331,7 +12213,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.10  FSCTL_GET_INTEGRITY_INFORMATION
+###### 2.1.5.10.10 FSCTL_GET_INTEGRITY_INFORMATION
 
 The server provides:
 
@@ -12388,7 +12270,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.Stream.StreamType is DataStream and Open.Stream.ChecksumEnforcementOff is
 TRUE, then the object store MUST set OutputBuffer.Flags to
@@ -12400,7 +12283,7 @@ FSCTL_INTEGRITY_FLAG_CHECKSUM_ENFORCEMENT_OFF.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.11  FSCTL_GET_NTFS_VOLUME_DATA
+###### 2.1.5.10.11 FSCTL_GET_NTFS_VOLUME_DATA
 
 The server provides:
 
@@ -12469,7 +12352,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OutputBuffer.Mft2StartLcn set to an implementation-specific value.
+
+  OutputBuffer.Mft2StartLcn set to an implementation-specific value.
 
   OutputBuffer.MftZoneStart set to an implementation-specific value.
 
@@ -12481,7 +12365,7 @@ Release: September 9, 2025
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.12  FSCTL_GET_REFS_VOLUME_DATA
+###### 2.1.5.10.12 FSCTL_GET_REFS_VOLUME_DATA
 
 The server provides:
 
@@ -12548,7 +12432,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-2.1.5.10.13  FSCTL_GET_OBJECT_ID
+
+###### 2.1.5.10.13 FSCTL_GET_OBJECT_ID
 
 The server provides:
 
@@ -12604,7 +12489,7 @@ The object store MUST populate the fields of OutputBuffer as follows:
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.14  FSCTL_GET_REPARSE_POINT
+###### 2.1.5.10.14 FSCTL_GET_REPARSE_POINT
 
 The server provides:
 
@@ -12628,7 +12513,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Status: An NTSTATUS code that specifies the result.
+
+  Status: An NTSTATUS code that specifies the result.
 
 Support for this operation is optional. If the object store does not implement this functionality, the
 operation MUST be failed with STATUS_INVALID_DEVICE_REQUEST.<107>
@@ -12691,7 +12577,7 @@ Open.File.ReparseGUID.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.15  FSCTL_GET_RETRIEVAL_POINTERS
+###### 2.1.5.10.15 FSCTL_GET_RETRIEVAL_POINTERS
 
 The server provides:
 
@@ -12716,7 +12602,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BytesReturned: The number of bytes returned to the caller.
+
+  BytesReturned: The number of bytes returned to the caller.
 
   Status: An NTSTATUS code that specifies the result.
 
@@ -12774,7 +12661,7 @@ into the remaining space in OutputBuffer, at offset OutputBuffer.Extents.
 
 copied into OutputBuffer.Extents, else STATUS_BUFFER_OVERFLOW.
 
-2.1.5.10.16  FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT
+###### 2.1.5.10.16 FSCTL_GET_RETRIEVAL_POINTERS_AND_REFCOUNT
 
 The server provides: <108>
 
@@ -12805,7 +12692,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -12857,7 +12745,7 @@ OutputBuffer.Extents.
 
 copied into OutputBuffer.Extents, else STATUS_BUFFER_OVERFLOW.
 
-2.1.5.10.17  FSCTL_GET_RETRIEVAL_POINTER_COUNT
+###### 2.1.5.10.17 FSCTL_GET_RETRIEVAL_POINTER_COUNT
 
 The server provides:
 
@@ -12897,7 +12785,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -12935,13 +12824,13 @@ Open.Stream.ExtentList, set OutputBuffer.ExtentCount to 1 instead.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.18  FSCTL_IS_PATHNAME_VALID
+###### 2.1.5.10.18 FSCTL_IS_PATHNAME_VALID
 
 The FSCTL_IS_PATHNAME_VALID structure is defined in [MS-FSCC] section 2.3.35.
 
 This operation always returns STATUS_SUCCESS.
 
-2.1.5.10.19  FSCTL_MARK_HANDLE
+###### 2.1.5.10.19 FSCTL_MARK_HANDLE
 
 The server provides:
 
@@ -12985,7 +12874,8 @@ Release: September 9, 2025
 
 133 / 287
 
-
+
+
 
 InputBuffer.HandleInfo contains any flag other than one and only one of either
 MARK_HANDLE_READ_COPY or MARK_HANDLE_NOT_READ_COPY.
@@ -13042,7 +12932,7 @@ Upon successful completion of the operation, the object store MUST return:
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.20  FSCTL_OFFLOAD_READ
+###### 2.1.5.10.20 FSCTL_OFFLOAD_READ
 
 The server provides:
 
@@ -13080,7 +12970,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Boolean (initialized to FALSE): VdlSameAsEof
+
+  Boolean (initialized to FALSE): VdlSameAsEof
 
   32-bit unsigned integers (initialized to zero): OutputBufferLength
 
@@ -13182,7 +13073,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-InputBuffer.CopyLength, IsExclusive set to FALSE, LockIntent set to FALSE, and Open set
+
+InputBuffer.CopyLength, IsExclusive set to FALSE, LockIntent set to FALSE, and Open set
 to Open. If a conflict is detected, the operation MUST be failed with
 STATUS_FILE_LOCK_CONFLICT.
 
@@ -13286,7 +13178,8 @@ Release: September 9, 2025
 
 136 / 287
 
-  Construct the offload read command with the OffloadLCNList as the ranges, and Token length
+
+  Construct the offload read command with the OffloadLCNList as the ranges, and Token length
 
 specified in InputBuffer.CopyLength as described in [INCITS-T10/11-059] and send it to the
 underlying storage subsystem, storing the status from the operation in StorageOffloadReadStatus,
@@ -13336,7 +13229,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.21  FSCTL_OFFLOAD_WRITE
+###### 2.1.5.10.21 FSCTL_OFFLOAD_WRITE
 
 The server provides:
 
@@ -13375,7 +13268,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  64-bit unsigned integers (initialized to zero): NewValidDataLength, ValidDataLength, FileSize, and
+
+  64-bit unsigned integers (initialized to zero): NewValidDataLength, ValidDataLength, FileSize, and
 
 StorageOffloadBytesWritten.
 
@@ -13475,7 +13369,8 @@ Release: September 9, 2025
 
 138 / 287
 
-
+
+
 
 
 
@@ -13571,11 +13466,12 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BytesReturned set to OutputBufferLength.
+
+  BytesReturned set to OutputBufferLength.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.22  FSCTL_QUERY_ALLOCATED_RANGES
+###### 2.1.5.10.22 FSCTL_QUERY_ALLOCATED_RANGES
 
 The server provides:
 
@@ -13660,7 +13556,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set BytesReturned to 0.
+
+  Set BytesReturned to 0.
 
   Return STATUS_SUCCESS.
 
@@ -13761,7 +13658,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set FoundRangeEnd to TRUE.
+
+  Set FoundRangeEnd to TRUE.
 
   Set RangeNextVcn to QueryNext.
 
@@ -13860,7 +13758,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set Range.Length to (RangeNextVcn - RangeFirstVcn) *
+
+  Set Range.Length to (RangeNextVcn - RangeFirstVcn) *
 
 Open.File.Volume.ClusterSize.
 
@@ -13926,7 +13825,7 @@ Endif
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.23  FSCTL_QUERY_FAT_BPB
+###### 2.1.5.10.23 FSCTL_QUERY_FAT_BPB
 
 Support for this operation is optional. If the object store does not implement this functionality, this
 operation MUST be failed with STATUS_INVALID_DEVICE_REQUEST.<115>
@@ -13954,7 +13853,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Pseudocode for the operation is as follows:
+
+Pseudocode for the operation is as follows:
 
 
 
@@ -13972,7 +13872,7 @@ Open.File.Volume into OutputBuffer.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.24  FSCTL_QUERY_FILE_REGIONS
+###### 2.1.5.10.24 FSCTL_QUERY_FILE_REGIONS
 
 Support for this operation is optional. If the object store does not implement this functionality, this
 operation MUST be failed with STATUS_INVALID_DEVICE_REQUEST.<116>
@@ -14036,7 +13936,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 The operation MUST be failed with STATUS_BUFFER_TOO_SMALL.
 
@@ -14128,7 +14029,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If (Vdl < Eof) AND (OutputBuffer.Region[OutputBufferIndex - 1]. Length
 <InputRegion.Length),
@@ -14177,7 +14079,7 @@ EndIf
 
   Status set to STATUS_SUCCESS
 
-2.1.5.10.25  FSCTL_QUERY_ON_DISK_VOLUME_INFO
+###### 2.1.5.10.25 FSCTL_QUERY_ON_DISK_VOLUME_INFO
 
 The server provides:
 
@@ -14212,7 +14114,8 @@ Release: September 9, 2025
 
 146 / 287
 
-
+
+
 
 The object store MUST populate the fields of OutputBuffer as follows:
 
@@ -14246,7 +14149,7 @@ Open.File.Volume.LastModifyingImplementationInfo.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.26  FSCTL_QUERY_SPARING_INFO
+###### 2.1.5.10.26 FSCTL_QUERY_SPARING_INFO
 
 The server provides:
 
@@ -14289,7 +14192,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OutputBuffer.TotalSpareBlocks set to Open.File.Volume.TotalSpareBlocks.
+
+  OutputBuffer.TotalSpareBlocks set to Open.File.Volume.TotalSpareBlocks.
 
   OutputBuffer.FreeSpareBlocks set to Open.File.Volume.FreeSpareBlocks.
 
@@ -14299,7 +14203,7 @@ Release: September 9, 2025
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.27  FSCTL_READ_FILE_USN_DATA
+###### 2.1.5.10.27 FSCTL_READ_FILE_USN_DATA
 
 The server provides:
 
@@ -14371,7 +14275,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-EndIf
+
+EndIf
 
 If MajorVersionToUse == 3:
 
@@ -14457,7 +14362,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OutputBuffer.ParentFileReferenceNumber set to Open.Link.ParentFile.FileId128.
+
+  OutputBuffer.ParentFileReferenceNumber set to Open.Link.ParentFile.FileId128.
 
   OutputBuffer.Usn set to Open.File.Usn.
 
@@ -14518,7 +14424,7 @@ Upon successful completion of the operation, the object store MUST return:
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.28  FSCTL_RECALL_FILE
+###### 2.1.5.10.28 FSCTL_RECALL_FILE
 
 The server provides:
 
@@ -14529,7 +14435,8 @@ Release: September 9, 2025
 
 150 / 287
 
-  Open: An Open of a DataFile.
+
+  Open: An Open of a DataFile.
 
 On completion, the object store MUST return:
 
@@ -14569,7 +14476,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.29  FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT
+###### 2.1.5.10.29 FSCTL_REFS_STREAM_SNAPSHOT_MANAGEMENT
 
 The server provides:
 
@@ -14616,7 +14523,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -14700,7 +14608,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  An array of OutputBuffer.ExtentCount structures of type REFS_STREAM_EXTENT. This
+
+  An array of OutputBuffer.ExtentCount structures of type REFS_STREAM_EXTENT. This
 
 structure contains the following information for each entry:
 
@@ -14789,7 +14698,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -14825,7 +14735,7 @@ If the operation is REFS_STREAM_SNAPSHOT_OPERATION_REVERT and the Open lacks
 (FILE_WRITE_ATTRIBUTES | FILE_WRITE_DATA) access, then the operation MUST be failed with
 STATUS_ACCESS_DENIED.
 
-2.1.5.10.29.1 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_CREATE
+###### 2.1.5.10.29.1 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_CREATE
 
 A given DataStream (A) is backed by some underlying backing store then:
 
@@ -14850,7 +14760,7 @@ IO is released and the operation is completed.
 queried, DataStream (B) is checked. If the extent is found, it is returned. If it is not found,
 DataStream (A) is checked.
 
-2.1.5.10.29.2 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_LIST
+###### 2.1.5.10.29.2 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_LIST
 
 Given a set of an arbitrary number (N) of DataStreams (S), as well as (N) named attributes where
 each named attribute references one DataStream, then:
@@ -14878,7 +14788,8 @@ Release: September 9, 2025
 
 154 / 287
 
-
+
+
 
 
 
@@ -14927,7 +14838,7 @@ of the entries are enumerated only incrementing Y.
 If Y > OutputBufferLength, then return STATUS_BUFFER_OVERFLOW. Otherwise return
 STATUS_SUCCESS.
 
-2.1.5.10.29.3 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS
+###### 2.1.5.10.29.3 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_QUERY_DELTAS
 
 Given a DataStream (A) and InputBuffer.SnapshotName representing the name of a file attribute
 referencing a DataStream (B), then:
@@ -14971,7 +14882,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Copy the Length of the W extent to OutputBuffer.Extents[X].Length.
+
+  Copy the Length of the W extent to OutputBuffer.Extents[X].Length.
 
   Copy the W properties to OutputBuffer.Extents[X].Properties.
 
@@ -14995,7 +14907,7 @@ FIELD_OFFSET(REFS_STREAM_SNAPSHOT_QUERY_DELTAS_OUTPUT_BUFFER, Extents[X]) )
 
 The operation is completed with STATUS_SUCCESS.
 
-2.1.5.10.29.4 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_REVERT
+###### 2.1.5.10.29.4 Algorithm for REFS_STREAM_SNAPSHOT_OPERATION_REVERT
 
 Given a DataStream (A) and InputBuffer.SnapshotName representing the name of a file attribute
 referencing a DataStream (B), then:
@@ -15031,7 +14943,7 @@ IO to the file is resumed.
 
 The operation is completed with STATUS_SUCCESS.<126>
 
-2.1.5.10.29.5 Algorithm for
+###### 2.1.5.10.29.5 Algorithm for
 
 REFS_STREAM_SNAPSHOT_OPERATION_SET_SHADOW_BTREE
 
@@ -15060,7 +14972,7 @@ will exist for it. Let this DataStream be denoted as (B).
 
 The operation is completed with STATUS_SUCCESS.<127>
 
-2.1.5.10.29.6 Algorithm for
+###### 2.1.5.10.29.6 Algorithm for
 
 REFS_STREAM_SNAPSHOT_OPERATION_CLEAR_SHADOW_BTREE
 
@@ -15071,7 +14983,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Given a DataStream (A), then:
+
+Given a DataStream (A), then:
 
 
 
@@ -15091,7 +15004,7 @@ order.
 
 The operation is completed with STATUS_SUCCESS.<128>
 
-2.1.5.10.30  FSCTL_SET_COMPRESSION
+###### 2.1.5.10.30 FSCTL_SET_COMPRESSION
 
 The server provides:
 
@@ -15168,7 +15081,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-COMPRESSION_FORMAT_NONE and Open.Stream.IsCompressed is TRUE), the operation MUST
+
+COMPRESSION_FORMAT_NONE and Open.Stream.IsCompressed is TRUE), the operation MUST
 return STATUS_SUCCESS at this point.
 
 
@@ -15250,7 +15164,7 @@ Open.File.PendingNotifications.FILE_NOTIFY_CHANGE_SIZE to TRUE.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.31  FSCTL_SET_DEFECT_MANAGEMENT
+###### 2.1.5.10.31 FSCTL_SET_DEFECT_MANAGEMENT
 
 The server provides:
 
@@ -15263,7 +15177,8 @@ Release: September 9, 2025
 
 158 / 287
 
-
+
+
 
 
 
@@ -15304,7 +15219,7 @@ The object store MUST set Open.File.DisableDefectManagement to InputBuffer.Disab
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.32  FSCTL_SET_ENCRYPTION
+###### 2.1.5.10.32 FSCTL_SET_ENCRYPTION
 
 The server provides:
 
@@ -15354,7 +15269,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -15475,7 +15391,8 @@ Release: September 9, 2025
 
 160 / 287
 
-
+
+
 
 If there does not exist an ExistingStream in Open.File.StreamList such that
 ExistingStream.IsEncrypted is TRUE:
@@ -15578,7 +15495,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.UserSetChangeTime is FALSE, update Open.File.LastChangeTime to the current
 time.
@@ -15593,7 +15511,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.33  FSCTL_SET_INTEGRITY_INFORMATION
+###### 2.1.5.10.33 FSCTL_SET_INTEGRITY_INFORMATION
 
 The server provides:<134>
 
@@ -15668,7 +15586,8 @@ Release: September 9, 2025
 
 162 / 287
 
-
+
+
 
 If InputBuffer.ChecksumAlgorithm != CHECKSUM_TYPE_UNCHANGED, the object store
 MUST set Open.Stream.CheckSumAlgorithm to CRC32 if the ReFS cluster size is 4KB or
@@ -15721,7 +15640,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.34  FSCTL_SET_INTEGRITY_INFORMATION_EX
+###### 2.1.5.10.34 FSCTL_SET_INTEGRITY_INFORMATION_EX
 
 The server provides:<137>
 
@@ -15772,7 +15691,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 InputBuffer.KeepIntegrityStateUnchanged != 0, Open.Stream.CheckSumAlgorithm ==
 CHECKSUM_TYPE_NONE, and
@@ -15877,7 +15797,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.35  FSCTL_SET_OBJECT_ID
+###### 2.1.5.10.35 FSCTL_SET_OBJECT_ID
 
 [MS-FSA] - v20250909
 File System Algorithms
@@ -15886,7 +15806,8 @@ Release: September 9, 2025
 
 164 / 287
 
-The server provides:
+
+The server provides:
 
   Open: An Open of a DataFile or DirectoryFile.
 
@@ -15975,7 +15896,8 @@ Release: September 9, 2025
 
 165 / 287
 
-  ObjectIdInfo.DomainId set to Open.File.DomainId.
+
+  ObjectIdInfo.DomainId set to Open.File.DomainId.
 
   Send directory change notification as specified in section 2.1.4.1, with Volume equal to
 Open.File.Volume, Action equal to FILE_ACTION_ADDED, FilterMatch equal to
@@ -15986,7 +15908,7 @@ Upon successful completion of the operation, the object store MUST return:
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.36  FSCTL_SET_OBJECT_ID_EXTENDED
+###### 2.1.5.10.36 FSCTL_SET_OBJECT_ID_EXTENDED
 
 The server provides:
 
@@ -16061,7 +15983,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-2.1.5.10.37  FSCTL_SET_REPARSE_POINT
+
+###### 2.1.5.10.37 FSCTL_SET_REPARSE_POINT
 
 The server provides:
 
@@ -16160,7 +16083,8 @@ Release: September 9, 2025
 
 167 / 287
 
-
+
+
 
 If Open.File.ReparseTag is not empty (indicating that a reparse point is already assigned):
 
@@ -16207,7 +16131,7 @@ Upon successful completion of the operation, the object store MUST return:
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.38  FSCTL_SET_SPARSE
+###### 2.1.5.10.38 FSCTL_SET_SPARSE
 
 The server provides:
 
@@ -16254,7 +16178,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 The object store MUST post a USN change as specified in section 2.1.4.11 with File equal to File,
 Reason equal to USN_REASON_BASIC_INFO_CHANGE, and FileName equal to
@@ -16323,7 +16248,7 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.39  FSCTL_SET_ZERO_DATA
+###### 2.1.5.10.39 FSCTL_SET_ZERO_DATA
 
 The server provides:
 
@@ -16357,7 +16282,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Support for this operation is optional. If the object store does not implement this functionality, the
+
+Support for this operation is optional. If the object store does not implement this functionality, the
 operation MUST be failed with STATUS_INVALID_DEVICE_REQUEST.<150><151>
 
 The operation MUST be failed with STATUS_INVALID_PARAMETER under any of the following
@@ -16452,7 +16378,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If LastOffset is -1 and StartingOffset is greater than Open.Stream.ValidDataLength:
 
@@ -16549,7 +16476,8 @@ Release: September 9, 2025
 
 171 / 287
 
-
+
+
 
 If there are not enough free clusters on the storage media to accommodate a write of
 Open.File.Volume.CompressionUnitSize bytes, the operation MUST be failed with
@@ -16649,7 +16577,8 @@ Release: September 9, 2025
 
 172 / 287
 
-
+
+
 
 If CurrentFinalByte is greater than InputBuffer.BeyondFinalZero, set CurrentFinalByte
 to InputBuffer.BeyondFinalZero.
@@ -16710,7 +16639,7 @@ reports an error flushing the data.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.39.1 Algorithm to Zero Data Beyond ValidDataLength
+###### 2.1.5.10.39.1 Algorithm to Zero Data Beyond ValidDataLength
 
 This algorithm returns no value.
 
@@ -16746,7 +16675,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 The object store MUST write zeroes into the stream from StartingZero to ZeroStart.
 
@@ -16844,7 +16774,7 @@ ByteCount.
 
 
 
-2.1.5.10.40  FSCTL_SET_ZERO_ON_DEALLOCATION
+###### 2.1.5.10.40 FSCTL_SET_ZERO_ON_DEALLOCATION
 
 The server provides:
 
@@ -16857,7 +16787,8 @@ Release: September 9, 2025
 
 174 / 287
 
-On completion the object store MUST return:
+
+On completion the object store MUST return:
 
   Status: An NTSTATUS code that specifies the result.
 
@@ -16880,7 +16811,7 @@ The object store MUST set Open.Stream.ZeroOnDeallocate to TRUE.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.41  FSCTL_SIS_COPYFILE
+###### 2.1.5.10.41 FSCTL_SIS_COPYFILE
 
 The server provides:
 
@@ -16939,7 +16870,8 @@ Release: September 9, 2025
 
 175 / 287
 
-
+
+
 
 
 
@@ -17029,7 +16961,8 @@ Release: September 9, 2025
 
 176 / 287
 
-  CreateDisposition: If InputBuffer.Flags.COPYFILE_SIS_REPLACE is TRUE, set to
+
+  CreateDisposition: If InputBuffer.Flags.COPYFILE_SIS_REPLACE is TRUE, set to
 
 FILE_OVERWRITE_IF, else set to FILE_CREATE.
 
@@ -17058,7 +16991,7 @@ Open.File.Volume, the operation MUST be failed with STATUS_NOT_SAME_DEVICE.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.10.42  FSCTL_WRITE_USN_CLOSE_RECORD
+###### 2.1.5.10.42 FSCTL_WRITE_USN_CLOSE_RECORD
 
 The server provides:
 
@@ -17116,13 +17049,14 @@ Release: September 9, 2025
 
 177 / 287
 
-  BytesReturned set to sizeof(Usn).
+
+  BytesReturned set to sizeof(Usn).
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.11
+##### 2.1.5.11 Server Requests Change Notifications for a Directory
 
-Server Requests Change Notifications for a Directory
+
 
 The server provides:
 
@@ -17189,7 +17123,7 @@ Insert operation into CancelableOperations.CancelableOperationList.
 
   Wait for a Change Notify as specified in section 2.1.5.11.1
 
-2.1.5.11.1  Waiting for Change Notification to be Reported
+###### 2.1.5.11.1 Waiting for Change Notification to be Reported
 
 Wait until the following conditions are satisfied:
 
@@ -17204,7 +17138,8 @@ Release: September 9, 2025
 
 178 / 287
 
-
+
+
 
 This change notification request is the oldest outstanding request on this Open. This means
 multiple change notification requests on the same Open are completed sequentially and in first-in-
@@ -17246,9 +17181,9 @@ EndIf
 
 EndIf
 
-2.1.5.12
+##### 2.1.5.12 Server Requests a Query of File Information
 
-Server Requests a Query of File Information
+
 
 The server provides:
 
@@ -17273,9 +17208,9 @@ dependent on FileInformationClass, as noted in the relevant subsection.
 If FileInformationClass is not defined in [MS-FSCC] section 2.4, the operation MUST be failed with
 STATUS_INVALID_INFO_CLASS.
 
-2.1.5.12.1
+###### 2.1.5.12.1 FileAccessInformation
 
-FileAccessInformation
+
 
 OutputBuffer is of type FILE_ACCESS_INFORMATION as described in [MS-FSCC] 2.4.1.
 
@@ -17293,7 +17228,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OutputBuffer MUST be constructed as follows:
+
+  OutputBuffer MUST be constructed as follows:
 
   OutputBuffer.AccessFlags set to Open.GrantedAccess.
 
@@ -17303,9 +17239,9 @@ Release: September 9, 2025
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.2
+###### 2.1.5.12.2 FileAlignmentInformation
 
-FileAlignmentInformation
+
 
 OutputBuffer is of type FILE_ALIGNMENT_INFORMATION as described in [MS-FSCC] section 2.4.3.
 
@@ -17329,9 +17265,9 @@ File is stored.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.3
+###### 2.1.5.12.3 FileAllInformation
 
-FileAllInformation
+
 
 OutputBuffer is of type FILE_ALL_INFORMATION as described in [MS-FSCC] 2.4.2.
 
@@ -17378,7 +17314,8 @@ Release: September 9, 2025
 
 180 / 287
 
-  OutputBuffer.ModeInformation MUST be filled using the operation described in section
+
+  OutputBuffer.ModeInformation MUST be filled using the operation described in section
 
 2.1.5.12.18.
 
@@ -17399,9 +17336,9 @@ NameInformationLength.
 
   Status set to NameInformationStatus.
 
-2.1.5.12.4
+###### 2.1.5.12.4 FileAlternateNameInformation
 
-FileAlternateNameInformation
+
 
 OutputBuffer is of type FILE_NAME_INFORMATION as described in [MS-FSCC] 2.4.5.
 
@@ -17432,9 +17369,9 @@ OutputBuffer.FileNameLength.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.5
+###### 2.1.5.12.5 FileAttributeTagInformation
 
-FileAttributeTagInformation
+
 
 OutputBuffer is of type FILE_ATTRIBUTE_TAG_INFORMATION as defined in [MS-FSCC] section 2.4.6.
 
@@ -17470,7 +17407,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 Else:
 
@@ -17543,9 +17481,9 @@ OutputBuffer.FileAttributes.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.6
+###### 2.1.5.12.6 FileBasicInformation
 
-FileBasicInformation
+
 
 OutputBuffer is of type FILE_BASIC_INFORMATION as defined in [MS-FSCC] section 2.4.7.
 
@@ -17577,7 +17515,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -17669,15 +17608,15 @@ OutputBuffer.FileAttributes.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.7
+###### 2.1.5.12.7 FileBothDirectoryInformation
 
-FileBothDirectoryInformation
+
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.12.8
+###### 2.1.5.12.8 FileCompressionInformation
 
-FileCompressionInformation
+
 
 [MS-FSA] - v20250909
 File System Algorithms
@@ -17686,7 +17625,8 @@ Release: September 9, 2025
 
 183 / 287
 
-OutputBuffer is of type FILE_COMPRESSION_INFORMATION as defined in [MS-FSCC] section
+
+OutputBuffer is of type FILE_COMPRESSION_INFORMATION as defined in [MS-FSCC] section
 2.4.9.<163>
 
 Pseudocode for the operation is as follows:
@@ -17793,15 +17733,16 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Status set to STATUS_SUCCESS.
 
-2.1.5.12.9
+  Status set to STATUS_SUCCESS.
 
-FileDirectoryInformation
+###### 2.1.5.12.9 FileDirectoryInformation
+
+
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.12.10  FileEaInformation
+###### 2.1.5.12.10 FileEaInformation
 
 OutputBuffer is of type FILE_EA_INFORMATION as described in [MS-FSCC] 2.4.13.<164>
 
@@ -17827,11 +17768,11 @@ incremented by 4 to account for the header.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.11  FileFullDirectoryInformation
+###### 2.1.5.12.11 FileFullDirectoryInformation
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.12.12  FileFullEaInformation
+###### 2.1.5.12.12 FileFullEaInformation
 
 OutputBuffer is of type FILE_FULL_EA_INFORMATION as described in [MS-FSCC] 2.4.16.<165>
 
@@ -17878,7 +17819,8 @@ Release: September 9, 2025
 
 185 / 287
 
-  STATUS_BUFFER_TOO_SMALL if OutputBufferSize is too small to hold
+
+  STATUS_BUFFER_TOO_SMALL if OutputBufferSize is too small to hold
 
 Open.NextEaEntry. No entries are returned.
 
@@ -17890,23 +17832,23 @@ there are still additional entries to return.
 
 Open.File.ExtendedAttributes and there are no more entries to return.
 
-2.1.5.12.13  FileHardLinkInformation
+###### 2.1.5.12.13 FileHardLinkInformation
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.12.14  FileIdBothDirectoryInformation
+###### 2.1.5.12.14 FileIdBothDirectoryInformation
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.12.15  FileIdFullDirectoryInformation
+###### 2.1.5.12.15 FileIdFullDirectoryInformation
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.12.16  FileIdGlobalTxDirectoryInformation
+###### 2.1.5.12.16 FileIdGlobalTxDirectoryInformation
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.12.17  FileInternalInformation
+###### 2.1.5.12.17 FileInternalInformation
 
 OutputBuffer is of type FILE_INTERNAL_INFORMATION as described in [MS-FSCC] 2.4.27.
 
@@ -17927,7 +17869,7 @@ be failed with STATUS_INFO_LENGTH_MISMATCH.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.18  FileModeInformation
+###### 2.1.5.12.18 FileModeInformation
 
 OutputBuffer is of type FILE_MODE_INFORMATION as described in [MS-FSCC] 2.4.31.
 
@@ -17953,9 +17895,10 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Status set to STATUS_SUCCESS.
 
-2.1.5.12.19  FileNameInformation
+  Status set to STATUS_SUCCESS.
+
+###### 2.1.5.12.19 FileNameInformation
 
 This operation is not supported from a remote client, it is only supported from a local client or as part
 of processing a query for the FileAllInformation operation as specified in section 2.1.5.12.3. If used to
@@ -18014,13 +17957,13 @@ FileNameLength bytes copied from FileName to OutputBuffer.FileName.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.20  FileNamesInformation
+###### 2.1.5.12.20 FileNamesInformation
 
 This operation is not supported as a file information class, it is only supported as a directory
 information class, as specified in section 2.1.5.5.3.6. If used to query file information STATUS_
 INVALID_INFO_CLASS MUST be returned.
 
-2.1.5.12.21  FileNetworkOpenInformation
+###### 2.1.5.12.21 FileNetworkOpenInformation
 
 OutputBuffer is of type FILE_NETWORK_OPEN_INFORMATION as defined in [MS-FSCC] section
 2.4.34.
@@ -18032,7 +17975,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Pseudocode for the operation is as follows:
+
+Pseudocode for the operation is as follows:
 
 
 
@@ -18134,7 +18078,8 @@ Release: September 9, 2025
 
 188 / 287
 
-
+
+
 
 If OutputBuffer.FileAttributes is 0, set FILE_ATTRIBUTE_NORMAL in
 OutputBuffer.FileAttributes.
@@ -18145,11 +18090,11 @@ OutputBuffer.FileAttributes.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.22  FileObjectIdInformation
+###### 2.1.5.12.22 FileObjectIdInformation
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.12.23  FilePositionInformation
+###### 2.1.5.12.23 FilePositionInformation
 
 OutputBuffer is of type FILE_POSITION_INFORMATION, as specified in [MS-FSCC] section 2.4.40.
 
@@ -18169,23 +18114,23 @@ Open.CurrentByteOffset.
 
 The operation returns STATUS_SUCCESS.<168>
 
-2.1.5.12.24  FileQuotaInformation
+###### 2.1.5.12.24 FileQuotaInformation
 
 This operation is not supported as a file information class; it is supported only as a server request, as
 specified in section 2.1.5.21. If used to query file information, STATUS_INVALID_PARAMETER MUST
 be returned.
 
-2.1.5.12.25  FileReparsePointInformation
+###### 2.1.5.12.25 FileReparsePointInformation
 
 This operation is not supported as a file information class; it is only supported as a directory
 enumeration class, as specified in section 2.1.5.6.2. If used to query file information
 STATUS_NOT_SUPPORTED MUST be returned.
 
-2.1.5.12.26  FileSfioReserveInformation
+###### 2.1.5.12.26 FileSfioReserveInformation
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.12.27  FileStandardInformation
+###### 2.1.5.12.27 FileStandardInformation
 
 OutputBuffer is of type FILE_STANDARD_INFORMATION, as described in [MS-FSCC] section 2.4.47.
 
@@ -18217,7 +18162,8 @@ Release: September 9, 2025
 
 189 / 287
 
-
+
+
 
 Else:
 
@@ -18248,11 +18194,11 @@ If OutputBuffer.NumberOfLinks is 0, set OutputBuffer.DeletePending to 1.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.28  FileStandardLinkInformation
+###### 2.1.5.12.28 FileStandardLinkInformation
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.12.29  FileStreamInformation
+###### 2.1.5.12.29 FileStreamInformation
 
 OutputBuffer is of type FILE_STREAM_INFORMATION, as described in [MS-FSCC] section 2.4.49.
 Object stores that do not support alternate data streams SHOULD<170> return
@@ -18309,7 +18255,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -18365,7 +18312,7 @@ The operation returns STATUS_SUCCESS.
 
 
 
-2.1.5.12.30  FileNormalizedNameInformation
+###### 2.1.5.12.30 FileNormalizedNameInformation
 
 OutputBuffer is of type FILE_NAME_INFORMATION as specified in [MS-FSCC] section 2.1.7.
 
@@ -18403,7 +18350,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set FileNameLength to the length, in bytes, of FileName.
+
+  Set FileNameLength to the length, in bytes, of FileName.
 
   Set OutputBuffer.FileNameLength to FileNameLength.
 
@@ -18435,7 +18383,7 @@ FileNameLength bytes copied from FileName to OutputBuffer.FileName.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.12.31  FileIdInformation
+###### 2.1.5.12.31 FileIdInformation
 
 OutputBuffer is of type FILE_ID_INFORMATION as specified in [MS-FSCC] section 2.4.26.
 
@@ -18458,9 +18406,9 @@ failed with STATUS_INFO_LENGTH_MISMATCH.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.13
+##### 2.1.5.13 Server Requests a Query of File System Information
 
-Server Requests a Query of File System Information
+
 
 The server provides:
 
@@ -18483,7 +18431,8 @@ Release: September 9, 2025
 
 192 / 287
 
-  OutputBuffer: An array of bytes containing the file system information. The structure of these
+
+  OutputBuffer: An array of bytes containing the file system information. The structure of these
 
 bytes is dependent on FsInformationClass, as noted in the relevant subsection.
 
@@ -18496,9 +18445,9 @@ Pseudocode for the operation is as follows:
 If FsInformationClass is not defined in [MS-FSCC] section 2.5, the operation MUST be failed
 with STATUS_INVALID_PARAMETER.
 
-2.1.5.13.1
+###### 2.1.5.13.1 FileFsVolumeInformation
 
-FileFsVolumeInformation
+
 
 OutputBuffer is of type FILE_FS_VOLUME_INFORMATION, as described in [MS-FSCC] section 2.5.9.
 
@@ -18556,9 +18505,9 @@ BytesToCopy.
   Status set to STATUS_BUFFER_OVERFLOW if BytesToCopy <
 OutputBuffer.VolumeLabelLength else STATUS_SUCCESS.
 
-2.1.5.13.2
+###### 2.1.5.13.2 FileFsLabelInformation
 
-FileFsLabelInformation
+
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
@@ -18569,9 +18518,10 @@ Release: September 9, 2025
 
 193 / 287
 
-2.1.5.13.3
 
-FileFsSizeInformation
+###### 2.1.5.13.3 FileFsSizeInformation
+
+
 
 OutputBuffer is of type FILE_FS_SIZE_INFORMATION as described in [MS-FSCC] section 2.5.8.
 
@@ -18668,11 +18618,12 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Status set to STATUS_SUCCESS.
 
-2.1.5.13.4
+  Status set to STATUS_SUCCESS.
 
-FileFsDeviceInformation
+###### 2.1.5.13.4 FileFsDeviceInformation
+
+
 
 OutputBuffer is of type FILE_FS_DEVICE_INFORMATION, as described in [MS-FSCC] section 2.5.10.
 
@@ -18697,9 +18648,9 @@ mounted on.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.13.5
+###### 2.1.5.13.5 FileFsAttributeInformation
 
-FileFsAttributeInformation
+
 
 OutputBuffer is of type FILE_FS_ATTRIBUTE_INFORMATION, as described in [MS-FSCC] section
 2.5.1.
@@ -18753,7 +18704,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndIf
 
@@ -18769,9 +18721,9 @@ BytesToCopy.
 
 OutputBuffer.FileSystemNameLength else STATUS_SUCCESS.
 
-2.1.5.13.6
+###### 2.1.5.13.6 FileFsControlInformation
 
-FileFsControlInformation
+
 
 OutputBuffer is of type FILE_FS_CONTROL_INFORMATION, as described in [MS-FSCC] section 2.5.2.
 
@@ -18817,9 +18769,9 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.13.7
+###### 2.1.5.13.7 FileFsFullSizeInformation
 
-FileFsFullSizeInformation
+
 
 OutputBuffer is of type FILE_FS_FULL_SIZE_INFORMATION, as described in [MS-FSCC] section
 2.5.4.
@@ -18846,7 +18798,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  OutputBuffer MUST be constructed as follows:
+
+  OutputBuffer MUST be constructed as follows:
 
   OutputBuffer.TotalAllocationUnits set to Open.File.Volume.TotalSpace /
 
@@ -18923,9 +18876,9 @@ EndIf
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.13.8
+###### 2.1.5.13.8 FileFsObjectIdInformation
 
-FileFsObjectIdInformation
+
 
 OutputBuffer is a FILE_FS_OBJECTID_INFORMATION structure as described in [MS-FSCC] section
 2.5.6.<174>
@@ -18944,7 +18897,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Support for ObjectIDs is optional. If the object store does not implement this functionality, the
+
+  Support for ObjectIDs is optional. If the object store does not implement this functionality, the
 
 operation MUST be failed with STATUS_INVALID_PARAMETER.<175>
 
@@ -18970,13 +18924,13 @@ STATUS_OBJECT_NAME_NOT_FOUND.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.13.9
+###### 2.1.5.13.9 FileFsDriverPathInformation
 
-FileFsDriverPathInformation
+
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.13.10  FileFsSectorSizeInformation
+###### 2.1.5.13.10 FileFsSectorSizeInformation
 
 OutputBuffer is of type FILE_FS_SECTOR_SIZE_INFORMATION as defined in [MS-FSCC] section
 2.5.7.
@@ -19031,7 +18985,8 @@ Release: September 9, 2025
 
 198 / 287
 
-  OutputBuffer.PhysicalBytesPerSectorForPerformance is set to
+
+  OutputBuffer.PhysicalBytesPerSectorForPerformance is set to
 
 OutputBuffer.PhysicalBytesPerSectorForAtomicity.
 
@@ -19124,7 +19079,8 @@ Release: September 9, 2025
 
 199 / 287
 
-  Query the storage device underlying the object store to determine if either the TRIM (T13-
+
+  Query the storage device underlying the object store to determine if either the TRIM (T13-
 
 ATA) or UNMAP (T10-SCSI/SAS) commands are supported. If either command is
 supported, set SSINFO_FLAGS_TRIM_ENABLED flag in OutputBuffer.Flags.
@@ -19135,9 +19091,9 @@ supported, set SSINFO_FLAGS_TRIM_ENABLED flag in OutputBuffer.Flags.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.14
+##### 2.1.5.14 Server Requests a Query of Security Information
 
-Server Requests a Query of Security Information
+
 
 If the object store does not implement security, the operation MUST be failed with
 STATUS_INVALID_DEVICE_REQUEST.<176>
@@ -19204,7 +19160,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -19306,7 +19263,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -19412,7 +19370,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -19520,7 +19479,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 The object store MUST set OutputBuffer.OffsetSacl equal to NextFree.
 
@@ -19578,7 +19538,7 @@ The operation returns STATUS_SUCCESS.
 
 
 
-2.1.5.14.1  Algorithm for Copying Audit or Label ACEs Into a Buffer
+###### 2.1.5.14.1 Algorithm for Copying Audit or Label ACEs Into a Buffer
 
 The inputs for an ACE copy are:
 
@@ -19614,7 +19574,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set NextFree to (size of ACL as defined in [MS-DTYP] section 2.4.5) bytes from the beginning of
+
+  Set NextFree to (size of ACL as defined in [MS-DTYP] section 2.4.5) bytes from the beginning of
 
 DestSacl.
 
@@ -19644,9 +19605,9 @@ EndIf
 
 EndFor
 
-2.1.5.15
+##### 2.1.5.15 Server Requests Setting of File Information
 
-Server Requests Setting of File Information
+
 
 The server provides:
 
@@ -19675,9 +19636,9 @@ Pseudocode for the operation is as follows:
 If Open.File.Volume.IsReadOnly is TRUE, the operation MUST be failed with
 STATUS_MEDIA_WRITE_PROTECTED.
 
-2.1.5.15.1
+###### 2.1.5.15.1 FileAllocationInformation
 
-FileAllocationInformation
+
 
 InputBuffer is of type FILE_ALLOCATION_INFORMATION as described in [MS-FSCC] section 2.4.4.
 
@@ -19707,7 +19668,8 @@ Release: September 9, 2025
 
 205 / 287
 
-
+
+
 
 
 
@@ -19805,7 +19767,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If the object store supports Open.File.Volume.ClusterRefcount, for each EXTENTS that
 is removed from Open.Stream.ExtentList as a result of truncation, for each cluster that
@@ -19849,9 +19812,9 @@ Link equal to Open.Link.
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.15.2
+###### 2.1.5.15.2 FileBasicInformation
 
-FileBasicInformation
+
 
 InputBuffer is of type FILE_BASIC_INFORMATION as described in [MS-FSCC] section 2.4.7.
 
@@ -19912,7 +19875,8 @@ Release: September 9, 2025
 
 207 / 287
 
-  ValidSetAttributes to (FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_HIDDEN |
+
+  ValidSetAttributes to (FILE_ATTRIBUTE_READONLY | FILE_ATTRIBUTE_HIDDEN |
 
 FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_ARCHIVE | FILE_ATTRIBUTE_TEMPORARY |
 FILE_ATTRIBUTE_OFFLINE | FILE_ATTRIBUTE_NOT_CONTENT_INDEXED)
@@ -20018,7 +19982,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 EndIf
 
@@ -20141,7 +20106,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -20227,9 +20193,9 @@ Reason equal to UsnReason, and FileName equal to Open.Link.Name.
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.15.3
+###### 2.1.5.15.3 FileDispositionInformation
 
-FileDispositionInformation
+
 
 InputBuffer is of type FILE_DISPOSITION_INFORMATION as described in [MS-FSCC] section 2.4.11.
 
@@ -20247,7 +20213,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.GrantedAccess does not contain DELETE, the operation MUST be failed with
 STATUS_ACCESS_DENIED.
@@ -20334,9 +20301,9 @@ The operation returns STATUS_SUCCESS.
 
 
 
-2.1.5.15.4
+###### 2.1.5.15.4 FileDispositionInformationEx
 
-FileDispositionInformationEx
+
 
 InputBuffer is of type FILE_DISPOSITION_INFORMATION_EX as described in [MS-FSCC] section
 2.4.12.
@@ -20355,7 +20322,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -20470,7 +20438,8 @@ Release: September 9, 2025
 
 212 / 287
 
-
+
+
 
 Else
 
@@ -20498,9 +20467,9 @@ The operation returns STATUS_SUCCESS.
 
 
 
-2.1.5.15.5
+###### 2.1.5.15.5 FileEndOfFileInformation
 
-FileEndOfFileInformation
+
 
 InputBuffer is of type FILE_END_OF_FILE_INFORMATION as described in [MS-FSCC] section
 2.4.14.<180>
@@ -20569,7 +20538,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Flags equal to "PARENT_OBJECT"
+
+  Flags equal to "PARENT_OBJECT"
 
 If Open.Stream.IsDeleted is TRUE, the operation SHOULD return STATUS_SUCCESS.
 
@@ -20660,9 +20630,9 @@ Link equal to Open.Link.
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.15.6
+###### 2.1.5.15.6 FileFullEaInformation
 
-FileFullEaInformation
+
 
 Support for this operation is optional. If the object store does not implement this functionality, the
 operation MUST be failed with STATUS_INVALID_DEVICE_REQUEST.<182>
@@ -20676,7 +20646,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Pseudocode for the operation is as follows:
+
+Pseudocode for the operation is as follows:
 
 
 
@@ -20736,9 +20707,9 @@ Reason equal to USN_REASON_EA_CHANGE, and FileName equal to Open.Link.Name.
 
 Open.File.PendingNotifications.FILE_NOTIFY_CHANGE_ATTRIBUTES to TRUE.
 
-2.1.5.15.7
+###### 2.1.5.15.7 FileLinkInformation
 
-FileLinkInformation
+
 
 InputBuffer is of type FILE_LINK_INFORMATION_TYPE_1, as described in [MS-FSCC] section
 2.4.28.1, for 32-bit local clients; or of type FILE_LINK_INFORMATION_TYPE_2, as described in [MS-
@@ -20780,7 +20751,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -20884,7 +20856,8 @@ Release: September 9, 2025
 
 216 / 287
 
-
+
+
 
 
 
@@ -20980,7 +20953,8 @@ Release: September 9, 2025
 
 217 / 287
 
-
+
+
 
 // In this case, the implementer replaced a link, but the new link created differs only in
 case.
@@ -21037,9 +21011,9 @@ EndIf
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.15.8
+###### 2.1.5.15.8 FileModeInformation
 
-FileModeInformation
+
 
 InputBuffer is of type FILE_MODE_INFORMATION, as described in [MS-FSCC] section 2.4.31.
 
@@ -21083,7 +21057,8 @@ Release: September 9, 2025
 
 218 / 287
 
-
+
+
 
 InputBuffer.Mode contains either FILE_SYNCHRONOUS_IO_ALERT or
 FILE_SYNCHRONOUS_IO_NONALERT, but Open.Mode contains neither
@@ -21140,13 +21115,13 @@ EndIf
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.15.9
+###### 2.1.5.15.9 FileObjectIdInformation
 
-FileObjectIdInformation
+
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.15.10  FilePositionInformation
+###### 2.1.5.15.10 FilePositionInformation
 
 InputBuffer is of type FILE_POSITION_INFORMATION, as described in [MS-FSCC] section 2.4.40.
 
@@ -21178,7 +21153,7 @@ The object store MUST set Open.CurrentByteOffset equal to InputBuffer.CurrentByt
 
 The operation returns STATUS_SUCCESS.<184>
 
-2.1.5.15.11  FileQuotaInformation
+###### 2.1.5.15.11 FileQuotaInformation
 
 [MS-FSA] - v20250909
 File System Algorithms
@@ -21187,9 +21162,10 @@ Release: September 9, 2025
 
 219 / 287
 
-This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED
 
-2.1.5.15.12  FileRenameInformation
+This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED
+
+###### 2.1.5.15.12 FileRenameInformation
 
 InputBuffer is of type FILE_RENAME_INFORMATION_TYPE_1, as described in [MS-FSCC] section
 2.4.42.1, for 32-bit local clients; or of type FILE_RENAME_INFORMATION_TYPE_2, as described in
@@ -21277,7 +21253,8 @@ Release: September 9, 2025
 
 220 / 287
 
-
+
+
 
 The object store MUST set DestFullLinkName to RootPathName + '\' +
 InputBuffer.FileName.
@@ -21379,7 +21356,8 @@ Release: September 9, 2025
 
 221 / 287
 
-
+
+
 
 Perform a stream rename according to the algorithm in section 2.1.5.15.12.1, setting the
 stream rename algorithm's parameters as follows:
@@ -21481,7 +21459,8 @@ Release: September 9, 2025
 
 222 / 287
 
-
+
+
 
 If (TargetLink.Name is a case-sensitive exact match with NewLinkName) or
 
@@ -21577,7 +21556,8 @@ Release: September 9, 2025
 
 223 / 287
 
-
+
+
 
 If TargetExistsSameFile is FALSE and InputBuffer.ReplaceIfExists is FALSE, the
 operation MUST be failed with STATUS_OBJECT_NAME_COLLISION.
@@ -21684,7 +21664,8 @@ Release: September 9, 2025
 
 224 / 287
 
-
+
+
 
 The object store MUST post a USN change as specified in section 2.1.4.11 with
 File equal to File, Reason equal to (USN_REASON_HARD_LINK_CHANGE |
@@ -21783,7 +21764,8 @@ Release: September 9, 2025
 
 225 / 287
 
-
+
+
 
 If Open.File.FileType is DirectoryFile, then Open.File MUST have every
 TunnelCacheEntry associated with it invalidated:
@@ -21883,7 +21865,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  ObjectIdInfo.BirthObjectId set to
+
+  ObjectIdInfo.BirthObjectId set to
 
 TunnelCacheEntry.ObjectIdInfo.BirthObjectId.
 
@@ -21971,7 +21954,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 Else:
 
@@ -22079,7 +22063,8 @@ Release: September 9, 2025
 
 228 / 287
 
-
+
+
 
 If RemoveTargetLink is TRUE and OverwriteSourceLink is FALSE and ExactCaseMatch is FALSE:
 
@@ -22196,7 +22181,8 @@ Release: September 9, 2025
 
 229 / 287
 
-
+
+
 
 If FilterMatch != 0:
 
@@ -22260,7 +22246,7 @@ FileRenameInformation
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.15.12.1 Algorithm for Performing Stream Rename
+###### 2.1.5.15.12.1 Algorithm for Performing Stream Rename
 
 The inputs for a stream rename are:
 
@@ -22285,7 +22271,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Streams: TargetStream, NewDefaultStream
+
+  Streams: TargetStream, NewDefaultStream
 
 Pseudocode for the algorithm is as follows:
 
@@ -22389,7 +22376,8 @@ Release: September 9, 2025
 
 231 / 287
 
-
+
+
 
 The object store MUST build a new Stream object TargetStream with all fields initially set to
 zero.
@@ -22449,11 +22437,11 @@ Open equal to Open.
 
   Return STATUS_SUCCESS.
 
-2.1.5.15.13  FileSfioReserveInformation
+###### 2.1.5.15.13 FileSfioReserveInformation
 
 This operation is not supported and MUST be failed with STATUS_NOT_SUPPORTED.
 
-2.1.5.15.14  FileShortNameInformation
+###### 2.1.5.15.14 FileShortNameInformation
 
 InputBuffer is of type FILE_NAME_INFORMATION, as described in [MS-FSCC] section 2.4.46.<188>
 
@@ -22481,7 +22469,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -22589,7 +22578,8 @@ Release: September 9, 2025
 
 233 / 287
 
-
+
+
 
 
 
@@ -22689,14 +22679,15 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 If Open.File.FileType is DataFile, the object store MUST set
 Open.File.FileAttributes.FILE_ATTRIBUTE_ARCHIVE.
 
   Return STATUS_SUCCESS.
 
-2.1.5.15.15  FileValidDataLengthInformation
+###### 2.1.5.15.15 FileValidDataLengthInformation
 
 InputBuffer is of type FILE_VALID_DATA_LENGTH_INFORMATION as described in [MS-FSCC] section
 2.4.50.<189>
@@ -22759,9 +22750,9 @@ FileValidDataLengthInformation.
 
   Return STATUS_SUCCESS.
 
-2.1.5.16
+##### 2.1.5.16 Server Requests Setting of File System Information
 
-Server Requests Setting of File System Information
+
 
 This operation is also referred to as SET_INFORMATION when it is used in switch statements.
 
@@ -22784,7 +22775,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 InputBufferSize: The size of the buffer provided.
 
@@ -22792,39 +22784,39 @@ The object store MUST return:
 
   Status: An NTSTATUS code indicating the result of the operation.
 
-2.1.5.16.1
+###### 2.1.5.16.1 FileFsVolumeInformation
 
-FileFsVolumeInformation
 
-This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
-
-2.1.5.16.2
-
-FileFsLabelInformation
 
 This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
 
-2.1.5.16.3
+###### 2.1.5.16.2 FileFsLabelInformation
 
-FileFsSizeInformation
 
-This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
-
-2.1.5.16.4
-
-FileFsDeviceInformation
 
 This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
 
-2.1.5.16.5
+###### 2.1.5.16.3 FileFsSizeInformation
 
-FileFsAttributeInformation
+
 
 This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
 
-2.1.5.16.6
+###### 2.1.5.16.4 FileFsDeviceInformation
 
-FileFsControlInformation
+
+
+This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
+
+###### 2.1.5.16.5 FileFsAttributeInformation
+
+
+
+This operation is not supported and MUST be failed with STATUS_INVALID_INFO_CLASS.
+
+###### 2.1.5.16.6 FileFsControlInformation
+
+
 
 InputBuffer is of type FILE_FS_CONTROL_INFORMATION, as described in [MS-FSCC] section 2.5.2.
 
@@ -22858,9 +22850,9 @@ undefined flags are cleared from InputBuffer.FileSystemControlFlags before being
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.16.7
+###### 2.1.5.16.7 FileFsFullSizeInformation
 
-FileFsFullSizeInformation
+
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
@@ -22871,9 +22863,10 @@ Release: September 9, 2025
 
 236 / 287
 
-2.1.5.16.8
 
-FileFsObjectIdInformation
+###### 2.1.5.16.8 FileFsObjectIdInformation
+
+
 
 InputBuffer is a FILE_FS_OBJECTID_INFORMATION structure, as described in [MS-FSCC] section
 2.5.6.<191>
@@ -22904,19 +22897,19 @@ STATUS_VOLUME_NOT_UPGRADED.
 
   Status set to STATUS_SUCCESS.
 
-2.1.5.16.9
+###### 2.1.5.16.9 FileFsDriverPathInformation
 
-FileFsDriverPathInformation
 
-This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
-
-2.1.5.16.10  FileFsSectorSizeInformation
 
 This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
 
-2.1.5.17
+###### 2.1.5.16.10 FileFsSectorSizeInformation
 
-Server Requests Setting of Security Information
+This operation is not supported and MUST be failed with STATUS_ INVALID_INFO_CLASS.
+
+##### 2.1.5.17 Server Requests Setting of Security Information
+
+
 
 This operation is also referred to as SET_SECURITY when it is used in switch statements.
 
@@ -22956,7 +22949,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-The operation MUST be failed with STATUS_ACCESS_DENIED under any of the following conditions:
+
+The operation MUST be failed with STATUS_ACCESS_DENIED under any of the following conditions:
 
   SecurityInformation contains any of OWNER_SECURITY_INFORMATION,
 
@@ -23058,7 +23052,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 
 
@@ -23066,9 +23061,9 @@ EndIf
 
 The operation returns STATUS_SUCCESS.
 
-2.1.5.18
+##### 2.1.5.18 Server Requests an Oplock
 
-Server Requests an Oplock
+
 
 The server provides:
 
@@ -23151,7 +23146,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 LEVEL_TWO
 
@@ -23249,7 +23245,8 @@ Release: September 9, 2025
 
 240 / 287
 
-  RequestedOplock equal to Type.
+
+  RequestedOplock equal to Type.
 
   GrantingInAck equal to FALSE.
 
@@ -23354,7 +23351,8 @@ Release: September 9, 2025
 
 241 / 287
 
-2.1.5.18.1  Algorithm to Request an Exclusive Oplock
+
+###### 2.1.5.18.1 Algorithm to Request an Exclusive Oplock
 
 The inputs for requesting an exclusive oplock are:
 
@@ -23440,7 +23438,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  NewOplockLevel equal to LEVEL_NONE.
+
+  NewOplockLevel equal to LEVEL_NONE.
 
   AcknowledgeRequired equal to FALSE.
 
@@ -23545,7 +23544,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BreakingOplockOpen equal to ThisOpen.
+
+  BreakingOplockOpen equal to ThisOpen.
 
   NewOplockLevel equal to RequestedOplock.
 
@@ -23644,7 +23644,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Case (READ_CACHING|WRITE_CACHING|EXCLUSIVE):
+
+  Case (READ_CACHING|WRITE_CACHING|EXCLUSIVE):
 
 
 
@@ -23742,7 +23743,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  AcknowledgeRequired is set to AcknowledgeRequired from the operation specified in
+
+  AcknowledgeRequired is set to AcknowledgeRequired from the operation specified in
 
 section 2.1.5.18.3.
 
@@ -23750,7 +23752,7 @@ section 2.1.5.18.3.
 
 EndIf
 
-2.1.5.18.2  Algorithm to Request a Shared Oplock
+###### 2.1.5.18.2 Algorithm to Request a Shared Oplock
 
 The inputs for requesting a shared oplock are:
 
@@ -23827,7 +23829,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 The operation MUST be failed with Status set to STATUS_OPLOCK_NOT_GRANTED.
 
@@ -23931,7 +23934,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BreakingOplockOpen equal to ThisOpen.
+
+  BreakingOplockOpen equal to ThisOpen.
 
   NewOplockLevel equal to READ_CACHING.
 
@@ -24032,7 +24036,8 @@ Release: September 9, 2025
 
 248 / 287
 
-Notify the server of an oplock break according to the algorithm in section 2.1.5.18.3, setting the
+
+Notify the server of an oplock break according to the algorithm in section 2.1.5.18.3, setting the
 algorithm's parameters as follows:
 
   BreakingOplockOpen equal to ThisOpen.
@@ -24125,7 +24130,8 @@ Release: September 9, 2025
 
 249 / 287
 
-
+
+
 
 The operation waits until the oplock is broken or canceled, as specified in section 2.1.5.18.3.
 When the operation specified in section 2.1.5.18.3 is called, its following input parameters are
@@ -24147,9 +24153,9 @@ section 2.1.5.18.3.
 
 EndIf
 
-2.1.5.18.3
+###### 2.1.5.18.3 Indicating an Oplock Break to the Server
 
-Indicating an Oplock Break to the Server
+
 
 The inputs for indicating an oplock break to the server are:
 
@@ -24197,9 +24203,9 @@ The object store MUST return OplockCompletionStatus, AcknowledgeRequired, and
 NewOplockLevel to the server (the algorithm is as specified in section 2.1.5.18.1 and section
 2.1.5.18.2).
 
-2.1.5.19
+##### 2.1.5.19 Server Acknowledges an Oplock Break
 
-Server Acknowledges an Oplock Break
+
 
 The server provides:
 
@@ -24210,7 +24216,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Open - The Open associated with the oplock that has broken.
+
+  Open - The Open associated with the oplock that has broken.
 
   Type - As part of the acknowledgement, the server indicates a new oplock it would like in place of
 
@@ -24302,7 +24309,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  Set Open.Stream.Oplock.State to LEVEL_TWO_OPLOCK.
+
+  Set Open.Stream.Oplock.State to LEVEL_TWO_OPLOCK.
 
   Set NewOplockGranted to TRUE.
 
@@ -24405,7 +24413,8 @@ Release: September 9, 2025
 
 252 / 287
 
-
+
+
 
 
 
@@ -24504,7 +24513,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-
+
+
 
 (Because BreakingOplockOpen is equal to the passed-in Open, the
 operation ends at this point.)
@@ -24607,7 +24617,8 @@ Release: September 9, 2025
 
 254 / 287
 
-  Recompute Open.Stream.Oplock.State according to the algorithm in
+
+  Recompute Open.Stream.Oplock.State according to the algorithm in
 section 2.1.4.13, passing Open.Stream.Oplock as the ThisOplock
 parameter.
 
@@ -24708,7 +24719,8 @@ Release: September 9, 2025
 
 255 / 287
 
-  Case
+
+  Case
 
 (READ_CACHING|WRITE_CACHING|HANDLE_CACHING|EXCLUSIVE|BREAK_TO_READ_CA
 CHING|BREAK_TO_HANDLE_CACHING):
@@ -24805,7 +24817,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  BreakingOplockOpen equal to Open.
+
+  BreakingOplockOpen equal to Open.
 
   NewOplockLevel equal to RequestedOplockLevel without
 
@@ -24904,7 +24917,8 @@ Release: September 9, 2025
 
 257 / 287
 
-
+
+
 
 
 
@@ -24941,9 +24955,9 @@ EndSwitch
 
 EndIf
 
-2.1.5.20
+##### 2.1.5.20 Server Requests Canceling an Operation
 
-Server Requests Canceling an Operation
+
 
 The server provides:
 
@@ -24970,9 +24984,9 @@ MUST be removed from CancelableOperations.CancelableOperationList and CanceledOp
 MUST be failed with STATUS_CANCELED returned for the status of the canceled operation. If not
 found, the cancel request returns performing no action.<197>
 
-2.1.5.21
+##### 2.1.5.21 Server Requests Querying Quota Information
 
-Server Requests Querying Quota Information
+
 
 The server provides:
 
@@ -24995,7 +25009,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-  SidListLength: The length, in bytes, of the SidList array. If no SidList array is provided, this
+
+  SidListLength: The length, in bytes, of the SidList array. If no SidList array is provided, this
 
 MUST be set to zero.
 
@@ -25091,7 +25106,8 @@ Release: September 9, 2025
 
 259 / 287
 
-
+
+
 
 If RestartScan is TRUE or Open.LastQuotaId is -1:
 
@@ -25155,9 +25171,9 @@ EndIf
 
   ByteCount set to the count, in bytes, of how much data was filled into OutputBuffer.
 
-2.1.5.22
+##### 2.1.5.22 Server Requests Setting Quota Information
 
-Server Requests Setting Quota Information
+
 
 The server provides:
 
@@ -25186,7 +25202,8 @@ Release: September 9, 2025
 
 260 / 287
 
-Pseudocode for the operation is as follows:
+
+Pseudocode for the operation is as follows:
 
 
 
@@ -25279,7 +25296,8 @@ Release: September 9, 2025
 
 261 / 287
 
-3  Algorithm Examples
+
+## 3 Algorithm Examples
 
 None.
 
@@ -25290,16 +25308,17 @@ Release: September 9, 2025
 
 262 / 287
 
-4  Security
 
-4.1  Security Considerations for Implementers
+## 4 Security
+
+### 4.1 Security Considerations for Implementers
 
 Security is opaque to file systems. Some file systems store security descriptors as opaque blobs and
 then call security support routines to perform the necessary security checks. Other file systems do not
 implement security. Security considerations are called out in the sections where they are used. Please
 refer to [MS-AUTHSOD] for a security overview.
 
-4.2  Index of Security Parameters
+### 4.2 Index of Security Parameters
 
 Security parameter  Section
 
@@ -25330,7 +25349,8 @@ Release: September 9, 2025
 
 263 / 287
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -25399,7 +25419,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<2> Section 2.1.1.1: NTFS uses a default cluster size of 4 KB, a maximum cluster size of 64 KB on
+
+<2> Section 2.1.1.1: NTFS uses a default cluster size of 4 KB, a maximum cluster size of 64 KB on
 Windows 10 v1703 operating system and earlier and Windows Server 2016 and earlier, and 2 MB on
 Windows 10 v1709 operating system and later and Windows Server 2019 and later, and a minimum
 cluster size of 512 bytes. ReFS in Windows 8, Windows 8.1, Windows Server 2012 operating system
@@ -25534,7 +25555,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Timestamp
+
+Timestamp
 
 ReFS
 
@@ -25760,7 +25782,8 @@ Release: September 9, 2025
 
 266 / 287
 
-Timestamp
+
+Timestamp
 
 ReFS
 
@@ -25950,7 +25973,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Value
+
+Value
 
 Meaning
 
@@ -26132,7 +26156,8 @@ Release: September 9, 2025
 
 268 / 287
 
-<24> Section 2.1.1.3: ReFS and exFAT do not implement ShortNames.
+
+<24> Section 2.1.1.3: ReFS and exFAT do not implement ShortNames.
 
 <25> Section 2.1.1.3: Only NTFS implements encryption.
 
@@ -26371,7 +26396,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Timestamp
+
+Timestamp
 
 ReFS
 
@@ -26606,7 +26632,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-In Windows 10 v1803 and later, NTFS has two registry values controlling LastAccessTime updates:
+
+In Windows 10 v1803 and later, NTFS has two registry values controlling LastAccessTime updates:
 HKLM\System\CurrentControlSet\Control\FileSystem\NtfsDisableLastAccessUpdate and
 HKLM\System\CurrentControlSet\Control\FileSystem\
 NtfsLastAccessUpdatePolicyVolumeSizeThreshold. The NtfsDisableLastAccessUpdate value is now
@@ -26771,7 +26798,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-Timestamp
+
+Timestamp
 
 ReFS
 
@@ -26886,7 +26914,8 @@ Release: September 9, 2025
 
 272 / 287
 
-<43> Section 2.1.4.17:  File systems may choose to defer processing for a file that has been modified
+
+<43> Section 2.1.4.17:  File systems may choose to defer processing for a file that has been modified
 to a later time, favoring performance over accuracy. The NTFS file system on versions earlier than
 Windows 10 v1809 operating system and non-NTFS file systems on all versions of Windows, defer this
 processing until the Open gets closed.
@@ -26999,7 +27028,8 @@ Release: September 9, 2025
 
 273 / 287
 
-<47> Section 2.1.5.1:  Only the NTFS and ReFS file systems support complex name suffixes and
+
+<47> Section 2.1.5.1:  Only the NTFS and ReFS file systems support complex name suffixes and
 StreamTypeNames. File systems that do not support this return STATUS_OBJECT_NAME_INVALID.
 
 <48> Section 2.1.5.1.1: For the NTFS file system, the FileId128 consists of a 48-bit index into the
@@ -27065,7 +27095,8 @@ Release: September 9, 2025
 
 274 / 287
 
-<65> Section 2.1.5.6.3.4:  The NTFS file system on versions earlier than Windows 11 and earlier than
+
+<65> Section 2.1.5.6.3.4:  The NTFS file system on versions earlier than Windows 11 and earlier than
 Windows Server 2022, and non-NTFS file systems on all versions of Windows, always set the FileID
 field to zero in the ".." entry.
 
@@ -27133,7 +27164,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<82> Section 2.1.5.10.1: This is only implemented by the NTFS file system.
+
+<82> Section 2.1.5.10.1: This is only implemented by the NTFS file system.
 
 <83> Section 2.1.5.10.1: If the generated ObjectId collides with existing ObjectIds on the volume,
 Windows retries up to 16 times before failing the operation with STATUS_DUPLICATE_NAME.
@@ -27202,7 +27234,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<102> Section 2.1.5.10.9: This is only implemented by the NTFS and ReFS file systems.
+
+<102> Section 2.1.5.10.9: This is only implemented by the NTFS and ReFS file systems.
 
 <103> Section 2.1.5.10.10: This operation is only implemented by the ReFS file system.
 
@@ -27272,7 +27305,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<126> Section 2.1.5.10.29.4: REFS_STREAM_SNAPSHOT_OPERATION_REVERT is not supported
+
+<126> Section 2.1.5.10.29.4: REFS_STREAM_SNAPSHOT_OPERATION_REVERT is not supported
 on Windows and returns STATUS_NOT_IMPLEMENTED.
 
 <127> Section 2.1.5.10.29.5: REFS_STREAM_SNAPSHOT_OPERATION_SET_SHADOW_BTREE
@@ -27340,7 +27374,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<145> Section 2.1.5.10.36: The file system only updates LastChangeTime if no user has explicitly set
+
+<145> Section 2.1.5.10.36: The file system only updates LastChangeTime if no user has explicitly set
 LastChangeTime. The NTFS and ReFS file systems defer setting the LastChangeTime until the handle
 is closed.
 
@@ -27409,7 +27444,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<164> Section 2.1.5.12.10: Only the NTFS file system implements EAs.
+
+<164> Section 2.1.5.12.10: Only the NTFS file system implements EAs.
 
 <165> Section 2.1.5.12.12: This operation is only supported by the NTFS file system.
 
@@ -27549,7 +27585,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-ReFS
+
+ReFS
 
 NTFS
 
@@ -27724,7 +27761,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-FILE_CASE_SENSITIVE_SEARCH
+
+FILE_CASE_SENSITIVE_SEARCH
 
 0x00000001
 
@@ -27861,7 +27899,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-ReFS
+
+ReFS
 
 NTFS
 
@@ -27942,7 +27981,8 @@ File System Algorithms
 Copyright © 2025 Microsoft Corporation
 Release: September 9, 2025
 
-<193> Section 2.1.5.17:  The FAT32 file system will return ACCESS_DENIED.
+
+<193> Section 2.1.5.17:  The FAT32 file system will return ACCESS_DENIED.
 
 <194> Section 2.1.5.17: The file system only updates LastChangeTime if no user has explicitly set
 LastChangeTime. The NTFS and ReFS file systems defer setting LastChangeTime until the handle is
@@ -27983,7 +28023,8 @@ Release: September 9, 2025
 
 284 / 287
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -28033,7 +28074,8 @@ Release: September 9, 2025
 
 285 / 287
 
-7  Index
+
+## 7 Index
 A
 
 Abstract data model
@@ -28168,7 +28210,8 @@ Higher-layer triggered events
 
 286 / 287
 
-   Oplock break 250
+
+   Oplock break 250
    overview 54
    quota information
       querying 258

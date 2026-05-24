@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 55
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: June 1, 2017
 
 2 / 55
 
-Date
+
+Date
 
 Revision
 History
@@ -501,193 +503,84 @@ Release: June 1, 2017
 
 3 / 55
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Internet Explorer Maintenance Extension Protocol Overview](#132-internet-explorer-maintenance-extension-protocol-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 SYSVOL Structure](#221-sysvol-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Tool Plug-in Details](#31-administrative-tool-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Administered GPO (Public)](#3111-administered-gpo-public)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client-Side Plug-in Details](#32-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Client-Side State](#3211-client-side-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 File Formats](#41-file-formats)
+    - [4.1.1 INS File Format](#411-ins-file-format)
+    - [4.1.2 ADM File Format](#412-adm-file-format)
+    - [4.1.3 INF File Format](#413-inf-file-format)
+      - [4.1.3.1 File Format used by Seczones.INF, Authcode.INF, Ratings.INF, and](#4131-file-format-used-by-seczonesinf-authcodeinf-ratingsinf-and)
+        - [4.1.3.1.1 Part A](#41311-part-a)
+        - [4.1.3.1.2 Part B](#41312-part-b)
+      - [4.1.3.2 Seczrsop.INF File Format](#4132-seczrsopinf-file-format)
+      - [4.1.3.3 Ratrsop.INF File Format](#4133-ratrsopinf-file-format)
+    - [4.1.4 BMP File Format](#414-bmp-file-format)
+    - [4.1.5 ICO File Format](#415-ico-file-format)
+    - [4.1.6 CONNECT.RAS File Format](#416-connectras-file-format)
+    - [4.1.7 CS.DAT File Format](#417-csdat-file-format)
+  - [4.2 INSTALL.INS Example](#42-installins-example)
+  - [4.3 Examples of Seczones.INF, Authcode.INF, Ratings.INF, and Programs.INF](#43-examples-of-seczonesinf-authcodeinf-ratingsinf-and-programsinf)
+    - [4.3.1 SECZONES.INF Example](#431-seczonesinf-example)
+    - [4.3.2 AUTHCODE.INF Example](#432-authcodeinf-example)
+    - [4.3.3 RATINGS.INF Example](#433-ratingsinf-example)
+    - [4.3.4 PROGRAMS.INF Example](#434-programsinf-example)
+  - [4.4 SECZRSOP.INF Example](#44-seczrsopinf-example)
+  - [4.5 RATRSOP.INF Example](#45-ratrsopinf-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Background ................................................................................................. 9
-Internet Explorer Maintenance Extension Protocol Overview ............................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-SYSVOL Structure ....................................................................................... 12
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 14
-Administrative Tool Plug-in Details ..................................................................... 14
-Abstract Data Model .................................................................................... 14
-Administered GPO (Public) ..................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-Client-Side Plug-in Details ................................................................................. 15
-Abstract Data Model .................................................................................... 15
-Client-Side State ................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Process Group Policy ............................................................................. 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-3.2.7
-
-3.2.1.1
-
-3.2.4.1
-
-3.2.1
-
-3.2
-
-4.1
-
-4  Protocol Examples ................................................................................................. 17
-File Formats .................................................................................................... 17
-INS File Format .......................................................................................... 17
-ADM File Format ......................................................................................... 36
-INF File Format .......................................................................................... 36
-
-4.1.1
-4.1.2
-4.1.3
-
-4.1.3.1
-
-4.1.3.1.1
-4.1.3.1.2
-
-4.1.3.2
-4.1.3.3
-
-File Format used by Seczones.INF, Authcode.INF, Ratings.INF, and
-Programs.INF ....................................................................................... 37
-Part A ............................................................................................ 37
-Part B ............................................................................................ 38
-Seczrsop.INF File Format ....................................................................... 39
-Ratrsop.INF File Format ......................................................................... 42
-BMP File Format ......................................................................................... 42
-ICO File Format .......................................................................................... 42
-CONNECT.RAS File Format ........................................................................... 42
-
-4.1.4
-4.1.5
-4.1.6
-
-[MS-GPIE] - v20170601
-Group Policy: Internet Explorer Maintenance Extension
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 55
-
-4.1.7
-
-4.2
-4.3
-
-4.3.1
-4.3.2
-4.3.3
-4.3.4
-
-4.4
-4.5
-
-CS.DAT File Format ..................................................................................... 42
-INSTALL.INS Example....................................................................................... 43
-Examples of Seczones.INF, Authcode.INF, Ratings.INF, and Programs.INF .............. 44
-SECZONES.INF Example .............................................................................. 44
-AUTHCODE.INF Example ............................................................................. 45
-RATINGS.INF Example ................................................................................ 46
-PROGRAMS.INF Example ............................................................................. 47
-SECZRSOP.INF Example ................................................................................... 48
-RATRSOP.INF Example ..................................................................................... 49
-
-5  Security ................................................................................................................. 50
-Security Considerations for Implementers ........................................................... 50
-Index of Security Parameters ............................................................................ 50
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 51
-
-7  Change Tracking .................................................................................................... 53
-
-8  Index ..................................................................................................................... 54
-
-[MS-GPIE] - v20170601
-Group Policy: Internet Explorer Maintenance Extension
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 55
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Group Policy: Internet Explorer Maintenance Extension protocol.
 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -748,7 +641,8 @@ Release: June 1, 2017
 
 6 / 55
 
-fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
+
+fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
 
 location in the Domain Name System's (DNS) hierarchy tree, as defined in [RFC1035] section
 3.1 and [RFC2181] section 11.
@@ -823,21 +717,22 @@ Release: June 1, 2017
 
 7 / 55
 
-Universal Naming Convention (UNC): A string format that specifies the location of a resource.
+
+Universal Naming Convention (UNC): A string format that specifies the location of a resource.
 
 For more information, see [MS-DTYP] section 2.2.57.
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -855,7 +750,7 @@ assist you in finding the relevant information.
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-FASOD] Microsoft Corporation, "File Access Services Protocols Overview".
 
@@ -889,7 +784,8 @@ Release: June 1, 2017
 
 8 / 55
 
-[MSDN-WININET2] Microsoft Corporation, "INTERNET_PER_CONN_OPTION structure",
+
+[MSDN-WININET2] Microsoft Corporation, "INTERNET_PER_CONN_OPTION structure",
 http://msdn.microsoft.com/en-us/library/aa385145.aspx
 
 [MSFT-IEM] Microsoft Corporation, "Internet Explorer Maintenance Extension Technical Reference",
@@ -911,14 +807,14 @@ https://www.rfc-editor.org/info/rfc2181
 [RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
 Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Internet Explorer Maintenance Extension protocol enables administrators to assign
 custom Favorites, links, security, interface, and other settings to Internet Explorer as part of a Group
 Policy Object (GPO). This enables administrators to enforce Internet-related security standards and
 provide a common browser interface within an organization.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol Specification (as specified in [MS-GPOL]) enables clients to discover
 and retrieve policy settings created by administrators of a domain. These settings are located in
@@ -938,7 +834,7 @@ A client-side plug-in uses the contents of the GPO to retrieve settings specific
 specific to its class. Once its class-specific settings are retrieved, the client-side plug-in uses those
 settings to perform class-specific processing.
 
-1.3.2  Internet Explorer Maintenance Extension Protocol Overview
+#### 1.3.2 Internet Explorer Maintenance Extension Protocol Overview
 
 The participants in this protocol are the following:
 
@@ -955,7 +851,8 @@ Release: June 1, 2017
 
 9 / 55
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-GPIE].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -974,7 +871,7 @@ this client-side plug-in then retrieves the files contained in the GPO, copying 
 location in the generic BLOB store ("<gpo path>\user\Microsoft\IEAK") to the client, where they will
 be processed later by Internet Explorer components.<1>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Group Policy: Internet Explorer Maintenance Extension protocol is initiated only as part of the
 Group Policy: Core Protocol, as specified in [MS-GPOL] section 1.3.3. The Group Policy: Internet
@@ -991,12 +888,12 @@ file access.
 Figure 1: Group Policy: Internet Explorer Maintenance Extension protocol relationship
 diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 There are no prerequisites or preconditions for the Group Policy: Internet Explorer Maintenance
 Extension protocol beyond what is specified in Group Policy: Core Protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: Internet Explorer Maintenance Extension protocol is applicable only within the Group
 Policy framework, as described in [MS-GPOL].
@@ -1008,19 +905,20 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The Group Policy: Internet Explorer Maintenance Extension protocol is not versioned and does not
 require any capability negotiation. It supports heterogeneous clients running different versions of the
 operating system or Internet Explorer browser.<2> However, some settings are not applicable for
 every version, and these are specifically mentioned in this document.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Internet Explorer Maintenance Extension protocol does not define any vendor-
 extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Group Policy: Internet Explorer Maintenance Extension protocol defines client-side extension
 GUID (CSE GUID) and tool extension GUID standards assignments, as specified in [MS-GPOL]
@@ -1043,15 +941,16 @@ Release: June 1, 2017
 
 11 / 55
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All messages are exchanged by copying files, using remote file access as described in [MS-FASOD].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  SYSVOL Structure
+#### 2.2.1 SYSVOL Structure
 
 The file store for Group Policy: Internet Explorer Maintenance Extension protocol files MUST be located
 in SYSVOL in the directory structure shown in the figure below. Each subdirectory of the "branding"
@@ -1067,7 +966,8 @@ Release: June 1, 2017
 
 12 / 55
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPIE].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1081,15 +981,16 @@ Release: June 1, 2017
 
 13 / 55
 
-3  Protocol Details
 
-3.1  Administrative Tool Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative Tool Plug-in Details
 
 The administrative plug-in mediates between a user interface (UI) and a generic BLOB store that
 contains data files. Its purpose is to receive configuration information from a UI and to write data files
 to a generic BLOB store.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1107,30 +1008,30 @@ plug-in will copy the resultant data files to the BLOB store.
 This conceptual data can be implemented using a variety of techniques. An implementation can
 implement such data using any method.
 
-3.1.1.1  Administered GPO (Public)
+##### 3.1.1.1 Administered GPO (Public)
 
 The Administered GPO is generated by [MS-GPOL] (as specified in section 3.3.1.3) and is read by
 Group Policy: Internet Explorer Maintenance Extension. The Group Policy Object (GPO) path is
 used to determine the destination of the data files being copied to a BLOB store.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the administrative tool plug-in is initialized, it retrieves the extension's GPO settings as
 described in [MS-GPOL] section 2.2.7, and uses remote file access to read the contents of the various
 configuration files which are located under SYSVOL as described in section 2.2.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Whenever an administrator changes a setting, the administrative tool plug-in MUST write the
 configuration files to the file share using remote file access. The install.ins file MUST reside under
 "<gpo path>\user\Microsoft\IEAK\". The remaining configuration files MUST reside under the "<gpo
 path>\user\Microsoft\IEAK\branding" directory, as specified in section 2.2.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The administrative tool plug-in MUST write all the files to SYSVOL, as specified in [MS-GPOL], using
 remote file access. If a copy fails, the administrative tool plug-in MUST display to the user that the
@@ -1143,24 +1044,25 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SYSVOL, the administrative tool MUST invoke the Group Policy Extension Update task ([MS-GPOL]
+
+SYSVOL, the administrative tool MUST invoke the Group Policy Extension Update task ([MS-GPOL]
 section 3.3.4.4, Group Policy Extension Update).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client-Side Plug-in Details
+### 3.2 Client-Side Plug-in Details
 
 The client-side plug-in for the Group Policy: Internet Explorer Maintenance Extension protocol
 retrieves settings, and controls how Internet Explorer behaves on client computers that receive
 settings. All relevant files MUST first be copied from the file store to the client.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1168,28 +1070,28 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Client-Side State
+##### 3.2.1.1 Client-Side State
 
 The client-side plug-in maintains no persistent state. During processing, the New or Changed GPO list
 passed as a parameter is enumerated and then discarded (see section 3.2.5).
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 This extension is launched by the Group Policy: Core Protocol, which invokes the Process Group Policy
 event, whose abstract interface is specified in [MS-GPOL] section 3.2.4.1, to apply policies that are
 handled by this extension.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 For each GPO in the New or Changed GPO list, the client-side plug-in MUST copy, using remote file
 access, the install.ins file from "<gpo path>\user\Microsoft\IEAK\". If the file is not found, the
@@ -1202,7 +1104,8 @@ Release: June 1, 2017
 
 15 / 55
 
-The client-side plug-in MUST then copy, using remote file access, the "<gpo
+
+The client-side plug-in MUST then copy, using remote file access, the "<gpo
 path>\user\Microsoft\IEAK\branding" directory, including all subdirectories and any files contained in
 those subdirectories.
 
@@ -1212,11 +1115,11 @@ Interfaces.<3>
 
 The destination of these file copies is implementation-specific.<4>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1227,7 +1130,8 @@ Release: June 1, 2017
 
 16 / 55
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections give examples of the types of files stored on the BLOB server by the authoring
 components in Windows and ultimately consumed by Internet Explorer. Examples of informative
@@ -1235,12 +1139,12 @@ descriptions of the individual file formats for each of the files under the "<gp
 path>\user\Microsoft\IEAK" folder in SYSVOL are first, followed by examples of the INSTALL.INS,
 SECZONES.INF, SECZRSOP.INF, and RATRSOP.INF files.
 
-4.1  File Formats
+### 4.1 File Formats
 
 This section specifies the individual file formats for each of the files under the "<gpo
 path>\user\Microsoft\IEAK" folder in SYSVOL.
 
-4.1.1  INS File Format
+#### 4.1.1 INS File Format
 
 The install.ins file is a file divided into various formatted sections and written using the ANSI
 character set (ANSI). Each section is designed for a particular purpose, and the entries in a section
@@ -1295,7 +1199,8 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-IP Address: Indicates that the value is an IPv4 address as an ANSI string (for more information, see
+
+IP Address: Indicates that the value is an IPv4 address as an ANSI string (for more information, see
 
 [RFC1123] section 2.1).
 
@@ -1418,7 +1323,8 @@ bitmap file
 
 18 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -1558,7 +1464,8 @@ Connection
 
 19 / 55
 
- Sample value
+
+ Sample value
 
  Description
 
@@ -1678,7 +1585,8 @@ will cause any
 
 20 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -1807,7 +1715,8 @@ used by
 
 21 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -1928,7 +1837,8 @@ Explorer is not
 
 22 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2036,7 +1946,8 @@ Explorer setup
 
 23 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2161,7 +2072,8 @@ IEAK wizard
 
 24 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2289,7 +2201,8 @@ default.
 
 25 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2430,7 +2343,8 @@ appear in the
 
 26 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2579,7 +2493,8 @@ the IEAK is to
 
 27 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2739,7 +2654,8 @@ The type of
 
 28 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -2882,7 +2798,8 @@ of a custom
 
 29 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3016,7 +2933,8 @@ Explorer.
 
 30 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3196,7 +3114,8 @@ settings.
 
 31 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3325,7 +3244,8 @@ protocol.
 
 32 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3488,7 +3408,8 @@ Name entry
 
 33 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3649,7 +3570,8 @@ settings.
 
 34 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3810,7 +3732,8 @@ Internet
 
 35 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -3848,12 +3771,12 @@ Explorer is to
 use a local
 INS file.
 
-4.1.2  ADM File Format
+#### 4.1.2 ADM File Format
 
 This file format applies to Inetcorp.adm and Inetset.adm under SYSVOL. This file format is specified
 in [MS-GPREG] section 2.2.2.1.
 
-4.1.3  INF File Format
+#### 4.1.3 INF File Format
 
 This file format applies to all INF files under SYSVOL. This file format is specified by the following
 ABNF format. For examples of uses of INF files, see [MSDN-INF].
@@ -3875,7 +3798,7 @@ the following sections, see [MSDN-SECZONES].
 
 For more information about INF files, see [MSDN-INF].
 
-4.1.3.1  File Format used by Seczones.INF, Authcode.INF, Ratings.INF, and
+##### 4.1.3.1 File Format used by Seczones.INF, Authcode.INF, Ratings.INF, and
 
 Programs.INF
 
@@ -3887,7 +3810,7 @@ is given in section 4.3.
 for the clarity of this documentation. In the protocol implementation, there is no separation marker or
 symbol placed between these parts. Part B seamlessly follows Part A of the file.
 
-4.1.3.1.1 Part A
+###### 4.1.3.1.1 Part A
 
 [MS-GPIE] - v20170601
 Group Policy: Internet Explorer Maintenance Extension
@@ -3896,7 +3819,8 @@ Release: June 1, 2017
 
 36 / 55
 
-Part A of seczones.inf is formed by sections and name-value pairs, similar in syntax to the
+
+Part A of seczones.inf is formed by sections and name-value pairs, similar in syntax to the
 INSTALL.INS file described above in section 4.1.1. The remainder of this section specifies additional
 restrictions for the SectionName, ValueName, and Value strings, and their interrelationships (for
 example, a certain ValueName will be legal only after a certain SectionName has appeared). In
@@ -4016,7 +3940,8 @@ followed by
 
 37 / 55
 
- SectionName
+
+ SectionName
 
  ValueName
 
@@ -4044,7 +3969,7 @@ this file
 followed by
 an integer.
 
-4.1.3.1.2 Part B
+###### 4.1.3.1.2 Part B
 
 This part (Part B) details the sections that are already named in the previous part (Part A). For each
 section, the section heading is followed by a set of entries describing a registry key or value. Each
@@ -4102,7 +4027,8 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-           FLG_ADDREG_TYPE_BINARY.)
+
+           FLG_ADDREG_TYPE_BINARY.)
 
  0x00000002 (FLG_ADDREG_NOCLOBBER)
       Prevent a given value from replacing the value of an existing
@@ -4139,7 +4065,7 @@ Optional. Value to set. Can be a 32-bit number in little-endian format, an ANSI 
 stream. An octet stream can extend beyond the 128-byte line maximum by using a backslash (\)
 character.
 
-4.1.3.2  Seczrsop.INF File Format
+##### 4.1.3.2 Seczrsop.INF File Format
 
 An informative description of the specific relevant setting names and legal values for Seczrsop.inf
 follows, which uses the definitions of value type from section 4.1.1. An example of this file format is
@@ -4190,7 +4116,8 @@ Release: June 1, 2017
 
 39 / 55
 
-SectionName
+
+SectionName
 
  ValueName
 
@@ -4361,7 +4288,8 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SectionName
+
+SectionName
 
  ValueName
 
@@ -4456,7 +4384,7 @@ level for third-party cookies.
 A URL that maps to the
 third-party privacy setting.
 
-4.1.3.3  Ratrsop.INF File Format
+##### 4.1.3.3 Ratrsop.INF File Format
 
 An informative description of the setting names and legal values in Ratrsop.inf follows, which uses the
 definitions of value type from section 4.1.1. An example of this file format is provided in section 4.5.
@@ -4509,7 +4437,8 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-SectionName
+
+SectionName
 
  ValueName
 
@@ -4533,19 +4462,19 @@ String
 
 Ratings bureau.
 
-4.1.4  BMP File Format
+#### 4.1.4 BMP File Format
 
 The BMP files under SYSVOL are not interpreted by the Group Policy: Internet Explorer Maintenance
 Extension protocol client or administrative tool plug-ins. For more information about BMP files, see
 [MSDN-BMPST].
 
-4.1.5  ICO File Format
+#### 4.1.5 ICO File Format
 
 The ICO files under SYSVOL are not interpreted by the Group Policy: Internet Explorer Maintenance
 Extension protocol client or administrative tool plug-ins. For more information on ICO files, see
 [MSDN-ICO].
 
-4.1.6  CONNECT.RAS File Format
+#### 4.1.6 CONNECT.RAS File Format
 
 The format of this file is specified in the ABNF that follows. For more information on the RAS file
 format, see [MSDN-RAS]. The content of this file is not interpreted by the Group Policy: Internet
@@ -4557,7 +4486,7 @@ Explorer Maintenance Extension protocol; it is simply given directly to Internet
  DWord = 4Byte
  Byte = %x00-FF
 
-4.1.7  CS.DAT File Format
+#### 4.1.7 CS.DAT File Format
 
 The format of this file is specified in the following ABNF. For more information, see [MSDN-RAS2],
 [MSDN-WININET1], and [MSDN-WININET2]. The content of this file is not interpreted by the Group
@@ -4593,7 +4522,8 @@ Release: June 1, 2017
 
 42 / 55
 
- sizedstring = strsize 1*wchar
+
+ sizedstring = strsize 1*wchar
  strsize = dword
  dword = wchar wchar
  wchar = byte byte
@@ -4615,7 +4545,7 @@ sizedstring: A BLOB of data to be passed uninterpreted to Internet Explorer sett
 
 octets is equal to two times the value in the strsize field.
 
-4.2  INSTALL.INS Example
+### 4.2 INSTALL.INS Example
 
 In this example, a system administrator chooses to not allow users in her group to configure proxy
 settings on their local machines. She, therefore, chooses to use the Internet Explorer Maintenance
@@ -4651,7 +4581,7 @@ also adds "http://*.mycorp.com" in the exception list as specified above by the 
 The client-side plug-in does not parse or interpret the settings or understand their semantics; it
 merely configures Internet Explorer with the values.
 
-4.3  Examples of Seczones.INF, Authcode.INF, Ratings.INF, and Programs.INF
+### 4.3 Examples of Seczones.INF, Authcode.INF, Ratings.INF, and Programs.INF
 
 The INF file format is specified in section 4.1.3. These files are placed according to the layout specified
 in section 2.2.1 on the remote storage location in a GPO path, such as
@@ -4663,13 +4593,14 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-"\\Redmond\SYSVOL\Redmond\Policies\{GPO-GUID}\user\Microsoft\IEAK". The text "GPO-GUID" is
+
+"\\Redmond\SYSVOL\Redmond\Policies\{GPO-GUID}\user\Microsoft\IEAK". The text "GPO-GUID" is
 replaced with the appropriate GPO GUID from the running Group Policy server; for example,
 "\\Redmond\SYSVOL\Redmond\Policies\{E11F4FD7-25E3-4069-876B-
 B8C90C4A61AF}\user\Microsoft\IEAK". This GPO path is written by the administrative tool extension.
 The following sections give examples of these INF file formats.
 
-4.3.1  SECZONES.INF Example
+#### 4.3.1 SECZONES.INF Example
 
 The following is an example of the Seczones.INF file format.
 
@@ -4738,7 +4669,8 @@ Release: June 1, 2017
 
 44 / 55
 
- HKCU,"Software\Microsoft\Internet Explorer\New Windows",BlockUserInit,
+
+ HKCU,"Software\Microsoft\Internet Explorer\New Windows",BlockUserInit,
      0x10001,00,00,00,00
  HKCU,"Software\Microsoft\Internet Explorer\New Windows",UseHooks,
      0x10001,01,00,00,00
@@ -4749,7 +4681,7 @@ Release: June 1, 2017
  HKCU,"Software\Microsoft\Internet Explorer\New Windows",PopupMgr,
      0x10001,01,00,00,00
 
-4.3.2  AUTHCODE.INF Example
+#### 4.3.2 AUTHCODE.INF Example
 
 The following is an example of the Authcode.INF file format.
 
@@ -4786,7 +4718,7 @@ bicgjfnidofeoilgbaedbnpcncepokfp,,"Contoso Test Root Authority"
 Publishing\Trust Database\0",mhakmeenekpdljcgjcikfejnnbciilai
 mngnindodflkogelilcgapilhnpjjoef,,"Test CodeSign CA"
 
-4.3.3  RATINGS.INF Example
+#### 4.3.3 RATINGS.INF Example
 
 The following is an example of the Ratings.INF file format.
 
@@ -4808,7 +4740,8 @@ Release: June 1, 2017
 
 45 / 55
 
- RequiredEngine=SetupAPI,"Fatal Error - missing setupapi.dll"
+
+ RequiredEngine=SetupAPI,"Fatal Error - missing setupapi.dll"
  CustomDestination=CustInstDestSection
  AddReg=AddReg.Hklm
 
@@ -4884,7 +4817,8 @@ Release: June 1, 2017
 
 46 / 55
 
- HKLM,"Software\Microsoft\Windows\CurrentVersion\Policies\Ratings\PICSRules\.Default\0\PRPolic
+
+ HKLM,"Software\Microsoft\Windows\CurrentVersion\Policies\Ratings\PICSRules\.Default\0\PRPolic
 y\0\PRPPolicySub\0",PRBUInternetPattern,0x10001,01,00,00,00
  HKLM,"Software\Microsoft\Windows\CurrentVersion\Policies\Ratings\PICSRules\.Default\0\PRPolic
 y\0\PRPPolicySub\0",PRBUNonWild,0x10001,0D,00,00,00
@@ -4899,7 +4833,7 @@ y\0\PRPPolicySub\0",PRBUPort,,"80"
  HKLM,"Software\Microsoft\Windows\CurrentVersion\Policies\Ratings\PICSRules\.Default\0\PRPolic
 y\0\PRPPolicySub\0",PRBUUrl,,"http://www.contoso.com"
 
-4.3.4  PROGRAMS.INF Example
+#### 4.3.4 PROGRAMS.INF Example
 
 The following is an example of the Programs.INF file format.
 
@@ -4957,10 +4891,11 @@ Group Policy: Internet Explorer Maintenance Extension
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- HKCU,"Software\Microsoft\Internet Explorer\Default HTML
+
+ HKCU,"Software\Microsoft\Internet Explorer\Default HTML
 Editor\shell\edit\command",,,"%11%\NOTEPAD.EXE %1"
 
-4.4  SECZRSOP.INF Example
+### 4.4 SECZRSOP.INF Example
 
  The INF file format is specified earlier in section 4.1.3. The following example demonstrates its use in
 describing the security zone settings for Internet Explorer through use of SECZRSOP.INF file. This file
@@ -5029,11 +4964,12 @@ Release: June 1, 2017
 
 48 / 55
 
- Action18=1400:0
+
+ Action18=1400:0
  Action23=1804:1
  Mapping0=www.contoso.com
 
-4.5  RATRSOP.INF Example
+### 4.5 RATRSOP.INF Example
 
 The INF file format is specified earlier in section 4.1.3. The following example demonstrates its use in
 describing the Content Advisor (site ratings) settings for Internet Explorer through use of
@@ -5055,13 +4991,14 @@ Release: June 1, 2017
 
 49 / 55
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -5072,7 +5009,8 @@ Release: June 1, 2017
 
 50 / 55
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5151,7 +5089,8 @@ Release: June 1, 2017
 
 51 / 55
 
-<5> Section 4.1.1: For more information on the Windows interpretation of these settings, see [MSFT-
+
+<5> Section 4.1.1: For more information on the Windows interpretation of these settings, see [MSFT-
 IEM].
 
 [MS-GPIE] - v20170601
@@ -5161,7 +5100,8 @@ Release: June 1, 2017
 
 52 / 55
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -5173,7 +5113,8 @@ Release: June 1, 2017
 
 53 / 55
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5305,7 +5246,8 @@ Release: June 1, 2017
 
 54 / 55
 
-Parameters - security index 50
+
+Parameters - security index 50
 Preconditions 10
 Prerequisites 10
 Product behavior 51

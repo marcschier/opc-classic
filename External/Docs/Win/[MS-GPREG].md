@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 81
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 81
 
-Date
+
+Date
 
 Revision
 History
@@ -540,263 +542,110 @@ Release: April 23, 2024
 
 3 / 81
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Registry Extension Encoding Overview](#132-registry-extension-encoding-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Registry Policy Message Syntax](#221-registry-policy-message-syntax)
+    - [2.2.2 Policy Description Message](#222-policy-description-message)
+      - [2.2.2.1 ADM-Based Policy Description Message](#2221-adm-based-policy-description-message)
+        - [2.2.2.1.1 ADM Conditional Directive](#22211-adm-conditional-directive)
+      - [2.2.2.2 ADMX-Based Policy Description Message](#2222-admx-based-policy-description-message)
+        - [2.2.2.2.1 ADMX File](#22221-admx-file)
+          - [2.2.2.2.1.1 categories Element](#222211-categories-element)
+          - [2.2.2.2.1.2 policies Element](#222212-policies-element)
+          - [2.2.2.2.1.3 stringReference](#222213-stringreference)
+          - [2.2.2.2.1.4 presentationReference](#222214-presentationreference)
+        - [2.2.2.2.2 ADML File](#22222-adml-file)
+          - [2.2.2.2.2.1 resources Element](#222221-resources-element)
+            - [2.2.2.2.2.1.1 stringTable Element](#2222211-stringtable-element)
+            - [2.2.2.2.2.1.2 presentationTable Element](#2222212-presentationtable-element)
+        - [2.2.2.2.3 ADMX/ADML File Reference Examples](#22223-admxadml-file-reference-examples)
+      - [2.2.2.3 ADM-based policies compared to ADMX-based policies](#2223-adm-based-policies-compared-to-admx-based-policies)
+    - [2.2.3 Policy Comment Message](#223-policy-comment-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Plug-in Details](#31-administrative-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Group Policy Object (GPO)](#3111-group-policy-object-gpo)
+      - [3.1.1.2 Policy Description Store](#3112-policy-description-store)
+      - [3.1.1.3 Computer Policy Setting State](#3113-computer-policy-setting-state)
+      - [3.1.1.4 User Policy Setting State](#3114-user-policy-setting-state)
+      - [3.1.1.5 Policy Comment State](#3115-policy-comment-state)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Load Policy Settings Event](#3141-load-policy-settings-event)
+      - [3.1.4.2 Update Policy Settings Event](#3142-update-policy-settings-event)
+      - [3.1.4.3 Load Policy Comments Event](#3143-load-policy-comments-event)
+      - [3.1.4.4 Update Policy Comments Event](#3144-update-policy-comments-event)
+      - [3.1.4.5 ADM-Based Policy Description Load Event](#3145-adm-based-policy-description-load-event)
+      - [3.1.4.6 ADMX-Based Policy Description Load Event](#3146-admx-based-policy-description-load-event)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Policy Description Sequences for ADM-Based Administrative Templates](#3151-policy-description-sequences-for-adm-based-administrative-templates)
+      - [3.1.5.2 Policy Description Sequences for ADMX-Based Administrative Templates](#3152-policy-description-sequences-for-admx-based-administrative-templates)
+      - [3.1.5.3 Policy Administration Load Message Sequencing](#3153-policy-administration-load-message-sequencing)
+      - [3.1.5.4 Policy Administration Update Message Sequencing](#3154-policy-administration-update-message-sequencing)
+      - [3.1.5.5 Policy Administration Comments Load Message Sequencing](#3155-policy-administration-comments-load-message-sequencing)
+      - [3.1.5.6 Policy Administration Comment Update Message Sequencing](#3156-policy-administration-comment-update-message-sequencing)
+      - [3.1.5.7 Policy Administration Comment Localization Message Sequencing](#3157-policy-administration-comment-localization-message-sequencing)
+      - [3.1.5.8 Policy Administration for Network Access Protection](#3158-policy-administration-for-network-access-protection)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Plug-in Details](#32-client-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Policy Setting State](#3211-policy-setting-state)
+      - [3.2.1.2 Impersonation Token](#3212-impersonation-token)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Registry Policy Message Sequencing](#3251-registry-policy-message-sequencing)
+        - [3.2.5.1.1 Deleted GPO List Processing](#32511-deleted-gpo-list-processing)
+        - [3.2.5.1.2 New or Changed GPO List Processing](#32512-new-or-changed-gpo-list-processing)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Interpretation of Registry Policy Messages as Policies by an Adminstration Tool](#33-interpretation-of-registry-policy-messages-as-policies-by-an-adminstration-tool)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Registry Policy Application Message](#41-registry-policy-application-message)
+  - [4.2 Policy Administration Update Message](#42-policy-administration-update-message)
+  - [4.3 ADM-Based Policy Description Message Example](#43-adm-based-policy-description-message-example)
+  - [4.4 ADMX-Based Policy Description Message Example](#44-admx-based-policy-description-message-example)
+    - [4.4.1 ADMX File Example](#441-admx-file-example)
+    - [4.4.2 ADML File Example](#442-adml-file-example)
+    - [4.4.3 CMTX File Example](#443-cmtx-file-example)
+    - [4.4.4 CMTL File Example](#444-cmtl-file-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Appendix B: Full XML Schemas](#7-appendix-b-full-xml-schemas)
+  - [7.1 Base ADMX Schema](#71-base-admx-schema)
+  - [7.2 ADMX Policy Definition Schema](#72-admx-policy-definition-schema)
+  - [7.3 ADMX File Schema](#73-admx-file-schema)
+  - [7.4 CMTX File Schema](#74-cmtx-file-schema)
+  - [7.5 CMTL File Schema](#75-cmtl-file-schema)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Background ................................................................................................. 8
-Registry Extension Encoding Overview ............................................................ 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2.2.2.2
-
-2.2.2.1
-
-2.2.2.2.1
-
-2.2.2.1.1
-
-2.2.1
-2.2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Registry Policy Message Syntax .................................................................... 12
-Policy Description Message .......................................................................... 14
-ADM-Based Policy Description Message .................................................... 14
-ADM Conditional Directive ................................................................ 18
-ADMX-Based Policy Description Message .................................................. 19
-ADMX File ....................................................................................... 19
-categories Element .................................................................... 19
-policies Element ......................................................................... 19
-stringReference ......................................................................... 19
-presentationReference ................................................................ 19
-ADML File ....................................................................................... 20
-resources Element ..................................................................... 20
-stringTable Element .............................................................. 20
-presentationTable Element .................................................... 20
-ADMX/ADML File Reference Examples ................................................ 20
-ADM-based policies compared to ADMX-based policies ............................... 21
-Policy Comment Message ............................................................................. 21
-Directory Service Schema Elements ................................................................... 21
-
-2.2.2.2.1.1
-2.2.2.2.1.2
-2.2.2.2.1.3
-2.2.2.2.1.4
-
-2.2.2.2.2.1.1
-2.2.2.2.2.1.2
-
-2.2.2.2.2.1
-
-2.2.2.2.2
-
-2.2.2.2.3
-
-2.2.2.3
-
-2.2.3
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3  Protocol Details ..................................................................................................... 22
-Administrative Plug-in Details ............................................................................ 22
-Abstract Data Model .................................................................................... 22
-Group Policy Object (GPO) ..................................................................... 22
-Policy Description Store ......................................................................... 22
-Computer Policy Setting State ................................................................ 22
-User Policy Setting State ........................................................................ 22
-Policy Comment State ........................................................................... 22
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Higher-Layer Triggered Events ..................................................................... 23
-Load Policy Settings Event ..................................................................... 23
-Update Policy Settings Event .................................................................. 23
-Load Policy Comments Event .................................................................. 24
-Update Policy Comments Event ............................................................... 24
-ADM-Based Policy Description Load Event ................................................ 24
-ADMX-Based Policy Description Load Event .............................................. 24
-Message Processing Events and Sequencing Rules .......................................... 24
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5
-
-[MS-GPREG] - v20240423
-Group Policy: Registry Extension Encoding
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 81
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-3.2.1.1
-3.2.1.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-
-Policy Description Sequences for ADM-Based Administrative Templates ....... 25
-Policy Description Sequences for ADMX-Based Administrative Templates ..... 25
-Policy Administration Load Message Sequencing ....................................... 26
-Policy Administration Update Message Sequencing .................................... 26
-Policy Administration Comments Load Message Sequencing ....................... 27
-Policy Administration Comment Update Message Sequencing ...................... 28
-Policy Administration Comment Localization Message Sequencing ............... 28
-Policy Administration for Network Access Protection .................................. 30
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Client Plug-in Details ........................................................................................ 31
-Abstract Data Model .................................................................................... 31
-Policy Setting State ............................................................................... 31
-Impersonation Token ............................................................................. 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 33
-Process Group Policy ............................................................................. 33
-Message Processing Events and Sequencing Rules .......................................... 33
-Registry Policy Message Sequencing ........................................................ 33
-Deleted GPO List Processing ............................................................. 33
-New or Changed GPO List Processing ................................................. 33
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-Interpretation of Registry Policy Messages as Policies by an Adminstration Tool ....... 35
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.6
-3.2.7
-
-3.3
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ................................................................................................. 37
-Registry Policy Application Message .................................................................... 37
-Policy Administration Update Message ................................................................ 37
-ADM-Based Policy Description Message Example .................................................. 38
-ADMX-Based Policy Description Message Example ................................................ 39
-ADMX File Example ..................................................................................... 39
-ADML File Example ..................................................................................... 46
-CMTX File Example ..................................................................................... 51
-CMTL File Example ...................................................................................... 51
-
-4.4.1
-4.4.2
-4.4.3
-4.4.4
-
-5  Security ................................................................................................................. 53
-Security Considerations for Implementers ........................................................... 53
-Index of Security Parameters ............................................................................ 53
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 54
-
-7  Appendix B: Full XML Schemas .............................................................................. 56
-Base ADMX Schema ......................................................................................... 56
-ADMX Policy Definition Schema .......................................................................... 58
-ADMX File Schema ........................................................................................... 72
-CMTX File Schema ............................................................................................ 74
-CMTL File Schema ............................................................................................ 76
-
-7.1
-7.2
-7.3
-7.4
-7.5
-
-8  Change Tracking .................................................................................................... 78
-
-9  Index ..................................................................................................................... 79
-
-[MS-GPREG] - v20240423
-Group Policy: Registry Extension Encoding
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 81
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Group Policy: Registry Extension Encoding to the Group Policy: Core
 Protocol, as specified in [MS-GPOL], and provides a mechanism for an administrator to control any
@@ -805,7 +654,7 @@ behavior on a client that depends on registry-based settings.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -866,7 +715,8 @@ Release: April 23, 2024
 
 6 / 81
 
-Group Policy Object (GPO): A collection of administrator-defined specifications of the policy
+
+Group Policy Object (GPO): A collection of administrator-defined specifications of the policy
 settings that can be applied to groups of computers in a domain. Each GPO includes two
 elements: an object that resides in the Active Directory for the domain, and a corresponding
 file system subdirectory that resides on the sysvol DFS share of the Group Policy server for the
@@ -915,14 +765,14 @@ in "\User".
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -937,7 +787,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-GPNAP] Microsoft Corporation, "Group Policy: Network Access Protection (NAP) Extension".
+
+[MS-GPNAP] Microsoft Corporation, "Group Policy: Network Access Protection (NAP) Extension".
 
 [MS-GPOL] Microsoft Corporation, "Group Policy: Core Protocol".
 
@@ -951,18 +802,18 @@ Release: April 23, 2024
 (XML) 1.0 (Second Edition)", W3C Recommendation, October 2000,
 https://www.w3.org/TR/2000/REC-xml-20001006
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RRP] Microsoft Corporation, "Windows Remote Registry Protocol".
 
 [MS-WPO] Microsoft Corporation, "Windows Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 Group Policy: Registry Extension Encoding provides a mechanism for an administrator to control any
 behavior on a client that depends on registry-based settings.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol (as specified in [MS-GPOL]) allows clients to discover and retrieve
 policy settings created by administrators of a domain. These settings are persisted within Group
@@ -986,7 +837,7 @@ A client plug-in uses the contents of the GPO to retrieve settings specific to i
 specific to its class. After its class-specific settings are retrieved, the client plug-in uses those settings
 to perform class-specific processing.
 
-1.3.2  Registry Extension Encoding Overview
+#### 1.3.2 Registry Extension Encoding Overview
 
 Registry-based settings are accessible from a GPO through the Group Policy: Registry Extension
 Encoding. The protocol provides mechanisms both for administrative tools (or any tool that allows an
@@ -1000,7 +851,8 @@ Release: April 23, 2024
 
 8 / 81
 
-Group Policy: Registry Extension Encoding settings can be administered using administrative
+
+Group Policy: Registry Extension Encoding settings can be administered using administrative
 templates (as specified in Policy Description Message (section 2.2.2)). An administrative template is
 a file associated with a GPO that combines information on the syntax of registry-based settings with
 human-readable descriptions of the settings as well as other information. Administrative tools use
@@ -1071,7 +923,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-GPREG].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -1080,7 +933,7 @@ Release: April 23, 2024
 client parses the file of settings, and then saves the settings in a user-specific portion of the
 generic settings database (registry) on the local computer.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Group Policy: Core Protocol (as specified in [MS-GPOL]) to provide a list
 of applicable Group Policy Objects (GPOs). It also transmits Group Policy settings and instructions
@@ -1094,7 +947,7 @@ The following diagram shows how this protocol relates to other protocols.
 
 Figure 1: Group Policy: Registry Extension Encoding protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Core Protocol.
 
@@ -1102,7 +955,7 @@ In addition, a client needs a system/subsystem that is capable of executing comm
 up/shutdown time (if Computer Policy Mode is used) and at user log-on/log-off time (if User Policy
 Mode is used).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Group Policy: Registry Extension Encoding is only applicable within the Group Policy: Core Protocol
 framework. Group Policy: Registry Extension Encoding is used to express the required state of the
@@ -1123,7 +976,8 @@ Release: April 23, 2024
 
 10 / 81
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 There is no capability negotiation based on versioning in this protocol. There are several fields that
 provide version information. The Registry Policy Message Syntax (section 2.2.1) contains a version
@@ -1133,11 +987,11 @@ that represents platform releases. The ADMX-Based Policy Description Message sch
 Appendix B: Full XML Schemas (section 7) contains informational revision and schemaVersion
 attributes.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol defines client-side extension GUID (CSE GUID) and tool extension GUID standards
 assignments, as specified in [MS-GPOL] section 1.8. The assignments are as follows. Where two
@@ -1168,9 +1022,10 @@ Release: April 23, 2024
 
 11 / 81
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Registry Extension Encoding uses remote file access. All messages are exchanged
 as files transferred using remote file access.
@@ -1179,7 +1034,7 @@ The Group Policy: Core Protocol uses this protocol CSE GUID (as specified in [MS
 2.3.4.3) and tool extension GUID values to invoke this protocol only to access GPOs that require
 processing by this protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The sections that follow specify the syntax for the following protocol elements:
 
@@ -1193,7 +1048,7 @@ Each protocol element is described as a message, which corresponds one-to-one wi
 using remote file access. The protocol is driven through the exchange of these messages, as specified
 in Protocol Details (section 3).
 
-2.2.1  Registry Policy Message Syntax
+#### 2.2.1 Registry Policy Message Syntax
 
 The following definitions will aid in understanding this section:
 
@@ -1235,7 +1090,8 @@ Release: April 23, 2024
 
 12 / 81
 
-KeyPath = Key / KeyPath "\" Key
+
+KeyPath = Key / KeyPath "\" Key
 Value = 1*259ValueCharacter
 Type = %x01 / %x02 / %x03 / %x04 / %x05 / %x07 / %x0B
 Size = %x00-FFFF
@@ -1331,7 +1187,8 @@ Release: April 23, 2024
 
 13 / 81
 
-Indicates the data associated with the value. This field MUST contain a number of bytes data
+
+Indicates the data associated with the value. This field MUST contain a number of bytes data
 indicated by the value of the Size field.
 
   Signature:
@@ -1346,14 +1203,14 @@ The order of the Instruction elements is significant: two such messages that dif
 the Instruction elements are not considered equivalent messages semantically. This is because
 message processing is sensitive to the order, as specified in Client Plug-In Details (section 3.2).<3>
 
-2.2.2  Policy Description Message
+#### 2.2.2 Policy Description Message
 
 Policy Description Messages are typically used by administrative plug-in to drive a user interface for
 viewing and editing settings, and are most importantly used to describe the serialization and
 deserialization of settings to and from the Group Policy: Registry Extension Encoding Message format.
 There are two formats for these messages: ADM and ADMX.
 
-2.2.2.1  ADM-Based Policy Description Message
+##### 2.2.2.1 ADM-Based Policy Description Message
 
 ADM-Based Policy Description Messages are encapsulated in Unicode files that are transmitted using
 remote file access. The names of these files MUST end in ".adm".
@@ -1401,7 +1258,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- AdmGuid = TokLeftCurly 8HEXDIG Dash 4HEXDIG Dash 4HEXDIG Dash 4HEXDIG Dash 12HEXDIG
+
+ AdmGuid = TokLeftCurly 8HEXDIG Dash 4HEXDIG Dash 4HEXDIG Dash 4HEXDIG Dash 12HEXDIG
 TokRightCurly
  AdmParts = 1*AdmPart
  AdmPart = TokPart AdmString AdmUIControl TokEnd TokPart
@@ -1478,7 +1336,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- TokCheckbox =       WhiteSpace "checkbox"            SpaceDelimiter
+
+ TokCheckbox =       WhiteSpace "checkbox"            SpaceDelimiter
  TokClass =          WhiteSpace "class"               SpaceDelimiter
  TokClientExt =      WhiteSpace "clientext"           SpaceDelimiter
  TokCombobox =       WhiteSpace "combobox"            SpaceDelimiter
@@ -1557,7 +1416,8 @@ Release: April 23, 2024
 
 16 / 81
 
- Value
+
+ Value
 
  Meaning
 
@@ -1637,7 +1497,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  AdmDefChecked:
+
+  AdmDefChecked:
 
  If present, indicates that the administrative plug-in MUST enable their associated AdmCheckBox
 control when a user initially attempts to enable the associated setting.
@@ -1695,7 +1556,7 @@ the associated AdmCombobox, AdmDropdownlist, or AdmListbox.
  Specifies that the administrative plug-in that consume this format MUST NOT allow updates of
 the GPO for the registry key unless a value has been provided in the user interface.
 
-2.2.2.1.1 ADM Conditional Directive
+###### 2.2.2.1.1 ADM Conditional Directive
 
 In addition to the ABNF syntax specified, the ADM file allows a conditional directive to include or
 exclude portions of the file depending on the version of the ADM file.
@@ -1709,7 +1570,8 @@ Release: April 23, 2024
 
 18 / 81
 
- AdmIf = TokIf TokVersion AdmOperator TokDigits <enclosed text> TokEndif
+
+ AdmIf = TokIf TokVersion AdmOperator TokDigits <enclosed text> TokEndif
  AdmOperator = (TokGT / TokLT / TokEQ / TokNE / TokGE / TokLE)
  TokDigits =         WhiteSpace 1*DIGIT               SpaceDelimiter
  TokEQ =             WhiteSpace "=="                  SpaceDelimiter
@@ -1729,7 +1591,7 @@ specified. Conditional directives can appear anywhere in the ADM file and they c
 The TokDigits are interpreted as a version number corresponding to the operating system version at
 the time the ADM was released.<4>
 
-2.2.2.2  ADMX-Based Policy Description Message
+##### 2.2.2.2 ADMX-Based Policy Description Message
 
 ADMX-Based Policy Description Messages are encapsulated in XML (as specified in [XML1.0]) files that
 are copied using remote file access. To support the multilingual display of policy settings, the ADMX-
@@ -1737,20 +1599,20 @@ Based Policy Description Messages are divided into two types of files, described
 sections. The format of these files is specified by the XML schemas in Appendix B: Full XML
 Schemas (section 7).<5>
 
-2.2.2.2.1 ADMX File
+###### 2.2.2.2.1 ADMX File
 
 An .admx file is a language-neutral file describing the structure of the categories and administrative
 template policy settings. The two primary components of an .admx file are the <categories> and
 <policies> elements which contain individual <category> or <policy> element definitions respectively.
 
-2.2.2.2.1.1  categories Element
+###### 2.2.2.2.1.1 categories Element
 
 Within <categories>, a <category> element defines an empty set to which policies MAY be assigned.
 Categories are exclusively used during the presentation of policies by administrative plug-ins. The
 displayName attribute of a <category> MAY be a reference to a language-specific string read from a
 language-specific .adml file. The format for a stringReference and examples are described below.
 
-2.2.2.2.1.2  policies Element
+###### 2.2.2.2.1.2 policies Element
 
 Within <policies>, a <policy> element MUST be assigned to one and only one <category> using a
 <parentCategory> subelement. String attributes of a <policy> MAY be a reference to a language-
@@ -1761,7 +1623,7 @@ file. The format for a presentationReference and examples are described below.
 If a stringReference or presentationReference is used in an .admx file, it MUST be found in the .adml
 file currently in use or an error condition MUST be signaled.
 
-2.2.2.2.1.3  stringReference
+###### 2.2.2.2.1.3 stringReference
 
 A stringReference MUST be in the format "$(string.<id>)" where the "id" MUST be found in the
 language-specific .adml file <stringTable>.
@@ -1773,12 +1635,13 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.2.1.4  presentationReference
+
+###### 2.2.2.2.1.4 presentationReference
 
 A presentationReference MUST be in the format "$(presentation.<id>)" where the "id" MUST be found
 in the language-specific .adml file <presentationTable>.
 
-2.2.2.2.2 ADML File
+###### 2.2.2.2.2 ADML File
 
 An .adml file is a set of language-dependent resources providing the localized portions (strings and
 presentations) of an .admx file. Each .adml file will represent a single language that needs to be
@@ -1791,25 +1654,25 @@ languages supported.
 
 The primary component of an .adml file is the <resources> element.
 
-2.2.2.2.2.1
+###### 2.2.2.2.2.1 resources Element
 
-resources Element
+
 
 Within the <resources> element, the <stringTable> and <presentationTable> elements contain the
 language-specific elements supporting stringReference and presentationReference functionality.
 
-2.2.2.2.2.1.1  stringTable Element
+###### 2.2.2.2.2.1.1 stringTable Element
 
 The <stringTable> element will contain <string> elements defining the language-specific strings that
 MAY be referenced by "id" from the language-neutral .admx file.
 
-2.2.2.2.2.1.2  presentationTable Element
+###### 2.2.2.2.2.1.2 presentationTable Element
 
 The <presentationTable> element will contain <presentation> elements that MAY be referenced by
 "id" from the language-neutral .admx file defining the user interface components presented by
 administrative plug-ins.
 
-2.2.2.2.3 ADMX/ADML File Reference Examples
+###### 2.2.2.2.3 ADMX/ADML File Reference Examples
 
 The Base ADMX Schema (section 7.1) contains the definitions for the simpleTypes stringReference and
 presentationReference used in the language-neutral .admx file to indicate a localized item that MUST
@@ -1839,7 +1702,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <string id="Sample_Checkbox_Help">This is an example of a Group Policy setting that
+
+ <string id="Sample_Checkbox_Help">This is an example of a Group Policy setting that
 configures a parameter using a check box.
 
  If you enable this policy setting, check box1 and check box2 will be active.
@@ -1861,7 +1725,7 @@ values.</string>
 default</checkBox>
  </presentation>
 
-2.2.2.3  ADM-based policies compared to ADMX-based policies
+##### 2.2.2.3 ADM-based policies compared to ADMX-based policies
 
 There is no difference in the registry.pol file format based on the use of ADM-based policies or ADMX-
 based policies, so the serialization/deserialization of policy settings is identical. ADMX-based policies
@@ -1869,7 +1733,7 @@ MAY set the full value of a REG_QWORD by using the presentation element LongDeci
 MAY set a REG_MULTI_SZ value using the presentation element multiTextElement. Both are defined in
 Appendix B: Full XML Schemas (section 7).
 
-2.2.3  Policy Comment Message
+#### 2.2.3 Policy Comment Message
 
 The Policy Comment Messages are typically used by administrative plug-ins to drive a user interface
 for viewing and editing comments associated with Extended Administrative Templates settings.
@@ -1885,7 +1749,7 @@ resources. A .cmtx file MAY be localized manually by following Policy Administra
 Localization Message Sequencing (section 3.1.5.7), in which case the .cmtx file will not contain
 embedded string resources. The string resources will be located in the language-specific .cmtl files.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -1896,11 +1760,12 @@ Release: April 23, 2024
 
 21 / 81
 
-3  Protocol Details
 
-3.1  Administrative Plug-in Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Administrative Plug-in Details
+
+#### 3.1.1 Abstract Data Model
 
 The administrative abstract data model mirrors the client abstract data model in Abstract Data
 Model (section 3.2.1), the difference being that the administrative abstract data model is logically
@@ -1909,12 +1774,12 @@ encapsulated within a single GPO's User Policy and Computer Policy sections.
 This protocol also includes one ADM element, Administered GPO (Public), which is directly accessed
 from the Group Policy: Core Protocol, as specified in [MS-GPOL] section 3.3.1.3.
 
-3.1.1.1  Group Policy Object (GPO)
+##### 3.1.1.1 Group Policy Object (GPO)
 
 The GPO contains a Policy Description Store, Policy Comment State, User Policy Setting State,
 and Computer Policy Setting State.
 
-3.1.1.2  Policy Description Store
+##### 3.1.1.2 Policy Description Store
 
 The Policy Description Store has the following structure:
 
@@ -1935,21 +1800,21 @@ ADM-Based Policy Description Message format.
 This state describes a subset of the settings modeled in the User Policy Setting State and the
 Computer Policy Setting State of this GPO.
 
-3.1.1.3  Computer Policy Setting State
+##### 3.1.1.3 Computer Policy Setting State
 
 The Computer Policy Setting State has the same structure as that specified for the client in Policy
 Setting State (section 3.2.1.1), except that settings are persisted in a file as defined in Registry Policy
 Message Syntax (section 2.2.1). This file is loaded as a collection of named-value pairs for
 Administrative Plug-ins that extend the Registry Extension.
 
-3.1.1.4  User Policy Setting State
+##### 3.1.1.4 User Policy Setting State
 
 The User Policy Setting State has the same structure as that specified for the client in Policy Setting
 State (section 3.2.1.1), except that settings are persisted in a file as defined in Registry Policy
 Message Syntax (section 2.2.1). This file is loaded as a collection of named-value pairs for
 Administrative Plug-ins that extend the Registry Extension.
 
-3.1.1.5  Policy Comment State
+##### 3.1.1.5 Policy Comment State
 
 The Policy Comment State comprises a CMTX file and optional CMTL files as described in Policy
 Comment Message (section 2.2.3).
@@ -1961,16 +1826,17 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 At initialization, the Group Policy: Core Protocol (as specified in [MS-GPOL]) provides a Group Policy
 Object (GPO) path corresponding to the Group Policy Object (GPO) applicable to this protocol.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events occur in the following situations:
 
@@ -1997,7 +1863,7 @@ the Update Policy Comments Event defined in section 3.1.4.4.
 The Registry Policy Comments are viewed. The sequence would include the Load Policy Comments
 Event defined in section 3.1.4.3.
 
-3.1.4.1  Load Policy Settings Event
+##### 3.1.4.1 Load Policy Settings Event
 
 The Load Policy Settings event can be invoked by Group Policy Extensions to read their registry-based
 policy.
@@ -2011,7 +1877,7 @@ State (section 3.1.1.3) and User Policy Setting State (section 3.1.1.4).
 This event causes the Policy Administration Load Message Sequence (section 3.1.5.3) to be performed
 using the <gpo path> and Policy Setting State logical parameters from this event.
 
-3.1.4.2  Update Policy Settings Event
+##### 3.1.4.2 Update Policy Settings Event
 
 The Update Policy Settings event can be invoked by Group Policy Extensions to update their registry-
 based policy settings. The logical parameters are:
@@ -2032,7 +1898,8 @@ Release: April 23, 2024
 
 23 / 81
 
-3.1.4.3  Load Policy Comments Event
+
+##### 3.1.4.3 Load Policy Comments Event
 
 The Load Policy Comments event is invoked by the Group Policy Registry Administrative plug-in to
 read policy comments.
@@ -2045,7 +1912,7 @@ State (section 3.1.1.5).
 This event causes the Policy Administration Comments Load Message Sequence (section 3.1.5.5) to be
 performed using the <gpo path> and Policy Comment State logical parameters from this event.
 
-3.1.4.4  Update Policy Comments Event
+##### 3.1.4.4 Update Policy Comments Event
 
 The Update Policy Comments event is invoked by the Group Policy Registry Administrative plug-in to
 update policy comments. The logical parameters are:
@@ -2059,7 +1926,7 @@ This event causes the Policy Administration Comment Update Message Sequence (sec
 be performed using the <gpo path> and the Policy Comment State logical parameters from this
 event.
 
-3.1.4.5  ADM-Based Policy Description Load Event
+##### 3.1.4.5 ADM-Based Policy Description Load Event
 
 The ADM-Based Policy Description Load event is invoked by the Group Policy Registry Administrative
 plug-in to load ADM-Based Administrative Templates. The logical parameters are:
@@ -2069,7 +1936,7 @@ plug-in to load ADM-Based Administrative Templates. The logical parameters are:
 This event causes the Policy Description Sequence for ADM-Based Administrative
 Templates (section 3.1.5.1) to be performed using the <gpo path> logical parameter from this event.
 
-3.1.4.6  ADMX-Based Policy Description Load Event
+##### 3.1.4.6 ADMX-Based Policy Description Load Event
 
 The ADMX-Based Policy Description Load event is invoked by the Group Policy Registry Administrative
 plug-in to load ADMX-Based Administrative Templates.
@@ -2077,7 +1944,7 @@ plug-in to load ADMX-Based Administrative Templates.
 This event causes the Policy Description Sequence for ADMX-Based Administrative
 Templates (section 3.1.5.2) to be performed.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Messages MUST be processed in the order of these subsections: 3.1.5.1 and/or 3.1.5.2 in any order,
 and 3.1.5.3 followed by 3.1.5.4 if applicable. The administrative plug-in executes the Policy
@@ -2097,10 +1964,11 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-an administrator makes a change to any Registry Policy Setting, the Policy Administration Update
+
+an administrator makes a change to any Registry Policy Setting, the Policy Administration Update
 Message Sequencing is executed by the administrative plug-in.
 
-3.1.5.1  Policy Description Sequences for ADM-Based Administrative Templates
+##### 3.1.5.1 Policy Description Sequences for ADM-Based Administrative Templates
 
 A Group Policy server MAY store serialized versions of Policy Description Messages in the GPO for use
 with administrative plug-ins.<7>
@@ -2140,7 +2008,7 @@ The steps listed in this section SHOULD be used when administrative plug-ins are
 administrative templates settings. Within all loaded ADM files, settings MUST be unique within the
 CLASS, CATEGORY, and POLICY sections.<8>
 
-3.1.5.2  Policy Description Sequences for ADMX-Based Administrative Templates
+##### 3.1.5.2 Policy Description Sequences for ADMX-Based Administrative Templates
 
 When the ADMX Policy Description format is used, administrative templates SHOULD exist on the
 administrator's computer. If the administrative templates also exist on the Group Policy server, the
@@ -2171,7 +2039,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Remote file reads occur until all the contents of the file are read or an error occurs.
+
+2.  Remote file reads occur until all the contents of the file are read or an error occurs.
 
 3.  A File Close occurs for the file.
 
@@ -2190,7 +2059,7 @@ fileName='wuau.adm' />". The contents of "wuau.adm" are indicated to be supersed
 file and MUST be ignored. There is no additional reconciliation between policies defined within
 ADM files and policies defined within ADMX files.
 
-3.1.5.3  Policy Administration Load Message Sequencing
+##### 3.1.5.3 Policy Administration Load Message Sequencing
 
 To load the registry-based policy settings from a Group Policy Object (GPO) using an administrative
 plug-in, the Computer Policy Setting State (section 3.1.1.3) and User Policy Setting
@@ -2221,7 +2090,7 @@ an error is encountered. If an error is encountered, the protocol sequence MUST 
 
 3.  File Close: The tool MUST then issue a File Close operation for all opened files.
 
-3.1.5.4  Policy Administration Update Message Sequencing
+##### 3.1.5.4 Policy Administration Update Message Sequencing
 
 To update the registry-based policy settings in a GPO using an administrative plug-in, the Computer
 Policy Setting State (section 3.1.1.3) and User Policy Setting State (section 3.1.1.4) of that GPO on
@@ -2251,7 +2120,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Remote File Write Sequences: The administrative plug-in MUST perform a series of remote file
+
+2.  Remote File Write Sequences: The administrative plug-in MUST perform a series of remote file
 writes to overwrite the contents of the opened registry.pol file with new settings. These writes
 MUST continue until the entire file is copied or an error is encountered. If an error is encountered,
 the protocol sequence MUST be terminated.
@@ -2279,7 +2149,7 @@ section 1.9.
 TOOL GUID is set to the Group Policy: Registry Extension Encoding TOOL GUID (defined in
 section 1.9.
 
-3.1.5.5  Policy Administration Comments Load Message Sequencing
+##### 3.1.5.5 Policy Administration Comments Load Message Sequencing
 
 To load the registry-based policy comments from a Group Policy Object (GPO) using an
 administrative plug-in, the Policy Comment State (section 3.1.1.5) of that GPO on the Group Policy
@@ -2336,12 +2206,13 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-entire file is read or an error is encountered. If an error is encountered, the protocol sequence
+
+entire file is read or an error is encountered. If an error is encountered, the protocol sequence
 MUST be terminated.
 
 4.  File Close: The tool MUST then issue a File Close operation for all opened files.
 
-3.1.5.6  Policy Administration Comment Update Message Sequencing
+##### 3.1.5.6 Policy Administration Comment Update Message Sequencing
 
 To update the registry-based comment settings in a Group Policy Object using an administrative plug-
 in, the Policy Comment State (section 3.1.1.5) of that Group Policy Object (GPO) on the Group
@@ -2383,7 +2254,7 @@ encountered, the protocol sequence MUST be terminated.
 
 3.  File Close: The tool MUST then issue a file close operation for all opened files.
 
-3.1.5.7  Policy Administration Comment Localization Message Sequencing
+##### 3.1.5.7 Policy Administration Comment Localization Message Sequencing
 
 1.  An Administrator MAY choose to localize the comments for a GPO. The Administrator MUST edit
 the .cmtx file at "<gpo path>\comment.cmtx", where <gpo path> is one of the following:
@@ -2411,7 +2282,8 @@ Release: April 23, 2024
 
 28 / 81
 
- <policyComments xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+ <policyComments xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0"
 xmlns="http://www.microsoft.com/GroupPolicy/CommentDefinitions">
    <policyNamespaces>
@@ -2487,7 +2359,8 @@ Release: April 23, 2024
 
 29 / 81
 
- <commentDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+ <commentDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0"
 xmlns="http://www.microsoft.com/GroupPolicy/CommentDefinitions">
    <resources>
@@ -2508,7 +2381,7 @@ locate the language-specific .cmtl file for language-locale en-us. If the .cmtl 
 locale en-us is not located, the Administrative plug-in MUST signal an error but MUST NOT prevent
 the GPO from loading in the Administrative plug-in.
 
-3.1.5.8  Policy Administration for Network Access Protection
+##### 3.1.5.8 Policy Administration for Network Access Protection
 
 This section describes the Network Access Protection administrative plug-in.
 
@@ -2562,7 +2435,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Network Access Protection policy settings are defined in the following sections of [MS-GPNAP]:
+
+The Network Access Protection policy settings are defined in the following sections of [MS-GPNAP]:
 
 
 
@@ -2578,17 +2452,17 @@ Enforcement Client Settings
 
   SoH Settings (section 2.5)
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Plug-in Details
+### 3.2 Client Plug-in Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2596,7 +2470,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Policy Setting State
+##### 3.2.1.1 Policy Setting State
 
 The Group Policy: Registry Extension Encoding client plug-in itself maintains no state. However, it is
 assumed that a local database of settings (registry) exists that can be updated by the client plug-in.
@@ -2631,7 +2505,8 @@ Release: April 23, 2024
 
 31 / 81
 
- A list of Database Operations to take on the database.
+
+ A list of Database Operations to take on the database.
 
   Database Operation:
 
@@ -2679,15 +2554,15 @@ interpreted, whether as a string, integer, multiple-valued string, or a binary s
 that other components on the client will act on this interpretation of the Data Value to determine
 its behavior.
 
-3.2.1.2  Impersonation Token
+##### 3.2.1.2 Impersonation Token
 
 A token used to impersonate a user.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
@@ -2698,24 +2573,25 @@ Release: April 23, 2024
 
 32 / 81
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 Process Group Policy
 
 This extension is launched by the Group Policy: Core Protocol, which invokes this Process Group Policy
 event, whose abstract interface is specified in [MS-GPOL] section 3.2.4.1, to apply policies handled by
 this extension. The SecurityToken abstract interface argument is saved in the Impersonation
 Token abstract data model element.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Registry Policy Message Sequencing
+##### 3.2.5.1 Registry Policy Message Sequencing
 
-3.2.5.1.1 Deleted GPO List Processing
+###### 3.2.5.1.1 Deleted GPO List Processing
 
 This protocol does not process the Deleted GPO list.
 
-3.2.5.1.2 New or Changed GPO List Processing
+###### 3.2.5.1.2 New or Changed GPO List Processing
 
 For each Group Policy Object in the New or Changed GPO list (as specified in section 3.2.1.2), one
 Registry Policy Message will be read from the Group Policy server, as specified in the following
@@ -2773,7 +2649,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The Data found in the Instruction for DataValue.
 
@@ -2875,7 +2752,8 @@ Release: April 23, 2024
 
 34 / 81
 
- Value Name
+
+ Value Name
 
  Meaning
 
@@ -2913,15 +2791,15 @@ beginning with the first Instruction in the Registry Policy message.
 Applications that query this database for behavior after the Group Policy: Registry Extension Encoding
 invocation can then conform to the specified settings.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  Interpretation of Registry Policy Messages as Policies by an Adminstration Tool
+### 3.3 Interpretation of Registry Policy Messages as Policies by an Adminstration Tool
 
 Policy Description Messages map policy behaviors to registry keys and values, and Registry Policy
 Messages describe registry keys and values. Therefore, the Policy Description Messages can map
@@ -2945,7 +2823,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following table shows the correspondence between Policy Description Messages and Registry
+
+The following table shows the correspondence between Policy Description Messages and Registry
 Policy Messages, as specified in Registry Policy Message Syntax (section 2.2.1).
 
  ADM/ADMX
@@ -2997,13 +2876,14 @@ Release: April 23, 2024
 
 36 / 81
 
-<!-- Extracted images from page 37 -->
+
+<!-- Extracted images from page 37 -->
 ![Extracted image 1 from page 37]([MS-GPREG].images/page037-img01.png)
 <!-- /Extracted images from page 37 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Registry Policy Application Message
+### 4.1 Registry Policy Application Message
 
 The following is an example registry settings message that instructs the client to set the Database
 Key Software\Policies\Microsoft\Windows\System\ with the Name Value Pair "LocalProfile", 1 with the
@@ -3027,7 +2907,7 @@ rules specified in 3.2.5. Any error in updating the registry is ignored.
 
 Figure 2: Contents of <gpo path>\Machine\Registry.pol
 
-4.2  Policy Administration Update Message
+### 4.2 Policy Administration Update Message
 
 The following is an example user registry settings message that an administrator wants to set on the
 client, Database Key Software\Microsoft\Windows\CurrentVersion\Policies\System with the Name
@@ -3042,7 +2922,8 @@ Release: April 23, 2024
 
 37 / 81
 
-<!-- Extracted images from page 38 -->
+
+<!-- Extracted images from page 38 -->
 ![Extracted image 1 from page 38]([MS-GPREG].images/page038-img01.png)
 <!-- /Extracted images from page 38 -->
 
@@ -3069,7 +2950,7 @@ terminated.
 
 Figure 3: Contents of <gpo path>\User\Registry.pol
 
-4.3  ADM-Based Policy Description Message Example
+### 4.3 ADM-Based Policy Description Message Example
 
  CLASS USER
  CATEGORY !!LogonLogoff
@@ -3103,7 +2984,8 @@ Release: April 23, 2024
 
 38 / 81
 
- ; This policy demonstrates some of the different PART types.
+
+ ; This policy demonstrates some of the different PART types.
 
     POLICY !!LimitSize
        EXPLAIN !!LimitSize_Explain
@@ -3162,9 +3044,9 @@ Release: April 23, 2024
  WarnUser="Notify user when profile storage space is exceeded."
  WarnUserTimeout="Remind user every X minutes"
 
-4.4  ADMX-Based Policy Description Message Example
+### 4.4 ADMX-Based Policy Description Message Example
 
-4.4.1  ADMX File Example
+#### 4.4.1 ADMX File Example
 
  <?xml version="1.0" encoding="utf-8"?>
 
@@ -3175,7 +3057,8 @@ Release: April 23, 2024
 
 39 / 81
 
- <policyDefinitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+ <policyDefinitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0"
 xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
    <policyNamespaces>
@@ -3252,7 +3135,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     </category>
+
+     </category>
      <category name="DROPDOWNLIST_CATEGORY" displayName="$(string.DROPDOWNLIST_CATEGORY)">
        <parentCategory ref="SAMPLE" />
      </category>
@@ -3329,7 +3213,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           <trueValue>
+
+           <trueValue>
              <decimal value="1" />
            </trueValue>
            <falseValue>
@@ -3406,7 +3291,8 @@ Release: April 23, 2024
 
 42 / 81
 
-                 <string>0</string>
+
+                 <string>0</string>
                </value>
              </item>
              <item key="Software\Policies\Examples" valueName="Example2ActionList22">
@@ -3483,7 +3369,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             <value>
+
+             <value>
                <decimal value="3" />
              </value>
            </item>
@@ -3560,7 +3447,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       </disabledValue>
+
+       </disabledValue>
      </policy>
      <policy name="Sample_NoParamPolicy" class="Both"
 displayName="$(string.Sample_NoParamPolicy)"
@@ -3637,7 +3525,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       </elements>
+
+       </elements>
      </policy>
      <policy name="Sample_Textbox" class="Both" displayName="$(string.Sample_Textbox)"
 explainText="$(string.Sample_Textbox_Help)"
@@ -3661,7 +3550,7 @@ maxStrings="6" maxLength="20"/>
    </policies>
  </policyDefinitions>
 
-4.4.2  ADML File Example
+#### 4.4.2 ADML File Example
 
  <?xml version="1.0" encoding="utf-8"?>
  <policyDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -3712,7 +3601,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- If you do not configure this policy setting, all values will be deleted, if currently set.
+
+ If you do not configure this policy setting, all values will be deleted, if currently set.
 
  Note: This policy setting changes the Example2Actionlist1, Example2Actionlist2 and
 Example2Actionlist3 registry values.</string>
@@ -3787,7 +3677,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Note: This policy setting creates registry values under the
+
+ Note: This policy setting creates registry values under the
 Software\Policies\Examples\listbox2 registry key.</string>
        <string id="Sample_ListBox_SingleColumn">Sets policy setting parameter via a one-column
 listbox</string>
@@ -3863,7 +3754,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- If you do not configure this policy setting, the value will be deleted, if currently set to a
+
+ If you do not configure this policy setting, the value will be deleted, if currently set to a
 value.
 
  Note: This policy setting changes the Example2NumericSpin registry value.</string>
@@ -3939,7 +3831,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- If you disable or do not configure this policy setting, the Example2TextboxExpandsz value
+
+ If you disable or do not configure this policy setting, the Example2TextboxExpandsz value
 will be deleted, if currently set.
 
  Note:The REG_EXPAND_SZ registry value type is a null-terminated string that contains
@@ -4016,7 +3909,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         <decimalTextBox refId="Sample_NumericTextLabel" defaultValue="900" spinStep="60">Spin
+
+         <decimalTextBox refId="Sample_NumericTextLabel" defaultValue="900" spinStep="60">Spin
 box label:</decimalTextBox>
        </presentation>
        <presentation id="Sample_LongNumericSpin">
@@ -4059,7 +3953,7 @@ enter:</multiTextBox>
    </resources>
  </policyDefinitionResources>
 
-4.4.3  CMTX File Example
+#### 4.4.3 CMTX File Example
 
  <?xml version='1.0' encoding='utf-8'?>
  <policyComments xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -4086,7 +3980,8 @@ Release: April 23, 2024
 
 51 / 81
 
-4.4.4  CMTL File Example
+
+#### 4.4.4 CMTL File Example
 
  <?xml version="1.0" encoding="utf-8"?>
  <commentDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -4113,9 +4008,10 @@ Release: April 23, 2024
 
 52 / 81
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Do not transmit passwords or other sensitive data through this protocol. The primary reason for this
 restriction is that the protocol provides no encryption, and therefore sensitive data transmitted
@@ -4127,7 +4023,7 @@ A person gaining unauthorized access, intercepting the protocol's network packet
 then discover the password for that resource that would then be unprotected from the unauthorized
 person.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters associated with this protocol.
 
@@ -4138,7 +4034,8 @@ Release: April 23, 2024
 
 53 / 81
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4206,7 +4103,8 @@ Release: April 23, 2024
 
 54 / 81
 
-  Windows Server 2003
+
+  Windows Server 2003
 
   Windows Vista
 
@@ -4275,12 +4173,13 @@ Release: April 23, 2024
 
 55 / 81
 
-7  Appendix B: Full XML Schemas
+
+## 7 Appendix B: Full XML Schemas
 
 The following sections list the complete ADMX base, policy definition, and file schemas for
 implementers of Group Policy: Registry Extension Encoding.
 
-7.1  Base ADMX Schema
+### 7.1 Base ADMX Schema
 
 The ADMX Base Types Schema provides the base types shared by the schema types in the ADMX
 Policy Definition Types Schema.
@@ -4371,7 +4270,8 @@ Release: April 23, 2024
 
 56 / 81
 
-     </xs:restriction>
+
+     </xs:restriction>
    </xs:simpleType>
 
    <xs:simpleType name="stringReference">
@@ -4448,7 +4348,8 @@ Release: April 23, 2024
 
 57 / 81
 
-     </xs:simpleContent>
+
+     </xs:simpleContent>
    </xs:complexType>
 
    <xs:simpleType name="registryKey">
@@ -4477,7 +4378,7 @@ Release: April 23, 2024
 
  </xs:schema>
 
-7.2  ADMX Policy Definition Schema
+### 7.2 ADMX Policy Definition Schema
 
 The ADMX Policy Definition Types Schema provides the schema elements and types used to define
 the required information for creating individual policy settings. These elements define the category,
@@ -4541,7 +4442,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ADMX Policy Definition Types
+
+ADMX Policy Definition Types
 Schema Element/Group Name
 (Parent Elements or Types)
 
@@ -4656,7 +4558,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ADMX Policy Definition Types
+
+ADMX Policy Definition Types
 Schema Element/Group Name
 (Parent Elements or Types)
 
@@ -4776,7 +4679,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ADMX Policy Definition Types
+
+ADMX Policy Definition Types
 Schema Element/Group Name
 (Parent Elements or Types)
 
@@ -4891,7 +4795,8 @@ Release: April 23, 2024
 
 61 / 81
 
-ADMX Policy Definition Types
+
+ADMX Policy Definition Types
 Schema Element/Group Name
 (Parent Elements or Types)
 
@@ -4992,7 +4897,8 @@ Group Policy: Registry Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ADMX Policy Definition Types
+
+ADMX Policy Definition Types
 Schema Element/Group Name
 (Parent Elements or Types)
 
@@ -5088,7 +4994,8 @@ Release: April 23, 2024
 
 63 / 81
 
-     <xs:attributeGroup ref="pd:PolicyElementAttributeGroup"/>
+
+     <xs:attributeGroup ref="pd:PolicyElementAttributeGroup"/>
      <xs:attribute name="required" type="xs:boolean"
  default="false"/>
      <xs:attribute name="minValue" type="xs:unsignedInt"
@@ -5162,7 +5069,8 @@ Release: April 23, 2024
 
 64 / 81
 
-             <xs:element name="value" type="pd:Value"/>
+
+             <xs:element name="value" type="pd:Value"/>
              <xs:element name="valueList" type="pd:ValueList"
  minOccurs="0" maxOccurs="1"/>
            </xs:sequence>
@@ -5235,7 +5143,8 @@ Release: April 23, 2024
 
 65 / 81
 
-   <xs:complexType name="ValueItem">
+
+   <xs:complexType name="ValueItem">
      <xs:sequence>
        <xs:element name="value" type="pd:Value"/>
      </xs:sequence>
@@ -5308,7 +5217,8 @@ Release: April 23, 2024
 
 66 / 81
 
-         <xs:attribute name="defaultValue" type="xs:unsignedInt"
+
+         <xs:attribute name="defaultValue" type="xs:unsignedInt"
  default="1"/>
          <xs:attribute name="spin" type="xs:boolean"
  default="true"/>
@@ -5381,7 +5291,8 @@ Release: April 23, 2024
 
 67 / 81
 
- </xs:documentation>
+
+ </xs:documentation>
      </xs:annotation>
      <xs:complexContent>
        <xs:extension base="pd:DataElement">
@@ -5458,7 +5369,8 @@ Release: April 23, 2024
 
 68 / 81
 
-       <xs:element name="parentCategory" type="pd:CategoryReference"
+
+       <xs:element name="parentCategory" type="pd:CategoryReference"
  minOccurs="0" maxOccurs="1"/>
        <xs:element name="seeAlso" type="xs:string" minOccurs="0"
  maxOccurs="unbounded"/>
@@ -5532,7 +5444,8 @@ Release: April 23, 2024
 
 69 / 81
 
-   <xs:complexType name="SupportedMajorVersion">
+
+   <xs:complexType name="SupportedMajorVersion">
      <xs:annotation>
        <xs:documentation>A major version of a product that can be
  referenced by a policy as being supported on.</xs:documentation>
@@ -5609,7 +5522,8 @@ Release: April 23, 2024
 
 70 / 81
 
-     </xs:annotation>
+
+     </xs:annotation>
      <xs:sequence>
        <xs:choice minOccurs="1" maxOccurs="unbounded">
          <xs:element name="range" type="pd:SupportedOnRange"/>
@@ -5686,7 +5600,8 @@ Release: April 23, 2024
 
 71 / 81
 
-       <xs:element name="disabledList" type="pd:ValueList"
+
+       <xs:element name="disabledList" type="pd:ValueList"
  minOccurs="0" maxOccurs="1"/>
        <xs:element name="elements" type="pd:PolicyElements"
  minOccurs="0" maxOccurs="1"/>
@@ -5713,7 +5628,7 @@ Release: April 23, 2024
    </xs:complexType>
  </xs:schema>
 
-7.3  ADMX File Schema
+### 7.3 ADMX File Schema
 
 PolicyDefinitionFiles.xsd:
 
@@ -5759,7 +5674,8 @@ Release: April 23, 2024
 
 72 / 81
 
-   <!--
+
+   <!--
          Special types and groups
       -->
    <xs:complexType name="FileReference">
@@ -5835,7 +5751,8 @@ Release: April 23, 2024
 
 73 / 81
 
-       <xs:element name="categories" type="pd:CategoryList"
+
+       <xs:element name="categories" type="pd:CategoryList"
  minOccurs="0" maxOccurs="1"/>
        <xs:element name="policies" type="pd:PolicyList"
  minOccurs="0" maxOccurs="1"/>
@@ -5879,7 +5796,7 @@ Release: April 23, 2024
 
  </xs:schema>
 
-7.4  CMTX File Schema
+### 7.4 CMTX File Schema
 
 CMTX Schema
 Element (parent)
@@ -5924,7 +5841,8 @@ Release: April 23, 2024
 
 74 / 81
 
-CMTX Schema
+
+CMTX Schema
 Element (parent)
 
 (comments)
@@ -6015,7 +5933,8 @@ Release: April 23, 2024
 
 75 / 81
 
-                         <xs:attribute name="commentText" type="xs:string" use="required" />
+
+                         <xs:attribute name="commentText" type="xs:string" use="required" />
                        </xs:complexType>
                      </xs:element>
                    </xs:sequence>
@@ -6058,7 +5977,7 @@ Release: April 23, 2024
    </xs:element>
  </xsd:schema>
 
-7.5  CMTL File Schema
+### 7.5 CMTL File Schema
 
 CMTL Schema Element
 (parent)
@@ -6100,7 +6019,8 @@ Release: April 23, 2024
 
 76 / 81
 
-CMTL.xsd:
+
+CMTL.xsd:
 
  <?xml version="1.0" encoding="utf-8"?>
  <xsd:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -6145,7 +6065,8 @@ Release: April 23, 2024
 
 77 / 81
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6189,7 +6110,8 @@ Release: April 23, 2024
 
 78 / 81
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -6325,7 +6247,8 @@ Data model - abstract
 
 79 / 81
 
-      policy
+
+      policy
          comment state 22
          description store 22
       user policy setting state 22
@@ -6463,7 +6386,8 @@ Product behavior 54
 
 80 / 81
 
-R
+
+R
 
 References 7
    informative 8

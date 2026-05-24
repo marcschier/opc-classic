@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 29
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -194,184 +195,78 @@ Release: April 23, 2024
 
 2 / 29
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 HTTP Headers](#222-http-headers)
+      - [2.2.2.1 Accept](#2221-accept)
+    - [2.2.3 Common URI Parameters](#223-common-uri-parameters)
+      - [2.2.3.1 api-version](#2231-api-version)
+    - [2.2.4 Complex Types](#224-complex-types)
+      - [2.2.4.1 AuthenticationService](#2241-authenticationservice)
+      - [2.2.4.2 DeviceRegistrationService](#2242-deviceregistrationservice)
+      - [2.2.4.3 Discovery](#2243-discovery)
+      - [2.2.4.4 OAuth2](#2244-oauth2)
+      - [2.2.4.5 IdentityProviderService](#2245-identityproviderservice)
+      - [2.2.4.6 DeviceJoinService](#2246-devicejoinservice)
+      - [2.2.4.7 WebBrowserZones](#2247-webbrowserzones)
+      - [2.2.4.8 Intranet](#2248-intranet)
+      - [2.2.4.9 Trusted](#2249-trusted)
+      - [2.2.4.10 Untrusted](#22410-untrusted)
+      - [2.2.4.11 KeyProvisioningService](#22411-keyprovisioningservice)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IHttpDiscoveryService Server Details](#31-ihttpdiscoveryservice-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 contract?api-version={api-version}](#3151-contractapi-versionapi-version)
+        - [3.1.5.1.1 GET](#31511-get)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Client Request](#41-client-request)
+    - [4.1.1 Protocol Version 1.0](#411-protocol-version-10)
+    - [4.1.2 Protocol Version 1.2](#412-protocol-version-12)
+  - [4.2 Server Response (XML)](#42-server-response-xml)
+    - [4.2.1 Protocol Version 1.0](#421-protocol-version-10)
+    - [4.2.2 Protocol Version 1.2](#422-protocol-version-12)
+  - [4.3 Server Response (JSON)](#43-server-response-json)
+    - [4.3.1 Protocol Version 1.0](#431-protocol-version-10)
+    - [4.3.2 Protocol Version 1.2](#432-protocol-version-12)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full XML Schema](#6-appendix-a-full-xml-schema)
+  - [6.1 tns1](#61-tns1)
+    - [6.1.1 Version 1.0](#611-version-10)
+    - [6.1.2 Version 1.2](#612-version-12)
+  - [6.2 http://tempuri.org Schema](#62-httptempuriorg-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.4
-
-2.2.3
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Common Data Types .......................................................................................... 9
-Namespaces ................................................................................................ 9
-HTTP Headers .............................................................................................. 9
-Accept ................................................................................................... 9
-Common URI Parameters ............................................................................ 10
-api-version ........................................................................................... 10
-Complex Types ........................................................................................... 10
-AuthenticationService ............................................................................ 11
-2.2.4.1
-DeviceRegistrationService ...................................................................... 11
-2.2.4.2
-Discovery ............................................................................................. 12
-2.2.4.3
-OAuth2 ................................................................................................ 12
-2.2.4.4
-IdentityProviderService .......................................................................... 12
-2.2.4.5
-DeviceJoinService ................................................................................. 13
-2.2.4.6
-WebBrowserZones ................................................................................ 13
-2.2.4.7
-Intranet ............................................................................................... 13
-2.2.4.8
-2.2.4.9
-Trusted ................................................................................................ 14
-2.2.4.10  Untrusted ............................................................................................. 14
-KeyProvisioningService .......................................................................... 14
-2.2.4.11
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 16
-IHttpDiscoveryService Server Details .................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-contract?api-version={api-version} ........................................................ 16
-GET ............................................................................................... 17
-Request Body ............................................................................ 17
-Response Body .......................................................................... 17
-Processing Details ...................................................................... 17
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.1.6
-3.1.7
-
-3.1.5.1.1
-
-3.1.5.1
-
-4.1
-
-4  Protocol Examples ................................................................................................. 19
-Client Request ................................................................................................. 19
-Protocol Version 1.0 .................................................................................... 19
-Protocol Version 1.2 .................................................................................... 19
-Server Response (XML) ..................................................................................... 19
-Protocol Version 1.0 .................................................................................... 19
-
-4.1.1
-4.1.2
-
-4.2.1
-
-4.2
-
-[MS-DVRD] - v20240423
-Device Registration Discovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 29
-
-4.3
-
-4.2.2
-
-4.3.1
-4.3.2
-
-Protocol Version 1.2 .................................................................................... 19
-Server Response (JSON) ................................................................................... 20
-Protocol Version 1.0 .................................................................................... 20
-Protocol Version 1.2 .................................................................................... 21
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6.1
-
-6  Appendix A: Full XML Schema ................................................................................ 23
-http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.Entities Schema
- ..................................................................................................................... 23
-Version 1.0 ................................................................................................ 23
-Version 1.2 ................................................................................................ 24
-http://tempuri.org Schema ............................................................................... 25
-
-6.1.1
-6.1.2
-
-6.2
-
-7  Appendix B: Product Behavior ............................................................................... 26
-
-8  Change Tracking .................................................................................................... 28
-
-9  Index ..................................................................................................................... 29
-
-[MS-DVRD] - v20240423
-Device Registration Discovery Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 29
-
-1  Introduction
+## 1 Introduction
 
 The discovery of information needed to register devices is accomplished through the protocol defined
 in this specification, the Device Registration Discovery Protocol (DVRD). Registration of a device in the
@@ -381,7 +276,7 @@ Discovery Protocol is handled by the Device Registration Enrollment Protocol [MS
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -424,7 +319,7 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -438,7 +333,8 @@ Release: April 23, 2024
 
 5 / 29
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -466,7 +362,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DVRE] Microsoft Corporation, "Device Registration Enrollment Protocol".
 
@@ -474,7 +370,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 
 [MS-KPP] Microsoft Corporation, "Key Provisioning Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 This document defines a protocol for returning information about a server that implements the Device
 Registration Enrollment Protocol [MS-DVRE] as structured RESTful resources.
@@ -508,20 +404,21 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 7 -->
+
+<!-- Extracted images from page 7 -->
 ![Extracted image 1 from page 7]([MS-DVRD].images/page007-img01.png)
 ![Extracted image 2 from page 7]([MS-DVRD].images/page007-img02.png)
 <!-- /Extracted images from page 7 -->
 
 Figure 1: Device discovery sequence
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure illustrates the relationship of this protocol to other protocols.
 
 Figure 2: Protocols related to the Device Registration Discovery Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The protocol defined in this document does not provide a mechanism for a client to discover the
 existence and location of arbitrary data services (of the server). It is a prerequisite that the client
@@ -530,7 +427,7 @@ obtain a URI to the server before the protocol can be used.
 Neither the protocol defined in this document nor its base protocols define an authentication or
 authorization scheme.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol defines a means for exposing information about a DRS server as structured RESTful
 resources. This protocol is applicable to both Internet and intranet client-server scenarios.
@@ -542,16 +439,17 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The protocol provides a URI parameter for specifying the desired version.  See section 2.2.3.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not provide any mechanism for capability negotiation beyond that specified in
 section 1.7.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has not been assigned any standard parameters.
 
@@ -562,9 +460,10 @@ Release: April 23, 2024
 
 8 / 29
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Device Registration Discovery Protocol consists of a single RESTful web service.
 
@@ -582,9 +481,9 @@ All client messages to the server MUST use Hypertext Transfer Protocol over Secu
 Layer (HTTPS) and provide server authentication, which MUST use Transport Layer Security
 (TLS) 1.1 [RFC4346] or greater.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces by using the mechanisms specified
 in [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -615,7 +514,7 @@ a
 
 http://schemas.microsoft.com/2003/10/Serialization/Arrays
 
-2.2.2  HTTP Headers
+#### 2.2.2 HTTP Headers
 
 This protocol accesses the HTTP headers listed in the following table.
 
@@ -630,7 +529,7 @@ Specifies the format of the response body.
 The following sections define the syntax of the HTTP headers by using the Augmented Backus-Naur
 Form (ABNF) syntax [RFC4234].
 
-2.2.2.1  Accept
+##### 2.2.2.1 Accept
 
 The Accept HTTP header is optional. This header is used by the client in the request to specify the
 format of the response body.
@@ -642,11 +541,12 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The format of the Accept header is as follows.
+
+The format of the Accept header is as follows.
 
 Accept = "application/json" / "application/xml"
 
-2.2.3  Common URI Parameters
+#### 2.2.3 Common URI Parameters
 
 The following table summarizes the set of Common URI Parameters defined by this specification.
 
@@ -656,7 +556,7 @@ api-version
 
 An integer that indicates the data version that is expected by the client.
 
-2.2.3.1  api-version
+##### 2.2.3.1 api-version
 
 The api-version parameter is an integer that indicates the data version that is expected by the client.
 This parameter MUST be included in all client requests.
@@ -664,7 +564,7 @@ This parameter MUST be included in all client requests.
  String = *(%x20-7E)
  api-version = String
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 The following table summarizes the set of common XML schema complex type definitions defined by
 this specification.
@@ -732,7 +632,8 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Complex Type
+
+Complex Type
 
 Description
 
@@ -741,7 +642,7 @@ KeyProvisioningService
 Information about the key provisioning server. See section 2.2.4.11. This type is
 included with DVRD version 1.2.
 
-2.2.4.1  AuthenticationService
+##### 2.2.4.1 AuthenticationService
 
 The AuthenticationService type contains metadata about all of the authentication schemes that are
 supported and allowed by the DRS server.
@@ -765,7 +666,7 @@ Namespace: http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.
 
 OAuth2: The top-level object for OAuth. See section 2.2.4.4.
 
-2.2.4.2  DeviceRegistrationService
+##### 2.2.4.2 DeviceRegistrationService
 
 The DeviceRegistrationService type contains metadata about the DRS server. This information, along
 with the information from AuthenticationService (section 2.2.4.1), can be used to connect and
@@ -800,7 +701,8 @@ Release: April 23, 2024
 
 11 / 29
 
-2.2.4.3  Discovery
+
+##### 2.2.4.3 Discovery
 
 The root element.
 
@@ -835,7 +737,7 @@ DeviceJoinService: The top-level object for DeviceJoinService. See section 2.2.4
 
 KeyProvisioningService: The top-level object for KeyProvisioningService. See section 2.2.4.11.
 
-2.2.4.4  OAuth2
+##### 2.2.4.4 OAuth2
 
 The OAuth2 type contains the information needed to connect to the OAuth2 server [RFC6749].
 
@@ -858,7 +760,7 @@ TokenEndpoint: The URL of the token endpoint on the OAuth2 server. This endpoint
 
 request access tokens in exchange for an authorization code.
 
-2.2.4.5  IdentityProviderService
+##### 2.2.4.5 IdentityProviderService
 
 The IdentityProviderService type contains metadata about the identity server that is used by the DRS
 server.
@@ -870,7 +772,8 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Namespace: http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.Entities
+
+Namespace: http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.Entities
 
  <xs:element name="IdentityProviderService">
    <xs:complexType>
@@ -882,7 +785,7 @@ Release: April 23, 2024
 
 PassiveAuthEndpoint: The URL of the passive authentication endpoint of the identity provider.
 
-2.2.4.6  DeviceJoinService
+##### 2.2.4.6 DeviceJoinService
 
 The DeviceJoinService type contains metadata about the DRS REST-based join server [MS-DVRJ].
 
@@ -905,7 +808,7 @@ federation provider.
 
 ServiceVersion: A decimal that indicates the discovery data version.
 
-2.2.4.7  WebBrowserZones
+##### 2.2.4.7 WebBrowserZones
 
 The WebBrowserZones type contains metadata about the settings that a client Web browser MUST
 have in order to use the Device Registration Enrollment Protocol [MS-DVRE] and the Device
@@ -917,7 +820,7 @@ Trusted: The top-level object for the Trusted object. See section 2.2.4.9.
 
 Untrusted: The top-level object for the Untrusted object. See section 2.2.4.10.
 
-2.2.4.8  Intranet
+##### 2.2.4.8 Intranet
 
 A child of the WebBrowserZones complex type (section 2.2.4.7).
 
@@ -937,7 +840,8 @@ Release: April 23, 2024
 
 13 / 29
 
-             <xs:element ref="a:anyURI" />
+
+             <xs:element ref="a:anyURI" />
            </xs:sequence>
          </xs:complexType>
        </xs:element>
@@ -945,7 +849,7 @@ Release: April 23, 2024
    </xs:complexType>
  </xs:element>
 
-2.2.4.9  Trusted
+##### 2.2.4.9 Trusted
 
 A child of the WebBrowserZones complex type (section 2.2.4.7).
 
@@ -965,9 +869,9 @@ The values of the Endpoints object MUST be added to the client Web browser trust
    </xs:complexType>
  </xs:element>
 
-2.2.4.10
+##### 2.2.4.10 Untrusted
 
-Untrusted
+
 
 A child of the WebBrowserZones complex type (section 2.2.4.7).
 
@@ -987,9 +891,9 @@ The values of the Endpoints object MUST be added to the client Web browser untru
    </xs:complexType>
  </xs:element>
 
-2.2.4.11
+##### 2.2.4.11 KeyProvisioningService
 
-KeyProvisioningService
+
 
 The KeyProvisioningService type contains metadata about the DRS REST-based key provisioning
 server [MS-KPP].
@@ -1008,7 +912,8 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       <xs:element name="KeyProvisionResourceId" type="xs:string" />
+
+       <xs:element name="KeyProvisionResourceId" type="xs:string" />
        <xs:element name="ServiceVersion" type="xs:decimal" />
      </xs:sequence>
    </xs:complexType>
@@ -1028,11 +933,12 @@ Release: April 23, 2024
 
 15 / 29
 
-3  Protocol Details
 
-3.1  IHttpDiscoveryService Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 IHttpDiscoveryService Server Details
+
+#### 3.1.1 Abstract Data Model
 
 The following information MUST be maintained on the server.
 
@@ -1058,21 +964,21 @@ KeyProvisionResourceId: See section 2.2.4.11 for KeyProvisioningService.
 
 Endpoints: See section 2.2.4.7 for WebBrowserZones.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server that implements the Device Registration Discovery Protocol must be initialized. Any
 databases or tables that contain the information needed in the Device Registration Discovery Protocol
 response MUST be initialized.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Resource
 
@@ -1091,7 +997,8 @@ Release: April 23, 2024
 
 16 / 29
 
-3.1.5.1  contract?api-version={api-version}
+
+##### 3.1.5.1 contract?api-version={api-version}
 
 api-version: An integer that indicates the data version expected by the client. This parameter MUST
 
@@ -1105,7 +1012,7 @@ GET
 
 Get connection and authentication metadata for the DRS server.
 
-3.1.5.1.1 GET
+###### 3.1.5.1.1 GET
 
 This operation is transported by an HTTP GET.
 
@@ -1113,11 +1020,11 @@ The operation can be invoked through the following URI:
 
  contract?api-version={version}
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The request body SHOULD be empty. Any content MUST be ignored by the server.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 The response body is encoded in either XML or JSON format. The format is controlled by the Accept
 header defined in section 2.2.2.1.
@@ -1126,7 +1033,7 @@ header defined in section 2.2.2.1.
 xmlns:q1="http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.Entities"
 type="q1:Discovery"/>
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 1.  The server MUST respond only to requests that have established TLS server authentication.
 
@@ -1157,15 +1064,16 @@ Release: April 23, 2024
 
 17 / 29
 
-6.  If the server encounters an error in message processing, the server MUST return an HTTP error
+
+6.  If the server encounters an error in message processing, the server MUST return an HTTP error
 code in the 400 range. The body of the message response is insignificant to the protocol. Clients
 MUST halt processing upon receiving an HTTP error.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1176,29 +1084,30 @@ Release: April 23, 2024
 
 18 / 29
 
-4  Protocol Examples
 
-4.1  Client Request
+## 4 Protocol Examples
+
+### 4.1 Client Request
 
 The following sections contain the request examples from the client.
 
-4.1.1  Protocol Version 1.0
+#### 4.1.1 Protocol Version 1.0
 
 Client request for DVRD version 1.0:
 
 https://enterpriseregistration.contoso.com/enrollmentserver/contract?api-version=1.0
 
-4.1.2  Protocol Version 1.2
+#### 4.1.2 Protocol Version 1.2
 
 Client request for DVRD version 1.2:
 
 https://enterpriseregistration.contoso.com/enrollmentserver/contract?api-version=1.2
 
-4.2  Server Response (XML)
+### 4.2 Server Response (XML)
 
 The following sections contain the response examples from the server in XML format.
 
-4.2.1  Protocol Version 1.0
+#### 4.2.1 Protocol Version 1.0
 
 Server response for DVRD version 1.0 in XML format:
 
@@ -1231,7 +1140,7 @@ Server response for DVRD version 1.0 in XML format:
    </IdentityProviderService>
  </Discovery>
 
-4.2.2  Protocol Version 1.2
+#### 4.2.2 Protocol Version 1.2
 
 Server response for DVRD version 1.2 in XML format:
 
@@ -1242,7 +1151,8 @@ Release: April 23, 2024
 
 19 / 29
 
- <Discovery
+
+ <Discovery
 xmlns="http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.Entities"
 xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
    <DeviceRegistrationService>
@@ -1285,13 +1195,13 @@ xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
    </KeyProvisioningService>
  </Discovery>
 
-4.3  Server Response (JSON)
+### 4.3 Server Response (JSON)
 
 The following sections contain the response examples from the server in JSON format.
 
 Note  Line breaks and spaces have been added for clarity.
 
-4.3.1  Protocol Version 1.0
+#### 4.3.1 Protocol Version 1.0
 
 Server response for DVRD version 1.0 in JSON format:
 
@@ -1315,11 +1225,12 @@ Release: April 23, 2024
 
 20 / 29
 
-   },
+
+   },
    "IdentityProviderService": { "PassiveAuthEndpoint": "https:\/\/sts.contoso.com\/adfs\/ls" }
  }
 
-4.3.2  Protocol Version 1.2
+#### 4.3.2 Protocol Version 1.2
 
 Server response for DVRD version 1.2 in JSON format:
 
@@ -1362,15 +1273,16 @@ Release: April 23, 2024
 
 21 / 29
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Device Registration Discovery Protocol uses HTTPS as a transport.  Using Secure Sockets Layer
 (SSL) server certificate verification ensures that the client is communicating with the real server and
 closes any possible man-in-the-middle attacks.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1381,7 +1293,8 @@ Release: April 23, 2024
 
 22 / 29
 
-6  Appendix A: Full XML Schema
+
+## 6 Appendix A: Full XML Schema
 
 For ease of implementation, the following sections provide the full XML schemas for this protocol.
 
@@ -1393,11 +1306,11 @@ http://schemas.datacontract.org/2004/07/Microsoft.DeviceRegistration.Entities
 
 tns
 
-6.1
+### 6.1 tns1
 
 http://tempuri.org
 
-tns1
+
 
 6.2
 
@@ -1408,7 +1321,7 @@ s Schema
 The following sections contain the XML schemas for the tns namespace of the Device Registration
 Discovery Protocol.
 
-6.1.1  Version 1.0
+#### 6.1.1 Version 1.0
 
 XML schema for the tns namespace of DVRD version 1.0:
 
@@ -1463,9 +1376,10 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </xs:schema>
 
-6.1.2  Version 1.2
+ </xs:schema>
+
+#### 6.1.2 Version 1.2
 
 XML schema for the tns namespace of DVRD version 1.2:
 
@@ -1537,7 +1451,8 @@ Device Registration Discovery Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                         </xs:sequence>
+
+                         </xs:sequence>
                        </xs:complexType>
                      </xs:element>
                    </xs:sequence>
@@ -1586,7 +1501,7 @@ Release: April 23, 2024
    </xs:element>
 </xs:schema>
 
-6.2  http://tempuri.org Schema
+### 6.2 http://tempuri.org Schema
 
 XML schema for the tns1 namespace of the Device Registration Discovery Protocol:
 
@@ -1604,7 +1519,8 @@ Release: April 23, 2024
 
 25 / 29
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1716,7 +1632,8 @@ Release: April 23, 2024
 
 26 / 29
 
-URI parameter
+
+URI parameter
 
 Windows 10
 
@@ -1736,7 +1653,8 @@ Release: April 23, 2024
 
 27 / 29
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1780,7 +1698,8 @@ Release: April 23, 2024
 
 28 / 29
 
-Product behavior 26
+
+Product behavior 26
 Protocol examples
    Client Request 19
    Server Response (JSON) 20
@@ -1815,7 +1734,7 @@ X
 
 XML schema 23
 
-9  Index
+## 9 Index
 A
 
 Applicability 7

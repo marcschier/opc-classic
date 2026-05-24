@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 241
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 241
 
-Date
+
+Date
 
 Revision
 History
@@ -499,403 +501,172 @@ Release: April 23, 2024
 
 3 / 241
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 11
-Preferences Encoding Overview .................................................................... 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.5
-
-2.2.1.4
-
-2.2.1.3
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.4.1
-2.2.1.4.2
-
-2.2.1.2.1
-2.2.1.2.2
-
-2.2.1.3.1
-2.2.1.3.2
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-2.2.1.1.4
-2.2.1.1.5
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-Preferences Policy Message Syntax ............................................................... 16
-Preferences Policy File Format ................................................................ 17
-Common XML Schema ..................................................................... 17
-Outer and Inner Element Names and CLSIDs ...................................... 18
-Common XML Attributes ................................................................... 20
-Password Encryption ........................................................................ 21
-Expanding Environment Variables ...................................................... 21
-DataSources ......................................................................................... 21
-Element-Specific Attributes ............................................................... 22
-DataSources Schema ....................................................................... 22
-Devices ................................................................................................ 23
-Element-Specific Attributes ............................................................... 23
-Devices Schema .............................................................................. 24
-Drives ................................................................................................. 25
-Element-Specific Attributes ............................................................... 25
-Drives Schema ................................................................................ 26
-EnvironmentVariables ............................................................................ 27
-Element-Specific Attributes ............................................................... 27
-EnvironmentVariables Schema .......................................................... 28
-Files .................................................................................................... 29
-Element-Specific Attributes ............................................................... 29
-Files Schema .................................................................................. 30
-FolderOptions ....................................................................................... 30
-GlobalFolderOptions element ............................................................ 31
-GlobalFolderOptionsVista element ...................................................... 32
-FileType element ............................................................................. 34
-OpenWith element ........................................................................... 35
-FolderOptions Schema ..................................................................... 36
-Folders ................................................................................................ 39
-Element-Specific Attributes ............................................................... 39
-Folders Schema ............................................................................... 41
-IniFiles ................................................................................................ 41
-Element-Specific Attributes ............................................................... 42
-IniFiles Schema ............................................................................... 42
-InternetSettings ................................................................................... 44
-Internet Settings (Internet Explorer 5 and 6) ...................................... 44
-Internet Explorer 7 Registry Keys ...................................................... 55
-Internet Explorer 8 and Internet Explorer 9 Registry Keys .................... 68
-
-2.2.1.7.1
-2.2.1.7.2
-2.2.1.7.3
-2.2.1.7.4
-2.2.1.7.5
-
-2.2.1.10.1
-2.2.1.10.2
-2.2.1.10.3
-
-2.2.1.8.1
-2.2.1.8.2
-
-2.2.1.5.1
-2.2.1.5.2
-
-2.2.1.6.1
-2.2.1.6.2
-
-2.2.1.9.1
-2.2.1.9.2
-
-2.2.1.10
-
-2.2.1.8
-
-2.2.1.9
-
-2.2.1.6
-
-2.2.1.7
-
-[MS-GPPREF] - v20240423
-Group Policy: Preferences Extension Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 241
-
-2.2.1.15
-
-2.2.1.16
-
-2.2.1.11
-
-2.2.1.14
-
-2.2.1.16.1
-2.2.1.16.2
-
-2.2.1.10.4
-2.2.1.10.5
-
-2.2.1.15.1
-2.2.1.15.2
-2.2.1.15.3
-2.2.1.15.4
-
-Internet Explorer 10 and Internet Explorer 11 Registry Keys ................. 84
-InternetSettings Schema ................................................................. 105
-Local Users and Groups ........................................................................ 109
-2.2.1.11.1  Group Inner Element ...................................................................... 109
-2.2.1.11.2  User Inner Element ......................................................................... 110
-2.2.1.11.3  Groups Schema .............................................................................. 111
-2.2.1.12  NetworkOptions ................................................................................... 113
-2.2.1.12.1  DUN Element ................................................................................. 113
-2.2.1.12.2
-VPN Element .................................................................................. 114
-2.2.1.12.3  NetworkOptions Schema ................................................................. 115
-2.2.1.13  NetworkShare...................................................................................... 117
-Element-Specific Attributes .............................................................. 117
-2.2.1.13.1
-2.2.1.13.2  NetworkShareSettings Schema ........................................................ 118
-PowerOptions ...................................................................................... 119
-2.2.1.14.1  GlobalPowerOptions element ............................................................ 119
-2.2.1.14.2
-PowerScheme element .................................................................... 119
-2.2.1.14.3  GlobalPowerOptionsV2 Element ........................................................ 120
-PowerOptions Schema .................................................................... 122
-2.2.1.14.4
-Printers............................................................................................... 124
-LocalPrinter element ....................................................................... 124
-SharedPrinter Element .................................................................... 125
-PortPrinter element......................................................................... 126
-Printers Schema ............................................................................. 127
-Regional Options .................................................................................. 129
-Element-Specific Attributes .............................................................. 129
-Regional Schema ............................................................................ 130
-Registry .............................................................................................. 131
-Element-Specific Attributes .............................................................. 131
-RegistrySettings Schema ................................................................. 133
-Scheduled Tasks .................................................................................. 136
-Task Inner Element ........................................................................ 136
-ImmediateTask Inner Element ......................................................... 138
-TaskV2 Inner Element ..................................................................... 138
-ImmediateTaskV2 Inner Element ...................................................... 139
-ScheduledTasks Schema ................................................................. 140
-Services .............................................................................................. 144
-2.2.1.19.1
-Element-Specific Attributes .............................................................. 144
-2.2.1.19.2  NTServices Schema ........................................................................ 145
-Shortcuts ............................................................................................ 146
-Element-Specific Attributes .............................................................. 146
-Shortcuts Schema .......................................................................... 147
-Start Menu .......................................................................................... 148
-StartMenu Inner Element ................................................................ 148
-StartMenuVista Inner Element .......................................................... 150
-Combined StartMenu and StartMenuVista Attribute Values .................. 152
-StartMenuTaskbar Schema .............................................................. 156
-Targeting ............................................................................................ 160
-Applications ......................................................................................... 177
-Applications Schema ....................................................................... 177
-Policy Administration Message Syntax .......................................................... 178
-Directory Service Schema Elements .................................................................. 179
-
-2.2.1.18.1
-2.2.1.18.2
-2.2.1.18.3
-2.2.1.18.4
-2.2.1.18.5
-
-2.2.1.21.1
-2.2.1.21.2
-2.2.1.21.3
-2.2.1.21.4
-
-2.2.1.17.1
-2.2.1.17.2
-
-2.2.1.20.1
-2.2.1.20.2
-
-2.2.1.22
-2.2.1.23
-
-2.2.1.23.1
-
-2.2.1.17
-
-2.2.1.18
-
-2.2.1.19
-
-2.2.1.20
-
-2.2.1.21
-
-2.2.2
-
-2.3
-
-3.1
-
-3  Protocol Details ................................................................................................... 180
-Administrative Add-in Details ............................................................................ 180
-Abstract Data Model ................................................................................... 180
-Timers ..................................................................................................... 180
-Initialization .............................................................................................. 180
-Higher-Layer Triggered Events .................................................................... 180
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-[MS-GPPREF] - v20240423
-Group Policy: Preferences Extension Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 241
-
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.1.1
-
-Message Processing Events and Sequencing Rules ......................................... 180
-Policy Administration Update Message Sequencing ................................... 180
-Policy Administration Delete Message Sequencing .................................... 181
-Policy Administration Load Message Sequencing ...................................... 181
-Timer Events ............................................................................................. 182
-Other Local Events ..................................................................................... 182
-Client Add-in Details ........................................................................................ 182
-Abstract Data Model ................................................................................... 182
-Preferences Setting State ...................................................................... 182
-Timers ..................................................................................................... 183
-Initialization .............................................................................................. 183
-Higher-Layer Triggered Events .................................................................... 183
-Process Group Policy ............................................................................ 183
-Message Processing Events and Sequencing Rules ......................................... 183
-Preferences Policy Message Sequencing .................................................. 183
-Deleted GPO List Processing ............................................................ 183
-New or Changed GPO List Processing ................................................ 184
-Timer Events ............................................................................................. 185
-Other Local Events ..................................................................................... 185
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.2.6
-3.2.7
-
-4.1
-4.2
-
-4  Protocol Examples ............................................................................................... 186
-Preferences Policy Application Message .............................................................. 186
-Protocol Samples ............................................................................................ 187
-DataSources XML Example .......................................................................... 187
-4.2.1
-Devices XML Example ................................................................................. 187
-4.2.2
-Mapped Drives XML Example ....................................................................... 188
-4.2.3
-EnvironmentVariables XML Example ............................................................. 188
-4.2.4
-Files XML Example ..................................................................................... 189
-4.2.5
-FolderOptions XML Example ........................................................................ 189
-4.2.6
-Folders XML Example ................................................................................. 191
-4.2.7
-IniFile XML Example ................................................................................... 191
-4.2.8
-InternetSettings XML Example .................................................................... 191
-4.2.9
-4.2.10
-Local Users and Groups Example ................................................................. 215
-4.2.11  NetworkOptions XML Example ..................................................................... 216
-4.2.12  NetworkShareSettings XML Example ............................................................ 217
-PowerOptions XML Example ........................................................................ 217
-4.2.13
-Printers XML Example................................................................................. 219
-4.2.14
-Regional Options XML Example .................................................................... 221
-4.2.15
-4.2.16
-RegistrySettings XML Example .................................................................... 221
-ScheduledTasks XML Example ..................................................................... 222
-4.2.17
-4.2.18  NTServices XML Example ............................................................................ 226
-Shortcuts XML Example .............................................................................. 227
-4.2.19
-StartMenu XML Example ............................................................................. 228
-4.2.20
-Targeting Sample ...................................................................................... 229
-4.2.21
-Applications XML Sample ............................................................................ 232
-4.2.22
-
-5  Security ............................................................................................................... 234
-Security Considerations for Implementers .......................................................... 234
-Index of Security Parameters ........................................................................... 234
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 235
-
-7  Change Tracking .................................................................................................. 239
-
-8  Index ................................................................................................................... 240
-
-[MS-GPPREF] - v20240423
-Group Policy: Preferences Extension Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 241
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Preferences Encoding Overview](#131-preferences-encoding-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Preferences Policy Message Syntax](#221-preferences-policy-message-syntax)
+      - [2.2.1.1 Preferences Policy File Format](#2211-preferences-policy-file-format)
+        - [2.2.1.1.1 Common XML Schema](#22111-common-xml-schema)
+        - [2.2.1.1.2 Outer and Inner Element Names and CLSIDs](#22112-outer-and-inner-element-names-and-clsids)
+        - [2.2.1.1.3 Common XML Attributes](#22113-common-xml-attributes)
+        - [2.2.1.1.4 Password Encryption](#22114-password-encryption)
+        - [2.2.1.1.5 Expanding Environment Variables](#22115-expanding-environment-variables)
+      - [2.2.1.2 DataSources](#2212-datasources)
+        - [2.2.1.2.1 Element-Specific Attributes](#22121-element-specific-attributes)
+        - [2.2.1.2.2 DataSources Schema](#22122-datasources-schema)
+      - [2.2.1.3 Devices](#2213-devices)
+        - [2.2.1.3.1 Element-Specific Attributes](#22131-element-specific-attributes)
+        - [2.2.1.3.2 Devices Schema](#22132-devices-schema)
+      - [2.2.1.4 Drives](#2214-drives)
+        - [2.2.1.4.1 Element-Specific Attributes](#22141-element-specific-attributes)
+        - [2.2.1.4.2 Drives Schema](#22142-drives-schema)
+      - [2.2.1.5 EnvironmentVariables](#2215-environmentvariables)
+        - [2.2.1.5.1 Element-Specific Attributes](#22151-element-specific-attributes)
+        - [2.2.1.5.2 EnvironmentVariables Schema](#22152-environmentvariables-schema)
+      - [2.2.1.6 Files](#2216-files)
+        - [2.2.1.6.1 Element-Specific Attributes](#22161-element-specific-attributes)
+        - [2.2.1.6.2 Files Schema](#22162-files-schema)
+      - [2.2.1.7 FolderOptions](#2217-folderoptions)
+        - [2.2.1.7.1 GlobalFolderOptions element](#22171-globalfolderoptions-element)
+        - [2.2.1.7.2 GlobalFolderOptionsVista element](#22172-globalfolderoptionsvista-element)
+        - [2.2.1.7.3 FileType element](#22173-filetype-element)
+        - [2.2.1.7.4 OpenWith element](#22174-openwith-element)
+        - [2.2.1.7.5 FolderOptions Schema](#22175-folderoptions-schema)
+      - [2.2.1.8 Folders](#2218-folders)
+        - [2.2.1.8.1 Element-Specific Attributes](#22181-element-specific-attributes)
+        - [2.2.1.8.2 Folders Schema](#22182-folders-schema)
+      - [2.2.1.9 IniFiles](#2219-inifiles)
+        - [2.2.1.9.1 Element-Specific Attributes](#22191-element-specific-attributes)
+        - [2.2.1.9.2 IniFiles Schema](#22192-inifiles-schema)
+      - [2.2.1.10 InternetSettings](#22110-internetsettings)
+        - [2.2.1.10.1 Internet Settings (Internet Explorer 5 and 6)](#221101-internet-settings-internet-explorer-5-and-6)
+        - [2.2.1.10.2 Internet Explorer 7 Registry Keys](#221102-internet-explorer-7-registry-keys)
+        - [2.2.1.10.3 Internet Explorer 8 and Internet Explorer 9 Registry Keys](#221103-internet-explorer-8-and-internet-explorer-9-registry-keys)
+        - [2.2.1.10.4 Internet Explorer 10 and Internet Explorer 11 Registry Keys](#221104-internet-explorer-10-and-internet-explorer-11-registry-keys)
+        - [2.2.1.10.5 InternetSettings Schema](#221105-internetsettings-schema)
+      - [2.2.1.11 Local Users and Groups](#22111-local-users-and-groups)
+        - [2.2.1.11.1 Group Inner Element](#221111-group-inner-element)
+        - [2.2.1.11.2 User Inner Element](#221112-user-inner-element)
+        - [2.2.1.11.3 Groups Schema](#221113-groups-schema)
+      - [2.2.1.12 NetworkOptions](#22112-networkoptions)
+        - [2.2.1.12.1 DUN Element](#221121-dun-element)
+        - [2.2.1.12.2 VPN Element](#221122-vpn-element)
+        - [2.2.1.12.3 NetworkOptions Schema](#221123-networkoptions-schema)
+      - [2.2.1.13 NetworkShare](#22113-networkshare)
+        - [2.2.1.13.1 Element-Specific Attributes](#221131-element-specific-attributes)
+        - [2.2.1.13.2 NetworkShareSettings Schema](#221132-networksharesettings-schema)
+      - [2.2.1.14 PowerOptions](#22114-poweroptions)
+        - [2.2.1.14.1 GlobalPowerOptions element](#221141-globalpoweroptions-element)
+        - [2.2.1.14.2 PowerScheme element](#221142-powerscheme-element)
+        - [2.2.1.14.3 GlobalPowerOptionsV2 Element](#221143-globalpoweroptionsv2-element)
+        - [2.2.1.14.4 PowerOptions Schema](#221144-poweroptions-schema)
+      - [2.2.1.15 Printers](#22115-printers)
+        - [2.2.1.15.1 LocalPrinter element](#221151-localprinter-element)
+        - [2.2.1.15.2 SharedPrinter Element](#221152-sharedprinter-element)
+        - [2.2.1.15.3 PortPrinter element](#221153-portprinter-element)
+        - [2.2.1.15.4 Printers Schema](#221154-printers-schema)
+      - [2.2.1.16 Regional Options](#22116-regional-options)
+        - [2.2.1.16.1 Element-Specific Attributes](#221161-element-specific-attributes)
+        - [2.2.1.16.2 Regional Schema](#221162-regional-schema)
+      - [2.2.1.17 Registry](#22117-registry)
+        - [2.2.1.17.1 Element-Specific Attributes](#221171-element-specific-attributes)
+        - [2.2.1.17.2 RegistrySettings Schema](#221172-registrysettings-schema)
+      - [2.2.1.18 Scheduled Tasks](#22118-scheduled-tasks)
+        - [2.2.1.18.1 Task Inner Element](#221181-task-inner-element)
+        - [2.2.1.18.2 ImmediateTask Inner Element](#221182-immediatetask-inner-element)
+        - [2.2.1.18.3 TaskV2 Inner Element](#221183-taskv2-inner-element)
+        - [2.2.1.18.4 ImmediateTaskV2 Inner Element](#221184-immediatetaskv2-inner-element)
+        - [2.2.1.18.5 ScheduledTasks Schema](#221185-scheduledtasks-schema)
+      - [2.2.1.19 Services](#22119-services)
+        - [2.2.1.19.1 Element-Specific Attributes](#221191-element-specific-attributes)
+        - [2.2.1.19.2 NTServices Schema](#221192-ntservices-schema)
+      - [2.2.1.20 Shortcuts](#22120-shortcuts)
+        - [2.2.1.20.1 Element-Specific Attributes](#221201-element-specific-attributes)
+        - [2.2.1.20.2 Shortcuts Schema](#221202-shortcuts-schema)
+      - [2.2.1.21 Start Menu](#22121-start-menu)
+        - [2.2.1.21.1 StartMenu Inner Element](#221211-startmenu-inner-element)
+        - [2.2.1.21.2 StartMenuVista Inner Element](#221212-startmenuvista-inner-element)
+        - [2.2.1.21.3 Combined StartMenu and StartMenuVista Attribute Values](#221213-combined-startmenu-and-startmenuvista-attribute-values)
+        - [2.2.1.21.4 StartMenuTaskbar Schema](#221214-startmenutaskbar-schema)
+      - [2.2.1.22 Targeting](#22122-targeting)
+      - [2.2.1.23 Applications](#22123-applications)
+        - [2.2.1.23.1 Applications Schema](#221231-applications-schema)
+    - [2.2.2 Policy Administration Message Syntax](#222-policy-administration-message-syntax)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Add-in Details](#31-administrative-add-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Policy Administration Update Message Sequencing](#3151-policy-administration-update-message-sequencing)
+      - [3.1.5.2 Policy Administration Delete Message Sequencing](#3152-policy-administration-delete-message-sequencing)
+      - [3.1.5.3 Policy Administration Load Message Sequencing](#3153-policy-administration-load-message-sequencing)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Add-in Details](#32-client-add-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Preferences Setting State](#3211-preferences-setting-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Preferences Policy Message Sequencing](#3251-preferences-policy-message-sequencing)
+        - [3.2.5.1.1 Deleted GPO List Processing](#32511-deleted-gpo-list-processing)
+        - [3.2.5.1.2 New or Changed GPO List Processing](#32512-new-or-changed-gpo-list-processing)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Preferences Policy Application Message](#41-preferences-policy-application-message)
+  - [4.2 Protocol Samples](#42-protocol-samples)
+    - [4.2.1 DataSources XML Example](#421-datasources-xml-example)
+    - [4.2.2 Devices XML Example](#422-devices-xml-example)
+    - [4.2.3 Mapped Drives XML Example](#423-mapped-drives-xml-example)
+    - [4.2.4 EnvironmentVariables XML Example](#424-environmentvariables-xml-example)
+    - [4.2.5 Files XML Example](#425-files-xml-example)
+    - [4.2.6 FolderOptions XML Example](#426-folderoptions-xml-example)
+    - [4.2.7 Folders XML Example](#427-folders-xml-example)
+    - [4.2.8 IniFile XML Example](#428-inifile-xml-example)
+    - [4.2.9 InternetSettings XML Example](#429-internetsettings-xml-example)
+    - [4.2.10 Local Users and Groups Example](#4210-local-users-and-groups-example)
+    - [4.2.11 NetworkOptions XML Example](#4211-networkoptions-xml-example)
+    - [4.2.12 NetworkShareSettings XML Example](#4212-networksharesettings-xml-example)
+    - [4.2.13 PowerOptions XML Example](#4213-poweroptions-xml-example)
+    - [4.2.14 Printers XML Example](#4214-printers-xml-example)
+    - [4.2.15 Regional Options XML Example](#4215-regional-options-xml-example)
+    - [4.2.16 RegistrySettings XML Example](#4216-registrysettings-xml-example)
+    - [4.2.17 ScheduledTasks XML Example](#4217-scheduledtasks-xml-example)
+    - [4.2.18 NTServices XML Example](#4218-ntservices-xml-example)
+    - [4.2.19 Shortcuts XML Example](#4219-shortcuts-xml-example)
+    - [4.2.20 StartMenu XML Example](#4220-startmenu-xml-example)
+    - [4.2.21 Targeting Sample](#4221-targeting-sample)
+    - [4.2.22 Applications XML Sample](#4222-applications-xml-sample)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document specifies the Group Policy: Preferences Extension protocol, which provides a
 mechanism for an administrator to manage and deploy preferences.
@@ -903,7 +674,7 @@ mechanism for an administrator to manage and deploy preferences.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -969,7 +740,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-globally unique identifier (GUID): A term used interchangeably with universally unique
+
+globally unique identifier (GUID): A term used interchangeably with universally unique
 
 identifier (UUID) in Microsoft protocol technical documents (TDs). Interchanging the usage of
 these terms does not imply or require a specific algorithm or mechanism to generate the value.
@@ -1043,7 +815,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-user-scoped Group Policy Object path: A scoped Group Policy Object (GPO) path that ends
+
+user-scoped Group Policy Object path: A scoped Group Policy Object (GPO) path that ends
 
 in "\User".
 
@@ -1063,14 +836,14 @@ routing infrastructure of the Internet.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1100,7 +873,7 @@ https://www.rfc-editor.org/info/rfc1179
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RRP] Microsoft Corporation, "Windows Remote Registry Protocol".
 
@@ -1111,7 +884,8 @@ Release: April 23, 2024
 
 9 / 241
 
-[MSDN-ACCESSDRIVER] Microsoft Corporation, "Setting Options Programmatically for the Access
+
+[MSDN-ACCESSDRIVER] Microsoft Corporation, "Setting Options Programmatically for the Access
 Driver", https://learn.microsoft.com/en-us/sql/odbc/microsoft/setting-options-programmatically-for-
 the-access-driver?view=sql-server-ver16
 
@@ -1178,7 +952,8 @@ Release: April 23, 2024
 
 10 / 241
 
-[MSDN-SetLocaleInfo] Microsoft Corporation, "SetLocaleInfo function", http://msdn.microsoft.com/en-
+
+[MSDN-SetLocaleInfo] Microsoft Corporation, "SetLocaleInfo function", http://msdn.microsoft.com/en-
 us/library/dd374049.aspx
 
 [MSDN-SHELLLINKS] Microsoft Corporation, "Shell Links", https://learn.microsoft.com/en-
@@ -1219,7 +994,7 @@ Policy", August 2022, https://learn.microsoft.com/en-us/windows/configuration/cu
 [MSWINREG] Microsoft Corporation, "Registry", http://msdn.microsoft.com/en-
 us/library/ms724871.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Preferences Extension provides a mechanism for an administrator to manage and
 deploy preferences that target client computers and network users. In this document, the term
@@ -1244,7 +1019,8 @@ Release: April 23, 2024
 
 11 / 241
 
-On each client, each GPO is interpreted and acted upon by software components known as client add-
+
+On each client, each GPO is interpreted and acted upon by software components known as client add-
 in. The client add-in responsible for a given GPO is specified by using an attribute on the GPO. This
 attribute specifies a list of GUID pairs. The first GUID of each pair is referred to as a client-side
 extension GUID (CSE GUID). The second GUID of each pair is referred to as a tool extension
@@ -1261,7 +1037,7 @@ A client add-in uses the contents of the GPO to retrieve settings specific to it
 specific to its class. After the client add-in retrieves the class-specific settings, it uses those settings to
 perform class-specific processing.
 
-1.3.1  Preferences Encoding Overview
+#### 1.3.1 Preferences Encoding Overview
 
 Group Policy: Preferences Extension settings are specified using an XML file, as defined in section
 2.2.1. An administrator invokes extension-specific Group Policy administrative tool plug-ins on the
@@ -1310,7 +1086,8 @@ Release: April 23, 2024
 
 12 / 241
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPPREF].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1333,7 +1110,7 @@ on (or when the computer connects to the network after the user logs on).
 parses the file of settings and then saves the settings in a user-specific portion of the generic
 settings database (registry) on the local machine.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on Group Policy: Core Protocol (as specified in [MS-GPOL]) to provide a list of
 applicable GPOs. It also depends on the Server Message Block (SMB) Protocols (as specified in
@@ -1347,7 +1124,7 @@ The relationship to other protocols diagram depicts how these protocols relate t
 
 Figure 1: Group Policy: Preferences Extension protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Core Protocol specified
 in [MS-GPOL].
@@ -1364,7 +1141,8 @@ Release: April 23, 2024
 
 13 / 241
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 Group Policy: Preferences Extension is only applicable within the Group Policy: Core Protocol
 framework. The Group Policy: Preferences Extension is used to express the required state of the client
@@ -1379,16 +1157,16 @@ This protocol also applies only when many clients are required to receive the sa
 configure individual clients with custom settings, use the Windows Remote Registry Protocol instead.
 For more information, see [MS-RRP].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Third-party developers can extend the Group Policy: Preferences Extension Applications administrative
 plug-in defined by the Applications Preference type in section 1.9. See [MSDN-APPSNAPIN].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Group Policy: Preferences Extension defines CSE GUID and tool extension GUID standards
 assignments, as specified in [MS-GPOL] section 1.8. The following table lists the assignments.
@@ -1487,7 +1265,8 @@ Release: April 23, 2024
 
 14 / 241
 
-Preference type
+
+Preference type
 
  CSE GUID
 
@@ -1589,16 +1368,17 @@ Release: April 23, 2024
 
 15 / 241
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Preferences Extension MUST transport messages (in the form of files) over the
 Group Policy Protocol over Server Message Block (SMB). Version negotiation within the protocol
 can lead to use of an SMB Version 1 protocol connection instead of an SMB2 connection, as defined in
 [MS-SMB2] section 3.2.4.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The following sections specify the syntax for the following protocol elements:
 
@@ -1608,7 +1388,7 @@ Each protocol element is described as a message that corresponds one-to-one with
 using the [MS-SMB2] protocol. The protocol is driven through the exchange of these messages, as
 specified in section 3.
 
-2.2.1  Preferences Policy Message Syntax
+#### 2.2.1 Preferences Policy Message Syntax
 
 This protocol uses the Server Message Block (SMB) transport, and through this transport, it copies
 the file that MUST be named "<gpo path>\Preferences\{preference-type specific}", where "<gpo
@@ -1685,7 +1465,8 @@ Release: April 23, 2024
 
 16 / 241
 
- Preference type
+
+ Preference type
 
  Path
 
@@ -1720,7 +1501,7 @@ StartMenuTaskbar\StartMenuTaskbar.xml
 Section 2.2.1.1 lists characteristics common to all messages. Sections 2.2.1.2 through 2.2.1.22
 describe the features unique to each message.
 
-2.2.1.1  Preferences Policy File Format
+##### 2.2.1.1 Preferences Policy File Format
 
 The contents of a Preferences Policy file MUST be an XML document.
 
@@ -1730,7 +1511,7 @@ inner element MUST define a properties attribute. Abstractly, an inner element r
 instance of an element, such as an environment variable or a data source. The outer element is a
 container of inner elements. The abstract XML schema is in section 2.2.1.1.1.
 
-2.2.1.1.1 Common XML Schema
+###### 2.2.1.1.1 Common XML Schema
 
 Common Schema
 
@@ -1773,7 +1554,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                   <xs:attribute name="desc" type="xs:string" use="optional" />
+
+                   <xs:attribute name="desc" type="xs:string" use="optional" />
                    <xs:attribute name="changed" type="xs:string" use="optional" />
                    <xs:attribute name="uid" type="xs:string" use="required" />
                    <xs:attribute name="name" type="xs:string" use="required" />
@@ -1787,7 +1569,7 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.1.2 Outer and Inner Element Names and CLSIDs
+###### 2.2.1.1.2 Outer and Inner Element Names and CLSIDs
 
 The following table shows the outer and inner elements in each Preference Policy file schema and the
 applicable clsid values. The meaning of each element is described in the appropriate section for the
@@ -1906,7 +1688,8 @@ Release: April 23, 2024
 
 18 / 241
 
-Preference
+
+Preference
 type
 
 Outer element name and
@@ -2073,7 +1856,8 @@ Release: April 23, 2024
 
 19 / 241
 
-Preference
+
+Preference
 type
 
 Outer element name and
@@ -2148,7 +1932,7 @@ StartMenu
 
 {8B03851A-1210-4621-80B6-C334A4F1C941}
 
-2.2.1.1.3 Common XML Attributes
+###### 2.2.1.1.3 Common XML Attributes
 
 Each schema defines various attributes for its outer element and inner element. Many attributes are
 common to all schemas and are defined here. The common attributes are included in the schema for
@@ -2196,7 +1980,8 @@ Release: April 23, 2024
 
 20 / 241
 
-Attribute
+
+Attribute
 name
 
 changed
@@ -2238,7 +2023,7 @@ preference is no longer applicable. If specified, values MUST be 1 to remove the
 
  The <Filters> element is defined in section 2.2.1.22.
 
-2.2.1.1.4 Password Encryption
+###### 2.2.1.1.4 Password Encryption
 
 All passwords are encrypted using a derived Advanced Encryption Standard (AES) key.<3>
 
@@ -2247,7 +2032,7 @@ The 32-byte AES key is as follows:
  4e 99 06 e8  fc b6 6c c9  fa f4 93 10  62 0f fe e8
  f4 96 e8 06  cc 05 79 90  20 9b 09 a4  33 b6 6c 1b
 
-2.2.1.1.5 Expanding Environment Variables
+###### 2.2.1.1.5 Expanding Environment Variables
 
 Certain attributes can contain a reference to the environment variables "%systemroot%" or
 "%systemdrive%".
@@ -2261,7 +2046,7 @@ same value.<4>
 Expanding environment variables other than "%systemroot%" and "%systemdrive%" is not part of
 this protocol.
 
-2.2.1.2  DataSources
+##### 2.2.1.2 DataSources
 
 The <DataSource> inner element describes a single ODBC data source. An ODBC DataSource is a set
 of attributes that point to a database or data provider. Each ODBC driver implements a standard set of
@@ -2276,7 +2061,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.2.1 Element-Specific Attributes
+
+###### 2.2.1.2.1 Element-Specific Attributes
 
 Attribute
 name
@@ -2350,7 +2136,7 @@ name: A value that MUST be passed to the ODBC driver and which is driver specifi
 
 value: A value that MUST be passed to the ODBC driver and which is driver specific.
 
-2.2.1.2.2 DataSources Schema
+###### 2.2.1.2.2 DataSources Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -2371,7 +2157,8 @@ Release: April 23, 2024
 
 22 / 241
 
-                            <xs:sequence>
+
+                            <xs:sequence>
                                <xs:element name="Attributes">
                                   <xs:complexType>
                                      <xs:sequence>
@@ -2426,12 +2213,12 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.3  Devices
+##### 2.2.1.3 Devices
 
 The <Device> inner element refers to a hardware device controlled by the client. The <Device>
 element enables and disables devices attached to the system.
 
-2.2.1.3.1 Element-Specific Attributes
+###### 2.2.1.3.1 Element-Specific Attributes
 
 [MS-GPPREF] - v20240423
 Group Policy: Preferences Extension Data Structure
@@ -2440,7 +2227,8 @@ Release: April 23, 2024
 
 23 / 241
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -2467,7 +2255,7 @@ deviceTypeID
 
 This MUST be the string that targets this instance of the device.
 
-2.2.1.3.2 Devices Schema
+###### 2.2.1.3.2 Devices Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -2520,12 +2308,13 @@ Release: April 23, 2024
 
 24 / 241
 
-2.2.1.4  Drives
+
+##### 2.2.1.4 Drives
 
 The <Drive> inner element refers to a local mapping of a remote filesystem path to a drive letter on
 the client.
 
-2.2.1.4.1 Element-Specific Attributes
+###### 2.2.1.4.1 Element-Specific Attributes
 
 Attribute
 name
@@ -2618,7 +2407,8 @@ Release: April 23, 2024
 
 25 / 241
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -2676,7 +2466,7 @@ R or U
 Updates or replaces the first mapped drive, starting with whatever drive is specified in
 letter.
 
-2.2.1.4.2 Drives Schema
+###### 2.2.1.4.2 Drives Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -2715,7 +2505,8 @@ Release: April 23, 2024
 
 26 / 241
 
-                            <xs:attribute name="letter"
+
+                            <xs:attribute name="letter"
                               type="xs:string" use="required" />
                            <xs:attribute name="disabled"
                               type="xs:unsignedByte" use="optional" />
@@ -2753,13 +2544,13 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.5  EnvironmentVariables
+##### 2.2.1.5 EnvironmentVariables
 
 The <EnvironmentVariable> inner element refers to a single environment variable in the policy
 target's environment. The <EnvironmentVariables> element creates both system and user variables.
 For information on environment variables, see [MSDN-ENVMTVAR].
 
-2.2.1.5.1 Element-Specific Attributes
+###### 2.2.1.5.1 Element-Specific Attributes
 
 Attribute
 name
@@ -2793,7 +2584,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -2827,7 +2619,7 @@ value
 
 MUST set the value of the environment variable.
 
-2.2.1.5.2 EnvironmentVariables Schema
+###### 2.2.1.5.2 EnvironmentVariables Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -2874,7 +2666,8 @@ Release: April 23, 2024
 
 28 / 241
 
-2.2.1.6  Files
+
+##### 2.2.1.6 Files
 
 The <File> inner element represents a request to modify or copy one or more files. The source and
 destination paths can refer to a file system on the client, or to a network path in UNC format. The
@@ -2882,7 +2675,7 @@ destination paths can refer to a file system on the client, or to a network path
 their attributes can be changed. For more information on files and their attributes, see [MSDN-
 FILEMGMT].
 
-2.2.1.6.1 Element-Specific Attributes
+###### 2.2.1.6.1 Element-Specific Attributes
 
 Attribute
 name
@@ -2962,7 +2755,8 @@ Release: April 23, 2024
 
 29 / 241
 
-2.2.1.6.2 Files Schema
+
+###### 2.2.1.6.2 Files Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -3011,7 +2805,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema">
     </xs:element>
  </xs:schema>
 
-2.2.1.7  FolderOptions
+##### 2.2.1.7 FolderOptions
 
 The Folder Options outer element is a container for operations related to the client's desktop and shell.
 Four different inner elements are defined. The FolderOptions preference type encompasses three
@@ -3039,7 +2833,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.7.1 GlobalFolderOptions element
+
+###### 2.2.1.7.1 GlobalFolderOptions element
 
 The GlobalFolderOptions inner element represents a collection of options used to control how folders
 are displayed on a client operating system.
@@ -3143,7 +2938,8 @@ Release: April 23, 2024
 
 31 / 241
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -3219,7 +3015,7 @@ webViewBarricade
 
 Displays the content of system folders. MUST be 1 to enable or 0 to disable.
 
-2.2.1.7.2 GlobalFolderOptionsVista element
+###### 2.2.1.7.2 GlobalFolderOptionsVista element
 
 The GlobalFolderOptionsVista inner element represents a collection of options used to control how
 folders are displayed on a client operating system. Some XML attributes control particular registry
@@ -3256,7 +3052,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -3375,7 +3172,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -3434,7 +3232,7 @@ fullPath
 
 Displays the full path in the title bar. MUST be 1 to enable, or 0 to disable.
 
-2.2.1.7.3 FileType element
+###### 2.2.1.7.3 FileType element
 
 The FileType element represents a mapping in the client between a file extension and a file type.
 
@@ -3481,7 +3279,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -3566,7 +3365,7 @@ ddeTopic
 
 (optional) MUST be a user-defined message sent to the DDE application.
 
-2.2.1.7.4 OpenWith element
+###### 2.2.1.7.4 OpenWith element
 
 The OpenWith element represents a mapping in the client between a file type and an executable
 application capable of processing or displaying files of that type.
@@ -3587,7 +3386,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name  Description
+
+Attribute name  Description
 
 
 
@@ -3629,7 +3429,7 @@ default
 that the operating system uses to open the file extension. MUST be 1 to set the default, or 0
 to add the Open With association without setting the default.
 
-2.2.1.7.5 FolderOptions Schema
+###### 2.2.1.7.5 FolderOptions Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -3669,7 +3469,8 @@ Release: April 23, 2024
 
 36 / 241
 
-                            <xs:attribute name="separateProcess"
+
+                            <xs:attribute name="separateProcess"
                               type="xs:boolean" use="required" />
                             <xs:attribute name="showSuperHidden"
                               type="xs:boolean" use="required" />
@@ -3746,7 +3547,8 @@ Release: April 23, 2024
 
 37 / 241
 
-                              type="xs:boolean" use="required" />
+
+                              type="xs:boolean" use="required" />
                             <xs:attribute name="showInfoTip"
                               type="xs:boolean" use="required" />
                             <xs:attribute name="showPreviewHandlers"
@@ -3822,7 +3624,8 @@ Release: April 23, 2024
 
 38 / 241
 
-                              type="xs:string" use="required" />
+
+                              type="xs:string" use="required" />
                             <xs:attribute name="configActions"
                               type="xs:boolean" use="required" />
                             <xs:attribute name="iconPath"
@@ -3874,13 +3677,13 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.8  Folders
+##### 2.2.1.8 Folders
 
 The Folders element aids in managing folders on a client. Folders can be created, deleted, and
 renamed, or attributes changed. For more information on folders and their attributes, see MSDN at
 [MSDN-FILEMGMT].
 
-2.2.1.8.1 Element-Specific Attributes
+###### 2.2.1.8.1 Element-Specific Attributes
 
 Attribute name
 
@@ -3898,7 +3701,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -3983,7 +3787,7 @@ The three attributes deleteFiles, deleteSubFolders, and deleteFolder MUST be pro
 client in that order, such that if all three are specified and set to 1, all files will be deleted, all empty
 subfolders will be deleted, and finally, if empty, the last parent folder will be deleted.
 
-2.2.1.8.2 Folders Schema
+###### 2.2.1.8.2 Folders Schema
 
  <?xml version="1.0" encoding="utf-8"?>
 
@@ -3994,7 +3798,8 @@ Release: April 23, 2024
 
 40 / 241
 
- <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+
+ <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
 xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:element name="Folders">
        <xs:complexType>
@@ -4048,7 +3853,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema">
     </xs:element>
  </xs:schema>
 
-2.2.1.9  IniFiles
+##### 2.2.1.9 IniFiles
 
 The <Ini> inner element MUST refer to a text file containing sections and key-value pairs in the
 following format.
@@ -4065,13 +3870,14 @@ Release: April 23, 2024
 
 41 / 241
 
- key=string
+
+ key=string
  key=string
 
 The file structure is documented as part of the primary application programming interface (API) call
 GetProfileString that is used to read .ini files (for more information see [MSDN-GetProfString]).
 
-2.2.1.9.1 Element-Specific Attributes
+###### 2.2.1.9.1 Element-Specific Attributes
 
 Attribute
 name
@@ -4124,7 +3930,7 @@ property
 (optional) MUST be the name of the property to configure or delete. To delete the entire section of
 the file or the entire file, leave this field blank.
 
-2.2.1.9.2 IniFiles Schema
+###### 2.2.1.9.2 IniFiles Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -4148,7 +3954,8 @@ Release: April 23, 2024
 
 42 / 241
 
-                   <xs:attribute name="section"
+
+                   <xs:attribute name="section"
                                  type="xs:string"
                                  use="optional" />
                    <xs:attribute name="value"
@@ -4216,9 +4023,10 @@ Release: April 23, 2024
 
 43 / 241
 
-2.2.1.10
 
-InternetSettings
+##### 2.2.1.10 InternetSettings
+
+
 
 The InternetSettings element is composed of all registry key and registry value settings. The
 examples provided in section 4.2 include all available settings. For the structure of the registry
@@ -4228,9 +4036,9 @@ For information on Internet settings, refer to the following documents:[MSDN-INF
 [MSDN-RAS2], [MSDN-SECZONES], [MSDN-WININET1], [MSDN-WININET2], [MSFT-IEM], and [MSFT-
 IESECZNREGENTRY].
 
-2.2.1.10.1
+###### 2.2.1.10.1 Internet Settings (Internet Explorer 5 and 6)
 
-Internet Settings (Internet Explorer 5 and 6)
+
 
 Attribute
 
@@ -4372,7 +4180,8 @@ Release: April 23, 2024
 
 44 / 241
 
-Attribute
+
+Attribute
 
 PageTransitions
 
@@ -4543,7 +4352,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registr
 y type
@@ -4716,7 +4526,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 WarnChangeSecure
 
@@ -4898,7 +4709,8 @@ Release: April 23, 2024
 
 47 / 241
 
-Attribute
+
+Attribute
 
 Registr
 y type
@@ -5087,7 +4899,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registr
 y type
@@ -5271,7 +5084,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 JavaPermissionsLocal
 
@@ -5461,7 +5275,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registr
 y type
@@ -5651,7 +5466,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registr
 y type
@@ -5843,7 +5659,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registr
 y type
@@ -6025,7 +5842,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 LogonLocal
 
@@ -6204,7 +6022,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 SyncMode5
 
@@ -6227,9 +6046,9 @@ ORD
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion
 \Explorer\User Shell Folders\Cache
 
-2.2.1.10.2
+###### 2.2.1.10.2 Internet Explorer 7 Registry Keys
 
-Internet Explorer 7 Registry Keys
+
 
 Attribute
 
@@ -6367,7 +6186,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -6540,7 +6360,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -6709,7 +6530,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 SecureProtocols
 
@@ -6885,7 +6707,8 @@ Release: April 23, 2024
 
 58 / 241
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -7078,7 +6901,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -7266,7 +7090,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -7452,7 +7277,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -7647,7 +7473,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -7839,7 +7666,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -8029,7 +7857,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 ActiveScriptingTrusted
 
@@ -8211,7 +8040,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 IgnoreFontSizes
 
@@ -8390,7 +8220,8 @@ Release: April 23, 2024
 
 66 / 241
 
-Attribute
+
+Attribute
 
 ShortcutBehavior
 
@@ -8575,7 +8406,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 PromptForInfoInternet
 
@@ -8606,9 +8438,9 @@ ORD
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\I
 nternet Settings\DisableIDNPrompt
 
-2.2.1.10.3
+###### 2.2.1.10.3 Internet Explorer 8 and Internet Explorer 9 Registry Keys
 
-Internet Explorer 8 and Internet Explorer 9 Registry Keys
+
 
 Attribute
 
@@ -8751,7 +8583,8 @@ Release: April 23, 2024
 
 68 / 241
 
-Attribute
+
+Attribute
 
 FormatWithStylesheet
 
@@ -8928,7 +8761,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 ActiveXUnusedLocal
 
@@ -9115,7 +8949,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -9301,7 +9136,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default120bLocal
 
@@ -9484,7 +9320,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 BinaryScriptTrusted
 
@@ -9671,7 +9508,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -9857,7 +9695,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default1605Trusted
 
@@ -10042,7 +9881,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -10231,7 +10071,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -10415,7 +10256,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default1a03Internet
 
@@ -10603,7 +10445,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 RunActiveXRestricted
 
@@ -10796,7 +10639,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -10982,7 +10826,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default1a06Restricted
 
@@ -11156,7 +11001,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 PageTransitions
 
@@ -11329,7 +11175,8 @@ Release: April 23, 2024
 
 82 / 241
 
-Attribute
+
+Attribute
 
 UseClearType
 
@@ -11498,7 +11345,8 @@ Release: April 23, 2024
 
 83 / 241
 
-Attribute
+
+Attribute
 
 State
 
@@ -11544,9 +11392,9 @@ REG_SZ
 HKEY_CURRENT_USER\Software\Microsoft\Internet
 Explorer\Main\Check_Associations
 
-2.2.1.10.4
+###### 2.2.1.10.4 Internet Explorer 10 and Internet Explorer 11 Registry Keys
 
-Internet Explorer 10 and Internet Explorer 11 Registry Keys
+
 
 Attribute
 
@@ -11676,7 +11524,8 @@ Release: April 23, 2024
 
 84 / 241
 
-Attribute
+
+Attribute
 
 CleanHistory
 
@@ -11849,7 +11698,8 @@ Release: April 23, 2024
 
 85 / 241
 
-Attribute
+
+Attribute
 
 Default_Script
 
@@ -12025,7 +11875,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 SyncStatus
 
@@ -12200,7 +12051,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -12389,7 +12241,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 AllowScriptingLocal
 
@@ -12576,7 +12429,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 PromptForInfoLocal
 
@@ -12758,7 +12612,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default2200Local
 
@@ -12942,7 +12797,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -13135,7 +12991,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 LocalDirOnULTrusted
 
@@ -13321,7 +13178,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default1605Trusted
 
@@ -13503,7 +13361,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 CurrentLevelInternet
 
@@ -13690,7 +13549,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -13881,7 +13741,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -14063,7 +13924,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default1C00Internet
 
@@ -14249,7 +14111,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -14438,7 +14301,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 tricted
 
@@ -14629,7 +14493,8 @@ Release: April 23, 2024
 
 100 / 241
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -14811,7 +14676,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Default2500Restricted
 
@@ -14990,7 +14856,8 @@ Release: April 23, 2024
 
 102 / 241
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -15162,7 +15029,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -15332,7 +15200,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 
 Registry
 type
@@ -15454,9 +15323,9 @@ ORD
 HKEY_CURRENT_USER\Software\Microsoft\Internet
 Explorer\Main\OpenLinks
 
-2.2.1.10.5
+###### 2.2.1.10.5 InternetSettings Schema
 
-InternetSettings Schema
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -15483,7 +15352,8 @@ Release: April 23, 2024
 
 105 / 241
 
-                         <xs:sequence minOccurs="0">
+
+                         <xs:sequence minOccurs="0">
                            <xs:element maxOccurs="unbounded" name="SubProp">
                              <xs:complexType>
                                <xs:attribute name="id"
@@ -15560,7 +15430,8 @@ Release: April 23, 2024
 
 106 / 241
 
-                           use="optional" />
+
+                           use="optional" />
              <xs:attribute name="bypassErrors"
                            type="xs:boolean"
                            use="optional" />
@@ -15637,7 +15508,8 @@ Release: April 23, 2024
 
 107 / 241
 
-               </xs:element>
+
+               </xs:element>
                <xs:element name="Collection">
                  <xs:complexType>
                    <xs:sequence>
@@ -15713,7 +15585,8 @@ Release: April 23, 2024
 
 108 / 241
 
-                           use="optional" />
+
+                           use="optional" />
              <xs:attribute name="bypassErrors"
                            type="xs:boolean"
                            use="optional" />
@@ -15736,11 +15609,11 @@ Release: April 23, 2024
    </xs:element>
  </xs:schema>
 
-2.2.1.11
+##### 2.2.1.11 Local Users and Groups
 
-Local Users and Groups
 
-2.2.1.11.1  Group Inner Element
+
+###### 2.2.1.11.1 Group Inner Element
 
 This element refers to a security group object that is local to the client computer. The group can be
 created, deleted, or modified by the element.
@@ -15795,7 +15668,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -15859,7 +15733,7 @@ action
 
 (optional) MUST be ADD or REMOVE for each user from the Members list.
 
-2.2.1.11.2  User Inner Element
+###### 2.2.1.11.2 User Inner Element
 
 This element refers to a user object that is local to the client computer.
 
@@ -15899,7 +15773,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -15968,7 +15843,7 @@ nochange
 (optional) If 1, then the client MUST block the newly created or updated local user account from
 changing its password.
 
-2.2.1.11.3  Groups Schema
+###### 2.2.1.11.3 Groups Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -15994,7 +15869,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                              type="xs:string" use="required" />
+
+                              type="xs:string" use="required" />
                             <xs:attribute name="description"
                               type="xs:string" use="optional" />
                             <xs:attribute name="cpassword"
@@ -16071,7 +15947,8 @@ Release: April 23, 2024
 
 112 / 241
 
-                            <xs:attribute name="groupName"
+
+                            <xs:attribute name="groupName"
                               type="xs:string" use="required" />
                             <xs:attribute name="groupSid"
                               type="xs:string" use="optional" />
@@ -16098,14 +15975,14 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.12
+##### 2.2.1.12 NetworkOptions
 
-NetworkOptions
+
 
 The NetworkOptions protocol allows the creation and maintenance of virtual private network (VPN)
 connections and dial-up network (DUN) connections.<11>
 
-2.2.1.12.1  DUN Element
+###### 2.2.1.12.1 DUN Element
 
 This element refers to a DUN network connection on the client.
 
@@ -16154,7 +16031,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -16165,7 +16043,7 @@ MUST be text used to name the connection.
 
 phoneNumber  MUST be text used to indicate the phone number the connection uses.
 
-2.2.1.12.2  VPN Element
+###### 2.2.1.12.2 VPN Element
 
 This element refers to a VPN connection on the client
 
@@ -16261,7 +16139,8 @@ Release: April 23, 2024
 
 114 / 241
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -16323,7 +16202,7 @@ msChapV2
 
 (optional) MUST be set to 1 to connect using CHAP version 2.
 
-2.2.1.12.3  NetworkOptions Schema
+###### 2.2.1.12.3 NetworkOptions Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -16361,7 +16240,8 @@ Release: April 23, 2024
 
 115 / 241
 
-                            <xs:attribute name="showPassword"
+
+                            <xs:attribute name="showPassword"
                               type="xs:boolean" use="optional" />
                             <xs:attribute name="showDomain"
                               type="xs:boolean" use="optional" />
@@ -16438,7 +16318,8 @@ Release: April 23, 2024
 
 116 / 241
 
-                   </xs:sequence>
+
+                   </xs:sequence>
                    <xs:attribute name="clsid" type="xs:string" use="required" />
                    <xs:attribute name="name" type="xs:string" use="required" />
                    <xs:attribute name="image" type="xs:unsignedByte" use="optional" />
@@ -16457,15 +16338,15 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.13
+##### 2.2.1.13 NetworkShare
 
-NetworkShare
+
 
 The NetShare element refers to a network Share offered by the client.
 
-2.2.1.13.1
+###### 2.2.1.13.1 Element-Specific Attributes
 
-Element-Specific Attributes
+
 
 Attribute
 name
@@ -16535,7 +16416,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -16554,7 +16436,7 @@ ENABLE. To make folders within the share visible to all users, MUST be set to DI
 leave the visibility of folders within the share unchanged when updating a share, MUST be set
 to NO_CHANGE.
 
-2.2.1.13.2  NetworkShareSettings Schema
+###### 2.2.1.13.2 NetworkShareSettings Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -16614,16 +16496,17 @@ Release: April 23, 2024
 
 118 / 241
 
-2.2.1.14
 
-PowerOptions
+##### 2.2.1.14 PowerOptions
+
+
 
 The Power Options and Power Schemes elements allow configuration of power-management behavior
 on the client. A client SHOULD implement either the GlobalPowerOptions element (section 2.2.1.14.1)
 and the PowerScheme element (section 2.2.1.14.2) or the GlobalPowerOptionsV2
 element (section 2.2.1.14.3). For more information on power settings, see [MSDN-POWER].
 
-2.2.1.14.1  GlobalPowerOptions element
+###### 2.2.1.14.1 GlobalPowerOptions element
 
 The <GlobalPowerOptions> inner element defines global power-management options.
 
@@ -16662,9 +16545,9 @@ enableHibernation
 
 (optional) MUST be set to 1 to enable hibernation, or set to 0 to disable hibernation.
 
-2.2.1.14.2
+###### 2.2.1.14.2 PowerScheme element
 
-PowerScheme element
+
 
 The <PowerScheme> inner element refers to a single power scheme. A power scheme is a named set
 of configuration parameters related to power management. The <PowerScheme> inner element allows
@@ -16709,7 +16592,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -16764,7 +16648,7 @@ hibernateDc
 (optional) MUST be set to the time, in hours, before the monitor turns off while on battery
 power.
 
-2.2.1.14.3  GlobalPowerOptionsV2 Element
+###### 2.2.1.14.3 GlobalPowerOptionsV2 Element
 
 The <GlobalPowerOptionsV2> inner element defines global power-management options. This element
 has a setting that ends in "AC", which applies when the computer is not running on batteries, and a
@@ -16806,7 +16690,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -16935,7 +16820,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -16943,9 +16829,9 @@ lowBatteryActionDC
 
 that the battery level for the expected action is at a low level.
 
-2.2.1.14.4
+###### 2.2.1.14.4 PowerOptions Schema
 
-PowerOptions Schema
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -17017,7 +16903,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                         </xs:complexType>
+
+                         </xs:complexType>
                       </xs:element>
                    </xs:sequence>
                    <xs:attribute name="clsid" type="xs:string" use="required" />
@@ -17091,7 +16978,8 @@ Release: April 23, 2024
 
 123 / 241
 
-       <xs:attribute name="changed" type="xs:string" use="optional" />
+
+       <xs:attribute name="changed" type="xs:string" use="optional" />
        <xs:attribute name="uid" type="xs:string" use="required" />
        <xs:attribute name="desc" type="xs:string" use="optional" />
        <xs:attribute name="bypassErrors" type="xs:boolean" use="optional" />
@@ -17107,17 +16995,17 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.15
+##### 2.2.1.15 Printers
 
-Printers
+
 
 The Printers element allows the configuration and maintenance of shared printers, local printers, and
 TCP/IP – Line Printer Remote (LPR) printers. For more information on printers and printing, see
 [MSDN-PRINT].
 
-2.2.1.15.1
+###### 2.2.1.15.1 LocalPrinter element
 
-LocalPrinter element
+
 
 The <LocalPrinter> inner element refers to a printer attached to one of the following local printer
 ports on the client: LPT0:, LPT1:, LPT2:, or LPT3:.
@@ -17177,7 +17065,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 location
@@ -17196,9 +17085,9 @@ deleteAll
 
 (optional) MUST be set to 1 to delete all local printers.
 
-2.2.1.15.2
+###### 2.2.1.15.2 SharedPrinter Element
 
-SharedPrinter Element
+
 
 The <SharedPrinter> inner element refers to a printer made available as a network resource.
 
@@ -17282,7 +17171,8 @@ Release: April 23, 2024
 
 125 / 241
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -17297,9 +17187,9 @@ cpassword
 share. The password is encrypted using an AES-derived encryption key when the preference is
 created, and decrypted in the client during client processing.
 
-2.2.1.15.3
+###### 2.2.1.15.3 PortPrinter element
 
-PortPrinter element
+
 
 The <PortPrinter> inner element refers to a client's connection to a network printer using the LPR/LPD
 remote-printer protocol (as specified in [RFC1179]) or the "JetDirect raw TCP" protocol using TCP port
@@ -17378,7 +17268,8 @@ Release: April 23, 2024
 
 126 / 241
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -17428,9 +17319,9 @@ snmpDevIndex
 
 (optional) MUST be set to an SNMP device index.
 
-2.2.1.15.4
+###### 2.2.1.15.4 Printers Schema
 
-Printers Schema
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -17474,7 +17365,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                   <xs:attribute name="uid" type="xs:string" use="required" />
+
+                   <xs:attribute name="uid" type="xs:string" use="required" />
                    <xs:attribute name="desc" type="xs:string" use="optional" />
                    <xs:attribute name="bypassErrors" type="xs:boolean" use="optional" />
                    <xs:attribute name="userContext" type="xs:boolean" use="optional" />
@@ -17551,7 +17443,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                   <xs:attribute name="image" type="xs:unsignedByte" use="optional" />
+
+                   <xs:attribute name="image" type="xs:unsignedByte" use="optional" />
                    <xs:attribute name="changed" type="xs:string" use="optional" />
                    <xs:attribute name="uid" type="xs:string" use="required" />
                    <xs:attribute name="desc" type="xs:string" use="optional" />
@@ -17567,17 +17460,17 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.16
+##### 2.2.1.16 Regional Options
 
-Regional Options
+
 
 The Regional Options element implements the functionality of the Regional Options item in Control
 Panel. The SetLocaleInfo API, which is used to manage the settings, contains an explanation of the
 settings. For information on the SetLocaleInfo API, see at [MSDN-SetLocaleInfo].
 
-2.2.1.16.1
+###### 2.2.1.16.1 Element-Specific Attributes
 
-Element-Specific Attributes
+
 
 Attribute name
 
@@ -17659,7 +17552,8 @@ Release: April 23, 2024
 
 129 / 241
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -17699,7 +17593,7 @@ dateLongFormat
 
 (optional) Maps to LCTYPE LOCALE_SLONGDATE.
 
-2.2.1.16.2  Regional Schema
+###### 2.2.1.16.2 Regional Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -17754,7 +17648,8 @@ Release: April 23, 2024
 
 130 / 241
 
-                              type="xs:string" use="optional" />
+
+                              type="xs:string" use="optional" />
                             <xs:attribute name="currDigitGrpFmt"
                               type="xs:string" use="optional" />
                             <xs:attribute name="timeFormat"
@@ -17796,17 +17691,17 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.17
+##### 2.2.1.17 Registry
 
-Registry
+
 
 The <Registry> element aids in maintaining registry keys and values. For more information on the
 registry and registry maintenance, see [MSWINREG]. A Collection is an arbitrary collection of registry
 settings.
 
-2.2.1.17.1
+###### 2.2.1.17.1 Element-Specific Attributes
 
-Element-Specific Attributes
+
 
 Attribute
 name
@@ -17839,7 +17734,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -17938,7 +17834,8 @@ Release: April 23, 2024
 
 132 / 241
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -17947,7 +17844,7 @@ desc
 
 (optional) Contains a comment.
 
-2.2.1.17.2  RegistrySettings Schema
+###### 2.2.1.17.2 RegistrySettings Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -18016,7 +17913,8 @@ Release: April 23, 2024
 
 133 / 241
 
-                         <xs:complexType>
+
+                         <xs:complexType>
                             <xs:sequence>
                                <xs:element name="Collection">
                                   <xs:complexType>
@@ -18093,7 +17991,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                                                       <xs:attribute name="clsid"
+
+                                                       <xs:attribute name="clsid"
                                                          type="xs:string"
                                                          use="required" />
                                                        <xs:attribute name="name"
@@ -18155,9 +18054,9 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.18
+##### 2.2.1.18 Scheduled Tasks
 
-Scheduled Tasks
+
 
 The Scheduled Task element implements most of the functionality of the Task Scheduler. A client
 SHOULD implement either the Task element (section 2.2.1.18.1) and the ImmediateTask
@@ -18169,12 +18068,13 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-element (section 2.2.1.18.2) or the TaskV2 element (section 2.2.1.18.3) and the ImmediateTaskV2
+
+element (section 2.2.1.18.2) or the TaskV2 element (section 2.2.1.18.3) and the ImmediateTaskV2
 element (section 2.2.1.18.4). For information on tasks and scheduling, see [MSDN-TASKS].
 
-2.2.1.18.1
+###### 2.2.1.18.1 Task Inner Element
 
-Task Inner Element
+
 
 The Task element shares a number of attributes with the ImmediateTask element. The shared
 attributes are defined in the table that follows.
@@ -18266,7 +18166,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -18381,7 +18282,8 @@ Release: April 23, 2024
 
 137 / 241
 
-Attribute name
+
+Attribute name
 
 Description
 
@@ -18429,9 +18331,9 @@ minutesDuration
 (optional) MUST be the number of minutes after the task starts that the task remains
 active.
 
-2.2.1.18.2
+###### 2.2.1.18.2 ImmediateTask Inner Element
 
-ImmediateTask Inner Element
+
 
 Immediate tasks are a special type of <ScheduledTask> and use similar settings. The primary
 difference is that immediate tasks have no scheduling attributes. Use of the <ImmediateTask>
@@ -18439,9 +18341,9 @@ element causes the task to start as soon as it is deployed to the client; in ess
 immediately. Attributes common to both <Task> and <ImmediateTask> are defined in Task Inner
 Element (section 2.2.1.18.1).
 
-2.2.1.18.3
+###### 2.2.1.18.3 TaskV2 Inner Element
 
-TaskV2 Inner Element
+
 
 Each TaskV2 inner element contains an embedded Task element, which follows the schema that is
 defined at [MSDN-TaskSchS]. The unique attributes that are found on the Properties element are
@@ -18483,7 +18385,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -18520,9 +18423,9 @@ cpassword
 (optional) The password of the runAs credentials. The password is encrypted by using an
 Advanced Encryption Standard (AES) key when the preference item is created.
 
-2.2.1.18.4
+###### 2.2.1.18.4 ImmediateTaskV2 Inner Element
 
-ImmediateTaskV2 Inner Element
+
 
 Each ImmediateTaskV2 inner element contains an embedded Task element, which follows the schema
 that is defined at [MSDN-TaskSchS]. The unique attributes that are found on the Properties element
@@ -18576,7 +18479,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -18600,9 +18504,9 @@ cpassword
 (optional) The password of the runAs credentials. The password is encrypted by using an
 Advanced Encryption Standard (AES) key when the preference item is created.
 
-2.2.1.18.5
+###### 2.2.1.18.5 ScheduledTasks Schema
 
-ScheduledTasks Schema
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -18658,7 +18562,8 @@ Release: April 23, 2024
 
 140 / 241
 
-                                              <xs:attribute name="endYear"
+
+                                              <xs:attribute name="endYear"
                                                 type="xs:unsignedByte" use="optional" />
                                               <xs:attribute name="endMonth"
                                                 type="xs:unsignedByte" use="optional" />
@@ -18735,7 +18640,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                            <xs:attribute name="comment" type="xs:string" use="optional" />
+
+                            <xs:attribute name="comment" type="xs:string" use="optional" />
                             <xs:attribute name="runAs" type="xs:string" use="optional" />
                             <xs:attribute name="cpassword" type="xs:string" use="optional" />
                             <xs:attribute name="enabled" type="xs:boolean" use="required" />
@@ -18812,7 +18718,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                    </xs:element>
+
+                    </xs:element>
                   </xs:sequence>
                   <xs:attribute name="clsid" type="xs:string" use="required" />
                   <xs:attribute name="name" type="xs:string" use="required" />
@@ -18884,15 +18791,16 @@ Release: April 23, 2024
 
 143 / 241
 
-2.2.1.19
 
-Services
+##### 2.2.1.19 Services
+
+
 
 The <Services> element manages services defined in the Service Control Manager.<14>
 
-2.2.1.19.1
+###### 2.2.1.19.1 Element-Specific Attributes
 
-Element-Specific Attributes
+
 
 Attribute Name
 
@@ -18985,7 +18893,7 @@ of a failure.
 (optional) MUST be the arguments appended to the default arguments that are passed
 to the program that executes in the event of a failure.
 
-2.2.1.19.2  NTServices Schema
+###### 2.2.1.19.2 NTServices Schema
 
 [MS-GPPREF] - v20240423
 Group Policy: Preferences Extension Data Structure
@@ -18994,7 +18902,8 @@ Release: April 23, 2024
 
 144 / 241
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
                           xmlns:xs="http://www.w3.org/2001/XMLSchema">
    <xs:element name="NTServices">
@@ -19071,7 +18980,8 @@ Release: April 23, 2024
 
 145 / 241
 
-             <xs:attribute name="clsid"
+
+             <xs:attribute name="clsid"
                            type="xs:string"
                            use="required" />
              <xs:attribute name="name"
@@ -19111,17 +19021,17 @@ Release: April 23, 2024
    </xs:element>
  </xs:schema>
 
-2.2.1.20
+##### 2.2.1.20 Shortcuts
 
-Shortcuts
+
 
 The Shortcuts element creates and maintains shortcuts. A shortcut is a link to a local or remote
 resource. The way that shortcuts are made visible to the user is implementation-specific. For
 information on shortcuts and their settings, see [MSDN-SHELLLINKS].
 
-2.2.1.20.1
+###### 2.2.1.20.1 Element-Specific Attributes
 
-Element-Specific Attributes
+
 
 Attribute
 name
@@ -19157,7 +19067,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute
+
+Attribute
 name
 
 Description
@@ -19219,9 +19130,9 @@ iconIndex
 
 (optional) MUST be the resource ID of an icon stored in the file that iconPath points to.
 
-2.2.1.20.2
+###### 2.2.1.20.2 Shortcuts Schema
 
-Shortcuts Schema
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -19251,7 +19162,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                              type="xs:unsignedByte" use="optional" />
+
+                              type="xs:unsignedByte" use="optional" />
                             <xs:attribute name="startIn"
                               type="xs:string" use="optional" />
                             <xs:attribute name="arguments"
@@ -19289,17 +19201,17 @@ Release: April 23, 2024
     </xs:element>
  </xs:schema>
 
-2.2.1.21
+##### 2.2.1.21 Start Menu
 
-Start Menu
+
 
 The StartMenu element manipulates the attributes of the Start menu, including showing and hiding
 options. A Start menu allows a centralized launching place for applications and utilities. For
 information on the Start menu, see [MSFT-STARTMENU].
 
-2.2.1.21.1
+###### 2.2.1.21.1 StartMenu Inner Element
 
-StartMenu Inner Element
+
 
 Some XML attributes control particular registry values of the client computer, as represented in the
 following table.<15>
@@ -19335,7 +19247,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Registry key
 
@@ -19452,7 +19365,8 @@ Release: April 23, 2024
 
 149 / 241
 
-Attribute name
+
+Attribute name
 
 Registry key
 
@@ -19481,9 +19395,9 @@ cPersonalized
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advance
 d\IntelliMenus
 
-2.2.1.21.2
+###### 2.2.1.21.2 StartMenuVista Inner Element
 
-StartMenuVista Inner Element
+
 
 The following attributes control particular registry values of the client computer, as represented in the
 following table.<16>
@@ -19564,7 +19478,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Registry key
 
@@ -19682,7 +19597,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Registry key
 
@@ -19733,9 +19649,9 @@ minMFU
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\
 Start_MinMFU
 
-2.2.1.21.3
+###### 2.2.1.21.3 Combined StartMenu and StartMenuVista Attribute Values
 
-Combined StartMenu and StartMenuVista Attribute Values
+
 
 The following attributes and values define behaviors of the client operating system. The values are
 stored in the registry at the location specified in the tables in section 2.2.1.21.1 and section
@@ -19802,7 +19718,8 @@ new installed programs
 
 152 / 241
 
-Attribute name
+
+Attribute name
 
 Type
 
@@ -19972,7 +19889,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Type
 
@@ -20131,7 +20049,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attribute name
+
+Attribute name
 
 Type
 
@@ -20290,7 +20209,8 @@ when the mouse
 
 155 / 241
 
-Attribute name
+
+Attribute name
 
 Type
 
@@ -20387,9 +20307,9 @@ Administrative Tools in
 the desktop menu. The
 default is ALLSTART.
 
-2.2.1.21.4
+###### 2.2.1.21.4 StartMenuTaskbar Schema
 
-StartMenuTaskbar Schema
+
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -20420,7 +20340,8 @@ Release: April 23, 2024
 
 156 / 241
 
-                              type="xs:boolean" use="optional" />
+
+                              type="xs:boolean" use="optional" />
                             <xs:attribute name="showControlPanel"
                               type="xs:string" use="optional" />
                             <xs:attribute name="enableDragDrop"
@@ -20497,7 +20418,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                         <xs:complexType>
+
+                         <xs:complexType>
                             <xs:sequence>
                                <xs:element name="FilterOs">
                                   <xs:complexType>
@@ -20574,7 +20496,8 @@ Release: April 23, 2024
 
 158 / 241
 
-                              type="xs:boolean" use="optional" />
+
+                              type="xs:boolean" use="optional" />
                             <xs:attribute name="searchFiles"
                               type="xs:string" use="optional" />
                             <xs:attribute name="searchPrograms"
@@ -20647,9 +20570,10 @@ Release: April 23, 2024
 
 159 / 241
 
-2.2.1.22
 
-Targeting
+##### 2.2.1.22 Targeting
+
+
 
 Targeting criteria can be added to any element and allow a granular selection beyond the user or
 computer. For each element that has targeting criteria, the result of each targeting item can be
@@ -20742,7 +20666,8 @@ frame relay, "ATM" for asynchronous transfer mode
 
 160 / 241
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -20845,7 +20770,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -20956,7 +20882,8 @@ FILECOMPONENT to match a specific product,
 
 162 / 241
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -21060,7 +20987,8 @@ Service Pack 5, or Service Pack 6, or NE (NE is the
 
 163 / 241
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -21165,7 +21093,8 @@ application of GPOs.
 
 164 / 241
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -21272,7 +21201,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -21379,7 +21309,8 @@ local time using a 24-hour clock and leading zeroes.
 
 166 / 241
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -21484,7 +21415,8 @@ TUE, WED, THU, FRI, or SAT.
 
 167 / 241
 
-Criterion
+
+Criterion
 
 Attribute
 
@@ -21569,7 +21501,8 @@ Release: April 23, 2024
 
 168 / 241
 
-       <xs:enumeration value="KEYEXISTS"/>
+
+       <xs:enumeration value="KEYEXISTS"/>
        <xs:enumeration value="MATCHVALUE"/>
        <xs:enumeration value="GETVALUE"/>
      </xs:restriction>
@@ -21646,7 +21579,8 @@ Release: April 23, 2024
 
 169 / 241
 
-       <xs:enumeration value="WINTHRESHOLD"/>
+
+       <xs:enumeration value="WINTHRESHOLD"/>
        <xs:enumeration value="WINTHRESHOLDSRV"/>
      </xs:restriction>
    </xs:simpleType>
@@ -21723,7 +21657,8 @@ Release: April 23, 2024
 
 170 / 241
 
-       <xs:enumeration value="YEARLY"/>
+
+       <xs:enumeration value="YEARLY"/>
      </xs:restriction>
    </xs:simpleType>
    <xs:simpleType name="enumFilterComputerNameType">
@@ -21800,7 +21735,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         <xs:element minOccurs="0" maxOccurs="unbounded" name="FilterLdap">
+
+         <xs:element minOccurs="0" maxOccurs="unbounded" name="FilterLdap">
            <xs:complexType>
              <xs:complexContent>
                <xs:extension base="IFilter">
@@ -21877,7 +21813,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           </xs:complexType>
+
+           </xs:complexType>
          </xs:element>
          <xs:element minOccurs="0" maxOccurs="unbounded" name="FilterDomain">
            <xs:complexType>
@@ -21954,7 +21891,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           <xs:complexType>
+
+           <xs:complexType>
              <xs:complexContent>
                <xs:extension base="IFilter">
                  <xs:attribute name="min" type="xs:string" use="required" />
@@ -22030,7 +21968,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                 <xs:attribute name="unknown" type="enumTrueFalse" use="optional" default="0"
+
+                 <xs:attribute name="unknown" type="enumTrueFalse" use="optional" default="0"
 />
                  <xs:attribute name="docked" type="enumTrueFalse" use="optional" default="0"
 />
@@ -22107,7 +22046,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                 <xs:attribute name="version" type="xs:string" use="optional" />
+
+                 <xs:attribute name="version" type="xs:string" use="optional" />
                </xs:extension>
              </xs:complexContent>
            </xs:complexType>
@@ -22184,7 +22124,8 @@ Release: April 23, 2024
 
 176 / 241
 
-     <xs:sequence>
+
+     <xs:sequence>
          <xs:group ref="gFilterTypes"/>
      </xs:sequence>
    </xs:group>
@@ -22198,9 +22139,9 @@ Release: April 23, 2024
    </xs:element>
  </xs:schema>
 
-2.2.1.23
+##### 2.2.1.23 Applications
 
-Applications
+
 
 The Application element allows third-party extensibility. For example, a third-party developer could
 combine a number of Registry settings into one Application element in order to apply policy to a third-
@@ -22218,7 +22159,7 @@ Application Client-side extension invokes the Preferences Client-side extension 
 embedded Preferences Policy Messages. For example, the sample message in section 4.2.22 shows a
 single Application that contains a Registry Preferences Policy Message setting a Registry value.
 
-2.2.1.23.1  Applications Schema
+###### 2.2.1.23.1 Applications Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
@@ -22257,7 +22198,8 @@ Release: April 23, 2024
 
 177 / 241
 
-             <xs:any minOccurs="0" ref="Shortcuts" />
+
+             <xs:any minOccurs="0" ref="Shortcuts" />
              <xs:any minOccurs="0" ref="StartMenuTaskbar" />
              </xs:sequence>
              <xs:attribute name="extId"
@@ -22303,7 +22245,7 @@ Release: April 23, 2024
    </xs:element>
  </xs:schema>
 
-2.2.2  Policy Administration Message Syntax
+#### 2.2.2 Policy Administration Message Syntax
 
 Policy Administration messages are typically used by administrative tools to drive a user interface for
 viewing and editing settings, and they are most importantly used to describe the serialization and
@@ -22315,7 +22257,7 @@ The administrative tool plug-ins that define and edit Group Policy: Preferences 
 settings read and write the settings using the protocol defined in sections 3.1.5.1, 3.1.5.2, and
 3.1.5.3.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
  The Group Policy: Preferences Extension accesses the following Directory Service schema classes and
 attributes listed in the following table. For the syntactic specifications of the following <Class> or
@@ -22327,7 +22269,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<Class> <Attribute> pairs, refer to: [MS-ADLS], [MS-ADTS], [MS-ADSC], [MS-ADA1], [MS-ADA2],
+
+<Class> <Attribute> pairs, refer to: [MS-ADLS], [MS-ADTS], [MS-ADSC], [MS-ADA1], [MS-ADA2],
 and [MS-ADA3].
 
 Class
@@ -22385,14 +22328,15 @@ Release: April 23, 2024
 
 179 / 241
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The administrative tool plug-ins that define and edit Group Policy: Preferences Extension settings
 MUST use the protocol specified in section 2.2.1.
 
-3.1  Administrative Add-in Details
+### 3.1 Administrative Add-in Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The administrative abstract data model mirrors the client abstract data model, as specified in section
 3.2.1, the difference being that the administrative abstract data model is logically encapsulated within
@@ -22417,16 +22361,16 @@ User Policy Setting State: Has the same structure (as specified in section 2.2.1
 
 the policy setting state (as specified in section 3.2.1.1).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Administrative tool plug-ins that define and edit Group Policy: Preferences Extension settings have no
 specific initialization requirements.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events occur in the following situations:
 
@@ -22434,9 +22378,9 @@ Higher-layer triggered events occur in the following situations:
 
   A Group Policy: Preferences Extension setting is viewed.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Policy Administration Update Message Sequencing
+##### 3.1.5.1 Policy Administration Update Message Sequencing
 
 To update the policy settings in a GPO using administrative tool plug-ins, the state of that GPO on
 the Group Policy server MUST be updated with a new preferences policy message. This MUST be
@@ -22451,7 +22395,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The file name used MUST be a path defined in section 2.2.1 and be specific to each preference
+
+The file name used MUST be a path defined in section 2.2.1 and be specific to each preference
 type, where <gpo path> is the user-scoped GPO path if the GPO's user settings are being
 updated or if the computer-scoped GPO path of the computer settings is being updated.
 
@@ -22477,7 +22422,7 @@ The tool MUST then issue an SMB file close operation.
 
 3.3.4.4).
 
-3.1.5.2  Policy Administration Delete Message Sequencing
+##### 3.1.5.2 Policy Administration Delete Message Sequencing
 
 To delete the policy settings in a GPO using administrative tool plug-ins, the state of that GPO on
 the Group Policy server MUST be updated with a new preferences policy message. This MUST be
@@ -22505,7 +22450,7 @@ If an error is encountered, the protocol sequence MUST be terminated.
 
 3.3.4.4).
 
-3.1.5.3  Policy Administration Load Message Sequencing
+##### 3.1.5.3 Policy Administration Load Message Sequencing
 
 To load the policy settings in a GPO using administrative tool plug-ins, the state of that GPO on the
 Group Policy server MUST be read with the following message sequence:
@@ -22519,7 +22464,8 @@ Release: April 23, 2024
 
 181 / 241
 
-The file name used MUST be a path, as defined in section 2.2.1, and be specific to each
+
+The file name used MUST be a path, as defined in section 2.2.1, and be specific to each
 preference type, where <gpo path> is the user-scoped GPO path if the GPO's user settings
 are being loaded or  the computer-scoped GPO path if the computer settings are being
 loaded.
@@ -22543,17 +22489,17 @@ If an error is encountered, the protocol sequence MUST be terminated.
 The administrative tool plug-ins MUST then issue an SMB file close operation if a file was
 opened.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Add-in Details
+### 3.2 Client Add-in Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -22561,7 +22507,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.2.1.1  Preferences Setting State
+##### 3.2.1.1 Preferences Setting State
 
 The Group Policy: Preferences Extension protocol maintains no state but can, through Group Policy
 processing, apply preferences to the computer or user. Preferences protocol settings are read from a
@@ -22581,27 +22527,28 @@ Release: April 23, 2024
 
 182 / 241
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 This extension is launched by the Group Policy: Core Protocol, which invokes this Process Group Policy
 event, whose abstract interface is specified in [MS-GPOL] section 3.2.4.1, to apply policies handled by
 this extension.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Preferences Policy Message Sequencing
+##### 3.2.5.1 Preferences Policy Message Sequencing
 
-3.2.5.1.1 Deleted GPO List Processing
+###### 3.2.5.1.1 Deleted GPO List Processing
 
 For each GPO in the Deleted GPO list (as specified in [MS-GPOL] section 3.2.4.1), each preferences
 policy message is read from the Group Policy server, as specified in the following sequence. Preference
@@ -22645,7 +22592,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-After all messages have been retrieved, the client MUST process its preferences according to the
+
+After all messages have been retrieved, the client MUST process its preferences according to the
 following rules. Any errors in updating this database MAY be ignored, although if an error occurs, the
 error SHOULD<23> be logged.
 
@@ -22660,7 +22608,7 @@ the start of the preferences policy message.
 Applications that query this database for behavior after the Group Policy: Preferences Extension
 invocation can then conform to the specified settings.
 
-3.2.5.1.2 New or Changed GPO List Processing
+###### 3.2.5.1.2 New or Changed GPO List Processing
 
 For each GPO in the New or Changed GPO list (as specified in [MS-GPOL] section 3.2.4.1), each
 preferences policy message is read from the Group Policy server, as specified in the following
@@ -22716,14 +22664,15 @@ Release: April 23, 2024
 
 184 / 241
 
-Applications that query this database for behavior after the Group Policy: Preferences Extension
+
+Applications that query this database for behavior after the Group Policy: Preferences Extension
 invocation can then conform to the specified settings.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -22734,9 +22683,10 @@ Release: April 23, 2024
 
 185 / 241
 
-4  Protocol Examples
 
-4.1  Preferences Policy Application Message
+## 4 Protocol Examples
+
+### 4.1 Preferences Policy Application Message
 
 The following is an example of a DataSources settings message that instructs the client to create a
 DataSource for opening a local client database stored on a local disk drive:
@@ -22801,9 +22751,10 @@ Release: April 23, 2024
 
 186 / 241
 
-4.2  Protocol Samples
 
-4.2.1  DataSources XML Example
+### 4.2 Protocol Samples
+
+#### 4.2.1 DataSources XML Example
 
 The following is an example of a DataSources configuration XML. The XML in this example defines an
 ODBC data source in the logged-in user profile that points to a Microsoft Office Access database; it
@@ -22840,7 +22791,7 @@ defines an ODBC data source for all users that points to another Microsoft Offic
    </DataSource>
  </DataSources>
 
-4.2.2  Devices XML Example
+#### 4.2.2 Devices XML Example
 
 The following is an example of a Devices configuration XML. The XML in this example enables the
 standard disk controller.
@@ -22868,7 +22819,8 @@ Release: April 23, 2024
 
 187 / 241
 
-4.2.3  Mapped Drives XML Example
+
+#### 4.2.3 Mapped Drives XML Example
 
 The following is an example of a mapped Drives configuration XML. The XML in this example defines a
 mapped drive assigned to drive letter "S:", which points to the UNC path "\\scratch" and labels the
@@ -22896,7 +22848,7 @@ drive as "SCRATCH".
    </Drive>
  </Drives>
 
-4.2.4  EnvironmentVariables XML Example
+#### 4.2.4 EnvironmentVariables XML Example
 
 The following is an example of an EnvironmentVariables configuration XML. The XML in this example
 defines a user-level EnvironmentVariable "GAMEDRIVE" with the value "Z:", and it defines a system-
@@ -22940,11 +22892,12 @@ Release: April 23, 2024
 
 188 / 241
 
-           partial="0"/>
+
+           partial="0"/>
    </EnvironmentVariable>
  </EnvironmentVariables>
 
-4.2.5  Files XML Example
+#### 4.2.5 Files XML Example
 
 The following is an example of a Files configuration XML. The XML in this example copies the file
 "\\software\accounting\qb.msi" to the EnvironmentVariable "%TempDir%".
@@ -22969,7 +22922,7 @@ The following is an example of a Files configuration XML. The XML in this exampl
    </File>
  </Files>
 
-4.2.6  FolderOptions XML Example
+#### 4.2.6 FolderOptions XML Example
 
 The following is an example of a FolderOptions configuration XML. The XML in this example enables
 various settings in the user shell, such as showCompColor (which causes encrypted and compressed
@@ -23008,7 +22961,8 @@ Release: April 23, 2024
 
 189 / 241
 
-                 hidden="HIDE"
+
+                 hidden="HIDE"
                  hideFileExt="1"
                  separateProcess="0"
                  showSuperHidden="0"
@@ -23084,9 +23038,10 @@ Release: April 23, 2024
 
 190 / 241
 
- </FolderOptions>
 
-4.2.7  Folders XML Example
+ </FolderOptions>
+
+#### 4.2.7 Folders XML Example
 
 The following is an example of a Folders configuration XML. The XML in this example changes the
 folder "\\scratch2\%LogonUser%" to add "readonly" and "archive" as folder attributes.
@@ -23109,7 +23064,7 @@ folder "\\scratch2\%LogonUser%" to add "readonly" and "archive" as folder attrib
    </Folder>
  </Folders>
 
-4.2.8  IniFile XML Example
+#### 4.2.8 IniFile XML Example
 
 The following is an example of an IniFiles configuration XML. The XML in this example creates an .ini
 file in the location "%SystemDir%\mp3s.ini", with a section "[MP3]" and a property "ALLOWED" set to
@@ -23134,7 +23089,7 @@ the value "ARTIST".
    </Ini>
  </IniFiles>
 
-4.2.9  InternetSettings XML Example
+#### 4.2.9 InternetSettings XML Example
 
 The following is an example of an InternetSettings configuration XML. The XML in this example
 changes a series of registry keys that control the behavior of Internet Explorer on the client.
@@ -23148,7 +23103,8 @@ Release: April 23, 2024
 
 191 / 241
 
- <InternetSettings clsid="{B611EB48-F531-42cd-A1F6-5E0D015377BA}"
+
+ <InternetSettings clsid="{B611EB48-F531-42cd-A1F6-5E0D015377BA}"
                    disabled="1">
  <Internet clsid="{8C0FE68F-E8A2-4f17-99E7-C6EFED208917}"
            name="Internet Explorer 5 and 6"
@@ -23225,7 +23181,8 @@ Release: April 23, 2024
 
 192 / 241
 
-            name="ProxyServer"
+
+            name="ProxyServer"
             value=""/>
  <Reg id="ProxyOverride" disabled="1"
             type="REG_SZ"
@@ -23302,7 +23259,8 @@ Release: April 23, 2024
 
 193 / 241
 
-            type="REG_DWORD"
+
+            type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Windows\CurrentVersion\Internet
                                                     Settings\Zones\3"
@@ -23379,7 +23337,8 @@ Release: April 23, 2024
 
 194 / 241
 
- <Reg id="FileDownloadInternet"
+
+ <Reg id="FileDownloadInternet"
             type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Windows\CurrentVersion\Internet
@@ -23456,7 +23415,8 @@ Release: April 23, 2024
 
 195 / 241
 
-            value="00000003"/>
+
+            value="00000003"/>
  <Reg id="DragAndDropInternet"
             type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
@@ -23533,7 +23493,8 @@ Release: April 23, 2024
 
 196 / 241
 
-            name="2101"
+
+            name="2101"
             value="00000000"/>
  <Reg id="ActiveScriptingInternet"
             type="REG_DWORD"
@@ -23610,7 +23571,8 @@ Release: April 23, 2024
 
 197 / 241
 
-            type="REG_DWORD"
+
+            type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Windows\CurrentVersion\Internet
                                                     Settings"
@@ -23687,7 +23649,8 @@ Release: April 23, 2024
 
 198 / 241
 
-            key="Software\Microsoft\Internet Explorer\Main"
+
+            key="Software\Microsoft\Internet Explorer\Main"
             name="FavIntelliMenus"
             value="no"/>
  <Reg id="3rdPartyExtensions"
@@ -23764,7 +23727,8 @@ Release: April 23, 2024
 
 199 / 241
 
-            value="no"/>
+
+            value="no"/>
  <Reg id="SmoothScrolling"
             type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
@@ -23841,7 +23805,8 @@ Release: April 23, 2024
 
 200 / 241
 
- <Reg id="PlayVideos"
+
+ <Reg id="PlayVideos"
             type="REG_SZ"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Internet Explorer\Main"
@@ -23918,7 +23883,8 @@ Release: April 23, 2024
 
 201 / 241
 
-            value="00000001"/>
+
+            value="00000001"/>
  <Reg id="EnableIntegrated"
             type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
@@ -23995,7 +23961,8 @@ Release: April 23, 2024
 
 202 / 241
 
-             type="VERSION"
+
+             type="VERSION"
              gte="1"
              min="7.0.0.0"
              max="8.0.0.0"
@@ -24072,7 +24039,8 @@ Release: April 23, 2024
 
 203 / 241
 
-            name="UseHooks"
+
+            name="UseHooks"
             value="1"/>
  <Reg id="PopupUseTimerMethod"
             type="REG_DWORD"
@@ -24149,7 +24117,8 @@ Release: April 23, 2024
 
 204 / 241
 
- <Reg id="XpsDocsInternet"
+
+ <Reg id="XpsDocsInternet"
             type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Windows\CurrentVersion\Internet
@@ -24226,7 +24195,8 @@ Release: April 23, 2024
 
 205 / 241
 
-            value="00000003"/>
+
+            value="00000003"/>
  <Reg id="ScriptUnsafeActiveXInternet"
             type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
@@ -24303,7 +24273,8 @@ Release: April 23, 2024
 
 206 / 241
 
-            name="1206"
+
+            name="1206"
             value="00000003"/>
  <Reg id="AllowScriptInitiatedWindowsInternet"
             type="REG_DWORD"
@@ -24380,7 +24351,8 @@ Release: April 23, 2024
 
 207 / 241
 
-                                                    Settings\Zones\3"
+
+                                                    Settings\Zones\3"
             name="1804"
             value="00000001"/>
  <Reg id="NavigateSubFramesAcrossDomainsInternet"
@@ -24457,7 +24429,8 @@ Release: April 23, 2024
 
 208 / 241
 
-            key="Software\Microsoft\Windows\CurrentVersion\Internet
+
+            key="Software\Microsoft\Windows\CurrentVersion\Internet
                                                     Settings\Zones\3"
             name="1407"
             value="00000001"/>
@@ -24534,7 +24507,8 @@ Release: April 23, 2024
 
 209 / 241
 
-            value="no"/>
+
+            value="no"/>
  <Reg id="MoveSystemCaret"
             type="REG_SZ"
             hive="HKEY_CURRENT_USER"
@@ -24611,7 +24585,8 @@ Release: April 23, 2024
 
 210 / 241
 
-            hive="HKEY_CURRENT_USER"
+
+            hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Internet Explorer\Main"
             name="FavIntelliMenus"
             value="no"/>
@@ -24688,7 +24663,8 @@ Release: April 23, 2024
 
 211 / 241
 
-            name="Use PASV"
+
+            name="Use PASV"
             value="yes"/>
  <Reg id="SmoothScrolling"
             type="REG_DWORD"
@@ -24765,7 +24741,8 @@ Release: April 23, 2024
 
 212 / 241
 
- <Reg id="AutoImageResize"
+
+ <Reg id="AutoImageResize"
             type="REG_SZ"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Internet Explorer\Main"
@@ -24842,7 +24819,8 @@ Release: April 23, 2024
 
 213 / 241
 
-            type="REG_DWORD"
+
+            type="REG_DWORD"
             hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Windows\CurrentVersion\WinTrust\
                                 Trust Providers\Software Publishing"
@@ -24919,7 +24897,8 @@ Release: April 23, 2024
 
 214 / 241
 
-            hive="HKEY_CURRENT_USER"
+
+            hive="HKEY_CURRENT_USER"
             key="Software\Microsoft\Windows\CurrentVersion\Internet
                                                     Settings"
             name="WarnonBadCertRecving"
@@ -24960,7 +24939,7 @@ Release: April 23, 2024
  </IE7>
  </InternetSettings>
 
-4.2.10 Local Users and Groups Example
+#### 4.2.10 Local Users and Groups Example
 
 In the following example, the XML creates a local user called "DbAdmin" that is initially disabled. A
 local group called "Database Admins" is also created that removes all the members if they exist, and
@@ -24991,7 +24970,8 @@ Release: April 23, 2024
 
 215 / 241
 
-           acctDisabled="1"
+
+           acctDisabled="1"
            userName="DbAdmin"/>
    </User>
    <Group  clsid="{6D4A79E4-529C-4481-ABD0-F5BD7EA93BA7}"
@@ -25018,7 +24998,7 @@ Release: April 23, 2024
    </Group>
  </Groups>
 
-4.2.11 NetworkOptions XML Example
+#### 4.2.11 NetworkOptions XML Example
 
 The following is an example of a NetworkOptions configuration XML. The XML in this example defines a
 VPN connection named "Corporate" to the IP address "10.10.10.50", and sets the encryption
@@ -25063,7 +25043,8 @@ Release: April 23, 2024
 
 216 / 241
 
-           vpnStrategy="VS_PptpOnly"/>
+
+           vpnStrategy="VS_PptpOnly"/>
    </VPN>
    <DUN    clsid="{9B0D030D-9396-49c1-8DEF-08B35B5BB79E}"
            name="Default IDSN Line"
@@ -25078,7 +25059,7 @@ Release: April 23, 2024
    </DUN>
  </NetworkOptions>
 
-4.2.12 NetworkShareSettings XML Example
+#### 4.2.12 NetworkShareSettings XML Example
 
 The following is an example of a NetworkShareSettings configuration XML. The XML in this example
 defines a share named "Products" that points to the UNC path "\\Products" with a comment of
@@ -25103,7 +25084,7 @@ defines a share named "Products" that points to the UNC path "\\Products" with a
    </NetShare>
  </NetworkShareSettings>
 
-4.2.13 PowerOptions XML Example
+#### 4.2.13 PowerOptions XML Example
 
 The following is an example of a PowerOptions configuration XML. The XML in this example sets the
 behavior of the power button and sleep button to shut down, and it sets the default behavior when the
@@ -25131,7 +25112,8 @@ Release: April 23, 2024
 
 217 / 241
 
-           bool="AND"
+
+           bool="AND"
            class="NT"
            version="VISTA"
            type="NE"
@@ -25207,7 +25189,8 @@ Release: April 23, 2024
 
 218 / 241
 
-          type="NE"
+
+          type="NE"
           edition="NE"
           sp="NE"/>
        <FilterOs
@@ -25263,7 +25246,7 @@ Release: April 23, 2024
  </GlobalPowerOptionsV2>
  </PowerOptions>
 
-4.2.14 Printers XML Example
+#### 4.2.14 Printers XML Example
 
 The following is an example of a Printers configuration XML. The XML in this example maps a shared
 printer "\\PRN-CORP1\b35-1053-a" as the default printer and skips the definition of the printer if a
@@ -25279,7 +25262,8 @@ Release: April 23, 2024
 
 219 / 241
 
- <?xml version="1.0" encoding="utf-8"?>
+
+ <?xml version="1.0" encoding="utf-8"?>
 
  <Printers
            clsid="{1F577D12-3D1B-471e-A1B7-060317597B9C}"
@@ -25354,7 +25338,8 @@ Release: April 23, 2024
 
 220 / 241
 
-4.2.15 Regional Options XML Example
+
+#### 4.2.15 Regional Options XML Example
 
 The following is an example of a Regional Options (section 2.2.1.16) configuration XML. The XML in
 this example sets English (United States) as the default locale of this user, and it sets various
@@ -25400,7 +25385,7 @@ attributes of the locale, such as the default time format, currency symbol, and 
    </RegionalOptions>
  </Regional>
 
-4.2.16 RegistrySettings XML Example
+#### 4.2.16 RegistrySettings XML Example
 
 The following is an example of a RegistrySettings configuration XML. The XML in this example creates
 a key in "HKEY_CURRENT_USER" with the name "MP3", and it sets the DWORD value "Disallowed" to
@@ -25426,7 +25411,8 @@ Release: April 23, 2024
 
 221 / 241
 
-     <Properties
+
+     <Properties
            action="U"
            displayDecimal="0"
            default="0"
@@ -25475,7 +25461,7 @@ Release: April 23, 2024
    </Collection>
  </RegistrySettings>
 
-4.2.17 ScheduledTasks XML Example
+#### 4.2.17 ScheduledTasks XML Example
 
 The following is an example of a ScheduledTasks (section 2.2.1.18) configuration XML. The XML in this
 example creates a task named "Cleanup" that runs the application "\\scratch\filecleanup.exe" on a
@@ -25498,7 +25484,8 @@ Release: April 23, 2024
 
 222 / 241
 
-         image="2"
+
+         image="2"
          changed="2007-07-06 20:54:40"
          uid="{96C2DBEF-ECAE-4BD4-B1C7-0CD71116595C}">
      <Filters>
@@ -25575,7 +25562,8 @@ Release: April 23, 2024
 
 223 / 241
 
- name="Demo"
+
+ name="Demo"
  image="2"
  changed="2008-05-28 21:07:40"
  uid="{BA81EFFF-E567-4CB8-8708-6C17A5950B0A}"
@@ -25652,7 +25640,8 @@ Release: April 23, 2024
 
 224 / 241
 
-     </ScheduleByWeek>
+
+     </ScheduleByWeek>
    </CalendarTrigger>
    <CalendarTrigger>
      <StartBoundary>2008-05-28T14:06:16</StartBoundary>
@@ -25729,7 +25718,8 @@ Release: April 23, 2024
 
 225 / 241
 
- name="ImdTask"
+
+ name="ImdTask"
  image="2"
  changed="2008-05-27 03:49:21"
  uid="{541F1F1E-CAD4-447C-B26F-5D1EAD6965AA}">
@@ -25787,7 +25777,7 @@ sp="NE"/>
  </ImmediateTaskV2>
  </ScheduledTasks>
 
-4.2.18 NTServices XML Example
+#### 4.2.18 NTServices XML Example
 
 The following is an example of an NTServices configuration XML. The XML in this example updates the
 NT service "Computer Browser" to run under the "LocalSystem" account with a restart after the third
@@ -25802,7 +25792,8 @@ Release: April 23, 2024
 
 226 / 241
 
- <NTServices
+
+ <NTServices
            clsid="{2CFB484A-4E96-4b5d-A0B6-093D2F91E6AE}">
    <NTService
            clsid="{AB6F0B67-341F-4e51-92F9-005FBFBA1A43}"
@@ -25824,7 +25815,7 @@ Release: April 23, 2024
    </NTService>
  </NTServices>
 
-4.2.19 Shortcuts XML Example
+#### 4.2.19 Shortcuts XML Example
 
 The following is an example of a Shortcuts configuration XML. The XML in this example creates a
 shortcut on the user desktop called "Temp Files" that points to "c:\temp".
@@ -25865,7 +25856,8 @@ Release: April 23, 2024
 
 227 / 241
 
-4.2.20 StartMenu XML Example
+
+#### 4.2.20 StartMenu XML Example
 
 The following is an example of a StartMenu configuration XML. The XML in this example sets various
 attributes of the desktop Start menu, such as hiding the Favorites menu, using large icons, showing
@@ -25941,7 +25933,8 @@ Release: April 23, 2024
 
 228 / 241
 
-                 not="0"
+
+                 not="0"
                  bool="AND"
                  class="NT"
                  version="VISTA"
@@ -25995,7 +25988,7 @@ Release: April 23, 2024
    </StartMenuVista>
  </StartMenuTaskbar>
 
-4.2.21 Targeting Sample
+#### 4.2.21 Targeting Sample
 
 The following is an example of a Targeting XML element. Targeting elements can occur within the
 Properties element of any configuration. The XML in this example applies various low-level selection
@@ -26013,7 +26006,8 @@ Release: April 23, 2024
 
 229 / 241
 
-             bool="AND"/>
+
+             bool="AND"/>
    <filterComputer
              not="0"
              bool="AND"
@@ -26090,7 +26084,8 @@ Release: April 23, 2024
 
 230 / 241
 
-             value=""
+
+             value=""
              max=""
              min=""
              gte="1"
@@ -26167,7 +26162,8 @@ Release: April 23, 2024
 
 231 / 241
 
-             bool="AND"
+
+             bool="AND"
              type="NE"
              option="NE"
              value=""/>
@@ -26203,7 +26199,7 @@ Release: April 23, 2024
              verbLog="0"/>
  </FILTERS>
 
-4.2.22 Applications XML Sample
+#### 4.2.22 Applications XML Sample
 
 The following sample shows an example of a single Application that contains a Registry Preferences
 Policy Message setting a Registry value. The Application Client-side extension launches the Registry
@@ -26239,7 +26235,8 @@ Release: April 23, 2024
 
 232 / 241
 
-           default="0"
+
+           default="0"
            hive="HKEY_CURRENT_USER"
            key="MP3"
            name="Disallowed"
@@ -26257,9 +26254,10 @@ Release: April 23, 2024
 
 233 / 241
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Do not transmit passwords or other sensitive data through this protocol. The primary reason for this
 restriction is that the protocol provides no encryption and, therefore, sensitive data transmitted
@@ -26276,7 +26274,7 @@ to the protected resource.
 
 Group Policy: Preferences Extension settings store encrypted data in a number of preference types.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -26287,7 +26285,8 @@ Release: April 23, 2024
 
 234 / 241
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -26355,7 +26354,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<2> Section 2.2.1: ControlPanel.xml is currently not created during any editing sequence. It is
+
+<2> Section 2.2.1: ControlPanel.xml is currently not created during any editing sequence. It is
 documented here for completeness.
 
 <3> Section 2.2.1.1.4: The seed value used to generate the key is the sequence of characters:
@@ -26419,7 +26419,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-"SystemRoot", are the values that make those environment variables unique within whatever
+
+"SystemRoot", are the values that make those environment variables unique within whatever
 repository is used.
 
 <9> Section 2.2.1.11.1: Windows assigns each group a security identifier (SID). Windows uses
@@ -26514,7 +26515,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Version
+
+Version
 attribute
 
 NT
@@ -26606,7 +26608,8 @@ Release: April 23, 2024
 
 238 / 241
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -26650,7 +26653,8 @@ Release: April 23, 2024
 
 239 / 241
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -26788,7 +26792,8 @@ Group Policy: Preferences Extension Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   implementer considerations 234
+
+   implementer considerations 234
    parameter index 234
 Sequencing rules
    administrative 180

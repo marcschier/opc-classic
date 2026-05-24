@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 25
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 25
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: April 23, 2024
 
 3 / 25
 
-Date
+
+Date
 
 Revision
 History
@@ -543,105 +546,50 @@ Release: April 23, 2024
 
 4 / 25
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 SERIALIZED_ENUM_SERVICE_STATUS](#221-serializedenumservicestatus)
+    - [2.2.2 STATUS_BLOB](#222-statusblob)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IIS Service Control Server Details](#31-iis-service-control-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Stop (Opnum 7)](#3141-stop-opnum-7)
+      - [3.1.4.2 Start (Opnum 8)](#3142-start-opnum-8)
+      - [3.1.4.3 Reboot (Opnum 9)](#3143-reboot-opnum-9)
+      - [3.1.4.4 Status (Opnum 10)](#3144-status-opnum-10)
+      - [3.1.4.5 Kill (Opnum 11)](#3145-kill-opnum-11)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Status Method Call Example](#41-status-method-call-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Common Data Types .......................................................................................... 9
-SERIALIZED_ENUM_SERVICE_STATUS ............................................................ 9
-STATUS_BLOB............................................................................................ 10
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 11
-IIS Service Control Server Details ...................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Stop (Opnum 7).................................................................................... 12
-Start (Opnum 8) ................................................................................... 13
-Reboot (Opnum 9) ................................................................................ 14
-Status (Opnum 10) ............................................................................... 15
-Kill (Opnum 11) .................................................................................... 16
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ................................................................................................. 18
-Status Method Call Example .............................................................................. 18
-
-4.1
-
-5  Security ................................................................................................................. 19
-Security Considerations for Implementers ........................................................... 19
-Index of Security Parameters ............................................................................ 19
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 20
-
-7  Appendix B: Product Behavior ............................................................................... 21
-
-8  Change Tracking .................................................................................................... 23
-
-9  Index ..................................................................................................................... 24
-
-[MS-IISS] - v20240423
-Internet Information Services (IIS) ServiceControl Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 25
-
-1  Introduction
+## 1 Introduction
 
 This specification defines the Internet Information Services (IIS) ServiceControl Protocol. This protocol
 is a client-to-server protocol which enables remote control of Internet services as a single unit. The
@@ -651,7 +599,7 @@ processes or reboot the computer. Lastly, it provides status information about t
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -712,7 +660,8 @@ Release: April 23, 2024
 
 6 / 25
 
-RPC protocol sequence: A character string that represents a valid combination of a remote
+
+RPC protocol sequence: A character string that represents a valid combination of a remote
 
 procedure call (RPC) protocol, a network layer protocol, and a transport layer protocol, as
 described in [C706] and [MS-RPCE].
@@ -735,14 +684,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -768,7 +717,7 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -779,7 +728,8 @@ Release: April 23, 2024
 
 7 / 25
 
-1.3  Overview
+
+### 1.3 Overview
 
 The IIS ServiceControl Protocol provides a mechanism for remote control of Internet services as a
 single unit on a server. Through the IIS ServiceControl Protocol, a client can start or stop the services.
@@ -791,11 +741,11 @@ protocol implements support for the DCOM interface to manage the Internet servic
 of the protocol invokes method calls on the interface to control the services on the server. The DCOM
 calls use standard DCOM marshaling.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the remote protocol described in [MS-DCOM].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the DCOM protocol is implemented on both the client and server
 computers.
@@ -806,22 +756,22 @@ This protocol is implemented over DCOM and RPC and, as a result, has the prerequ
 This protocol specification assumes that any security or authentication associations between the client
 and server are performed by the DCOM layer.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The IIS ServiceControl Protocol is applicable to remote control Internet services on a server as a
 single unit.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values, as specified in [MS-ERREF]. Vendors can define their own
 HRESULT values, provided they set the C bit (0x20000000) for each vendor-defined value, indicating
 that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -842,9 +792,10 @@ Release: April 23, 2024
 
 8 / 25
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the DCOM protocol, as specified in [MS-DCOM], as its transport. On its behalf, the
 DCOM protocol uses the following RPC protocol sequence: RPC over TCP, as specified in [MS-
@@ -867,7 +818,7 @@ DCOM]) for access control. DCOM differentiates between launch and access. An imp
 IIS ServiceControl Protocol MAY differentiate between launch and access permission, and impose
 different authorization requirements.<2>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to include support for both the NDR20 and
 NDR64 transfer syntaxes as well as provide the negotiation mechanism for determining which transfer
@@ -876,7 +827,7 @@ syntax will be used, as specified in [MS-RPCE] section 3.
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data types
 are defined as follows.
 
-2.2.1  SERIALIZED_ENUM_SERVICE_STATUS
+#### 2.2.1 SERIALIZED_ENUM_SERVICE_STATUS
 
 This data structure provides information about the state of the Internet services on a server. It is
 used by the server to return data to the client in the Status method, as specified in section 3.1.4.4.
@@ -911,7 +862,8 @@ Release: April 23, 2024
 
 9 / 25
 
-iServiceName (4 bytes): The number of unsigned wide characters to use as an offset to the
+
+iServiceName (4 bytes): The number of unsigned wide characters to use as an offset to the
 
 WCHAR string that contains the service name for this service. For more information, see section
 2.2.2.
@@ -923,7 +875,7 @@ WCHAR string that contains the display name for this service. For more informati
 
 ServiceStatus (28 bytes): Provides status for the service, as specified in [MS-SCMR] section 2.2.47.
 
-2.2.2  STATUS_BLOB
+#### 2.2.2 STATUS_BLOB
 
 The STATUS_BLOB structure is marshaled to the client using the Status method over RPC using an
 unsigned char array. It is up to the client or user code, and not the RPC proxy, to interpret this data
@@ -977,16 +929,17 @@ Release: April 23, 2024
 
 10 / 25
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, there are no additional timers or
 other state requirements on the client side of this protocol. Calls made by the higher-layer protocol or
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  IIS Service Control Server Details
+### 3.1 IIS Service Control Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -994,16 +947,16 @@ explanation of how the protocol behaves. This specification does not mandate tha
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timer events are used outside of specific call time-outs that are discussed within each method
 description.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
  This protocol uses DCOM initialization.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 5.0, as specified in [MS-RPCE] section 3.
@@ -1047,7 +1000,8 @@ Release: April 23, 2024
 
 11 / 25
 
-Method  Description
+
+Method  Description
 
 Status
 
@@ -1061,7 +1015,7 @@ Terminates the Internet services.
 
 Opnum: 11
 
-3.1.4.1  Stop (Opnum 7)
+##### 3.1.4.1 Stop (Opnum 7)
 
 This method stops any running Internet services.<3>
 
@@ -1133,7 +1087,8 @@ Release: April 23, 2024
 
 12 / 25
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1161,7 +1116,7 @@ E_ERROR_RESOURCE_DISABLED
 If the length of time specified by dwTimeoutMsecs has elapsed and not all services have stopped, and
 if dwForce is set to 0x00000001 (True), then the remaining services SHOULD be forced to terminate.
 
-3.1.4.2  Start (Opnum 8)
+##### 3.1.4.2 Start (Opnum 8)
 
 This method is used to start the Internet services.
 
@@ -1228,13 +1183,14 @@ Release: April 23, 2024
 
 13 / 25
 
-Return value/code
+
+Return value/code
 
 Description
 
 E_ERROR_RESOURCE_DISABLED
 
-3.1.4.3  Reboot (Opnum 9)
+##### 3.1.4.3 Reboot (Opnum 9)
 
 This method is used to reboot the computer where the IIS service is running.
 
@@ -1312,7 +1268,8 @@ Release: April 23, 2024
 
 14 / 25
 
-3.1.4.4  Status (Opnum 10)
+
+##### 3.1.4.4 Status (Opnum 10)
 
 This method returns the status of the Internet services.
 
@@ -1393,7 +1350,8 @@ Release: April 23, 2024
 
 15 / 25
 
-The method MUST return S_OK (0x00000000) upon success.
+
+The method MUST return S_OK (0x00000000) upon success.
 
 Return value/code
 
@@ -1424,7 +1382,7 @@ The IIisServiceControl interface is disabled.
 
 E_ERROR_RESOURCE_DISABLED
 
-3.1.4.5  Kill (Opnum 11)
+##### 3.1.4.5 Kill (Opnum 11)
 
 This method is used to terminate the Internet services processes. This erases the IIS processes
 from memory, and is used to recover from failed instances of IIS processes.
@@ -1482,7 +1440,8 @@ Internet Information Services (IIS) ServiceControl Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1492,12 +1451,12 @@ The IIisServiceControl interface is disabled.
 
 E_ERROR_RESOURCE_DISABLED
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
  No timer events are used outside of specific call time-outs that are discussed within each method
 description.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
  No local events are defined.
 
@@ -1508,9 +1467,10 @@ Release: April 23, 2024
 
 17 / 25
 
-4  Protocol Examples
 
-4.1  Status Method Call Example
+## 4 Protocol Examples
+
+### 4.1 Status Method Call Example
 
 The client allocates approximately enough memory in a buffer for data that is expected to be returned
 by the Status call. This buffer will hold an array of SERIALIZED_ENUM_SERVICE_STATUS structures
@@ -1541,9 +1501,10 @@ Release: April 23, 2024
 
 18 / 25
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers need to be careful not to expose functionality through this interface to users who do not
 have permissions for such functionality. If users cannot reboot the server while logged on locally, do
@@ -1556,7 +1517,7 @@ processes and operations defined in this specification.
 Implementers need to review the security considerations as specified in [MS-RPCE] section 5.1
 because these are valid for DCOM-based protocols.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -1567,7 +1528,8 @@ Release: April 23, 2024
 
 19 / 25
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] Appendix A.
@@ -1619,7 +1581,8 @@ Release: April 23, 2024
 
 20 / 25
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1687,7 +1650,8 @@ Release: April 23, 2024
 
 21 / 25
 
-  SYSTEM
+
+  SYSTEM
 
 <3> Section 3.1.4.1: In the Windows implementation, all services that have declared dependencies
 upon the IIS Admin Service (IISAdmin) will constitute the Internet services. In Windows Server
@@ -1724,7 +1688,8 @@ Release: April 23, 2024
 
 22 / 25
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1768,7 +1733,8 @@ Release: April 23, 2024
 
 23 / 25
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 11
@@ -1899,7 +1865,8 @@ Start (Opnum 8) method 13
 
 24 / 25
 
-Start method 13
+
+Start method 13
 Status (Opnum 10) method 15
 Status method 15
 Status method call example 18

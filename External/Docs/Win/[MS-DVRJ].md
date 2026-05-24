@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -148,181 +149,76 @@ Release: September 16, 2024
 
 2 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Headers](#221-http-headers)
+      - [2.2.1.1 Authorization](#2211-authorization)
+    - [2.2.2 URI Parameters](#222-uri-parameters)
+      - [2.2.2.1 api-version](#2221-api-version)
+    - [2.2.3 Complex Types](#223-complex-types)
+      - [2.2.3.1 ErrorDetails](#2231-errordetails)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 ms-DS-Issuer-Certificates](#231-ms-ds-issuer-certificates)
+    - [2.3.2 ms-DS-Issuer-Public-Certificates](#232-ms-ds-issuer-public-certificates)
+    - [2.3.3 Alt-Security-Identities](#233-alt-security-identities)
+    - [2.3.4 ms-DS-Key-Credential-Link](#234-ms-ds-key-credential-link)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Join Service Details](#31-join-service-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 device](#3151-device)
+        - [3.1.5.1.1 POST](#31511-post)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+        - [3.1.5.1.2 DELETE](#31512-delete)
+          - [3.1.5.1.2.1 Request Body](#315121-request-body)
+          - [3.1.5.1.2.2 Response Body](#315122-response-body)
+          - [3.1.5.1.2.3 Processing Details](#315123-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 device](#3251-device)
+        - [3.2.5.1.1 POST](#32511-post)
+        - [3.2.5.1.2 DELETE](#32512-delete)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Create a device](#41-create-a-device)
+  - [4.2 Error Example](#42-error-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full JSON Schema](#6-appendix-a-full-json-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1.1
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Common Data Types ........................................................................................ 11
-HTTP Headers ............................................................................................ 11
-Authorization ........................................................................................ 11
-URI Parameters .......................................................................................... 11
-api-version ........................................................................................... 12
-Complex Types ........................................................................................... 12
-ErrorDetails .......................................................................................... 12
-Directory Service Schema Elements ................................................................... 12
-ms-DS-Issuer-Certificates ............................................................................ 13
-ms-DS-Issuer-Public-Certificates .................................................................. 13
-Alt-Security-Identities ................................................................................. 13
-ms-DS-Key-Credential-Link .......................................................................... 13
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-
-2.2.3.1
-
-2.2.3
-
-2.3
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.2
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 15
-Join Service Details .......................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-device ................................................................................................. 15
-POST ............................................................................................. 15
-Request Body ............................................................................ 16
-Response Body .......................................................................... 16
-Processing Details ...................................................................... 17
-DELETE .......................................................................................... 20
-Request Body ............................................................................ 20
-Response Body .......................................................................... 20
-Processing Details ...................................................................... 20
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Client Details ................................................................................................... 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-device ................................................................................................. 21
-POST ............................................................................................. 21
-DELETE .......................................................................................... 22
-
-3.1.5.1.2.1
-3.1.5.1.2.2
-3.1.5.1.2.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2
-
-[MS-DVRJ] - v20240916
-Device Registration Join Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-3 / 30
-
-3.2.6
-3.2.7
-
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-4  Protocol Examples ................................................................................................. 23
-Create a device ................................................................................................ 23
-Error Example.................................................................................................. 24
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Full JSON Schema .............................................................................. 26
-
-7  Appendix B: Product Behavior ............................................................................... 27
-
-8  Change Tracking .................................................................................................... 28
-
-9  Index ..................................................................................................................... 29
-
-[MS-DVRJ] - v20240916
-Device Registration Join Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4 / 30
-
-1  Introduction
+## 1 Introduction
 
 The Device Registration Join Protocol provides a lightweight mechanism for registering personal or
 corporate-owned devices with a workplace.
@@ -334,7 +230,7 @@ specification, makes use of that information to register a device in the device 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -394,7 +290,8 @@ Device Registration Join Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
+
+referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
 references to UTC refer to the time at UTC-0 (or GMT).
 
 device registration service: A service that allows registration of computing devices on a
@@ -471,7 +368,8 @@ Release: September 16, 2024
 
 6 / 30
 
-Representational State Transfer (REST): A class of web services that is used to transfer
+
+Representational State Transfer (REST): A class of web services that is used to transfer
 
 domain-specific data by using HTTP, without additional messaging layers or session tracking,
 and returns textual data, such as XML.
@@ -514,14 +412,14 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -542,7 +440,8 @@ Release: September 16, 2024
 
 7 / 30
 
-[MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
+
+[MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
 
 [MS-ADA3] Microsoft Corporation, "Active Directory Schema Attributes N-Z".
 
@@ -583,13 +482,13 @@ editor.org/info/rfc5280
 [RFC8017] Moriarty, K., Ed., Kaliski, B., Jonsson, J., and Rusch, A., "PKCS #1: RSA Cryptography
 Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8017
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-DVRD] Microsoft Corporation, "Device Registration Discovery Protocol".
 
 [MS-DVRE] Microsoft Corporation, "Device Registration Enrollment Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The Device Registration Join Protocol provides for issuance of X.509v3 digital certificates, and is
 intended for use as a lightweight device-registration server. The protocol is based loosely on
@@ -607,7 +506,8 @@ Release: September 16, 2024
 
 8 / 30
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-DVRJ].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -617,13 +517,13 @@ accepts and responds to device registration requests using the Device Registrati
 client: The entity that creates and sends a request to the server using the Device Registration Join
 Protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure illustrates the relationship of this protocol to other protocols.
 
 Figure 1: Protocols related to the Device Registration Join Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Device Registration Join Protocol issues X.509v3 certificates that have a corresponding
 relationship with a device object represented in a directory server.  A server implementation of the
@@ -666,7 +566,8 @@ Release: September 16, 2024
 
 9 / 30
 
-The public portion of the certificate is stored in the ms-DS-Issuer-Public-Certificates attribute
+
+The public portion of the certificate is stored in the ms-DS-Issuer-Public-Certificates attribute
 ([MS-ADA2] section 2.352) of the ms-DS-Device-Registration-Service object. For details, see
 section 2.3.2.
 
@@ -676,19 +577,19 @@ section 2.3.2.
 
 2.  Grant the server read/write access to ms-DS-Device objects ([MS-ADSC] section 2.136).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Device Registration Join Protocol is applicable only for requests for device registration.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Device Registration Join Protocol does not include any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -699,9 +600,10 @@ Release: September 16, 2024
 
 10 / 30
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Device Registration Join Protocol consists of a single RESTful Web service.
 
@@ -721,9 +623,9 @@ All client messages to the server MUST use Hypertext Transfer Protocol over Secu
 Layer (HTTPS) and provide server authentication, which MUST use Transport Layer Security
 (TLS) 1.1 [RFC4346], or greater.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Headers
+#### 2.2.1 HTTP Headers
 
 This protocol accesses the HTTP headers listed in the following table.
 
@@ -736,7 +638,7 @@ Description
 This header is used by the client to send authorization
 claims. It contains a JSON Web Token (JWT).
 
-2.2.1.1  Authorization
+##### 2.2.1.1 Authorization
 
 The Authorization header is required in the request and contains authorization claims that the client
 passes to the server for access to the relevant device object on the directory server.
@@ -746,7 +648,7 @@ The format of the Authorization header, in Augmented Backus-Naur Form (ABNF), is
  String = *(%x20-7E)
  Authorization = String
 
-2.2.2  URI Parameters
+#### 2.2.2 URI Parameters
 
 The following table summarizes the set of common URI parameters defined by this protocol.
 
@@ -766,7 +668,8 @@ Release: September 16, 2024
 
 11 / 30
 
-2.2.2.1  api-version
+
+##### 2.2.2.1 api-version
 
 The api-version parameter is an integer that indicates the data version that is expected by the client.
 This parameter MUST be included in all client requests.
@@ -774,7 +677,7 @@ This parameter MUST be included in all client requests.
  String = *(%x20-7E)
  api-version = String
 
-2.2.3  Complex Types
+#### 2.2.3 Complex Types
 
 The following table summarizes the set of complex type definitions included in this specification.
 
@@ -782,7 +685,7 @@ Complex type
 
 ErrorDetails
 
-2.2.3.1  ErrorDetails
+##### 2.2.3.1 ErrorDetails
 
 Description
 
@@ -813,7 +716,7 @@ TraceId: An identifier assigned by the DRS server.
 
 Time: The [ISO8601]-formatted time assigned by the DRS server.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol makes use of the Directory Service schema classes and attributes that are listed in the
 following table.
@@ -837,7 +740,8 @@ Device-Object-Version, ms-DS-Device-OS-Type, ms-
 
 12 / 30
 
-Class
+
+Class
 
 Attribute
 
@@ -870,7 +774,7 @@ Object-Guid
 
 Invocation-Id
 
-2.3.1  ms-DS-Issuer-Certificates
+#### 2.3.1 ms-DS-Issuer-Certificates
 
 The ms-DS-Issuer-Certificates attribute is a multi-valued OCTET_STRING attribute (see [MS-ADTS]
 section 3.1.1.2.2.2, the String(Octet) syntax). Each value of the attribute is stored as a binary blob
@@ -883,12 +787,12 @@ intervals that have elapsed since 12:00:00 midnight, January 1, 0001, UTC, and [
 X.509 certificate] is the contents of an X.509 certificate [RFC5280] stored as an encrypted binary
 blob.
 
-2.3.2  ms-DS-Issuer-Public-Certificates
+#### 2.3.2 ms-DS-Issuer-Public-Certificates
 
 The ms-DS-Issuer-Public-Certificates attribute is a multi-valued OCTET_STRING attribute. Each value
 of the attribute is stored as a binary blob containing an X.509 certificate [RFC5280].
 
-2.3.3  Alt-Security-Identities
+#### 2.3.3 Alt-Security-Identities
 
 The Alt-Security-Identities attribute ([MS-ADA1] section 2.61) is a multi-valued UNICODE_STRING
 attribute (see [MS-ADTS] section 3.1.1.2.2.2, the String(Unicode) syntax). The value is formatted as
@@ -899,7 +803,7 @@ follows:
 where [thumbprint] is the SHA1 hash of a certificate and [publickeyhash] is the base64-encoded
 SHA-256 ([NIST.FIPS.180-4]) of the X.509 certificate public key [RFC5280].
 
-2.3.4  ms-DS-Key-Credential-Link
+#### 2.3.4 ms-DS-Key-Credential-Link
 
 The ms-DS-Key-Credential-Link attribute ([MS-ADA2] section 2.358) is a DN-Binary attribute (see
 [MS-ADTS] section 3.1.1.2.2.2, the Object(DN-Binary) syntax). The value is formatted as follows:
@@ -911,7 +815,8 @@ Release: September 16, 2024
 
 13 / 30
 
-"B:[keylen]:[key]:[objectDN]"
+
+"B:[keylen]:[key]:[objectDN]"
 
 Where [keylen] is the length of [key]. [key] is a KEYCREDENTIALLINK_BLOB ([MS-ADTS] section
 2.2.20.2). [objectDN] is an [RFC4514]-formatted distinguished name for the directory object that
@@ -924,29 +829,30 @@ Release: September 16, 2024
 
 14 / 30
 
-3  Protocol Details
 
-3.1  Join Service Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Join Service Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
+
+None.
+
+#### 3.1.3 Initialization
 
 The server that implements the Device Registration Join Protocol must be initialized. Any databases or
 tables that contain the information that is needed in the Device Registration Join Protocol response
 must also be initialized.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following resource is used by the Device Registration Join Protocol.
 
@@ -959,7 +865,7 @@ device?api-version={apiversion}
 An object that represents the device objects on the
 DRS server.
 
-3.1.5.1  device
+##### 3.1.5.1 device
 
  The following HTTP methods are allowed to be performed on this resource.
 
@@ -981,7 +887,7 @@ Create a new device object.
 
 Remove a device object.
 
-3.1.5.1.1 POST
+###### 3.1.5.1.1 POST
 
 This method is transported by an HTTP POST.
 
@@ -996,10 +902,11 @@ Release: September 16, 2024
 
 15 / 30
 
-The URI parameters supported for the POST request are the common URI parameters defined in
+
+The URI parameters supported for the POST request are the common URI parameters defined in
 section 2.2.2 (URI Parameters).
 
-3.1.5.1.1.1  Request Body
+###### 3.1.5.1.1.1 Request Body
 
 The request body contains the following JSON-formatted object.
 
@@ -1045,7 +952,7 @@ DeviceDisplayName: The friendly name of the device.
 
 JoinType: The type of join operation. The value MUST be set to 6.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 If the DRS server successfully creates a device object in the directory, an HTTP 200 status code is
 returned. Additionally, the response body for the POST response contains a JSON-formatted object, as
@@ -1066,7 +973,8 @@ Release: September 16, 2024
 
 16 / 30
 
-             "properties": {
+
+             "properties": {
                  "Thumbprint": { "type": "string", "optional": false },
                  "RawBody": { "type": "string", "optional": false }
              }
@@ -1107,7 +1015,7 @@ be ignored by the client.
 
 AddSIDs: An empty array. This value MUST be ignored by the client.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The HTTP POST request is processed as follows.
 
@@ -1140,7 +1048,8 @@ the client. The value
 
 17 / 30
 
-Claim
+
+Claim
 
 primarysid
 
@@ -1227,7 +1136,8 @@ Device Registration Join Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -1323,7 +1233,8 @@ Release: September 16, 2024
 
 19 / 30
 
-KEYCREDENTIALLINK_ENTRY identifier
+
+KEYCREDENTIALLINK_ENTRY identifier
 
 Value
 
@@ -1336,7 +1247,7 @@ device object, formatted as specified in [MS-ADTS] section
 7.  The DRS server responds to the HTTP POST request with an HTTP response with the HTTP status
 code set to 200 ("OK"). The response body contains the signed X.509 certificate from step 3.
 
-3.1.5.1.2 DELETE
+###### 3.1.5.1.2 DELETE
 
 This method is transported by an HTTP DELETE.
 
@@ -1351,11 +1262,11 @@ deviceid: A GUID that represents the device object to be looked up.
 The URI parameters supported for the DELETE request are the common URI parameters documented
 in section 2.2.2 (URI Parameters).
 
-3.1.5.1.2.1  Request Body
+###### 3.1.5.1.2.1 Request Body
 
 The request body MUST be empty.
 
-3.1.5.1.2.2  Response Body
+###### 3.1.5.1.2.2 Response Body
 
 If the DRS server successfully removes the device object from the directory, an HTTP 200 status code
 ("OK") is returned. If the DRS server does NOT respond to the HTTP DELETE request with the HTTP
@@ -1363,7 +1274,7 @@ status code set to 200, the body of the HTTP response MUST contain an ErrorDetai
 2.2.3.1) that provides the client with additional, implementation-specific information about the error.
 Otherwise, the response body MUST be empty.
 
-3.1.5.1.2.3  Processing Details
+###### 3.1.5.1.2.3 Processing Details
 
 The HTTP DELETE request is processed as follows.
 
@@ -1392,21 +1303,22 @@ Release: September 16, 2024
 
 20 / 30
 
-4.  The DRS server responds to the HTTP DELETE request with an HTTP response that has the HTTP
+
+4.  The DRS server responds to the HTTP DELETE request with an HTTP response that has the HTTP
 
 status code set to 200 ("OK").
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1420,27 +1332,27 @@ SignedDeviceCertificate: An element that contains the signed X.509 certificate t
 
 the DRS server in response to the POST request sent to the device resource.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The resource used by the Device Registration Join Protocol, device, is defined in section 3.1.5.
 
-3.2.5.1  device
+##### 3.2.5.1 device
 
 See section 3.1.5.1.
 
-3.2.5.1.1 POST
+###### 3.2.5.1.1 POST
 
 See section 3.1.5.1.1 and subsections.
 
@@ -1455,18 +1367,19 @@ Release: September 16, 2024
 
 21 / 30
 
-3.2.5.1.2 DELETE
+
+###### 3.2.5.1.2 DELETE
 
 See section 3.1.5.1.2 and subsections.
 
 The client must send the X.509 certificate that was stored in the SignedDeviceCertificate ADM element
 (section 3.2.1) as part of client authentication for the DELETE request (section 3.1.5.1.2.3).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1477,9 +1390,10 @@ Release: September 16, 2024
 
 22 / 30
 
-4  Protocol Examples
 
-4.1  Create a device
+## 4 Protocol Examples
+
+### 4.1 Create a device
 
 The following example shows a request to the DRS server to create a device object (section
 3.1.5.1.1.1) and the response (section 3.1.5.1.1.2).
@@ -1549,11 +1463,12 @@ Device Registration Join Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-     }
+
+     }
    ]
  }
 
-4.2  Error Example
+### 4.2 Error Example
 
 The following example shows a request to the DRS server that resulted in an error response (section
 2.2.3.1).
@@ -1572,9 +1487,10 @@ Release: September 16, 2024
 
 24 / 30
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Device Registration Join Protocol uses HTTPS as a transport. Using Secure Sockets Layer (SSL)
 server certificate verification ensures that the client is communicating with the real server and closes
@@ -1584,7 +1500,7 @@ The input message uses an JSON Web Token for both authentication and authorizati
 must validate that the security token is signed by a trusted identity provider, is within the token
 validity period, and that the target audience of the token is the server.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security Parameter
 
@@ -1601,7 +1517,8 @@ Release: September 16, 2024
 
 25 / 30
 
-6  Appendix A: Full JSON Schema
+
+## 6 Appendix A: Full JSON Schema
 
  {
      "description": "object",
@@ -1670,7 +1587,8 @@ Release: September 16, 2024
 
 26 / 30
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1749,7 +1667,8 @@ Release: September 16, 2024
 
 27 / 30
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1761,7 +1680,8 @@ Release: September 16, 2024
 
 28 / 30
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -1899,7 +1819,8 @@ Product behavior 27
 
 29 / 30
 
-Protocol Details
+
+Protocol Details
    Join service 15
 Protocol examples
    Create a device 23

@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 126
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Release: September 16, 2024
 
 2 / 126
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: September 16, 2024
 
 3 / 126
 
-Date
+
+Date
 
 Revision
 History
@@ -552,282 +555,116 @@ Release: September 16, 2024
 
 4 / 126
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Metafile Structure](#131-metafile-structure)
+    - [1.3.2 Byte Ordering](#132-byte-ordering)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 EMFSPOOL Enumerations](#21-emfspool-enumerations)
+    - [2.1.1 RecordType Enumeration](#211-recordtype-enumeration)
+    - [2.1.2 SpecVersion Enumeration](#212-specversion-enumeration)
+  - [2.2 EMFSPOOL Records](#22-emfspool-records)
+    - [2.2.1 Record Syntax](#221-record-syntax)
+    - [2.2.2 Header Record](#222-header-record)
+    - [2.2.3 Data Records](#223-data-records)
+      - [2.2.3.6 EMRI_PRESTARTPAGE records contain information used in encapsulated](#2236-emriprestartpage-records-contain-information-used-in-encapsulated)
+      - [2.2.3.7 EMRI_PS_JOB_DATA records store injected PostScript data at the job](#2237-emripsjobdata-records-store-injected-postscript-data-at-the-job)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Byte Ordering](#31-byte-ordering)
+  - [3.2 EMFSPOOL Metafile Structure](#32-emfspool-metafile-structure)
+    - [3.2.1 EMFSPOOL Header Example](#321-emfspool-header-example)
+    - [3.2.2 EMRI_METAFILE_DATA Example 1](#322-emrimetafiledata-example-1)
+      - [3.2.2.1 EMR_HEADER Example](#3221-emrheader-example)
+      - [3.2.2.2 EMR_SETICMMODE Example 1](#3222-emrseticmmode-example-1)
+      - [3.2.2.3 EMR_SELECTOBJECT Example 1](#3223-emrselectobject-example-1)
+      - [3.2.2.4 EMR_SELECTOBJECT Example 2](#3224-emrselectobject-example-2)
+      - [3.2.2.5 EMR_SELECTOBJECT Example 3](#3225-emrselectobject-example-3)
+      - [3.2.2.6 EMR_MOVETOEX Example](#3226-emrmovetoex-example)
+      - [3.2.2.7 EMR_SETBRUSHORGEX Example](#3227-emrsetbrushorgex-example)
+      - [3.2.2.8 EMR_SETICMMODE Example 2](#3228-emrseticmmode-example-2)
+      - [3.2.2.9 EMR_SETCOLORSPACE Example](#3229-emrsetcolorspace-example)
+      - [3.2.2.10 EMR_SETTEXTALIGN Example 1](#32210-emrsettextalign-example-1)
+      - [3.2.2.11 EMR_SELECTOBJECT Example 4](#32211-emrselectobject-example-4)
+      - [3.2.2.12 EMR_SETTEXTALIGN Example 2](#32212-emrsettextalign-example-2)
+      - [3.2.2.13 EMR_SETBKMODE Example 1](#32213-emrsetbkmode-example-1)
+      - [3.2.2.14 EMR_SETVIEWPORTORGEX Example](#32214-emrsetviewportorgex-example)
+      - [3.2.2.15 EMR_SETBKMODE Example 2](#32215-emrsetbkmode-example-2)
+      - [3.2.2.16 EMR_EXTCREATEFONTINDIRECTW Example](#32216-emrextcreatefontindirectw-example)
+      - [3.2.2.17 EMR_SELECTOBJECT Example 5](#32217-emrselectobject-example-5)
+      - [3.2.2.18 EMR_SETTEXTCOLOR Example](#32218-emrsettextcolor-example)
+      - [3.2.2.19 EMR_FORCEUFIMAPPING Example](#32219-emrforceufimapping-example)
+      - [3.2.2.20 EMR_COMMENT_EMFSPOOL Example](#32220-emrcommentemfspool-example)
+        - [3.2.2.20.1 EMRI_ENGINE_FONT Example](#322201-emrienginefont-example)
+      - [3.2.2.21 EMR_EXTTEXTOUTW Example 1](#32221-emrexttextoutw-example-1)
+      - [3.2.2.22 EMR_EXTTEXTOUTW Example 2](#32222-emrexttextoutw-example-2)
+      - [3.2.2.23 EMR_SETBKMODE Example 3](#32223-emrsetbkmode-example-3)
+      - [3.2.2.24 EMR_EXTTEXTOUTW Example 3](#32224-emrexttextoutw-example-3)
+      - [3.2.2.25 EMR_EXTTEXTOUTW Example 4](#32225-emrexttextoutw-example-4)
+      - [3.2.2.26 EMR_SETBKMODE Example 4](#32226-emrsetbkmode-example-4)
+      - [3.2.2.27 EMR_EXTTEXTOUTW Example 5](#32227-emrexttextoutw-example-5)
+      - [3.2.2.28 EMR_EXTTEXTOUTW Example 6](#32228-emrexttextoutw-example-6)
+      - [3.2.2.29 EMR_EXTTEXTOUTW Example 7](#32229-emrexttextoutw-example-7)
+      - [3.2.2.30 EMR_EXTTEXTOUTW Example 8](#32230-emrexttextoutw-example-8)
+      - [3.2.2.31 EMR_SETBKMODE Example 5](#32231-emrsetbkmode-example-5)
+      - [3.2.2.32 EMR_EXTTEXTOUTW Example 9](#32232-emrexttextoutw-example-9)
+      - [3.2.2.33 EMR_SELECTOBJECT Example 6](#32233-emrselectobject-example-6)
+      - [3.2.2.34 EMR_SETICMMODE Example 3](#32234-emrseticmmode-example-3)
+      - [3.2.2.35 EMR_EOF Example](#32235-emreof-example)
+    - [3.2.3 EMRI_ENGINE_FONT_EXT Example](#323-emrienginefontext-example)
+    - [3.2.4 EMRI_DEVMODE Example 1](#324-emridevmode-example-1)
+    - [3.2.5 EMRI_BW_METAFILE_EXT Example 1](#325-emribwmetafileext-example-1)
+    - [3.2.6 EMRI_METAFILE_DATA Example 2](#326-emrimetafiledata-example-2)
+      - [3.2.6.1 EMR_HEADER Example](#3261-emrheader-example)
+      - [3.2.6.2 EMR_SETICMMODE Example 1](#3262-emrseticmmode-example-1)
+      - [3.2.6.3 EMR_SELECTOBJECT Example 1](#3263-emrselectobject-example-1)
+      - [3.2.6.4 EMR_SELECTOBJECT Example 2](#3264-emrselectobject-example-2)
+      - [3.2.6.5 EMR_SELECTOBJECT Example 3](#3265-emrselectobject-example-3)
+      - [3.2.6.6 EMR_MOVETOEX Example](#3266-emrmovetoex-example)
+      - [3.2.6.7 EMR_SETBRUSHORGEX Example](#3267-emrsetbrushorgex-example)
+      - [3.2.6.8 EMR_SETICMMODE Example 2](#3268-emrseticmmode-example-2)
+      - [3.2.6.9 EMR_SETCOLORSPACE Example](#3269-emrsetcolorspace-example)
+      - [3.2.6.10 EMR_SETTEXTALIGN Example 1](#32610-emrsettextalign-example-1)
+      - [3.2.6.11 EMR_SELECTOBJECT Example 4](#32611-emrselectobject-example-4)
+      - [3.2.6.12 EMR_SETTEXTALIGN Example 2](#32612-emrsettextalign-example-2)
+      - [3.2.6.13 EMR_SETBKMODE Example 1](#32613-emrsetbkmode-example-1)
+      - [3.2.6.14 EMR_SETVIEWPORTORGEX Example](#32614-emrsetviewportorgex-example)
+      - [3.2.6.15 EMR_SETBKMODE Example 2](#32615-emrsetbkmode-example-2)
+      - [3.2.6.16 EMR_EXTCREATEFONTINDIRECTW Example](#32616-emrextcreatefontindirectw-example)
+      - [3.2.6.17 EMR_SELECTOBJECT Example 5](#32617-emrselectobject-example-5)
+      - [3.2.6.18 EMR_FORCEUFIMAPPING Example](#32618-emrforceufimapping-example)
+      - [3.2.6.19 EMR_EXTTEXTOUTW Example 1](#32619-emrexttextoutw-example-1)
+      - [3.2.6.20 EMR_EXTTEXTOUTW Example 2](#32620-emrexttextoutw-example-2)
+      - [3.2.6.21 EMR_SETBKMODE Example 3](#32621-emrsetbkmode-example-3)
+      - [3.2.6.22 EMR_EXTTEXTOUTW Example 3](#32622-emrexttextoutw-example-3)
+      - [3.2.6.23 EMR_EXTTEXTOUTW Example 4](#32623-emrexttextoutw-example-4)
+      - [3.2.6.24 EMR_EXTTEXTOUTW Example 5](#32624-emrexttextoutw-example-5)
+      - [3.2.6.25 EMR_EXTTEXTOUTW Example 6](#32625-emrexttextoutw-example-6)
+      - [3.2.6.26 EMR_EXTTEXTOUTW Example 7](#32626-emrexttextoutw-example-7)
+      - [3.2.6.27 EMR_EXTTEXTOUTW Example 8](#32627-emrexttextoutw-example-8)
+      - [3.2.6.28 EMR_SETBKMODE Example 4](#32628-emrsetbkmode-example-4)
+      - [3.2.6.29 EMR_EXTTEXTOUTW Example 9](#32629-emrexttextoutw-example-9)
+      - [3.2.6.30 EMR_SELECTOBJECT Example 6](#32630-emrselectobject-example-6)
+      - [3.2.6.31 EMR_SETICMMODE Example 3](#32631-emrseticmmode-example-3)
+      - [3.2.6.32 EMR_EOF Example](#32632-emreof-example)
+    - [3.2.7 EMRI_DEVMODE Example 2](#327-emridevmode-example-2)
+    - [3.2.8 EMRI_BW_METAFILE_EXT Example 2](#328-emribwmetafileext-example-2)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Metafile Structure ....................................................................................... 11
-Byte Ordering ............................................................................................ 13
-Relationship to Protocols and Other Structures .................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Localization ............................................................................... 14
-Vendor-Extensible Fields ................................................................................... 14
-
-1.4
-1.5
-1.6
-1.7
-
-1.3.1
-1.3.2
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2  Structures ............................................................................................................. 15
-EMFSPOOL Enumerations .................................................................................. 15
-RecordType Enumeration ............................................................................. 15
-SpecVersion Enumeration ............................................................................ 16
-EMFSPOOL Records .......................................................................................... 17
-Record Syntax ............................................................................................ 17
-Header Record ........................................................................................... 18
-Data Records ............................................................................................. 20
-Page Content Records ............................................................................ 21
-Page Offset Records .............................................................................. 22
-Font Definition Records .......................................................................... 23
-EMRI_ENGINE_FONT Record ............................................................. 23
-EMRI_TYPE1_FONT Record ............................................................... 24
-EMRI_DESIGNVECTOR Record ........................................................... 25
-EMRI_SUBSET_FONT Record ............................................................. 26
-EMRI_DELTA_FONT Record ............................................................... 27
-Font Offset Records ............................................................................... 28
-EMRI_DEVMODE Record ........................................................................ 28
-EMRI_PRESTARTPAGE Record ................................................................. 29
-EMRI_PS_JOB_DATA Record ................................................................... 30
-
-2.2.3.3.1
-2.2.3.3.2
-2.2.3.3.3
-2.2.3.3.4
-2.2.3.3.5
-
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-3.1
-3.2
-
-3.2.1
-3.2.2
-
-3  Structure Examples ............................................................................................... 32
-Byte Ordering .................................................................................................. 32
-EMFSPOOL Metafile Structure ............................................................................ 32
-EMFSPOOL Header Example ......................................................................... 40
-EMRI_METAFILE_DATA Example 1 ................................................................ 41
-EMR_HEADER Example .......................................................................... 41
-EMR_SETICMMODE Example 1 ................................................................ 44
-EMR_SELECTOBJECT Example 1 ............................................................. 44
-EMR_SELECTOBJECT Example 2 ............................................................. 45
-EMR_SELECTOBJECT Example 3 ............................................................. 45
-EMR_MOVETOEX Example ...................................................................... 46
-EMR_SETBRUSHORGEX Example ............................................................ 46
-EMR_SETICMMODE Example 2 ................................................................ 47
-EMR_SETCOLORSPACE Example ............................................................. 47
-EMR_SETTEXTALIGN Example 1 .............................................................. 47
-EMR_SELECTOBJECT Example 4 ............................................................. 48
-EMR_SETTEXTALIGN Example 2 .............................................................. 48
-EMR_SETBKMODE Example 1 ................................................................. 49
-EMR_SETVIEWPORTORGEX Example ....................................................... 49
-EMR_SETBKMODE Example 2 ................................................................. 50
-EMR_EXTCREATEFONTINDIRECTW Example ............................................. 50
-
-3.2.2.1
-3.2.2.2
-3.2.2.3
-3.2.2.4
-3.2.2.5
-3.2.2.6
-3.2.2.7
-3.2.2.8
-3.2.2.9
-3.2.2.10
-3.2.2.11
-3.2.2.12
-3.2.2.13
-3.2.2.14
-3.2.2.15
-3.2.2.16
-
-[MS-EMFSPOOL] - v20240916
-Enhanced Metafile Spool Format
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 126
-
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.2.2.20.1
-
-3.2.2.17
-3.2.2.18
-3.2.2.19
-3.2.2.20
-
-3.2.2.21
-3.2.2.22
-3.2.2.23
-3.2.2.24
-3.2.2.25
-3.2.2.26
-3.2.2.27
-3.2.2.28
-3.2.2.29
-3.2.2.30
-3.2.2.31
-3.2.2.32
-3.2.2.33
-3.2.2.34
-3.2.2.35
-
-3.2.6.1
-3.2.6.2
-3.2.6.3
-3.2.6.4
-3.2.6.5
-3.2.6.6
-3.2.6.7
-3.2.6.8
-3.2.6.9
-3.2.6.10
-3.2.6.11
-3.2.6.12
-3.2.6.13
-3.2.6.14
-3.2.6.15
-3.2.6.16
-3.2.6.17
-3.2.6.18
-3.2.6.19
-3.2.6.20
-3.2.6.21
-3.2.6.22
-3.2.6.23
-3.2.6.24
-3.2.6.25
-3.2.6.26
-3.2.6.27
-3.2.6.28
-3.2.6.29
-3.2.6.30
-3.2.6.31
-3.2.6.32
-
-EMR_SELECTOBJECT Example 5 ............................................................. 53
-EMR_SETTEXTCOLOR Example ............................................................... 54
-EMR_FORCEUFIMAPPING Example .......................................................... 54
-EMR_COMMENT_EMFSPOOL Example ...................................................... 55
-EMRI_ENGINE_FONT Example ........................................................... 55
-EMR_EXTTEXTOUTW Example 1 .............................................................. 56
-EMR_EXTTEXTOUTW Example 2 .............................................................. 58
-EMR_SETBKMODE Example 3 ................................................................. 60
-EMR_EXTTEXTOUTW Example 3 .............................................................. 60
-EMR_EXTTEXTOUTW Example 4 .............................................................. 62
-EMR_SETBKMODE Example 4 ................................................................. 64
-EMR_EXTTEXTOUTW Example 5 .............................................................. 65
-EMR_EXTTEXTOUTW Example 6 .............................................................. 67
-EMR_EXTTEXTOUTW Example 7 .............................................................. 68
-EMR_EXTTEXTOUTW Example 8 .............................................................. 70
-EMR_SETBKMODE Example 5 ................................................................. 72
-EMR_EXTTEXTOUTW Example 9 .............................................................. 72
-EMR_SELECTOBJECT Example 6 ............................................................. 74
-EMR_SETICMMODE Example 3 ................................................................ 75
-EMR_EOF Example ................................................................................ 75
-EMRI_ENGINE_FONT_EXT Example ............................................................... 76
-EMRI_DEVMODE Example 1 ......................................................................... 76
-EMRI_BW_METAFILE_EXT Example 1 ............................................................ 81
-EMRI_METAFILE_DATA Example 2 ................................................................ 82
-EMR_HEADER Example .......................................................................... 82
-EMR_SETICMMODE Example 1 ................................................................ 85
-EMR_SELECTOBJECT Example 1 ............................................................. 85
-EMR_SELECTOBJECT Example 2 ............................................................. 86
-EMR_SELECTOBJECT Example 3 ............................................................. 86
-EMR_MOVETOEX Example ...................................................................... 87
-EMR_SETBRUSHORGEX Example ............................................................ 87
-EMR_SETICMMODE Example 2 ................................................................ 87
-EMR_SETCOLORSPACE Example ............................................................. 88
-EMR_SETTEXTALIGN Example 1 .............................................................. 88
-EMR_SELECTOBJECT Example 4 ............................................................. 89
-EMR_SETTEXTALIGN Example 2 .............................................................. 89
-EMR_SETBKMODE Example 1 ................................................................. 90
-EMR_SETVIEWPORTORGEX Example ....................................................... 90
-EMR_SETBKMODE Example 2 ................................................................. 91
-EMR_EXTCREATEFONTINDIRECTW Example ............................................. 91
-EMR_SELECTOBJECT Example 5 ............................................................. 94
-EMR_FORCEUFIMAPPING Example .......................................................... 95
-EMR_EXTTEXTOUTW Example 1 .............................................................. 95
-EMR_EXTTEXTOUTW Example 2 .............................................................. 97
-EMR_SETBKMODE Example 3 ................................................................. 99
-EMR_EXTTEXTOUTW Example 3 .............................................................. 99
-EMR_EXTTEXTOUTW Example 4 ............................................................. 101
-EMR_EXTTEXTOUTW Example 5 ............................................................. 103
-EMR_EXTTEXTOUTW Example 6 ............................................................. 105
-EMR_EXTTEXTOUTW Example 7 ............................................................. 107
-EMR_EXTTEXTOUTW Example 8 ............................................................. 109
-EMR_SETBKMODE Example 4 ................................................................ 110
-EMR_EXTTEXTOUTW Example 9 ............................................................. 111
-EMR_SELECTOBJECT Example 6 ............................................................ 113
-EMR_SETICMMODE Example 3 ............................................................... 113
-EMR_EOF Example ............................................................................... 113
-EMRI_DEVMODE Example 2 ........................................................................ 114
-EMRI_BW_METAFILE_EXT Example 2 ........................................................... 119
-
-3.2.7
-3.2.8
-
-[MS-EMFSPOOL] - v20240916
-Enhanced Metafile Spool Format
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 126
-
-4  Security Considerations ....................................................................................... 120
-
-5  Appendix A: Product Behavior ............................................................................. 121
-
-6  Change Tracking .................................................................................................. 124
-
-7  Index ................................................................................................................... 125
-
-[MS-EMFSPOOL] - v20240916
-Enhanced Metafile Spool Format
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 126
-
-1  Introduction
+## 1 Introduction
 
 Enhanced metafile spool format (EMFSPOOL) is a file format used to store portable definitions of
 print jobs that output graphical images. EMFSPOOL metafiles contain a sequence of records that are
@@ -836,7 +673,7 @@ parsed and processed to run the print job on any output device.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -898,7 +735,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-enhanced metafile format (EMF): A file format that supports the device-independent definitions
+
+enhanced metafile format (EMF): A file format that supports the device-independent definitions
 
 of images.
 
@@ -975,7 +813,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-PostScript: A page description language developed by Adobe Systems that is primarily used for
+
+PostScript: A page description language developed by Adobe Systems that is primarily used for
 
 printing documents on laser printers. It is the standard for desktop publishing.
 
@@ -1051,7 +890,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-weight: The property of a font that specifies the degree of emphasis or boldness of the characters.
+
+weight: The property of a font that specifies the degree of emphasis or boldness of the characters.
 
 Windows metafile format (WMF): A file format used by Windows that supports the definition of
 
@@ -1060,14 +900,14 @@ images, including a format for clip art in word-processing documents.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1090,7 +930,7 @@ Note There is a charge to download the specification.
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-EMFPLUS] Microsoft Corporation, "Enhanced Metafile Format Plus Extensions".
 
@@ -1098,12 +938,12 @@ Note There is a charge to download the specification.
 
 [MS-WMF] Microsoft Corporation, "Windows Metafile Format".
 
-1.3  Overview
+### 1.3 Overview
 
 An EMFSPOOL metafile is a sequence of variable-length records that define the page data, page
 layout, fonts, graphics, and virtual device settings for a print job that renders a graphical image.<1>
 
-1.3.1  Metafile Structure
+#### 1.3.1 Metafile Structure
 
 An EMFSPOOL metafile begins with a header record, which includes the metafile version, its size,
 the name of the document, and identification of an output device. A metafile is "played back" when its
@@ -1116,7 +956,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-EMFSPOOL].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1156,7 +997,8 @@ Release: September 16, 2024
 
 12 / 126
 
-  A header record is always present, specified in section 2.2.2.
+
+  A header record is always present, specified in section 2.2.2.
 
   A page content record actually contains an entire EMF metafile, as specified in [MS-EMF].
 
@@ -1167,7 +1009,7 @@ see [MS-EMF] section 2.3.3.3.
 
   No end-of-file record is defined.
 
-1.3.2  Byte Ordering
+#### 1.3.2 Byte Ordering
 
 The bytes in a word in EMFSPOOL metafile records are numbered right-to-left  little-endian format.
 
@@ -1209,7 +1051,7 @@ little-endian
 
 0x12
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Several related metafile formats can be used together for device-independent printing. Their
 relationships are:
@@ -1231,7 +1073,8 @@ Release: September 16, 2024
 
 13 / 126
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-EMFSPOOL].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1240,12 +1083,12 @@ Figure 2: Relationships of metafile record types
 EMFSPOOL metafile print jobs are sent to remote print servers by using the Print System Remote
 Protocol [MS-RPRN] or Print System Asynchronous Remote Protocol [MS-PAR].
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 EMFSPOOL metafiles are portable containers for print jobs. The spool file format supported by
 EMFSPOOL is applicable to rendering output on all devices, including displays, printers, and plotters.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This specification covers versioning issues in the following areas:
 
@@ -1253,7 +1096,7 @@ Structure Versions: There is only one version of the EMFSPOOL file format.
 
 Localization: EMFSPOOL format defines no locale-specific processes or data.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 EMFSPOOL metafile format supports arbitrary, vendor-defined PDL within embedded EMF metafiles
 [MS-EMF].
@@ -1265,7 +1108,8 @@ Release: September 16, 2024
 
 14 / 126
 
-2  Structures
+
+## 2 Structures
 
 The following topics specify:
 
@@ -1275,9 +1119,9 @@ The following topics specify:
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  EMFSPOOL Enumerations
+### 2.1 EMFSPOOL Enumerations
 
-2.1.1  RecordType Enumeration
+#### 2.1.1 RecordType Enumeration
 
 The RecordType enumeration specifies the types of records allowed in an EMF spool format
 metafile.<2>
@@ -1334,7 +1178,8 @@ Release: September 16, 2024
 
 15 / 126
 
-EMRI_FORM_METAFILE:  Document content in the form of an EMF metafile, as specified in section
+
+EMRI_FORM_METAFILE:  Document content in the form of an EMF metafile, as specified in section
 
 2.2.3.1.
 
@@ -1372,7 +1217,7 @@ EMRI_PS_JOB_DATA:  Document-level PostScript data, as specified in section 2.2.3
 
 EMRI_EMBED_FONT_EXT:  An offset to embedded font identifiers, as specified in section 2.2.3.4.
 
-2.1.2  SpecVersion Enumeration
+#### 2.1.2 SpecVersion Enumeration
 
 The SpecVersion enumeration specifies Windows system versions, for comparison with printer driver
 versions.
@@ -1411,9 +1256,10 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-_WIN32_WINNT_WIN8:  Windows 8 operating system and Windows Server 2012 operating system
 
-2.2  EMFSPOOL Records
+_WIN32_WINNT_WIN8:  Windows 8 operating system and Windows Server 2012 operating system
+
+### 2.2 EMFSPOOL Records
 
 EMFSPOOL records include syntax and record types. This information is organized as follows.
 
@@ -1448,7 +1294,7 @@ All string data in EMFSPOOL records MUST be encoded in Unicode UTF-16LE format, 
 [UNICODE], unless stated otherwise. The size of each record in EMFSPOOL MUST be rounded up to a
 multiple of 4 bytes.
 
-2.2.1  Record Syntax
+#### 2.2.1 Record Syntax
 
 The Record Syntax is specified as follows.
 
@@ -1492,7 +1338,8 @@ Release: September 16, 2024
 
 17 / 126
 
-These record types perform the following roles:
+
+These record types perform the following roles:
 
   An <EMRI_PS_JOB_DATA_record> stores injected PostScript code at the document level. If
 an <EMRI_PS_JOB_DATA_record> is present in the metafile, it MUST be the first EMF spool
@@ -1526,7 +1373,7 @@ capabilities.
 
 All record types are specified in section 2.2.
 
-2.2.2  Header Record
+#### 2.2.2 Header Record
 
 The Header record is always the first record of an EMFSPOOL metafile.
 
@@ -1568,7 +1415,8 @@ Release: September 16, 2024
 
 18 / 126
 
-dwVersion (4 bytes): A 32-bit unsigned integer that specifies the version of EMFSPOOL. This value
+
+dwVersion (4 bytes): A 32-bit unsigned integer that specifies the version of EMFSPOOL. This value
 
 MUST be 0x00010000.
 
@@ -1644,7 +1492,8 @@ Release: September 16, 2024
 
 19 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1685,7 +1534,7 @@ AlignmentOutputDevice (variable): An optional array of WORD structures to ensure
 
 alignment. The values of these structures are indeterminate and MUST be ignored.
 
-2.2.3  Data Records
+#### 2.2.3 Data Records
 
 This section specifies the Data records, which follow the EMF spool format Header
 Record (section 2.2.2). These records have been grouped into the following categories, as described in
@@ -1731,16 +1580,16 @@ EMRI_DEVMODE records store device settings and properties.
 EMRI_PRESTARTPAGE
 record
 
-2.2.3.6
+##### 2.2.3.6 EMRI_PRESTARTPAGE records contain information used in encapsulated
 
-EMRI_PRESTARTPAGE records contain information used in encapsulated
+
 PostScript (EPS) printing.
 
 EMRI_PS_JOB_DATA
 
-2.2.3.7
+##### 2.2.3.7 EMRI_PS_JOB_DATA records store injected PostScript data at the job
 
-EMRI_PS_JOB_DATA records store injected PostScript data at the job
+
 
 20 / 126
 
@@ -1749,7 +1598,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Name
+
+Name
 
 record
 
@@ -1838,7 +1688,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 0x00000001
 
@@ -1938,7 +1789,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-located ahead of the corresponding page offset record, which means that the offset is counted
+
+located ahead of the corresponding page offset record, which means that the offset is counted
 backward in the metafile.
 
 2.2.3.3  Font Definition Records
@@ -2022,7 +1874,8 @@ Release: September 16, 2024
 
 23 / 126
 
-AlignBuffer (variable)
+
+AlignBuffer (variable)
 
 ...
 
@@ -2097,7 +1950,8 @@ Release: September 16, 2024
 
 24 / 126
 
-...
+
+...
 
 Padding (optional)
 
@@ -2172,7 +2026,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-UniversalFontId
+
+UniversalFontId
 
 ...
 
@@ -2243,7 +2098,8 @@ Release: September 16, 2024
 
 26 / 126
 
-...
+
+...
 
 ulID (4 bytes): A 32-bit unsigned integer that identifies the type of record. The value MUST be
 
@@ -2318,7 +2174,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2423,7 +2280,8 @@ Release: September 16, 2024
 
 28 / 126
 
-cjSize
+
+cjSize
 
 Devmode (variable)
 
@@ -2495,7 +2353,8 @@ Release: September 16, 2024
 
 29 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2582,7 +2441,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value of (PostScriptDataSize modulo 4)  Value of PostScriptDataRecordSize
+
+Value of (PostScriptDataSize modulo 4)  Value of PostScriptDataRecordSize
 
 2
 
@@ -2650,9 +2510,10 @@ Release: September 16, 2024
 
 31 / 126
 
-3  Structure Examples
 
-3.1  Byte Ordering
+## 3 Structure Examples
+
+### 3.1 Byte Ordering
 
 The following code snippet illustrates how the use of the big-endian and little-endian methods can
 affect the compatibility of applications.
@@ -2689,7 +2550,7 @@ output would be as follows.
 Because of the difference in output, one would need to implement metafile record processing so that
 it could read integers from a file based on the endian method that the computer uses.
 
-3.2  EMFSPOOL Metafile Structure
+### 3.2 EMFSPOOL Metafile Structure
 
 This section provides an example of an EMFSPOOL metafile, which when processed renders the
 following images.
@@ -2701,7 +2562,8 @@ Release: September 16, 2024
 
 32 / 126
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-EMFSPOOL].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
@@ -2714,7 +2576,8 @@ Release: September 16, 2024
 
 33 / 126
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-EMFSPOOL].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
@@ -2753,7 +2616,8 @@ Release: September 16, 2024
 
 34 / 126
 
- 00000140:0c 00 00 00 14 00 00 80 16 00 00 00 0c 00 00 00    .......€........
+
+ 00000140:0c 00 00 00 14 00 00 80 16 00 00 00 0c 00 00 00    .......€........
  00000150:18 00 00 00 25 00 00 00 0c 00 00 00 0e 00 00 80    ....%..........€
  00000160:16 00 00 00 0c 00 00 00 18 00 00 00 12 00 00 00    ................
  00000170:0c 00 00 00 01 00 00 00 0c 00 00 00 10 00 00 00    ................
@@ -2830,7 +2694,8 @@ Release: September 16, 2024
 
 35 / 126
 
- 00064410:00 00 00 00 f4 0b 00 00 78 0f 00 00 50 00 00 00    ....ô...x...P...
+
+ 00064410:00 00 00 00 f4 0b 00 00 78 0f 00 00 50 00 00 00    ....ô...x...P...
  00064420:20 00 00 00 1a 00 00 00 12 00 00 00 0c 00 00 00     ...............
  00064430:01 00 00 00 54 00 00 00 d0 00 00 00 67 01 00 00    ....T...Ð...g...
  00064440:c7 01 00 00 61 03 00 00 0a 02 00 00 01 00 00 00    Ç...a...........
@@ -2907,7 +2772,8 @@ Release: September 16, 2024
 
 36 / 126
 
- 00064860:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
+
+ 00064860:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00064870:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00064880:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00064890:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
@@ -2984,7 +2850,8 @@ Release: September 16, 2024
 
 37 / 126
 
- 00064cb0:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
+
+ 00064cb0:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00064cc0:00 00 00 00 00 00 20 00 08 5a 18 00 24 a8 56 07    ...... ..Z..$¨V.
  00064cd0:24 a8 56 07 c4 f0 7d 07 c9 a4 07 30 90 00 b7 00    $¨V.Äð}.É¤.0□.•.
  00064ce0:b8 1a e2 01 43 00 00 00 00 00 00 00 b8 1a e2 01    ¸.â.C.......¸.â.
@@ -3061,7 +2928,8 @@ Release: September 16, 2024
 
 38 / 126
 
- 00065100:74 00 61 00 74 00 69 00 6f 00 6e 00 20 00 69 00    t.a.t.i.o.n. .i.
+
+ 00065100:74 00 61 00 74 00 69 00 6f 00 6e 00 20 00 69 00    t.a.t.i.o.n. .i.
  00065110:73 00 20 00 6c 00 61 00 6e 00 64 00 73 00 63 00    s. .l.a.n.d.s.c.
  00065120:61 00 70 00 65 00 2e 00 21 00 00 00 1b 00 00 00    a.p.e...!.......
  00065130:1d 00 00 00 1b 00 00 00 0f 00 00 00 1e 00 00 00    ................
@@ -3138,7 +3006,8 @@ Release: September 16, 2024
 
 39 / 126
 
- 00065550:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
+
+ 00065550:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00065560:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00065570:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  00065580:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
@@ -3164,7 +3033,7 @@ Release: September 16, 2024
  000656c0:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00    ................
  000656d0:0e 00 00 00 08 00 00 00 b4 0b 00 00 00 00 00 00    ........´.......
 
-3.2.1  EMFSPOOL Header Example
+#### 3.2.1 EMFSPOOL Header Example
 
 This section provides an example of a Header record (section 2.2.2).
 
@@ -3211,7 +3080,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-dpszDocName (4 bytes): 0x00000010 specifies the offset of the document name from the start of
+
+dpszDocName (4 bytes): 0x00000010 specifies the offset of the document name from the start of
 the record (the dwVersion field). The document name is stored as a NULL-terminated Unicode
 string [UNICODE], in the extraData area. If the value is 0x00000000, no document name is
 specified.
@@ -3226,7 +3096,7 @@ extraDataOutputDevice: Variable-size storage area for output device name. Paddin
 
 added following this storage area to align the entire header record on a 4-byte boundary.
 
-3.2.2  EMRI_METAFILE_DATA Example 1
+#### 3.2.2 EMRI_METAFILE_DATA Example 1
 
 This section provides an example of the EMRI_METAFILE_DATA record (section 2.2.3.1).
 
@@ -3262,7 +3132,7 @@ EmfMetafile (variable): A variable-size field that contains a complete EMF metaf
 embedded metafile itself contains an embedded Font Definition Record (), the corresponding
 example of which is in section 3.2.2.20.1.
 
-3.2.2.1  EMR_HEADER Example
+##### 3.2.2.1 EMR_HEADER Example
 
 This section provides an example of the EMF EMR_HEADER record ([MS-EMF] section 2.3.4.2).
 
@@ -3283,7 +3153,8 @@ Release: September 16, 2024
 
 41 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3362,7 +3233,8 @@ Release: September 16, 2024
 
 42 / 126
 
-nPalEntries (0x00000000)
+
+nPalEntries (0x00000000)
 
 Signature (4 bytes): 0x464D4520 specifies the record signature, which consists of the ASCII string
 
@@ -3437,7 +3309,8 @@ Release: September 16, 2024
 
 43 / 126
 
-cbPixelFormat (4 bytes): 0x00000000 specifies the size of the PixelFormatDescriptor structure
+
+cbPixelFormat (4 bytes): 0x00000000 specifies the size of the PixelFormatDescriptor structure
 
 ([MS-EMF] section 2.2.22). This value indicates that no pixel format is defined.
 
@@ -3457,7 +3330,7 @@ micrometers.
 
 EmfDescription (4 bytes): "Print test".
 
-3.2.2.2  EMR_SETICMMODE Example 1
+##### 3.2.2.2 EMR_SETICMMODE Example 1
 
 This section provides an example of the EMF EMR_SETICMMODE record ([MS-EMF] section
 2.3.11.14).
@@ -3489,7 +3362,7 @@ ICMMode (4 bytes): 0x00000002 is an Image Color Management (ICM) mode value ([MS
 
 section 2.1.18).
 
-3.2.2.3  EMR_SELECTOBJECT Example 1
+##### 3.2.2.3 EMR_SELECTOBJECT Example 1
 
 This section provides an example of the EMF EMR_SELECTOBJECT record, ([MS-EMF] section 2.3.8.5).
 
@@ -3518,7 +3391,8 @@ Release: September 16, 2024
 
 44 / 126
 
-ihObject (0x80000007)
+
+ihObject (0x80000007)
 
 Type (4 bytes): 0x00000025 identifies this record type as EMR_SELECTOBJECT.
 
@@ -3528,7 +3402,7 @@ ihObject (4 bytes): 0x80000007 is the index of a BLACK_PEN stock object from ([M
 
 section 2.1.31).
 
-3.2.2.4  EMR_SELECTOBJECT Example 2
+##### 3.2.2.4 EMR_SELECTOBJECT Example 2
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -3560,7 +3434,7 @@ ihObject (4 bytes): 0x80000000 specifies the index of an object in the object ta
 
 object if it is negative.
 
-3.2.2.5  EMR_SELECTOBJECT Example 3
+##### 3.2.2.5 EMR_SELECTOBJECT Example 3
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -3594,11 +3468,12 @@ Release: September 16, 2024
 
 45 / 126
 
-ihObject (4 bytes): 0x8000000E specifies the index of an object in the object table or the stock
+
+ihObject (4 bytes): 0x8000000E specifies the index of an object in the object table or the stock
 
 object if it is negative.
 
-3.2.2.6  EMR_MOVETOEX Example
+##### 3.2.2.6 EMR_MOVETOEX Example
 
 This section provides an example of the EMF EMR_MOVETOEX record ([MS-EMF] section 2.3.11.4).
 
@@ -3631,7 +3506,7 @@ Offset (8 bytes): 0x0000000000000000 specifies the coordinates of the new curren
 
 logical units.
 
-3.2.2.7  EMR_SETBRUSHORGEX Example
+##### 3.2.2.7 EMR_SETBRUSHORGEX Example
 
 This section provides an example of the EMF EMR_SETBRUSHORGEX record ([MS-EMF] section
 2.3.11.12).
@@ -3672,7 +3547,8 @@ Release: September 16, 2024
 
 46 / 126
 
-3.2.2.8  EMR_SETICMMODE Example 2
+
+##### 3.2.2.8 EMR_SETICMMODE Example 2
 
 This section provides an example of the EMF EMR_SETICMMODE record ([MS-EMF] section
 2.3.11.14).
@@ -3704,7 +3580,7 @@ ICMMode (4 bytes): 0x00000002 is an Image Color Management (ICM) mode value ([MS
 
 section 2.1.18).
 
-3.2.2.9  EMR_SETCOLORSPACE Example
+##### 3.2.2.9 EMR_SETCOLORSPACE Example
 
 This section provides an example of the EMF EMR_SETCOLORSPACE record ([MS-EMF] section
 2.3.8.7).
@@ -3735,9 +3611,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 ihCS (4 bytes): 0x80000014 specifies the ColorSpace ([MS-EMF] section 2.1.7).
 
-3.2.2.10
+##### 3.2.2.10 EMR_SETTEXTALIGN Example 1
 
-EMR_SETTEXTALIGN Example 1
+
 
 This section provides an example of an EMF EMR_SETTEXTALIGN record ([MS-EMF] section
 2.3.11.25).
@@ -3751,7 +3627,8 @@ Release: September 16, 2024
 
 47 / 126
 
- 00000150:18 00 00 00
+
+ 00000150:18 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -3778,9 +3655,9 @@ TextAlignmentMode (4 bytes): 0x00000018 specifies the text alignment mode by usi
 
 TextAlignmentMode Flags ([MS-WMF] section 2.1.2.3).
 
-3.2.2.11
+##### 3.2.2.11 EMR_SELECTOBJECT Example 4
 
-EMR_SELECTOBJECT Example 4
+
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -3811,9 +3688,9 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the object ta
 
 be selected.
 
-3.2.2.12
+##### 3.2.2.12 EMR_SETTEXTALIGN Example 2
 
-EMR_SETTEXTALIGN Example 2
+
 
 This section provides an example of the EMF EMR_SETTEXTALIGN record ([MS-EMF] section
 2.3.11.25).
@@ -3827,7 +3704,8 @@ Release: September 16, 2024
 
 48 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3852,9 +3730,9 @@ TextAlignmentMode (4 bytes): 0x00000018 specifies the text alignment mode by usi
 
 TextAlignmentMode Flags ([MS-WMF] section 2.1.2.3).
 
-3.2.2.13
+##### 3.2.2.13 EMR_SETBKMODE Example 1
 
-EMR_SETBKMODE Example 1
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -3884,9 +3762,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 BackgroundMode (4 bytes): 0x00000001 specifies background mode.
 
-3.2.2.14
+##### 3.2.2.14 EMR_SETVIEWPORTORGEX Example
 
-EMR_SETVIEWPORTORGEX Example
+
 
 This section provides an example of the EMF EMR_SETVIEWPORTORGEX record ([MS-EMF] section
 2.3.11.29).
@@ -3916,7 +3794,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Origin (0x00000000)
+
+Origin (0x00000000)
 
 ... (0x00000000)
 
@@ -3928,9 +3807,9 @@ Origin (8 bytes): 0x00000000, 0x00000000 specifies the viewport horizontal and v
 
 device units.
 
-3.2.2.15
+##### 3.2.2.15 EMR_SETBKMODE Example 2
 
-EMR_SETBKMODE Example 2
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -3960,9 +3839,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 BackgroundMode (4 bytes): 0x00000001 specifies background mode.
 
-3.2.2.16
+##### 3.2.2.16 EMR_EXTCREATEFONTINDIRECTW Example
 
-EMR_EXTCREATEFONTINDIRECTW Example
+
 
 This section provides an example of an EMF EMR_EXTCREATEFONTINDIRECTW record ([MS-EMF]
 section 2.3.7.8).
@@ -3994,7 +3873,8 @@ Release: September 16, 2024
 
 50 / 126
 
- 000002C0:77 00 20 00 52 00 6F 00 6D 00 61 00 6E 00 00 00
+
+ 000002C0:77 00 20 00 52 00 6F 00 6D 00 61 00 6E 00 00 00
  000002D0:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  000002E0:00 00 00 00 00 00 00 00 F0 EE 7D 07 5A B0 02 30
  000002F0:F0 EE 7D 07 8C 63 AB 30 08 EF 7D 07 64 76 00 08
@@ -4083,7 +3963,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-...
+
+...
 
 ...
 
@@ -4165,7 +4046,8 @@ Release: September 16, 2024
 
 52 / 126
 
-...
+
+...
 
 Style ("") (68 bytes)
 
@@ -4201,9 +4083,9 @@ NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the
 
 object.
 
-3.2.2.17
+##### 3.2.2.17 EMR_SELECTOBJECT Example 5
 
-EMR_SELECTOBJECT Example 5
+
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -4237,13 +4119,14 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ihObject (4 bytes): 0x00000001 specifies the index of an object in the object table or stock object to
+
+ihObject (4 bytes): 0x00000001 specifies the index of an object in the object table or stock object to
 
 be selected.
 
-3.2.2.18
+##### 3.2.2.18 EMR_SETTEXTCOLOR Example
 
-EMR_SETTEXTCOLOR Example
+
 
 This section provides an example of the EMF EMR_SETTEXTCOLOR record ([MS-EMF] section
 2.3.11.26).
@@ -4273,9 +4156,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 Color (4 bytes): 0x02000000 specifies the text color value.
 
-3.2.2.19
+##### 3.2.2.19 EMR_FORCEUFIMAPPING Example
 
-EMR_FORCEUFIMAPPING Example
+
 
 This section provides an example of the EMF EMR_FORCEUFIMAPPING record ([MS-EMF] section
 2.3.11.2).
@@ -4317,9 +4200,10 @@ Release: September 16, 2024
 
 54 / 126
 
-3.2.2.20
 
-EMR_COMMENT_EMFSPOOL Example
+##### 3.2.2.20 EMR_COMMENT_EMFSPOOL Example
+
+
 
 This section provides an example of the EMF EMR_COMMENT_EMFSPOOL record ([MS-EMF] section
 2.3.3.3).
@@ -4374,9 +4258,9 @@ as one that contains embedded EMF spool format font definition data.
 
 EMFSpoolFontDefinitionData (variable): A DataSize length array of bytes that contains the data.
 
-3.2.2.20.1
+###### 3.2.2.20.1 EMRI_ENGINE_FONT Example
 
-EMRI_ENGINE_FONT Example
+
 
 This section provides an example of an EMRI_ENGINE_FONT font definition record (section 2.2.3.3.1).
 
@@ -4390,7 +4274,8 @@ Release: September 16, 2024
 
 55 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4439,9 +4324,9 @@ follows 64-bit aligned.
 
 FileContent (variable): The actual bits of the fonts, each 32-bit aligned, in TrueType format.
 
-3.2.2.21
+##### 3.2.2.21 EMR_EXTTEXTOUTW Example 1
 
-EMR_EXTTEXTOUTW Example 1
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -4464,7 +4349,8 @@ Release: September 16, 2024
 
 56 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4545,7 +4431,8 @@ Release: September 16, 2024
 
 57 / 126
 
-offString (0x0000004C)
+
+offString (0x0000004C)
 
 Options (0x00001004)
 
@@ -4581,9 +4468,9 @@ offDx (4 bytes): 0x0000006C specifies the offset to the intercharacter spacing a
 
 text (4 bytes): "This is page 1.".
 
-3.2.2.22
+##### 3.2.2.22 EMR_EXTTEXTOUTW Example 2
 
-EMR_EXTTEXTOUTW Example 2
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -4618,7 +4505,8 @@ Release: September 16, 2024
 
 58 / 126
 
-... (0x0000013D)
+
+... (0x0000013D)
 
 ... (0x000002DF)
 
@@ -4690,7 +4578,8 @@ Release: September 16, 2024
 
 59 / 126
 
-... (0x00000BF4)
+
+... (0x00000BF4)
 
 ... (0x00000F78)
 
@@ -4718,9 +4607,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.2.23
+##### 3.2.2.23 EMR_SETBKMODE Example 3
 
-EMR_SETBKMODE Example 3
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -4749,9 +4638,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 Mode (4 bytes): 0x00000001 specifies the background color value.
 
-3.2.2.24
+##### 3.2.2.24 EMR_EXTTEXTOUTW Example 3
 
-EMR_EXTTEXTOUTW Example 3
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -4767,7 +4656,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- 00064360:F4 0B 00 00 78 0F 00 00 70 00 00 00 50 00 61 00
+
+ 00064360:F4 0B 00 00 78 0F 00 00 70 00 00 00 50 00 61 00
  00064370:67 00 65 00 20 00 31 00 20 00 69 00 73 00 20 00
  00064380:6C 00 65 00 74 00 74 00 65 00 72 00 2E 00 00 00
  00064390:21 00 00 00 1B 00 00 00 1D 00 00 00 1B 00 00 00
@@ -4840,7 +4730,8 @@ Release: September 16, 2024
 
 61 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4893,9 +4784,9 @@ offDx (4 bytes): 0x00000070 specifies the offset to intercharacter spacing array
 
 text (4 bytes): "Page 1 is letter.".
 
-3.2.2.25
+##### 3.2.2.25 EMR_EXTTEXTOUTW Example 4
 
-EMR_EXTTEXTOUTW Example 4
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -4913,7 +4804,8 @@ Release: September 16, 2024
 
 62 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -4994,7 +4886,8 @@ Release: September 16, 2024
 
 63 / 126
 
-offString (0x0000004C)
+
+offString (0x0000004C)
 
 Options (0x00001004)
 
@@ -5030,9 +4923,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.2.26
+##### 3.2.2.26 EMR_SETBKMODE Example 4
 
-EMR_SETBKMODE Example 4
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -5067,11 +4960,12 @@ Release: September 16, 2024
 
 64 / 126
 
-BackgroundMode (4 bytes): 0x00000001 specifies background mode.
 
-3.2.2.27
+BackgroundMode (4 bytes): 0x00000001 specifies background mode.
 
-EMR_EXTTEXTOUTW Example 5
+##### 3.2.2.27 EMR_EXTTEXTOUTW Example 5
+
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -5138,7 +5032,8 @@ Release: September 16, 2024
 
 65 / 126
 
-iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
+
+iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
 
 section 2.1.16).
 
@@ -5214,9 +5109,10 @@ Release: September 16, 2024
 
 66 / 126
 
-3.2.2.28
 
-EMR_EXTTEXTOUTW Example 6
+##### 3.2.2.28 EMR_EXTTEXTOUTW Example 6
+
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -5289,7 +5185,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-EmrText (variable): An EmrText object ([MS-EMF] section 2.2.5). This is followed by strings and
+
+EmrText (variable): An EmrText object ([MS-EMF] section 2.2.5). This is followed by strings and
 
 spacing arrays.
 
@@ -5346,9 +5243,9 @@ offDx (4 bytes): 0x0000005C specifies the offset to the intercharacter spacing a
 
 text (4 bytes): "portrait".
 
-3.2.2.29
+##### 3.2.2.29 EMR_EXTTEXTOUTW Example 7
 
-EMR_EXTTEXTOUTW Example 7
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -5366,7 +5263,8 @@ Release: September 16, 2024
 
 68 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5447,7 +5345,8 @@ Release: September 16, 2024
 
 69 / 126
 
-offString (0x0000004C)
+
+offString (0x0000004C)
 
 Options (0x00001004)
 
@@ -5483,9 +5382,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): ".".
 
-3.2.2.30
+##### 3.2.2.30 EMR_EXTTEXTOUTW Example 8
 
-EMR_EXTTEXTOUTW Example 8
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -5520,7 +5419,8 @@ Release: September 16, 2024
 
 70 / 126
 
-... (0x000001C7)
+
+... (0x000001C7)
 
 ... (0x0000043B)
 
@@ -5592,7 +5492,8 @@ Release: September 16, 2024
 
 71 / 126
 
-... (0x00000BF4F)
+
+... (0x00000BF4F)
 
 ... (0x00000F78)
 
@@ -5620,9 +5521,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.2.31
+##### 3.2.2.31 EMR_SETBKMODE Example 5
 
-EMR_SETBKMODE Example 5
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -5652,9 +5553,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 Mode (4 bytes): 0x00000001 specifies the background mode.
 
-3.2.2.32
+##### 3.2.2.32 EMR_EXTTEXTOUTW Example 9
 
-EMR_EXTTEXTOUTW Example 9
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -5669,7 +5570,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- 00064660:01 00 00 00 4C 00 00 00 04 10 00 00 00 00 00 00
+
+ 00064660:01 00 00 00 4C 00 00 00 04 10 00 00 00 00 00 00
  00064670:00 00 00 00 F4 0B 00 00 78 0F 00 00 50 00 00 00
  00064680:20 00 00 00 1B 00 00 00
 
@@ -5750,7 +5652,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-... (0x00000242)
+
+... (0x00000242)
 
 Chars (0x00000001)
 
@@ -5790,9 +5693,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.2.33
+##### 3.2.2.33 EMR_SELECTOBJECT Example 6
 
-EMR_SELECTOBJECT Example 6
+
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -5823,7 +5726,8 @@ Release: September 16, 2024
 
 74 / 126
 
-Type (4 bytes): 0x00000025 identifies this record type as EMR_SELECTOBJECT.
+
+Type (4 bytes): 0x00000025 identifies this record type as EMR_SELECTOBJECT.
 
 Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
@@ -5831,9 +5735,9 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the object ta
 
 object if it is negative.
 
-3.2.2.34
+##### 3.2.2.34 EMR_SETICMMODE Example 3
 
-EMR_SETICMMODE Example 3
+
 
 This section provides an example of the EMF EMR_SETICMMODE record ([MS-EMF] section
 2.3.11.14).
@@ -5865,9 +5769,9 @@ ICMMode (4 bytes): 0x00000001 is an Image Color Management (ICM) mode value ([MS
 
 section 2.1.18).
 
-3.2.2.35
+##### 3.2.2.35 EMR_EOF Example
 
-EMR_EOF Example
+
 
 This section provides an example of an EMF EMR_EOF record ([MS-EMF] section 2.3.4.1).
 
@@ -5904,7 +5808,8 @@ Release: September 16, 2024
 
 75 / 126
 
-Size (4 bytes): 0x00000014 is the size of this record in bytes.
+
+Size (4 bytes): 0x00000014 is the size of this record in bytes.
 
 nPalEntries (4 bytes): 0x00000000 specifies the number of palette entries.
 
@@ -5912,7 +5817,7 @@ offPalEntries (4 bytes): 0x00000010 specifies the offset to the palette entries.
 
 SizeLast (4 bytes): 0x00000014 is the same as Size.
 
-3.2.3  EMRI_ENGINE_FONT_EXT Example
+#### 3.2.3 EMRI_ENGINE_FONT_EXT Example
 
 This section provides an example of the EMRI_ENGINE_FONT_EXT record (section 2.2.3.4).
 
@@ -5950,7 +5855,7 @@ start of this record.
 
 OffsetHigh (4 bytes): 0x00000000 is the upper (most-significant) 32 bits of the offset.
 
-3.2.4  EMRI_DEVMODE Example 1
+#### 3.2.4 EMRI_DEVMODE Example 1
 
 This section provides an example of the EMRI_DEVMODE record (section 2.2.3.5).
 
@@ -5979,7 +5884,8 @@ Release: September 16, 2024
 
 76 / 126
 
- 000647D0:00 00 00 00 08 00 00 00 01 00 00 00 03 00 01 00
+
+ 000647D0:00 00 00 00 08 00 00 00 01 00 00 00 03 00 01 00
  000647E0:01 00 02 00 02 00 00 00 00 00 00 00 00 00 00 00
  000647F0:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00064800:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -6058,7 +5964,8 @@ Release: September 16, 2024
 
 77 / 126
 
-...
+
+...
 
 ulID (4 bytes): 0x00000003 is the EMRI_DEVMODE record type (section 2.2.1).
 
@@ -6144,7 +6051,8 @@ Release: September 16, 2024
 
 78 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6272,7 +6180,8 @@ Release: September 16, 2024
 
 79 / 126
 
-dmDuplex (2 bytes): 0x0001 specifies single-sided printing.
+
+dmDuplex (2 bytes): 0x0001 specifies single-sided printing.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -6359,7 +6268,8 @@ Release: September 16, 2024
 
 80 / 126
 
-reserved5 (0x00000000)
+
+reserved5 (0x00000000)
 
 reserved6 (0x00000000)
 
@@ -6395,7 +6305,7 @@ reserved8 (4 bytes): Not used.
 
 dmDriverExtraData (868 bytes): Private, printer driver-specific data.
 
-3.2.5  EMRI_BW_METAFILE_EXT Example 1
+#### 3.2.5 EMRI_BW_METAFILE_EXT Example 1
 
 This section provides an example of the EMRI_BW_METAFILE_EXT record (section 2.2.3.2).
 
@@ -6428,7 +6338,8 @@ Release: September 16, 2024
 
 81 / 126
 
-ulID (4 bytes): 0x0000000E identifies this record type as EMRI_BW_METAFILE_EXT, which is a
+
+ulID (4 bytes): 0x0000000E identifies this record type as EMRI_BW_METAFILE_EXT, which is a
 
 page offset record.
 
@@ -6441,7 +6352,7 @@ preceding page content record (section 2.2.3.1), the corresponding example of wh
 
 This record signals the end of the page.
 
-3.2.6  EMRI_METAFILE_DATA Example 2
+#### 3.2.6 EMRI_METAFILE_DATA Example 2
 
 This section provides an example of the EMRI_METAFILE_DATA record (section 2.2.3.1).
 
@@ -6479,7 +6390,7 @@ EmfMetafile (variable): A variable-size field that contains a complete EMF metaf
 
 embedded metafile does not contain an embedded font definition record (section 2.2.3.3).
 
-3.2.6.1  EMR_HEADER Example
+##### 3.2.6.1 EMR_HEADER Example
 
 This section provides an example of the EMF EMR_HEADER record ([MS-EMF] section 2.3.4.2).
 
@@ -6500,7 +6411,8 @@ Release: September 16, 2024
 
 82 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6578,7 +6490,8 @@ Release: September 16, 2024
 
 83 / 126
 
-nPalEntries (0x00000000)
+
+nPalEntries (0x00000000)
 
 Signature (4 bytes): 0x464D4520 specifies the record signature, which consists of the ASCII string
 
@@ -6653,7 +6566,8 @@ Release: September 16, 2024
 
 84 / 126
 
-cbPixelFormat (4 bytes): 0x00000000 specifies the size of the PixelFormatDescriptor structure
+
+cbPixelFormat (4 bytes): 0x00000000 specifies the size of the PixelFormatDescriptor structure
 
 ([MS-EMF] section 2.2.22). This value indicates that no pixel format is defined.
 
@@ -6673,7 +6587,7 @@ micrometers.
 
 EmfDescription (4 bytes): "Print test".
 
-3.2.6.2  EMR_SETICMMODE Example 1
+##### 3.2.6.2 EMR_SETICMMODE Example 1
 
 This section provides an example of the EMR_SETICMMODE record ([MS-EMF] section 2.3.11.14).
 
@@ -6705,7 +6619,7 @@ ICMMode (4 bytes): 0x00000002 is an Image Color Management (ICM) mode value from
 
 EMF ICMMode enumeration ([MS-EMF] section 2.1.18).
 
-3.2.6.3  EMR_SELECTOBJECT Example 1
+##### 3.2.6.3 EMR_SELECTOBJECT Example 1
 
 This section provides an example of the EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -6735,7 +6649,8 @@ Release: September 16, 2024
 
 85 / 126
 
-Type (4 bytes): 0x00000025 identifies this EMF record type as EMR_SELECTOBJECT.
+
+Type (4 bytes): 0x00000025 identifies this EMF record type as EMR_SELECTOBJECT.
 
 Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
@@ -6743,7 +6658,7 @@ ihObject (4 bytes): 0x80000007 specifies the index of an object in the object ta
 
 object if it is negative.
 
-3.2.6.4  EMR_SELECTOBJECT Example 2
+##### 3.2.6.4 EMR_SELECTOBJECT Example 2
 
 This section provides an example of the EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -6774,7 +6689,7 @@ ihObject (4 bytes): 0x00000002 specifies the index of an object in the object ta
 
 object if it is negative.
 
-3.2.6.5  EMR_SELECTOBJECT Example 3
+##### 3.2.6.5 EMR_SELECTOBJECT Example 3
 
 This section provides an example of the EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -6813,7 +6728,8 @@ Release: September 16, 2024
 
 86 / 126
 
-3.2.6.6  EMR_MOVETOEX Example
+
+##### 3.2.6.6 EMR_MOVETOEX Example
 
 This section provides an example of the EMR_MOVETOEX record ([MS-EMF] section 2.3.11.4).
 
@@ -6847,7 +6763,7 @@ Offset (8 bytes): 0x0000000000000000 specifies coordinates of the new current po
 
 units.
 
-3.2.6.7  EMR_SETBRUSHORGEX Example
+##### 3.2.6.7 EMR_SETBRUSHORGEX Example
 
 This section provides an example of the EMR_SETBRUSHORGEX record ([MS-EMF] section 2.3.11.12).
 
@@ -6881,7 +6797,7 @@ Origin (8 bytes): 0x00000000, 0x00000000 specifies the brush horizontal and vert
 
 device units.
 
-3.2.6.8  EMR_SETICMMODE Example 2
+##### 3.2.6.8 EMR_SETICMMODE Example 2
 
 This section provides an example of the EMR_SETICMMODE record ([MS-EMF] section 2.3.11.14).
 
@@ -6892,7 +6808,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- 00064BF0:                        62 00 00 00 0C 00 00 00
+
+ 00064BF0:                        62 00 00 00 0C 00 00 00
  00064C00:02 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
@@ -6920,7 +6837,7 @@ ICMMode (4 bytes): 0x00000002 is an Image Color Management (ICM) mode value from
 
 ICMMode enumeration ([MS-EMF] section 2.1.18).
 
-3.2.6.9  EMR_SETCOLORSPACE Example
+##### 3.2.6.9 EMR_SETCOLORSPACE Example
 
 This section provides an example of the EMF EMR_SETCOLORSPACE record ([MS-EMF] section
 2.3.8.7).
@@ -6950,9 +6867,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 ihCS (4 bytes): 0x80000014 specifies the ColorSpace ([MS-EMF] section 2.1.7).
 
-3.2.6.10
+##### 3.2.6.10 EMR_SETTEXTALIGN Example 1
 
-EMR_SETTEXTALIGN Example 1
+
 
 This section provides an example of an EMF EMR_SETTEXTALIGN record ([MS-EMF] section
 2.3.11.25).
@@ -6966,7 +6883,8 @@ Release: September 16, 2024
 
 88 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6991,9 +6909,9 @@ TextAlignmentMode (4 bytes): 0x00000018 specifies the text alignment mode by usi
 
 TextAlignmentMode flags ([MS-WMF] section 2.1.2.3).
 
-3.2.6.11
+##### 3.2.6.11 EMR_SELECTOBJECT Example 4
 
-EMR_SELECTOBJECT Example 4
+
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -7025,9 +6943,9 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the object ta
 
 object if it is negative.
 
-3.2.6.12
+##### 3.2.6.12 EMR_SETTEXTALIGN Example 2
 
-EMR_SETTEXTALIGN Example 2
+
 
 This section provides an example of an EMF EMR_SETTEXTALIGN record ([MS-EMF] section
 2.3.11.25).
@@ -7055,7 +6973,8 @@ Release: September 16, 2024
 
 89 / 126
 
-Size (0x0000000C)
+
+Size (0x0000000C)
 
 TextAlignmentMode (0x00000018)
 
@@ -7067,9 +6986,9 @@ TextAlignmentMode (4 bytes): 0x00000018 specifies the text alignment mode by usi
 
 TextAlignmentMode flags ([MS-WMF] section 2.1.2.3).
 
-3.2.6.13
+##### 3.2.6.13 EMR_SETBKMODE Example 1
 
-EMR_SETBKMODE Example 1
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -7098,9 +7017,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 Mode (4 bytes): 0x00000001 specifies the background mode as TRANSPARENT.
 
-3.2.6.14
+##### 3.2.6.14 EMR_SETVIEWPORTORGEX Example
 
-EMR_SETVIEWPORTORGEX Example
+
 
 This section provides an example of the EMF EMR_SETVIEWPORTORGEX record ([MS-EMF] section
 2.3.11.29).
@@ -7135,15 +7054,16 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Size (4 bytes): 0x00000010 is the size of this record in bytes.
+
+Size (4 bytes): 0x00000010 is the size of this record in bytes.
 
 Origin (8 bytes): 0x00000000, 0x00000000 specifies the viewport horizontal and vertical origin in
 
 device units.
 
-3.2.6.15
+##### 3.2.6.15 EMR_SETBKMODE Example 2
 
-EMR_SETBKMODE Example 2
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -7172,9 +7092,9 @@ Size (4 bytes): 0x0000000C is the size of this record in bytes.
 
 Mode (4 bytes): 0x00000001 specifies the background mode ([MS-EMF] section 2.1.4).
 
-3.2.6.16
+##### 3.2.6.16 EMR_EXTCREATEFONTINDIRECTW Example
 
-EMR_EXTCREATEFONTINDIRECTW Example
+
 
 This section provides an example of an EMF EMR_EXTCREATEFONTINDIRECTW record ([MS-EMF]
 section 2.3.7.8).
@@ -7211,7 +7131,8 @@ Release: September 16, 2024
 
 91 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7300,7 +7221,8 @@ Release: September 16, 2024
 
 92 / 126
 
-Height (4 bytes): 0xFFFFFFC4 has an absolute value of 60, which specifies the character height for
+
+Height (4 bytes): 0xFFFFFFC4 has an absolute value of 60, which specifies the character height for
 
 this font in logical units.
 
@@ -7383,7 +7305,8 @@ Release: September 16, 2024
 
 93 / 126
 
-...
+
+...
 
 ...
 
@@ -7413,9 +7336,9 @@ NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the
 
 object.
 
-3.2.6.17
+##### 3.2.6.17 EMR_SELECTOBJECT Example 5
 
-EMR_SELECTOBJECT Example 5
+
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -7454,9 +7377,10 @@ Release: September 16, 2024
 
 94 / 126
 
-3.2.6.18
 
-EMR_FORCEUFIMAPPING Example
+##### 3.2.6.18 EMR_FORCEUFIMAPPING Example
+
+
 
 This section provides an example of the EMF EMR_FORCEUFIMAPPING record ([MS-EMF] section
 2.3.11.2).
@@ -7491,9 +7415,9 @@ ufi (8 bytes): 0x78A0A6DF, 0x00000001 specifies the universal font ID to use. Th
 
 bit checksum (0x78A0A6DF) followed by a 32-bit index (0x00000001).
 
-3.2.6.19
+##### 3.2.6.19 EMR_EXTTEXTOUTW Example 1
 
-EMR_EXTTEXTOUTW Example 1
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -7537,7 +7461,8 @@ Release: September 16, 2024
 
 95 / 126
 
-... (0x000001AB)
+
+... (0x000001AB)
 
 iGraphicsMode (0x00000001)
 
@@ -7609,7 +7534,8 @@ Release: September 16, 2024
 
 96 / 126
 
-offDx (0x0000006C)
+
+offDx (0x0000006C)
 
 text ("This is page 2.")
 
@@ -7633,9 +7559,9 @@ offDx (4 bytes): 0x0000006C specifies the offset to the intercharacter spacing a
 
 text (4 bytes): "This is page 2.".
 
-3.2.6.20
+##### 3.2.6.20 EMR_EXTTEXTOUTW Example 2
 
-EMR_EXTTEXTOUTW Example 2
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -7682,7 +7608,8 @@ Release: September 16, 2024
 
 97 / 126
 
-EmrText (variable)
+
+EmrText (variable)
 
 ...
 
@@ -7756,7 +7683,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-offString (4 bytes): 0x0000004C specifies the offset to the string.
+
+offString (4 bytes): 0x0000004C specifies the offset to the string.
 
 Options (4 bytes): 0x00001004 indicates that the rectangle defined in the Rectangle field is used
 
@@ -7770,9 +7698,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.6.21
+##### 3.2.6.21 EMR_SETBKMODE Example 3
 
-EMR_SETBKMODE Example 3
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -7801,9 +7729,9 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 BackgroundMode (4 bytes): 0x00000001 specifies background mode.
 
-3.2.6.22
+##### 3.2.6.22 EMR_EXTTEXTOUTW Example 3
 
-EMR_EXTTEXTOUTW Example 3
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -7839,7 +7767,8 @@ Release: September 16, 2024
 
 99 / 126
 
-Bounds (0x0000013D)
+
+Bounds (0x0000013D)
 
 ... (0x000001AD)
 
@@ -7911,7 +7840,8 @@ Release: September 16, 2024
 
 100 / 126
 
-... (0x00000000)
+
+... (0x00000000)
 
 ... (0x00000F78)
 
@@ -7941,9 +7871,9 @@ offDx (4 bytes): 0x00000060 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): "Page 2 is !".
 
-3.2.6.23
+##### 3.2.6.23 EMR_EXTTEXTOUTW Example 4
 
-EMR_EXTTEXTOUTW Example 4
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -7986,7 +7916,8 @@ Release: September 16, 2024
 
 101 / 126
 
-iGraphicsMode (0x00000001)
+
+iGraphicsMode (0x00000001)
 
 exScale (0x40E18476)
 
@@ -8058,7 +7989,8 @@ Release: September 16, 2024
 
 102 / 126
 
-text ("letter")
+
+text ("letter")
 
 Reference (8 bytes): 0x00000224, 0x000001E3 specifies the coordinates of the reference point
 
@@ -8080,9 +8012,9 @@ offDx (4 bytes): 0x00000058 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): "letter".
 
-3.2.6.24
+##### 3.2.6.24 EMR_EXTTEXTOUTW Example 5
 
-EMR_EXTTEXTOUTW Example 5
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -8131,7 +8063,8 @@ Release: September 16, 2024
 
 103 / 126
 
-...
+
+...
 
 ...
 
@@ -8205,7 +8138,8 @@ Release: September 16, 2024
 
 104 / 126
 
-Options (4 bytes): 0x00001004 indicates that the rectangle defined in the Rectangle field is used
+
+Options (4 bytes): 0x00001004 indicates that the rectangle defined in the Rectangle field is used
 
 for clipping ([MS-EMF] section 2.1.11).
 
@@ -8217,9 +8151,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.6.25
+##### 3.2.6.25 EMR_EXTTEXTOUTW Example 6
 
-EMR_EXTTEXTOUTW Example 6
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -8279,7 +8213,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
+
+iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
 
 section 2.1.16).
 
@@ -8355,9 +8290,10 @@ Release: September 16, 2024
 
 106 / 126
 
-3.2.6.26
 
-EMR_EXTTEXTOUTW Example 7
+##### 3.2.6.26 EMR_EXTTEXTOUTW Example 7
+
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -8428,7 +8364,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
+
+iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
 
 section 2.1.16).
 
@@ -8504,9 +8441,10 @@ Release: September 16, 2024
 
 108 / 126
 
-3.2.6.27
 
-EMR_EXTTEXTOUTW Example 8
+##### 3.2.6.27 EMR_EXTTEXTOUTW Example 8
+
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -8581,7 +8519,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8634,9 +8573,9 @@ offDx (4 bytes): 0x00000050 specifies the offset to the intercharacter spacing a
 
 text (4 bytes): " ".
 
-3.2.6.28
+##### 3.2.6.28 EMR_SETBKMODE Example 4
 
-EMR_SETBKMODE Example 4
+
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -8663,7 +8602,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Size (0x0000000C)
+
+Size (0x0000000C)
 
 BackgroundMode (0x00000001)
 
@@ -8673,9 +8613,9 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 BackgroundMode (4 bytes): 0x00000001 specifies background mode.
 
-3.2.6.29
+##### 3.2.6.29 EMR_EXTTEXTOUTW Example 9
 
-EMR_EXTTEXTOUTW Example 9
+
 
 This section provides an example of an EMF EMR_EXTTEXTOUTW record ([MS-EMF] section 2.3.5.8).
 
@@ -8732,7 +8672,8 @@ Release: September 16, 2024
 
 111 / 126
 
-Bounds (16 bytes): 0x0000013D, 0x00000237, 0x00000157, 0x0000027A values are not used.
+
+Bounds (16 bytes): 0x0000013D, 0x00000237, 0x00000157, 0x0000027A values are not used.
 
 iGraphicsMode (4 bytes): 0x00000001 specifies the GM_COMPATIBLE graphics mode ([MS-EMF]
 
@@ -8810,9 +8751,10 @@ Release: September 16, 2024
 
 112 / 126
 
-3.2.6.30
 
-EMR_SELECTOBJECT Example 6
+##### 3.2.6.30 EMR_SELECTOBJECT Example 6
+
+
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -8844,9 +8786,9 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the object ta
 
 object if it is negative.
 
-3.2.6.31
+##### 3.2.6.31 EMR_SETICMMODE Example 3
 
-EMR_SETICMMODE Example 3
+
 
 This section provides an example of the EMF EMR_SETICMMODE record ([MS-EMF] section
 2.3.11.14).
@@ -8879,9 +8821,9 @@ ICMMode (4 bytes): 0x00000001 is an Image Color Management (ICM) mode value ([MS
 
 section 2.1.18).
 
-3.2.6.32
+##### 3.2.6.32 EMR_EOF Example
 
-EMR_EOF Example
+
 
 This section provides an example of an EMF EMR_EOF record ([MS-EMF] section 2.3.4.1).
 
@@ -8894,7 +8836,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- 00065280:10 00 00 00 14 00 00 00
+
+ 00065280:10 00 00 00 14 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -8927,7 +8870,7 @@ offPalEntries (4 bytes): 0x00000010 specifies the offset to the palette entries.
 
 SizeLast (4 bytes): 0x00000014 is the same as Size.
 
-3.2.7  EMRI_DEVMODE Example 2
+#### 3.2.7 EMRI_DEVMODE Example 2
 
 This section provides an example of the EMRI_DEVMODE record (section 2.2.3.5).
 
@@ -8970,7 +8913,8 @@ Release: September 16, 2024
 
 114 / 126
 
- 00065470:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00065470:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00065480:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00065490:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  000654A0:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -9049,7 +8993,8 @@ Release: September 16, 2024
 
 115 / 126
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9139,7 +9084,8 @@ Release: September 16, 2024
 
 116 / 126
 
-dmScale (2 bytes): 0x0064 specifies the factor by which the printed output is meant to be scaled, in
+
+dmScale (2 bytes): 0x0064 specifies the factor by which the printed output is meant to be scaled, in
 
 percent.
 
@@ -9219,7 +9165,8 @@ Release: September 16, 2024
 
 117 / 126
 
-reserved3 (4 bytes): 0x00000000 is not used.
+
+reserved3 (4 bytes): 0x00000000 is not used.
 
 dmNup (4 bytes): 0x00000001 specifies that the print server handles the layout of multiple logical
 
@@ -9293,7 +9240,8 @@ Release: September 16, 2024
 
 118 / 126
 
-3.2.8  EMRI_BW_METAFILE_EXT Example 2
+
+#### 3.2.8 EMRI_BW_METAFILE_EXT Example 2
 
 This section provides an example of the EMRI_BW_METAFILE_EXT record specified in section 2.2.3.2).
 
@@ -9338,7 +9286,8 @@ Release: September 16, 2024
 
 119 / 126
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 This file format enables third parties to send payloads (such as PostScript) to pass through as
 executable code.
@@ -9350,7 +9299,8 @@ Release: September 16, 2024
 
 120 / 126
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9418,7 +9368,8 @@ Release: September 16, 2024
 
 121 / 126
 
-2.  The application then calls Windows graphics device interface (GDI) methods such as
+
+2.  The application then calls Windows graphics device interface (GDI) methods such as
 
 DrawLine to pass drawing instructions to the GDI graphics engine.
 
@@ -9586,7 +9537,8 @@ Enhanced Metafile Spool Format
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Record type
+
+Record type
 
 EMRI_ENGINE_FONT_EXT
 
@@ -9658,7 +9610,8 @@ Release: September 16, 2024
 
 123 / 126
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -9670,7 +9623,8 @@ Release: September 16, 2024
 
 124 / 126
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 14
@@ -9837,7 +9791,8 @@ Implementer - security considerations 120
 
 125 / 126
 
-Informative references 11
+
+Informative references 11
 Introduction 8
 
 L

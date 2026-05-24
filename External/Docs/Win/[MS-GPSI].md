@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 64
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 64
 
-Date
+
+Date
 
 Revision
 History
@@ -540,311 +542,130 @@ Release: April 23, 2024
 
 3 / 64
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Software Installation Extension Overview](#132-software-installation-extension-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Messages](#221-common-messages)
+      - [2.2.1.1 Default Naming Context Search Request](#2211-default-naming-context-search-request)
+      - [2.2.1.2 Default Naming Context Search Reply](#2212-default-naming-context-search-reply)
+    - [2.2.2 Policy Application Messages](#222-policy-application-messages)
+      - [2.2.2.1 Software Installation Container Search Request](#2221-software-installation-container-search-request)
+      - [2.2.2.2 Software Installation Container Search Reply](#2222-software-installation-container-search-reply)
+      - [2.2.2.3 Software Installation Search Request](#2223-software-installation-search-request)
+      - [2.2.2.4 Software Installation Search Reply](#2224-software-installation-search-reply)
+        - [2.2.2.4.1 Software Installation Search Reply Attributes](#22241-software-installation-search-reply-attributes)
+        - [2.2.2.4.2 canUpgradeScript Attribute UpgradeType Values](#22242-canupgradescript-attribute-upgradetype-values)
+        - [2.2.2.4.3 packageFlags Attribute Values](#22243-packageflags-attribute-values)
+        - [2.2.2.4.4 packageType Attribute Values](#22244-packagetype-attribute-values)
+      - [2.2.2.5 Software Installation Maintenance Message](#2225-software-installation-maintenance-message)
+    - [2.2.3 Administrative Messages](#223-administrative-messages)
+      - [2.2.3.1 Software Installation Read Administration Message](#2231-software-installation-read-administration-message)
+        - [2.2.3.1.1 Package Search Request](#22311-package-search-request)
+        - [2.2.3.1.2 Package Search Reply](#22312-package-search-reply)
+        - [2.2.3.1.3 Software Settings Read Administration Message](#22313-software-settings-read-administration-message)
+        - [2.2.3.1.4 All Categories Search Request](#22314-all-categories-search-request)
+        - [2.2.3.1.5 All Categories Search Reply](#22315-all-categories-search-reply)
+        - [2.2.3.1.6 Category Search Request](#22316-category-search-request)
+        - [2.2.3.1.7 Category Search Reply](#22317-category-search-reply)
+      - [2.2.3.2 Software Installation Write Administration](#2232-software-installation-write-administration)
+        - [2.2.3.2.1 Class Store Creation Message](#22321-class-store-creation-message)
+        - [2.2.3.2.2 Packages Container Creation Message](#22322-packages-container-creation-message)
+        - [2.2.3.2.3 Package Creation Message](#22323-package-creation-message)
+        - [2.2.3.2.4 Class Store Confirmation Message](#22324-class-store-confirmation-message)
+        - [2.2.3.2.5 Package Update Message](#22325-package-update-message)
+        - [2.2.3.2.6 Package Deletion Message](#22326-package-deletion-message)
+        - [2.2.3.2.7 Category Creation Message](#22327-category-creation-message)
+        - [2.2.3.2.8 Category Modification Message](#22328-category-modification-message)
+        - [2.2.3.2.9 Category Deletion Message](#22329-category-deletion-message)
+    - [2.2.4 Application Advertise Script](#224-application-advertise-script)
+      - [2.2.4.1 Application Advertise Script Record Structure](#2241-application-advertise-script-record-structure)
+      - [2.2.4.2 Opcode List](#2242-opcode-list)
+        - [2.2.4.2.1 Header (Opcode 2)](#22421-header-opcode-2)
+        - [2.2.4.2.2 ProductInfo (Opcode 4)](#22422-productinfo-opcode-4)
+        - [2.2.4.2.3 SourceListPublish (Opcode 9)](#22423-sourcelistpublish-opcode-9)
+        - [2.2.4.2.4 ProductPublish (Opcode 16)](#22424-productpublish-opcode-16)
+        - [2.2.4.2.5 End (Opcode 3)](#22425-end-opcode-3)
+        - [2.2.4.2.6 DialogInfo (Opcode 5)](#22426-dialoginfo-opcode-5)
+        - [2.2.4.2.7 UserRegister (Opcode 18)](#22427-userregister-opcode-18)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Plug-in Details](#31-administrative-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 AD Connection Handle](#3111-ad-connection-handle)
+      - [3.1.1.2 Software Deployment List](#3112-software-deployment-list)
+      - [3.1.1.3 Software Deployment](#3113-software-deployment)
+      - [3.1.1.4 Software Package](#3114-software-package)
+      - [3.1.1.5 Deployment Instruction](#3115-deployment-instruction)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Policy Read Administration](#3151-policy-read-administration)
+        - [3.1.5.1.1 Package Read](#31511-package-read)
+        - [3.1.5.1.2 All Categories Read](#31512-all-categories-read)
+      - [3.1.5.2 Policy Write Administration](#3152-policy-write-administration)
+        - [3.1.5.2.1 Package Creation](#31521-package-creation)
+        - [3.1.5.2.2 Package Modification](#31522-package-modification)
+        - [3.1.5.2.3 Package Updates](#31523-package-updates)
+        - [3.1.5.2.4 Package Removal](#31524-package-removal)
+        - [3.1.5.2.5 Package Obsolescence](#31525-package-obsolescence)
+        - [3.1.5.2.6 All Packages Deletion](#31526-all-packages-deletion)
+        - [3.1.5.2.7 Category Creation](#31527-category-creation)
+        - [3.1.5.2.8 Category Modification](#31528-category-modification)
+        - [3.1.5.2.9 Category Deletion](#31529-category-deletion)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Plug-in Details](#32-client-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Client Environment](#3211-client-environment)
+      - [3.2.1.2 AD Connection Handle](#3212-ad-connection-handle)
+      - [3.2.1.3 Policy Target List](#3213-policy-target-list)
+      - [3.2.1.4 Software Deployment List](#3214-software-deployment-list)
+      - [3.2.1.5 Software Deployment](#3215-software-deployment)
+      - [3.2.1.6 Software Package](#3216-software-package)
+      - [3.2.1.7 Deployment Instruction](#3217-deployment-instruction)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Software Deployment Retrieval](#3251-software-deployment-retrieval)
+      - [3.2.5.2 Software Deployment Applicability](#3252-software-deployment-applicability)
+      - [3.2.5.3 Software Action Determination](#3253-software-action-determination)
+      - [3.2.5.4 Software Configuration](#3254-software-configuration)
+      - [3.2.5.5 Software Installation Maintenance](#3255-software-installation-maintenance)
+      - [3.2.5.6 Common LDAP Bind](#3256-common-ldap-bind)
+      - [3.2.5.7 Common LDAP UnBind](#3257-common-ldap-unbind)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Example](#4-protocol-example)
+  - [4.1 Software Installation Search Result Protocol Example](#41-software-installation-search-result-protocol-example)
+  - [4.2 Sample Application Advertise Script File](#42-sample-application-advertise-script-file)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Background ............................................................................................... 12
-Software Installation Extension Overview ...................................................... 12
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.3
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.2.5
-
-2.2.1.1
-2.2.1.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.2.4.1
-2.2.2.4.2
-2.2.2.4.3
-2.2.2.4.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-Common Messages ..................................................................................... 16
-Default Naming Context Search Request .................................................. 16
-Default Naming Context Search Reply ..................................................... 17
-Policy Application Messages ......................................................................... 17
-Software Installation Container Search Request ........................................ 17
-Software Installation Container Search Reply ........................................... 18
-Software Installation Search Request ...................................................... 18
-Software Installation Search Reply .......................................................... 18
-Software Installation Search Reply Attributes ...................................... 19
-canUpgradeScript Attribute UpgradeType Values ................................. 21
-packageFlags Attribute Values ........................................................... 21
-packageType Attribute Values ........................................................... 22
-Software Installation Maintenance Message .............................................. 23
-Administrative Messages ............................................................................. 23
-Software Installation Read Administration Message ................................... 23
-Package Search Request .................................................................. 23
-Package Search Reply ...................................................................... 23
-Software Settings Read Administration Message .................................. 24
-All Categories Search Request ........................................................... 24
-All Categories Search Reply .............................................................. 24
-Category Search Request ................................................................. 25
-Category Search Reply ..................................................................... 25
-Software Installation Write Administration................................................ 25
-Class Store Creation Message ........................................................... 25
-Packages Container Creation Message ................................................ 26
-Package Creation Message ................................................................ 26
-Class Store Confirmation Message ..................................................... 27
-Package Update Message ................................................................. 28
-Package Deletion Message ................................................................ 29
-Category Creation Message .............................................................. 29
-Category Modification Message .......................................................... 30
-Category Deletion Message ............................................................... 30
-Application Advertise Script ......................................................................... 30
-Application Advertise Script Record Structure ........................................... 31
-Opcode List .......................................................................................... 32
-Header (Opcode 2) .......................................................................... 32
-ProductInfo (Opcode 4) .................................................................... 33
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-2.2.3.2.4
-2.2.3.2.5
-2.2.3.2.6
-2.2.3.2.7
-2.2.3.2.8
-2.2.3.2.9
-
-2.2.3.1.1
-2.2.3.1.2
-2.2.3.1.3
-2.2.3.1.4
-2.2.3.1.5
-2.2.3.1.6
-2.2.3.1.7
-
-2.2.4.2.1
-2.2.4.2.2
-
-2.2.4.1
-2.2.4.2
-
-2.2.3.2
-
-2.2.4
-
-[MS-GPSI] - v20240423
-Group Policy: Software Installation Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 64
-
-2.2.4.2.3
-2.2.4.2.4
-2.2.4.2.5
-2.2.4.2.6
-2.2.4.2.7
-
-SourceListPublish (Opcode 9) ............................................................ 34
-ProductPublish (Opcode 16) .............................................................. 35
-End (Opcode 3) ............................................................................... 35
-DialogInfo (Opcode 5) ...................................................................... 35
-UserRegister (Opcode 18)................................................................. 36
-Directory Service Schema Elements ................................................................... 36
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.5.2
-
-3.1.5.1
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-3.1.5.2.7
-3.1.5.2.8
-3.1.5.2.9
-
-3  Protocol Details ..................................................................................................... 38
-Administrative Plug-in Details ............................................................................ 38
-Abstract Data Model .................................................................................... 38
-AD Connection Handle ........................................................................... 38
-Software Deployment List ...................................................................... 38
-Software Deployment ............................................................................ 38
-Software Package ................................................................................. 38
-Deployment Instruction ......................................................................... 39
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Policy Read Administration ..................................................................... 40
-Package Read ................................................................................. 40
-All Categories Read .......................................................................... 41
-Policy Write Administration ..................................................................... 41
-Package Creation............................................................................. 41
-Package Modification ........................................................................ 42
-Package Updates ............................................................................. 44
-Package Removal ............................................................................ 44
-Package Obsolescence ..................................................................... 45
-All Packages Deletion ....................................................................... 46
-Category Creation ........................................................................... 46
-Category Modification ...................................................................... 47
-Category Deletion ............................................................................ 47
-Timer Events .............................................................................................. 47
-Other Local Events ...................................................................................... 47
-Client Plug-in Details ........................................................................................ 48
-Abstract Data Model .................................................................................... 48
-Client Environment ................................................................................ 48
-AD Connection Handle ........................................................................... 48
-Policy Target List .................................................................................. 48
-Software Deployment List ...................................................................... 48
-Software Deployment ............................................................................ 49
-Software Package ................................................................................. 49
-Deployment Instruction ......................................................................... 50
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 50
-Process Group Policy ............................................................................. 50
-Message Processing Events and Sequencing Rules .......................................... 50
-Software Deployment Retrieval ............................................................... 51
-Software Deployment Applicability .......................................................... 51
-Software Action Determination ............................................................... 52
-Software Configuration .......................................................................... 52
-Software Installation Maintenance ........................................................... 53
-Common LDAP Bind .............................................................................. 54
-Common LDAP UnBind ........................................................................... 55
-Timer Events .............................................................................................. 55
-Other Local Events ...................................................................................... 55
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-3.2.1.6
-3.2.1.7
-
-3.2.2
-3.2.3
-3.2.4
-
-3.1.6
-3.1.7
-
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2.5
-
-3.2.1
-
-3.2
-
-4  Protocol Example................................................................................................... 56
-
-5 / 64
-
-[MS-GPSI] - v20240423
-Group Policy: Software Installation Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.1
-4.2
-
-Software Installation Search Result Protocol Example ........................................... 56
-Sample Application Advertise Script File .............................................................. 57
-
-5  Security ................................................................................................................. 59
-Security Considerations for Implementers ........................................................... 59
-Index of Security Parameters ............................................................................ 59
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 60
-
-7  Change Tracking .................................................................................................... 63
-
-8  Index ..................................................................................................................... 64
-
-[MS-GPSI] - v20240423
-Group Policy: Software Installation Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 64
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Group Policy: Software Installation Protocol Extension. The transmitted
 configuration data enables centralized (common) configuration of multiple client systems. The Group
@@ -855,7 +676,7 @@ computers.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -915,7 +736,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
+
+referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
 references to UTC refer to the time at UTC-0 (or GMT).
 
 curly braced GUID string: The string representation of a 128-bit globally unique identifier
@@ -989,7 +811,8 @@ Release: April 23, 2024
 
 8 / 64
 
-Lightweight Directory Access Protocol (LDAP): The primary access protocol for Active
+
+Lightweight Directory Access Protocol (LDAP): The primary access protocol for Active
 
 Directory. Lightweight Directory Access Protocol (LDAP) is an industry-standard protocol,
 established by the Internet Engineering Task Force (IETF), which allows users to query and
@@ -1061,7 +884,8 @@ Release: April 23, 2024
 
 9 / 64
 
-Simple and Protected GSS-API Negotiation Mechanism (SPNEGO): An authentication
+
+Simple and Protected GSS-API Negotiation Mechanism (SPNEGO): An authentication
 mechanism that allows Generic Security Services (GSS) peers to determine whether their
 credentials support a common set of GSS-API security mechanisms, to negotiate different
 options within a given security mechanism or different options from several security
@@ -1132,17 +956,18 @@ Release: April 23, 2024
 
 10 / 64
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1184,7 +1009,7 @@ Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-WPO] Microsoft Corporation, "Windows Protocols Overview".
 
@@ -1198,7 +1023,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MSDN-InstType] Microsoft Corporation, "Installing Multiple Instances with Instance Transforms",
+
+[MSDN-InstType] Microsoft Corporation, "Installing Multiple Instances with Instance Transforms",
 http://msdn.microsoft.com/en-us/library/aa369528.aspx
 
 [MSDN-LUASetting] Microsoft Corporation, "User Account Control (UAC) Patching",
@@ -1207,14 +1033,14 @@ http://msdn.microsoft.com/en-us/library/Aa372388.aspx
 [MSDN-Production] Microsoft Corporation, "ARPPRODUCTICON property",
 http://msdn.microsoft.com/en-us/library/aa367593.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Software Installation Protocol Extension to the Group Policy Protocol, as specified in
 [MS-GPOL], allows administrators to instruct arbitrarily large groups of clients to install and remove
 administrator-specified software at computer startup, user logon, or when explicitly instructed by an
 interactively logged-on user.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy Protocol, as specified in [MS-GPOL], allows clients to discover and retrieve policy
 settings created by administrators of a domain. These settings are persisted within Group Policy
@@ -1238,7 +1064,7 @@ A client plug-in uses the content of the GPO to retrieve settings specific to it
 specific to its class. After its class-specific settings are retrieved, the client plug-in uses those settings
 to perform class-specific processing.
 
-1.3.2  Software Installation Extension Overview
+#### 1.3.2 Software Installation Extension Overview
 
 This protocol specifies the behavior of two components: an administrative plug-in that extends an
 administrative tool, as specified in [MS-GPOL], and a client plug-in that extends a Group Policy
@@ -1264,7 +1090,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPSI].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1284,7 +1111,7 @@ Install a given application when certain users log on.
 
 applications deployed to the network and to optionally install or remove them.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Group Policy: Core Protocol (as specified in [MS-GPOL]) to provide a list
 of applicable GPOs. It also transmits Group Policy settings and instructions between the client and the
@@ -1308,7 +1135,7 @@ tool extension GUIDs are used by policy administration tools to invoke the polic
 portion of the Group Policy: Software Installation Protocol Extension plug-ins in order to update the
 Group Policy: Software Installation Protocol Extension settings stored within a GPO.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Core Protocol, as
 specified in [MS-GPOL].
@@ -1323,7 +1150,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Group Policy: Software Installation Protocol Extension is applicable only within the Group Policy
 Protocol framework. The Group Policy: Software Installation Protocol Extension is applicable to the
@@ -1331,18 +1159,18 @@ installation, update, and removal of application software on client computers.
 
 This protocol is appropriate for use only when the same settings are relevant to all clients.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no mechanism in the Group Policy: Software Installation Protocol Extension for versioning or
 capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Software Installation Protocol Extension defines several vendor-extensible fields
 that are of type GUID. Vendors can acquire GUID values by using the GUID generation method, as
 specified in [C706].
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol defines CSE GUID and tool extension GUID standards assignments, as specified in [MS-
 GPOL] section 1.8. The assignments are as follows.
@@ -1368,16 +1196,17 @@ Release: April 23, 2024
 
 14 / 64
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Software Installation Protocol Extension requires remote file access and LDAP
 transports as specified for use in the Group Policy: Core Protocol [MS-GPOL]. All messages MUST be
 exchanged over the LDAP and remote file access protocols between the client and server, as specified
 in section 2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 There are two classes of protocol conversations. Each message can be categorized into one of these
 two classes:
@@ -1403,18 +1232,19 @@ Release: April 23, 2024
 
 15 / 64
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-GPSI].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
 Figure 2: Active Directory GPO structure for software installation
 
-2.2.1  Common Messages
+#### 2.2.1 Common Messages
 
 The following message is used by both policy application and administrative tasks to read and write
 software installation settings.
 
-2.2.1.1  Default Naming Context Search Request
+##### 2.2.1.1 Default Naming Context Search Request
 
 This message requests the Group Policy server to return the default naming context (NC). This is
 an LDAP searchRequest message, as specified in [RFC2251], and MUST have the following values.
@@ -1446,7 +1276,8 @@ Release: April 23, 2024
 
 16 / 64
 
-Parameter  Value
+
+Parameter  Value
 
 typesOnly
 
@@ -1460,7 +1291,7 @@ attributes
 
 The following attribute MUST be retrieved: defaultNamingContext.
 
-2.2.1.2  Default Naming Context Search Reply
+##### 2.2.1.2 Default Naming Context Search Reply
 
 This is read from the SearchResultEntry in an LDAPMessage, as specified in [RFC2251], section 4.5.2.
 The message is received by the client from the Group Policy server in response to a default naming
@@ -1474,12 +1305,12 @@ Format
 
 defaultNamingContext  A directory string that represents the default naming context.
 
-2.2.2  Policy Application Messages
+#### 2.2.2 Policy Application Messages
 
 The following messages are generated by the client and the Group Policy server during policy
 application.
 
-2.2.2.1  Software Installation Container Search Request
+##### 2.2.2.1 Software Installation Container Search Request
 
 This message requests the Group Policy server to search for the software package container for a
 GPO. This is an LDAP searchRequest message, as specified in [RFC2251], and MUST have the
@@ -1532,7 +1363,8 @@ Release: April 23, 2024
 
 17 / 64
 
-2.2.2.2  Software Installation Container Search Reply
+
+##### 2.2.2.2 Software Installation Container Search Reply
 
 This is read from the SearchResultEntry in an LDAPMessage, as specified in [RFC2251], section 4.5.2,
 received by the client from the Group Policy server in response to a software installation container
@@ -1550,7 +1382,7 @@ The message MUST be considered invalid if the appSchemaVersion attribute does no
 value 0x000006CC. Further messages MUST NOT be generated by the client for this cycle of policy
 application.
 
-2.2.2.3  Software Installation Search Request
+##### 2.2.2.3 Software Installation Search Request
 
 This message requests the Group Policy server to return PackageRegistration objects for the
 Group Policy: Software Installation Extension settings in a given GPO. This is an LDAP searchRequest
@@ -1607,7 +1439,7 @@ msiScriptPath, lastUpdateSequence, localeID, machineArchitecture, packageName,
 versionNumberHi, versionNumberLo, installUiLevel, vendor, url, revision, productCode,
 objectGUID, categories, and msiFileList.<5> nTSecurityDescriptor MAY be retrieved.
 
-2.2.2.4  Software Installation Search Reply
+##### 2.2.2.4 Software Installation Search Reply
 
 This is read from the SearchResultEntry in an LDAPMessage, as specified in [RFC2251], section 4.5.2.
 The message is received by the client from the Group Policy server in response to a software
@@ -1619,12 +1451,13 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-installation search request message. A successful reply from the search request SHOULD contain one
+
+installation search request message. A successful reply from the search request SHOULD contain one
 or more LDAPMessages. These messages MUST contain one or more SearchResultEntries that
 represent the Group Policy: Software Installation Protocol Extension settings stored in the GPO. The
 SearchResultEntries MUST contain attributes with the formats specified in the following sections.
 
-2.2.2.4.1 Software Installation Search Reply Attributes
+###### 2.2.2.4.1 Software Installation Search Reply Attributes
 
 The SearchResultEntries MUST contain attributes with the following formats.
 
@@ -1713,7 +1546,8 @@ Release: April 23, 2024
 
 19 / 64
 
- Attribute
+
+ Attribute
 
  Format
 
@@ -1817,7 +1651,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Attribute
+
+ Attribute
 
  Format
 
@@ -1844,7 +1679,7 @@ nTSecurityDescriptor  A security descriptor, as specified in [MS-DTYP] section 2
 the client only for logging purposes to log the security permissions that are associated
 with the PackageRegistration object that represents an application.
 
-2.2.2.4.2 canUpgradeScript Attribute UpgradeType Values
+###### 2.2.2.4.2 canUpgradeScript Attribute UpgradeType Values
 
 The canUpgradeScript attribute <UpgradeType> values are as follows.
 
@@ -1882,7 +1717,7 @@ This package forces an existing installed instance of the same productCode (obje
 the package) to be upgraded. The administrative plug-in SHOULD prevent the user from
 removing this enforced upgrade.
 
-2.2.2.4.3 packageFlags Attribute Values
+###### 2.2.2.4.3 packageFlags Attribute Values
 
 The packageFlags attribute values are as follows.
 
@@ -1922,7 +1757,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2033,7 +1869,7 @@ interface if the user initiates an installation of the package. If the flag is n
 specified, a simpler interface with fewer options MAY be presented by the
 software installation maintenance application at the time of installation.
 
-2.2.2.4.4 packageType Attribute Values
+###### 2.2.2.4.4 packageType Attribute Values
 
 The packageType attribute values are as follows.
 
@@ -2044,7 +1880,8 @@ Release: April 23, 2024
 
 22 / 64
 
-Value
+
+Value
 
 Meaning
 
@@ -2062,23 +1899,23 @@ This application MUST be installed by creating a process from the executable pro
 file path specified in the msiScriptPath attribute of this object. The file path can be either a
 local disk path or a UncPath, and MUST be accessible by clients applying the policy.
 
-2.2.2.5  Software Installation Maintenance Message
+##### 2.2.2.5 Software Installation Maintenance Message
 
 This operation allows software maintenance utilities on the client to dynamically retrieve the
 deployed software packages from the Group Policy server in contexts outside the Group Policy
 Protocol, as specified in [MS-GPOL]. This message MUST be identical to the software installation read
 administration message specified in section 2.2.3.1.3.
 
-2.2.3  Administrative Messages
+#### 2.2.3 Administrative Messages
 
 The following messages are generated by the administrative plug-in and the Active Directory server
 during policy administration.
 
-2.2.3.1  Software Installation Read Administration Message
+##### 2.2.3.1 Software Installation Read Administration Message
 
 The following messages MUST be used by administrative tools to read software installation settings.
 
-2.2.3.1.1 Package Search Request
+###### 2.2.3.1.1 Package Search Request
 
 This message requests the Group Policy server to return a PackageRegistration object for the
 Group Policy: Software Installation Extension settings in a given GPO. This is an LDAP searchRequest
@@ -2114,7 +1951,7 @@ attributes
 
 MAY be any attribute defined in Software Installation Search Request (section 2.2.2.3).
 
-2.2.3.1.2 Package Search Reply
+###### 2.2.3.1.2 Package Search Reply
 
 This is read from the SearchResultEntry in an LDAPMessage, as specified in [RFC2251], section 4.5.2.
 The message is received by the client from the Group Policy server in response to a Package Search
@@ -2130,7 +1967,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3.1.3 Software Settings Read Administration Message
+
+###### 2.2.3.1.3 Software Settings Read Administration Message
 
 In this message, settings from a single GPO are retrieved by the client for use in software
 maintenance utilities or in use by Policy Read Administration tools.
@@ -2144,7 +1982,7 @@ search filter for read administration MUST be the following.
 
 The remainder of the sequence MUST be the same.
 
-2.2.3.1.4 All Categories Search Request
+###### 2.2.3.1.4 All Categories Search Request
 
 This message requests the Group Policy server to return search results for the Group Policy:
 Software Installation categories. This is an LDAP searchRequest message, as specified in [RFC2251],
@@ -2185,7 +2023,7 @@ attributes
 
 The following attributes MUST be retrieved: categoryId, and localizedDescription.
 
-2.2.3.1.5 All Categories Search Reply
+###### 2.2.3.1.5 All Categories Search Reply
 
 This is read from the SearchResultEntry in an LDAPMessage, as specified in [RFC2251], section 4.5.2.
 The message is received by the client from the Group Policy server in response to an all categories
@@ -2212,7 +2050,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3.1.6 Category Search Request
+
+###### 2.2.3.1.6 Category Search Request
 
 This message requests the Group Policy server to return search results for a specific Group Policy:
 Software Installation category. This is an LDAP searchRequest message, as specified in [RFC2251],
@@ -2254,7 +2093,7 @@ Attributes
 
 The following attributes MUST be retrieved: localizedDescription.
 
-2.2.3.1.7 Category Search Reply
+###### 2.2.3.1.7 Category Search Reply
 
 This is read from the SearchResultEntry in an LDAPMessage, as specified in [RFC2251], section 4.5.2.
 The message is received by the client from the Group Policy server in response to a category search
@@ -2269,11 +2108,11 @@ Format
 
 localizedDescription  A directory string representing the name of the category.
 
-2.2.3.2  Software Installation Write Administration
+##### 2.2.3.2 Software Installation Write Administration
 
 The following messages MUST be used by administrative tools to update software installation settings.
 
-2.2.3.2.1 Class Store Creation Message
+###### 2.2.3.2.1 Class Store Creation Message
 
 The class store container of the gpContainer object in Active Directory is the container for all
 PackageRegistration objects that represent deployed software. This message MUST be an LDAP
@@ -2287,7 +2126,8 @@ Release: April 23, 2024
 
 25 / 64
 
-Parameter
+
+Parameter
 
  Value
 
@@ -2326,7 +2166,7 @@ value Application Store.
 
 A field whose value indicates a well-formed object.
 
-2.2.3.2.2 Packages Container Creation Message
+###### 2.2.3.2.2 Packages Container Creation Message
 
 The packages container of the classStore object in Active Directory is the container for all
 PackageRegistration objects that represent deployed software. This message MUST be an LDAP
@@ -2371,7 +2211,7 @@ value Application Packages.
 
 A field whose value indicates a well-formed object.
 
-2.2.3.2.3 Package Creation Message
+###### 2.2.3.2.3 Package Creation Message
 
 This message creates a PackageRegistration object in Active Directory and an application
 advertise script file in the file system of the Group Policy server. The LDAP portion of the message
@@ -2384,7 +2224,8 @@ Release: April 23, 2024
 
 26 / 64
 
-Parameter
+
+Parameter
 
  Value
 
@@ -2455,7 +2296,7 @@ The remote file access portion of the message is an application advertise script
 algorithm in [C706] Appendix A "Universal Unique Identifier", a unique GUID is generated for the
 name of the application advertise script file.
 
-2.2.3.2.4 Class Store Confirmation Message
+###### 2.2.3.2.4 Class Store Confirmation Message
 
 The class store container of the gpContainer object in Active Directory is the container for all
 PackageRegistration objects that represent deployed software. This message updates that
@@ -2473,7 +2314,8 @@ Release: April 23, 2024
 
 27 / 64
 
-Parameter
+
+Parameter
 
  Value
 
@@ -2520,7 +2362,7 @@ MUST be the directory string value Application Store.
 
 The name of the package.
 
-2.2.3.2.5 Package Update Message
+###### 2.2.3.2.5 Package Update Message
 
 This message updates a PackageRegistration object in Active Directory. The LDAP portion of the
 message MUST be an LDAP modifyRequest message, as specified in [RFC2251].
@@ -2562,7 +2404,8 @@ Release: April 23, 2024
 
 28 / 64
 
-3.  The msiScriptName attribute MUST also be specified for all updates according to the rules in
+
+3.  The msiScriptName attribute MUST also be specified for all updates according to the rules in
 
 section 2.2.3.2.3.
 
@@ -2578,7 +2421,7 @@ The remote file access portion of the message MUST be an application advertise s
 part of the message is optional if the file already exists in the GPO. The file needs to be updated only
 in certain circumstances, as specified in section 3.1.5.2.2.
 
-2.2.3.2.6 Package Deletion Message
+###### 2.2.3.2.6 Package Deletion Message
 
 This message deletes a PackageRegistration object in Active Directory. The LDAP portion of the
 message MUST be an LDAP delRequest message, as specified in [RFC2251], with the parameter
@@ -2594,7 +2437,7 @@ The Software package DN of the PackageRegistration object MUST be a DN of the fo
 CN=<PackageId>,CN=Packages,CN=Class Store,<scoped gpo dn>, where <scoped gpo dn> is a
 scoped GPO DN and <PackageId> is a GUID string, as defined in [RFC4122] section 3.
 
-2.2.3.2.7 Category Creation Message
+###### 2.2.3.2.7 Category Creation Message
 
 This message creates a CategoryRegistration object in Active Directory.
 
@@ -2649,7 +2492,8 @@ Release: April 23, 2024
 
 29 / 64
 
-2.2.3.2.8 Category Modification Message
+
+###### 2.2.3.2.8 Category Modification Message
 
 This message modifies a CategoryRegistration object in Active Directory.
 
@@ -2677,7 +2521,7 @@ Meaning
 
 localizedDescription  MUST be a directory string value.  The name of the category.
 
-2.2.3.2.9 Category Deletion Message
+###### 2.2.3.2.9 Category Deletion Message
 
 This message deletes a CategoryRegistration object in Active Directory.
 
@@ -2695,7 +2539,7 @@ MUST be a DN of the form CN=<CategoryId>,CN=AppCategories,CN=Default Domain
 Policy,CN=System, <Domain NC> and <CategoryId> is a GUID string, as defined in [RFC4122]
 section 3.
 
-2.2.4  Application Advertise Script
+#### 2.2.4 Application Advertise Script
 
 The application advertise script is a file containing a linear sequence of installation operations to be
 performed, such as file and registry updates, configuration database updates, and UI notifications. The
@@ -2716,7 +2560,8 @@ Release: April 23, 2024
 
 30 / 64
 
-The application advertise script is based on Windows Installer technology and requires the author of
+
+The application advertise script is based on Windows Installer technology and requires the author of
 the application advertise script file to have detailed knowledge of Windows Installer technology.<10>
 
 The following ABNF grammar specifies the application advertise script file format.
@@ -2735,7 +2580,7 @@ The following ABNF grammar specifies the application advertise script file forma
  DataLength = *2OCTET
  Data       = *16383OCTET
 
-2.2.4.1  Application Advertise Script Record Structure
+##### 2.2.4.1 Application Advertise Script Record Structure
 
 The first 16-bit word of a record MUST contain the operation code in the low byte and the argument
 count in the high byte.
@@ -2820,7 +2665,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Type and
+
+Type and
 length
 encoding (16
 bits)
@@ -2835,7 +2681,7 @@ of Unicode string
 
 terminating NULL character.
 
-2.2.4.2  Opcode List
+##### 2.2.4.2 Opcode List
 
 Operation codes MUST be specified as part of the application advertise script file. Each operation
 code, immediately followed by its arguments, MUST appear in the file in the sequence shown in the
@@ -2887,7 +2733,7 @@ UserRegister
 
 Arguments for the operation codes are described in the remaining topics in this section.
 
-2.2.4.2.1 Header (Opcode 2)
+###### 2.2.4.2.1 Header (Opcode 2)
 
 Opcode 2 is the header of an application advertise script. The header includes the following
 arguments:
@@ -2941,7 +2787,8 @@ Release: April 23, 2024
 
 32 / 64
 
-Platform: 32-bit signed integer. The value MUST be either zero or a value obtained using the
+
+Platform: 32-bit signed integer. The value MUST be either zero or a value obtained using the
 
 following formula: (PROCESSOR_ARCHITECTURE_INTEL & 0xffff) | ((wTargetProcessorArchitecture
 & 0xffff) << 16)
@@ -2970,7 +2817,7 @@ ScriptMinorVersion: 32-bit signed integer. The value MUST be 4.
 
 ScriptAttributes: 32-bit signed integer. The value MUST be 0.
 
-2.2.4.2.2 ProductInfo (Opcode 4)
+###### 2.2.4.2.2 ProductInfo (Opcode 4)
 
 Operation code 4 provides information about the product. ProductInfo includes the following
 arguments:
@@ -3020,7 +2867,8 @@ Release: April 23, 2024
 
 33 / 64
 
-PackageCode: ASCII character string. Represented as a GUID, PackageCode specifies a particular
+
+PackageCode: ASCII character string. Represented as a GUID, PackageCode specifies a particular
 Windows Installer package. The package code associates an .msi file with an application or
 product and can also be used for the verification of sources.
 
@@ -3103,7 +2951,7 @@ package is installer detected.
 
 6
 
-2.2.4.2.3 SourceListPublish (Opcode 9)
+###### 2.2.4.2.3 SourceListPublish (Opcode 9)
 
 Operation code 9 provides information about sources for creating the product. SourceListPublish
 includes the following arguments:
@@ -3123,7 +2971,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PackagePath: A string (array) of either ASCII characters or Unicode characters,  PackagePath is
+
+PackagePath: A string (array) of either ASCII characters or Unicode characters,  PackagePath is
 
 the full path to the MSI package of the product being advertised. For example,
 "\\server\share\apps\app1\example.msi".
@@ -3159,7 +3008,7 @@ For example, if an advertise script for the .msi package at
 "\\server\share\apps\app1\example.msi" was created, LaunchPath will be set to
 "\\server\share\apps\app1\".
 
-2.2.4.2.4 ProductPublish (Opcode 16)
+###### 2.2.4.2.4 ProductPublish (Opcode 16)
 
 Operation code 16 provides information about the installation package. ProductPublish includes the
 following argument:
@@ -3168,7 +3017,7 @@ PackageKey: ASCII character string. Represented as a GUID, PackageKey is the pac
 
 installation package.
 
-2.2.4.2.5 End (Opcode 3)
+###### 2.2.4.2.5 End (Opcode 3)
 
 End (opcode 3) includes the following arguments:
 
@@ -3178,7 +3027,7 @@ ProgressTotalHDWord: 32-bit signed integer. The value MUST be 0. This argument i
 
 ProgressTotalLDWord: 32-bit signed integer. The value MUST be 0. This argument is not used.
 
-2.2.4.2.6 DialogInfo (Opcode 5)
+###### 2.2.4.2.6 DialogInfo (Opcode 5)
 
 DialogInfo (opcode 5) includes the following arguments:
 
@@ -3188,7 +3037,7 @@ error messages, and warning messages.
 
 Arguments: Dependent on the dialog type.
 
-2.2.4.2.7 UserRegister (Opcode 18)
+###### 2.2.4.2.7 UserRegister (Opcode 18)
 
 [MS-GPSI] - v20240423
 Group Policy: Software Installation Protocol Extension
@@ -3197,7 +3046,8 @@ Release: April 23, 2024
 
 35 / 64
 
-UserRegister (opcode 18) includes the following arguments:
+
+UserRegister (opcode 18) includes the following arguments:
 
 Owner: A string (array) of either ASCII characters or Unicode characters representing the user for
 whom a product key is registered.
@@ -3208,7 +3058,7 @@ company that is used to register a product key.
 ProductId: A string (array) of either ASCII characters or Unicode characters representing the product
 Id that is used to register a product key.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Group Policy: Software Installation Protocol Extension accesses the directory service schema
 classes and attributes that are listed in the following table. For the syntactic specifications of the
@@ -3284,14 +3134,15 @@ Release: April 23, 2024
 
 36 / 64
 
-3  Protocol Details
 
-3.1  Administrative Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative Plug-in Details
 
 Administrative tools use the policy administration portion of this protocol to present the current set of
 software deployments stored in a GPO and to allow administrators to edit those deployments.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 A Group Policy server's storage of the policy administration data can be defined as follows.
 
@@ -3303,22 +3154,22 @@ The administrative plug-in simply has a UI that can manipulate corresponding set
 to the server. The administrative plug-in can be modeled in the manner specified in the subsections
 that follow.
 
-3.1.1.1  AD Connection Handle
+##### 3.1.1.1 AD Connection Handle
 
 The AD Connection Handle ADM element is an ADConnection handle that manages the TCP
 connections that are used for communication between the client and Active Directory servers as
 defined in [MS-ADTS] section 7.3. This element is used each time a Group Policy client communicates
 with a Group Policy Server over an Active Directory connection.
 
-3.1.1.2  Software Deployment List
+##### 3.1.1.2 Software Deployment List
 
 A list of deployed software items.
 
-3.1.1.3  Software Deployment
+##### 3.1.1.3 Software Deployment
 
 A software package and a deployment instruction.
 
-3.1.1.4  Software Package
+##### 3.1.1.4 Software Package
 
 The administrative plug-in software package ADM element provides a reference to an executable or
 installation database that allows an application to be deployed and gives information about how to do
@@ -3351,7 +3202,8 @@ Release: April 23, 2024
 
 37 / 64
 
-  Revision
+
+  Revision
 
 Version number of the deployment. The version number MUST change each time an application
 gets updated.
@@ -3405,7 +3257,7 @@ PackageType
 MUST indicate the type of package used to install the application. This corresponds to the
 packageType attribute defined in section 2.2.2.4.4 packageType Attribute Values.
 
-3.1.1.5  Deployment Instruction
+##### 3.1.1.5 Deployment Instruction
 
 The deployment instruction ADM element MUST be one of the following:
 
@@ -3431,14 +3283,15 @@ Release: April 23, 2024
 
 38 / 64
 
-Install this application if it is listed as an upgrade of an application previously installed through
+
+Install this application if it is listed as an upgrade of an application previously installed through
 this protocol.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 At initialization, the client invokes the task "Initialize an ADConnection", as defined in [MS-ADTS]
 section 7.6.1.1, with the following parameters:
@@ -3463,15 +3316,15 @@ Object (GPO) applicable to this protocol. The Group Policy: Software Installatio
 protocol then processes the <gpo path> list as described in Policy Read
 Administration (section 3.1.5.1).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Policy Read Administration
+##### 3.1.5.1 Policy Read Administration
 
-3.1.5.1.1 Package Read
+###### 3.1.5.1.1 Package Read
 
 A policy administration tool on a client can read all of the software settings stored in the user policy
 settings section of a GPO or stored in the computer policy settings section. An example of such a tool
@@ -3500,14 +3353,15 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The Common LDAP UnBind sequence (section 3.2.5.7) MUST be issued.
+
+4.  The Common LDAP UnBind sequence (section 3.2.5.7) MUST be issued.
 
 Any failure codes returned from the LDAP operations listed above MUST be treated as a failure, and
 the protocol sequence above MUST be terminated.
 
 Note  For read administration, no remote file access sequences are generated.
 
-3.1.5.1.2 All Categories Read
+###### 3.1.5.1.2 All Categories Read
 
 A policy administration tool on a client can read all of the categories used by Group Policy Software
 Administration. The categories are stored in the AppCategories container in the Default Domain Policy
@@ -3531,7 +3385,7 @@ Any failure codes returned from the LDAP operations listed above MUST be treated
 
 Note  For read administration, no remote file access sequences are generated.
 
-3.1.5.2  Policy Write Administration
+##### 3.1.5.2 Policy Write Administration
 
 The write administration sequence of the Group Policy: Software Installation Protocol Extension allows
 administrators to add new deployed software to a GPO so that it can be installed by clients through
@@ -3541,7 +3395,7 @@ client or to remove the deployments.
 
 The class of policy write administration sequences consists of the following sequencing behaviors.
 
-3.1.5.2.1 Package Creation
+###### 3.1.5.2.1 Package Creation
 
 When an administrator deploys new software, a new software package is created. The plug-in MUST
 accomplish this in the following way, using the messages specified in section 2.2.3.2:
@@ -3568,7 +3422,8 @@ Release: April 23, 2024
 
 40 / 64
 
-2.  If the package container creation message failed because the container already exists, the
+
+2.  If the package container creation message failed because the container already exists, the
 
 protocol MUST continue to the next step.
 
@@ -3638,7 +3493,7 @@ writing occurs.
 
 9.  The Common LDAP UnBind sequence (section 3.2.5.7) MUST be issued.
 
-3.1.5.2.2 Package Modification
+###### 3.1.5.2.2 Package Modification
 
 After software has been deployed in a GPO as a software package, an administrator might want to
 change properties of the software package, such as its display name in administrative tools, whether it
@@ -3652,7 +3507,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  The Common LDAP Bind sequence (section 3.2.5.6) MUST be issued.
+
+1.  The Common LDAP Bind sequence (section 3.2.5.6) MUST be issued.
 
 2.  Retrieve the GUID string, as defined in [RFC4122] section 3, of the package to be modified. A
 
@@ -3744,7 +3600,8 @@ Release: April 23, 2024
 
 42 / 64
 
-1.  A file open from client to server.
+
+1.  A file open from client to server.
 
 The plug-in MUST attempt to open the application advertise script file identified by the value of
 the msiScriptPath attribute.
@@ -3759,7 +3616,7 @@ the new application advertise script file content or until an error is encounter
 A file close operation MUST be issued after the file has been replaced by the client or an error
 in writing occurs.
 
-3.1.5.2.3 Package Updates
+###### 3.1.5.2.3 Package Updates
 
 As part of routine software maintenance, software updates are done to update software due to defects
 in functionality or security. Within the context of the Group Policy: Software Installation Protocol
@@ -3791,7 +3648,7 @@ The package update protocol sequence above MUST increment the software package's
 count, thus indicating that there are new changes to this software. The effect of this operation on
 clients is specified in section 3.2.5.3 step 9.
 
-3.1.5.2.4 Package Removal
+###### 3.1.5.2.4 Package Removal
 
 Administrators might want an application that is deployed in a GPO to be removed from all clients that
 previously installed it through this protocol. Package removal MUST accomplish this through the
@@ -3815,7 +3672,8 @@ Release: April 23, 2024
 
 43 / 64
 
-
+
+
 
 
 
@@ -3890,7 +3748,7 @@ mode sequence is invoked is specified in section 3.2.5.3.
 
 7.  The Common LDAP UnBind sequence (section 3.2.5.7) MUST be issued.
 
-3.1.5.2.5 Package Obsolescence
+###### 3.1.5.2.5 Package Obsolescence
 
 Administrators might want to stop a GPO from deploying an application without uninstalling the
 application from any client on which the GPO had already deployed the application. If specified by an
@@ -3905,7 +3763,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Mark the package as obsolete. A package update sequence (as specified in section 2.2.3.2.5)
+
+2.  Mark the package as obsolete. A package update sequence (as specified in section 2.2.3.2.5)
 
 MUST be generated by the client with the following attributes:
 
@@ -3921,7 +3780,7 @@ proceed to step 3 (LDAP UnBindRequest).
 
 3.  The Common LDAP UnBind sequence (section 3.2.5.7) MUST be issued.
 
-3.1.5.2.6 All Packages Deletion
+###### 3.1.5.2.6 All Packages Deletion
 
 When a GPO is deleted, all packages in that GPO are also deleted.
 
@@ -3935,7 +3794,7 @@ path MUST be obtained by the client by reading this attribute before the deletio
 the read administration protocol sequence specified in section 2.2.3.1.3. The deletion MUST be done
 with remote file access:<15>
 
-3.1.5.2.7 Category Creation
+###### 3.1.5.2.7 Category Creation
 
 When an administrator adds a new category, a new category registration object is created. The plug-in
 MUST accomplish this in the following way, using the messages specified in section 2.2.3.2:
@@ -3977,7 +3836,8 @@ Release: April 23, 2024
 
 45 / 64
 
-3.1.5.2.8 Category Modification
+
+###### 3.1.5.2.8 Category Modification
 
 When an administrator modifies a category, the corresponding category registration object is
 modified. The plug-in MUST accomplish this with the following sequence:
@@ -4009,7 +3869,7 @@ zero, this protocol sequence MUST proceed to step 5 (LDAP UnBindRequest).
 
 connection.
 
-3.1.5.2.9 Category Deletion
+###### 3.1.5.2.9 Category Deletion
 
 When an administrator deletes a category, the corresponding category registration object is deleted.
 The plug-in MUST accomplish this in the following way, using the messages specified in section
@@ -4030,11 +3890,11 @@ terminated after the next step (LDAP UnBindRequest).
 
 4.  The Common LDAP UnBind sequence (section 3.2.5.7) MUST be issued.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -4045,13 +3905,14 @@ Release: April 23, 2024
 
 46 / 64
 
-3.2  Client Plug-in Details
+
+### 3.2 Client Plug-in Details
 
 The client plug-in is invoked after the Group Policy Protocol [MS-GPOL] client has computed a list of
 GPOs for which the Group Policy: Software Installation Protocol Extension client plug-in is to be
 invoked.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4062,7 +3923,7 @@ document.
 The software installation protocol state can be modeled in the manner specified in the subsections that
 follow. The conceptual data can be implemented using a variety of techniques.
 
-3.2.1.1  Client Environment
+##### 3.2.1.1 Client Environment
 
 The Client Environment abstract data model (ADM) element MUST include the following elements:
 
@@ -4080,19 +3941,19 @@ used during user policy application mode to filter software by language.
 A primary language identifier associated with the system. It is used during computer policy
 application mode to filter software by language.
 
-3.2.1.2  AD Connection Handle
+##### 3.2.1.2 AD Connection Handle
 
 The AD Connection Handle ADM element is an ADConnection handle that manages the TCP
 connections that are used for communication between the client and Active Directory servers as
 defined in [MS-ADTS] section 7.3. This element is used each time a Group Policy client communicates
 with a Group Policy Server over an Active Directory connection.
 
-3.2.1.3  Policy Target List
+##### 3.2.1.3 Policy Target List
 
 The Policy Target List ADM element is a list of entries, each of which contains a policy target
 account and an associated software deployment list.
 
-3.2.1.4  Software Deployment List
+##### 3.2.1.4 Software Deployment List
 
 The Software Deployment List ADM element MUST be a list of software deployment entries, for
 software that is installed on the computer through the Group Policy: Software Installation Protocol
@@ -4107,11 +3968,12 @@ Release: April 23, 2024
 
 47 / 64
 
-3.2.1.5  Software Deployment
+
+##### 3.2.1.5 Software Deployment
 
 The Software Deployment ADM element is a software package and a deployment instruction.
 
-3.2.1.6  Software Package
+##### 3.2.1.6 Software Package
 
 The client plug-in software package ADM element provides a reference to an executable or an
 installation database that allows an application to be deployed. The reference is a network file system
@@ -4183,14 +4045,15 @@ Release: April 23, 2024
 
 48 / 64
 
-
+
+
 
 PackageType
 
 Indicates the type of package used to install the application. This corresponds to the
 packageType attribute defined in section 2.2.2.4.4, packageType Attribute Values.
 
-3.2.1.7  Deployment Instruction
+##### 3.2.1.7 Deployment Instruction
 
 The deployment instruction ADM element MUST be one of the values in the following table.
 
@@ -4209,11 +4072,11 @@ Upgrade
 Install this application if it is listed as an upgrade of an application previously installed through this
 protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 In addition to the initialization required for the Group Policy Protocol, the client invokes the task
 "Initialize an ADConnection", as defined in [MS-ADTS] section 7.6.1.1, with the following parameters:
@@ -4233,15 +4096,15 @@ If the task returns failure and it is the first iteration, repeat from the begin
 Otherwise, policy application MUST be terminated and an event SHOULD<16> be logged using an
 implementation-specific mechanism.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 This extension is launched by the Group Policy: Core Protocol, which invokes this Process Group Policy
 event, whose abstract interface is specified in [MS-GPOL] section 3.2.4.1, to apply policies handled by
 this extension.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 For each Group Policy Object in the New or Changed GPO list, one software installation message
 MUST be read from the server, as specified below. If any of the operations specified below fail, the
@@ -4259,7 +4122,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Software Deployment Applicability (section 3.2.5.2)
+
+2.  Software Deployment Applicability (section 3.2.5.2)
 
 3.  Software Action Determination (section 3.2.5.3)
 
@@ -4269,7 +4133,7 @@ Release: April 23, 2024
 
 These steps are specified in detail later in this specification.
 
-3.2.5.1  Software Deployment Retrieval
+##### 3.2.5.1 Software Deployment Retrieval
 
 The procedure described in this section generates the software deployment protocol sequences
 specified in section 2.2.2. Each of the retrieved PackageRegistration objects MUST undergo
@@ -4301,7 +4165,7 @@ made for the software package, the client MUST remove the application modeled by
 package if the ACTFLG_Orphan flag is not specified in the packageFlags attribute of the software
 package.
 
-3.2.5.2  Software Deployment Applicability
+##### 3.2.5.2 Software Deployment Applicability
 
 A PackageRegistration object MUST be identified as applicable or not applicable to the client.
 
@@ -4328,7 +4192,8 @@ Release: April 23, 2024
 
 50 / 64
 
-3.2.5.3  Software Action Determination
+
+##### 3.2.5.3 Software Action Determination
 
 For an applicable application, the following rules MUST be used to decide what action to take on the
 client:
@@ -4384,7 +4249,7 @@ modifying the software deployment.
 
 For any application that is ignored, there SHOULD be no further protocol generated for it.<17>
 
-3.2.5.4  Software Configuration
+##### 3.2.5.4 Software Configuration
 
 The software MUST be configured according to the action determined in section 3.2.5.3.
 
@@ -4402,7 +4267,8 @@ Release: April 23, 2024
 
 51 / 64
 
-Sequence
+
+Sequence
 
 Description
 
@@ -4442,7 +4308,7 @@ If the action was anything other than installation, the client MUST behave as if
 to do nothing, because PackageType SetupNamePath supports only the installation
 action.<19>
 
-3.2.5.5  Software Installation Maintenance
+##### 3.2.5.5 Software Installation Maintenance
 
 This operation allows software maintenance utilities on the client to dynamically retrieve the
 deployed software packages from the Group Policy server in contexts outside the Group Policy
@@ -4483,7 +4349,8 @@ Release: April 23, 2024
 
 52 / 64
 
-3.2.5.6  Common LDAP Bind
+
+##### 3.2.5.6 Common LDAP Bind
 
 Whenever the Software Installation Protocol Extension issues LDAP commands to the Group Policy
 Server, it first binds to the Group Policy Server.  Binding is accomplished by this processing sequence.
@@ -4580,7 +4447,8 @@ Group Policy: Software Installation Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  After the Active Directory connection is initialized and the options are set, the client invokes the
+
+5.  After the Active Directory connection is initialized and the options are set, the client invokes the
 "Performing an LDAP Bind on an ADConnection" task, as defined in [MS-ADTS] section 7.6.1.4,
 with the following parameter:
 
@@ -4593,7 +4461,7 @@ If the TaskReturnStatus returned is not 0 and it is the first iteration, repeat 
 Otherwise, policy application MUST be terminated and an event SHOULD<25> be logged using an
 implementation-specific mechanism.
 
-3.2.5.7  Common LDAP UnBind
+##### 3.2.5.7 Common LDAP UnBind
 
 After the Software Installation Protocol Extension has completed issuing LDAP commands, it unbinds
 from the Group Policy Server. UnBinding is accomplished by this processing sequence.
@@ -4608,11 +4476,11 @@ ADTS] section 7.6.1.5, with the following parameter:
 
 TaskInputADConnection: Value of the AD Connection Handle ADM element.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -4623,7 +4491,8 @@ Release: April 23, 2024
 
 54 / 64
 
-4  Protocol Example
+
+## 4 Protocol Example
 
 This section provides two topics:
 
@@ -4633,7 +4502,7 @@ This section provides two topics:
 
   Sample Application Advertise Script File (section 4.2).
 
-4.1  Software Installation Search Result Protocol Example
+### 4.1 Software Installation Search Result Protocol Example
 
 The following example shows the fields of an LDAP searchResultEntry message as part of a software
 installation search result, as specified in section 2.2.2.4.1, Software Installation Search Reply
@@ -4731,7 +4600,8 @@ Release: April 23, 2024
 
 55 / 64
 
- Field
+
+ Field
 
  Value
 
@@ -4739,7 +4609,7 @@ installUiLevel
 
 0
 
-4.2  Sample Application Advertise Script File
+### 4.2 Sample Application Advertise Script File
 
 The following sample shows the content of an application advertise script file. Two views of the file
 are presented:
@@ -4798,7 +4668,8 @@ Release: April 23, 2024
 
 56 / 64
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-GPSI].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -4811,9 +4682,10 @@ Release: April 23, 2024
 
 57 / 64
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Key security issues: Implementers need to be aware that the network paths used to actually install
 the software are not secured by the Group Policy Core Protocol, as specified in [MS-GPOL].
@@ -4821,7 +4693,7 @@ Implementers can choose to implement a separate security mechanism for this purp
 administrators who deploy applications through this protocol that they need to take steps to ensure
 the integrity of the software deployed through this protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -4840,7 +4712,8 @@ Release: April 23, 2024
 
 58 / 64
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4907,7 +4780,8 @@ Release: April 23, 2024
 
 59 / 64
 
-<5> Section 2.2.2.3: Windows additionally specifies the attribute displayName but then ignores it in
+
+<5> Section 2.2.2.3: Windows additionally specifies the attribute displayName but then ignores it in
 the reply.
 
 <6> Section 2.2.2.4.3: Windows XP operating system Service Pack 1 (SP1), Windows Server 2003,
@@ -4974,7 +4848,8 @@ Release: April 23, 2024
 
 60 / 64
 
-<23> Section 3.2.5.6: When policy application is terminated, Windows clients log an event to a
+
+<23> Section 3.2.5.6: When policy application is terminated, Windows clients log an event to a
 Windows Event Log.
 
 <24> Section 3.2.5.6: When policy application is terminated, Windows clients log an event to a
@@ -4990,7 +4865,8 @@ Release: April 23, 2024
 
 61 / 64
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5034,7 +4910,8 @@ Release: April 23, 2024
 
 62 / 64
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -5166,7 +5043,8 @@ Release: April 23, 2024
 
 63 / 64
 
-T
+
+T
 
 Timer events
    administrative 47

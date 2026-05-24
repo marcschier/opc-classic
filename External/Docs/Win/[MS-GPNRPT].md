@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 34
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -271,7 +272,8 @@ Release: April 23, 2024
 
 2 / 34
 
-Date
+
+Date
 
 Revision
 History
@@ -320,159 +322,73 @@ Release: April 23, 2024
 
 3 / 34
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Protocol Overview (Synopsis)](#13-protocol-overview-synopsis)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Name Resolution Policy Table Extension Encoding Overview](#132-name-resolution-policy-table-extension-encoding-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Global Policy Configuration Options](#221-global-policy-configuration-options)
+      - [2.2.1.1 Enable DirectAccess for All Networks](#2211-enable-directaccess-for-all-networks)
+      - [2.2.1.2 DNS Secure Name Query Fallback](#2212-dns-secure-name-query-fallback)
+      - [2.2.1.3 DirectAccess Query Order](#2213-directaccess-query-order)
+    - [2.2.2 Name Resolution Policy Messages](#222-name-resolution-policy-messages)
+      - [2.2.2.1 Name](#2221-name)
+      - [2.2.2.2 Config Options](#2222-config-options)
+      - [2.2.2.3 Version](#2223-version)
+      - [2.2.2.4 DNSSEC Query IPsec Encryption](#2224-dnssec-query-ipsec-encryption)
+      - [2.2.2.5 DNSSEC Query IPsec Required](#2225-dnssec-query-ipsec-required)
+      - [2.2.2.6 DNSSEC Validation Required](#2226-dnssec-validation-required)
+      - [2.2.2.7 IPsec CA Restriction](#2227-ipsec-ca-restriction)
+      - [2.2.2.8 DirectAccess DNS Servers](#2228-directaccess-dns-servers)
+      - [2.2.2.9 DirectAccess Proxy Name](#2229-directaccess-proxy-name)
+      - [2.2.2.10 DirectAccess Proxy Type](#22210-directaccess-proxy-type)
+      - [2.2.2.11 DirectAccess Query IPsec Encryption](#22211-directaccess-query-ipsec-encryption)
+      - [2.2.2.12 DirectAccess Query IPsec Required](#22212-directaccess-query-ipsec-required)
+      - [2.2.2.13 Generic DNS Servers](#22213-generic-dns-servers)
+      - [2.2.2.14 IDN Configuration](#22214-idn-configuration)
+      - [2.2.2.15 Auto-Trigger VPN](#22215-auto-trigger-vpn)
+      - [2.2.2.16 Proxy Name](#22216-proxy-name)
+      - [2.2.2.17 Proxy Type](#22217-proxy-type)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Plug-in Details](#31-administrative-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Global Policy Configuration Messages](#41-global-policy-configuration-messages)
+  - [4.2 Name Resolution Policy Messages](#42-name-resolution-policy-messages)
+    - [4.2.1 DirectAccess](#421-directaccess)
+    - [4.2.2 DNSSEC](#422-dnssec)
+    - [4.2.3 Both DirectAccess and DNSSEC](#423-both-directaccess-and-dnssec)
+    - [4.2.4 Generic DNS Server](#424-generic-dns-server)
+    - [4.2.5 IDN Configuration](#425-idn-configuration)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Protocol Overview (Synopsis) .............................................................................. 8
-Background ................................................................................................. 9
-Name Resolution Policy Table Extension Encoding Overview ............................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Global Policy Configuration Options ............................................................... 11
-Enable DirectAccess for All Networks ....................................................... 11
-DNS Secure Name Query Fallback ........................................................... 11
-DirectAccess Query Order ...................................................................... 12
-Name Resolution Policy Messages ................................................................. 12
-2.2.2.1
-Name .................................................................................................. 12
-2.2.2.2
-Config Options ...................................................................................... 12
-2.2.2.3
-Version ................................................................................................ 13
-2.2.2.4
-DNSSEC Query IPsec Encryption ............................................................. 13
-2.2.2.5
-DNSSEC Query IPsec Required ............................................................... 14
-2.2.2.6
-DNSSEC Validation Required .................................................................. 14
-2.2.2.7
-IPsec CA Restriction .............................................................................. 14
-2.2.2.8
-DirectAccess DNS Servers ...................................................................... 15
-DirectAccess Proxy Name ....................................................................... 15
-2.2.2.9
-2.2.2.10  DirectAccess Proxy Type ........................................................................ 15
-2.2.2.11  DirectAccess Query IPsec Encryption ....................................................... 16
-2.2.2.12  DirectAccess Query IPsec Required.......................................................... 16
-2.2.2.13  Generic DNS Servers ............................................................................. 16
-IDN Configuration ................................................................................. 17
-2.2.2.14
-Auto-Trigger VPN .................................................................................. 17
-2.2.2.15
-Proxy Name ......................................................................................... 17
-2.2.2.16
-Proxy Type ........................................................................................... 18
-2.2.2.17
-
-3.1
-
-3  Protocol Details ..................................................................................................... 19
-Administrative Plug-in Details ............................................................................ 19
-Abstract Data Model .................................................................................... 19
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Processing Events and Sequencing Rules ....................................................... 19
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 21
-Global Policy Configuration Messages .................................................................. 21
-Name Resolution Policy Messages ...................................................................... 21
-DirectAccess .............................................................................................. 21
-
-4.1
-4.2
-
-4.2.1
-
-[MS-GPNRPT] - v20240423
-Group Policy: Name Resolution Policy Table (NRPT) Data Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 34
-
-4.2.2
-4.2.3
-4.2.4
-4.2.5
-
-DNSSEC .................................................................................................... 23
-Both DirectAccess and DNSSEC .................................................................... 24
-Generic DNS Server .................................................................................... 25
-IDN Configuration ....................................................................................... 26
-
-5  Security ................................................................................................................. 28
-Security Considerations for Implementers ........................................................... 28
-Index of Security Parameters ............................................................................ 28
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 29
-
-7  Change Tracking .................................................................................................... 32
-
-8  Index ..................................................................................................................... 33
-
-[MS-GPNRPT] - v20240423
-Group Policy: Name Resolution Policy Table (NRPT) Data Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 34
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Name Resolution Policy Table (NRPT) Group Policy Data Extension, an
 extension to Group Policy: Registry Extension Encoding [MS-GPREG]. The NRPT Group Policy Data
@@ -482,7 +398,7 @@ behavior on a client by using Group Policy settings.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -544,7 +460,8 @@ Group Policy: Name Resolution Policy Table (NRPT) Data Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain: A set of users and computers sharing a common namespace and management
+
+domain: A set of users and computers sharing a common namespace and management
 
 infrastructure. At least one computer member of the set has to act as a domain controller (DC)
 and host a member list that identifies all members of the domain, as well as optionally hosting
@@ -620,7 +537,8 @@ Release: April 23, 2024
 
 7 / 34
 
-registry policy file: A file associated with a Group Policy Object (GPO) that contains a set of
+
+registry policy file: A file associated with a Group Policy Object (GPO) that contains a set of
 
 registry-based policy settings.
 
@@ -637,14 +555,14 @@ BE, UTF-16 LE, UTF-32, UTF-32 LE, and UTF-32 BE).
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -661,7 +579,7 @@ assist you in finding the relevant information.
 Certificate and Certificate Revocation List (CRL) Profile", RFC 5280, May 2008, https://www.rfc-
 editor.org/info/rfc5280
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-HNDS] Microsoft Corporation, "Host Name Data Structure Extension".
 
@@ -674,7 +592,7 @@ editor.org/info/rfc5280
 [RFC3596] Thomson, S., Huitema, C., Ksinant, V., and Souissi, M., "DNS Extensions to Support IP
 version 6", RFC 3596, October 2003, https://www.rfc-editor.org/info/rfc3596
 
-1.3  Protocol Overview (Synopsis)
+### 1.3 Protocol Overview (Synopsis)
 
 The Name Resolution Policy Table (NRPT) Group Policy Data Extension provides a mechanism for an
 administrator to control Name Resolution Policy behavior of the client through Group Policy by
@@ -687,7 +605,8 @@ Release: April 23, 2024
 
 8 / 34
 
-1.3.1  Background
+
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol (as specified in [MS-GPOL]) allows clients to discover and retrieve
 policy settings created by administrators of a domain. These settings are persisted within Group
@@ -711,7 +630,7 @@ administrative template to write out a registry policy file and associate it wit
 Policy: Registry Extension Encoding plug-in on each client reads registry policy files specified by
 applicable GPOs and applies their contents to its registry.
 
-1.3.2  Name Resolution Policy Table Extension Encoding Overview
+#### 1.3.2 Name Resolution Policy Table Extension Encoding Overview
 
 Name Resolution Policy Table policies are configurable from a GPO through the Name Resolution
 Policy Table Group Policy Data Extension, which uses the {f4d8c39a-f43d-42b4-9bdf-4e48d3044ba1}
@@ -754,7 +673,8 @@ Release: April 23, 2024
 
 9 / 34
 
-3.  In processing the Policy Application portion of Group Policy: Registry Extension Encoding, the
+
+3.  In processing the Policy Application portion of Group Policy: Registry Extension Encoding, the
 
 client parses the settings and then saves the settings in the registry on the local computer and
 notifies the Name Resolution Policy client component. The NRPT policies are stored in local
@@ -764,13 +684,13 @@ storage.
 
 Name Resolution Policy component parses its previously stored settings in local storage.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Group Policy: Registry Extension Encoding (as specified in [MS-GPREG])
 to transport the Name Resolution Policy Table Group Policy Data Extension settings. The protocol also
 has all the dependencies inherited from Group Policy: Registry Extension Encoding.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Registry Extension
 Encoding ([MS-GPREG]).
@@ -779,7 +699,7 @@ In addition, a client needs to have a system/subsystem capable of executing comm
 startup/shutdown time because the Computer Policy Mode of the Group Policy: Registry Extension
 Encoding is used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The NRPT Group Policy Data Extension is applicable only while transported under the Group Policy:
 Registry Extension Encoding and within the Group Policy: Core Protocol framework. The Group Policy:
@@ -789,16 +709,16 @@ settings.
 
 The NRPT Group Policy Data Extension is not used in any other context.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Group Policy: Name Resolution Policy Table Data Structure has a policy version (also called
 schema version), but the protocol currently defines a single version with a value of 1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -817,24 +737,25 @@ Release: April 23, 2024
 
 10 / 34
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Name Resolution Policy Table Group Policy Data Extension requires Group Policy: Registry
 Extension Encoding. All messages are exchanged in registry policy files encoded using Group Policy:
 Registry Extension Encoding.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Global Policy Configuration Options
+#### 2.2.1 Global Policy Configuration Options
 
 The Global Policy Configuration Options specify name resolution behavior that applies to all entries
 within the NRPT.
 
 For information about the Type values, see [MS-GPREG] section 2.2.1.
 
-2.2.1.1  Enable DirectAccess for All Networks
+##### 2.2.1.1 Enable DirectAccess for All Networks
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient or
 System\CurrentControlSet\services\Dnscache\Parameters<1>
@@ -857,7 +778,7 @@ Meaning
 
 0x00000002  Never use DirectAccess settings regardless of location.
 
-2.2.1.2  DNS Secure Name Query Fallback
+##### 2.2.1.2 DNS Secure Name Query Fallback
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient or
 System\CurrentControlSet\services\Dnscache\Parameters<2>
@@ -885,7 +806,8 @@ Release: April 23, 2024
 
 11 / 34
 
-Value
+
+Value
 
 Meaning
 
@@ -895,7 +817,7 @@ Meaning
 
 are unreachable when on a private network.
 
-2.2.1.3  DirectAccess Query Order
+##### 2.2.1.3 DirectAccess Query Order
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient or
 System\CurrentControlSet\services\Dnscache\Parameters<3>
@@ -916,13 +838,13 @@ Meaning
 
 0x00000001  Resolve both IPv4 and IPv6 addresses.
 
-2.2.2  Name Resolution Policy Messages
+#### 2.2.2 Name Resolution Policy Messages
 
 The Name Resolution Policy Table consists of one or more Name Resolution Policy keys under
 Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig. The names for these keys can be
 any unique string value.
 
-2.2.2.1  Name
+##### 2.2.2.1 Name
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<4>
@@ -940,7 +862,7 @@ section 3.6.2, or an IPv6 subnet formatted as specified in [RFC3596] section 2.5
 Each DNS suffix present MUST consist of a "." character with a domain name appended. Each DNS
 prefix present MUST be constructed according to the "name" rule specified in [MS-HNDS] section 2.1.
 
-2.2.2.2  Config Options
+##### 2.2.2.2 Config Options
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<5>
@@ -956,7 +878,8 @@ Release: April 23, 2024
 
 12 / 34
 
-Size: 32 bits.
+
+Size: 32 bits.
 
 Data: This field is a 32-bit value, which MUST contain one of the following values.
 
@@ -1000,7 +923,7 @@ are specified.
 
 options are specified.
 
-2.2.2.3  Version
+##### 2.2.2.3 Version
 
  Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<6>
@@ -1014,7 +937,7 @@ Size: 32 bits.
 Data: This field is a 32-bit value specifying the Name Resolution Policy version. Its value MUST be
 0x00000001.
 
-2.2.2.4  DNSSEC Query IPsec Encryption
+##### 2.2.2.4 DNSSEC Query IPsec Encryption
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<7>
@@ -1030,7 +953,8 @@ Release: April 23, 2024
 
 13 / 34
 
-Size: 32 bits.
+
+Size: 32 bits.
 
 Data: This field is a 32-bit value, which MUST contain one of the following values.
 
@@ -1052,7 +976,7 @@ used when IPsec protection is used for DNSSEC queries.
 
 IPsec protection is used for DNSSEC queries.
 
-2.2.2.5  DNSSEC Query IPsec Required
+##### 2.2.2.5 DNSSEC Query IPsec Required
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<8>
@@ -1077,7 +1001,7 @@ IPsec is not required for DNS queries.
 
 IPsec is required for DNS queries.
 
-2.2.2.6  DNSSEC Validation Required
+##### 2.2.2.6 DNSSEC Validation Required
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<9>
@@ -1098,7 +1022,7 @@ Meaning
 
 0x00000001  DNSSEC validation is required for DNS queries.
 
-2.2.2.7  IPsec CA Restriction
+##### 2.2.2.7 IPsec CA Restriction
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<10>
@@ -1110,7 +1034,8 @@ Group Policy: Name Resolution Policy Table (NRPT) Data Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value: "IPSECCARestriction"
+
+Value: "IPSECCARestriction"
 
 Type: REG_SZ.
 
@@ -1118,7 +1043,7 @@ Size: Equal to the size of the Data field.
 
 Data: A Unicode string specifying the Certificate Authority in X509 format [RFC5280].
 
-2.2.2.8  DirectAccess DNS Servers
+##### 2.2.2.8 DirectAccess DNS Servers
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<11>
@@ -1134,7 +1059,7 @@ internal name resolutions by DirectAccess clients. Each IP address item in the s
 an IPv4 address in string format or an IPv6 address in string format. Each name in the string
 MUST be an extended hostname as specified in [MS-HNDS].
 
-2.2.2.9  DirectAccess Proxy Name
+##### 2.2.2.9 DirectAccess Proxy Name
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<12>
@@ -1150,9 +1075,9 @@ Data: A Unicode string specifying the HTTP proxy name and port in the format "pr
 address in string format, or an IPv6 address in string format; "port" MUST be a decimal integer
 between 1 and 65535.
 
-2.2.2.10
+##### 2.2.2.10 DirectAccess Proxy Type
 
-DirectAccess Proxy Type
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<13>
@@ -1180,15 +1105,16 @@ Release: April 23, 2024
 
 15 / 34
 
-Value
+
+Value
 
 Meaning
 
 0x00000002  Use the proxy specified by the DirectAccess Proxy Name (see section 2.2.2.9).
 
-2.2.2.11
+##### 2.2.2.11 DirectAccess Query IPsec Encryption
 
-DirectAccess Query IPsec Encryption
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<14>
@@ -1219,9 +1145,9 @@ protection of DNS queries.
 
 DNS queries.
 
-2.2.2.12
+##### 2.2.2.12 DirectAccess Query IPsec Required
 
-DirectAccess Query IPsec Required
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<15>
@@ -1246,9 +1172,9 @@ IPsec protection is not required for DNS queries.
 
 IPsec protection is required for DNS queries.
 
-2.2.2.13
+##### 2.2.2.13 Generic DNS Servers
 
-Generic DNS Servers
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<16><17>
@@ -1266,14 +1192,15 @@ Release: April 23, 2024
 
 16 / 34
 
-Data: A semicolon-delimited Unicode string of IP addresses or names of DNS servers used for name
+
+Data: A semicolon-delimited Unicode string of IP addresses or names of DNS servers used for name
 resolutions by clients in the absence of DirectAccess settings. Each IP address item in the string
 MUST be either an IPv4 address in string format or an IPv6 address in string format. Each
 name in the string MUST be an extended hostname, as specified in [MS-HNDS].
 
-2.2.2.14
+##### 2.2.2.14 IDN Configuration
 
-IDN Configuration
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<18><19>
@@ -1298,9 +1225,9 @@ Meaning
 
 For more information about IDN configuration, see [RFC3490].
 
-2.2.2.15
+##### 2.2.2.15 Auto-Trigger VPN
 
-Auto-Trigger VPN
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<20>
@@ -1323,9 +1250,9 @@ Meaning
 
 0x00000001  Notify VPN platform to dial VPN when sending DNS queries.
 
-2.2.2.16
+##### 2.2.2.16 Proxy Name
 
-Proxy Name
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<21>
@@ -1343,16 +1270,17 @@ Release: April 23, 2024
 
 17 / 34
 
-Size: Equal to the size of the Data field.
+
+Size: Equal to the size of the Data field.
 
 Data: A Unicode string specifying the HTTP proxy name and port in the format "proxy:port" where
 "proxy" MUST be either an extended hostname as specified in [MS-HNDS] section 2.1, an IPv4
 address in string format, or an IPv6 address in string format; "port" MUST be a decimal integer
 between 1 and 65,535.
 
-2.2.2.17
+##### 2.2.2.17 Proxy Type
 
-Proxy Type
+
 
 Key: Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Rule GUID} or
 System\CurrentControlSet\services\Dnscache\Parameters\DnsPolicyConfig\{Rule GUID}<22>
@@ -1384,9 +1312,10 @@ Release: April 23, 2024
 
 18 / 34
 
-3  Protocol Details
 
-3.1  Administrative Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative Plug-in Details
 
 The administrative plug-in mediates between the user interface (UI) and a remote data store that
 contains Name Resolution Policy Table Group Policy extension settings. Its purpose is to receive
@@ -1406,19 +1335,19 @@ Policy Data Extension administrative plug-in will make corresponding changes to 
 stored in the aforementioned Unicode configuration file following the conventions of the keys specified
 in section 2.2.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The NRPT Group Policy Data Extension administrative plug-in is invoked when an administrator
 launches the user interface for editing Group Policy settings. The plug-in displays the current settings
@@ -1429,7 +1358,7 @@ as noted in this section.
 The administrative plug-in SHOULD<23> take measures in its UI to ensure that the user cannot
 unknowingly set the Name Resolution Policy Table Group Policy settings to an invalid value.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The NRPT Group Policy Data Extension administrative plug-in reads extension-specific data from the
 remote storage location and will then pass that information to a UI to display the current settings to
@@ -1445,15 +1374,16 @@ Release: April 23, 2024
 
 19 / 34
 
-Any additional entries in the configuration data that do not pertain to the configuration options
+
+Any additional entries in the configuration data that do not pertain to the configuration options
 specified in section 2.2, or that are not supported by the particular implementation, MUST be ignored
 by the plug-in.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1464,9 +1394,10 @@ Release: April 23, 2024
 
 20 / 34
 
-4  Protocol Examples
 
-4.1  Global Policy Configuration Messages
+## 4 Protocol Examples
+
+### 4.1 Global Policy Configuration Messages
 
 The following is an example of Name Resolution Policy global options to query for both IPv4 and
 IPv6, always allow fallback to LLMNR and NetBIOS, and to enable Name Resolution Policy behavior
@@ -1498,12 +1429,12 @@ Size: 32 bits.
 
 Data: 00000000
 
-4.2  Name Resolution Policy Messages
+### 4.2 Name Resolution Policy Messages
 
 The following are examples of individual Name Resolution Policy entries specifying DNSSEC,
 DirectAccess, and both.
 
-4.2.1  DirectAccess
+#### 4.2.1 DirectAccess
 
 The following is an example of a Name Resolution Policy entry to apply DirectAccess for names
 under the directaccess.example.com domain. The policy specifies the DNS servers to query and
@@ -1530,7 +1461,8 @@ Release: April 23, 2024
 
 21 / 34
 
-Size: Equal to the size of the data field.
+
+Size: Equal to the size of the data field.
 
 Data: ".directaccess.example.com"
 
@@ -1597,7 +1529,8 @@ Release: April 23, 2024
 
 22 / 34
 
-4.2.2  DNSSEC
+
+#### 4.2.2 DNSSEC
 
 The following is an example of a Name Resolution Policy entry to apply DNSSEC for names under
 the dnssec.example.com domain. The policy requires DNSSEC validation, IPsec with medium
@@ -1666,10 +1599,11 @@ Release: April 23, 2024
 
 23 / 34
 
-Data: 'C=US, O="VeriSign, Inc.", OU=Class 3 Public Primary Certification Authority - G2, OU="(c)
+
+Data: 'C=US, O="VeriSign, Inc.", OU=Class 3 Public Primary Certification Authority - G2, OU="(c)
 1998 VeriSign, Inc. - For authorized use only", OU=VeriSign Trust Network'
 
-4.2.3  Both DirectAccess and DNSSEC
+#### 4.2.3 Both DirectAccess and DNSSEC
 
 The following is an example of a Name Resolution Policy entry to apply both DirectAccess and
 DNSSEC for names under the both.example.com domain. For DNSSEC, the policy requires DNSSEC
@@ -1735,7 +1669,8 @@ Release: April 23, 2024
 
 24 / 34
 
-Type: REG_DWORD
+
+Type: REG_DWORD
 
 Size: 32 bits.
 
@@ -1782,7 +1717,7 @@ Size: Equal to the size of the data field.
 Data: 'C=US, O="VeriSign, Inc.", OU=Class 3 Public Primary Certification Authority - G2, OU="(c)
 1998 VeriSign, Inc. - For authorized use only", OU=VeriSign Trust Network'
 
-4.2.4  Generic DNS Server
+#### 4.2.4 Generic DNS Server
 
 The following is an example of a Name Resolution Policy entry to apply the Generic DNS server
 configuration for names under the example.com domain. The policy requires the use of the configured
@@ -1805,7 +1740,8 @@ Release: April 23, 2024
 
 25 / 34
 
-Value: "Name"
+
+Value: "Name"
 
 Type: REG_MULTI_SZ
 
@@ -1845,7 +1781,7 @@ Size: 32 bits
 
 Data: 00000002
 
-4.2.5  IDN Configuration
+#### 4.2.5 IDN Configuration
 
 The following is an example of a Name Resolution Policy entry to apply internationalized domain
 name processing for names under the idn.example.com domain. The policy requires that all names in
@@ -1874,7 +1810,8 @@ Release: April 23, 2024
 
 26 / 34
 
-Data: ".dnssec.example.com"
+
+Data: ".dnssec.example.com"
 
 Value: "ConfigOptions"
 
@@ -1899,9 +1836,10 @@ Release: April 23, 2024
 
 27 / 34
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Do not transmit passwords or other sensitive data through this protocol. The primary reason for this
 restriction is that the protocol provides no encryption, and therefore sensitive data transmitted
@@ -1913,7 +1851,7 @@ A person gaining unauthorized access, intercepting the protocol's network packet
 then discover the password for that resource, which would then be unprotected from the unauthorized
 person.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1924,7 +1862,8 @@ Release: April 23, 2024
 
 28 / 34
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1993,7 +1932,8 @@ Group Policy: Name Resolution Policy Table (NRPT) Data Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<7> Section 2.2.2.4: The DNSSEC Query IPsec Encryption key specification is
+
+<7> Section 2.2.2.4: The DNSSEC Query IPsec Encryption key specification is
 Software\Policies\Microsoft\Windows NT\DNSClient\DnsPolicyConfig\{Name}. Note that in the
 presence of both specified keys, Windows ignores the
 System\CurrentControlSet\services\Dnscache\Parameters key.
@@ -2061,7 +2001,8 @@ Group Policy: Name Resolution Policy Table (NRPT) Data Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<22> Section 2.2.2.17: This property is ignored on Windows 7, Windows Server 2008 R2, Windows 8,
+
+<22> Section 2.2.2.17: This property is ignored on Windows 7, Windows Server 2008 R2, Windows 8,
 and Windows Server 2012.
 
 <23> Section 3.1.4: Windows administrative tools verify the validity of the objects as defined in
@@ -2075,7 +2016,8 @@ Release: April 23, 2024
 
 31 / 34
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2119,7 +2061,8 @@ Release: April 23, 2024
 
 32 / 34
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 19
@@ -2250,7 +2193,8 @@ Release: April 23, 2024
 
 33 / 34
 
-      generic DNS server 25
+
+      generic DNS server 25
       IDN configuration 26
       overview 21
    Table extension encoding - overview 9

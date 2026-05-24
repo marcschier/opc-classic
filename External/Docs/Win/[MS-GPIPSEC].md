@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 84
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 84
 
-Date
+
+Date
 
 Revision
 History
@@ -545,216 +547,88 @@ Release: April 23, 2024
 
 3 / 84
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 IPsec Protocol Overview](#132-ipsec-protocol-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 IPsec Policy Creation/Modification](#221-ipsec-policy-creationmodification)
+      - [2.2.1.1 ipsecPolicy Object Attribute Details](#2211-ipsecpolicy-object-attribute-details)
+        - [2.2.1.1.1 ipsecPolicy{GUID} Object Attribute Descriptions](#22111-ipsecpolicyguid-object-attribute-descriptions)
+      - [2.2.1.2 ipsecISAKMPPolicy Object Attribute Details](#2212-ipsecisakmppolicy-object-attribute-details)
+        - [2.2.1.2.1 ipsecISAKMPPolicy{GUID} Object Attribute Descriptions](#22121-ipsecisakmppolicyguid-object-attribute-descriptions)
+      - [2.2.1.3 ipsecNFA Object Attribute Details](#2213-ipsecnfa-object-attribute-details)
+        - [2.2.1.3.1 ipsecNFA{GUID} Object Description](#22131-ipsecnfaguid-object-description)
+      - [2.2.1.4 ipsecNegotiationPolicy Object Attribute Details](#2214-ipsecnegotiationpolicy-object-attribute-details)
+        - [2.2.1.4.1 ipsecNegotiationPolicy{GUID} Object Description](#22141-ipsecnegotiationpolicyguid-object-description)
+      - [2.2.1.5 ipsecFilter Object Attribute Details](#2215-ipsecfilter-object-attribute-details)
+        - [2.2.1.5.1 ipsecFilter{GUID} Object Description](#22151-ipsecfilterguid-object-description)
+    - [2.2.2 IPsec Policy Assignment](#222-ipsec-policy-assignment)
+    - [2.2.3 IPsec Policy Retrieval](#223-ipsec-policy-retrieval)
+      - [2.2.3.1 Policy Location, Name, and Description Retrieval](#2231-policy-location-name-and-description-retrieval)
+      - [2.2.3.2 Policy Data Retrieval](#2232-policy-data-retrieval)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IPsec Group Policy Administrative Plug-in Details](#31-ipsec-group-policy-administrative-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Configuring an LDAP BindRequest](#3151-configuring-an-ldap-bindrequest)
+      - [3.1.5.2 Terminating the LDAP BindRequest](#3152-terminating-the-ldap-bindrequest)
+      - [3.1.5.3 Retrieving the Assigned Policy Location, Name, and Description](#3153-retrieving-the-assigned-policy-location-name-and-description)
+      - [3.1.5.4 Reading the Assigned Policy Data](#3154-reading-the-assigned-policy-data)
+      - [3.1.5.5 Writing the Assigned Policy Data](#3155-writing-the-assigned-policy-data)
+      - [3.1.5.6 Modifying the Assigned Policy Data](#3156-modifying-the-assigned-policy-data)
+      - [3.1.5.7 Deleting the Assigned Policy Data](#3157-deleting-the-assigned-policy-data)
+      - [3.1.5.8 Policy Assignment](#3158-policy-assignment)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 IPsec Group Policy Client-Side Plug-in Details](#32-ipsec-group-policy-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Processing Group Policy Callbacks](#3241-processing-group-policy-callbacks)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Locating a Domain Controller](#3251-locating-a-domain-controller)
+      - [3.2.5.2 Establishing a Connection to the Domain Controller](#3252-establishing-a-connection-to-the-domain-controller)
+      - [3.2.5.3 Retrieving the Assigned Policy Location, Name, and Description](#3253-retrieving-the-assigned-policy-location-name-and-description)
+      - [3.2.5.4 Retrieving the Assigned Policy Data](#3254-retrieving-the-assigned-policy-data)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 Local Timer Expiration](#3261-local-timer-expiration)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Administrative Creation/Assignment of Policy](#41-administrative-creationassignment-of-policy)
+    - [4.1.1 Policy Creation](#411-policy-creation)
+    - [4.1.2 Policy Assignment](#412-policy-assignment)
+  - [4.2 Client Retrieval of Policy](#42-client-retrieval-of-policy)
+    - [4.2.1 Retrieving the Assigned Policy Name, Description, and Location](#421-retrieving-the-assigned-policy-name-description-and-location)
+    - [4.2.2 Retrieving the Assigned Policy Data](#422-retrieving-the-assigned-policy-data)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Background ............................................................................................... 10
-IPsec Protocol Overview .............................................................................. 10
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 15
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.2.1
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-IPsec Policy Creation/Modification ................................................................. 16
-ipsecPolicy Object Attribute Details ......................................................... 20
-ipsecPolicy{GUID} Object Attribute Descriptions ................................. 21
-ipsecISAKMPPolicy Object Attribute Details ............................................... 23
-ipsecISAKMPPolicy{GUID} Object Attribute Descriptions ...................... 24
-ipsecNFA Object Attribute Details ............................................................ 31
-ipsecNFA{GUID} Object Description .................................................. 32
-ipsecNegotiationPolicy Object Attribute Details ......................................... 38
-ipsecNegotiationPolicy{GUID} Object Description ................................ 39
-ipsecFilter Object Attribute Details .......................................................... 44
-ipsecFilter{GUID} Object Description ................................................. 45
-IPsec Policy Assignment .............................................................................. 56
-IPsec Policy Retrieval .................................................................................. 57
-Policy Location, Name, and Description Retrieval ...................................... 58
-Policy Data Retrieval ............................................................................. 58
-Directory Service Schema Elements ................................................................... 59
-
-2.2.3.1
-2.2.3.2
-
-2.2.2
-2.2.3
-
-2.2.1.3.1
-
-2.2.1.4.1
-
-2.2.1.5.1
-
-2.2.1.4
-
-2.2.1.5
-
-2.3
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 61
-IPsec Group Policy Administrative Plug-in Details ................................................. 61
-Abstract Data Model .................................................................................... 61
-Timers ...................................................................................................... 61
-Initialization ............................................................................................... 61
-Higher-Layer Triggered Events ..................................................................... 61
-Message Processing Events and Sequencing Rules .......................................... 62
-Configuring an LDAP BindRequest ........................................................... 62
-Terminating the LDAP BindRequest ......................................................... 62
-Retrieving the Assigned Policy Location, Name, and Description .................. 62
-Reading the Assigned Policy Data ............................................................ 62
-Writing the Assigned Policy Data ............................................................. 62
-Modifying the Assigned Policy Data.......................................................... 64
-Deleting the Assigned Policy Data ........................................................... 64
-Policy Assignment ................................................................................. 66
-Timer Events .............................................................................................. 67
-Other Local Events ...................................................................................... 67
-IPsec Group Policy Client-Side Plug-in Details ...................................................... 67
-Abstract Data Model .................................................................................... 67
-Timers ...................................................................................................... 67
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-
-3.2.1
-3.2.2
-
-3.1.6
-3.1.7
-
-3.2
-
-[MS-GPIPSEC] - v20240423
-Group Policy: IP Security (IPsec) Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 84
-
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.6
-
-3.2.7
-
-3.2.6.1
-
-Initialization ............................................................................................... 67
-Higher-Layer Triggered Events ..................................................................... 68
-Processing Group Policy Callbacks ........................................................... 68
-Message Processing Events and Sequencing Rules .......................................... 68
-Locating a Domain Controller .................................................................. 68
-Establishing a Connection to the Domain Controller ................................... 68
-Retrieving the Assigned Policy Location, Name, and Description .................. 69
-Retrieving the Assigned Policy Data ......................................................... 69
-Timer Events .............................................................................................. 70
-Local Timer Expiration ........................................................................... 70
-Other Local Events ...................................................................................... 70
-
-4.1
-
-4.1.1
-4.1.2
-
-4  Protocol Examples ................................................................................................. 71
-Administrative Creation/Assignment of Policy ...................................................... 71
-Policy Creation ........................................................................................... 71
-Policy Assignment ....................................................................................... 73
-Client Retrieval of Policy.................................................................................... 74
-Retrieving the Assigned Policy Name, Description, and Location ....................... 74
-Retrieving the Assigned Policy Data .............................................................. 74
-
-4.2.1
-4.2.2
-
-4.2
-
-5  Security ................................................................................................................. 78
-Security Considerations for Implementers ........................................................... 78
-Index of Security Parameters ............................................................................ 78
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 79
-
-7  Change Tracking .................................................................................................... 82
-
-8  Index ..................................................................................................................... 83
-
-[MS-GPIPSEC] - v20240423
-Group Policy: IP Security (IPsec) Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 84
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: IP Security (IPsec) Protocol Extension is layered on top of the Group Policy: Core
 Protocol (as specified in [MS-GPOL]). The transmitted configuration data enables centralized
@@ -764,7 +638,7 @@ filtering, data integrity, and optionally, data encryption for IP traffic.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -825,7 +699,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Encapsulating Security Payload (ESP): An Internet Protocol security (IPsec) encapsulation
+
+Encapsulating Security Payload (ESP): An Internet Protocol security (IPsec) encapsulation
 
 mode that provides authentication, data confidentiality, and message integrity. For more
 information, see [RFC4303] section 1.
@@ -896,7 +771,8 @@ Release: April 23, 2024
 
 7 / 84
 
-main mode (MM): The first phase of an Internet Key Exchange (IKE) negotiation that
+
+main mode (MM): The first phase of an Internet Key Exchange (IKE) negotiation that
 
 performs authentication and negotiates a main mode security association (MM SA) between the
 peers. For more information, see [RFC2409] section 5.
@@ -935,14 +811,14 @@ the transport layer in the ISO/OSI reference model.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -968,7 +844,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-GPOL] Microsoft Corporation, "Group Policy: Core Protocol".
 
@@ -993,7 +870,7 @@ https://www.rfc-editor.org/info/rfc2409
 [RFC2412] Orman, H., "The OAKLEY Key Determination Protocol", RFC 2412, November 1998,
 https://www.rfc-editor.org/info/rfc2412
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSFT-ISOLATION-1] Microsoft Corporation, "Server and Domain Isolation Using IPsec and Group
 Policy", July 2006, https://technet.microsoft.com/en-us/library/cc163159.aspx
@@ -1033,7 +910,8 @@ Release: April 23, 2024
 
 9 / 84
 
-1.3  Overview
+
+### 1.3 Overview
 
 The Group Policy: IPsec Protocol allows administrators to arbitrarily instruct large groups of client
 machines to configure their local IPsec/IKE components to provide basic IP traffic filtering, IP data
@@ -1043,7 +921,7 @@ This allows administrators to configure client machines to block, permit, or sec
 traffic, which enables the configuration of IP network isolation, for example server isolation and
 domain isolation as described in [MSFT-ISOLATION-1].
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol as specified in [MS-GPOL] section 1.3, "Overview" allows clients to
 discover and retrieve policy settings that are created by administrators of a domain. These settings
@@ -1066,7 +944,7 @@ A client-side plug-in uses the contents of the GPO to retrieve class-specific se
 specific to its class. After its class-specific settings are retrieved, the client-side plug-in uses those
 settings to perform class-specific processing.
 
-1.3.2  IPsec Protocol Overview
+#### 1.3.2 IPsec Protocol Overview
 
 The following figure shows the components that use the Group Policy: IPsec Protocol.
 
@@ -1077,7 +955,8 @@ Release: April 23, 2024
 
 10 / 84
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GPIPSEC].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1114,7 +993,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GPIPSEC].images/page012-img01.png)
 ![Extracted image 2 from page 12]([MS-GPIPSEC].images/page012-img02.png)
 <!-- /Extracted images from page 12 -->
@@ -1159,7 +1039,8 @@ Release: April 23, 2024
 
 12 / 84
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPIPSEC].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1168,7 +1049,7 @@ Figure 4: IPsec policy retrieval
 Note  Processing instructions for the first LDAP Search/Response pair is specified in section 3.2.5.3.
 Processing instructions for the second LDAP Search/Response pair is specified in section 3.2.5.4.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Group Policy: IP Security (IPsec) Protocol Extension depends on the Group Policy: Core Protocol
 [MS-GPOL] to read and write IPsec policy ( [RFC2401], [RFC2402], [RFC2406], [RFC2410], and
@@ -1191,31 +1072,32 @@ Release: April 23, 2024
 
 13 / 84
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-GPIPSEC].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
 Figure 5: Protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as for the Group Policy: Core Protocol, [MS-GPOL]
 section 1.5.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: IPsec Protocol is applicable only in the Group Policy framework. Data values that
 are interpreted differently depending on the implementation are noted in the specific data model
 descriptions. Systems receiving the policy data are required to ignore information that they do not
 understand.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There is no mechanism in the Group Policy: IPsec Protocol for versioning or capability negotiation. If
 new functionality is required that would be incompatible with the existing protocol, implement a new
 Group Policy protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -1226,7 +1108,8 @@ Release: April 23, 2024
 
 14 / 84
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 This protocol defines values for the IPsec client-side extension GUID and IPsec administrative
 extension GUID, as specified in [MS-GPOL] section 1.8, "Vendor-Extensible Fields". The assignments
@@ -1260,14 +1143,15 @@ Release: April 23, 2024
 
 15 / 84
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: IPsec Protocol uses the LDAP protocol, as specified in [RFC2251], to read and write
 data to the remote Active Directory data store.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The messages are in the following three categories:
 
@@ -1285,7 +1169,7 @@ IPsec policy retrieval
 
 These categories are explained in the following subsections.
 
-2.2.1  IPsec Policy Creation/Modification
+#### 2.2.1 IPsec Policy Creation/Modification
 
 This section specifies how the IPsec Group Policy administrative plug-in creates and modifies an
 IPsec policy that is stored in Active Directory.
@@ -1318,7 +1202,8 @@ Release: April 23, 2024
 
 16 / 84
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-GPIPSEC].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1344,7 +1229,8 @@ Release: April 23, 2024
 
 17 / 84
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-GPIPSEC].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1370,7 +1256,8 @@ Release: April 23, 2024
 
 18 / 84
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-GPIPSEC].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1412,7 +1299,8 @@ Release: April 23, 2024
 
 19 / 84
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-GPIPSEC].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1444,7 +1332,7 @@ ipsecNFA object can be associated to a maximum of one ipsecNegotiationPolicy obj
 Each ipsecFilter object can be associated to zero or more ipsecNFA objects. Each ipsecNFA object
 can be associated to one or more ipsecFilter objects.
 
-2.2.1.1  ipsecPolicy Object Attribute Details
+##### 2.2.1.1 ipsecPolicy Object Attribute Details
 
 IPsec policy is the main unit of a single policy instance. The ipsecPolicy data attribute contains this
 IPsec policy information. It MUST contain a reference to an ISAKMP policy, at least one reference to a
@@ -1458,7 +1346,8 @@ Release: April 23, 2024
 
 20 / 84
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-GPIPSEC].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1469,7 +1358,7 @@ IPsec policy creation MUST use the LDAP add functionality in conformance with [R
 IPsec policy modification MUST use the LDAP modify functionality in conformance with [RFC2251]
 section 4.6.
 
-2.2.1.1.1 ipsecPolicy{GUID} Object Attribute Descriptions
+###### 2.2.1.1.1 ipsecPolicy{GUID} Object Attribute Descriptions
 
 The following table specifies the attributes of the ipsecPolicy class object (as specified in [MS-ADSC],
 [MS-ADA1], and [MS-ADA3]).
@@ -1506,7 +1395,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Type
 
@@ -1625,7 +1515,8 @@ Release: April 23, 2024
 
 22 / 84
 
-Data-Length
+
+Data-Length
 
 Polling-Interval
 
@@ -1645,7 +1536,7 @@ integer value. Polling interval is 10,800 seconds when this value is set to 0.
 
 Unused (1 byte): This value MUST always be written as 0x0 and MUST be ignored when read.
 
-2.2.1.2  ipsecISAKMPPolicy Object Attribute Details
+##### 2.2.1.2 ipsecISAKMPPolicy Object Attribute Details
 
 The ISAKMP policy stores information related to the initial IPsec conversation (that is, main mode
 (MM); as defined in [RFC2408] and [RFC2409], section 7.1). The ipsecISAKMPPolicy data attribute
@@ -1663,7 +1554,8 @@ Release: April 23, 2024
 
 23 / 84
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-GPIPSEC].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1677,7 +1569,7 @@ with [RFC2251] section 4.6.
 
 The ipsecISAKMPPolicy attributes are specified in the following subsection.
 
-2.2.1.2.1 ipsecISAKMPPolicy{GUID} Object Attribute Descriptions
+###### 2.2.1.2.1 ipsecISAKMPPolicy{GUID} Object Attribute Descriptions
 
 The following table specifies the attributes of the ipsecISAKMPPolicy class object (as specified in [MS-
 ADSC], [MS-ADA1], and [MS-ADA3]).
@@ -1717,7 +1609,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 ipsecID
 
@@ -1815,7 +1708,8 @@ Release: April 23, 2024
 
 25 / 84
 
-Master-PFS-Required
+
+Master-PFS-Required
 
 ISAKMP-Options
 
@@ -1892,7 +1786,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1994,7 +1889,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x04
 
@@ -2170,7 +2066,8 @@ Security-Method-N
 
 28 / 84
 
-QM-Limit (4 bytes): The number of quick modes allowed per main mode in an IKE ([RFC2409])
+
+QM-Limit (4 bytes): The number of quick modes allowed per main mode in an IKE ([RFC2409])
 
 negotiation. A special value is 0x00000000, which means no limit. This field MUST be an unsigned
 integer.
@@ -2249,7 +2146,8 @@ Release: April 23, 2024
 
 29 / 84
 
-Major-Version (1 byte): The crypto bundle major version; MUST be 0x00.
+
+Major-Version (1 byte): The crypto bundle major version; MUST be 0x00.
 
 Minor-Version (1 byte): The crypto bundle minor version; MUST be 0x00.
 
@@ -2351,7 +2249,8 @@ Release: April 23, 2024
 
 30 / 84
 
-Value
+
+Value
 
 Meaning
 
@@ -2390,7 +2289,7 @@ Meaning
 
 0x00000001  Yes, PFS identity is required.
 
-2.2.1.3  ipsecNFA Object Attribute Details
+##### 2.2.1.3 ipsecNFA Object Attribute Details
 
 The NFA policy stores references to a Filter List policy and a Negotiation policy to bind the individual
 Filter and Negotiation policy objects together. The ipsecNFA data attribute contains this policy binding
@@ -2404,7 +2303,8 @@ Release: April 23, 2024
 
 31 / 84
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-GPIPSEC].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2418,7 +2318,7 @@ The ipsecNFA object modification MUST use the LDAP modify functionality in confo
 
 The ipsecNFA attributes are specified in in the following subsection.
 
-2.2.1.3.1 ipsecNFA{GUID} Object Description
+###### 2.2.1.3.1 ipsecNFA{GUID} Object Description
 
 The following table specifies the attributes of the ipsecNFA class object, as specified in [MS-ADSC],
 [MS-ADA1], and [MS-ADA3].
@@ -2442,7 +2342,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Type
 
@@ -2566,7 +2467,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following table specifies the ipsecData attribute's specific sections, corresponding names, and the
+
+The following table specifies the ipsecData attribute's specific sections, corresponding names, and the
 data types for the assigned values for the purpose of IPsec policy configuration.
 
 The values of these settings MUST be applied as is to the IPsec component; they MUST NOT be
@@ -2634,7 +2536,8 @@ Release: April 23, 2024
 
 34 / 84
 
-Alt-Auth-Num-Methods-Count (optional)
+
+Alt-Auth-Num-Methods-Count (optional)
 
 Alt-Auth-Method-Data (variable)
 
@@ -2706,7 +2609,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Auth-Length
+
+Auth-Length
 
 Auth-Method-Data (variable)
 
@@ -2788,7 +2692,8 @@ Release: April 23, 2024
 
 36 / 84
 
-Is-Tunnel-Specifier (4 bytes): An indicator that this NFA policy applies to an IPsec tunnel. Used by
+
+Is-Tunnel-Specifier (4 bytes): An indicator that this NFA policy applies to an IPsec tunnel. Used by
 
 IKE to negotiate SAs. This MUST be one of the following values.
 
@@ -2873,7 +2778,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2933,7 +2839,7 @@ field value. This SHOULD<18> be the GUID whose string representation is "{010101
 IPv6-Tunnel-Mode-Address (16 bytes): This SHOULD<19> be the IPv6 address of the IPsec
 tunnel mode endpoint to which the IPsec component will apply this NFA (if applicable).
 
-2.2.1.4  ipsecNegotiationPolicy Object Attribute Details
+##### 2.2.1.4 ipsecNegotiationPolicy Object Attribute Details
 
 The Negotiation policy stores information regarding what action to take when it is determined that a
 packet matches the associated Filter policy. The ipsecNegotiationPolicy data attribute contains this
@@ -2948,7 +2854,8 @@ Release: April 23, 2024
 
 38 / 84
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-GPIPSEC].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -2962,7 +2869,7 @@ conformance with [RFC2251] section 4.6.
 
  The ipsecNegotiationPolicy attributes are specified in the following subsection.
 
-2.2.1.4.1 ipsecNegotiationPolicy{GUID} Object Description
+###### 2.2.1.4.1 ipsecNegotiationPolicy{GUID} Object Description
 
 The following table specifies the attributes of the ipsecNegotiationPolicy class object, as specified in
 [MS-ADSC], [MS-ADA1], and [MS-ADA3].
@@ -2987,7 +2894,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Type
 
@@ -3104,7 +3012,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-was used to configure them. A description of the interpretation by the IPsec component is provided for
+
+was used to configure them. A description of the interpretation by the IPsec component is provided for
 informative purposes (as opposed to the syntax, which is normative).
 
 ipsecNegotiationPolicyType: The ipsecNegotiationPolicyType value description. The value MUST
@@ -3198,7 +3107,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DataLength (4 bytes): This is the length of the data that follows. This MUST be an unsigned integer.
+
+DataLength (4 bytes): This is the length of the data that follows. This MUST be an unsigned integer.
 This field is always 1 byte less than the size of the following data encoded as an octet stream.
 
 Security-Offer-Count (4 bytes): The number of security offers that are specified in the Security-
@@ -3278,7 +3188,8 @@ Release: April 23, 2024
 
 42 / 84
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3370,7 +3281,8 @@ Release: April 23, 2024
 
 43 / 84
 
-<!-- Extracted images from page 44 -->
+
+<!-- Extracted images from page 44 -->
 ![Extracted image 1 from page 44]([MS-GPIPSEC].images/page044-img01.png)
 <!-- /Extracted images from page 44 -->
 
@@ -3384,7 +3296,7 @@ Meaning
 
 Zero1 (8 bytes): This value MAY be filled with 0x00 and MUST be ignored when read.
 
-2.2.1.5  ipsecFilter Object Attribute Details
+##### 2.2.1.5 ipsecFilter Object Attribute Details
 
 The Filter policy stores IP filter conditions. The ipsecFilter data attribute contains the IPsec filter
 policy information. This information includes what is commonly associated with IP filters (for example,
@@ -3408,7 +3320,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.5.1 ipsecFilter{GUID} Object Description
+
+###### 2.2.1.5.1 ipsecFilter{GUID} Object Description
 
 The following table specifies the attributes of the ipsecFilter class object, as specified in [MS-ADSC],
 [MS-ADA1], and [MS-ADA3].
@@ -3518,7 +3431,8 @@ Release: April 23, 2024
 
 45 / 84
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3595,7 +3509,8 @@ Release: April 23, 2024
 
 46 / 84
 
-...
+
+...
 
 Destination-Length-Of-DNS-Name1
 
@@ -3664,7 +3579,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Filter-Description1 (variable): The user-constructed Unicode, NULL-terminated text string that
+
+Filter-Description1 (variable): The user-constructed Unicode, NULL-terminated text string that
 is intended to contain a description of this individual filter (for example, "Matches all ICMP
 packets between this computer and any other computer").
 
@@ -3746,7 +3662,8 @@ Release: April 23, 2024
 
 48 / 84
 
-Value  Meaning
+
+Value  Meaning
 
 0x00
 
@@ -3840,7 +3757,8 @@ Release: April 23, 2024
 
 49 / 84
 
-Filter-Description2 (variable)
+
+Filter-Description2 (variable)
 
 ...
 
@@ -3901,7 +3819,8 @@ Release: April 23, 2024
 
 50 / 84
 
-Filter-Description2 (variable): The user-constructed Unicode, NULL-terminated text string that
+
+Filter-Description2 (variable): The user-constructed Unicode, NULL-terminated text string that
 is intended to contain a description of this individual filter (for example, "Matches all ICMP
 packets between this computer and any other computer").
 
@@ -3981,7 +3900,8 @@ Release: April 23, 2024
 
 51 / 84
 
-Value
+
+Value
 
 Meaning
 
@@ -4060,7 +3980,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-byte order) representation of the IPv4 subnet mask; if the IPsec-Address-Version field is
+
+byte order) representation of the IPv4 subnet mask; if the IPsec-Address-Version field is
 0x0002, this is the 1-byte representation of the IPv6 subnet mask. The IPv6 subnet mask is a
 byte number that counts the number of bits prefixes that compose the mask.
 
@@ -4139,7 +4060,8 @@ Release: April 23, 2024
 
 53 / 84
 
-The value 0x00000003 MUST only be used if the value of the IPsec-Address-Type is
+
+The value 0x00000003 MUST only be used if the value of the IPsec-Address-Type is
 0x00000008, 0x00000010, 0x00000020, 0x00000040, or 0x00000080.
 
 IP-Address-Data-Format (32 bytes): The IP address(es) of the traffic that define(s) the IPsec
@@ -4221,7 +4143,8 @@ Release: April 23, 2024
 
 54 / 84
 
-IPsec-Source-Port-Type (4 bytes): Specifies the type of port that the IPsec filter specifies. This
+
+IPsec-Source-Port-Type (4 bytes): Specifies the type of port that the IPsec filter specifies. This
 includes special port types that have a predefined meaning. This MUST be one of the following
 values and MUST be an unsigned integer.
 
@@ -4306,7 +4229,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 56 -->
+
+<!-- Extracted images from page 56 -->
 ![Extracted image 1 from page 56]([MS-GPIPSEC].images/page056-img01.png)
 <!-- /Extracted images from page 56 -->
 
@@ -4325,7 +4249,7 @@ expressed as both the version-1 (v1) expanded subnets and the v2 address range, 
 the flag is to ignore the v1 expanded subnets because it can process the v2 filter expressed as an
 address range.
 
-2.2.2  IPsec Policy Assignment
+#### 2.2.2 IPsec Policy Assignment
 
 This section specifies how an IPsec Group Policy administrative plug-in assigns an active IPsec
 policy to a GPO.
@@ -4350,7 +4274,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Name
+
+ Name
 
  Type
 
@@ -4427,7 +4352,7 @@ NOT be included in the LDAP modifyRequest message.
 If the resultCode field of the "ModifyResponse" message ([RFC2251] section 4.6) is nonzero, the
 modify operation failed and this protocol sequence MUST log an error.
 
-2.2.3  IPsec Policy Retrieval
+#### 2.2.3 IPsec Policy Retrieval
 
 This section specifies LDAP SearchRequest message parameters for the retrieval of policy location,
 name, and description; the retrieval of policy data; and for determining whether an IPsec policy exists.
@@ -4439,7 +4364,8 @@ Release: April 23, 2024
 
 57 / 84
 
-2.2.3.1  Policy Location, Name, and Description Retrieval
+
+##### 2.2.3.1 Policy Location, Name, and Description Retrieval
 
 When retrieving the assigned policy location, name, and description, an LDAP SearchRequest message
 MUST be sent to the domain controller with the parameters that follow:
@@ -4520,7 +4446,7 @@ Attributes
 This field MUST specify the attributes ipsecOwnersReference, description, and ipsecName, as
 specified in section 2.2.2.
 
-2.2.3.2  Policy Data Retrieval
+##### 2.2.3.2 Policy Data Retrieval
 
 To retrieve the assigned policy data, an LDAP SearchRequest MUST be sent to the domain controller
 with following parameters:
@@ -4532,7 +4458,8 @@ Release: April 23, 2024
 
 58 / 84
 
-Parameter  Value
+
+Parameter  Value
 
 baseObject
 
@@ -4575,7 +4502,7 @@ Attributes
 This field MUST specify the attributes that are specific to the individual policy object, as specified in
 sections 2.2.1.1, 2.2.1.2, 2.2.1.3, 2.2.1.4, and 2.2.1.5.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Group Policy: Core Protocol accesses the Directory Service schema classes and attributes listed in
 the following table. For the syntactic specifications of the following <Class> or <Class> <Attribute>
@@ -4632,7 +4559,8 @@ Release: April 23, 2024
 
 59 / 84
 
-Class
+
+Class
 
 Attribute
 
@@ -4709,9 +4637,10 @@ Release: April 23, 2024
 
 60 / 84
 
-3  Protocol Details
 
-3.1  IPsec Group Policy Administrative Plug-in Details
+## 3 Protocol Details
+
+### 3.1 IPsec Group Policy Administrative Plug-in Details
 
 The IPsec administrative plug-in consists of a user interface that allows an IPsec administrator to
 author an IPsec policy and assign it to a GPO. First, the values that are entered by the administrator
@@ -4720,7 +4649,7 @@ Creation/Modification (section 2.2.1) and IPsec policy assignment messages, as s
 Policy Assignment (section 2.2.2). These messages are then sent to Active Directory and stored as
 the IPsec policy, as explained in IPsec Extension Overview (section 1.3.2).
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The described organization is provided to facilitate the
@@ -4739,11 +4668,11 @@ ADConnectionHandle: An ADConnection structure (see "ADConnection Abstract Data M
 Note that an ADCONNECTION_HANDLE object is returned by the ADConnection initialization
 operation, as defined in section 3.2.5.2.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the IPsec administrative plug-in starts, the Group Policy Protocol component (as specified
 in [MS-GPOL] (section 1.3.3.1), "Server Discovery and Group Policy Object Association" and [MS-
@@ -4757,7 +4686,7 @@ currently available for assignment to the GPO from the IP Security Active Direct
 specified in section 3.2.5.4. If this fails, administrators MUST be informed so that they can determine
 the appropriate action to take.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The higher-layer triggered events are: policy creation, policy modification, policy deletion, reading the
 policy, and assigning the policy to a GPO.
@@ -4771,7 +4700,8 @@ Release: April 23, 2024
 
 61 / 84
 
-On the policy creation/modify, the IPsec Protocol plug-in MUST generate the messages to create or
+
+On the policy creation/modify, the IPsec Protocol plug-in MUST generate the messages to create or
 modify the IPsec policy in the Active Directory store, as specified in IPsec Policy
 Creation/Modification (section 2.2.1).
 
@@ -4786,9 +4716,9 @@ section 3.1.5.8.
 In all cases, if this fails, the administrator MUST be informed so that they can determine the
 appropriate action to take.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Configuring an LDAP BindRequest
+##### 3.1.5.1 Configuring an LDAP BindRequest
 
 The following protocol sequences MUST be generated by the administrative plug-in.
 
@@ -4802,26 +4732,26 @@ To configure an LDAP BindRequest:
 
 an error and MUST terminate policy reading.
 
-3.1.5.2  Terminating the LDAP BindRequest
+##### 3.1.5.2 Terminating the LDAP BindRequest
 
 To close the connection opened by a previous LDAP BindRequest, the administrative plug-in MUST
 unbind as specified in [MS-ADTS] section 7.6.1.5. The administrative plug-in MUST pass its
 ADConnectionHandle as a parameter to the unbind task.
 
-3.1.5.3  Retrieving the Assigned Policy Location, Name, and Description
+##### 3.1.5.3 Retrieving the Assigned Policy Location, Name, and Description
 
 The administrative plug-in MUST connect to the domain controller as specified in sections 3.2.5.1 and
 3.2.5.2. The administrative plug-in MUST retrieve the assigned policy location, name, and description,
 as specified in section 3.2.5.3. Thereafter, terminate the BindRequest, as defined in section 3.1.5.2.
 
-3.1.5.4  Reading the Assigned Policy Data
+##### 3.1.5.4 Reading the Assigned Policy Data
 
 The administrative plug-in MUST connect to the domain controller as specified in section 3.2.5.1 and
 3.2.5.2. The administrative plug-in MUST read the existing group policy, using the appropriate
 parameters and values, as specified in sections 3.2.5.3 and 3.2.5.4. Thereafter, terminate the LDAP
 BindRequest, as specified in section 3.1.5.2.
 
-3.1.5.5  Writing the Assigned Policy Data
+##### 3.1.5.5 Writing the Assigned Policy Data
 
 The administrative plug-in MUST connect to the domain controller as specified in sections 3.2.5.1 and
 3.2.5.2. To write the new IPsec policy, the administrative plug-in MUST perform the LDAP operation
@@ -4837,7 +4767,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter  Value
+
+Parameter  Value
 
 Entry
 
@@ -4927,7 +4858,8 @@ Release: April 23, 2024
 
 63 / 84
 
-3.1.5.6  Modifying the Assigned Policy Data
+
+##### 3.1.5.6 Modifying the Assigned Policy Data
 
 The administrative plug-in MUST connect to the domain controller as specified in sections 3.2.5.1 and
 3.2.5.2. To modify the policy, the administrative-side plug-in modifies the existing policy object in
@@ -4995,7 +4927,7 @@ then the administrative plug-in MUST log an error, and then unbind as specified 
 Note  To terminate the LDAP BindRequest and close the connection, the administrative plug-in MUST
 make an LDAP UnBindRequest corresponding to the LDAP BindRequest, as indicated in section 3.1.5.2.
 
-3.1.5.7  Deleting the Assigned Policy Data
+##### 3.1.5.7 Deleting the Assigned Policy Data
 
 To delete an existing object, the administrative plug-in MUST connect to the domain controller as
 specified in sections 3.2.5.1 and 3.2.5.2. The administrative-side plug-in MUST delete the existing
@@ -5010,7 +4942,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ADCONNECTION_HANDLE object ([MS-DTYP], section 2.2.2, "ADCONNECTION_HANDLE") stored in
+
+ADCONNECTION_HANDLE object ([MS-DTYP], section 2.2.2, "ADCONNECTION_HANDLE") stored in
 ADConnectionHandle. The TaskInputRequestMessage MUST contain an LDAP delRequest message
 ([RFC2251] section 4.8) with the following parameters:
 
@@ -5088,10 +5021,11 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-All reference modification MUST be done as specified in section 3.1.5.6. Object deletion MUST be done
+
+All reference modification MUST be done as specified in section 3.1.5.6. Object deletion MUST be done
 as specified in this section.
 
-3.1.5.8  Policy Assignment
+##### 3.1.5.8 Policy Assignment
 
 The Policy Assignment event is invoked to assign an ipsecPolicy object to a GPO.
 
@@ -5169,21 +5103,22 @@ Release: April 23, 2024
 
 66 / 84
 
-3.1.6  Timer Events
+
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  IPsec Group Policy Client-Side Plug-in Details
+### 3.2 IPsec Group Policy Client-Side Plug-in Details
 
 During policy application, this protocol is invoked after the Group Policy: Core Protocol has computed a
 list of GPOs for which the IPsec client plug-in is to be invoked as specified in [MS-GPOL] section
 3.2.5, "Message Processing Events and Sequencing Rules".
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section specifies a conceptual model of possible data organization that an implementation can
 maintain to participate in this protocol. The described organization is provided to facilitate the
@@ -5215,12 +5150,12 @@ FilteredGPOList: A list of new or changed GPOs since this client-side extension 
 
 Filtered GO List is defined in [MS-GPOL] section 3.2.1.5.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Local Timer: A local timer controls the time interval at which to check for IPsec policy updates in the
 IPsec policy container.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 On initialization, the client MUST set the LocalWhenChanged ADM element to 0 and then execute
 the functionality specified in 3.2.6.1. Note that the whenChanged attribute in the retrieved policy will
@@ -5234,9 +5169,10 @@ Release: April 23, 2024
 
 67 / 84
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  Processing Group Policy Callbacks
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 Processing Group Policy Callbacks
 
 During policy application, this protocol is invoked after the Group Policy: Core Protocol has computed a
 list of GPOs for which the IPsec client plug-in is to be invoked, as specified in [MS-GPOL] section
@@ -5257,9 +5193,9 @@ determine the location of the policy that is assigned to the client as specified
 Once the policy location is known, the client MUST read the policy, as specified in sections 3.2.5.1,
 3.2.5.2, and 3.2.5.4.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Locating a Domain Controller
+##### 3.2.5.1 Locating a Domain Controller
 
 To locate the domain controller, the client MUST invoke the DC locator operation DsrGetDcName ([MS-
 NRPC] section 3.5.4.3.3, "DsrGetDcName (Opnum 20)"). For this method, the input parameters are all
@@ -5277,7 +5213,7 @@ explicit IP address when connecting to the domain controller in section 3.2.5.2.
 Timer to this new value, in minutes. Otherwise, the client MUST retrieve the assigned policy location,
 name, and description, as specified in section 3.2.5.3.
 
-3.2.5.2  Establishing a Connection to the Domain Controller
+##### 3.2.5.2 Establishing a Connection to the Domain Controller
 
 An ADConnection initialization operation MUST be performed, as specified in [MS-ADTS] section
 7.6.1.1, "Initializing an ADConnection". The TaskInputTargetName input value MUST be taken from
@@ -5303,7 +5239,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 LDAP_OPT_SIGN MUST be set to TRUE.
 
@@ -5318,7 +5255,7 @@ Note  The hostname, contained in the RetrievedDomainName data element, is resolv
 explicit IP address in [MS-ADTS] section 7.6.1.1, "Initializing an ADConnection", and [MS-ADTS]
 section 7.6.1.3, "Establishing an ADConnection".
 
-3.2.5.3  Retrieving the Assigned Policy Location, Name, and Description
+##### 3.2.5.3 Retrieving the Assigned Policy Location, Name, and Description
 
 The client MUST determine the location of the currently assigned policy by accessing the
 ipsecOwnersReference attribute, as specified in [MS-ADA1] section 2.330, "Attribute
@@ -5346,7 +5283,7 @@ If either LDAP SearchRequest message fails, the local IPsec component MUST be si
 can enter a known-safe state. Otherwise, the client MUST retrieve its assigned policy data (section
 3.2.5.4).
 
-3.2.5.4  Retrieving the Assigned Policy Data
+##### 3.2.5.4 Retrieving the Assigned Policy Data
 
 The IPsec policy data that is currently assigned is specified by the ipsecFilter, ipsecISAKMPPolicy,
 ipsecNegotiationPolicy, ipsecNFA, and ipsecPolicy entries, as specified in [MS-ADSC] section 2.71,
@@ -5370,12 +5307,13 @@ Release: April 23, 2024
 
 69 / 84
 
-Any retrieved ipsecPolicy object MUST copy its whenChanged field (see section 2.2.1.1) to the
+
+Any retrieved ipsecPolicy object MUST copy its whenChanged field (see section 2.2.1.1) to the
 implementation's LocalWhenChanged ADM element, as defined in section 3.2.1.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  Local Timer Expiration
+##### 3.2.6.1 Local Timer Expiration
 
 When the Local Timer (section 3.2.2) expires, the client MUST check for IPsec policy updates in the
 IPsec policy container.
@@ -5387,7 +5325,7 @@ attribute (section 2.2.1.1.1) against the LocalWhenChanged ADM element. If these
 same, the client MUST reset the timer using the LocalTimerInterval. Otherwise, the client MUST reread
 all policies for all objects as defined in section 3.2.5.4.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -5398,7 +5336,8 @@ Release: April 23, 2024
 
 70 / 84
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The IT security office of Contoso, Ltd (contoso.com) decides to implement an IPsec-based security
 solution. On a network that is managed by a central IT department, computers will use the
@@ -5411,7 +5350,7 @@ domain and are configured with the Group Policy settings to require authenticati
 communication attempts, to secure data traffic, and optionally, to encrypt data traffic. The security
 administrator configures this policy format in the IPsec policy administrative user interface.
 
-4.1  Administrative Creation/Assignment of Policy
+### 4.1 Administrative Creation/Assignment of Policy
 
 To create and assign the policy, the security administrator uses an IPsec administrative plug-in
 user interface to configure and make active the required policy. This results in the Group Policy: IPsec
@@ -5419,7 +5358,7 @@ Protocol transferring the settings to the IP Security container and the GPO of t
 that need to participate in the isolation mechanism. In this example, the domain name
 myDomain.contoso.com is used.
 
-4.1.1  Policy Creation
+#### 4.1.1 Policy Creation
 
 The protocol messages that occur to create the policy are as follows.
 
@@ -5480,7 +5419,8 @@ Release: April 23, 2024
 
 71 / 84
 
-
+
+
 
 
 
@@ -5589,7 +5529,8 @@ Release: April 23, 2024
 
 72 / 84
 
-
+
+
 
 ipsecName = "All Traffic Filter"
 
@@ -5649,7 +5590,7 @@ ipsecNegotiationPolicyReference= "CN= ipsecNegotiationPolicy{72385233-70FA-11D1-
 ipsecFilterReference= "CN=ipsecFilter{2FE2FD79-0389-4D6C-8794-55C4D444DB31},CN=IP
 Security, CN=System, DC=myDomain,DC=contoso,DC=com"
 
-4.1.2  Policy Assignment
+#### 4.1.2 Policy Assignment
 
 The protocol message that occurs to assign the policy is as follows:
 
@@ -5686,7 +5627,8 @@ Release: April 23, 2024
 
 73 / 84
 
-4.2  Client Retrieval of Policy
+
+### 4.2 Client Retrieval of Policy
 
 On client machines that are members of the GPO, the Group Policy protocol client subsequently
 signals the IPsec client-side plug-in, as specified in [MS-GPOL] section 3.2.5, "Message Processing
@@ -5694,7 +5636,7 @@ Events and Sequencing Rules", that an IPsec policy has been activated. The polic
 using the Group Policy: IPsec Protocol and is supplied to the local IPsec/IKE component to enact the
 required policy.
 
-4.2.1  Retrieving the Assigned Policy Name, Description, and Location
+#### 4.2.1 Retrieving the Assigned Policy Name, Description, and Location
 
 The protocol exchange that occurs to retrieve the assigned policy is as follows:
 
@@ -5728,7 +5670,7 @@ ipsecName = "Assigned IPsec Policy v1.2.1.2 [assigned July 2006]"
 
 Security,CN=System,DC=myDomain, DC=contoso,DC=com"
 
-4.2.2  Retrieving the Assigned Policy Data
+#### 4.2.2 Retrieving the Assigned Policy Data
 
 The protocol messages that occur to retrieve the assigned policy data are as follows:
 
@@ -5767,7 +5709,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5868,7 +5811,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5968,7 +5912,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -5983,9 +5928,10 @@ Release: April 23, 2024
 
 77 / 84
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The transmission of the IPsec configuration data can present a risk of disclosing the assets that the
 IPsec policy is being used to protect. Of particular concern is the transmission of a pre-shared key (in
@@ -5994,7 +5940,7 @@ to determine the security controls allows an attacker to analyze the policy for 
 organizational data. As such, implementers are advised to provide data integrity and data
 confidentiality for this protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol does not explicitly control the security parameters that are used to protect the data;
 however, it does configure the IPsec component, which is a group of security parameter settings.
@@ -6061,7 +6007,8 @@ Release: April 23, 2024
 
 78 / 84
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6131,7 +6078,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<6> Section 2.2.1.3.1: Except for Windows Server 2003 and Windows XP SP2, Windows honors the
+
+<6> Section 2.2.1.3.1: Except for Windows Server 2003 and Windows XP SP2, Windows honors the
 settings in the additional data. Windows Server 2003 and Windows XP SP2 read only up to the value
 specified in the data length; the additional data is ignored.
 
@@ -6200,7 +6148,8 @@ Group Policy: IP Security (IPsec) Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<26> Section 2.2.1.5.1: The Source-Port-Data field is not implemented in Windows 2000, Windows
+
+<26> Section 2.2.1.5.1: The Source-Port-Data field is not implemented in Windows 2000, Windows
 XP, and Windows Server 2003.
 
 <27> Section 2.2.1.5.1: The Destination-Port-Data field is not implemented in Windows 2000,
@@ -6222,7 +6171,8 @@ Release: April 23, 2024
 
 81 / 84
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6266,7 +6216,8 @@ Release: April 23, 2024
 
 82 / 84
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6397,7 +6348,8 @@ Schema elements - directory service 59
 
 83 / 84
 
-Security 78
+
+Security 78
    implementer considerations 78
    parameter index 78
 Sequencing rules

@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 114
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: June 1, 2017
 
 2 / 114
 
-Date
+
+Date
 
 Revision
 History
@@ -512,374 +514,164 @@ Release: June 1, 2017
 
 3 / 114
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Remote Administration Tasks](#131-remote-administration-tasks)
+    - [1.3.2 Remote Querying](#132-remote-querying)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+    - [1.8.1 Property IDs](#181-property-ids)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 CBaseStorageVariant](#2211-cbasestoragevariant)
+        - [2.2.1.1.1 CBaseStorageVariant Structures](#22111-cbasestoragevariant-structures)
+          - [2.2.1.1.1.1 DECIMAL](#221111-decimal)
+          - [2.2.1.1.1.2 VT_VECTOR](#221112-vtvector)
+          - [2.2.1.1.1.3 SAFEARRAY](#221113-safearray)
+          - [2.2.1.1.1.4 SAFEARRAYBOUND](#221114-safearraybound)
+          - [2.2.1.1.1.5 SAFEARRAY2](#221115-safearray2)
+      - [2.2.1.2 CFullPropSpec](#2212-cfullpropspec)
+      - [2.2.1.3 CContentRestriction](#2213-ccontentrestriction)
+      - [2.2.1.4 CNatLanguageRestriction](#2214-cnatlanguagerestriction)
+      - [2.2.1.5 CNodeRestriction](#2215-cnoderestriction)
+      - [2.2.1.6 CPropertyRestriction](#2216-cpropertyrestriction)
+      - [2.2.1.7 CScopeRestriction](#2217-cscoperestriction)
+      - [2.2.1.8 CSort](#2218-csort)
+      - [2.2.1.9 CVectorRestriction](#2219-cvectorrestriction)
+      - [2.2.1.10 CRestriction](#22110-crestriction)
+      - [2.2.1.11 CColumnSet](#22111-ccolumnset)
+      - [2.2.1.12 CCategorizationSet](#22112-ccategorizationset)
+      - [2.2.1.13 CCategorizationSpec](#22113-ccategorizationspec)
+      - [2.2.1.14 CDbColId](#22114-cdbcolid)
+      - [2.2.1.15 CDbProp](#22115-cdbprop)
+        - [2.2.1.15.1 Database Properties](#221151-database-properties)
+      - [2.2.1.16 CDbPropSet](#22116-cdbpropset)
+      - [2.2.1.17 CPidMapper](#22117-cpidmapper)
+      - [2.2.1.18 CRowSeekAt](#22118-crowseekat)
+      - [2.2.1.19 CRowSeekAtRatio](#22119-crowseekatratio)
+      - [2.2.1.20 CRowSeekByBookmark](#22120-crowseekbybookmark)
+      - [2.2.1.21 CRowSeekNext](#22121-crowseeknext)
+      - [2.2.1.22 CRowsetProperties](#22122-crowsetproperties)
+      - [2.2.1.23 CRowVariant](#22123-crowvariant)
+      - [2.2.1.24 CSortSet](#22124-csortset)
+      - [2.2.1.25 CTableColumn](#22125-ctablecolumn)
+      - [2.2.1.26 SERIALIZEDPROPERTYVALUE](#22126-serializedpropertyvalue)
+    - [2.2.2 Message Headers](#222-message-headers)
+    - [2.2.3 Messages](#223-messages)
+      - [2.2.3.1 CPMCiStateInOut](#2231-cpmcistateinout)
+      - [2.2.3.2 CPMSetCatStateIn](#2232-cpmsetcatstatein)
+      - [2.2.3.3 CPMSetCatStateOut](#2233-cpmsetcatstateout)
+      - [2.2.3.4 CPMUpdateDocumentsIn](#2234-cpmupdatedocumentsin)
+      - [2.2.3.5 CPMForceMergeIn](#2235-cpmforcemergein)
+      - [2.2.3.6 CPMConnectIn](#2236-cpmconnectin)
+      - [2.2.3.7 CPMConnectOut](#2237-cpmconnectout)
+      - [2.2.3.8 CPMCreateQueryIn](#2238-cpmcreatequeryin)
+      - [2.2.3.9 CPMCreateQueryOut](#2239-cpmcreatequeryout)
+      - [2.2.3.10 CPMGetQueryStatusIn](#22310-cpmgetquerystatusin)
+      - [2.2.3.11 CPMGetQueryStatusOut](#22311-cpmgetquerystatusout)
+      - [2.2.3.12 CPMGetQueryStatusExIn](#22312-cpmgetquerystatusexin)
+      - [2.2.3.13 CPMGetQueryStatusExOut](#22313-cpmgetquerystatusexout)
+      - [2.2.3.14 CPMSetBindingsIn](#22314-cpmsetbindingsin)
+      - [2.2.3.15 CPMGetRowsIn](#22315-cpmgetrowsin)
+      - [2.2.3.16 CPMGetRowsOut](#22316-cpmgetrowsout)
+      - [2.2.3.17 CPMRatioFinishedIn](#22317-cpmratiofinishedin)
+      - [2.2.3.18 CPMRatioFinishedOut](#22318-cpmratiofinishedout)
+      - [2.2.3.19 CPMFetchValueIn](#22319-cpmfetchvaluein)
+      - [2.2.3.20 CPMFetchValueOut](#22320-cpmfetchvalueout)
+      - [2.2.3.21 CPMGetNotify](#22321-cpmgetnotify)
+      - [2.2.3.22 CPMSendNotifyOut](#22322-cpmsendnotifyout)
+      - [2.2.3.23 CPMGetApproximatePositionIn](#22323-cpmgetapproximatepositionin)
+      - [2.2.3.24 CPMGetApproximatePositionOut](#22324-cpmgetapproximatepositionout)
+      - [2.2.3.25 CPMCompareBmkIn](#22325-cpmcomparebmkin)
+      - [2.2.3.26 CPMCompareBmkOut](#22326-cpmcomparebmkout)
+      - [2.2.3.27 CPMRestartPositionIn](#22327-cpmrestartpositionin)
+      - [2.2.3.28 CPMStopAsynchIn](#22328-cpmstopasynchin)
+      - [2.2.3.29 CPMFreeCursorIn](#22329-cpmfreecursorin)
+      - [2.2.3.30 CPMFreeCursorOut](#22330-cpmfreecursorout)
+      - [2.2.3.31 CPMDisconnect](#22331-cpmdisconnect)
+    - [2.2.4 Errors](#224-errors)
+    - [2.2.5 Standard Properties](#225-standard-properties)
+      - [2.2.5.1 Query Properties](#2251-query-properties)
+      - [2.2.5.2 Common Open Properties](#2252-common-open-properties)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing and Sequencing Rules](#315-message-processing-and-sequencing-rules)
+      - [3.1.5.1 Remote Indexing Service Catalog Management](#3151-remote-indexing-service-catalog-management)
+        - [3.1.5.1.1 Receiving a CPMCiStateInOut Request](#31511-receiving-a-cpmcistateinout-request)
+        - [3.1.5.1.2 Receiving a CPMSetCatStateIn Request](#31512-receiving-a-cpmsetcatstatein-request)
+        - [3.1.5.1.3 Receiving a CPMUpdateDocumentsIn Request](#31513-receiving-a-cpmupdatedocumentsin-request)
+        - [3.1.5.1.4 Receiving a CPMForceMergeIn Request](#31514-receiving-a-cpmforcemergein-request)
+      - [3.1.5.2 Remote Indexing Service Querying](#3152-remote-indexing-service-querying)
+        - [3.1.5.2.1 Receiving a CPMConnectIn Request](#31521-receiving-a-cpmconnectin-request)
+        - [3.1.5.2.2 Receiving a CPMCreateQueryIn Request](#31522-receiving-a-cpmcreatequeryin-request)
+        - [3.1.5.2.3 Receiving a CPMGetQueryStatusIn Request](#31523-receiving-a-cpmgetquerystatusin-request)
+        - [3.1.5.2.4 Receiving a CPMGetQueryStatusExIn Request](#31524-receiving-a-cpmgetquerystatusexin-request)
+        - [3.1.5.2.5 Receiving a CPMRatioFinishedIn Request](#31525-receiving-a-cpmratiofinishedin-request)
+        - [3.1.5.2.6 Receiving a CPMSetBindingsIn Request](#31526-receiving-a-cpmsetbindingsin-request)
+        - [3.1.5.2.7 Receiving a CPMGetRowsIn Request](#31527-receiving-a-cpmgetrowsin-request)
+        - [3.1.5.2.8 Receiving a CPMFetchValueIn Request](#31528-receiving-a-cpmfetchvaluein-request)
+        - [3.1.5.2.9 Receiving a CPMGetNotify Request](#31529-receiving-a-cpmgetnotify-request)
+        - [3.1.5.2.10 Receiving a CPMGetApproximatePositionIn Request](#315210-receiving-a-cpmgetapproximatepositionin-request)
+        - [3.1.5.2.11 Receiving a CPMCompareBmkIn Request](#315211-receiving-a-cpmcomparebmkin-request)
+        - [3.1.5.2.12 Receiving a CPMRestartPositionIn Request](#315212-receiving-a-cpmrestartpositionin-request)
+        - [3.1.5.2.13 Receiving a CPMStopAsynchIn Request](#315213-receiving-a-cpmstopasynchin-request)
+        - [3.1.5.2.14 Receiving a CPMFreeCursorIn Request](#315214-receiving-a-cpmfreecursorin-request)
+        - [3.1.5.2.15 Receiving a CPMDisconnect Request](#315215-receiving-a-cpmdisconnect-request)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Remote Indexing Service Catalog Management](#3241-remote-indexing-service-catalog-management)
+        - [3.2.4.1.1 Sending a CPMCiStateInOut Request](#32411-sending-a-cpmcistateinout-request)
+        - [3.2.4.1.2 Sending a CPMSetCatStateIn Request](#32412-sending-a-cpmsetcatstatein-request)
+        - [3.2.4.1.3 Sending a CPMUpdateDocumentsIn Request](#32413-sending-a-cpmupdatedocumentsin-request)
+        - [3.2.4.1.4 Sending a CPMForceMergeIn Request](#32414-sending-a-cpmforcemergein-request)
+      - [3.2.4.2 Remote Indexing Service Catalog Query Messages](#3242-remote-indexing-service-catalog-query-messages)
+        - [3.2.4.2.1 Sending a CPMConnectIn Request](#32421-sending-a-cpmconnectin-request)
+        - [3.2.4.2.2 Sending a CPMCreateQueryIn Request](#32422-sending-a-cpmcreatequeryin-request)
+        - [3.2.4.2.3 Sending a CPMSetBindingsIn Request](#32423-sending-a-cpmsetbindingsin-request)
+        - [3.2.4.2.4 Sending a CPMGetRowsIn Request](#32424-sending-a-cpmgetrowsin-request)
+        - [3.2.4.2.5 Sending a CPMFetchValueIn Request](#32425-sending-a-cpmfetchvaluein-request)
+        - [3.2.4.2.6 Sending a CPMFreeCursorIn Request](#32426-sending-a-cpmfreecursorin-request)
+        - [3.2.4.2.7 Sending a CPMDisconnect Message](#32427-sending-a-cpmdisconnect-message)
+    - [3.2.5 Message Processing and Sequencing Rules](#325-message-processing-and-sequencing-rules)
+      - [3.2.5.1 Receiving a CPMCreateQueryOut Response](#3251-receiving-a-cpmcreatequeryout-response)
+      - [3.2.5.2 Receiving a CPMGetRowsOut Response](#3252-receiving-a-cpmgetrowsout-response)
+      - [3.2.5.3 Receiving a CPMFetchValueOut Response](#3253-receiving-a-cpmfetchvalueout-response)
+      - [3.2.5.4 Receiving a CPMFreeCursorOut Response](#3254-receiving-a-cpmfreecursorout-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example 1](#41-example-1)
+  - [4.2 Example 2](#42-example-2)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Remote Administration Tasks ....................................................................... 10
-Remote Querying ........................................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Property IDs .............................................................................................. 11
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-
-1.8.1
-
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.1.1.1
-2.2.1.1.1.2
-2.2.1.1.1.3
-2.2.1.1.1.4
-2.2.1.1.1.5
-
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-2.2.1.10
-2.2.1.11
-2.2.1.12
-2.2.1.13
-2.2.1.14
-2.2.1.15
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Structures ................................................................................................. 12
-CBaseStorageVariant ............................................................................. 13
-CBaseStorageVariant Structures ........................................................ 17
-DECIMAL .................................................................................. 17
-VT_VECTOR .............................................................................. 17
-SAFEARRAY ............................................................................... 18
-SAFEARRAYBOUND .................................................................... 19
-SAFEARRAY2 ............................................................................. 19
-CFullPropSpec ...................................................................................... 20
-CContentRestriction ............................................................................... 21
-CNatLanguageRestriction ....................................................................... 22
-CNodeRestriction .................................................................................. 23
-CPropertyRestriction .............................................................................. 24
-CScopeRestriction ................................................................................. 26
-CSort .................................................................................................. 27
-CVectorRestriction ................................................................................. 28
-CRestriction.......................................................................................... 28
-CColumnSet ......................................................................................... 30
-CCategorizationSet ................................................................................ 30
-CCategorizationSpec ............................................................................. 30
-CDbColId ............................................................................................. 31
-CDbProp .............................................................................................. 32
-2.2.1.15.1  Database Properties ......................................................................... 32
-CDbPropSet .......................................................................................... 34
-CPidMapper .......................................................................................... 35
-CRowSeekAt ......................................................................................... 36
-CRowSeekAtRatio ................................................................................. 36
-CRowSeekByBookmark .......................................................................... 37
-CRowSeekNext ..................................................................................... 38
-CRowsetProperties ................................................................................ 38
-CRowVariant ........................................................................................ 39
-CSortSet .............................................................................................. 40
-CTableColumn ...................................................................................... 40
-SERIALIZEDPROPERTYVALUE ................................................................. 42
-Message Headers ........................................................................................ 42
-Messages ................................................................................................... 44
-
-2.2.1.16
-2.2.1.17
-2.2.1.18
-2.2.1.19
-2.2.1.20
-2.2.1.21
-2.2.1.22
-2.2.1.23
-2.2.1.24
-2.2.1.25
-2.2.1.26
-
-2.2.2
-2.2.3
-
-[MS-MCIS] - v20170601
-Content Indexing Services Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 114
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-2.2.3.12
-2.2.3.13
-2.2.3.14
-2.2.3.15
-2.2.3.16
-2.2.3.17
-2.2.3.18
-2.2.3.19
-2.2.3.20
-2.2.3.21
-2.2.3.22
-2.2.3.23
-2.2.3.24
-2.2.3.25
-2.2.3.26
-2.2.3.27
-2.2.3.28
-2.2.3.29
-2.2.3.30
-2.2.3.31
-
-CPMCiStateInOut .................................................................................. 44
-CPMSetCatStateIn ................................................................................. 47
-CPMSetCatStateOut ............................................................................... 47
-CPMUpdateDocumentsIn ........................................................................ 48
-CPMForceMergeIn ................................................................................. 49
-CPMConnectIn ...................................................................................... 49
-CPMConnectOut .................................................................................... 52
-CPMCreateQueryIn ................................................................................ 52
-CPMCreateQueryOut .............................................................................. 54
-CPMGetQueryStatusIn ........................................................................... 55
-CPMGetQueryStatusOut ......................................................................... 55
-CPMGetQueryStatusExIn ........................................................................ 56
-CPMGetQueryStatusExOut ...................................................................... 57
-CPMSetBindingsIn ................................................................................. 57
-CPMGetRowsIn ..................................................................................... 58
-CPMGetRowsOut ................................................................................... 60
-CPMRatioFinishedIn ............................................................................... 63
-CPMRatioFinishedOut ............................................................................. 63
-CPMFetchValueIn .................................................................................. 64
-CPMFetchValueOut ................................................................................ 64
-CPMGetNotify ....................................................................................... 65
-CPMSendNotifyOut ................................................................................ 65
-CPMGetApproximatePositionIn ................................................................ 66
-CPMGetApproximatePositionOut .............................................................. 66
-CPMCompareBmkIn ............................................................................... 67
-CPMCompareBmkOut ............................................................................ 67
-CPMRestartPositionIn ............................................................................ 68
-CPMStopAsynchIn ................................................................................. 68
-CPMFreeCursorIn .................................................................................. 69
-CPMFreeCursorOut ................................................................................ 69
-CPMDisconnect ..................................................................................... 69
-Errors........................................................................................................ 69
-Standard Properties .................................................................................... 69
-Query Properties ................................................................................... 70
-Common Open Properties ...................................................................... 70
-
-2.2.4
-2.2.5
-
-2.2.5.1
-2.2.5.2
-
-3.1
-
-3.1.5.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1
-3.1.5.1.2
-3.1.5.1.3
-3.1.5.1.4
-
-3  Protocol Details ..................................................................................................... 79
-Server Details .................................................................................................. 80
-Abstract Data Model .................................................................................... 80
-Timers ...................................................................................................... 81
-Initialization ............................................................................................... 81
-Higher-Layer Triggered Events ..................................................................... 81
-Message Processing and Sequencing Rules .................................................... 81
-Remote Indexing Service Catalog Management ......................................... 83
-Receiving a CPMCiStateInOut Request ............................................... 83
-Receiving a CPMSetCatStateIn Request .............................................. 83
-Receiving a CPMUpdateDocumentsIn Request ..................................... 84
-Receiving a CPMForceMergeIn Request............................................... 84
-Remote Indexing Service Querying.......................................................... 84
-Receiving a CPMConnectIn Request ................................................... 84
-Receiving a CPMCreateQueryIn Request ............................................. 85
-Receiving a CPMGetQueryStatusIn Request ........................................ 85
-Receiving a CPMGetQueryStatusExIn Request ..................................... 86
-Receiving a CPMRatioFinishedIn Request ............................................ 86
-Receiving a CPMSetBindingsIn Request .............................................. 86
-Receiving a CPMGetRowsIn Request .................................................. 87
-Receiving a CPMFetchValueIn Request ............................................... 88
-Receiving a CPMGetNotify Request .................................................... 88
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-3.1.5.2.5
-3.1.5.2.6
-3.1.5.2.7
-3.1.5.2.8
-3.1.5.2.9
-
-3.1.5.2
-
-[MS-MCIS] - v20170601
-Content Indexing Services Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 114
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2.4.2
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-
-3.1.5.2.10
-3.1.5.2.11
-3.1.5.2.12
-3.1.5.2.13
-3.1.5.2.14
-3.1.5.2.15
-
-Receiving a CPMGetApproximatePositionIn Request ............................. 89
-Receiving a CPMCompareBmkIn Request ............................................ 89
-Receiving a CPMRestartPositionIn Request .......................................... 89
-Receiving a CPMStopAsynchIn Request .............................................. 90
-Receiving a CPMFreeCursorIn Request ............................................... 90
-Receiving a CPMDisconnect Request .................................................. 90
-Timer Events .............................................................................................. 91
-Other Local Events ...................................................................................... 91
-Client Details ................................................................................................... 91
-Abstract Data Model .................................................................................... 91
-Timers ...................................................................................................... 91
-Initialization ............................................................................................... 91
-Higher-Layer Triggered Events ..................................................................... 91
-Remote Indexing Service Catalog Management ......................................... 92
-Sending a CPMCiStateInOut Request .................................................. 92
-Sending a CPMSetCatStateIn Request ................................................ 92
-Sending a CPMUpdateDocumentsIn Request ....................................... 92
-Sending a CPMForceMergeIn Request ................................................. 92
-Remote Indexing Service Catalog Query Messages .................................... 93
-Sending a CPMConnectIn Request ..................................................... 93
-Sending a CPMCreateQueryIn Request ............................................... 93
-Sending a CPMSetBindingsIn Request ................................................ 94
-Sending a CPMGetRowsIn Request .................................................... 94
-Sending a CPMFetchValueIn Request ................................................. 95
-Sending a CPMFreeCursorIn Request ................................................. 95
-Sending a CPMDisconnect Message .................................................... 95
-Message Processing and Sequencing Rules .................................................... 96
-Receiving a CPMCreateQueryOut Response .............................................. 96
-Receiving a CPMGetRowsOut Response .................................................... 96
-Receiving a CPMFetchValueOut Response ................................................. 97
-Receiving a CPMFreeCursorOut Response ................................................. 97
-Timer Events .............................................................................................. 97
-Other Local Events ...................................................................................... 98
-
-3.2.4.2.1
-3.2.4.2.2
-3.2.4.2.3
-3.2.4.2.4
-3.2.4.2.5
-3.2.4.2.6
-3.2.4.2.7
-
-3.2.5
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 99
-Example 1 ....................................................................................................... 99
-Example 2 ...................................................................................................... 105
-
-4.1
-4.2
-
-5  Security ............................................................................................................... 107
-Security Considerations for Implementers .......................................................... 107
-Index of Security Parameters ........................................................................... 107
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 108
-
-7  Change Tracking .................................................................................................. 110
-
-8  Index ................................................................................................................... 111
-
-[MS-MCIS] - v20170601
-Content Indexing Services Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 114
-
-1  Introduction
+## 1 Introduction
 
 This document is a specification of the Content Indexing Services Protocol. This protocol allows a client
 to communicate with a server hosting an indexing service to issue queries. The protocol is primarily
@@ -889,7 +681,7 @@ service.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -952,7 +744,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-locale: An identifier, as specified in [MS-LCID], that specifies preferences related to language.
+
+locale: An identifier, as specified in [MS-LCID], that specifies preferences related to language.
 
 These preferences indicate how dates and times are to be formatted, how items are to be sorted
 alphabetically, how strings are to be compared, and so on.
@@ -1001,14 +794,14 @@ would have a virtual path of /server/vanityroot/default.htm.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1021,7 +814,8 @@ Release: June 1, 2017
 
 8 / 114
 
-[IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
+
+[IEEE754] IEEE, "IEEE Standard for Binary Floating-Point Arithmetic", IEEE 754-1985, October 1985,
 http://ieeexplore.ieee.org/servlet/opac?punumber=2355
 
 [MS-DTYP] Microsoft Corporation, "Windows Data Types".
@@ -1040,7 +834,7 @@ Information by Computer", 1988, ISBN: 0201122278.
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-FULLPROPSPEC] Microsoft Corporation, "FULLPROPSPEC structure",
 http://msdn.microsoft.com/en-us/library/ms690996.aspx
@@ -1057,7 +851,7 @@ us/library/ms691041.aspx
 [MSDN-QUERYERR] Microsoft Corporation, "Query-Execution Values", http://msdn.microsoft.com/en-
 us/library/ms690617.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 A content indexing service  helps efficiently organize the extracted features of a collection of
 documents. The Content Indexing Services Protocol allows a client to communicate with a server
@@ -1088,7 +882,8 @@ Release: June 1, 2017
 
 9 / 114
 
-1.3.1  Remote Administration Tasks
+
+#### 1.3.1 Remote Administration Tasks
 
 The Content Indexing Services Protocol enables the following indexing service catalog management
 tasks from a client:
@@ -1108,7 +903,7 @@ Initiate optimization of an index to improve query performance.
 All remote administration tasks follow a simple request/response model. No state is maintained on the
 client for any administration call, and administrative calls can be made in any order.
 
-1.3.2  Remote Querying
+#### 1.3.2 Remote Querying
 
 The Content Indexing Services Protocol enables clients to perform search queries against a remote
 server hosting an indexing service. See [MSDN-ISQL] for more information about the Indexing
@@ -1159,7 +954,7 @@ contacts the server to release the query.
 server. The connection is then closed. Alternatively, the client might issue another query and
 repeat the sequence from step 2.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Content Indexing Services Protocol relies on the SMB protocol, as specified in [MS-SMB], for
 message transport. No other protocol depends directly on the Content Indexing Services Protocol.<1>
@@ -1171,7 +966,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 It is assumed that the client has obtained the name of the server and a catalog name before this
 protocol is invoked. How a client does this is not addressed in this specification.
@@ -1179,16 +975,16 @@ protocol is invoked. How a client does this is not addressed in this specificati
 It is also assumed that the client and server have a security association that is usable with named
 pipes, as specified in [MS-SMB].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Content Indexing Services Protocol is designed for querying and managing catalogs on a remote
 server from a client.<2>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol has no versioning or capability negotiation mechanisms.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs that are vendor extensible. Vendors are free to choose their own values
 for this field as long as the C bit (0x20000000) is set as specified in [MS-ERREF] section 2.1,
@@ -1198,7 +994,7 @@ This protocol also uses NTSTATUS values taken from the NTSTATUS number space spe
 ERREF]. Vendors SHOULD<3> reuse those values with their indicated meaning. Choosing any other
 value runs the risk of a collision in the future.
 
-1.8.1  Property IDs
+#### 1.8.1 Property IDs
 
 Properties are represented by IDs known as property IDs. Each property MUST have a globally
 unique identifier (GUID), as defined in [MS-DTYP] section 2.3.4.3. This identifier consists of a
@@ -1209,7 +1005,7 @@ integer to identify the property within the set. If the integer form of ID is us
 Vendors can guarantee that their properties are uniquely defined by placing them in a property set
 defined by their own GUIDs.<4>
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments, only private assignments made by Microsoft using
 allocation procedures specified in other protocols.
@@ -1224,7 +1020,8 @@ Release: June 1, 2017
 
 11 / 114
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Content Indexing Services Protocol messages are transported and
 specify common Content Indexing Services Protocol data types. This protocol references commonly
@@ -1233,7 +1030,7 @@ used data types as defined in [MS-DTYP].
 Note  All 2-byte, 4-byte, and 8-byte signed and unsigned integers in the following structures and
 messages MUST be transferred in little-endian byte order.
 
-2.1  Transport
+### 2.1 Transport
 
 All messages MUST be transported using a named pipe, as specified in [MS-SMB]. The following pipe
 name is used:
@@ -1246,7 +1043,7 @@ This protocol uses the underlying SMB named pipe protocol to retrieve the identi
 made the connection, as specified in [MS-SMB] section 2.2.4.9.1. The client MUST set
 SECURITY_IDENTIFICATION as the ImpersonationLevel in the request to open the named pipe.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Several structures and messages in the following sections refer to chapter or bookmark handles
 (see 2.2.5.1). A handle is a 32-bit long opaque structure that uniquely identifies a chapter or
@@ -1256,7 +1053,7 @@ Typically, client applications receive handle values by way of method calls; how
 value that does not need to be obtained from a server. DB_NULL_HCHAPTER (0x00000000) is a A
 chapter handle to the unchaptered rowset that contains all query results.
 
-2.2.1  Structures
+#### 2.2.1 Structures
 
 This section details data structures that are defined and used by the Content Indexing Services
 Protocol.
@@ -1313,7 +1110,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Structure
+
+ Structure
 
  Description
 
@@ -1398,7 +1196,7 @@ Contains a column for the CPMSetBindingsIn message.
 
 SERIALIZEDPROPERTYVALUE  Contains a serialized value.
 
-2.2.1.1  CBaseStorageVariant
+##### 2.2.1.1 CBaseStorageVariant
 
 The CBaseStorageVariant structure contains the value on which to perform a match operation for a
 property specified in the CPropertyRestriction structure.
@@ -1429,7 +1227,8 @@ Release: June 1, 2017
 
 13 / 114
 
-...
+
+...
 
 vType (2 bytes): A type indicator that indicates the type of vValue. It MUST be one of the values
 
@@ -1549,7 +1348,8 @@ Release: June 1, 2017
 
 14 / 114
 
-Value
+
+Value
 
 Meaning
 
@@ -1665,7 +1465,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-vData2 (1 byte): When vType is VT_DECIMAL, the value of this field is specified as the Sign field in
+
+vData2 (1 byte): When vType is VT_DECIMAL, the value of this field is specified as the Sign field in
 
 section 2.2.1.1.1.1. For all other vType fields, the value MUST be set to 0x00.
 
@@ -1761,7 +1562,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-string (variable, optional)
+
+string (variable, optional)
 
 ...
 
@@ -1773,11 +1575,11 @@ value of 0x00000000 indicates that no such string is present.
 
 string: Null-terminated string. This field MUST be absent if cLen equals 0x00000000.
 
-2.2.1.1.1 CBaseStorageVariant Structures
+###### 2.2.1.1.1 CBaseStorageVariant Structures
 
 The following structures are used in the CBaseStorageVariant structure.
 
-2.2.1.1.1.1  DECIMAL
+###### 2.2.1.1.1.1 DECIMAL
 
 The DECIMAL structure is used to represent an exact numeric value with a fixed precision and fixed
 scale.
@@ -1816,7 +1618,7 @@ Lo32 (4 bytes): The lowest 32 bits of the 96-bit integer.
 
 Mid32 (4 bytes): The middle 32 bits of the 96-bit integer.
 
-2.2.1.1.1.2  VT_VECTOR
+###### 2.2.1.1.1.2 VT_VECTOR
 
 The VT_VECTOR structure is used to pass one-dimensional arrays.
 
@@ -1840,7 +1642,8 @@ Release: June 1, 2017
 
 17 / 114
 
-vVectorData (variable)
+
+vVectorData (variable)
 
 ...
 
@@ -1865,7 +1668,7 @@ contents of the padding bytes MUST be ignored by the receiver.
 For a vType set to VT_ARRAY | VT_VARIANT, the type for items in this sequence is
 CBaseStorageVariant.
 
-2.2.1.1.1.3  SAFEARRAY
+###### 2.2.1.1.1.3 SAFEARRAY
 
 The SAFEARRAY structure is used to pass multidimensional arrays. The structure contains array size
 information as well as the data in the array.
@@ -1916,7 +1719,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-MCIS].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1942,7 +1746,7 @@ Using the previous diagram, vData will contain the following sequence: 0x0000000
 preceding Rgsabound (which records cElements and lLbound) would be the following:
 0x00000004, 0x00000000, 0x00000002, and 0x00000000.
 
-2.2.1.1.1.4  SAFEARRAYBOUND
+###### 2.2.1.1.1.4 SAFEARRAYBOUND
 
 The SAFEARRAYBOUND structure represents the bounds of one dimension of a SAFEARRAY or
 SAFEARRAY2 structure. Its format is as follows.
@@ -1968,7 +1772,7 @@ dimension.
 
 lLbound (4 bytes): A 32-bit unsigned integer, specifying the lower bound of the dimension.
 
-2.2.1.1.1.5  SAFEARRAY2
+###### 2.2.1.1.1.5 SAFEARRAY2
 
 The SAFEARRAY2 structure is used to pass multidimensional arrays in SERIALIZEDPROPERTYVALUE.
 The structure contains boundary information and the data above.
@@ -1993,7 +1797,8 @@ Release: June 1, 2017
 
 19 / 114
 
-Rgsabound (variable)
+
+Rgsabound (variable)
 
 ...
 
@@ -2012,7 +1817,7 @@ vData (variable): A vector of marshaled items of a particular type indicated by 
 containing SERIALIZEDPROPERTYVALUE with bit 0x2000 cleared. The format of vData is the same
 as that specified for the vData field of SAFEARRAY.
 
-2.2.1.2  CFullPropSpec
+##### 2.2.1.2 CFullPropSpec
 
 The CFullPropSpec structure contains a property set GUID and a property identifier to uniquely
 identify a property. A CFullPropSpec instance has a property set GUID and either an integer property
@@ -2064,7 +1869,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-_guidPropSet (16 bytes): The GUID of the property set to which the property belongs.
+
+_guidPropSet (16 bytes): The GUID of the property set to which the property belongs.
 
 ulKind (4 bytes): A 32-bit unsigned integer. MUST be one of the following values that indicates the
 
@@ -2094,7 +1900,7 @@ Property name (variable): If ulKind is set to PRSPEC_PROPID, this field MUST NOT
 ulKind is set to PRSPEC_LPWSTR, this field MUST contain a case-insensitive array of PrSpec non-
 null Unicode characters that contains the name of the property.
 
-2.2.1.3  CContentRestriction
+##### 2.2.1.3 CContentRestriction
 
 The CContentRestriction structure contains a word or phrase to match in the inverted index for a
 specific property.
@@ -2146,7 +1952,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-message that contains this structure. If this field is present (that is, its length is nonzero), the
+
+message that contains this structure. If this field is present (that is, its length is nonzero), the
 value that it contains is arbitrary. The content of this field MUST be ignored by the receiver.
 
 Cc (4 bytes): A 32-bit unsigned integer, specifying the number of characters in the _pwcsPhrase
@@ -2198,7 +2005,7 @@ word in the same part of speech that has been modified, according to
 linguistic rules of a given language. For example, inflections of the verb
 swim in English include swim, swims, swimming, and swam.
 
-2.2.1.4  CNatLanguageRestriction
+##### 2.2.1.4 CNatLanguageRestriction
 
 The CNatLanguageRestriction structure contains a natural language query match for a property.
 Natural language means that the string has no formal meaning. The indexing service is free to
@@ -2233,7 +2040,8 @@ Release: June 1, 2017
 
 22 / 114
 
-_pwcsPhrase (variable)
+
+_pwcsPhrase (variable)
 
 ...
 
@@ -2271,7 +2079,7 @@ Lcid (4 bytes): A 32-bit unsigned integer indicating the locale of _pwcsPhrase, 
 
 LCID].
 
-2.2.1.5  CNodeRestriction
+##### 2.2.1.5 CNodeRestriction
 
 The CNodeRestriction structure contains an array of command tree restriction nodes for
 constraining the results of a query.
@@ -2311,7 +2119,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.1.6  CPropertyRestriction
+
+##### 2.2.1.6 CPropertyRestriction
 
 The CPropertyRestriction structure contains a property to get from each row, a comparison operator,
 and a constant. For each row, the value returned by the specific property in the row is compared
@@ -2406,7 +2215,8 @@ Release: June 1, 2017
 
 24 / 114
 
-Character  Meaning
+
+Character  Meaning
 
 (
 
@@ -2517,7 +2327,8 @@ Release: June 1, 2017
 
 25 / 114
 
-For vector properties, the behavior of the relational operators depends on the result of a logical
+
+For vector properties, the behavior of the relational operators depends on the result of a logical
 OR using a mask and the relational operator.
 
 If there is no mask, then the restriction  is true if the relational operator holds between each
@@ -2551,7 +2362,7 @@ match operation.
 
 _prval (variable): A CBaseStorageVariant structure containing the value to relate to the property.
 
-2.2.1.7  CScopeRestriction
+##### 2.2.1.7 CScopeRestriction
 
 The CScopeRestriction structure restricts the files to be returned to those that have a path that
 matches the restriction.
@@ -2601,7 +2412,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-message that contains this structure. If this field is present (that is, its length is nonzero), the
+
+message that contains this structure. If this field is present (that is, its length is nonzero), the
 value that it contains is arbitrary. The content of this field MUST be ignored by the receiver.
 
 _length (4 bytes): A 32-bit unsigned integer containing the length of _lowerPath in Unicode
@@ -2632,7 +2444,7 @@ Meaning
 
 for a website.
 
-2.2.1.8  CSort
+##### 2.2.1.8 CSort
 
 The CSort structure identifies a column, direction, and locale to sort by.
 
@@ -2691,7 +2503,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.1.9  CVectorRestriction
+
+##### 2.2.1.9 CVectorRestriction
 
 The CVectorRestriction structure contains a weighted OR operation over restriction nodes. Vector
 restrictions represent queries using the full-text vector space model of ranking (as specified in
@@ -2766,9 +2579,9 @@ Use the Jaccard coefficient algorithm as specified in [SALTON].
 
 0x00000004
 
-2.2.1.10
+##### 2.2.1.10 CRestriction
 
-CRestriction
+
 
 The CRestriction structure contains a restriction node in a query command tree.
 
@@ -2779,7 +2592,8 @@ Release: June 1, 2017
 
 28 / 114
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2891,13 +2705,14 @@ Release: June 1, 2017
 
 29 / 114
 
-Restriction (variable): The restriction type for the command tree node. The syntax MUST be as
+
+Restriction (variable): The restriction type for the command tree node. The syntax MUST be as
 
 indicated by the _ulType field.
 
-2.2.1.11
+##### 2.2.1.11 CColumnSet
 
-CColumnSet
+
 
 The CColumnSet structure specifies the column numbers to be returned. This structure is always used
 in reference to a specific CPidMapper structure.
@@ -2925,9 +2740,9 @@ indexes (variable): An array of 4-byte unsigned integers representing zero-based
 aPropSpec array in the corresponding CPidMapper structure. The corresponding property values
 are returned as columns in the result set.
 
-2.2.1.12
+##### 2.2.1.12 CCategorizationSet
 
-CCategorizationSet
+
 
 The CCategorizationSet structure contains information on the grouping is done at each level in a
 hierarchical result set.
@@ -2957,9 +2772,9 @@ categories (variable): Array of CCategorizationSpec structures specifying the gr
 
 in a hierarchical query. The first structure specifies the top level.
 
-2.2.1.13
+##### 2.2.1.13 CCategorizationSpec
 
-CCategorizationSpec
+
 
 The CCategorizationSpec structure specifies how grouping is done at one level in a hierarchical query.
 
@@ -2985,7 +2800,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-_ulCategType
+
+_ulCategType
 
 _csColumns (variable): A CColumnSet structure indicating the columns to return at that level in a
 
@@ -2993,9 +2809,9 @@ hierarchical result set.
 
 _ulCategType (4 bytes): A 32-bit unsigned integer that MUST be set to 0x00000000.
 
-2.2.1.14
+##### 2.2.1.14 CDbColId
 
-CDbColId
+
 
 The CDbColId structure contains an OLE-DB Column ID.
 
@@ -3075,7 +2891,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-GUID (16 bytes): GUID which uniquely identifies the property set for the property.
+
+GUID (16 bytes): GUID which uniquely identifies the property set for the property.
 
 ulId (4 bytes): If eKind is DBKIND_GUID_PROPID, this field contains an unsigned integer specifying
 
@@ -3086,9 +2903,9 @@ vString (variable): A non-null-terminated Unicode string representing the proper
 
 be omitted unless the eKind field is set to DBKIND_GUID_NAME.
 
-2.2.1.15
+##### 2.2.1.15 CDbProp
 
-CDbProp
+
 
 The CDbProp structure contains an OLE-DB DBPROP database property. These properties control how
 queries are interpreted by the indexing service.
@@ -3142,7 +2959,7 @@ value that it contains is arbitrary. The content of this field MUST be ignored b
 
 vValue (variable): A CBaseStorageVariant structure containing the property value.
 
-2.2.1.15.1  Database Properties
+###### 2.2.1.15.1 Database Properties
 
 [MS-MCIS] - v20170601
 Content Indexing Services Protocol
@@ -3151,7 +2968,8 @@ Release: June 1, 2017
 
 32 / 114
 
-This section details the properties that are used by the Content Indexing Services Protocol to control
+
+This section details the properties that are used by the Content Indexing Services Protocol to control
 the behavior of the indexing service. These properties are grouped into three property sets identified
 in the guidPropertySet field of the CDbPropSet structure.
 
@@ -3269,7 +3087,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 0x00000003
 
@@ -3343,9 +3162,9 @@ Ignored by the server. MUST be set to an empty BSTR.
 
 0x00000004
 
-2.2.1.16
+##### 2.2.1.16 CDbPropSet
 
-CDbPropSet
+
 
 The CDbPropSet structure contains a set of properties. The first field (guidPropertySet) is not
 padded and will start where the previous structure in the message ended (as indicated by the
@@ -3376,7 +3195,8 @@ Release: June 1, 2017
 
 34 / 114
 
-...
+
+...
 
 ...
 
@@ -3441,9 +3261,9 @@ multiple of 4 bytes from the beginning of the message that contains this array. 
 are present, the value that they contain is arbitrary. The content of the padding bytes MUST be
 ignored by the receiver.
 
-2.2.1.17
+##### 2.2.1.17 CPidMapper
 
-CPidMapper
+
 
 The CPidMapper structure contains an array of property specifications and serves to map from a
 property offset to a full property specification. The more compact property offsets are used to name
@@ -3457,7 +3277,8 @@ Release: June 1, 2017
 
 35 / 114
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3489,9 +3310,9 @@ value and MUST be ignored by the receiver.
 
 aPropSpec (variable): An array of CFullPropSpec structures.
 
-2.2.1.18
+##### 2.2.1.18 CRowSeekAt
 
-CRowSeekAt
+
 
 The CRowSeekAt structure contains the offset at which to retrieve rows for a CPMGetRowsIn
 message.
@@ -3527,9 +3348,9 @@ _hRegion (4 bytes): A 32-bit unsigned integer. This field MUST be set to 0x00000
 
 ignored.
 
-2.2.1.19
+##### 2.2.1.19 CRowSeekAtRatio
 
-CRowSeekAtRatio
+
 
 The CRowSeekAtRatio structure identifies the point at which to begin retrieval for a CPMGetRowsIn
 message.
@@ -3541,7 +3362,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3574,9 +3396,9 @@ _hRegion (4 bytes): A 32-bit unsigned integer. This field MUST be set to 0x00000
 
 ignored.
 
-2.2.1.20
+##### 2.2.1.20 CRowSeekByBookmark
 
-CRowSeekByBookmark
+
 
 The CRowSeekByBookmark structure identifies the bookmarks from which to begin retrieving rows
 for a CPMGetRowsIn message.
@@ -3627,16 +3449,17 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-_ascRet (variable): An array of HRESULT values. When the CRowSeekByBookmark structure is sent
+
+_ascRet (variable): An array of HRESULT values. When the CRowSeekByBookmark structure is sent
 
 as part of the CPMGetRowsIn request, the number of entries in the array MUST be equal to
 _maxRet. When sent by the client, the values MUST be set to zero when sent and MUST be
 ignored on receipt. When sent by the server (as part of the CPMGetRowsOut message), the values
 in the array indicate the result status for each row retrieval.
 
-2.2.1.21
+##### 2.2.1.21 CRowSeekNext
 
-CRowSeekNext
+
 
 The CRowSeekNext structure contains the number of rows to skip for a CPMGetRowsIn message.
 
@@ -3659,9 +3482,9 @@ _chapt (4 bytes): A 32-bit value representing the handle of the rowset chapter.
 
 _cskip (4 bytes): A 32-bit unsigned integer representing the number of rows to skip in the rowset.
 
-2.2.1.22
+##### 2.2.1.22 CRowsetProperties
 
-CRowsetProperties
+
 
 The CRowsetProperties structure contains configuration information for a query.
 
@@ -3722,7 +3545,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -3784,9 +3608,9 @@ _cCmdTimeout (4 bytes): A 32-bit unsigned integer, specifying the number of seco
 query is to time out and automatically terminate, counting from the time the query starts
 executing on the server. A value of 0x00000000 means that the query is not to time out.
 
-2.2.1.23
+##### 2.2.1.23 CRowVariant
 
-CRowVariant
+
 
 The CRowVariant structure contains the fixed-size portion of a variable-length data type stored in the
 CPMGetRowsOut message.
@@ -3825,16 +3649,17 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-reserved2 (4 bytes): Not used. Can be set to any arbitrary value and MUST be ignored on receipt.
+
+reserved2 (4 bytes): Not used. Can be set to any arbitrary value and MUST be ignored on receipt.
 
 Offset (variable): An offset to variable-length data (for example, a string). This MUST be a 32-bit
 
 value (4 bytes long) if 32-bit offsets are being used (per the rules in section 2.2.3.16) or a 64-bit
 value (8 bytes long) if 64-bit offsets are being used.
 
-2.2.1.24
+##### 2.2.1.24 CSortSet
 
-CSortSet
+
 
 The CSortSet structure contains the sort order of the query.
 
@@ -3862,9 +3687,9 @@ the query. Structures in the array MUST be separated by 0 to 3 padding bytes suc
 structure has a 4-byte alignment from the beginning of a message. Such padding bytes can be set
 to any arbitrary value and MUST be ignored on receipt.
 
-2.2.1.25
+##### 2.2.1.25 CTableColumn
 
-CTableColumn
+
 
 The CTableColumn structure contains a column of a CPMSetBindingsIn message.
 
@@ -3921,7 +3746,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-ValueUsed (1 byte): A 1-byte field that MUST be set to one of the following values.
+
+ValueUsed (1 byte): A 1-byte field that MUST be set to one of the following values.
 
 Value  Meaning
 
@@ -4003,7 +3829,8 @@ Release: June 1, 2017
 
 41 / 114
 
-Value  Meaning
+
+Value  Meaning
 
 0x00
 
@@ -4023,9 +3850,9 @@ LengthOffset (2 bytes):  An unsigned 2-byte integer specifying the offset of the
 the row. In CPMGetRowsOut, length is represented by a 32-bit unsigned integer by the offset
 specified in LengthOffset. If LengthUsed is set to 0x00, this field MUST NOT be present.
 
-2.2.1.26
+##### 2.2.1.26 SERIALIZEDPROPERTYVALUE
 
-SERIALIZEDPROPERTYVALUE
+
 
 The SERIALIZEDPROPERTYVALUE structure contains a serialized value.
 
@@ -4055,7 +3882,7 @@ vValue field of CBaseStorageVariant.
 
 rgb (variable): Serialized value. See serialization for vValue in section 2.2.1.1.
 
-2.2.2  Message Headers
+#### 2.2.2 Message Headers
 
 All Content Indexing Services Protocol messages have a 16-byte header.
 
@@ -4087,7 +3914,8 @@ Release: June 1, 2017
 
 42 / 114
 
-_msg (4 bytes): A 32-bit integer that identifies the type of message following the header. The
+
+_msg (4 bytes): A 32-bit integer that identifies the type of message following the header. The
 following table lists the Content Indexing Services Protocol messages and the integer values
 specified for each message. As shown in the table, some values identify two messages in the
 table. In those instances, the message following the header can be identified by the direction of
@@ -4162,7 +3990,8 @@ Release: June 1, 2017
 
 43 / 114
 
-  CPMFetchValueIn
+
+  CPMFetchValueIn
 
 Note  For all other messages from the client, _ulChecksum MUST be set to 0x00000000. A client
 MUST ignore the _ulChecksum field.
@@ -4171,11 +4000,11 @@ _ulReserved2 (4 bytes): If 32-bit offsets are being used, MUST be set to 0x00000
 ignored by the receiver. _ulReserved2 can be used in 64-bit scenarios, as specified in section
 2.2.3.16.
 
-2.2.3  Messages
+#### 2.2.3 Messages
 
 The following sections specify Content Indexing Services Protocol messages.
 
-2.2.3.1  CPMCiStateInOut
+##### 2.2.3.1 CPMCiStateInOut
 
 The CPMCiStateInOut message contains information on the state of the indexing service. All fields are
 required whether this message is sent by the client or the server.
@@ -4230,7 +4059,8 @@ Release: June 1, 2017
 
 44 / 114
 
-cSecQDocuments
+
+cSecQDocuments
 
 dwPropCacheSize
 
@@ -4334,7 +4164,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -4439,7 +4270,8 @@ Release: June 1, 2017
 
 46 / 114
 
-2.2.3.2  CPMSetCatStateIn
+
+##### 2.2.3.2 CPMSetCatStateIn
 
 The CPMSetCatStateIn message sets the state of a catalog. The format of the CPMSetCatStateIn
 message that follows the header is as follows.
@@ -4517,7 +4349,7 @@ _CatName (variable):  The name of the catalog that is to have its state modified
 be a null-terminated Unicode string. This field MUST be omitted if _dwNewState is set to
 CICAT_ALL_OPENED.
 
-2.2.3.3  CPMSetCatStateOut
+##### 2.2.3.3 CPMSetCatStateOut
 
 The CPMSetCatStateOut message is a reply to a CPMSetCatStateIn message with the old state of the
 catalog. The format of the CPMSetCatStateOut message that follows the header is as follows.
@@ -4542,7 +4374,8 @@ Release: June 1, 2017
 
 47 / 114
 
-_dwOldState (4 bytes):  A 32-bit unsigned integer that MUST be one or more of the following flags,
+
+_dwOldState (4 bytes):  A 32-bit unsigned integer that MUST be one or more of the following flags,
 
 indicating the old state of the catalog.
 
@@ -4583,7 +4416,7 @@ or CICAT_STOPPED.
 The catalog is not available for querying. This value MUST NOT be combined with
 CICAT_STOPPED.
 
-2.2.3.4  CPMUpdateDocumentsIn
+##### 2.2.3.4 CPMUpdateDocumentsIn
 
 The CPMUpdateDocumentsIn message directs the server to index the specified path.
 
@@ -4644,7 +4477,8 @@ Release: June 1, 2017
 
 48 / 114
 
-Value
+
+Value
 
 Meaning
 
@@ -4665,7 +4499,7 @@ Note  This field MUST be present when the message is sent by the client and _fRo
 set to 0x00000000. This field MUST be absent when the message is sent by the server. When
 present, the name MUST be a null-terminated Unicode string.
 
-2.2.3.5  CPMForceMergeIn
+##### 2.2.3.5 CPMForceMergeIn
 
 The CPMForceMergeIn message requests a server to perform any maintenance necessary to improve
 query performance. The server will reply with the message header of the CPMForceMergeIn message
@@ -4693,7 +4527,7 @@ Note  This field MUST be present when the message is sent by the client and MUST
 when the message is sent by the server. When this field is present, it MUST be set to
 0x00000001.
 
-2.2.3.6  CPMConnectIn
+##### 2.2.3.6 CPMConnectIn
 
 The CPMConnectIn message begins a session between the client and server.
 
@@ -4725,7 +4559,8 @@ Release: June 1, 2017
 
 49 / 114
 
-...
+
+...
 
 _cbBlob2
 
@@ -4784,7 +4619,8 @@ Release: June 1, 2017
 
 50 / 114
 
-  CPMCreateQueryIn
+
+  CPMCreateQueryIn
 
   CPMFetchValueIn
 
@@ -4861,7 +4697,8 @@ Release: June 1, 2017
 
 51 / 114
 
-beginning of the message that contains this structure equal a multiple of 8. The value of the bytes
+
+beginning of the message that contains this structure equal a multiple of 8. The value of the bytes
 can be any arbitrary value, and MUST be ignored by the receiver.
 
 cExtPropSet (4 bytes): A 32-bit unsigned integer indicating the number of CDbPropSet structures
@@ -4873,7 +4710,7 @@ number of elements in this array MUST be equal to cExtPropSet. An example would 
 DONOTCOMPUTEEXPENSIVEPROPERTIES(A7AC77ED-F8D7-11CE-A798-0020F8008025) which
 prevents the computation of expensive properties.<9>
 
-2.2.3.7  CPMConnectOut
+##### 2.2.3.7 CPMConnectOut
 
 The CPMConnectOut message contains a response to a CPMConnectIn message.
 
@@ -4912,7 +4749,7 @@ _reserved (variable): Reserved. The server can send an arbitrary number of arbit
 
 the client MUST ignore these values, if they are present.
 
-2.2.3.8  CPMCreateQueryIn
+##### 2.2.3.8 CPMCreateQueryIn
 
 The CPMCreateQueryIn message creates a new query. The format of the CPMCreateQueryIn message
 that follows the header is shown in the following diagram.
@@ -4945,7 +4782,8 @@ Release: June 1, 2017
 
 52 / 114
 
-CRestrictionPresent
+
+CRestrictionPresent
 
 paddingCRestrictionPresent (variable)
 
@@ -5021,7 +4859,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-paddingCRestrictionPresent (variable): This field MUST be 0 to 3 bytes in length. The length of
+
+paddingCRestrictionPresent (variable): This field MUST be 0 to 3 bytes in length. The length of
 
 this field MUST be such that the following field begins at an offset that is a multiple of 4 bytes
 from the beginning of the message that contains this structure. If this field is present (that is, its
@@ -5070,7 +4909,7 @@ PidMapper (variable): A CPidMapper structure that maps from property offsets to 
 
 descriptions.
 
-2.2.3.9  CPMCreateQueryOut
+##### 2.2.3.9 CPMCreateQueryOut
 
 The CPMCreateQueryOut message contains a response to a CPMCreateQueryIn message.
 
@@ -5101,7 +4940,8 @@ Release: June 1, 2017
 
 54 / 114
 
-...
+
+...
 
 _fTrueSequential (4 bytes): A 32-bit unsigned integer. MUST be set to one of the following values.
 
@@ -5134,9 +4974,9 @@ aCursors (variable): An array of 32-bit unsigned integers representing the handl
 the number of elements equal to the number of categories in the CategorizationSet field of the
 CPMCreateQueryIn message, plus one element, which represents an uncategorized cursor.
 
-2.2.3.10
+##### 2.2.3.10 CPMGetQueryStatusIn
 
-CPMGetQueryStatusIn
+
 
 The CPMGetQueryStatusIn message requests the status of a query. The format of the
 CPMGetQueryStatusIn message that follows the header is shown in the following diagram.
@@ -5158,9 +4998,9 @@ _hCursor (4 bytes): A 32-bit unsigned integer representing the handle from the C
 
 message identifying the query for which to retrieve status information.
 
-2.2.3.11
+##### 2.2.3.11 CPMGetQueryStatusOut
 
-CPMGetQueryStatusOut
+
 
 The CPMGetQueryStatusOut message replies to a CPMGetQueryStatusIn message with the status of
 the query. The format of the CPMGetQueryStatusOut message that follows the header is shown in the
@@ -5190,7 +5030,8 @@ Release: June 1, 2017
 
 55 / 114
 
-The following table lists STAT_* values obtained by performing a bitwise AND operation on
+
+The following table lists STAT_* values obtained by performing a bitwise AND operation on
 _Status with 0x00000007. The result MUST be one of the following.
 
 Constant
@@ -5263,9 +5104,9 @@ STAT_TIME_LIMIT_EXCEEDED
 The results of the query might be incorrect because the query
 execution reached the maximum allowable time.
 
-2.2.3.12
+##### 2.2.3.12 CPMGetQueryStatusExIn
 
-CPMGetQueryStatusExIn
+
 
 A client MAY use the CPMGetQueryStatusExIn message to request the status of a query and additional
 information such as the number of documents that have been indexed and the number of documents
@@ -5300,9 +5141,10 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.3.13
 
-CPMGetQueryStatusExOut
+##### 2.2.3.13 CPMGetQueryStatusExOut
+
+
 
 When a CPMGetQueryStatusExIn message is received, the server SHOULD reply with a
 CPMGetQueryStatusExOut with both the query status and other status information, as outlined in the
@@ -5358,9 +5200,9 @@ in the rowset in terms of rows.
 
 _cRowsTotal (4 bytes): A 32-bit unsigned integer specifying the total number of rows in the rowset.
 
-2.2.3.14
+##### 2.2.3.14 CPMSetBindingsIn
 
-CPMSetBindingsIn
+
 
 The CPMSetBindingsIn message requests the binding of columns to a rowset. The server will reply to
 the CPMSetBindingsIn request message using the header section of the CPMSetBindingsIn message
@@ -5387,7 +5229,8 @@ Release: June 1, 2017
 
 57 / 114
 
-_cbRow (optional)
+
+_cbRow (optional)
 
 _cbBindingDesc (optional)
 
@@ -5428,9 +5271,9 @@ to 3 padding bytes such that each structure has a 4-byte alignment from the begi
 message. Such padding bytes can be set to any arbitrary value when sent and MUST be ignored
 on receipt.
 
-2.2.3.15
+##### 2.2.3.15 CPMGetRowsIn
 
-CPMGetRowsIn
+
 
 The CPMGetRowsIn message requests rows from a query. The format of the CPMGetRowsIn message
 that follows the header is shown in the following diagram.
@@ -5461,7 +5304,8 @@ Release: June 1, 2017
 
 58 / 114
 
-_cbReserved
+
+_cbReserved
 
 _cbReadBuffer
 
@@ -5530,7 +5374,8 @@ Release: June 1, 2017
 
 59 / 114
 
-Value
+
+Value
 
 Meaning
 
@@ -5562,9 +5407,9 @@ SeekDescription (variable): This field MUST contain a structure of the type indi
 
 value.
 
-2.2.3.16
+##### 2.2.3.16 CPMGetRowsOut
 
-CPMGetRowsOut
+
 
 The CPMGetRowsOut message replies to a CPMGetRowsIn message with the rows of a query. Servers
 MUST format offsets to variable-length data types in the Row field as follows.
@@ -5622,7 +5467,8 @@ Release: June 1, 2017
 
 60 / 114
 
-_cRowsReturned (4 bytes): A 32-bit unsigned integer indicating the number of rows returned in
+
+_cRowsReturned (4 bytes): A 32-bit unsigned integer indicating the number of rows returned in
 
 the Rows field.
 
@@ -5712,7 +5558,8 @@ Release: June 1, 2017
 
 61 / 114
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-MCIS].images/page062-img01.png)
 ![Extracted image 2 from page 62]([MS-MCIS].images/page062-img02.png)
 <!-- /Extracted images from page 62 -->
@@ -5750,12 +5597,13 @@ Release: June 1, 2017
 
 62 / 114
 
-The six bytes between the last CRowVariant and the beginning of the column data stored at
+
+The six bytes between the last CRowVariant and the beginning of the column data stored at
 0x10026 are padding.
 
-2.2.3.17
+##### 2.2.3.17 CPMRatioFinishedIn
 
-CPMRatioFinishedIn
+
 
 The CPMRatioFinishedIn message requests the completion percentage of a query. The format of the
 CPMRatioFinishedIn message that follows the header is shown in the following diagram.
@@ -5783,9 +5631,9 @@ _fQuick (4 bytes): This is unused and MUST be ignored by the server.
 
 Note  This field MUST be set to 0x00000001.
 
-2.2.3.18
+##### 2.2.3.18 CPMRatioFinishedOut
 
-CPMRatioFinishedOut
+
 
 The CPMRatioFinishedOut message replies to a CPMRatioFinishedIn message with the completion ratio
 of a query. The format of the CPMRatioFinishedOut message that follows the header is shown in the
@@ -5833,9 +5681,10 @@ Release: June 1, 2017
 
 63 / 114
 
-2.2.3.19
 
-CPMFetchValueIn
+##### 2.2.3.19 CPMFetchValueIn
+
+
 
 The CPMFetchValueIn message requests a property value. As specified in section 3.2.4.2.5, this
 message is sent repeatedly to retrieve all bytes of the property, updating _cbSoFar for each, until the
@@ -5895,9 +5744,9 @@ _padding (variable): This field MUST be of the length necessary (0 to 3 bytes) t
 out to a multiple of 4 bytes in length. The value of the padding bytes can be any arbitrary value.
 This field MUST be ignored by the receiver.
 
-2.2.3.20
+##### 2.2.3.20 CPMFetchValueOut
 
-CPMFetchValueOut
+
 
 The CPMFetchValueOut message replies to a CPMFetchValueIn message with a property value from a
 previous query. As specified in section 3.1.5.2.8, this message is sent after each CPMFetchValueIn
@@ -5913,7 +5762,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5964,18 +5814,18 @@ offset of the beginning of the portion is the value of _cbSoFar in CPMFetchValue
 the portion, indicated by the _cbValue field, MUST be less than or equal to the valure of
 _cbChunk in CPMFetchValueIn.
 
-2.2.3.21
+##### 2.2.3.21 CPMGetNotify
 
-CPMGetNotify
+
 
 The CPMGetNotify message MAY request that the client be notified of rowset changes.
 
 The message MUST NOT include a body; only the message header (as specified in section 2.2.2) is to
 be sent.
 
-2.2.3.22
+##### 2.2.3.22 CPMSendNotifyOut
 
-CPMSendNotifyOut
+
 
 The CPMSendNotifyOut message SHOULD notify the client of a change to the results of a query.
 
@@ -6002,7 +5852,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-_watchNotify (4 bytes): A 32-bit unsigned integer representing the change to the query. It MUST
+
+_watchNotify (4 bytes): A 32-bit unsigned integer representing the change to the query. It MUST
 
 be one of the following values.
 
@@ -6028,9 +5879,9 @@ The query has been executed again.
 
 0x00000003
 
-2.2.3.23
+##### 2.2.3.23 CPMGetApproximatePositionIn
 
-CPMGetApproximatePositionIn
+
 
 The CPMGetApproximatePositionIn message requests the approximate position of a bookmark in a
 chapter. The format of the CPMGetApproximatePositionIn message that follows the header is shown
@@ -6063,9 +5914,9 @@ _bmk (4 bytes): A 32-bit value representing the handle to the bookmark for which
 
 approximate position.
 
-2.2.3.24
+##### 2.2.3.24 CPMGetApproximatePositionOut
 
-CPMGetApproximatePositionOut
+
 
 The CPMGetApproximatePositionOut message replies to a CPMGetApproximatePositionIn message
 describing the approximate position of the bookmark in the chapter. The format of the
@@ -6097,11 +5948,12 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-_denominator (4 bytes): A 32-bit unsigned integer containing the number of rows in the rowset.
 
-2.2.3.25
+_denominator (4 bytes): A 32-bit unsigned integer containing the number of rows in the rowset.
 
-CPMCompareBmkIn
+##### 2.2.3.25 CPMCompareBmkIn
+
+
 
 The CPMCompareBmkIn message requests a comparison of two bookmarks in a chapter.
 
@@ -6143,9 +5995,9 @@ bmkSecond (4 bytes): A 32-bit unsigned integer representing the handle to the se
 
 compare.
 
-2.2.3.26
+##### 2.2.3.26 CPMCompareBmkOut
 
-CPMCompareBmkOut
+
 
 The CPMCompareBmkOut message replies to a CPMCompareBmkIn message with the comparison of
 the two bookmarks in the chapter. The format of the CPMCompareBmkOut message that follows the
@@ -6195,7 +6047,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 0x00000002
 
@@ -6213,9 +6066,9 @@ The first bookmark is not comparable to the second.
 
 0x00000004
 
-2.2.3.27
+##### 2.2.3.27 CPMRestartPositionIn
 
-CPMRestartPositionIn
+
 
 The CPMRestartPositionIn message moves the fetch position for a cursor (1) to the beginning of the
 chapter. As specified in section 3.1.5.2.12, the server will reply using the same message with the
@@ -6250,9 +6103,9 @@ _chapt (4 bytes): A 32-bit value representing the handle of a chapter from which
 This field MUST be present when the message is sent by the client and MUST be absent when the
 message is sent by the server.
 
-2.2.3.28
+##### 2.2.3.28 CPMStopAsynchIn
 
-CPMStopAsynchIn
+
 
 The CPMStopAsynchIn message contains a cursor handle for which an asynchronous query SHOULD
 be stopped.
@@ -6284,9 +6137,10 @@ Release: June 1, 2017
 
 68 / 114
 
-2.2.3.29
 
-CPMFreeCursorIn
+##### 2.2.3.29 CPMFreeCursorIn
+
+
 
 The CPMFreeCursorIn message requests the release of a cursor. The format of the CPMFreeCursorIn
 message that follows the header is shown in the following diagram.
@@ -6308,9 +6162,9 @@ CPMCreateQueryOut message to release.
 
 _hCursor
 
-2.2.3.30
+##### 2.2.3.30 CPMFreeCursorOut
 
-CPMFreeCursorOut
+
 
 The CPMFreeCursorOut message replies to a CPMFreeCursorIn message with the results of freeing a
 cursor. The format of the CPMFreeCursorOut message that follows the header is shown in the
@@ -6333,16 +6187,16 @@ _cCursorsRemaining (4 bytes): A 32-bit unsigned integer indicating the number of
 
 use for the query.
 
-2.2.3.31
+##### 2.2.3.31 CPMDisconnect
 
-CPMDisconnect
+
 
 The CPMDisconnect message SHOULD end the connection with the server.
 
 The message MUST NOT include a body; only the message header (as specified in section 2.2.2) is to
 be sent.
 
-2.2.4  Errors
+#### 2.2.4 Errors
 
 All Content Indexing Services Protocol messages MUST return 0x00000000 on success; otherwise,
 they return a 32-bit nonzero error code that can be either an HRESULT value or an NTSTATUS value
@@ -6359,7 +6213,7 @@ identical meaning; but, even if there were conflicts in the future, they would n
 issues as long as the value for STATUS_INSUFFICIENT_RESOURCES remains unique because all other
 error values are treated the same.
 
-2.2.5  Standard Properties
+#### 2.2.5 Standard Properties
 
  Properties in the indexing service are represented by the combination of a property set GUID and
 either a string property name or an integer property ID. See CFullPropSpec for more details.
@@ -6371,14 +6225,15 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-There are three classes of properties: database properties, query properties, and open properties.
+
+There are three classes of properties: database properties, query properties, and open properties.
 Database properties help control the indexing service behavior and are as specified in section
 2.2.1.15.1. Query properties can be used in a restriction and in some cases returned with every result.
 They are special because they are built into the indexing service. Open properties are defined by
 individual applications. There are a typical set of common properties in use, but there is no
 requirement to use them.
 
-2.2.5.1  Query Properties
+##### 2.2.5.1 Query Properties
 
 Query Property Set
 
@@ -6454,7 +6309,7 @@ Storage Property Set
 The friendly name is Contents, the PropId is 0x00000013, the data type is VT_LPWSTR, and it
 represents the main contents of a file; usually, this property cannot be retrieved.
 
-2.2.5.2  Common Open Properties
+##### 2.2.5.2 Common Open Properties
 
 An indexing service can allow querying and retrieval over any property. The following tables outline
 some properties typically used.
@@ -6471,7 +6326,8 @@ Release: June 1, 2017
 
 70 / 114
 
-Friendly name/PropId  Data type
+
+Friendly name/PropId  Data type
 
 Description
 
@@ -6615,7 +6471,8 @@ Release: June 1, 2017
 
 71 / 114
 
- Attribute/value
+
+ Attribute/value
 
 Description
 
@@ -6738,7 +6595,8 @@ Release: June 1, 2017
 
 72 / 114
 
-Friendly name/PropId  Data type
+
+Friendly name/PropId  Data type
 
 Description
 
@@ -6881,7 +6739,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Friendly
+
+Friendly
 name/PropId
 
 DocByteCount
@@ -7012,7 +6871,8 @@ Release: June 1, 2017
 
 74 / 114
 
-Friendly name/PropId  Data type
+
+Friendly name/PropId  Data type
 
 Description
 
@@ -7143,7 +7003,8 @@ Release: June 1, 2017
 
 75 / 114
 
-Friendly name/PropId  Data type
+
+Friendly name/PropId  Data type
 
 Description
 
@@ -7268,7 +7129,8 @@ Release: June 1, 2017
 
 76 / 114
 
-Friendly Name/PropId  Datatype
+
+Friendly Name/PropId  Datatype
 
 Description
 
@@ -7406,14 +7268,16 @@ Release: June 1, 2017
 
 77 / 114
 
-[MS-MCIS] - v20170601
+
+[MS-MCIS] - v20170601
 Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
 78 / 114
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 Content Indexing Services Protocol message requests require only minimal sequencing. A
 CPMSetCatStateIn message MAY be called at any time. All other messages MUST be preceded by an
@@ -7433,7 +7297,8 @@ Release: June 1, 2017
 
 79 / 114
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-MCIS].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -7442,9 +7307,9 @@ Figure 4: Typical message sequence for a simple query from client to remote comp
 The messages represented in the preceding diagram represent a subset of all of the Content Indexing
 Services Protocol messages used for querying a remote indexing service catalog.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The following section specifies data and state maintained by the Content Indexing Services Protocol
 server. The data provided in this document explains how the protocol behaves. This section does not
@@ -7458,7 +7323,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-MCIS].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
@@ -7531,7 +7397,7 @@ which corresponds to the values of dwOldState in section 2.2.3.3.<13>
 For each language supported, a database of word variations as discussed in
 GENERATE_METHOD_INFLECT in section 2.2.1.3.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
@@ -7542,17 +7408,18 @@ Release: June 1, 2017
 
 81 / 114
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 Upon initialization, the server MUST set its state to "not initialized" and start listening for messages on
 the named pipe specified in section 1.9. After doing any other internal initialization, the server MUST
 transition to the "running" state.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing and Sequencing Rules
+#### 3.1.5 Message Processing and Sequencing Rules
 
 Whenever an error occurs during the processing of a message sent by a client, the server MUST report
 an error back to the client as follows:
@@ -7609,7 +7476,8 @@ Release: June 1, 2017
 
 82 / 114
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-MCIS].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
@@ -7619,9 +7487,9 @@ the following sections. The following table summarizes the relationship between 
 
 Figure 6: Relationship between messages
 
-3.1.5.1  Remote Indexing Service Catalog Management
+##### 3.1.5.1 Remote Indexing Service Catalog Management
 
-3.1.5.1.1 Receiving a CPMCiStateInOut Request
+###### 3.1.5.1.1 Receiving a CPMCiStateInOut Request
 
 When the server receives a CPMCiStateInOut message request from the client, the server MUST first
 check whether the client is in a list of connected clients. If the client is not in the list, the server MUST
@@ -7629,7 +7497,7 @@ report a STATUS_INVALID_PARAMETER (0xC000000D) error. Otherwise, the server MUST
 the client with a CPMCiStateInOut message, filling the message in with information about the client's
 associated catalog, as specified in section 2.2.3.1.
 
-3.1.5.1.2 Receiving a CPMSetCatStateIn Request
+###### 3.1.5.1.2 Receiving a CPMSetCatStateIn Request
 
 83 / 114
 
@@ -7638,7 +7506,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 84 -->
+
+<!-- Extracted images from page 84 -->
 ![Extracted image 1 from page 84]([MS-MCIS].images/page084-img01.png)
 ![Extracted image 2 from page 84]([MS-MCIS].images/page084-img02.png)
 <!-- /Extracted images from page 84 -->
@@ -7690,7 +7559,8 @@ Release: June 1, 2017
 
 84 / 114
 
-3.1.5.1.3 Receiving a CPMUpdateDocumentsIn Request
+
+###### 3.1.5.1.3 Receiving a CPMUpdateDocumentsIn Request
 
 When the server receives a CPMUpdateDocumentsIn message request, the server MUST do the
 following:
@@ -7712,7 +7582,7 @@ MUST be performed. This operation MUST be performed in the catalog associated wi
 
 the _status field to the results of the request.
 
-3.1.5.1.4 Receiving a CPMForceMergeIn Request
+###### 3.1.5.1.4 Receiving a CPMForceMergeIn Request
 
 When the server receives a CPMForceMergeIn message request, the server MUST do the following:
 
@@ -7737,9 +7607,9 @@ Note  The process of maintenance is asynchronous and can continue after the clie
 the response message. This process does not directly affect the protocol in any way (other than
 response time).
 
-3.1.5.2  Remote Indexing Service Querying
+##### 3.1.5.2 Remote Indexing Service Querying
 
-3.1.5.2.1 Receiving a CPMConnectIn Request
+###### 3.1.5.2.1 Receiving a CPMConnectIn Request
 
 When the server receives a CPMConnectIn request from a client, the server MUST do the following:
 
@@ -7766,9 +7636,10 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-6.  Respond to the client with a CPMConnectOut message.
 
-3.1.5.2.2 Receiving a CPMCreateQueryIn Request
+6.  Respond to the client with a CPMConnectOut message.
+
+###### 3.1.5.2.2 Receiving a CPMCreateQueryIn Request
 
 When the server receives a CPMCreateQueryIn message request from a client, the server MUST do the
 following:
@@ -7810,7 +7681,7 @@ the numerator and denominator of query completion.
 
 11. Respond to the client with a CPMCreateQueryOut message.
 
-3.1.5.2.3 Receiving a CPMGetQueryStatusIn Request
+###### 3.1.5.2.3 Receiving a CPMGetQueryStatusIn Request
 
 When the server receives a CPMGetQueryStatusIn message request from a client, the server MUST do
 the following:
@@ -7830,7 +7701,7 @@ the server MUST report an error.
 
 4.  Respond to the client with the CPMGetQueryStatusOut message.
 
-3.1.5.2.4 Receiving a CPMGetQueryStatusExIn Request
+###### 3.1.5.2.4 Receiving a CPMGetQueryStatusExIn Request
 
 [MS-MCIS] - v20170601
 Content Indexing Services Protocol
@@ -7839,7 +7710,8 @@ Release: June 1, 2017
 
 86 / 114
 
-If the server receives a CPMGetQueryStatusExIn message request from a client, the server MUST do
+
+If the server receives a CPMGetQueryStatusExIn message request from a client, the server MUST do
 the following:
 
 1.  Check whether the client has a query associated with it. If this is not the case, the server MUST
@@ -7869,7 +7741,7 @@ reason, the server MUST report that an error was encountered.
 
 6.  Respond to the client with the CPMGetQueryStatusExOut message.
 
-3.1.5.2.5 Receiving a CPMRatioFinishedIn Request
+###### 3.1.5.2.5 Receiving a CPMRatioFinishedIn Request
 
 When the server receives a CPMRatioFinishedIn message request from a client, the server MUST do
 the following:
@@ -7894,7 +7766,7 @@ the server MUST report that an error was encountered.
 
 6.  Respond to the client with the CPMRatioFinishedOut message.
 
-3.1.5.2.6 Receiving a CPMSetBindingsIn Request
+###### 3.1.5.2.6 Receiving a CPMSetBindingsIn Request
 
 When the server receives a CPMSetBindingsIn message request from a client, the server MUST do the
 following:
@@ -7914,7 +7786,8 @@ Release: June 1, 2017
 
 87 / 114
 
-3.  Verify that binding information is valid (that is, the column at least specifies value, length, or
+
+3.  Verify that binding information is valid (that is, the column at least specifies value, length, or
 
 status to be returned; no overlap in bindings for value, length, or status; and value, length, and
 status fit in the specified row size) and if not, report a DB_E_BADBINDINFO (0x80040E08) error.
@@ -7927,7 +7800,7 @@ step fails for any reason, the server MUST report that an error was encountered.
 
 _status set to the results of the specified binding.
 
-3.1.5.2.7 Receiving a CPMGetRowsIn Request
+###### 3.1.5.2.7 Receiving a CPMGetRowsIn Request
 
 When the server receives a CPMGetRowsIn message request from a client, the server MUST do the
 following:
@@ -7992,12 +7865,13 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the property value is absent for this row, the server MUST set the status byte to StatusNull. If the
+
+If the property value is absent for this row, the server MUST set the status byte to StatusNull. If the
 value is too big to be transferred in the CPMGetRowsOut message (greater than 2048 bytes), the
 server MUST set the status byte to StatusDeferred. Otherwise, the server MUST set the status byte to
 StatusOK.
 
-3.1.5.2.8 Receiving a CPMFetchValueIn Request
+###### 3.1.5.2.8 Receiving a CPMFetchValueIn Request
 
 When the server receives a CPMFetchValueIn message request from a client, the server MUST do the
 following:
@@ -8031,7 +7905,7 @@ _fMoreExists to 0x00000001; otherwise, set it to 0x00000000.
 
 5.  Respond to the client with the CPMFetchValueOut message.
 
-3.1.5.2.9 Receiving a CPMGetNotify Request
+###### 3.1.5.2.9 Receiving a CPMGetNotify Request
 
 If the server SHOULD receive a CPMGetNotify message from a client, the server MUST do the
 following:
@@ -8054,7 +7928,7 @@ DBWATCHNOTIFY_ROWSCHANGED takes priority (that is, if the query was done and re-
 and then if the number of rows changed and the query was done again, then the event reported
 would be DBWATCHNOTIFY_ROWSCHANGED).
 
-3.1.5.2.10  Receiving a CPMGetApproximatePositionIn Request
+###### 3.1.5.2.10 Receiving a CPMGetApproximatePositionIn Request
 
 [MS-MCIS] - v20170601
 Content Indexing Services Protocol
@@ -8063,7 +7937,8 @@ Release: June 1, 2017
 
 89 / 114
 
-When the server receives a CPMGetApproximatePositionIn message request from the client, the server
+
+When the server receives a CPMGetApproximatePositionIn message request from the client, the server
 MUST do the following:
 
 1.  Check whether the client has a query associated with it. If this is not the case, the server MUST
@@ -8083,7 +7958,7 @@ for any reason, the server MUST report an error.
 
 4.  Respond to the client with a CPMGetApproximatePositionOut message.
 
-3.1.5.2.11  Receiving a CPMCompareBmkIn Request
+###### 3.1.5.2.11 Receiving a CPMCompareBmkIn Request
 
 When the server receives a CPMCompareBmkIn message request from the client, the server MUST do
 the following:
@@ -8118,7 +7993,7 @@ set to DBCOMPARE_GT.
 
 6.  Respond to the client with filled CPMCompareBmkOut message.
 
-3.1.5.2.12  Receiving a CPMRestartPositionIn Request
+###### 3.1.5.2.12 Receiving a CPMRestartPositionIn Request
 
 When the server receives the CPMRestartPositionIn message request from the client, the server MUST
 do the following:
@@ -8138,14 +8013,15 @@ Release: June 1, 2017
 
 90 / 114
 
-3.  Move the cursor to the beginning of the chapter, identified by the chapter handle. Note that when
+
+3.  Move the cursor to the beginning of the chapter, identified by the chapter handle. Note that when
 
 the chapter handle is DB_NULL_HCHAPTER, the corresponding chapter is the main rowset of the
 query. If this step fails for any reason, the server MUST report an error.
 
 4.  Respond to the client with a CPMRestartPositionIn message.
 
-3.1.5.2.13  Receiving a CPMStopAsynchIn Request
+###### 3.1.5.2.13 Receiving a CPMStopAsynchIn Request
 
 If the server SHOULD receive a CPMStopAsynchIn message request from the client, the server MUST
 do the following:
@@ -8164,7 +8040,7 @@ MUST report an E_FAIL (0x80004005) error.
 
 set the _status field to the result of step 3.
 
-3.1.5.2.14  Receiving a CPMFreeCursorIn Request
+###### 3.1.5.2.14 Receiving a CPMFreeCursorIn Request
 
 When the server receives a CPMFreeCursorIn message request from the client, the server MUST do
 the following:
@@ -8191,16 +8067,16 @@ number of cursors remaining in this client's list.
 
 resources (see section 3.1.1).
 
-3.1.5.2.15  Receiving a CPMDisconnect Request
+###### 3.1.5.2.15 Receiving a CPMDisconnect Request
 
 If the server SHOULD receive a CPMDisconnect message request from the client, the server MUST
 remove the client from the list of connected clients and release all resources associated with the client.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 When the server is stopped, it MUST first transition to the "shutting down" state. It MUST then stop
 listening to the pipe, perform any other implementation-specific shutdown tasks, and then transition
@@ -8213,9 +8089,10 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 The following section specifies data and state maintained by the Content Indexing Services Protocol
 client. The data is provided to help explain how the protocol behaves. This section does not mandate
@@ -8234,15 +8111,15 @@ Current Bytes Received: The number of bytes received for Current Property Value 
 
 Named Pipe Connection State: A connection to the server.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 No actions are taken until a higher-layer request is received.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 When a request is received from a higher layer, the client MUST create a named pipe connection to
 the server, using the details specified in section 2.1. If the client is unable to do so, the higher-layer
@@ -8263,14 +8140,14 @@ values given by these integers.
 
 3.  Subtract the value given by _msg from the value that results from the bitwise XOR.
 
-3.2.4.1  Remote Indexing Service Catalog Management
+##### 3.2.4.1 Remote Indexing Service Catalog Management
 
 Each message is triggered by a request from the higher layer. There is no message sequence enforced
 by the client for Content Indexing Services Protocol message requests for remotely managing
 catalogs, but (with the exception of a CPMSetCatStateIn message) the server will reply with success
 only if the client previously connected by means of a CPMConnectIn message.
 
-3.2.4.1.1 Sending a CPMCiStateInOut Request
+###### 3.2.4.1.1 Sending a CPMCiStateInOut Request
 
 92 / 114
 
@@ -8279,7 +8156,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Typically, the higher layer asks the protocol client to send a CPMCiStateInOut message when it
+
+Typically, the higher layer asks the protocol client to send a CPMCiStateInOut message when it
 requires information on indexing services on the server.
 
 When requested to send this message, the client MUST do the following:
@@ -8294,7 +8172,7 @@ messages.
 
 informational structure) to the higher layer.
 
-3.2.4.1.2 Sending a CPMSetCatStateIn Request
+###### 3.2.4.1.2 Sending a CPMSetCatStateIn Request
 
 Typically, the higher layer asks the protocol client to send a CPMSetCatStateIn message when it
 requires information on a catalog or all catalogs. For this message, the higher layer needs to provide
@@ -8312,7 +8190,7 @@ messages.
 
 _dwOldState) to the higher layer.
 
-3.2.4.1.3 Sending a CPMUpdateDocumentsIn Request
+###### 3.2.4.1.3 Sending a CPMUpdateDocumentsIn Request
 
 Typically, the higher layer asks to send this message when it needs to either update documents in an
 existing path or add a new file path to the inverted index. Thus the higher layer is to provide the
@@ -8329,7 +8207,7 @@ other messages.
 
 3.  Report back the value of the _status field of the response to the higher layer.
 
-3.2.4.1.4 Sending a CPMForceMergeIn Request
+###### 3.2.4.1.4 Sending a CPMForceMergeIn Request
 
 Typically, the higher layer requests to send this message when there is a need to improve query
 performance or when it is part of scheduled indexing service maintenance.
@@ -8351,7 +8229,8 @@ Release: June 1, 2017
 
 93 / 114
 
-3.2.4.2  Remote Indexing Service Catalog Query Messages
+
+##### 3.2.4.2 Remote Indexing Service Catalog Query Messages
 
 With the exception of CPMGetRowsIn/CPMGetRowsOut and CPMFetchValueIn/CPMFetchValueOut,
 there is a one-to-one relationship between Content Indexing Services Protocol messages and higher-
@@ -8364,7 +8243,7 @@ tracks if the client is in a connected state, but this is not enforced in any wa
 The client portion of the diagram in section 3 illustrates this sequence for a simple indexing service
 query.
 
-3.2.4.2.1 Sending a CPMConnectIn Request
+###### 3.2.4.2.1 Sending a CPMConnectIn Request
 
 This message is typically the very first request from the higher layer (as if the client is not connected,
 the server will fail most of the messages with the exception of CPMSetCatStateIn). The higher level
@@ -8402,7 +8281,7 @@ successful connection, but these are not enforced by the Content Indexing Servic
 
 from the catalog.
 
-3.2.4.2.2 Sending a CPMCreateQueryIn Request
+###### 3.2.4.2.2 Sending a CPMCreateQueryIn Request
 
 The higher layer will typically provide information for the query creation after the protocol client is
 connected. The higher layer provides the client with a restrictions set, columns set, sort order rules
@@ -8424,7 +8303,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.  If a sort set is present, set CSortSetPresent to 0x01, and fill the SortSet field.
+
+3.  If a sort set is present, set CSortSetPresent to 0x01, and fill the SortSet field.
 
 4.  If a categorization set is present, set CCategorizationSetPresent to 0x01, and fill the
 
@@ -8444,7 +8324,7 @@ other messages.
 
 cursor handles and informative Boolean values, as specified in section 2.2.3.9) to the higher layer.
 
-3.2.4.2.3 Sending a CPMSetBindingsIn Request
+###### 3.2.4.2.3 Sending a CPMSetBindingsIn Request
 
 The higher layer will typically set bindings for each column to be returned in the rows when it already
 has a valid cursor handle (after successfully receiving CPMCreateQueryOut, see section 3.2.5.1). The
@@ -8474,7 +8354,7 @@ application layer. Set the ulChecksum field to the value calculated as specified
 For informative purposes, it is expected that higher layers will typically request a client to send a
 CPMGetRowsIn message, but this is not enforced by the Content Indexing Services Protocol.
 
-3.2.4.2.4 Sending a CPMGetRowsIn Request
+###### 3.2.4.2.4 Sending a CPMGetRowsIn Request
 
 When the higher layer is about to receive rows data, it will provide the protocol client with a valid
 cursor and chapter handle and give an appropriate seek description. Typically, a higher layer is
@@ -8499,7 +8379,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -8520,7 +8401,7 @@ _cbSeek plus 0x14.
 
 5.  Send a CPMGetRowsIn message to the server.
 
-3.2.4.2.5 Sending a CPMFetchValueIn Request
+###### 3.2.4.2.5 Sending a CPMFetchValueIn Request
 
 If the client receives a CPMGetRowsOut response from the server with the column's Status field set to
 StatusDeferred (0x01), it means that the property value was not included in the Rows field of the
@@ -8539,7 +8420,7 @@ the client MUST do the following:
 
 4.  Send the CPMFetchValueIn message to the server.
 
-3.2.4.2.6 Sending a CPMFreeCursorIn Request
+###### 3.2.4.2.6 Sending a CPMFreeCursorIn Request
 
 After the higher level is no longer using the search query, it can release the resources on the server
 by asking the client to send a CPMFreeCursorIn message.
@@ -8553,14 +8434,14 @@ containing the handle specified by the upper layer.
 
 2.  Wait to receive a CPMFreeCursorOut message from server, discarding other messages.
 
-3.2.4.2.7 Sending a CPMDisconnect Message
+###### 3.2.4.2.7 Sending a CPMDisconnect Message
 
 If the higher layer has no more queries for the indexing service, the application can request that the
 client send a CPMDisconnect message to the server in order to make more server resources available.
 When the application makes the request, the client MUST send the message as requested. There is no
 response to this message from the server.
 
-3.2.5  Message Processing and Sequencing Rules
+#### 3.2.5 Message Processing and Sequencing Rules
 
 When the client receives a message response from the server, the client MUST use the Last Message
 Sent state to determine whether the message received from the server is the one expected by the
@@ -8572,10 +8453,11 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-client. All messages with the _msg field different from the one in Last Message Sent MUST be
+
+client. All messages with the _msg field different from the one in Last Message Sent MUST be
 ignored.
 
-3.2.5.1  Receiving a CPMCreateQueryOut Response
+##### 3.2.5.1 Receiving a CPMCreateQueryOut Response
 
 When the client receives a CPMCreateQueryOut message response from the server, the client MUST
 return back _status (and, if the status is successful, cursor handle values) to the higher layer. Any
@@ -8598,7 +8480,7 @@ the querypath.
 
   Use CPMRatioFinishedIn to request the completion percentage of the query.
 
-3.2.5.2  Receiving a CPMGetRowsOut Response
+##### 3.2.5.2 Receiving a CPMGetRowsOut Response
 
 When the client receives a CPMGetRowsOut message response from the server, the client MUST do
 the following:
@@ -8645,7 +8527,8 @@ Release: June 1, 2017
 
 97 / 114
 
-
+
+
 
 The seek description is returned back to the higher layer as well and can be reused or examined
 by the higher layer.
@@ -8671,7 +8554,7 @@ chapter.
 
 the rowset.
 
-3.2.5.3  Receiving a CPMFetchValueOut Response
+##### 3.2.5.3 Receiving a CPMFetchValueOut Response
 
 When the client receives a CPMFetchValueOut message response from the server, the client MUST do
 the following:
@@ -8695,7 +8578,7 @@ Received, _cbPropSpec to zero, and _cbChunk to the buffer size required by the h
 
 the higher layer.
 
-3.2.5.4  Receiving a CPMFreeCursorOut Response
+##### 3.2.5.4 Receiving a CPMFreeCursorOut Response
 
 When the client receives a successful CPMFreeCursorOut message response from the server, the client
 MUST return the _cCursorsRemaining value to the higher layer.
@@ -8706,7 +8589,7 @@ not use ones that have already been freed. When the number of _cCursorsRemaining
 0x00000000, the higher layer can use the connection to specify another query (using a
 CPMCreateQueryIn message).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -8717,7 +8600,8 @@ Release: June 1, 2017
 
 98 / 114
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -8728,9 +8612,10 @@ Release: June 1, 2017
 
 99 / 114
 
-4  Protocol Examples
 
-4.1  Example 1
+## 4 Protocol Examples
+
+### 4.1 Example 1
 
 In the following example, consider a scenario in which the user JOHN on machine A wants to obtain
 the sizes of files that contain the word "Microsoft" from the set of documents stored on server X in
@@ -8810,7 +8695,8 @@ Release: June 1, 2017
 
 100 / 114
 
-
+
+
 
 For the ColId element:
 
@@ -8930,7 +8816,8 @@ Release: June 1, 2017
 
 101 / 114
 
-
+
+
 
 PropId is set to 0x00000003 (DBPROP_CI_INCLUDE_SCOPES).
 
@@ -9040,7 +8927,8 @@ Release: June 1, 2017
 
 102 / 114
 
-4.  The server verifies that the _ulChecksum is correct, verifies that the user is authorized to make
+
+4.  The server verifies that the _ulChecksum is correct, verifies that the user is authorized to make
 
 this request, and responds with a CPMConnectOut message.
 
@@ -9131,7 +9019,8 @@ Release: June 1, 2017
 
 103 / 114
 
-  _ulGenerateMethod is set to 0x00000000 (exact match).
+
+  _ulGenerateMethod is set to 0x00000000 (exact match).
 
   CSortPresent is set to 0x00.
 
@@ -9205,7 +9094,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  _cbBindingDesc is set to the size of the _cColumns and _aColumns fields combined.
+
+  _cbBindingDesc is set to the size of the _cColumns and _aColumns fields combined.
 
   _dummy is omitted.
 
@@ -9279,7 +9169,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  _ulClientBase is set to 0x00000000.
+
+  _ulClientBase is set to 0x00000000.
 
   _fBwdfetch is set to 0x00000000, indicating that the rows are to be fetched in forward order.
 
@@ -9334,7 +9225,7 @@ The header of the message is populated as follows:
 
 12. The server processes the message and removes all client states.
 
-4.2  Example 2
+### 4.2 Example 2
 
 In the previous example, the query was quite simple. Now consider a slightly more complex query,
 assuming that the user wants to retrieve the size of the documents that contain the following words:
@@ -9356,7 +9247,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-_weight is set to 0x00000000.
+
+_weight is set to 0x00000000.
 
 The rest of the field contains a CNodeRestriction structure:
 
@@ -9417,15 +9309,16 @@ Release: June 1, 2017
 
 107 / 114
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 For Indexing implementations that index secure content, consider using the user context provided by
 the server message block (SMB) protocol (as specified in [MS-SMB]) to trim search results and return
 only those accessible to the caller.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The only security parameter is the impersonations level (see section 2.1).
 
@@ -9436,7 +9329,8 @@ Release: June 1, 2017
 
 108 / 114
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9506,7 +9400,8 @@ Content Indexing Services Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -9542,7 +9437,8 @@ Release: June 1, 2017
 
 110 / 114
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -9554,7 +9450,8 @@ Release: June 1, 2017
 
 111 / 114
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -9710,7 +9607,8 @@ DECIMAL packet 17
 
 112 / 114
 
-Details 79
+
+Details 79
 
 E
 
@@ -9847,7 +9745,8 @@ Standard properties 69
 
 113 / 114
 
-Standard Properties message 69
+
+Standard Properties message 69
 Standards assignments 11
 Structures 12
 Structures message 12

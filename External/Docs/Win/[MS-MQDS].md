@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 238
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: June 1, 2017
 
 2 / 238
 
-Date
+
+Date
 
 Revision
 History
@@ -500,587 +502,269 @@ Release: June 1, 2017
 
 3 / 238
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 14
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 16
-Versioning and Capability Negotiation ................................................................. 16
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Common Data Types ........................................................................................ 18
-HRESULT ................................................................................................... 19
-2.2.1
-GUID ........................................................................................................ 19
-2.2.2
-PROPVARIANT ............................................................................................ 19
-2.2.3
-SECURITY_DESCRIPTOR .............................................................................. 20
-2.2.4
-PCONTEXT_HANDLE_SERVER_AUTH_TYPE ..................................................... 20
-2.2.5
-PCONTEXT_HANDLE_TYPE ........................................................................... 20
-2.2.6
-PCONTEXT_HANDLE_DELETE_TYPE ............................................................... 20
-2.2.7
-Directory Object Types ................................................................................ 20
-2.2.8
-2.2.9
-Directory Service Pathname ......................................................................... 21
-2.2.10  MSMQ Object Properties .............................................................................. 21
-Property Identifiers ............................................................................... 21
-2.2.10.1
-2.2.10.2  Queue Object Properties ........................................................................ 22
-2.2.10.3  Machine Object Properties ...................................................................... 22
-Site Object Properties ............................................................................ 23
-2.2.10.4
-2.2.10.5
-Connected Network Object Properties ...................................................... 23
-Enterprise Object Properties ................................................................... 23
-2.2.10.6
-2.2.10.7  User Object Properties ........................................................................... 24
-Routing Link Object Properties ................................................................ 24
-2.2.10.8
-2.2.11  MQPROPERTYRESTRICTION ......................................................................... 24
-2.2.12  MQRESTRICTION ........................................................................................ 25
-2.2.13  MQCOLUMNSET .......................................................................................... 25
-2.2.14  MQSORTKEY .............................................................................................. 26
-2.2.15  MQSORTSET .............................................................................................. 26
-Server Specification List String ..................................................................... 26
-2.2.16
-Server List String........................................................................................ 27
-2.2.17
-RSAPUBKEY ............................................................................................... 27
-2.2.18
-2.2.19
-BLOBHEADER ............................................................................................. 28
-2.2.20  MQDS_PublicKey ........................................................................................ 28
-BOUNDED_SIGNATURE_SIZE ....................................................................... 29
-2.2.21
-BOUNDED_PROPERTIES .............................................................................. 29
-2.2.22
-PROPID ..................................................................................................... 29
-2.2.23
-Directory Service Schema Elements ................................................................... 29
-
-2.3
-
-3.1
-
-3.1.1
-
-3  Protocol Details ..................................................................................................... 30
-dscomm Server Details ..................................................................................... 30
-Abstract Data Model .................................................................................... 30
-DirectorySequenceNumber Type ............................................................. 30
-DirectoryPartitionIdentifier Type ............................................................. 30
-GssSecurityContext Data Element ........................................................... 30
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-
-[MS-MQDS] - v20170601
-Message Queuing (MSMQ): Directory Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 238
-
-3.1.2
-3.1.3
-3.1.4
-
-PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC Context Handle .................. 31
-3.1.1.4
-PCONTEXT_HANDLE_TYPE RPC Context Handle ........................................ 31
-3.1.1.5
-Enterprise Data Elements ....................................................................... 31
-3.1.1.6
-QueueManager Data Elements ................................................................ 32
-3.1.1.7
-Queue Data Elements ............................................................................ 32
-3.1.1.8
-User Data Elements ............................................................................... 32
-3.1.1.9
-Site Data Elements................................................................................ 32
-3.1.1.10
-RoutingLink Data Elements..................................................................... 32
-3.1.1.11
-ConnectedNetwork Data Elements ........................................................... 32
-3.1.1.12
-3.1.1.13
-LookupIteratorState Data Elements ......................................................... 33
-3.1.1.14  Directory Data Elements ........................................................................ 33
-3.1.1.15  Negotiation Token Data Element ............................................................. 34
-LocalQueueManager Data Element .......................................................... 34
-3.1.1.16
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 34
-S_DSGetServerPort (Opnum 27) ............................................................. 36
-S_DSValidateServer (Opnum 22) ............................................................ 37
-S_DSCloseServerHandle (Opnum 23) ...................................................... 39
-S_DSCreateObject (Opnum 0) ................................................................ 39
-S_DSDeleteObject (Opnum 1) ................................................................ 44
-S_DSDeleteObjectGuid (Opnum 10) ........................................................ 45
-S_DSGetProps (Opnum 2) ...................................................................... 46
-S_DSGetPropsGuid (Opnum 11) ............................................................. 48
-S_DSSetProps (Opnum 3) ...................................................................... 51
-S_DSSetPropsGuid (Opnum 12) .............................................................. 53
-S_DSGetObjectSecurity (Opnum 4) ......................................................... 55
-S_DSGetObjectSecurityGuid (Opnum 13) ................................................. 60
-S_DSSetObjectSecurity (Opnum 5) ......................................................... 63
-S_DSSetObjectSecurityGuid (Opnum 14) ................................................. 66
-S_DSQMGetObjectSecurity (Opnum 21) .................................................. 69
-S_DSQMSetMachineProperties (Opnum 19) .............................................. 72
-S_DSLookupBegin (Opnum 6) ................................................................ 74
-S_DSLookupNext (Opnum 7) .................................................................. 75
-S_DSLookupEnd (Opnum 8) ................................................................... 76
-S_DSCreateServersCache (Opnum 20) .................................................... 77
-Common Details ................................................................................... 78
-3.1.4.21.1  Directory Service Objects ................................................................. 78
-3.1.4.21.2  Directory Service Object Properties .................................................... 79
-3.1.4.21.3  Directory Service Object Properties Specifying an Identifier .................. 79
-3.1.4.21.4  Directory Service Object Properties Specifying a Name......................... 80
-3.1.4.21.5  Directory Service Object Access Control ............................................. 80
-3.1.4.21.6  Data Partitioning ............................................................................. 80
-3.1.4.21.7  Data Replication .............................................................................. 81
-3.1.4.21.8  Directory Service Object Property Mapping ......................................... 81
-Read Directory Object Mapping .................................................... 81
-3.1.4.21.8.1.1  QueueManager ..................................................................... 81
-3.1.4.21.8.1.2
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-
-RemoteAccessServer, RoutingServer, DirectoryServer,
-DirectoryServerType ............................................................. 83
-3.1.4.21.8.1.3  OperatingSystemType ........................................................... 83
-3.1.4.21.8.1.4  Queue ................................................................................. 84
-PrivacyLevel ........................................................................ 85
-3.1.4.21.8.1.5
-Enterprise............................................................................ 85
-3.1.4.21.8.1.6
-CryptographicProvider ........................................................... 86
-3.1.4.21.8.1.7
-Site .................................................................................... 86
-3.1.4.21.8.1.8
-3.1.4.21.8.1.9
-RoutingLink ......................................................................... 86
-3.1.4.21.8.1.10  ConnectedNetwork ............................................................... 87
-3.1.4.21.8.1.11  User ................................................................................... 87
-
-3.1.4.21.8.1
-
-[MS-MQDS] - v20170601
-Message Queuing (MSMQ): Directory Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 238
-
-3.1.4.21.8.2  Write Directory Object Mapping ................................................... 88
-3.1.4.21.8.2.1  QueueManager ..................................................................... 88
-3.1.4.21.8.2.2
-
-RemoteAccessServer, RoutingServer, DirectoryServer,
-DirectoryServerType ............................................................. 89
-3.1.4.21.8.2.3  OperatingSystemType ........................................................... 90
-3.1.4.21.8.2.4  Queue ................................................................................. 90
-PrivacyLevel ........................................................................ 91
-3.1.4.21.8.2.5
-Enterprise............................................................................ 91
-3.1.4.21.8.2.6
-CryptographicProvider ........................................................... 92
-3.1.4.21.8.2.7
-Site .................................................................................... 92
-3.1.4.21.8.2.8
-3.1.4.21.8.2.9
-RoutingLink ......................................................................... 93
-3.1.4.21.8.2.10  ConnectedNetwork ............................................................... 93
-3.1.4.21.8.2.11  NetworkProtocol ................................................................... 93
-3.1.4.21.8.2.12  User ................................................................................... 94
-Create Directory Object Mapping ................................................. 94
-3.1.4.21.8.3.1  QueueManager ..................................................................... 94
-3.1.4.21.8.3.2  DirectoryServer, DirectoryServerType, RoutingServer,
-
-3.1.4.21.8.3
-
-3.1.5
-3.1.6
-
-RemoteAccessServer ............................................................ 95
-3.1.4.21.8.3.3  Queue ................................................................................. 96
-Site .................................................................................... 96
-3.1.4.21.8.3.4
-RoutingLink ......................................................................... 97
-3.1.4.21.8.3.5
-3.1.4.21.8.3.6
-ConnectedNetwork ............................................................... 97
-3.1.4.21.8.3.7  User ................................................................................... 97
-Timer Events .............................................................................................. 98
-Other Local Events ...................................................................................... 98
-PCONTEXT_HANDLE_SERVER_AUTH_TYPE Rundown ................................. 98
-3.1.6.1
-PCONTEXT_HANDLE_TYPE Rundown ........................................................ 98
-3.1.6.2
-Create Directory Object ......................................................................... 98
-3.1.6.3
-Update Directory Object ........................................................................ 100
-3.1.6.4
-Delete Directory Object......................................................................... 102
-3.1.6.5
-Read Directory Object .......................................................................... 103
-3.1.6.6
-Begin Directory Lookup ......................................................................... 104
-3.1.6.7
-Lookup Directory Next .......................................................................... 105
-3.1.6.8
-End Directory Lookup ........................................................................... 106
-3.1.6.9
-Remove Directory Objects ..................................................................... 106
-3.1.6.10
-3.1.6.11
-Add Object to Directory ........................................................................ 107
-3.1.6.12  Get Directory Object ............................................................................. 107
-3.1.6.13
-Remove Object from Directory ............................................................... 109
-3.1.6.14  Get Directory Object for Update ............................................................. 110
-Commit Directory Object Update ............................................................ 111
-3.1.6.15
-dscomm Client Details ..................................................................................... 111
-Abstract Data Model ................................................................................... 111
-Externally Defined Data Elements .......................................................... 111
-GssSecurityContext Data Element .......................................................... 112
-SiteIdentifier Data Element ................................................................... 112
-DirectoryServiceServersCollection Data Element ...................................... 112
-ReadDirectoryIteratorState Data Element ............................................... 112
-ReadDirectoryIteratorStateCollection Data Element .................................. 113
-CurrentServer Data Element .................................................................. 113
-Timers ..................................................................................................... 113
-Initialization .............................................................................................. 113
-Message Processing Events and Sequencing Rules ......................................... 113
-S_DSQMSetMachinePropertiesSignProc (Opnum 0) .................................. 114
-S_DSQMGetObjectSecurityChallengeResponceProc (Opnum 1) .................. 115
-S_InitSecCtx (Opnum 2) ....................................................................... 116
-Timer Events ............................................................................................. 117
-Other Local Events ..................................................................................... 117
-Create Directory Object ........................................................................ 118
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-3.2.1.4
-3.2.1.5
-3.2.1.6
-3.2.1.7
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.6.1
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-3.2
-
-3.2.1
-
-[MS-MQDS] - v20170601
-Message Queuing (MSMQ): Directory Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 238
-
-3.2.6.2
-
-3.2.6.3
-
-3.2.6.3.1
-
-3.2.6.1.2
-
-3.2.6.1.1
-
-3.2.6.3.2
-
-3.2.6.3.3
-
-3.2.6.1.3
-3.2.6.1.4
-3.2.6.1.5
-3.2.6.1.6
-
-3.2.6.2.1
-3.2.6.2.2
-3.2.6.2.3
-3.2.6.2.4
-3.2.6.2.5
-3.2.6.2.6
-
-3.2.6.3.2.1
-
-3.2.6.1.2.1
-
-3.2.6.3.1.1
-3.2.6.3.1.2
-
-3.2.6.1.1.1
-3.2.6.1.1.2
-
-3.2.6.3.3.1
-3.2.6.3.3.2
-
-QueueManager ............................................................................... 118
-PROPID_QM_SERVICE ............................................................... 120
-PROPID_QM_OS ....................................................................... 120
-Queue ........................................................................................... 121
-PROPID_Q_PRIV_LEVEL ............................................................. 122
-Site .............................................................................................. 122
-RoutingLink ................................................................................... 123
-ConnectedNetwork ......................................................................... 124
-User ............................................................................................. 125
-Delete Directory Object......................................................................... 126
-QueueManager ............................................................................... 126
-Queue ........................................................................................... 127
-Site .............................................................................................. 128
-RoutingLink ................................................................................... 128
-ConnectedNetwork ......................................................................... 128
-User ............................................................................................. 129
-Read Directory..................................................................................... 129
-QueueManager ............................................................................... 131
-DirectoryServer Type ................................................................ 133
-OperatingSystem Type .............................................................. 133
-Queue ........................................................................................... 134
-PrivacyLevel ............................................................................. 135
-Enterprise...................................................................................... 136
-WeakenedSecurity .................................................................... 137
-CryptographicProvider ............................................................... 137
-Site .............................................................................................. 137
-RoutingLink ................................................................................... 139
-ConnectedNetwork ......................................................................... 140
-User ............................................................................................. 141
-Read Directory Begin ............................................................................ 142
-QueueManager ............................................................................... 143
-Queue ........................................................................................... 146
-Enterprise...................................................................................... 148
-Site .............................................................................................. 149
-RoutingLink ................................................................................... 151
-ConnectedNetwork ......................................................................... 153
-User ............................................................................................. 154
-Read Directory Next ............................................................................. 155
-QueueManager ............................................................................... 156
-Queue ........................................................................................... 158
-Enterprise...................................................................................... 159
-Site .............................................................................................. 160
-RoutingLink ................................................................................... 161
-ConnectedNetwork ......................................................................... 162
-User ............................................................................................. 163
-Read Directory End .............................................................................. 163
-Write Directory .................................................................................... 164
-QueueManager ............................................................................... 164
-Queue ........................................................................................... 166
-Enterprise...................................................................................... 167
-Site .............................................................................................. 168
-RoutingLink ................................................................................... 169
-ConnectedNetwork ......................................................................... 170
-User ............................................................................................. 171
-Initialize List of Known Directory Service Servers Event ............................ 171
-dscomm2 Server Details .................................................................................. 172
-Abstract Data Model ................................................................................... 172
-PCONTEXT_HANDLE_DELETE_TYPE RPC Context Handle ........................... 172
-
-3.2.6.3.4
-3.2.6.3.5
-3.2.6.3.6
-3.2.6.3.7
-
-3.2.6.4.1
-3.2.6.4.2
-3.2.6.4.3
-3.2.6.4.4
-3.2.6.4.5
-3.2.6.4.6
-3.2.6.4.7
-
-3.2.6.7.1
-3.2.6.7.2
-3.2.6.7.3
-3.2.6.7.4
-3.2.6.7.5
-3.2.6.7.6
-3.2.6.7.7
-
-3.2.6.5.1
-3.2.6.5.2
-3.2.6.5.3
-3.2.6.5.4
-3.2.6.5.5
-3.2.6.5.6
-3.2.6.5.7
-
-3.2.6.5
-
-3.2.6.6
-3.2.6.7
-
-3.2.6.4
-
-3.2.6.8
-
-3.3
-
-3.3.1
-
-3.3.1.1
-
-[MS-MQDS] - v20170601
-Message Queuing (MSMQ): Directory Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-7 / 238
-
-3.3.2
-3.3.3
-3.3.4
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-3.3.4.4
-3.3.4.5
-3.3.4.6
-3.3.4.7
-3.3.4.8
-
-Timers ..................................................................................................... 173
-Initialization .............................................................................................. 173
-Message Processing Events and Sequencing Rules ......................................... 173
-S_DSGetComputerSites (Opnum 0) ........................................................ 174
-S_DSGetPropsEx (Opnum 1) ................................................................. 175
-S_DSGetPropsGuidEx (Opnum 2) ........................................................... 177
-S_DSBeginDeleteNotification (Opnum 3) ................................................. 179
-S_DSNotifyDelete (Opnum 4) ................................................................ 180
-S_DSEndDeleteNotification (Opnum 5) ................................................... 180
-S_DSIsServerGC (Opnum 6) ................................................................. 181
-S_DSGetGCListInDomain (Opnum 8) ...................................................... 181
-Timer Events ............................................................................................. 182
-Other Local Events ..................................................................................... 182
-PCONTEXT_HANDLE_DELETE_TYPE Rundown .......................................... 182
-dscomm2 Client Details ................................................................................... 183
-Abstract Data Model ................................................................................... 183
-Timers ..................................................................................................... 183
-Initialization .............................................................................................. 183
-Message Processing Events and Sequencing Rules ......................................... 183
-Send an Object Deleted Notification ....................................................... 183
-Timer Events ............................................................................................. 183
-Other Local Events ..................................................................................... 183
-
-3.3.5
-3.3.6
-
-3.3.6.1
-
-3.4
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-3.4.6
-
-3.4.4.1
-
-4  Protocol Examples ............................................................................................... 184
-S_DSValidateServer and S_InitSecCtx ............................................................... 184
-S_DSQMGetObjectSecurity and S_DSQMGetObjectSecurityChallengeResponceProc . 185
-S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd ................................. 187
-S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification ... 188
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ............................................................................................................... 189
-Security Considerations for Implementers .......................................................... 189
-Index of Security Parameters ........................................................................... 189
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 190
-
-7  Appendix B: Product Behavior ............................................................................. 197
-
-8  Change Tracking .................................................................................................. 232
-
-9  Index ................................................................................................................... 233
-
-[MS-MQDS] - v20170601
-Message Queuing (MSMQ): Directory Service Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-8 / 238
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HRESULT](#221-hresult)
+    - [2.2.2 GUID](#222-guid)
+    - [2.2.3 PROPVARIANT](#223-propvariant)
+    - [2.2.4 SECURITY_DESCRIPTOR](#224-securitydescriptor)
+    - [2.2.5 PCONTEXT_HANDLE_SERVER_AUTH_TYPE](#225-pcontexthandleserverauthtype)
+    - [2.2.6 PCONTEXT_HANDLE_TYPE](#226-pcontexthandletype)
+    - [2.2.7 PCONTEXT_HANDLE_DELETE_TYPE](#227-pcontexthandledeletetype)
+    - [2.2.8 Directory Object Types](#228-directory-object-types)
+    - [2.2.9 Directory Service Pathname](#229-directory-service-pathname)
+    - [2.2.10 MSMQ Object Properties](#2210-msmq-object-properties)
+      - [2.2.10.1 Property Identifiers](#22101-property-identifiers)
+      - [2.2.10.2 Queue Object Properties](#22102-queue-object-properties)
+      - [2.2.10.3 Machine Object Properties](#22103-machine-object-properties)
+      - [2.2.10.4 Site Object Properties](#22104-site-object-properties)
+      - [2.2.10.5 Connected Network Object Properties](#22105-connected-network-object-properties)
+      - [2.2.10.6 Enterprise Object Properties](#22106-enterprise-object-properties)
+      - [2.2.10.7 User Object Properties](#22107-user-object-properties)
+      - [2.2.10.8 Routing Link Object Properties](#22108-routing-link-object-properties)
+    - [2.2.11 MQPROPERTYRESTRICTION](#2211-mqpropertyrestriction)
+    - [2.2.12 MQRESTRICTION](#2212-mqrestriction)
+    - [2.2.13 MQCOLUMNSET](#2213-mqcolumnset)
+    - [2.2.14 MQSORTKEY](#2214-mqsortkey)
+    - [2.2.15 MQSORTSET](#2215-mqsortset)
+    - [2.2.16 Server Specification List String](#2216-server-specification-list-string)
+    - [2.2.17 Server List String](#2217-server-list-string)
+    - [2.2.18 RSAPUBKEY](#2218-rsapubkey)
+    - [2.2.19 BLOBHEADER](#2219-blobheader)
+    - [2.2.20 MQDS_PublicKey](#2220-mqdspublickey)
+    - [2.2.21 BOUNDED_SIGNATURE_SIZE](#2221-boundedsignaturesize)
+    - [2.2.22 BOUNDED_PROPERTIES](#2222-boundedproperties)
+    - [2.2.23 PROPID](#2223-propid)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 dscomm Server Details](#31-dscomm-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 DirectorySequenceNumber Type](#3111-directorysequencenumber-type)
+      - [3.1.1.2 DirectoryPartitionIdentifier Type](#3112-directorypartitionidentifier-type)
+      - [3.1.1.3 GssSecurityContext Data Element](#3113-gsssecuritycontext-data-element)
+      - [3.1.1.4 PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC Context Handle](#3114-pcontexthandleserverauthtype-rpc-context-handle)
+      - [3.1.1.5 PCONTEXT_HANDLE_TYPE RPC Context Handle](#3115-pcontexthandletype-rpc-context-handle)
+      - [3.1.1.6 Enterprise Data Elements](#3116-enterprise-data-elements)
+      - [3.1.1.7 QueueManager Data Elements](#3117-queuemanager-data-elements)
+      - [3.1.1.8 Queue Data Elements](#3118-queue-data-elements)
+      - [3.1.1.9 User Data Elements](#3119-user-data-elements)
+      - [3.1.1.10 Site Data Elements](#31110-site-data-elements)
+      - [3.1.1.11 RoutingLink Data Elements](#31111-routinglink-data-elements)
+      - [3.1.1.12 ConnectedNetwork Data Elements](#31112-connectednetwork-data-elements)
+      - [3.1.1.13 LookupIteratorState Data Elements](#31113-lookupiteratorstate-data-elements)
+      - [3.1.1.14 Directory Data Elements](#31114-directory-data-elements)
+      - [3.1.1.15 Negotiation Token Data Element](#31115-negotiation-token-data-element)
+      - [3.1.1.16 LocalQueueManager Data Element](#31116-localqueuemanager-data-element)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 S_DSGetServerPort (Opnum 27)](#3141-sdsgetserverport-opnum-27)
+      - [3.1.4.2 S_DSValidateServer (Opnum 22)](#3142-sdsvalidateserver-opnum-22)
+      - [3.1.4.3 S_DSCloseServerHandle (Opnum 23)](#3143-sdscloseserverhandle-opnum-23)
+      - [3.1.4.4 S_DSCreateObject (Opnum 0)](#3144-sdscreateobject-opnum-0)
+      - [3.1.4.5 S_DSDeleteObject (Opnum 1)](#3145-sdsdeleteobject-opnum-1)
+      - [3.1.4.6 S_DSDeleteObjectGuid (Opnum 10)](#3146-sdsdeleteobjectguid-opnum-10)
+      - [3.1.4.7 S_DSGetProps (Opnum 2)](#3147-sdsgetprops-opnum-2)
+      - [3.1.4.8 S_DSGetPropsGuid (Opnum 11)](#3148-sdsgetpropsguid-opnum-11)
+      - [3.1.4.9 S_DSSetProps (Opnum 3)](#3149-sdssetprops-opnum-3)
+      - [3.1.4.10 S_DSSetPropsGuid (Opnum 12)](#31410-sdssetpropsguid-opnum-12)
+      - [3.1.4.11 S_DSGetObjectSecurity (Opnum 4)](#31411-sdsgetobjectsecurity-opnum-4)
+      - [3.1.4.12 S_DSGetObjectSecurityGuid (Opnum 13)](#31412-sdsgetobjectsecurityguid-opnum-13)
+      - [3.1.4.13 S_DSSetObjectSecurity (Opnum 5)](#31413-sdssetobjectsecurity-opnum-5)
+      - [3.1.4.14 S_DSSetObjectSecurityGuid (Opnum 14)](#31414-sdssetobjectsecurityguid-opnum-14)
+      - [3.1.4.15 S_DSQMGetObjectSecurity (Opnum 21)](#31415-sdsqmgetobjectsecurity-opnum-21)
+      - [3.1.4.16 S_DSQMSetMachineProperties (Opnum 19)](#31416-sdsqmsetmachineproperties-opnum-19)
+      - [3.1.4.17 S_DSLookupBegin (Opnum 6)](#31417-sdslookupbegin-opnum-6)
+      - [3.1.4.18 S_DSLookupNext (Opnum 7)](#31418-sdslookupnext-opnum-7)
+      - [3.1.4.19 S_DSLookupEnd (Opnum 8)](#31419-sdslookupend-opnum-8)
+      - [3.1.4.20 S_DSCreateServersCache (Opnum 20)](#31420-sdscreateserverscache-opnum-20)
+      - [3.1.4.21 Common Details](#31421-common-details)
+        - [3.1.4.21.1 Directory Service Objects](#314211-directory-service-objects)
+        - [3.1.4.21.2 Directory Service Object Properties](#314212-directory-service-object-properties)
+        - [3.1.4.21.3 Directory Service Object Properties Specifying an Identifier](#314213-directory-service-object-properties-specifying-an-identifier)
+        - [3.1.4.21.4 Directory Service Object Properties Specifying a Name](#314214-directory-service-object-properties-specifying-a-name)
+        - [3.1.4.21.5 Directory Service Object Access Control](#314215-directory-service-object-access-control)
+        - [3.1.4.21.6 Data Partitioning](#314216-data-partitioning)
+        - [3.1.4.21.7 Data Replication](#314217-data-replication)
+        - [3.1.4.21.8 Directory Service Object Property Mapping](#314218-directory-service-object-property-mapping)
+          - [3.1.4.21.8.1 Read Directory Object Mapping](#3142181-read-directory-object-mapping)
+            - [3.1.4.21.8.1.1 QueueManager](#31421811-queuemanager)
+            - [3.1.4.21.8.1.2 RemoteAccessServer, RoutingServer, DirectoryServer,](#31421812-remoteaccessserver-routingserver-directoryserver)
+            - [3.1.4.21.8.1.3 OperatingSystemType](#31421813-operatingsystemtype)
+            - [3.1.4.21.8.1.4 Queue](#31421814-queue)
+            - [3.1.4.21.8.1.5 PrivacyLevel](#31421815-privacylevel)
+            - [3.1.4.21.8.1.6 Enterprise](#31421816-enterprise)
+            - [3.1.4.21.8.1.7 CryptographicProvider](#31421817-cryptographicprovider)
+            - [3.1.4.21.8.1.8 Site](#31421818-site)
+            - [3.1.4.21.8.1.9 RoutingLink](#31421819-routinglink)
+            - [3.1.4.21.8.1.10 ConnectedNetwork](#314218110-connectednetwork)
+            - [3.1.4.21.8.1.11 User](#314218111-user)
+          - [3.1.4.21.8.2 Write Directory Object Mapping](#3142182-write-directory-object-mapping)
+            - [3.1.4.21.8.2.1 QueueManager](#31421821-queuemanager)
+            - [3.1.4.21.8.2.2 RemoteAccessServer, RoutingServer, DirectoryServer,](#31421822-remoteaccessserver-routingserver-directoryserver)
+            - [3.1.4.21.8.2.3 OperatingSystemType](#31421823-operatingsystemtype)
+            - [3.1.4.21.8.2.4 Queue](#31421824-queue)
+            - [3.1.4.21.8.2.5 PrivacyLevel](#31421825-privacylevel)
+            - [3.1.4.21.8.2.6 Enterprise](#31421826-enterprise)
+            - [3.1.4.21.8.2.7 CryptographicProvider](#31421827-cryptographicprovider)
+            - [3.1.4.21.8.2.8 Site](#31421828-site)
+            - [3.1.4.21.8.2.9 RoutingLink](#31421829-routinglink)
+            - [3.1.4.21.8.2.10 ConnectedNetwork](#314218210-connectednetwork)
+            - [3.1.4.21.8.2.11 NetworkProtocol](#314218211-networkprotocol)
+            - [3.1.4.21.8.2.12 User](#314218212-user)
+          - [3.1.4.21.8.3 Create Directory Object Mapping](#3142183-create-directory-object-mapping)
+            - [3.1.4.21.8.3.1 QueueManager](#31421831-queuemanager)
+            - [3.1.4.21.8.3.2 DirectoryServer, DirectoryServerType, RoutingServer,](#31421832-directoryserver-directoryservertype-routingserver)
+            - [3.1.4.21.8.3.3 Queue](#31421833-queue)
+            - [3.1.4.21.8.3.4 Site](#31421834-site)
+            - [3.1.4.21.8.3.5 RoutingLink](#31421835-routinglink)
+            - [3.1.4.21.8.3.6 ConnectedNetwork](#31421836-connectednetwork)
+            - [3.1.4.21.8.3.7 User](#31421837-user)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 PCONTEXT_HANDLE_SERVER_AUTH_TYPE Rundown](#3161-pcontexthandleserverauthtype-rundown)
+      - [3.1.6.2 PCONTEXT_HANDLE_TYPE Rundown](#3162-pcontexthandletype-rundown)
+      - [3.1.6.3 Create Directory Object](#3163-create-directory-object)
+      - [3.1.6.4 Update Directory Object](#3164-update-directory-object)
+      - [3.1.6.5 Delete Directory Object](#3165-delete-directory-object)
+      - [3.1.6.6 Read Directory Object](#3166-read-directory-object)
+      - [3.1.6.7 Begin Directory Lookup](#3167-begin-directory-lookup)
+      - [3.1.6.8 Lookup Directory Next](#3168-lookup-directory-next)
+      - [3.1.6.9 End Directory Lookup](#3169-end-directory-lookup)
+      - [3.1.6.10 Remove Directory Objects](#31610-remove-directory-objects)
+      - [3.1.6.11 Add Object to Directory](#31611-add-object-to-directory)
+      - [3.1.6.12 Get Directory Object](#31612-get-directory-object)
+      - [3.1.6.13 Remove Object from Directory](#31613-remove-object-from-directory)
+      - [3.1.6.14 Get Directory Object for Update](#31614-get-directory-object-for-update)
+      - [3.1.6.15 Commit Directory Object Update](#31615-commit-directory-object-update)
+  - [3.2 dscomm Client Details](#32-dscomm-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Externally Defined Data Elements](#3211-externally-defined-data-elements)
+      - [3.2.1.2 GssSecurityContext Data Element](#3212-gsssecuritycontext-data-element)
+      - [3.2.1.3 SiteIdentifier Data Element](#3213-siteidentifier-data-element)
+      - [3.2.1.4 DirectoryServiceServersCollection Data Element](#3214-directoryserviceserverscollection-data-element)
+      - [3.2.1.5 ReadDirectoryIteratorState Data Element](#3215-readdirectoryiteratorstate-data-element)
+      - [3.2.1.6 ReadDirectoryIteratorStateCollection Data Element](#3216-readdirectoryiteratorstatecollection-data-element)
+      - [3.2.1.7 CurrentServer Data Element](#3217-currentserver-data-element)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 S_DSQMSetMachinePropertiesSignProc (Opnum 0)](#3241-sdsqmsetmachinepropertiessignproc-opnum-0)
+      - [3.2.4.2 S_DSQMGetObjectSecurityChallengeResponceProc (Opnum 1)](#3242-sdsqmgetobjectsecuritychallengeresponceproc-opnum-1)
+      - [3.2.4.3 S_InitSecCtx (Opnum 2)](#3243-sinitsecctx-opnum-2)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+      - [3.2.6.1 Create Directory Object](#3261-create-directory-object)
+        - [3.2.6.1.1 QueueManager](#32611-queuemanager)
+          - [3.2.6.1.1.1 PROPID_QM_SERVICE](#326111-propidqmservice)
+          - [3.2.6.1.1.2 PROPID_QM_OS](#326112-propidqmos)
+        - [3.2.6.1.2 Queue](#32612-queue)
+          - [3.2.6.1.2.1 PROPID_Q_PRIV_LEVEL](#326121-propidqprivlevel)
+        - [3.2.6.1.3 Site](#32613-site)
+        - [3.2.6.1.4 RoutingLink](#32614-routinglink)
+        - [3.2.6.1.5 ConnectedNetwork](#32615-connectednetwork)
+        - [3.2.6.1.6 User](#32616-user)
+      - [3.2.6.2 Delete Directory Object](#3262-delete-directory-object)
+        - [3.2.6.2.1 QueueManager](#32621-queuemanager)
+        - [3.2.6.2.2 Queue](#32622-queue)
+        - [3.2.6.2.3 Site](#32623-site)
+        - [3.2.6.2.4 RoutingLink](#32624-routinglink)
+        - [3.2.6.2.5 ConnectedNetwork](#32625-connectednetwork)
+        - [3.2.6.2.6 User](#32626-user)
+      - [3.2.6.3 Read Directory](#3263-read-directory)
+        - [3.2.6.3.1 QueueManager](#32631-queuemanager)
+          - [3.2.6.3.1.1 DirectoryServer Type](#326311-directoryserver-type)
+          - [3.2.6.3.1.2 OperatingSystem Type](#326312-operatingsystem-type)
+        - [3.2.6.3.2 Queue](#32632-queue)
+          - [3.2.6.3.2.1 PrivacyLevel](#326321-privacylevel)
+        - [3.2.6.3.3 Enterprise](#32633-enterprise)
+          - [3.2.6.3.3.1 WeakenedSecurity](#326331-weakenedsecurity)
+          - [3.2.6.3.3.2 CryptographicProvider](#326332-cryptographicprovider)
+        - [3.2.6.3.4 Site](#32634-site)
+        - [3.2.6.3.5 RoutingLink](#32635-routinglink)
+        - [3.2.6.3.6 ConnectedNetwork](#32636-connectednetwork)
+        - [3.2.6.3.7 User](#32637-user)
+      - [3.2.6.4 Read Directory Begin](#3264-read-directory-begin)
+        - [3.2.6.4.1 QueueManager](#32641-queuemanager)
+        - [3.2.6.4.2 Queue](#32642-queue)
+        - [3.2.6.4.3 Enterprise](#32643-enterprise)
+        - [3.2.6.4.4 Site](#32644-site)
+        - [3.2.6.4.5 RoutingLink](#32645-routinglink)
+        - [3.2.6.4.6 ConnectedNetwork](#32646-connectednetwork)
+        - [3.2.6.4.7 User](#32647-user)
+      - [3.2.6.5 Read Directory Next](#3265-read-directory-next)
+        - [3.2.6.5.1 QueueManager](#32651-queuemanager)
+        - [3.2.6.5.2 Queue](#32652-queue)
+        - [3.2.6.5.3 Enterprise](#32653-enterprise)
+        - [3.2.6.5.4 Site](#32654-site)
+        - [3.2.6.5.5 RoutingLink](#32655-routinglink)
+        - [3.2.6.5.6 ConnectedNetwork](#32656-connectednetwork)
+        - [3.2.6.5.7 User](#32657-user)
+      - [3.2.6.6 Read Directory End](#3266-read-directory-end)
+      - [3.2.6.7 Write Directory](#3267-write-directory)
+        - [3.2.6.7.1 QueueManager](#32671-queuemanager)
+        - [3.2.6.7.2 Queue](#32672-queue)
+        - [3.2.6.7.3 Enterprise](#32673-enterprise)
+        - [3.2.6.7.4 Site](#32674-site)
+        - [3.2.6.7.5 RoutingLink](#32675-routinglink)
+        - [3.2.6.7.6 ConnectedNetwork](#32676-connectednetwork)
+        - [3.2.6.7.7 User](#32677-user)
+      - [3.2.6.8 Initialize List of Known Directory Service Servers Event](#3268-initialize-list-of-known-directory-service-servers-event)
+  - [3.3 dscomm2 Server Details](#33-dscomm2-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 PCONTEXT_HANDLE_DELETE_TYPE RPC Context Handle](#3311-pcontexthandledeletetype-rpc-context-handle)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 S_DSGetComputerSites (Opnum 0)](#3341-sdsgetcomputersites-opnum-0)
+      - [3.3.4.2 S_DSGetPropsEx (Opnum 1)](#3342-sdsgetpropsex-opnum-1)
+      - [3.3.4.3 S_DSGetPropsGuidEx (Opnum 2)](#3343-sdsgetpropsguidex-opnum-2)
+      - [3.3.4.4 S_DSBeginDeleteNotification (Opnum 3)](#3344-sdsbegindeletenotification-opnum-3)
+      - [3.3.4.5 S_DSNotifyDelete (Opnum 4)](#3345-sdsnotifydelete-opnum-4)
+      - [3.3.4.6 S_DSEndDeleteNotification (Opnum 5)](#3346-sdsenddeletenotification-opnum-5)
+      - [3.3.4.7 S_DSIsServerGC (Opnum 6)](#3347-sdsisservergc-opnum-6)
+      - [3.3.4.8 S_DSGetGCListInDomain (Opnum 8)](#3348-sdsgetgclistindomain-opnum-8)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+      - [3.3.6.1 PCONTEXT_HANDLE_DELETE_TYPE Rundown](#3361-pcontexthandledeletetype-rundown)
+  - [3.4 dscomm2 Client Details](#34-dscomm2-client-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 Send an Object Deleted Notification](#3441-send-an-object-deleted-notification)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 S_DSValidateServer and S_InitSecCtx](#41-sdsvalidateserver-and-sinitsecctx)
+  - [4.2 S_DSQMGetObjectSecurity and](#42-sdsqmgetobjectsecurity-and)
+  - [4.3 S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd](#43-sdslookupbegin-sdslookupnext-and-sdslookupend)
+  - [4.4 S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification](#44-sdsbegindeletenotification-sdsnotifydelete-and-sdsenddeletenotification)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Message Queuing (MSMQ): Directory Service Protocol, a remote
 procedure call (RPC)-based protocol that is used by a client to remotely access and maintain
@@ -1090,7 +774,7 @@ server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1155,7 +839,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
+
+sequence that is being used. For example, for RPC over TCP (RPC Protocol Sequence
 ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
 Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
@@ -1229,7 +914,8 @@ Release: June 1, 2017
 
 10 / 238
 
-MSMQ mixed-mode: When upgrading from MSMQ 1.0 in Windows NT 4.0 operating system to
+
+MSMQ mixed-mode: When upgrading from MSMQ 1.0 in Windows NT 4.0 operating system to
 MSMQ 2.0 in Windows 2000 operating system, a transitional mode known as mixed-mode
 environment is supported. Although not intended as a final deployment strategy, there is full
 support for this mixed-mode, which allows MSMQ 1.0 controller servers to coexist in the same
@@ -1304,7 +990,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-public queue: An application-defined message queue that is registered in the MSMQ Directory
+
+public queue: An application-defined message queue that is registered in the MSMQ Directory
 
 Service. A public queue can be deployed at any queue manager.
 
@@ -1380,17 +1067,18 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1443,7 +1131,8 @@ Release: June 1, 2017
 
 13 / 238
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MC-MQDSRP] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Replication
 Protocol", (Archived), Message Queuing (MSMQ): Directory Service Replication Protocol
@@ -1453,7 +1142,7 @@ Protocol", (Archived), Message Queuing (MSMQ): Directory Service Replication Pro
 [NTLM] Microsoft Corporation, "Microsoft NTLM", http://msdn.microsoft.com/en-
 us/library/aa378749.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Message Queuing is a communications service that provides asynchronous and reliable message
 passing between client applications, including between client applications running on different hosts.
@@ -1510,7 +1199,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-MQDS].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1539,7 +1229,7 @@ This is an RPC-based protocol consisting of simple request-response exchanges. F
 request that the server receives, it executes the method and returns a completion. The client simply
 returns the completion status to the caller.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Message Queuing (MSMQ): Directory Service Protocol depends on RPC for its transport and uses
 RPC, as specified in section 2.1.
@@ -1570,12 +1260,13 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-from concrete to abstract. The server side of the MSMQ: Directory Service Protocol processes those
+
+from concrete to abstract. The server side of the MSMQ: Directory Service Protocol processes those
 RPC methods either by maintaining a private abstract data model that leverages the data model types
 defined in [MS-MQDMPR] or by accessing an LDAP-based directory service using the [MS-MQDSSM]
 algorithm.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is an RPC interface, and as a result has the prerequisites specified in [MS-RPCE] as
 being common to RPC interfaces.
@@ -1598,7 +1289,7 @@ supporting it.
 The client and server have to possess valid security credentials suitable for mutual authentication and
 supported by [PCT1].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol can be used to provide directory service functionality. It is intended for use by the
 message queuing system, and it supports a fixed and limited set of directory object types and
@@ -1609,7 +1300,7 @@ conjunction with the algorithm specified in [MS-MQDSSM]. A server can implement 
 support clients of this protocol to access the Active Directory based directory service. Future
 development based on this protocol is strongly discouraged.<2>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1638,13 +1329,14 @@ Release: June 1, 2017
 
 16 / 238
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 The Message Queuing (MSMQ): Directory Service Protocol uses HRESULTs, as specified in [MS-DTYP]
 section 2.2.18. Vendors are free to choose their own values for this field as long as the C bit
 (0x20000000) is set, indicating it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1665,12 +1357,13 @@ Release: June 1, 2017
 
 17 / 238
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how to establish a connection to an RPC server and common data types
 used by the client and server of this protocol.
 
-2.1  Transport
+### 2.1 Transport
 
 The Message Queuing (MSMQ): Directory Service Protocol uses RPC dynamic endpoints, as
 specified in [C706].<4>
@@ -1690,7 +1383,7 @@ underlying RPC protocol to retrieve the identity of the method caller, as specif
 3.3.3.4.3. The server SHOULD use this identity to perform method-specific access checks, as specified
 in section 3.1.4.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The Message Queuing (MSMQ): Directory Service Protocol MUST indicate to the RPC runtime that it is
 to support both the NDR20 and NDR64 transfer syntaxes, and MUST provide a negotiation mechanism
@@ -1748,7 +1441,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Type
+
+ Type
 
  Description
 
@@ -1836,15 +1530,15 @@ DirectoryOperationResult ([MS-MQDMPR] section
 An enumeration that specifies the result of a
 directory operation.
 
-2.2.1  HRESULT
+#### 2.2.1 HRESULT
 
 This specification uses the HRESULT type, as specified in [MS-DTYP] section 2.2.18.
 
-2.2.2  GUID
+#### 2.2.2 GUID
 
 This specification uses a GUID. See [MS-DTYP] section 2.3.4.
 
-2.2.3  PROPVARIANT
+#### 2.2.3 PROPVARIANT
 
 This specification uses the PROPVARIANT type. See [MS-MQMQ] section 2.2.13.2.
 
@@ -1855,11 +1549,12 @@ Release: June 1, 2017
 
 19 / 238
 
-2.2.4  SECURITY_DESCRIPTOR
+
+#### 2.2.4 SECURITY_DESCRIPTOR
 
 This specification uses Security Descriptors. See [MS-DTYP] section 2.4.6.
 
-2.2.5  PCONTEXT_HANDLE_SERVER_AUTH_TYPE
+#### 2.2.5 PCONTEXT_HANDLE_SERVER_AUTH_TYPE
 
 The PCONTEXT_HANDLE_SERVER_AUTH_TYPE is an RPC context handle type. This type identifies the
 security context established through the [GSS] negotiation. The security context is used to construct
@@ -1873,7 +1568,7 @@ specified in [C706] section 6.1.6.
  typedef [context_handle] void* PCONTEXT_HANDLE_SERVER_AUTH_TYPE;
  typedef [ref] PCONTEXT_HANDLE_SERVER_AUTH_TYPE* PPCONTEXT_HANDLE_SERVER_AUTH_TYPE;
 
-2.2.6  PCONTEXT_HANDLE_TYPE
+#### 2.2.6 PCONTEXT_HANDLE_TYPE
 
 The PCONTEXT_HANDLE_TYPE is an RPC context handle type. This type is used to identify a directory
 query result set. See S_DSLookupBegin.
@@ -1886,7 +1581,7 @@ in [C706] section 6.1.6.
  typedef [context_handle] void* PCONTEXT_HANDLE_TYPE;
  typedef [ref] PCONTEXT_HANDLE_TYPE* PPCONTEXT_HANDLE_TYPE;
 
-2.2.7  PCONTEXT_HANDLE_DELETE_TYPE
+#### 2.2.7 PCONTEXT_HANDLE_DELETE_TYPE
 
 The PCONTEXT_HANDLE_DELETE_TYPE is an RPC context handle type. This type is used to identify a
 pending directory object delete notification. See S_DSBeginDeleteNotification (section 3.3.4.4).
@@ -1899,7 +1594,7 @@ specified in [C706] section 6.1.6.
  typedef [context_handle] void* PCONTEXT_HANDLE_DELETE_TYPE;
  typedef [ref] PCONTEXT_HANDLE_DELETE_TYPE* PPCONTEXT_HANDLE_DELETE_TYPE;
 
-2.2.8  Directory Object Types
+#### 2.2.8 Directory Object Types
 
 The directory consists of eight types of directory objects. The directory object type is specified by a
 DWORD value as specified by the following table.
@@ -1929,7 +1624,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Name
+
+ Name
 
  Value (decimal)
 
@@ -1969,7 +1665,7 @@ Object represents a user.
 
 Object represents a routing link.
 
-2.2.9  Directory Service Pathname
+#### 2.2.9 Directory Service Pathname
 
 This specification uses directory service pathnames to refer to directory objects. Each MSMQ object
 type, as specified in section 2.2.8, has a particular format for pathnames or cannot be referenced by
@@ -2007,7 +1703,7 @@ MQDS_ROUTINGLINK
 
 Routing link objects are not referenced by pathname.
 
-2.2.10 MSMQ Object Properties
+#### 2.2.10 MSMQ Object Properties
 
 Each MSMQ object type, as specified in section 2.2.8, has a set of MSMQ object properties
 associated with it. Each MSMQ object property has a property identifier, a variant type, and a
@@ -2018,9 +1714,9 @@ simply treated as payload by this protocol. The following sections define the pr
 associated with each directory object type and the subset of the MSMQ object properties that are
 interpreted by this protocol.
 
-2.2.10.1
+##### 2.2.10.1 Property Identifiers
 
-Property Identifiers
+
 
 Each MSMQ object property has associated with it a unique DWORD property identifier. The
 following table specifies the valid property identifier ranges for each directory object type.
@@ -2032,7 +1728,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Directory object type
+
+ Directory object type
 
  Range of valid property identifiers (decimal)
 
@@ -2072,9 +1769,9 @@ property identifiers in this reserved range but can associate some properties wi
 in this range at object creation time. Properties in this reserved range, which can be specified at
 object creation time, will be listed in the tables in the following sections in this topic.
 
-2.2.10.2
+##### 2.2.10.2 Queue Object Properties
 
-Queue Object Properties
+
 
 The following table specifies the set of properties associated with directory objects of type
 MQDS_QUEUE that are used by this protocol.
@@ -2111,9 +1808,9 @@ Security descriptor for the queue object in Active Directory format.
 
 1102
 
-2.2.10.3
+##### 2.2.10.3 Machine Object Properties
 
-Machine Object Properties
+
 
  The following table specifies the set of MSMQ object properties associated with directory objects of
 type MQDS_MACHINE that are used by this protocol.
@@ -2157,7 +1854,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Property identifier
+
+ Property identifier
 
  Variant type
 
@@ -2209,9 +1907,9 @@ VT_VECTOR)
 
 Array of site IDs to which the machine belongs.
 
-2.2.10.4
+##### 2.2.10.4 Site Object Properties
 
-Site Object Properties
+
 
 The following table specifies the set of MSMQ object properties associated with directory objects of
 type MQDS_SITE that are used by this protocol.
@@ -2240,9 +1938,9 @@ VT_BLOB
 The site's public key certificate used for signing, formatted as an
 MQDSPUBLICKEYS structure ([MS-MQMQ] section 2.2.2).
 
-2.2.10.5
+##### 2.2.10.5 Connected Network Object Properties
 
-Connected Network Object Properties
+
 
 The following table specifies the set of MSMQ object properties associated with directory objects of
 type MQDS_CN that are used by this protocol.
@@ -2261,9 +1959,9 @@ GUID identifier for the directory object instance.
 
 503
 
-2.2.10.6
+##### 2.2.10.6 Enterprise Object Properties
 
-Enterprise Object Properties
+
 
 The following table specifies the set of MSMQ object properties associated with directory objects of
 type MQDS_ENTERPRISE that are used by this protocol.
@@ -2287,7 +1985,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Property identifier
+
+ Property identifier
 
  Variant type
 
@@ -2295,9 +1994,9 @@ Release: June 1, 2017
 
 609
 
-2.2.10.7
+##### 2.2.10.7 User Object Properties
 
-User Object Properties
+
 
 The following table specifies the set of MSMQ object properties associated with directory objects of
 type MQDS_USER that are used by this protocol.
@@ -2316,9 +2015,9 @@ GUID identifier for the directory object instance.
 
 706
 
-2.2.10.8
+##### 2.2.10.8 Routing Link Object Properties
 
-Routing Link Object Properties
+
 
 The following table specifies the set of MSMQ object properties associated with directory objects of
 type MQDS_ROUTINGLINK that are used by this protocol.
@@ -2337,7 +2036,7 @@ GUID identifier for the directory object instance.
 
 806
 
-2.2.11 MQPROPERTYRESTRICTION
+#### 2.2.11 MQPROPERTYRESTRICTION
 
 The MQPROPERTYRESTRICTION structure specifies a logical expression over an MSMQ object
 property. The logical expression evaluates to TRUE or FALSE. The logical expression is defined
@@ -2377,7 +2076,8 @@ Release: June 1, 2017
 
 24 / 238
 
-Value
+
+Value
 
 Meaning
 
@@ -2418,7 +2118,7 @@ directory objects to be returned. An object is deemed to satisfy the constraint 
 as specified by the MQPROPERTYRESTRICTION structure, evaluates to TRUE, and is deemed not to
 satisfy the constraint otherwise. See section 3.1.4.17.
 
-2.2.12 MQRESTRICTION
+#### 2.2.12 MQRESTRICTION
 
 The MQRESTRICTION structure specifies a set of MQPROPERTYRESTRICTION structures. This structure
 is used in directory query operations to define a set of constraints over the set of directory objects to
@@ -2435,7 +2135,7 @@ cRes:   MUST be set to the count of MQPROPERTYRESTRICTION structures in the paPr
 
 paPropRes:   A pointer to an array of MQPROPERTYRESTRICTION structures.
 
-2.2.13 MQCOLUMNSET
+#### 2.2.13 MQCOLUMNSET
 
 The MQCOLUMNSET structure specifies a list of MSMQ object property identifiers. This structure is
 used in directory query operations to define the set of MSMQ object properties to be returned. See
@@ -2455,10 +2155,11 @@ Release: June 1, 2017
 
 25 / 238
 
-aCol:   A pointer to an array of property identifiers. Each element of the array MUST be one of the
+
+aCol:   A pointer to an array of property identifiers. Each element of the array MUST be one of the
 values specified in the object property identifier table in section 2.2.10.1.
 
-2.2.14 MQSORTKEY
+#### 2.2.14 MQSORTKEY
 
 The MQSORTKEY structure specifies a sort key and sort order. This structure is used in directory query
 operations to identify an MSMQ object property to be used as a sort key by which to sort the result
@@ -2491,7 +2192,7 @@ Descending sort.
 
 0x00000001
 
-2.2.15 MQSORTSET
+#### 2.2.15 MQSORTSET
 
 The MQSORTSET structure specifies a multipart sort key. This structure is used in directory query
 operations to define a collection of sort keys and sort orders by which to sort the result set. See
@@ -2506,7 +2207,7 @@ cCol:   MUST be set to the count of MQSORTKEY structures referenced by aCol.
 
 aCol:   A pointer to an array of MQSORTKEY structures.
 
-2.2.16 Server Specification List String
+#### 2.2.16 Server Specification List String
 
 A Server Specification List String is a UNICODE string that specifies a set of directory servers. The
 following Augmented Backus-Naur Form (ABNF) notation defines the format of this string.
@@ -2525,7 +2226,8 @@ Release: June 1, 2017
 
 26 / 238
 
- ; "1" if the server supports IP addressing
+
+ ; "1" if the server supports IP addressing
 
  <support-IPX> = "0" / "1"
  ; "0" if the server does not support IPX addressing
@@ -2535,7 +2237,7 @@ Release: June 1, 2017
 
 <name> is the DNS name of a directory server as specified in [RFC1034].
 
-2.2.17 Server List String
+#### 2.2.17 Server List String
 
 A Server List String is a UNICODE string that specifies a set of directory servers associated with a site.
 The following ABNF notation defines the format of this string.
@@ -2548,7 +2250,7 @@ The following ABNF notation defines the format of this string.
 
 <site-name> is the DNS name of a site as specified in [RFC1034].
 
-2.2.18 RSAPUBKEY
+#### 2.2.18 RSAPUBKEY
 
 The RSAPUBKEY structure contains information specific to a particular public key.
 
@@ -2595,7 +2297,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.19 BLOBHEADER
+
+#### 2.2.19 BLOBHEADER
 
 The BLOBHEADER structure indicates a key's binary large object (BLOB) type and the algorithm that
 the key uses.
@@ -2659,7 +2362,7 @@ RSA public key signature algorithm.
 
 0x00002400
 
-2.2.20 MQDS_PublicKey
+#### 2.2.20 MQDS_PublicKey
 
 The MQDS_PublicKey structure defines a public key certificate.
 
@@ -2691,7 +2394,8 @@ Release: June 1, 2017
 
 28 / 238
 
-dwPublicKeyBlobSize (4 bytes): An unsigned 32-bit integer that MUST contain the size in bytes of
+
+dwPublicKeyBlobSize (4 bytes): An unsigned 32-bit integer that MUST contain the size in bytes of
 
 the abPublicKeyBlobHeader and abPublicKeyBlob fields.
 
@@ -2701,21 +2405,21 @@ abPublicKeyBlob (variable): A buffer containing a public key certificate formatt
 
 RSAPUBKEY (section 2.2.18) structure.
 
-2.2.21 BOUNDED_SIGNATURE_SIZE
+#### 2.2.21 BOUNDED_SIGNATURE_SIZE
 
  typedef [range(0, 128*1024)] unsigned long BOUNDED_SIGNATURE_SIZE;
  typedef BOUNDED_SIGNATURE_SIZE* LPBOUNDED_SIGNATURE_SIZE;
 
-2.2.22 BOUNDED_PROPERTIES
+#### 2.2.22 BOUNDED_PROPERTIES
 
  typedef [range(0, 128)] DWORD BOUNDED_PROPERTIES;
  typedef BOUNDED_PROPERTIES* LPBOUNDED_PROPERTIES;
 
-2.2.23 PROPID
+#### 2.2.23 PROPID
 
 This specification uses the PROPID type ([MS-MQMQ] section 2.3).
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol implements a directory that is accessed via events as specified in [MS-MQDMPR]
 section 3.1.7.1. The Directory Service schema elements for objects accessed via these events are
@@ -2728,7 +2432,8 @@ Release: June 1, 2017
 
 29 / 238
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The methods that comprise this RPC interface return MQ_OK (0x00000000) on success and a nonzero
 implementation-specific error code on failure. Unless otherwise specified, a server-side
@@ -2747,9 +2452,9 @@ additional timers or other states required on the client side of this protocol. 
 layer software are passed directly to the transport, and the results returned by the transport are
 passed directly back to the higher-layer software.
 
-3.1  dscomm Server Details
+### 3.1 dscomm Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2757,17 +2462,17 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
-3.1.1.1  DirectorySequenceNumber Type
+##### 3.1.1.1 DirectorySequenceNumber Type
 
 This is an eight-byte array of UCHARs that MAY be used to identify the last operation on a directory
 object.<10> The specification MUST NOT interpret the value of this type.
 
-3.1.1.2  DirectoryPartitionIdentifier Type
+##### 3.1.1.2 DirectoryPartitionIdentifier Type
 
 This is a GUID that MAY be used to logically group directory objects. Other than assignment, this
 protocol SHOULD NOT perform actions based on the values of instances of this type.<11>
 
-3.1.1.3  GssSecurityContext Data Element
+##### 3.1.1.3 GssSecurityContext Data Element
 
  The server needs to maintain the GSS security context acquired through the S_DSValidateServer
 sequence. This security context is used during the mutual authentication handshake and subsequently
@@ -2792,9 +2497,10 @@ Release: June 1, 2017
 
 30 / 238
 
-  S_DSCreateServersCache
 
-3.1.1.4  PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC Context Handle
+  S_DSCreateServersCache
+
+##### 3.1.1.4 PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC Context Handle
 
 The PCONTEXT_HANDLE_SERVER_AUTH_TYPE represents the server's security context established
 with a client.
@@ -2811,7 +2517,7 @@ method. See section 3.1.6.1.
 The server MUST retain this information until the client closes the RPC context handle through a call to
 the S_DSCloseServerHandle method, or until the RPC context handle rundown occurs.
 
-3.1.1.5  PCONTEXT_HANDLE_TYPE RPC Context Handle
+##### 3.1.1.5 PCONTEXT_HANDLE_TYPE RPC Context Handle
 
 The PCONTEXT_HANDLE_TYPE represents the server's state associated with an in-progress directory
 query.
@@ -2852,7 +2558,7 @@ For more information, see S_DSLookupBegin (section 3.1.4.17).
 The server MUST retain this information until the client closes the context handle through a call to the
 S_DSLookupEnd method, or until the RPC context handle rundown occurs.
 
-3.1.1.6  Enterprise Data Elements
+##### 3.1.1.6 Enterprise Data Elements
 
 This protocol adds the following directory attributes to the Enterprise ([MS-MQDMPR] section
 3.1.1.6) ADM element:
@@ -2866,11 +2572,12 @@ Release: June 1, 2017
 
 31 / 238
 
-  EnterpriseControllerName: The NetBIOS name of the computer that hosts the queue
+
+  EnterpriseControllerName: The NetBIOS name of the computer that hosts the queue
 manager for which the QueueManager.DirectoryServerType attribute is set to
 PrimaryEnterpriseController.
 
-3.1.1.7  QueueManager Data Elements
+##### 3.1.1.7 QueueManager Data Elements
 
 This protocol adds the following directory attributes to the QueueManager ([MS-MQDMPR] section
 3.1.1.1) ADM element type:
@@ -2884,7 +2591,7 @@ This protocol adds the following directory attributes to the QueueManager ([MS-M
 structures that represent the network address(es) of the computer(s) that host(s) the
 QueueManager ADM element.
 
-3.1.1.8  Queue Data Elements
+##### 3.1.1.8 Queue Data Elements
 
 This protocol adds the following directory attributes to the Queue ([MS-MQDMPR] section 3.1.1.2)
 ADM element type:
@@ -2893,34 +2600,34 @@ ADM element type:
 
   PartitionIdentifier:  A DirectoryPartitionIdentifier (section 3.1.1.2).
 
-3.1.1.9  User Data Elements
+##### 3.1.1.9 User Data Elements
 
 This protocol adds the following directory attribute to the User ([MS-MQDMPR] section 3.1.1.15) ADM
 element type:
 
   SequenceNumber: A DirectorySequenceNumber (section 3.1.1.1).
 
-3.1.1.10
+##### 3.1.1.10 Site Data Elements
 
-Site Data Elements
+
 
 This protocol adds the following directory attribute to the Site ([MS-MQDMPR] section 3.1.1.7) ADM
 element type:
 
   SequenceNumber: A DirectorySequenceNumber (section 3.1.1.1).
 
-3.1.1.11
+##### 3.1.1.11 RoutingLink Data Elements
 
-RoutingLink Data Elements
+
 
 This protocol adds the following directory attribute to the RoutingLink ([MS-MQDMPR] section
 3.1.1.8) ADM element type:
 
   SequenceNumber: A DirectorySequenceNumber (section 3.1.1.1).
 
-3.1.1.12
+##### 3.1.1.12 ConnectedNetwork Data Elements
 
-ConnectedNetwork Data Elements
+
 
  This protocol adds the following directory attributes to the ConnectedNetwork ([MS-MQDMPR]
 section 3.1.1.9) ADM element type:
@@ -2938,7 +2645,8 @@ Release: June 1, 2017
 
 32 / 238
 
-
+
+
 
 
 
@@ -2948,9 +2656,9 @@ IPX: The ConnectedNetwork uses the IPX protocol.
 
   Foreign: The ConnectedNetwork uses any protocol other than IP or IPX.
 
-3.1.1.13
+##### 3.1.1.13 LookupIteratorState Data Elements
 
-LookupIteratorState Data Elements
+
 
 The LookupIteratorState ADM element represents the state associated with a directory lookup
 initiated by a Begin Directory Lookup (section 3.1.6.7) event. The state is used by the Lookup
@@ -2969,9 +2677,9 @@ type of the objects in the result set.
   PropertyList: A list of property identifiers valid for objects of type ObjectType (see section
 2.2.10), which indicates the properties for which the Read Directory Next event returns data.
 
-3.1.1.14
+##### 3.1.1.14 Directory Data Elements
 
-Directory Data Elements
+
 
 Servers MAY<12> maintain the following ADM elements.
 
@@ -3016,9 +2724,10 @@ Release: June 1, 2017
 
 33 / 238
 
-3.1.1.15
 
-Negotiation Token Data Element
+##### 3.1.1.15 Negotiation Token Data Element
+
+
 
 The server MUST maintain the security context acquired through the S_DSValidateServer sequence.
 This security context is used during the mutual authentication handshake and subsequently in the
@@ -3038,26 +2747,26 @@ generation of the pbServerSignature parameter for each of the following protocol
 
   S_DSCreateServersCache
 
-3.1.1.16
+##### 3.1.1.16 LocalQueueManager Data Element
 
-LocalQueueManager Data Element
+
 
 Every MQDS server is co-located with a Queue Manager (see the diagram in [MS-MQDMPR] section
 1.4). The server MUST maintain a reference to the Queue Manager with which it is associated.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Parameters necessary to initialize the RPC protocol are specified in section 2.1.
 
 The server MAY<13> register static RPC ports. If it does, it MUST return those ports in a call to the
 S_DSGetServerPort method. For more information, see section 3.1.4.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The Message Queuing (MSMQ): Directory Service Protocol SHOULD indicate to the RPC runtime that it
 is to perform a strict NDR data consistency check at target level 6.0, as specified in [MS-RPCE]
@@ -3090,7 +2799,8 @@ Release: June 1, 2017
 
 34 / 238
 
-Method
+
+Method
 
 Description
 
@@ -3207,7 +2917,8 @@ Release: June 1, 2017
 
 35 / 238
 
-Method
+
+Method
 
 Description
 
@@ -3282,7 +2993,7 @@ Opnum: 27
 In the preceding table, the phrase "Reserved for local use" means that the client MUST NOT send the
 opnum and that the server behavior is undefined<15> because it does not affect interoperability.
 
-3.1.4.1  S_DSGetServerPort (Opnum 27)
+##### 3.1.4.1 S_DSGetServerPort (Opnum 27)
 
 This method returns the RPC endpoint port for a transport protocol. The client establishes a new
 binding to the server by using the returned port number.
@@ -3303,7 +3014,8 @@ Release: June 1, 2017
 
 36 / 238
 
-Value
+
+Value
 
 Meaning
 
@@ -3330,7 +3042,7 @@ the server MUST return 0 when the fIP parameter is zero.
 If the server is using dynamic endpoints, the server MUST return the RPC endpoint port number. If
 the server is using static endpoints, the server MUST return 0.
 
-3.1.4.2  S_DSValidateServer (Opnum 22)
+##### 3.1.4.2 S_DSValidateServer (Opnum 22)
 
 This method performs mutual authentication between the client and server, and establishes a security
 context, as specified in [RFC2743]. The server uses the security context to construct a digital
@@ -3373,7 +3085,8 @@ Release: June 1, 2017
 
 37 / 238
 
-dwClientBuffMaxSize:  MUST be set by the client to the size of the buffer pointed to by the
+
+dwClientBuffMaxSize:  MUST be set by the client to the size of the buffer pointed to by the
 pClientBuff parameter.
 
 pClientBuff: A pointer that MUST be set by the client to point to a buffer that contains the
@@ -3443,12 +3156,13 @@ Release: June 1, 2017
 
 38 / 238
 
-On successful return, the client MUST retrieve the GSS security context associated with the dwContext
+
+On successful return, the client MUST retrieve the GSS security context associated with the dwContext
 parameter and MUST associate it with the PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC context
 handle returned in the pphServerAuth parameter. The GSS security context will be used by the client
 in subsequent calls to GSSUnwrap, as specified in [RFC2743] section 2.3.4.
 
-3.1.4.3  S_DSCloseServerHandle (Opnum 23)
+##### 3.1.4.3 S_DSCloseServerHandle (Opnum 23)
 
 This method closes the RPC context handle returned by a previous call to S_DSValidateServer. The
 server releases resources associated with the RPC context handle.
@@ -3478,7 +3192,7 @@ security context entry from the security context table.
 On return from this call, the client SHOULD delete the GSS security context associated with dwContext
 through a call to GSS_Delete_sec_context, as specified in [RFC2743] section 2.2.3.
 
-3.1.4.4  S_DSCreateObject (Opnum 0)
+##### 3.1.4.4 S_DSCreateObject (Opnum 0)
 
 This method creates a new directory object, assigns the specified properties and security descriptor to
 that directory object, and returns a unique GUID identifier for that directory object.
@@ -3508,7 +3222,8 @@ Release: June 1, 2017
 
 39 / 238
 
-pwcsPathName:  Pointer to a NULL-terminated 16-bit Unicode string that MUST contain the
+
+pwcsPathName:  Pointer to a NULL-terminated 16-bit Unicode string that MUST contain the
 directory service pathname, as specified in section 2.2.9 for the object to be created in the directory
 service. If the object is of a type that is not referenced by pathname, as specified in section 2.2.9, this
 pointer MUST be NULL.
@@ -3579,7 +3294,8 @@ Release: June 1, 2017
 
 40 / 238
 
-Object Type
+
+Object Type
 
 Required property identifiers
 
@@ -3682,7 +3398,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Use the following fields from the SecurityDescriptor parameter to create a new security
+
+  Use the following fields from the SecurityDescriptor parameter to create a new security
 
 descriptor:
 
@@ -3766,7 +3483,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 dirObject.Security SHOULD be set to a default security descriptor with the owner SID set to
 the SID of the calling user.<27>
@@ -3854,7 +3572,8 @@ Release: June 1, 2017
 
 43 / 238
 
-be ignored. If the rules indicate that any property identifier is invalid, then the server MUST
+
+be ignored. If the rules indicate that any property identifier is invalid, then the server MUST
 take no further action and return a failure HRESULT.
 
   Create a new Site ADM element instance using the mapping from the preceding step and
@@ -3896,7 +3615,7 @@ iDirectoryObject := dirObject
 
 The server MAY<33> contact other servers to propagate the changes.
 
-3.1.4.5  S_DSDeleteObject (Opnum 1)
+##### 3.1.4.5 S_DSDeleteObject (Opnum 1)
 
 This method deletes a directory object specified by a directory service pathname.
 
@@ -3937,7 +3656,8 @@ Release: June 1, 2017
 
 44 / 238
 
-
+
+
 
 The server MAY<34> forward the delete to another server.
 
@@ -3965,7 +3685,7 @@ If rStatus returned by the event is not 0x00000000, return rStatus and take no f
 
 The server MAY<35> contact other servers to propagate the changes.
 
-3.1.4.6  S_DSDeleteObjectGuid (Opnum 10)
+##### 3.1.4.6 S_DSDeleteObjectGuid (Opnum 10)
 
 This method deletes a directory object specified by an object identifier.
 
@@ -4026,7 +3746,8 @@ Release: June 1, 2017
 
 45 / 238
 
-
+
+
 
 
 
@@ -4034,7 +3755,7 @@ If rStatus returned by the event is not 0x00000000, return rStatus and take no f
 
 The server MAY<37> contact other servers to propagate the changes.
 
-3.1.4.7  S_DSGetProps (Opnum 2)
+##### 3.1.4.7 S_DSGetProps (Opnum 2)
 
 This method returns the properties associated with a directory object specified by a directory service
 pathname.
@@ -4098,7 +3819,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-MQ_ERROR_INVALID_PARAMETER (0xC00E0006)
+
+MQ_ERROR_INVALID_PARAMETER (0xC00E0006)
 
 MQ_ERROR_ILLEGAL_PROPID (0xC00E0039)
 
@@ -4193,7 +3915,8 @@ Release: June 1, 2017
 
 47 / 238
 
-Value of dwObjectType  Rules
+
+Value of dwObjectType  Rules
 
 MQDS_ENTERPRISE
 
@@ -4234,7 +3957,7 @@ specified in [RFC1321], and sealing it, as specified by the following pseudocode
 signature on output. If the server signature is larger than the supplied buffer, the server MUST
 return MQ_ERROR_USER_BUFFER_TOO_SMALL (0xC00E0028).
 
-3.1.4.8  S_DSGetPropsGuid (Opnum 11)
+##### 3.1.4.8 S_DSGetPropsGuid (Opnum 11)
 
 This method returns properties associated with a directory object specified by an object identifier.
 
@@ -4266,7 +3989,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-cp:  MUST be set to the size (in elements) of the arrays aProp and apVar. The arrays aProp and apVar
+
+cp:  MUST be set to the size (in elements) of the arrays aProp and apVar. The arrays aProp and apVar
 MUST have an identical number of elements and MUST contain at least one element.
 
 aProp:  An array of identifiers of properties to retrieve from the object designated by pGuid. Each
@@ -4340,7 +4064,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -4434,7 +4159,8 @@ Release: June 1, 2017
 
 50 / 238
 
-3.1.4.9  S_DSSetProps (Opnum 3)
+
+##### 3.1.4.9 S_DSSetProps (Opnum 3)
 
 This method sets the specified properties for a directory object specified by a directory service
 pathname.
@@ -4506,7 +4232,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 The server MAY<45> forward the update to another server.
 
@@ -4611,7 +4338,8 @@ Release: June 1, 2017
 
 52 / 238
 
-
+
+
 
 If the Computer portion of the dirObject.PathName (as described in [MS-MQMQ] section
 2.1.1) is different from the LocalQueueManager.ComputerName, the server MAY do the
@@ -4650,9 +4378,9 @@ iOperation := QueueManagerUpdate
 
 iDirectoryObject := dirObject
 
-3.1.4.10
+##### 3.1.4.10 S_DSSetPropsGuid (Opnum 12)
 
-S_DSSetPropsGuid (Opnum 12)
+
 
 This method sets properties for a directory object specified by an object identifier.
 
@@ -4697,7 +4425,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-MQ_ERROR_ILLEGAL_PROPID (0xC00E0039)
+
+MQ_ERROR_ILLEGAL_PROPID (0xC00E0039)
 
 MQ_ERROR (0xC00E0001)
 
@@ -4797,7 +4526,8 @@ Release: June 1, 2017
 
 54 / 238
 
-indicate that the property identifier is invalid, the server MUST take no further action and return a
+
+indicate that the property identifier is invalid, the server MUST take no further action and return a
 failure HRESULT.
 
 Value of dwObjectType  Rules
@@ -4885,9 +4615,9 @@ iDirectoryObject := dirObject
 
 The server MAY<54> contact other servers to propagate the changes.
 
-3.1.4.11
+##### 3.1.4.11 S_DSGetObjectSecurity (Opnum 4)
 
-S_DSGetObjectSecurity (Opnum 4)
+
 
 This method gets security properties for a directory object specified by a directory service
 pathname.
@@ -4903,7 +4633,8 @@ Release: June 1, 2017
 
 55 / 238
 
-   [in] const wchar_t* pwcsPathName,
+
+   [in] const wchar_t* pwcsPathName,
    [in] unsigned long SecurityInformation,
    [out, size_is(nLength)] unsigned char* pSecurityDescriptor,
    [in, range(0,524288)] unsigned long nLength,
@@ -4991,7 +4722,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-pSecurityDescriptor: If the SecurityInformation parameter is MQDS_SIGN_PUBLIC_KEY or
+
+pSecurityDescriptor: If the SecurityInformation parameter is MQDS_SIGN_PUBLIC_KEY or
 MQDS_KEYX_PUBLIC_KEY, it SHOULD<55> contain a pointer to a BLOBHEADER (section 2.2.19)
 structure followed by an RSAPUBKEY (section 2.2.18) structure. Otherwise, this parameter contains a
 security descriptor, as specified in [MS-DTYP] section 2.4.6.
@@ -5072,7 +4804,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Construct a buffer that consists of a BLOBHEADER structure followed by an RSAPUBKEY
+
+  Construct a buffer that consists of a BLOBHEADER structure followed by an RSAPUBKEY
 structure. The BLOBHEADER MUST be initialized as specified in section 2.2.18, and the
 aiKeyAlg field set to CALG_RSA_KEYX. The RSAPUBKEY structure is obtained from the
 dirObject.PublicEncryptionKeyList attribute by extracting the aBuf field of the first
@@ -5152,7 +4885,8 @@ Release: June 1, 2017
 
 58 / 238
 
-
+
+
 
 If the dwObjectType is MQDS_CN and SecurityInformation is a bitwise OR of any combination of
 OWNER_SECURITY_INFORMATION, GROUP_SECURITY_INFORMATION,
@@ -5235,9 +4969,10 @@ Release: June 1, 2017
 
 59 / 238
 
-3.1.4.12
 
-S_DSGetObjectSecurityGuid (Opnum 13)
+##### 3.1.4.12 S_DSGetObjectSecurityGuid (Opnum 13)
+
+
 
 This method retrieves the security descriptor for a directory object specified by an object identifier.
 
@@ -5306,7 +5041,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC
 extension protocol, as specified in [MS-RPCE].
 
 When processing this call, the server MUST:
@@ -5392,7 +5128,8 @@ Release: June 1, 2017
 
 61 / 238
 
-
+
+
 
 If the dwObjectType is MQDS_SITE:
 
@@ -5478,7 +5215,8 @@ Release: June 1, 2017
 
 62 / 238
 
-
+
+
 
 If the requested security descriptor or public key is larger than nLength, the server MUST set the
 lpnLengthNeeded parameter to the size needed for the requested security descriptor or public key,
@@ -5506,9 +5244,9 @@ and return MQ_ERROR_SECURITY_DESCRIPTOR_TOO_SMALL (0xC00E0023).
 server signature is larger than the supplied buffer, the server MUST return
 MQ_ERROR_USER_BUFFER_TOO_SMALL (0xC00E0028).
 
-3.1.4.13
+##### 3.1.4.13 S_DSSetObjectSecurity (Opnum 5)
 
-S_DSSetObjectSecurity (Opnum 5)
+
 
 This method sets security properties for a directory object specified by a directory service
 pathname.
@@ -5550,7 +5288,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return Values: If the method succeeds, the return value is 0x00000000. If the method fails, the
+
+Return Values: If the method succeeds, the return value is 0x00000000. If the method fails, the
 return value is an implementation-specific error code.
 
 MQ_OK (0x00000000)
@@ -5641,7 +5380,8 @@ Release: June 1, 2017
 
 64 / 238
 
-  Generate the Get Directory Object for Update event with the arguments set to
+
+  Generate the Get Directory Object for Update event with the arguments set to
 
 MQDS_MACHINE, pwcsPathName, and NULL respectively. If rStatus returned by the event
 is not MQ_OK, return rStatus and take no further action; otherwise, set dirObject to
@@ -5733,7 +5473,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Set dirObject.PublicSigningKeyList to the MQDSPUBLICKEYS structure.
+
+  Set dirObject.PublicSigningKeyList to the MQDSPUBLICKEYS structure.
 
   Generate the Commit Directory Object Update event with the arguments set to dirObject
 
@@ -5761,9 +5502,9 @@ take no further action.
 
 The server MAY<67> contact other servers to propagate the changes.
 
-3.1.4.14
+##### 3.1.4.14 S_DSSetObjectSecurityGuid (Opnum 14)
 
-S_DSSetObjectSecurityGuid (Opnum 14)
+
 
 This method sets security properties for a directory object specified by an object identifier.
 
@@ -5808,7 +5549,8 @@ Release: June 1, 2017
 
 66 / 238
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 extension, as specified in [MS-RPCE].
 
 When processing this call, the server MUST:
@@ -5903,7 +5645,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-field set to the RSAPUBKEY structure that was extracted in the previous step. Then
+
+field set to the RSAPUBKEY structure that was extracted in the previous step. Then
 construct an MQDSPUBLICKEYS structure, initialized as specified in [MS-MQMQ] section
 2.2.2, with the just-constructed MQDSPUBLICKEY structure as the only element of
 aPublicKeys.
@@ -5993,7 +5736,8 @@ Release: June 1, 2017
 
 68 / 238
 
-  Generate the Get Directory Object for Update event with the arguments set to MQDS_CN,
+
+  Generate the Get Directory Object for Update event with the arguments set to MQDS_CN,
 
 NULL and pGuid respectively. If rStatus returned by the event is not MQ_OK, return rStatus
 and take no further action; otherwise, set dirObject to rObject.
@@ -6008,9 +5752,9 @@ return rStatus and take no further action.
 
 The server MAY<72> contact other servers to propagate the changes.
 
-3.1.4.15
+##### 3.1.4.15 S_DSQMGetObjectSecurity (Opnum 21)
 
-S_DSQMGetObjectSecurity (Opnum 21)
+
 
 This method retrieves the security descriptor for a directory object specified by an object identifier.
 
@@ -6065,7 +5809,8 @@ Release: June 1, 2017
 
 69 / 238
 
-phServerAuth:  A PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC context handle acquired from the
+
+phServerAuth:  A PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC context handle acquired from the
 pphServerAuth parameter in a previous call to S_DSValidateServer. The server MUST use this
 parameter as a key to locate the GSS security context used to compute the signature returned in
 pbServerSignature. See section 3.1.4.2.
@@ -6150,7 +5895,8 @@ Release: June 1, 2017
 
 70 / 238
 
-  Generate the Get Directory Object event with the arguments set to MQDS_MACHINE,
+
+  Generate the Get Directory Object event with the arguments set to MQDS_MACHINE,
 
 NULL and pGuid respectively. If rStatus returned by the event is not MQ_OK, return
 rStatus and take no further action; otherwise, set dirObject to rObject.
@@ -6234,7 +5980,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Generate the Get Directory Object event with the arguments set to MQDS_ENTERPRISE, NULL
+
+  Generate the Get Directory Object event with the arguments set to MQDS_ENTERPRISE, NULL
 and pGuid respectively. If rStatus returned by the event is not MQ_OK, return rStatus and
 take no further action; otherwise, set dirObject to rObject.
 
@@ -6290,9 +6037,9 @@ and return MQ_ERROR_SECURITY_DESCRIPTOR_TOO_SMALL (0xC00E0023).
 server signature is larger than the supplied buffer, the server MUST return
 MQ_ERROR_USER_BUFFER_TOO_SMALL (0xC00E0028).
 
-3.1.4.16
+##### 3.1.4.16 S_DSQMSetMachineProperties (Opnum 19)
 
-S_DSQMSetMachineProperties (Opnum 19)
+
 
 This method sets properties associated with a machine object specified by a directory service
 pathname. This method is intended for use by a queue manager to manipulate its own directory
@@ -6316,7 +6063,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-pwcsPathName: Pointer to a NULL-terminated 16-bit Unicode string that MUST contain the
+
+pwcsPathName: Pointer to a NULL-terminated 16-bit Unicode string that MUST contain the
 directory service pathname, as specified in section 2.2.9, of a machine object in the directory service.
 
 cp: MUST be set to the size (in elements) of the arrays aProp and apVar. The arrays aProp and apVar
@@ -6401,7 +6149,8 @@ Release: June 1, 2017
 
 73 / 238
 
-
+
+
 
 
 
@@ -6436,9 +6185,9 @@ iOperation := QueueManagerUpdate
 
 iDirectoryObject := dirObject
 
-3.1.4.17
+##### 3.1.4.17 S_DSLookupBegin (Opnum 6)
 
-S_DSLookupBegin (Opnum 6)
+
 
 This method performs a query over the directory objects and returns an RPC context handle that can
 be used to retrieve the result set through a subsequent series of calls to
@@ -6480,7 +6229,8 @@ Release: June 1, 2017
 
 74 / 238
 
-pSort: A pointer to an MQSORTSET (section 2.2.15) structure that defines the sort order of the result
+
+pSort: A pointer to an MQSORTSET (section 2.2.15) structure that defines the sort order of the result
 set. The server MUST sort the objects in the result set according to this multikey sort order. See
 section 2.2.15.
 
@@ -6520,9 +6270,9 @@ If rStatus of the preceding event is not MQ_OK, return rStatus and take no furth
 
   Return MQ_OK (0x00000000).
 
-3.1.4.18
+##### 3.1.4.18 S_DSLookupNext (Opnum 7)
 
-S_DSLookupNext (Opnum 7)
+
 
 This method returns a portion of the data from the result set computed in a previous call to
 S_DSLookupBegin (section 3.1.4.17) and updates the cursor index to the first directory object that
@@ -6558,7 +6308,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-dwOutSize: A pointer to an unsigned LONG that the server MUST set to the number of properties
+
+dwOutSize: A pointer to an unsigned LONG that the server MUST set to the number of properties
 returned in pbBuffer for the set of objects being returned from this invocation of the S_DSLookupNext
 method. The server MUST return as many completed sets of properties as will fit in the buffer. If no
 matching objects are found, the server MUST set this parameter to 0 to inform the client that there is
@@ -6618,9 +6369,9 @@ Else:
 
   Return MQ_OK.
 
-3.1.4.19
+##### 3.1.4.19 S_DSLookupEnd (Opnum 8)
 
-S_DSLookupEnd (Opnum 8)
+
 
 This method closes an opened RPC context handle created from a previous call to
 S_DSLookupBegin (section 3.1.4.17).
@@ -6636,7 +6387,8 @@ Release: June 1, 2017
 
 76 / 238
 
- );
+
+ );
 
 hBind:  MUST specify an RPC binding handle, as specified in [MS-RPCE] section 2.
 
@@ -6664,9 +6416,9 @@ iLookupDescriptor := the object referenced by the phContext parameter
 
   Return rStatus of the preceding event.
 
-3.1.4.20
+##### 3.1.4.20 S_DSCreateServersCache (Opnum 20)
 
-S_DSCreateServersCache (Opnum 20)
+
 
 This method returns a list of Backup Site Controllers (BSCs) associated with a specified site. The
 client calls this method to enumerate the BSCs associated with sites in the configured list of sites in
@@ -6707,7 +6459,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- Initialize an MD5 hash context
+
+ Initialize an MD5 hash context
  Add to the hash context the DWORD value 0x00000002
 
  Construct a PROPVARIANT apVar as follows
@@ -6757,11 +6510,11 @@ pdwIndex parameter to 0. After each successful invocation, the client increments
 parameter by 1 and calls the method again. The client repeats this sequence until the method call
 returns an error.
 
-3.1.4.21
+##### 3.1.4.21 Common Details
 
-Common Details
 
-3.1.4.21.1  Directory Service Objects
+
+###### 3.1.4.21.1 Directory Service Objects
 
 The directory defined by this protocol is composed of eight types of directory service objects,
 representing enterprises, sites, routing links, machines, users, queues, connected networks,
@@ -6776,7 +6529,8 @@ Release: June 1, 2017
 
 78 / 238
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-MQDS].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -6785,7 +6539,7 @@ service object types.
 
 Figure 2: Directory service object type ownership
 
-3.1.4.21.2  Directory Service Object Properties
+###### 3.1.4.21.2 Directory Service Object Properties
 
 Each directory service object type is composed of a collection of directory service object properties.
 These properties form the schema of the directory service object. Note that there is no type
@@ -6798,7 +6552,7 @@ passed from the directory service to the user without translation or other manip
 directory service object properties, however, are used by this protocol and are called out specifically in
 section 2.2.11.
 
-3.1.4.21.3  Directory Service Object Properties Specifying an Identifier
+###### 3.1.4.21.3 Directory Service Object Properties Specifying an Identifier
 
 Most directory service object types include a unique identifier, assigned by the directory service at
 the time of directory service object creation, and stored as a directory service object property.
@@ -6833,7 +6587,8 @@ Release: June 1, 2017
 
 79 / 238
 
-Directory service object type   Directory service object property identifier
+
+Directory service object type   Directory service object property identifier
 
 Connected Network
 
@@ -6859,7 +6614,7 @@ PROPID_L_ID
 
 806
 
-3.1.4.21.4  Directory Service Object Properties Specifying a Name
+###### 3.1.4.21.4 Directory Service Object Properties Specifying a Name
 
 Many directory service objects include a textual name, intended to provide a mechanism for people
 to more easily distinguish between instances of directory service object types. These names are
@@ -6901,7 +6656,7 @@ PROPID_E_NAME
 
 601
 
-3.1.4.21.5  Directory Service Object Access Control
+###### 3.1.4.21.5 Directory Service Object Access Control
 
 Each directory service object has an associated access control list (ACL) in the directory service.
 The ACL is generally assigned by the directory service, but can also be assigned by the user. These
@@ -6910,7 +6665,7 @@ ACLs are generally mutable.
 Unlike other object properties, the ACLs are not retrievable or settable by a property identifier in
 the protocol. Instead, they are retrieved or set through dedicated RPC methods.
 
-3.1.4.21.6  Data Partitioning
+###### 3.1.4.21.6 Data Partitioning
 
 If the directory service consists of multiple servers, the directory objects MAY<84> be partitioned
 such that each server owns the write permission to a subset of the directory objects.
@@ -6922,23 +6677,24 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.4.21.7  Data Replication
+
+###### 3.1.4.21.7 Data Replication
 
 To provide high availability, directory objects MAY be replicated.<85>
 
 Due to latency of replication, there is no assurance that a change to the directory will be immediately
 visible to all clients. Clients of the protocol must be aware of this limitation.
 
-3.1.4.21.8  Directory Service Object Property Mapping
+###### 3.1.4.21.8 Directory Service Object Property Mapping
 
-3.1.4.21.8.1  Read Directory Object Mapping
+###### 3.1.4.21.8.1 Read Directory Object Mapping
 
  The tables below describe the computation of property identifier values from the corresponding
 directory server object attributes.
 
-3.1.4.21.8.1.1
+###### 3.1.4.21.8.1.1 QueueManager
 
-QueueManager
+
 
 Property identifier
 
@@ -7059,7 +6815,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property identifier
+
+Property identifier
 
 QueueManager attribute
 
@@ -7225,7 +6982,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property identifier
+
+Property identifier
 
 QueueManager attribute
 
@@ -7268,9 +7026,9 @@ N/A
 
 See [MS-MQMQ] section 2.3.2.39.
 
-3.1.4.21.8.1.2
+###### 3.1.4.21.8.1.2 RemoteAccessServer, RoutingServer, DirectoryServer,
 
-RemoteAccessServer, RoutingServer, DirectoryServer,
+
 
 DirectoryServerType
 
@@ -7307,9 +7065,9 @@ PrimaryEnterpriseController  0x00000008
 
  The value of PROPID_QM_SERVICE MUST be the value of FinalValue.
 
-3.1.4.21.8.1.3
+###### 3.1.4.21.8.1.3 OperatingSystemType
 
-OperatingSystemType
+
 
 OperatingSystemType value  PROPID_QM_OS value
 
@@ -7340,15 +7098,16 @@ Release: June 1, 2017
 
 83 / 238
 
-OperatingSystemType value  PROPID_QM_OS value
+
+OperatingSystemType value  PROPID_QM_OS value
 
 WinEnt
 
 0x00000500
 
-3.1.4.21.8.1.4
+###### 3.1.4.21.8.1.4 Queue
 
-Queue
+
 
 Property Identifier
 
@@ -7498,7 +7257,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property Identifier
+
+Property Identifier
 
 Queue attribute
 
@@ -7531,9 +7291,9 @@ If Queue.Scope is Enterprise, set
 to 0x01; Else if Queue.Scope is
 Site, set to 0x00.
 
-3.1.4.21.8.1.5
+###### 3.1.4.21.8.1.5 PrivacyLevel
 
-PrivacyLevel
+
 
 PROPID_Q_PRIV_LEVEL value  PrivacyLevel value
 
@@ -7549,9 +7309,9 @@ Optional
 
 Body
 
-3.1.4.21.8.1.6
+###### 3.1.4.21.8.1.6 Enterprise
 
-Enterprise
+
 
 Property Identifier
 
@@ -7634,7 +7394,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property Identifier
+
+Property Identifier
 
 Enterprise attribute
 
@@ -7644,9 +7405,9 @@ MQMQ] section 2.3.5.4)
 
 Enterprise.EnterpriseControllerName.
 
-3.1.4.21.8.1.7
+###### 3.1.4.21.8.1.7 CryptographicProvider
 
-CryptographicProvider
+
 
 PROPID_E_CSP_NAME value
 
@@ -7662,9 +7423,9 @@ Enhanced
 
 "Microsoft Enhanced RSA and AES Cryptographic Provider"  EnhancedAes
 
-3.1.4.21.8.1.8
+###### 3.1.4.21.8.1.8 Site
 
-Site
+
 
 Property Identifier
 
@@ -7762,9 +7523,9 @@ DoNothing
 
 Copy byte.
 
-3.1.4.21.8.1.9
+###### 3.1.4.21.8.1.9 RoutingLink
 
-RoutingLink
+
 
 [MS-MQDS] - v20170601
 Message Queuing (MSMQ): Directory Service Protocol
@@ -7773,7 +7534,8 @@ Release: June 1, 2017
 
 86 / 238
 
-Property Identifier
+
+Property Identifier
 
 PROPID_L_NEIGHBOR1 ([MS-
 MQMQ] section 2.3.7.1)
@@ -7852,9 +7614,9 @@ ActualCost
 
 String copied from RoutingLink.ActualCost.
 
-3.1.4.21.8.1.10
+###### 3.1.4.21.8.1.10 ConnectedNetwork
 
-ConnectedNetwork
+
 
 Property Identifier
 
@@ -7887,9 +7649,9 @@ Security
 SECURITY is security descriptors stored
 as blob.
 
-3.1.4.21.8.1.11
+###### 3.1.4.21.8.1.11 User
 
-User
+
 
 Property Identifier
 
@@ -7925,7 +7687,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property Identifier
+
+Property Identifier
 
 User attribute
 
@@ -7938,14 +7701,14 @@ Identifier
 
 GUID copied from User.Identifier.
 
-3.1.4.21.8.2  Write Directory Object Mapping
+###### 3.1.4.21.8.2 Write Directory Object Mapping
 
  The following tables describe the computation of directory server object attributes from their
 corresponding property identifier values.
 
-3.1.4.21.8.2.1
+###### 3.1.4.21.8.2.1 QueueManager
 
-QueueManager
+
 
 Property Identifier
 
@@ -8071,7 +7834,8 @@ TRUE; Else set to FALSE.
 
 88 / 238
 
-Property Identifier
+
+Property Identifier
 
 QueueManager attribute
 
@@ -8155,9 +7919,9 @@ PartitionIdentifier
 
 GUID copied from property.
 
-3.1.4.21.8.2.2
+###### 3.1.4.21.8.2.2 RemoteAccessServer, RoutingServer, DirectoryServer,
 
-RemoteAccessServer, RoutingServer, DirectoryServer,
+
 
 DirectoryServerType
 
@@ -8197,11 +7961,12 @@ Release: June 1, 2017
 
 89 / 238
 
-5.  The value of PROPID_QM_SERVICE MUST be the value of FinalValue.
 
-3.1.4.21.8.2.3
+5.  The value of PROPID_QM_SERVICE MUST be the value of FinalValue.
 
-OperatingSystemType
+###### 3.1.4.21.8.2.3 OperatingSystemType
+
+
 
 OperatingSystemType value  PROPID_QM_OS value
 
@@ -8229,9 +7994,9 @@ WinEnt
 
 0x00000500
 
-3.1.4.21.8.2.4
+###### 3.1.4.21.8.2.4 Queue
 
-Queue
+
 
 Property Identifier
 
@@ -8344,7 +8109,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property Identifier
+
+Property Identifier
 
 Queue attribute
 
@@ -8395,9 +8161,9 @@ SequenceNumber
 
 MAY be unused.<95>
 
-3.1.4.21.8.2.5
+###### 3.1.4.21.8.2.5 PrivacyLevel
 
-PrivacyLevel
+
 
 PROPID_Q_PRIV_LEVEL value  PrivacyLevel value
 
@@ -8413,9 +8179,9 @@ Optional
 
 Body
 
-3.1.4.21.8.2.6
+###### 3.1.4.21.8.2.6 Enterprise
 
-Enterprise
+
 
 Property Identifier
 
@@ -8471,7 +8237,8 @@ Release: June 1, 2017
 
 91 / 238
 
-Property Identifier
+
+Property Identifier
 
 Enterprise attribute
 
@@ -8499,9 +8266,9 @@ SequenceNumber
 
 MAY be unused.<98>
 
-3.1.4.21.8.2.7
+###### 3.1.4.21.8.2.7 CryptographicProvider
 
-CryptographicProvider
+
 
 PROPID_E_CSP_NAME value
 
@@ -8517,9 +8284,9 @@ Enhanced
 
 "Microsoft Enhanced RSA and AES Cryptographic Provider"  EnhancedAes
 
-3.1.4.21.8.2.8
+###### 3.1.4.21.8.2.8 Site
 
-Site
+
 
 Property identifier
 
@@ -8613,7 +8380,8 @@ Release: June 1, 2017
 
 92 / 238
 
-Property identifier
+
+Property identifier
 
 Site attribute
 
@@ -8621,9 +8389,9 @@ Computation
 
 2.3.3.12)
 
-3.1.4.21.8.2.9
+###### 3.1.4.21.8.2.9 RoutingLink
 
-RoutingLink
+
 
 Property Identifier
 
@@ -8684,9 +8452,9 @@ SequenceNumber
 
 MAY be unused.<106>
 
-3.1.4.21.8.2.10
+###### 3.1.4.21.8.2.10 ConnectedNetwork
 
-ConnectedNetwork
+
 
 Property Identifier
 
@@ -8717,9 +8485,9 @@ SequenceNumber
 
 MAY be unused.<107>
 
-3.1.4.21.8.2.11
+###### 3.1.4.21.8.2.11 NetworkProtocol
 
-NetworkProtocol
+
 
 See PROPID_CN_PROTOCOLID ([MS-MQMQ] section 2.3.4.1).
 
@@ -8740,15 +8508,16 @@ Release: June 1, 2017
 
 93 / 238
 
-PROPID_CN_PROTOCOLID value  NetworkProtocol value
+
+PROPID_CN_PROTOCOLID value  NetworkProtocol value
 
 0x05
 
 Foreign
 
-3.1.4.21.8.2.12
+###### 3.1.4.21.8.2.12 User
 
-User
+
 
 Property Identifier
 
@@ -8776,14 +8545,14 @@ SequenceNumber
 
 MAY be unused.<108>
 
-3.1.4.21.8.3  Create Directory Object Mapping
+###### 3.1.4.21.8.3 Create Directory Object Mapping
 
  The following tables describe the directory server object attributes that have different behavior on
 object creation than on object update.
 
-3.1.4.21.8.3.1
+###### 3.1.4.21.8.3.1 QueueManager
 
-QueueManager
+
 
 Property Identifier
 
@@ -8861,7 +8630,8 @@ treated as invalid.<113>
 
 94 / 238
 
-Property Identifier
+
+Property Identifier
 
 QueueManager attribute
 
@@ -8930,9 +8700,9 @@ PublicEncryptionKeyList
 MQDSPUBLICKEYS structure copied
 from property.
 
-3.1.4.21.8.3.2
+###### 3.1.4.21.8.3.2 DirectoryServer, DirectoryServerType, RoutingServer,
 
-DirectoryServer, DirectoryServerType, RoutingServer,
+
 
 RemoteAccessServer
 
@@ -8965,9 +8735,9 @@ Primary Site Controller (PSC)
 
 Primary Enterprise Controller (PEC)
 
-3.1.4.21.8.3.3
+###### 3.1.4.21.8.3.3 Queue
 
-Queue
+
 
 [MS-MQDS] - v20170601
 Message Queuing (MSMQ): Directory Service Protocol
@@ -8976,7 +8746,8 @@ Release: June 1, 2017
 
 95 / 238
 
-Property Identifier
+
+Property Identifier
 
 Queue attribute
 
@@ -9065,9 +8836,9 @@ Security
 Security MUST be set as described in
 section 3.1.4.4.
 
-3.1.4.21.8.3.4
+###### 3.1.4.21.8.3.4 Site
 
-Site
+
 
 Property Identifier
 
@@ -9107,7 +8878,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property Identifier
+
+Property Identifier
 
 Site attribute
 
@@ -9143,9 +8915,9 @@ PublicSigningKeyList  MQUSERSIGNCERTS structure ([MS-MQMQ] section
 
 2.2.21) copied from property.
 
-3.1.4.21.8.3.5
+###### 3.1.4.21.8.3.5 RoutingLink
 
-RoutingLink
+
 
 Property Identifier
 
@@ -9185,9 +8957,9 @@ FullPath
 NULL-terminated 16-bit Unicode string set by the
 server.
 
-3.1.4.21.8.3.6
+###### 3.1.4.21.8.3.6 ConnectedNetwork
 
-ConnectedNetwork
+
 
 Property identifier
 
@@ -9211,9 +8983,9 @@ Identifier
 
 GUID copied from the property.
 
-3.1.4.21.8.3.7
+###### 3.1.4.21.8.3.7 User
 
-User
+
 
 Property Identifier
 
@@ -9232,13 +9004,14 @@ Release: June 1, 2017
 
 97 / 238
 
-3.1.5  Timer Events
+
+#### 3.1.5 Timer Events
 
 There are no timer events.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
-3.1.6.1  PCONTEXT_HANDLE_SERVER_AUTH_TYPE Rundown
+##### 3.1.6.1 PCONTEXT_HANDLE_SERVER_AUTH_TYPE Rundown
 
 This event occurs when a PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC context handle has been
 established between a client and server through a call to S_DSValidateServer, and the RPC connection
@@ -9251,7 +9024,7 @@ associated with the security context entry through a call to GSS_Delete_sec_cont
 [RFC2743] section 2.2.3. The server MUST remove the security context entry from the security
 context table.
 
-3.1.6.2  PCONTEXT_HANDLE_TYPE Rundown
+##### 3.1.6.2 PCONTEXT_HANDLE_TYPE Rundown
 
 This event occurs when a PCONTEXT_HANDLE_TYPE RPC context handle has been established
 between a client and server through a call to S_DSLookupBegin, and the RPC connection between the
@@ -9261,7 +9034,7 @@ The server MUST use the context handle (supplied as an event argument) as a key 
 entry in the query table. The server MUST delete the result set associated with the query entry and
 remove the query entry from the table.
 
-3.1.6.3  Create Directory Object
+##### 3.1.6.3 Create Directory Object
 
 This event MUST be generated with the following arguments:
 
@@ -9313,7 +9086,8 @@ Release: June 1, 2017
 
 98 / 238
 
-Return value:
+
+Return value:
 
 
 
@@ -9417,7 +9191,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -9502,7 +9277,7 @@ action.
 
 If iReplicate is TRUE, the server MAY<127> contact other servers to propagate the changes.
 
-3.1.6.4  Update Directory Object
+##### 3.1.6.4 Update Directory Object
 
 This event MUST be generated with the following arguments:
 
@@ -9527,7 +9302,8 @@ Release: June 1, 2017
 
 100 / 238
 
-
+
+
 
 
 
@@ -9631,7 +9407,8 @@ Release: June 1, 2017
 
 101 / 238
 
-Value of iObjectType  Rules
+
+Value of iObjectType  Rules
 
 MQDS_SITE
 
@@ -9689,7 +9466,7 @@ rStatus to 0x00000000; otherwise, set rStatus to a failure HRESULT, and take no 
 
 If iReplicate is TRUE, the server MAY<129> contact other servers to propagate the changes.
 
-3.1.6.5  Delete Directory Object
+##### 3.1.6.5 Delete Directory Object
 
 This event MUST be generated with the following arguments:
 
@@ -9719,7 +9496,8 @@ Release: June 1, 2017
 
 102 / 238
 
-Return Value:
+
+Return Value:
 
 
 
@@ -9749,7 +9527,7 @@ If rStatus returned by the event is not 0x00000000, return rStatus, and take no 
 
 If iReplicate is TRUE, the server MAY<130> contact other servers to propagate the changes.
 
-3.1.6.6  Read Directory Object
+##### 3.1.6.6 Read Directory Object
 
 This event MUST be generated with the following arguments:
 
@@ -9819,7 +9597,8 @@ Release: June 1, 2017
 
 103 / 238
 
-  Generate a Get Directory Object (section 3.1.6.12) event with the following arguments:
+
+  Generate a Get Directory Object (section 3.1.6.12) event with the following arguments:
 
 
 
@@ -9874,7 +9653,7 @@ MQDS_ROUTINGLINK
 
 See section 3.1.4.21.8.1.9
 
-3.1.6.7  Begin Directory Lookup
+##### 3.1.6.7 Begin Directory Lookup
 
 This event MUST be generated with the following arguments:
 
@@ -9923,7 +9702,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-newStateObject.ObjectType. If the property identifiers belong to more than one directory object
+
+newStateObject.ObjectType. If the property identifiers belong to more than one directory object
 type, perform no further processing and return an error.
 
 
@@ -10008,7 +9788,7 @@ action, and return an error.
 
   Set rStatus to MQ_OK.
 
-3.1.6.8  Lookup Directory Next
+##### 3.1.6.8 Lookup Directory Next
 
 This event MUST be generated with the following arguments:
 
@@ -10024,7 +9804,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Return Values:
+
+Return Values:
 
 
 
@@ -10073,7 +9854,7 @@ nextObject using the mapping defined in section 3.1.4.21.8.1.
 
   Set rStatus to MQ_OK (0x00000000).
 
-3.1.6.9  End Directory Lookup
+##### 3.1.6.9 End Directory Lookup
 
 This event MUST be generated with the following argument:
 
@@ -10101,9 +9882,9 @@ associated with it.
 
   Return MQ_OK (0x00000000).
 
-3.1.6.10
+##### 3.1.6.10 Remove Directory Objects
 
-Remove Directory Objects
+
 
 This event MUST be generated with the following arguments:
 
@@ -10118,7 +9899,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 iOperation: A UCHAR that indicates the operation to be performed.
 
@@ -10130,9 +9912,9 @@ rStatus: An HRESULT indicating the result of the operation.
 
 The server SHOULD<134> set rStatus to 0x00000000 and perform no further actions.
 
-3.1.6.11
+##### 3.1.6.11 Add Object to Directory
 
-Add Object to Directory
+
 
 This event MUST be generated with the following arguments:
 
@@ -10177,9 +9959,9 @@ iDirectoryObject := iObject
 If the event returns DirectoryOperationResult.Success, set rStatus to 0x00000000; otherwise,
 set rStatus to a failure HRESULT.
 
-3.1.6.12
+##### 3.1.6.12 Get Directory Object
 
-Get Directory Object
+
 
 This event MUST be generated with the following arguments:
 
@@ -10227,7 +10009,8 @@ Release: June 1, 2017
 
 107 / 238
 
-  Set directoryObjectType to "Queue".
+
+  Set directoryObjectType to "Queue".
 
 
 
@@ -10336,11 +10119,12 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Set rStatus to 0x00000000.
 
-3.1.6.13
+  Set rStatus to 0x00000000.
 
-Remove Object from Directory
+##### 3.1.6.13 Remove Object from Directory
+
+
 
 This event MUST be generated with the following arguments:
 
@@ -10440,7 +10224,8 @@ Release: June 1, 2017
 
 109 / 238
 
-
+
+
 
 Else if iObjectType equals MQDS_USER:
 
@@ -10465,9 +10250,9 @@ failure HRESULT.
 
   Set rStatus to 0x00000000.
 
-3.1.6.14
+##### 3.1.6.14 Get Directory Object for Update
 
-Get Directory Object for Update
+
 
 This event MUST be generated with the following arguments:
 
@@ -10540,7 +10325,8 @@ Release: June 1, 2017
 
 110 / 238
 
-  Set rObject.Identifier to iGuid.
+
+  Set rObject.Identifier to iGuid.
 
 
 
@@ -10550,9 +10336,9 @@ Else:
 
   Set rStatus to 0x00000000.
 
-3.1.6.15
+##### 3.1.6.15 Commit Directory Object Update
 
-Commit Directory Object Update
+
 
 This event MUST be generated with the following arguments:
 
@@ -10591,9 +10377,9 @@ iAttributeList := iAttributes
 If the preceding event returns DirectoryOperationResult.Success, set rStatus to 0x00000000;
 otherwise, set rStatus to a failure HRESULT.
 
-3.2  dscomm Client Details
+### 3.2 dscomm Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
  This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -10611,7 +10397,7 @@ is described in [MS-MQOD].
 Section 3.2.1.1 details the elements from the shared data model that are specified in [MS-MQDMPR].
 Sections 3.2.1.2 through 3.2.1.6 detail the data model elements that are specific to this protocol.
 
-3.2.1.1  Externally Defined Data Elements
+##### 3.2.1.1 Externally Defined Data Elements
 
 This protocol contains the following abstract data model elements defined in [MS-MQDMPR] section
 3.1.1.
@@ -10623,7 +10409,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-QueueManager: [MS-MQDMPR] section 3.1.1.1.
+
+QueueManager: [MS-MQDMPR] section 3.1.1.1.
 
 Queue: [MS-MQDMPR] section 3.1.1.2.
 
@@ -10635,7 +10422,7 @@ RoutingLink: [MS-MQDMPR] section 3.1.1.8.
 
 ConnectedNetwork: [MS-MQDMPR] section 3.1.1.9.
 
-3.2.1.2  GssSecurityContext Data Element
+##### 3.2.1.2 GssSecurityContext Data Element
 
 The client needs to maintain the GSS security context, output_token from the
 GSS_Accept_sec_context as specified in [RFC2743], acquired through the S_InitSecCtx callback of the
@@ -10657,17 +10444,17 @@ following protocol methods:
 
   S_DSCreateServersCache
 
-3.2.1.3  SiteIdentifier Data Element
+##### 3.2.1.3 SiteIdentifier Data Element
 
 The client SHOULD maintain its site identifier, a GUID that identifies a Site object in the
 directory.<141>
 
-3.2.1.4  DirectoryServiceServersCollection Data Element
+##### 3.2.1.4 DirectoryServiceServersCollection Data Element
 
 The client SHOULD<142><143>  maintain a list of known directory service servers, one of which is
 designated as the current server.
 
-3.2.1.5  ReadDirectoryIteratorState Data Element
+##### 3.2.1.5 ReadDirectoryIteratorState Data Element
 
  The ReadDirectoryIteratorState data element represents the state associated with a directory read
 initiated by a Read Directory Begin event (see section 3.2.6.4). The data element MUST contain the
@@ -10690,25 +10477,26 @@ Release: June 1, 2017
 
 112 / 238
 
-3.2.1.6  ReadDirectoryIteratorStateCollection Data Element
+
+##### 3.2.1.6 ReadDirectoryIteratorStateCollection Data Element
 
  The ReadDirectoryIteratorStateCollection data element is an abstract data model element that is
 private to this protocol. It is a collection that MUST contain a reference to every existing
 ReadDirectoryIteratorState element.
 
-3.2.1.7  CurrentServer Data Element
+##### 3.2.1.7 CurrentServer Data Element
 
 The CurrentServer data element is an element in the
 DirectoryServiceServersCollection (section 3.2.1.4) data element. It identifies the current directory
 service server to which the client will connect to perform all Message Queuing (MSMQ): Directory
 Service Protocol operations.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required beyond those that are used internally by RPC to implement resiliency
 to network outages. See [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST create an RPC connection to the remote computer identified by the
 CurrentServer (section 3.2.1.7) data element by using the details specified in section 2.1. If the RPC
@@ -10733,7 +10521,7 @@ RPC context handle as an input parameter. The client MUST call S_DSValidateServe
 context handle prior to calling any method that requires this handle as input. The client MUST call
 S_DSCloseServerHandle when finished with the context handle.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 When a method completes, the values returned by RPC MUST be returned unmodified to the upper
 layer.
@@ -10756,7 +10544,8 @@ Release: June 1, 2017
 
 113 / 238
 
-Method
+
+Method
 
 Description
 
@@ -10788,7 +10577,7 @@ Opnum: 2
 
 All methods MUST NOT throw exceptions.
 
-3.2.4.1  S_DSQMSetMachinePropertiesSignProc (Opnum 0)
+##### 3.2.4.1 S_DSQMSetMachinePropertiesSignProc (Opnum 0)
 
 This method is a callback method called by the server during a client call to
 S_DSQMSetMachineProperties. Through this method, the server provides a challenge that the client
@@ -10834,7 +10623,8 @@ Release: June 1, 2017
 
 114 / 238
 
-        S_DSQMSetMachineProperties.
+
+        S_DSQMSetMachineProperties.
 
  FOR each property in the corresponding call to
      S_DSQMSetMachineProperties
@@ -10875,7 +10665,7 @@ MQ_ERROR_NOT_SUPPORTED (0xC00E03EB)
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC
 extension protocol, as specified in [MS-RPCE].
 
-3.2.4.2  S_DSQMGetObjectSecurityChallengeResponceProc (Opnum 1)
+##### 3.2.4.2 S_DSQMGetObjectSecurityChallengeResponceProc (Opnum 1)
 
 S_DSQMGetObjectSecurityChallengeResponceProc is a callback method called by the server during a
 client call to S_DSQMGetObjectSecurity. Through this method, the server provides a challenge that
@@ -10901,7 +10691,8 @@ Release: June 1, 2017
 
 115 / 238
 
-dwCallengeSize:  MUST be set by the caller to the size, in bytes, of the challenge in the abChallenge
+
+dwCallengeSize:  MUST be set by the caller to the size, in bytes, of the challenge in the abChallenge
 parameter.
 
 dwContext:  MUST be set by the caller to the value that was supplied in the dwContext parameter of
@@ -10947,7 +10738,7 @@ MQ_ERROR_NOT_SUPPORTED (0xC00E03EB)
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 extension, as specified in [MS-RPCE].
 
-3.2.4.3  S_InitSecCtx (Opnum 2)
+##### 3.2.4.3 S_InitSecCtx (Opnum 2)
 
 This method is a callback method called by the server during a client call to S_DSValidateServer.
 These two methods are used to tunnel a GSS (as specified in [RFC2743]) security negotiation to
@@ -10969,7 +10760,8 @@ Release: June 1, 2017
 
 116 / 238
 
-   [out] unsigned long* pdwClientBuffSize
+
+   [out] unsigned long* pdwClientBuffSize
  );
 
 dwContext:  MUST be set by the caller to the correlation value supplied by the client in the
@@ -11015,11 +10807,11 @@ If GSS_Init_sec_context returns GSS_S_COMPLETE, the negotiation is complete. The
 save the output context handle in the GSS security context state associated with the dwContext
 parameter. The receiver MUST return SEC_E_OK (0x00000000).
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 There are no timer events.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 These events are made available by the MQDS client and are raised by the processing rules within the
 common processing rules defined in [MS-MQDMPR]. These events act as a simple translation layer to
@@ -11032,7 +10824,8 @@ Release: June 1, 2017
 
 117 / 238
 
-3.2.6.1  Create Directory Object
+
+##### 3.2.6.1 Create Directory Object
 
  This event MUST be generated with the following arguments:
 
@@ -11083,7 +10876,7 @@ be returned.
 
   User, section 3.2.6.1.6
 
-3.2.6.1.1 QueueManager
+###### 3.2.6.1.1 QueueManager
 
 The MQDS client MUST perform the following actions:
 
@@ -11117,7 +10910,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-iDirectoryObject, add the property identifier to aProp, add a PROPVARIANT to apVar that is set to
+
+iDirectoryObject, add the property identifier to aProp, add a PROPVARIANT to apVar that is set to
 the correct type for the property and contains in the correct field the computed value for the
 property, as shown in the following table. QueueManager attribute names that appear in
 iAttributeList but do not appear in the following table or subsections referenced by the table MUST
@@ -11230,7 +11024,8 @@ Release: June 1, 2017
 
 119 / 238
 
-3.  SecurityDescriptor MUST point to a buffer that contains the value of iDirectoryObject.Security
+
+3.  SecurityDescriptor MUST point to a buffer that contains the value of iDirectoryObject.Security
 
 if the attribute name Security appears in iAttributeList and iDirectoryObject.Security is
 populated, or MUST be set to NULL otherwise.
@@ -11248,7 +11043,7 @@ of S_DSCreateObject.
 
 7.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.1.1.1  PROPID_QM_SERVICE
+###### 3.2.6.1.1.1 PROPID_QM_SERVICE
 
  The PROPID_QM_SERVICE property is a bitmap that MUST be computed according to the following
 algorithm:
@@ -11284,7 +11079,7 @@ PrimaryEnterpriseController  0x00000008
 
 5.  The value of the PROPID_QM_SERVICE property MUST be the value of FinalValue.
 
-3.2.6.1.1.2  PROPID_QM_OS
+###### 3.2.6.1.1.2 PROPID_QM_OS
 
 The PROPID_QM_OS property is an integer that MUST have one of the values listed in the following
 table. The OperatingSystemType attribute is an enumeration. The value MUST be converted according
@@ -11319,13 +11114,14 @@ Release: June 1, 2017
 
 120 / 238
 
-OperatingSystemType value  PROPID_QM_OS value
+
+OperatingSystemType value  PROPID_QM_OS value
 
 WinEnt
 
 0x00000500
 
-3.2.6.1.2 Queue
+###### 3.2.6.1.2 Queue
 
  The MQDS client MUST perform the following actions:
 
@@ -11419,7 +11215,8 @@ Release: June 1, 2017
 
 121 / 238
 
-1.  dwObjectType MUST be MQDS_QUEUE.
+
+1.  dwObjectType MUST be MQDS_QUEUE.
 
 2.  pwcsPathName MUST point to a buffer containing the value of iDirectoryObject.Pathname.
 
@@ -11441,7 +11238,7 @@ of S_DSCreateObject.
 
 7.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.1.2.1  PROPID_Q_PRIV_LEVEL
+###### 3.2.6.1.2.1 PROPID_Q_PRIV_LEVEL
 
 The PROPID_Q_PRIV_LEVEL property is an integer that MUST have one of the values listed in the
 following table. The PrivacyLevel attribute is an enumeration. The value MUST be converted according
@@ -11461,7 +11258,7 @@ Optional
 
 Body
 
-3.2.6.1.3 Site
+###### 3.2.6.1.3 Site
 
  The MQDS client MUST perform the following actions:
 
@@ -11500,7 +11297,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property Identifier
+
+Property Identifier
 
 Property value computation
 
@@ -11555,7 +11353,7 @@ argument of S_DSCreateObject.
 
 7.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.1.4 RoutingLink
+###### 3.2.6.1.4 RoutingLink
 
  The MQDS client MUST perform the following actions:
 
@@ -11590,7 +11388,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-property, as shown in the following table.  RoutingLink attribute names that appear in
+
+property, as shown in the following table.  RoutingLink attribute names that appear in
 iAttributeList but do not appear in the following table or subsections referenced by the table MUST
 be ignored.
 
@@ -11659,7 +11458,7 @@ argument of S_DSCreateObject.
 
 7.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.1.5 ConnectedNetwork
+###### 3.2.6.1.5 ConnectedNetwork
 
  The MQDS client MUST perform the following actions:
 
@@ -11684,7 +11483,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  If iAttributeList was not provided as an argument, then an iAttributeList MUST be constructed that
+
+2.  If iAttributeList was not provided as an argument, then an iAttributeList MUST be constructed that
 MUST contain the names of all ConnectedNetwork directory attributes listed in [MS-MQDMPR]
 section 3.1.1.9.
 
@@ -11724,7 +11524,7 @@ argument of S_DSCreateObject.
 
 7.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.1.6 User
+###### 3.2.6.1.6 User
 
  The MQDS client MUST perform the following actions:
 
@@ -11760,7 +11560,8 @@ Release: June 1, 2017
 
 125 / 238
 
-Property Identifier
+
+Property Identifier
 
 Property value computation
 
@@ -11801,7 +11602,7 @@ argument of S_DSCreateObject.
 
 7.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.2  Delete Directory Object
+##### 3.2.6.2 Delete Directory Object
 
  This event MUST be generated with the following arguments:
 
@@ -11838,7 +11639,7 @@ sections listed, and return the rStatus value described in that section.
 
   User, section 3.2.6.2.6
 
-3.2.6.2.1 QueueManager
+###### 3.2.6.2.1 QueueManager
 
 [MS-MQDS] - v20170601
 Message Queuing (MSMQ): Directory Service Protocol
@@ -11847,7 +11648,8 @@ Release: June 1, 2017
 
 126 / 238
 
- The MQDS client MUST perform the following actions:
+
+ The MQDS client MUST perform the following actions:
 
 1.
 
@@ -11885,7 +11687,7 @@ to DirectoryOperationResult.GenericError.
 
 DirectoryOperationResult.Success.
 
-3.2.6.2.2 Queue
+###### 3.2.6.2.2 Queue
 
  The MQDS client MUST perform the following actions:
 
@@ -11928,7 +11730,8 @@ Release: June 1, 2017
 
 127 / 238
 
-3.2.6.2.3 Site
+
+###### 3.2.6.2.3 Site
 
  The MQDS client MUST perform the following actions:
 
@@ -11958,7 +11761,7 @@ to DirectoryOperationResult.GenericError.
 
 DirectoryOperationResult.Success.
 
-3.2.6.2.4 RoutingLink
+###### 3.2.6.2.4 RoutingLink
 
  The MQDS client MUST perform the following actions:
 
@@ -11986,7 +11789,7 @@ to DirectoryOperationResult.GenericError.
 
 DirectoryOperationResult.Success.
 
-3.2.6.2.5 ConnectedNetwork
+###### 3.2.6.2.5 ConnectedNetwork
 
  The MQDS client MUST perform the following actions:
 
@@ -12011,7 +11814,8 @@ Release: June 1, 2017
 
 128 / 238
 
-2.  pGuid MUST point to a buffer containing the value of iDirectoryObject.Identifier.
+
+2.  pGuid MUST point to a buffer containing the value of iDirectoryObject.Identifier.
 
 3.  If the return value of the method is not MQ_OK, then processing MUST end. rStatus MUST be set
 
@@ -12021,7 +11825,7 @@ to DirectoryOperationResult.GenericError.
 
 DDirectoryOperationResult.Success.
 
-3.2.6.2.6 User
+###### 3.2.6.2.6 User
 
  The MQDS client MUST perform the following actions:
 
@@ -12051,7 +11855,7 @@ to DirectoryOperationResult.GenericError.
 
 DirectoryOperationResult.Success.
 
-3.2.6.3  Read Directory
+##### 3.2.6.3 Read Directory
 
  This event MUST be generated with the following arguments:
 
@@ -12099,7 +11903,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 If that expression takes one of the following forms:
 
@@ -12206,7 +12011,8 @@ Release: June 1, 2017
 
 130 / 238
 
-
+
+
 
 
 
@@ -12217,7 +12023,7 @@ returned by the Read Directory End event.
 Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success and
 rDirectoryObject MUST be set to the value of DirObj.
 
-3.2.6.3.1 QueueManager
+###### 3.2.6.3.1 QueueManager
 
  The MQDS client MUST perform the following actions:
 
@@ -12330,7 +12136,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-QueueManager attribute
+
+QueueManager attribute
 
 Property identifier
 
@@ -12489,7 +12296,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.  dwObjectType MUST be MQDS_MACHINE.
+
+1.  dwObjectType MUST be MQDS_MACHINE.
 
 2.  Other arguments MUST be set up as described in section 3.1.4.7 or 3.1.4.8, depending on
 
@@ -12519,7 +12327,7 @@ to the table above and set on rDirectoryObject.
 
 10. Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.3.1.1  DirectoryServer Type
+###### 3.2.6.3.1.1 DirectoryServer Type
 
 The rDirectoryObject.DirectoryServerType attribute MUST not be set if
 rDirectoryObject.DirectoryServer will be returned as FALSE or will not be populated.
@@ -12543,7 +12351,7 @@ PrimarySiteController
 
 PrimaryEnterpriseController
 
-3.2.6.3.1.2  OperatingSystem Type
+###### 3.2.6.3.1.2 OperatingSystem Type
 
 The PROPID_QM_OS property is an integer that MUST have one of the values listed in the following
 table. The OperatingSystemType attribute is an enumeration. The value MUST be converted according
@@ -12574,7 +12382,8 @@ Release: June 1, 2017
 
 133 / 238
 
-OperatingSystemType value  PROPID_QM_OS value
+
+OperatingSystemType value  PROPID_QM_OS value
 
 WinServer
 
@@ -12584,7 +12393,7 @@ WinEnt
 
 0x00000500
 
-3.2.6.3.2 Queue
+###### 3.2.6.3.2 Queue
 
 The MQDS client MUST perform the following actions:
 
@@ -12695,7 +12504,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Queue ADM element
+
+Queue ADM element
 attribute
 
 Authentication
@@ -12800,7 +12610,7 @@ to the table preceding and MUST be set on rDirectoryObject.
 
 9.  rStatus MUST be set to DirectoryOperationResult.Success. Processing MUST end.
 
-3.2.6.3.2.1  PrivacyLevel
+###### 3.2.6.3.2.1 PrivacyLevel
 
 [MS-MQDS] - v20170601
 Message Queuing (MSMQ): Directory Service Protocol
@@ -12809,7 +12619,8 @@ Release: June 1, 2017
 
 135 / 238
 
-The PROPID_Q_PRIV_LEVEL property is an integer that MUST have one of the values listed in the
+
+The PROPID_Q_PRIV_LEVEL property is an integer that MUST have one of the values listed in the
 following table. The PrivacyLevel attribute is an enumeration. The values MUST be converted
 according to the following table.
 
@@ -12827,7 +12638,7 @@ Optional
 
 Body
 
-3.2.6.3.3 Enterprise
+###### 3.2.6.3.3 Enterprise
 
 The MQDS client MUST perform the following actions:
 
@@ -12923,7 +12734,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Other arguments MUST be set up as specified in section 3.1.4.8
+
+  Other arguments MUST be set up as specified in section 3.1.4.8
 
 5.  The common steps for the Read Directory event ensure that these steps are performed only if the
 
@@ -12948,7 +12760,7 @@ according to the preceding table and MUST be set on rDirectoryObject.
 
 9.  rStatus MUST be set to DirectoryOperationResult.Success. Processing MUST end.
 
-3.2.6.3.3.1  WeakenedSecurity
+###### 3.2.6.3.3.1 WeakenedSecurity
 
 The PROPID_E_NAMESTYLE property is an integer that MUST have one of the values listed in the
 following table. The WeakenedSecurity attribute is an enumeration. The values MUST be converted
@@ -12964,7 +12776,7 @@ disabled
 
 enabled
 
-3.2.6.3.3.2  CryptographicProvider
+###### 3.2.6.3.3.2 CryptographicProvider
 
 The PROPID_E_CSP_NAME is a string that MUST have one of the values listed in the following table.
 The CryptographicProvider attribute is an enumeration. The values MUST be converted according to
@@ -12984,7 +12796,7 @@ Enhanced
 
 "Microsoft Enhanced RSA and AES Cryptographic Provider"  EnhancedAes
 
-3.2.6.3.4 Site
+###### 3.2.6.3.4 Site
 
  The MQDS client MUST perform the following actions:
 
@@ -13001,7 +12813,8 @@ Release: June 1, 2017
 
 137 / 238
 
-
+
+
 
 The iDirectoryObject.Identifier attribute MUST be populated.
 
@@ -13125,7 +12938,8 @@ Release: June 1, 2017
 
 138 / 238
 
-7.  If the return value is not MQ_OK, rStatus MUST be set to
+
+7.  If the return value is not MQ_OK, rStatus MUST be set to
 
 DirectoryOperationResult.GenericError, rDirectoryObject is undefined, and processing MUST
 end.
@@ -13137,7 +12951,7 @@ preceding table and MUST be set on rDirectoryObject.
 
 9.  rStatus MUST be set to DirectoryOperationResult.Success. Processing MUST end.
 
-3.2.6.3.5 RoutingLink
+###### 3.2.6.3.5 RoutingLink
 
 The MQDS client MUST perform the following actions:
 
@@ -13256,7 +13070,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.  Other input parameters for the S_DSGetPropsGuid method MUST be computed:
+
+4.  Other input parameters for the S_DSGetPropsGuid method MUST be computed:
 
 
 
@@ -13286,7 +13101,7 @@ according to the preceding table and MUST be set on rDirectoryObject.
 
 9.  rStatus MUST be set to DirectoryOperationResult.Success. Processing MUST end.
 
-3.2.6.3.6 ConnectedNetwork
+###### 3.2.6.3.6 ConnectedNetwork
 
  The MQDS client MUST perform the following actions:
 
@@ -13353,7 +13168,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  Other parameters MUST be set up as specified in section 3.1.4.8.
+
+2.  Other parameters MUST be set up as specified in section 3.1.4.8.
 
 5.  The common steps for the Read Directory event ensure that these steps are performed only if
 theattribute-filter expression ([MS-MQDMPR] section 3.1.7.1.20) in iFilter is of the form
@@ -13376,7 +13192,7 @@ be computed according to the preceding table and MUST be set on rDirectoryObject
 
 9.  rStatus MUST be set to DirectoryOperationResult.Success. Processing MUST end.
 
-3.2.6.3.7 User
+###### 3.2.6.3.7 User
 
  The MQDS client MUST perform the following actions:
 
@@ -13452,7 +13268,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-5.  The common steps for the Read Directory event ensure that these steps are performed only if the
+
+5.  The common steps for the Read Directory event ensure that these steps are performed only if the
 
 attribute-filter expression ([MS-MQDMPR] section 3.1.7.1.20) in iFilter is of the form
 "CertificateDigestList" EQUALS someGuid, and the S_DSGetPropsGuid method MUST be called with
@@ -13475,7 +13292,7 @@ preceding table and MUST be set on rDirectoryObject.
 
 9.  rStatus MUST be set to DirectoryOperationResult.Success. Processing MUST end.
 
-3.2.6.4  Read Directory Begin
+##### 3.2.6.4 Read Directory Begin
 
 This event MUST be generated with the following arguments:
 
@@ -13536,7 +13353,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- The MQDS client MUST perform the following actions to process this event:
+
+ The MQDS client MUST perform the following actions to process this event:
 
 
 
@@ -13576,7 +13394,7 @@ rQueryHandle is undefined, and processing MUST end.
 If the value of rStatus is DirectoryOperationResult.Success, rQueryHandle MUST be set to the
 value of ReadIterator.Handle, and processing MUST end.
 
-3.2.6.4.1 QueueManager
+###### 3.2.6.4.1 QueueManager
 
  The MQDS client MUST perform the following actions:
 
@@ -13622,7 +13440,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-QueueManager attribute
+
+QueueManager attribute
 
 Property identifier
 
@@ -13743,7 +13562,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Filtering on attribute
+
+Filtering on attribute
 
 Filter value computation
 
@@ -13862,7 +13682,8 @@ Release: June 1, 2017
 
 145 / 238
 
-9.  The S_DSLookupBegin method MUST be called with the given arguments. If the return value is not
+
+9.  The S_DSLookupBegin method MUST be called with the given arguments. If the return value is not
 MQ_OK, processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericError and
 rQueryHandle is undefined.
 
@@ -13870,7 +13691,7 @@ rQueryHandle is undefined.
 
 MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.4.2 Queue
+###### 3.2.6.4.2 Queue
 
  The MQDS client MUST perform the following actions:
 
@@ -13972,7 +13793,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-5.  The pRestriction argument for the S_DSLookupBegin method MUST be computed. For each
+
+5.  The pRestriction argument for the S_DSLookupBegin method MUST be computed. For each
 
 attribute-filter expression that appears in iFilter, an MQPROPERTYRESTRICTION structure (section
 2.2.11) MUST be added to the paPropRes field of the MQRESTRICTION structure. The
@@ -14082,7 +13904,8 @@ Release: June 1, 2017
 
 147 / 238
 
-2.  The dwOrder field MUST be set to QUERY_SORTASCEND if SortAscending is TRUE, or to
+
+2.  The dwOrder field MUST be set to QUERY_SORTASCEND if SortAscending is TRUE, or to
 
 QUERY_SORTDESCEND if SortAscending is FALSE.
 
@@ -14098,7 +13921,7 @@ and rQueryHandle is undefined.
 
 rQueryHandle MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.4.3 Enterprise
+###### 3.2.6.4.3 Enterprise
 
  The MQDS client MUST perform the following actions:
 
@@ -14173,7 +13996,8 @@ Release: June 1, 2017
 
 148 / 238
 
-3.  The value of the prval field MUST be computed from the value in the original expression
+
+3.  The value of the prval field MUST be computed from the value in the original expression
 
 according to the following table.
 
@@ -14234,7 +14058,7 @@ rQueryHandle is undefined.
 
 MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.4.4 Site
+###### 3.2.6.4.4 Site
 
  The MQDS client MUST perform the following actions:
 
@@ -14257,7 +14081,8 @@ Release: June 1, 2017
 
 149 / 238
 
-Site attribute
+
+Site attribute
 
 Site attribute
 
@@ -14370,7 +14195,8 @@ Release: June 1, 2017
 
 150 / 238
 
-6.  The pSort argument for the S_DSLookupBegin method MUST be computed. For each attribute-
+
+6.  The pSort argument for the S_DSLookupBegin method MUST be computed. For each attribute-
 sort-order expression that appears in iAttributeSortOrder that has a nonzero SortPriority, a
 MQSORTKEY structure (section 2.2.14) MUST be added to the aCol field of the MQSORTSET
 structure. The attribute-sort-order expressions MUST be processed in priority order according to
@@ -14399,7 +14225,7 @@ rQueryHandle is undefined.
  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success. rQueryHandle
 MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.4.5 RoutingLink
+###### 3.2.6.4.5 RoutingLink
 
  The MQDS client MUST perform the following actions:
 
@@ -14462,7 +14288,8 @@ Release: June 1, 2017
 
 151 / 238
 
-RoutingLink attribute  Property identifier
+
+RoutingLink attribute  Property identifier
 
 ActualCost
 
@@ -14559,7 +14386,8 @@ Release: June 1, 2017
 
 152 / 238
 
-8.  The S_DSLookupBegin method MUST be called with the given arguments. If the return value is not
+
+8.  The S_DSLookupBegin method MUST be called with the given arguments. If the return value is not
 MQ_OK, processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericError and
 rQueryHandle is undefined.
 
@@ -14567,7 +14395,7 @@ rQueryHandle is undefined.
 
 MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.4.6 ConnectedNetwork
+###### 3.2.6.4.6 ConnectedNetwork
 
 The MQDS client MUST perform the following actions:
 
@@ -14642,7 +14470,8 @@ Release: June 1, 2017
 
 153 / 238
 
-6.  The pSort argument for the S_DSLookupBegin method MUST be computed. For each attribute-
+
+6.  The pSort argument for the S_DSLookupBegin method MUST be computed. For each attribute-
 sort-order expression that appears in iAttributeSortOrder that has a nonzero SortPriority, a
 MQSORTKEY structure (section 2.2.14) MUST be added to the aCol field of the MQSORTSET
 structure. The attribute-sort-order expressions MUST be processed in priority order according to
@@ -14670,7 +14499,7 @@ rQueryHandle is undefined.
 
 MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.4.7 User
+###### 3.2.6.4.7 User
 
  The MQDS client MUST perform the following actions:
 
@@ -14727,7 +14556,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  The value of the prop field MUST be set to the property identifier that corresponds to the User
+
+2.  The value of the prop field MUST be set to the property identifier that corresponds to the User
 
 attribute specified in the attribute-filter expression according to the preceding table.
 
@@ -14781,7 +14611,7 @@ rQueryHandle is undefined.
 
 MUST be set to the PCONTEXT_HANDLE_TYPE returned by S_DSLookupBegin.
 
-3.2.6.5  Read Directory Next
+##### 3.2.6.5 Read Directory Next
 
  This event MUST be generated with the following arguments:
 
@@ -14815,7 +14645,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -14845,7 +14676,7 @@ Enterprise (section 3.2.6.5.3)
 
   User (section 3.2.6.5.7)
 
-3.2.6.5.1 QueueManager
+###### 3.2.6.5.1 QueueManager
 
 The MQDS client MUST perform the following actions:
 
@@ -14914,7 +14745,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-QueueManager attribute
+
+QueueManager attribute
 
 Property identifier
 
@@ -15075,7 +14907,8 @@ Release: June 1, 2017
 
 157 / 238
 
-QueueManager attribute
+
+QueueManager attribute
 
 Property identifier
 
@@ -15136,7 +14969,7 @@ Clustered is FALSE.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.5.2 Queue
+###### 3.2.6.5.2 Queue
 
  The MQDS client MUST perform the following actions:
 
@@ -15188,7 +15021,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Queue attribute
+
+Queue attribute
 
 Property identifier
 
@@ -15317,7 +15151,7 @@ Scope is Site.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.5.3 Enterprise
+###### 3.2.6.5.3 Enterprise
 
  The MQDS client MUST perform the following actions:
 
@@ -15332,7 +15166,8 @@ Release: June 1, 2017
 
 159 / 238
 
-2.  Other arguments MUST be set up as described in section 3.1.4.18.
+
+2.  Other arguments MUST be set up as described in section 3.1.4.18.
 
 2.
 
@@ -15413,7 +15248,7 @@ Security descriptor copied from property.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.5.4 Site
+###### 3.2.6.5.4 Site
 
  The MQDS client MUST perform the following actions:
 
@@ -15444,7 +15279,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-pointed to by pbBuffer and are in the same order as the property identifiers in
+
+pointed to by pbBuffer and are in the same order as the property identifiers in
 ReadIterator.PropidList.
 
 Site attribute
@@ -15531,7 +15367,7 @@ ForeignSite is FALSE.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.5.5 RoutingLink
+###### 3.2.6.5.5 RoutingLink
 
  The MQDS client MUST perform the following actions:
 
@@ -15562,7 +15398,8 @@ Release: June 1, 2017
 
 161 / 238
 
-PROPVARIANT array pointed to by pbBuffer and are in the same order as the property
+
+PROPVARIANT array pointed to by pbBuffer and are in the same order as the property
 identifiers in ReadIterator.PropidList.
 
 RoutingLink
@@ -15650,7 +15487,7 @@ property.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.5.6 ConnectedNetwork
+###### 3.2.6.5.6 ConnectedNetwork
 
  The MQDS client MUST perform the following actions:
 
@@ -15682,7 +15519,8 @@ Release: June 1, 2017
 
 162 / 238
 
- ConnectedNetwork
+
+ ConnectedNetwork
 attribute
 
 Property identifier
@@ -15715,7 +15553,7 @@ from property.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.5.7 User
+###### 3.2.6.5.7 User
 
  The MQDS client MUST perform the following actions:
 
@@ -15775,7 +15613,7 @@ GUID copied from property.
 
 5.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.6  Read Directory End
+##### 3.2.6.6 Read Directory End
 
  This event MUST be generated with the following arguments:
 
@@ -15793,7 +15631,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 rStatus: A DirectoryOperationResult that indicates the result of this directory operation.
 
@@ -15821,7 +15660,7 @@ set to DirectoryOperationResult.GenericError.
 
 Processing MUST end, and rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7  Write Directory
+##### 3.2.6.7 Write Directory
 
  This event MUST be generated with the following arguments:
 
@@ -15866,7 +15705,7 @@ Enterprise, section 3.2.6.7.3
 
   User, section 3.2.6.7.7
 
-3.2.6.7.1 QueueManager
+###### 3.2.6.7.1 QueueManager
 
  The MQDS client MUST perform the following actions:
 
@@ -15877,7 +15716,8 @@ Release: June 1, 2017
 
 164 / 238
 
-1.  The arguments supplied to the Write Directory event MUST meet the following conditions. If any of
+
+1.  The arguments supplied to the Write Directory event MUST meet the following conditions. If any of
 
 these conditions is violated, processing of the event MUST end. rStatus MUST be set to
 DirectoryOperationResult.GenericError and rObjectGUID is undefined.
@@ -15989,7 +15829,8 @@ Release: June 1, 2017
 
 165 / 238
 
-Property identifier
+
+Property identifier
 
 Property value computation
 
@@ -16025,7 +15866,7 @@ MUST be set to DirectoryOperationResult.GenericError.
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7.2 Queue
+###### 3.2.6.7.2 Queue
 
  The MQDS client MUST perform the following actions:
 
@@ -16083,7 +15924,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property identifier
+
+Property identifier
 
 Property value computation
 
@@ -16145,7 +15987,7 @@ DirectoryOperationResult.GenericError.
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7.3 Enterprise
+###### 3.2.6.7.3 Enterprise
 
  The MQDS client MUST perform the following actions:
 
@@ -16178,7 +16020,8 @@ Release: June 1, 2017
 
 167 / 238
 
-Property identifier
+
+Property identifier
 
 Property value computation
 
@@ -16233,7 +16076,7 @@ processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericErro
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7.4 Site
+###### 3.2.6.7.4 Site
 
 The MQDS client MUST perform the following actions:
 
@@ -16274,7 +16117,8 @@ Release: June 1, 2017
 
 168 / 238
 
-Property identifier
+
+Property identifier
 
 Property value computation
 
@@ -16325,7 +16169,7 @@ processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericErro
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7.5 RoutingLink
+###### 3.2.6.7.5 RoutingLink
 
  The MQDS client MUST perform the following actions:
 
@@ -16371,7 +16215,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Property identifier
+
+Property identifier
 
 Property value computation
 
@@ -16419,7 +16264,7 @@ processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericErro
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7.6 ConnectedNetwork
+###### 3.2.6.7.6 ConnectedNetwork
 
  The MQDS client MUST perform the following actions:
 
@@ -16462,7 +16307,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-1.  dwObjectType MUST be MQDS_CN.
+
+1.  dwObjectType MUST be MQDS_CN.
 
 2.  Other arguments MUST be set up as described in section 3.1.4.10.
 
@@ -16474,7 +16320,7 @@ processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericErro
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.7.7 User
+###### 3.2.6.7.7 User
 
  The MQDS client MUST perform the following actions:
 
@@ -16527,7 +16373,7 @@ processing MUST end. rStatus MUST be set to DirectoryOperationResult.GenericErro
 
 6.  Processing MUST end. rStatus MUST be set to DirectoryOperationResult.Success.
 
-3.2.6.8  Initialize List of Known Directory Service Servers Event
+##### 3.2.6.8 Initialize List of Known Directory Service Servers Event
 
 This event is performed when the client needs to refresh its list of known directory service servers in
 the DirectoryServiceServersCollection (section 3.2.1.4) data element.<148>
@@ -16543,7 +16389,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the initialization fails, the client MUST report an error in an implementation-specific manner and
+
+If the initialization fails, the client MUST report an error in an implementation-specific manner and
 take no further action.<149>
 
 2.  Once an RPC binding is established, the client creates a temporary variable temp_server_list,
@@ -16574,11 +16421,11 @@ starting from step 4.
 
 for future operations using the Message Queuing (MSMQ): Directory Service Protocol.
 
-3.3  dscomm2 Server Details
+### 3.3 dscomm2 Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
-3.3.1.1  PCONTEXT_HANDLE_DELETE_TYPE RPC Context Handle
+##### 3.3.1.1 PCONTEXT_HANDLE_DELETE_TYPE RPC Context Handle
 
 This is an RPC context handle that represents an in-progress directory object delete notification.
 
@@ -16622,19 +16469,20 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.3.2  Timers
+
+#### 3.3.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages. See [MS-RPCE].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Parameters necessary to initialize the RPC protocol are specified in section 2.1.
 
 The server MAY<151> register static RPC ports for the server. If it does, it MUST return those ports in
 a call to the S_DSGetServerPort method.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 The Message Queuing (MSMQ): Directory Service Protocol SHOULD indicate to the RPC runtime that it
 is to perform a strict NDR data consistency check at target level 6.0, as specified in [MS-RPCE]
@@ -16715,7 +16563,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.3.4.1  S_DSGetComputerSites (Opnum 0)
+
+##### 3.3.4.1 S_DSGetComputerSites (Opnum 0)
 
 The S_DSGetComputerSites method returns the site identifier for every site of which the specified
 computer is a member.
@@ -16792,7 +16641,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Calculate the pbServerSignature by using the MD5 algorithm (as specified in [RFC1321]) and the
+
+  Calculate the pbServerSignature by using the MD5 algorithm (as specified in [RFC1321]) and the
 
 GSS security context as specified by the following pseudocode.
 
@@ -16823,7 +16673,7 @@ MD5 hash.
 server signature is larger than the supplied buffer, the server MUST return
 MQ_ERROR_USER_BUFFER_TOO_SMALL (0xC00E0028).
 
-3.3.4.2  S_DSGetPropsEx (Opnum 1)
+##### 3.3.4.2 S_DSGetPropsEx (Opnum 1)
 
 The S_DSGetPropsEx method returns the properties associated with the object specified by a
 directory service pathname. This method differs from S_DSGetProps (section 3.1.4.7) in that it
@@ -16865,7 +16715,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-element MUST specify the property identifier for the corresponding property value at the same
+
+element MUST specify the property identifier for the corresponding property value at the same
 element index in apVar. The array MUST contain exactly one element.
 
 apVar:  MUST be set by the client to an array that holds the property values retrieved from the
@@ -16957,7 +16808,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 If the dwObjectType is MQDS_MACHINE:
 
@@ -16986,7 +16838,7 @@ If the property identifier is PROPID_QM_SIGN_PKS:
 output. If the server signature is larger than the supplied buffer, the server MUST return
 MQ_ERROR_USER_BUFFER_TOO_SMALL (0xC00E0028).
 
-3.3.4.3  S_DSGetPropsGuidEx (Opnum 2)
+##### 3.3.4.3 S_DSGetPropsGuidEx (Opnum 2)
 
 This method returns the properties for the object specified by object identifier. This method differs
 from S_DSGetPropsGuid in that it supports a restricted set of properties that pertain only to queue or
@@ -17033,7 +16885,8 @@ Release: June 1, 2017
 
 177 / 238
 
-phServerAuth:  A PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC context handle acquired from the
+
+phServerAuth:  A PCONTEXT_HANDLE_SERVER_AUTH_TYPE RPC context handle acquired from the
 pphServerAuth parameter in a previous call to S_DSValidateServer. The server MUST use this
 parameter as a key to locate the GSS security context used to compute the signature returned in
 pbServerSignature. See section 3.1.4.2.
@@ -17127,7 +16980,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Set the first element in apVar to dirObject.PublicEncryptionKeyList.
+
+  Set the first element in apVar to dirObject.PublicEncryptionKeyList.
 
   And the property identifier supplied in the aProp parameter is PROPID_QM_SIGN_PKS:
 
@@ -17138,7 +16992,7 @@ Release: June 1, 2017
 output. If the server signature is larger than the supplied buffer, the server MUST return
 MQ_ERROR_USER_BUFFER_TOO_SMALL (0xC00E0028).
 
-3.3.4.4  S_DSBeginDeleteNotification (Opnum 3)
+##### 3.3.4.4 S_DSBeginDeleteNotification (Opnum 3)
 
 The S_DSBeginDeleteNotification method begins a delete notification and returns an RPC context
 handle associated with the delete notification.
@@ -17197,10 +17051,11 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The server MUST retain this information until the client calls the S_DSEndDeleteNotification method or
+
+The server MUST retain this information until the client calls the S_DSEndDeleteNotification method or
 until the PCONTEXT_HANDLE_DELETE_TYPE rundown event occurs.
 
-3.3.4.5  S_DSNotifyDelete (Opnum 4)
+##### 3.3.4.5 S_DSNotifyDelete (Opnum 4)
 
 This method instructs the server to notify the computer that owns the deleted object about the
 deletion.
@@ -17249,7 +17104,7 @@ If the object type in the delete notification table entry is MQDS_QUEUE, and if 
 foreign, the server MUST notify the owner queue manager that the queue object was deleted by
 the client. This specification does not mandate how this notification is performed.
 
-3.3.4.6  S_DSEndDeleteNotification (Opnum 5)
+##### 3.3.4.6 S_DSEndDeleteNotification (Opnum 5)
 
 The S_DSEndDeleteNotification method closes the RPC context handle acquired from a previous call
 to S_DSBeginDeleteNotification.
@@ -17268,7 +17123,8 @@ Release: June 1, 2017
 
 180 / 238
 
-pHandle:  MUST be set by the client to a pointer to an RPC context_handle returned by a previous
+
+pHandle:  MUST be set by the client to a pointer to an RPC context_handle returned by a previous
 call to S_DSBeginDeleteNotification. The RPC context handle MUST NOT have been used in a previous
 call to S_DSEndDeleteNotification. The server MUST set this parameter to NULL.
 
@@ -17288,7 +17144,7 @@ error code.
 
   Set pHandle to NULL.
 
-3.3.4.7  S_DSIsServerGC (Opnum 6)
+##### 3.3.4.7 S_DSIsServerGC (Opnum 6)
 
 This method returns a value that indicates if that server is a Global Catalog Server.
 
@@ -17308,7 +17164,7 @@ FALSE (0x00000000)
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC
 extension protocol, as specified in [MS-RPCE].
 
-3.3.4.8  S_DSGetGCListInDomain (Opnum 8)
+##### 3.3.4.8 S_DSGetGCListInDomain (Opnum 8)
 
 The S_DSGetGCListInDomain method returns the list of Global Catalog Servers in the specified
 domain.
@@ -17336,7 +17192,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-lpwszDomainName:  MUST be set by the client to the domain name of the domain to query.
+
+lpwszDomainName:  MUST be set by the client to the domain name of the domain to query.
 
 lplpwszGCList:  MUST be set by the server to the list of Global Catalog Servers. The format of the list
 is a Server Specification List String.
@@ -17375,13 +17232,13 @@ MQ_OK (0x00000000)
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 Remote Procedure Call Protocol Extensions, as specified in [MS-RPCE].
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 There are no timer events.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
-3.3.6.1  PCONTEXT_HANDLE_DELETE_TYPE Rundown
+##### 3.3.6.1 PCONTEXT_HANDLE_DELETE_TYPE Rundown
 
 This event occurs when a PCONTEXT_HANDLE_DELETE_TYPE RPC context handle has been
 established between a client and server through a call to S_DSBeginDeleteNotification, and the RPC
@@ -17399,24 +17256,25 @@ Release: June 1, 2017
 
 182 / 238
 
-3.4  dscomm2 Client Details
 
-3.4.1  Abstract Data Model
+### 3.4 dscomm2 Client Details
+
+#### 3.4.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages. See [MS-RPCE].
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 Initialization is as specified in section 3.2.3.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
-3.4.4.1  Send an Object Deleted Notification
+##### 3.4.4.1 Send an Object Deleted Notification
 
 To notify the server of an object deleted, the client MUST follow this sequence:
 
@@ -17437,11 +17295,11 @@ acquired from the previous call to S_DSBeginDeleteNotification.
 The client MUST call the S_DSEndDeleteNotification method with the handle set to the context
 handle acquired from the previous call to S_DSBeginDeleteNotification.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 There are no client timer events for the dscomm2 interface.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 There are no other local events for the dscomm2 interface.
 
@@ -17452,12 +17310,13 @@ Release: June 1, 2017
 
 183 / 238
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several methods used to allow the client and server to mutually
 authenticate.
 
-4.1  S_DSValidateServer and S_InitSecCtx
+### 4.1 S_DSValidateServer and S_InitSecCtx
 
 Collectively, the S_DSValidateServer and S_InitSecCtx methods allow the client and server to
 mutually authenticate. These methods are used to tunnel GSS security context negotiation through
@@ -17486,13 +17345,14 @@ Release: June 1, 2017
 
 184 / 238
 
-<!-- Extracted images from page 185 -->
+
+<!-- Extracted images from page 185 -->
 ![Extracted image 1 from page 185]([MS-MQDS].images/page185-img01.png)
 <!-- /Extracted images from page 185 -->
 
 Figure 3: Protocol exchange complete
 
-4.2  S_DSQMGetObjectSecurity and
+### 4.2 S_DSQMGetObjectSecurity and
 
 S_DSQMGetObjectSecurityChallengeResponceProc
 
@@ -17516,7 +17376,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 186 -->
+
+<!-- Extracted images from page 186 -->
 ![Extracted image 1 from page 186]([MS-MQDS].images/page186-img01.png)
 <!-- /Extracted images from page 186 -->
 
@@ -17542,11 +17403,12 @@ Release: June 1, 2017
 
 186 / 238
 
-<!-- Extracted images from page 187 -->
+
+<!-- Extracted images from page 187 -->
 ![Extracted image 1 from page 187]([MS-MQDS].images/page187-img01.png)
 <!-- /Extracted images from page 187 -->
 
-4.3  S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd
+### 4.3 S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd
 
 Collectively, the methods S_DSLookupBegin, S_DSLookupNext, and S_DSLookupEnd allow the client
 to perform ad-hoc queries against the directory service.
@@ -17568,11 +17430,12 @@ Release: June 1, 2017
 
 187 / 238
 
-<!-- Extracted images from page 188 -->
+
+<!-- Extracted images from page 188 -->
 ![Extracted image 1 from page 188]([MS-MQDS].images/page188-img01.png)
 <!-- /Extracted images from page 188 -->
 
-4.4  S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification
+### 4.4 S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification
 
 Collectively, the S_DSBeginDeleteNotification, S_DSNotifyDelete, and S_DSEndDeleteNotification
 methods are used by the client to notify the server that a queue or machine has been deleted by the
@@ -17595,17 +17458,18 @@ Release: June 1, 2017
 
 188 / 238
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for all server implementations.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 As specified in section 2.1, this protocol allows any user to connect to the server. Therefore, any
 security bug in the server implementation could be exploitable. The server implementation needs to
 enforce security on each method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -17620,7 +17484,8 @@ Release: June 1, 2017
 
 189 / 238
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL specified in
 [MS-DTYP] Appendix A, and "ms-mqmq.idl" is the IDL specified in [MS-MQMQ] Appendix A.
@@ -17691,7 +17556,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- typedef BOUNDED_SIGNATURE_SIZE * LPBOUNDED_SIGNATURE_SIZE;
+
+ typedef BOUNDED_SIGNATURE_SIZE * LPBOUNDED_SIGNATURE_SIZE;
 
  typedef [range(0, 128)] DWORD BOUNDED_PROPERTIES;
  typedef BOUNDED_PROPERTIES * LPBOUNDED_PROPERTIES;
@@ -17768,7 +17634,8 @@ Release: June 1, 2017
 
 191 / 238
 
-     [in] handle_t hBind,
+
+     [in] handle_t hBind,
      [in, range(1,58)] unsigned long dwObjectType,
      [in] const wchar_t * pwcsPathName,
      [in] unsigned long SecurityInformation,
@@ -17845,7 +17712,8 @@ Release: June 1, 2017
 
 192 / 238
 
-     [in, out, size_is(cp)] PROPVARIANT apVar[],
+
+     [in, out, size_is(cp)] PROPVARIANT apVar[],
      [in] PCONTEXT_HANDLE_SERVER_AUTH_TYPE phServerAuth,
      [out, size_is(*pdwServerSignatureSize)]
            unsigned char * pbServerSignature,
@@ -17922,7 +17790,8 @@ Release: June 1, 2017
 
 193 / 238
 
-     [in, out] LPBOUNDED_SIGNATURE_SIZE pdwServerSignatureSize
+
+     [in, out] LPBOUNDED_SIGNATURE_SIZE pdwServerSignatureSize
  );
 
  [callback]
@@ -17998,7 +17867,8 @@ Release: June 1, 2017
 
 194 / 238
 
- HRESULT
+
+ HRESULT
  S_DSCloseServerHandle(
      [in, out] PPCONTEXT_HANDLE_SERVER_AUTH_TYPE pphServerAuth
  );
@@ -18075,7 +17945,8 @@ Release: June 1, 2017
 
 195 / 238
 
- );
+
+ );
 
  HRESULT S_DSNotifyDelete(
  [in] handle_t hBind,
@@ -18112,7 +17983,8 @@ Release: June 1, 2017
 
 196 / 238
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -18179,7 +18051,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<4> Section 2.1: Windows can be configured via the registry to use a static port. The server uses
+
+<4> Section 2.1: Windows can be configured via the registry to use a static port. The server uses
 registry key HKLM\SOFTWARE\Microsoft\MSMQ\Parameters\UseDSPredefinedEP to determine whether
 to use the predefined endpoint instead of a dynamic endpoint. Setting this key to a nonzero
 DWORD value causes the predefined endpoint to be used. The endpoint port number defaults to 2879
@@ -18251,7 +18124,8 @@ Release: June 1, 2017
 
 198 / 238
 
-Opnum
+
+Opnum
 
  Description
 
@@ -18347,7 +18221,8 @@ Release: June 1, 2017
 
 199 / 238
 
-Object Type
+
+Object Type
 
 Required property identifiers
 
@@ -18448,7 +18323,8 @@ Release: June 1, 2017
 
 200 / 238
 
-
+
+
 
 
 
@@ -18561,7 +18437,8 @@ Release: June 1, 2017
 
 201 / 238
 
-Property identifier
+
+Property identifier
 
 Default value
 
@@ -18648,7 +18525,8 @@ Release: June 1, 2017
 
 202 / 238
 
-  Adds the new ConnectedNetwork ADM element instance to the ConnectedNetworkCollection
+
+  Adds the new ConnectedNetwork ADM element instance to the ConnectedNetworkCollection
 
 ADM element.
 
@@ -18753,7 +18631,8 @@ Release: June 1, 2017
 
 203 / 238
 
-
+
+
 
 Treat the returned rObject as a QueueManager ADM element instance. Set DoForward to
 True, and set SiteGuid to the first element in rObject.SiteIdentifierList if either of the
@@ -18868,7 +18747,8 @@ Release: June 1, 2017
 
 204 / 238
 
-
+
+
 
 iSeqNumber := the SequenceNumber attribute of the directory object that was deleted
 
@@ -18971,7 +18851,8 @@ Release: June 1, 2017
 
 205 / 238
 
-
+
+
 
 
 
@@ -19081,7 +18962,8 @@ Release: June 1, 2017
 
 206 / 238
 
-Name
+
+Name
 
 Value
 
@@ -19167,7 +19049,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-MQMQ] section 2.1.1. If dwObjectType is MQDS_MACHINE, set ComputerName to
+
+MQMQ] section 2.1.1. If dwObjectType is MQDS_MACHINE, set ComputerName to
 pwcsPathName.
 
 
@@ -19268,7 +19151,8 @@ Release: June 1, 2017
 
 208 / 238
 
-
+
+
 
 If dwObjectType is one of MQDS_SITE, MQDS_CN, MQDS_ENTERPRISE, MQDS_USER, or
 MQDS_ROUTINGLINK and ServerQueueManager.DirectoryServerType is not
@@ -19377,7 +19261,8 @@ Release: June 1, 2017
 
 209 / 238
 
-
+
+
 
 If the Change Remote Object event was raised, the rStatus returned by the event becomes the
 return value of the S_DSSetPropsGuid method, and no further processing is performed.
@@ -19470,7 +19355,8 @@ Release: June 1, 2017
 
 210 / 238
 
-<61> Section 3.1.4.12: Windows NT, Windows 2000, and Windows XP return
+
+<61> Section 3.1.4.12: Windows NT, Windows 2000, and Windows XP return
 MQ_ERROR_INVALID_PARAMETER (0xC00E0006). Windows Server 2003, Windows Vista, and
 Windows Server 2008 return MQDS_WRONG_OBJ_TYPE (0xC00E0506).
 
@@ -19569,7 +19455,8 @@ Release: June 1, 2017
 
 211 / 238
 
-
+
+
 
 
 
@@ -19674,7 +19561,8 @@ Release: June 1, 2017
 
 212 / 238
 
-  blob.pBlobData := pSecurityDescriptor
+
+  blob.pBlobData := pSecurityDescriptor
 
 
 
@@ -19770,7 +19658,8 @@ Release: June 1, 2017
 
 213 / 238
 
-
+
+
 
 If DoForward is TRUE, the server raises the Change Remote Object event, as described in the
 archived [MC-MQDSRP] protocol section 3.1.7.1.1, with the following arguments:
@@ -19877,7 +19766,8 @@ Release: June 1, 2017
 
 214 / 238
 
-dwObjectType
+
+dwObjectType
 
 iPropertyID
 
@@ -19985,7 +19875,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -20084,7 +19975,8 @@ Release: June 1, 2017
 
 216 / 238
 
-  Create an MD5 hash context and add:
+
+  Create an MD5 hash context and add:
 
 
 
@@ -20177,7 +20069,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 If DoForward is TRUE, the server raises the Change Remote Object event, as described in the
 archived [MC-MQDSRP] protocol section 3.1.7.1.1 with the following arguments:
@@ -20287,7 +20180,8 @@ Release: June 1, 2017
 
 218 / 238
 
-
+
+
 
 iSeqNumber := the SequenceNumber attribute of the QueueManager ADM element instance
 that was updated
@@ -20359,7 +20253,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 iPartitionID := the GUID in the PartitionIdentifier attribute of the Queue object.
 
@@ -20437,7 +20332,8 @@ Release: June 1, 2017
 
 220 / 238
 
-The SequenceNumber attribute is set to the contents of rSeqNumber returned by the event.
+
+The SequenceNumber attribute is set to the contents of rSeqNumber returned by the event.
 
 <108> Section 3.1.4.21.8.2.12: For Windows NT and Windows 2000, when operating in MSMQ mixed-
 mode, the server populates the SequenceNumber attribute by raising the Read Next Sequence
@@ -20504,7 +20400,8 @@ Release: June 1, 2017
 
 221 / 238
 
-Object Type
+
+Object Type
 
 Windows NT
 
@@ -20614,7 +20511,8 @@ Release: June 1, 2017
 
 222 / 238
 
-
+
+
 
 
 
@@ -20737,7 +20635,8 @@ Release: June 1, 2017
 
 223 / 238
 
-
+
+
 
 iSeqNumber := iSeqNumber
 
@@ -20841,7 +20740,8 @@ Release: June 1, 2017
 
 224 / 238
 
-
+
+
 
 For each Queue ADM element instance in the QueueCollection ADM element where
 Queue.PartitionIdentifier equals iPartitionID, perform the following steps:
@@ -20952,7 +20852,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Return MQ_OK (0x00000000).
+
+  Return MQ_OK (0x00000000).
 
 <135> Section 3.1.6.11: Windows NT Server performs the following actions:
 
@@ -21057,7 +20958,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  RoutingLink.Identifier equals iGuid if iGuid is not NULL.
+
+  RoutingLink.Identifier equals iGuid if iGuid is not NULL.
 
 
 
@@ -21164,7 +21066,8 @@ Release: June 1, 2017
 
 227 / 238
 
-
+
+
 
 
 
@@ -21285,7 +21188,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 Else If iObjectType is MQDS_MACHINE:
 
@@ -21374,7 +21278,8 @@ Release: June 1, 2017
 
 229 / 238
 
-<146> Section 3.2.4.1: Windows NT Server, Windows 2000, Windows XP, and Windows Server 2003
+
+<146> Section 3.2.4.1: Windows NT Server, Windows 2000, Windows XP, and Windows Server 2003
 support the S_DSQMSetMachinePropertiesSignProc callback method. Windows Vista and Windows
 Server 2008 return MQ_ERROR_NOT_SUPPORTED (0xC00E03EB).
 
@@ -21442,7 +21347,8 @@ Message Queuing (MSMQ): Directory Service Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<160> Section 3.3.4.4: The object identifier of the site is not required if the owner is the Active
+
+<160> Section 3.3.4.4: The object identifier of the site is not required if the owner is the Active
 Directory.
 
 <161> Section 3.3.4.5: For Windows 2000 and Windows XP, the server notifies the Primary Site
@@ -21460,7 +21366,8 @@ Release: June 1, 2017
 
 231 / 238
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -21472,7 +21379,8 @@ Release: June 1, 2017
 
 232 / 238
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -21630,7 +21538,8 @@ Data types
 
 233 / 238
 
-      machine object properties 22
+
+      machine object properties 22
       overview 21
       property identifiers 21
       queue object properties 22
@@ -21788,7 +21697,8 @@ servers 171
 
 234 / 238
 
-            overview 117
+
+            overview 117
             read directory
                begin 142
                end 163
@@ -21943,7 +21853,8 @@ rundown 98
 
 235 / 238
 
-   dscomm2
+
+   dscomm2
       client 183
       server - PCONTEXT_HANDLE_DELETE_TYPE
 
@@ -22090,7 +22001,8 @@ RSAPUBKEY packet 27
 
 236 / 238
 
-S
+
+S
 
 S_dsbegindeletenotification - s_dsnotifydelete - and
 
@@ -22249,7 +22161,8 @@ Server
 
 237 / 238
 
-   S_DSLookupEnd (Opnum 8) method 76
+
+   S_DSLookupEnd (Opnum 8) method 76
    S_DSLookupNext (Opnum 7) method 75
    S_DSNotifyDelete (Opnum 4) method 180
    S_DSQMGetObjectSecurity (Opnum 21) method 69

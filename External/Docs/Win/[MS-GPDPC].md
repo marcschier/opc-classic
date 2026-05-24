@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -537,7 +539,8 @@ Release: April 23, 2024
 
 3 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -562,160 +565,67 @@ Release: April 23, 2024
 
 4 / 32
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Deployed Printer Connections](#132-deployed-printer-connections)
+      - [1.3.2.1 Administrative Scenario](#1321-administrative-scenario)
+      - [1.3.2.2 Client Scenario](#1322-client-scenario)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Deployed Printer Connection Setting Creation Messages](#221-deployed-printer-connection-setting-creation-messages)
+      - [2.2.1.1 PushedPrinterConnections Container Creation](#2211-pushedprinterconnections-container-creation)
+      - [2.2.1.2 Printer Connections Creation](#2212-printer-connections-creation)
+    - [2.2.2 Deployed Printer Connection Setting Deletion Message](#222-deployed-printer-connection-setting-deletion-message)
+    - [2.2.3 Common LDAP Messages](#223-common-ldap-messages)
+      - [2.2.3.1 LDAP SearchRequest Message](#2231-ldap-searchrequest-message)
+      - [2.2.3.2 LDAP SearchResultEntry Message](#2232-ldap-searchresultentry-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Tool Plug-in Details](#31-administrative-tool-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Adding a Printer Connection](#3151-adding-a-printer-connection)
+      - [3.1.5.2 Deleting a Printer Connection](#3152-deleting-a-printer-connection)
+      - [3.1.5.3 Retrieving Connection Policy Objects](#3153-retrieving-connection-policy-objects)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client-Side Plug-in Details](#32-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Retrieving Connection Policy Objects](#3251-retrieving-connection-policy-objects)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Background ............................................................................................... 10
-Deployed Printer Connections ....................................................................... 11
-Administrative Scenario ......................................................................... 12
-Client Scenario ..................................................................................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2.1
-1.3.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Deployed Printer Connection Setting Creation Messages .................................. 15
-PushedPrinterConnections Container Creation ........................................... 15
-Printer Connections Creation .................................................................. 15
-Deployed Printer Connection Setting Deletion Message .................................... 16
-Common LDAP Messages ............................................................................. 16
-LDAP SearchRequest Message ................................................................ 16
-LDAP SearchResultEntry Message ........................................................... 17
-Directory Service Schema Elements ................................................................... 17
-
-2.2.3.1
-2.2.3.2
-
-2.2.2
-2.2.3
-
-2.3
-
-3.1
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 18
-Administrative Tool Plug-in Details ..................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 18
-Message Processing Events and Sequencing Rules .......................................... 19
-Adding a Printer Connection ................................................................... 19
-Deleting a Printer Connection ................................................................. 20
-Retrieving Connection Policy Objects ....................................................... 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Client-Side Plug-in Details ................................................................................. 21
-Abstract Data Model .................................................................................... 21
-Timers ...................................................................................................... 22
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Process Group Policy ............................................................................. 22
-Message Processing Events and Sequencing Rules .......................................... 22
-Retrieving Connection Policy Objects ....................................................... 23
-Timer Events .............................................................................................. 24
-Other Local Events ...................................................................................... 24
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.2.5.1
-
-3.2.4.1
-
-3.2.5
-
-3.2
-
-4  Protocol Examples ................................................................................................. 25
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-
-5.1
-
-5 / 32
-
-[MS-GPDPC] - v20240423
-Group Policy: Deployed Printer Connections Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.2
-
-Index of Security Parameters ............................................................................ 27
-
-6  Appendix A: Product Behavior ............................................................................... 28
-
-7  Change Tracking .................................................................................................... 30
-
-8  Index ..................................................................................................................... 31
-
-[MS-GPDPC] - v20240423
-Group Policy: Deployed Printer Connections Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 32
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: Deployed Printer Connections Extension supports managing connections to printers
 that are hosted by print servers and shared by multiple users.
@@ -727,7 +637,7 @@ component allows a user to discover the printer connections that have been confi
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -787,7 +697,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain: A set of users and computers sharing a common namespace and management
+
+domain: A set of users and computers sharing a common namespace and management
 
 infrastructure. At least one computer member of the set has to act as a domain controller
 (DC) and host a member list that identifies all members of the domain, as well as optionally
@@ -862,7 +773,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-policy application: The protocol exchange by which a client obtains all of the Group Policy
+
+policy application: The protocol exchange by which a client obtains all of the Group Policy
 
 Object (GPO) and thus all applicable Group Policy settings for a particular policy target from
 the server, as specified in [MS-GPOL]. Policy application can operate in two modes, user policy
@@ -924,7 +836,7 @@ authenticated domain user account, interactively logged on to a client.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -936,10 +848,11 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -966,7 +879,7 @@ Extension".
 [RFC2251] Wahl, M., Howes, T., and Kille, S., "Lightweight Directory Access Protocol (v3)", RFC 2251,
 December 1997, https://www.rfc-editor.org/info/rfc2251
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-ImpersLogdOnUser] Microsoft Corporation, "ImpersonateLoggedOnUser function",
 http://msdn.microsoft.com/en-us/library/aa378612.aspx
@@ -974,7 +887,7 @@ http://msdn.microsoft.com/en-us/library/aa378612.aspx
 [SYSPRINT] Microsoft Corporation, "Deploy printers by using Group Policy", August 2005,
 https://technet.microsoft.com/en-us/library/cc722179(v=ws.10).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Deployed Printer Connections Extension uses the Group Policy: Core Protocol
 specified in [MS-GPOL] to support the use of preconfigured collections of shared printer connections.
@@ -987,7 +900,7 @@ The Deployed Printer Connections client-side plug-in uses the Deployed Printer C
 query the Active Directory domain controller (DC) in order to obtain the list of printer connections
 that have been configured by the network administrator for the computer or the user.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol allows clients to discover and retrieve policy settings that were
 created by the administrators of a domain. These settings are stored in Group Policy Objects
@@ -1001,7 +914,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GPDPC].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1023,7 +937,7 @@ client-side plug-ins to handle the GPOs. A client-side plug-in uses the contents
 settings that are specific to its class in a manner that is specific to its class. Once its class-specific
 settings are retrieved, the client-side plug-in uses those settings to perform class-specific processing.
 
-1.3.2  Deployed Printer Connections
+#### 1.3.2 Deployed Printer Connections
 
 The following diagram shows the consumers of the Deployed Printer Connections protocol.
 
@@ -1036,10 +950,11 @@ Release: April 23, 2024
 
 11 / 32
 
-The situations in which this protocol is used are described in two scenarios: the administrative
+
+The situations in which this protocol is used are described in two scenarios: the administrative
 scenario and the client scenario, which are defined in sections 1.3.2.1 and 1.3.2.2, respectively.
 
-1.3.2.1  Administrative Scenario
+##### 1.3.2.1 Administrative Scenario
 
 An administrator invokes a Group Policy administrative tool to manage a GPO, using the Policy
 Administration Protocol specified in [MS-GPOL] sections 2.2.7 and 2.2.8.<1> This administration is
@@ -1055,7 +970,7 @@ The administrative tool plug-in stores and retrieves the data from a GPO on a do
 is affected by the GPO. The administrator can view the existing printer connection data and also
 update it to add new printer connections.
 
-1.3.2.2  Client Scenario
+##### 1.3.2.2 Client Scenario
 
 When a client computer that is affected by a GPO starts, or if it is connected to the network after it
 has been started, it performs policy application by retrieving the policy settings for the computer
@@ -1083,7 +998,7 @@ machine connection, and the printer connection is applied to all users of the co
 In user policy mode, the printer connection was deployed by the administrator as a user
 connection, and the printer connection is applied only to the current user of the computer.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Group Policy: Deployed Printer Connections Extension depends on the Group Policy: Core Protocol
 specified in [MS-GPOL] to update version information in applicable GPOs. The administrative tool
@@ -1097,33 +1012,34 @@ Release: April 23, 2024
 
 12 / 32
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPDPC].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 2: Group Policy: Deployed Printer Connections dependencies
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Group Policy: Deployed Printer Connections Extension has no additional prerequisites or
 preconditions beyond those specified in the Group Policy: Core Protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: Deployed Printer Connections Extension is applicable only within the Group Policy
 framework, as specified in [MS-GPOL].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Group Policy: Deployed Printer Connections Extension does not provide versioning or capability
 negotiations, and it defines no locale-specific data.<3>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Deployed Printer Connections Extension does not define any vendor-extensible
 fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Group Policy: Deployed Printer Connections Extension defines the CSE GUID and tool extension
 GUID values, as specified in [MS-GPOL] section 1.8. The assignments are as follows.
@@ -1150,9 +1066,10 @@ Release: April 23, 2024
 
 13 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Deployed Printer Connections Extension uses LDAP version 3, as defined in
 [RFC2251], to read and write deployed printer connection settings to GPOs on the domain
@@ -1162,7 +1079,7 @@ After writing a new deployed printer connection setting to a GPO, the Deployed P
 protocol uses the messages specified in [MS-GPOL] section 2.2.4 to update the version information in
 the GPO.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages exchanged in the Group Policy: Deployed Printer Connections Extension allow:
 
@@ -1236,7 +1153,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The messages that are used by this protocol perform the following functions:
+
+The messages that are used by this protocol perform the following functions:
 
 
 
@@ -1253,9 +1171,9 @@ Printer connection setting retrieval
 Unless specified otherwise, the format used for GUID values in this protocol is the curly-braced string
 representation ([MS-DTYP] section 2.3.4.3).
 
-2.2.1  Deployed Printer Connection Setting Creation Messages
+#### 2.2.1 Deployed Printer Connection Setting Creation Messages
 
-2.2.1.1  PushedPrinterConnections Container Creation
+##### 2.2.1.1 PushedPrinterConnections Container Creation
 
 The PushedPrinterConnections container, under the User or Computer that is contained in the GPO in
 Active Directory, is the container for all msPrint-ConnectionPolicy objects that represent deployed
@@ -1292,7 +1210,7 @@ name
 
 The value of this attribute MUST be the directory string "PushedPrinterConnections".
 
-2.2.1.2  Printer Connections Creation
+##### 2.2.1.2 Printer Connections Creation
 
 This message instructs the domain controller (DC) to create an msPrint-ConnectionPolicy object in
 the Active Directory. The LDAP portion of the message is an LDAP AddRequest as specified in
@@ -1322,7 +1240,8 @@ Release: April 23, 2024
 
 15 / 32
 
-The attributes parameter of this message MUST contain a list of attribute name/value pairs, as
+
+The attributes parameter of this message MUST contain a list of attribute name/value pairs, as
 specified in the following table:
 
  Attribute
@@ -1351,7 +1270,7 @@ printAttributes
 The value of this attribute MUST specify a value of printAttributes, as specified in section
 2.2.
 
-2.2.2  Deployed Printer Connection Setting Deletion Message
+#### 2.2.2 Deployed Printer Connection Setting Deletion Message
 
 This message instructs the DC to delete an msPrint-ConnectionPolicy object in Active Directory.
 The LDAP portion of the message is an LDAP DelRequest, as specified in [RFC2251], section 4.8.
@@ -1359,9 +1278,9 @@ The LDAP portion of the message is an LDAP DelRequest, as specified in [RFC2251]
 The LDAPDN parameter specifies the Printer Connection Setting distinguished name (DN) of the
 msPrint-ConnectionPolicy object.
 
-2.2.3  Common LDAP Messages
+#### 2.2.3 Common LDAP Messages
 
-2.2.3.1  LDAP SearchRequest Message
+##### 2.2.3.1 LDAP SearchRequest Message
 
 Each LDAP SearchRequest message (sections 3.1.5.3 and 3.2.5.1) MUST have the following
 parameters:
@@ -1413,7 +1332,8 @@ Release: April 23, 2024
 
 16 / 32
 
-Parameter
+
+Parameter
 name
 
 Value
@@ -1433,7 +1353,7 @@ attributes
 The value of this parameter MUST be an AttributeDescriptionList ([RFC2251] section 4.1.5).
 The AttributeDescriptionList MUST contain uNCName and printAttributes attribute names.
 
-2.2.3.2  LDAP SearchResultEntry Message
+##### 2.2.3.2 LDAP SearchResultEntry Message
 
 Each LDAP SearchResultEntry message (sections 3.1.5.3 and 3.2.5.1) MUST have the following
 parameters:
@@ -1453,7 +1373,7 @@ attributes
 The value of this parameter MUST be a PartialAttributeList ([RFC2251] section 4.5.2) that
 contains name/value pairs for the uNCName and printAttributes attributes.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Group Policy: Deployed Printer Connections Extension to the Group Policy: Core Protocol specified
 in [MS-GPOL] accesses the directory service schema classes and attributes that are listed in the
@@ -1477,7 +1397,8 @@ Release: April 23, 2024
 
 17 / 32
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Group Policy: Deployed Printer Connections Extension administrative tool plug-in SHOULD<5>
 read and write printer connection settings on the Active Directory server.
@@ -1485,13 +1406,13 @@ read and write printer connection settings on the Active Directory server.
 The Deployed Printer Connections client-side plug-in reads printer connection settings from the Active
 Directory server.
 
-3.1  Administrative Tool Plug-in Details
+### 3.1 Administrative Tool Plug-in Details
 
 The administrative tool abstract data model, as specified in [MS-GPOL] section 3.3.1, allows the
 Deployed Printer Connections administrative tool plug-in to write extension-specific data that it
 receives from a user interface to Active Directory.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The administrative tool plug-in has a user interface that allows an administrator to deploy a printer
 connection to a GPO in the format that is specified in section 2.2.
@@ -1501,11 +1422,11 @@ which is a handle to an ADConnection ([MS-ADTS] ADConnection Abstract Data Model
 It is used to manage communication between the administrative tool plug-in and the Active
 Directory.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the administrative tool plug-in starts up, it gets a scoped GPO path from the Group Policy:
 Core Protocol in the following form:
@@ -1530,7 +1451,7 @@ TaskInputPortNumber: 389
 The administrative tool plug-in MUST attempt to use LDAP to retrieve any existing printer connection
 settings from the scoped GPO path, as specified in section 3.1.5.3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 When a network administrator adds a printer connection to a GPO by using the administrative tool
 plug-in, the administrative tool plug-in MUST add the connection to Active Directory, as specified in
@@ -1543,11 +1464,12 @@ Release: April 23, 2024
 
 18 / 32
 
-When a network administrator deletes a printer connection from a GPO by using the administrative
+
+When a network administrator deletes a printer connection from a GPO by using the administrative
 tool plug-in, the administrative tool plug-in MUST delete the connection from Active Directory, as
 specified in section 2.2.2. If this fails, the administrator MUST be informed.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 This section specifies message processing and sequencing for the following events:
 
@@ -1557,7 +1479,7 @@ This section specifies message processing and sequencing for the following event
 
   An administrator retrieving a GPO (section 3.1.5.3).
 
-3.1.5.1  Adding a Printer Connection
+##### 3.1.5.1 Adding a Printer Connection
 
 This section specifies the processing events and sequencing for an administrator adding a printer
 connection to a GPO.
@@ -1618,7 +1540,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Printer connection settings in the Machine section of the GPO MUST use this location:
 
@@ -1644,7 +1567,7 @@ section 3.3.4.4).
 
 7.  An LDAP UnbindRequest MUST be made by the administrative tool plug-in to close the connection.
 
-3.1.5.2  Deleting a Printer Connection
+##### 3.1.5.2 Deleting a Printer Connection
 
 This section specifies the processing events and sequencing for an administrator to delete a printer
 connection from a GPO.
@@ -1691,7 +1614,8 @@ Release: April 23, 2024
 
 20 / 32
 
-3.1.5.3  Retrieving Connection Policy Objects
+
+##### 3.1.5.3 Retrieving Connection Policy Objects
 
 This section specifies the processing events and sequencing for an administrator to retrieve existing
 connection policy objects.
@@ -1728,22 +1652,22 @@ Each LDAP SearchResultEntry message MUST have the parameters specified in sectio
 
 4.  An LDAP UnbindRequest MUST be made by the client to close the connection.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client-Side Plug-in Details
+### 3.2 Client-Side Plug-in Details
 
 The Group Policy: Deployed Printer Connections Extension client-side plug-in has a logical client role
 because it is responsible for reading the settings that were written by the administrative tool plug-in,
 and it implements client-specific logic based on those settings. The client-side plug-in is a logical client
 because either a physical client or a physical server that is used in a client role can host it.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of a possible data organization that an implementation
 SHOULD maintain to participate in this protocol. The described organization is provided to facilitate the
@@ -1758,7 +1682,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client-side plug-in uses the following data stores:
+
+The client-side plug-in uses the following data stores:
 
 DesiredConnections list: A list of printer connections that a network administrator has assigned to a
 user or to a machine. Each entry in this list includes the GUID of the GPO through which the
@@ -1777,11 +1702,11 @@ ADConnection handle: A handle to an ADConnection ([MS-ADTS] ADConnection Abstrac
 Model section 7.3). It is used to manage communication between the client-side plug-in and the
 Active Directory.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 In order to use LDAP, the client-side plug-in invokes the Initializing an ADConnection task specified in
 [MS-ADTS] section 7.6.1.1 with the following parameters, and it stores the new
@@ -1796,15 +1721,15 @@ TaskInputTargetName: MAY be specified by the administrator, or if not specified,
 
 TaskInputPortNumber: 389
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 The Deployed Printer Connections extension is launched by the Group Policy: Core Protocol, which
 invokes the Process Group Policy event to apply policies handled by this extension. The abstract
 interface for Process Group Policy is defined in [MS-GPOL] section 3.2.4.1.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The Deployed Printer Connections client-side plug-in reads a list of printer connections, shared from a
 central server, that a network administrator would like to deploy to client computers, and it configures
@@ -1825,7 +1750,8 @@ Release: April 23, 2024
 
 22 / 32
 
-2.  For each GPO in the Deleted GPO list parameter (specified in [MS-GPOL] section 3.2.4.1), the
+
+2.  For each GPO in the Deleted GPO list parameter (specified in [MS-GPOL] section 3.2.4.1), the
 
 client-side plug-in MUST remove any printer connections from the DesiredConnections list that
 were assigned to the user or machine by this GPO, as determined by the GUID of the GPO.
@@ -1890,7 +1816,7 @@ printer connection.<6>
 
 version of the PreviouslyAppliedConnections list.
 
-3.2.5.1  Retrieving Connection Policy Objects
+##### 3.2.5.1 Retrieving Connection Policy Objects
 
 This section specifies the processing events and sequencing for a client to retrieve existing connection
 policy objects.
@@ -1906,7 +1832,8 @@ Group Policy: Deployed Printer Connections Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The policy retrieval message uses LDAP as a transport. Authentication MUST be either Kerberos with
+
+The policy retrieval message uses LDAP as a transport. Authentication MUST be either Kerberos with
 credentials in Unicode for computer policy mode, or the SPNEGO Extension specified in [MS-SPNG]
 for user policy mode. This message allows the client to query Active Directory for printer
 connections settings that are associated with the GPO.
@@ -1940,11 +1867,11 @@ Each LDAP SearchResultEntry message MUST have the parameters specified in sectio
 
 6.  An LDAP UnbindRequest MUST be made by the client to close the connection.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1955,7 +1882,8 @@ Release: April 23, 2024
 
 24 / 32
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The Group Policy: Deployed Printer Connections Extension allows network administrators to deploy
 printer connections to a printer that is shared by a central server to multiple client computers.
@@ -2040,7 +1968,8 @@ Release: April 23, 2024
 
 25 / 32
 
-
+
+
 
 The printer connections that are specified in the GPOs are added to the client machine. The client-
 side plug-in now removes the printer connection \\fabprint44\b2-2003-clr from its
@@ -2098,16 +2027,17 @@ Release: April 23, 2024
 
 26 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Because the Group Policy: Deployed Printer Connections Extension allows printer connections to be
 added automatically without any user intervention, spoofing of print servers is a concern.
 Implementers need to ensure that a printer connection is added only if the client computer is on a
 secure network environment; that is, on a network where Active Directory can be contacted.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 The Group Policy: Deployed Printer Connections Extension does not define any security parameters.
 
@@ -2118,7 +2048,8 @@ Release: April 23, 2024
 
 27 / 32
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2186,7 +2117,8 @@ Release: April 23, 2024
 
 28 / 32
 
-  Windows Server 2003
+
+  Windows Server 2003
 
 <2> Section 1.3.2.2: Windows 2000, Windows XP, and Windows Server 2003 do not support the
 Group Policy: Deployed Printer Connections Extension in the client scenario. In these releases, the
@@ -2212,7 +2144,8 @@ Release: April 23, 2024
 
 29 / 32
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2256,7 +2189,8 @@ Release: April 23, 2024
 
 30 / 32
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2393,7 +2327,8 @@ Preconditions 13
 
 31 / 32
 
-Prerequisites 13
+
+Prerequisites 13
 Printers
    adding connections 19
    connections creation message 15

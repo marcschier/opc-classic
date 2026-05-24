@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 20
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 20
 
-Date
+
+Date
 
 Revision
 History
@@ -525,7 +527,8 @@ Release: April 23, 2024
 
 3 / 20
 
-Date
+
+Date
 
 Revision
 History
@@ -566,96 +569,45 @@ Release: April 23, 2024
 
 4 / 20
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Extended Error Data Model](#131-extended-error-data-model)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Capability Negotiation](#16-versioning-and-capability-negotiation)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Structure Syntax](#22-structure-syntax)
+    - [2.2.1 Common Types](#221-common-types)
+      - [2.2.1.1 EEAString](#2211-eeastring)
+      - [2.2.1.2 EEUString](#2212-eeustring)
+      - [2.2.1.3 BinaryEEInfo](#2213-binaryeeinfo)
+      - [2.2.1.4 ExtendedErrorParamTypesInternal](#2214-extendederrorparamtypesinternal)
+      - [2.2.1.5 ExtendedErrorParam](#2215-extendederrorparam)
+      - [2.2.1.6 EEComputerNamePresent](#2216-eecomputernamepresent)
+      - [2.2.1.7 EEComputerName](#2217-eecomputername)
+      - [2.2.1.8 ExtendedErrorInfo](#2218-extendederrorinfo)
+    - [2.2.2 Extended Error Interface](#222-extended-error-interface)
+      - [2.2.2.1 Encoding an Extended Error](#2221-encoding-an-extended-error)
+      - [2.2.2.2 Decoding an Extended Error](#2222-decoding-an-extended-error)
+    - [2.2.3 Well-Known Detection Locations](#223-well-known-detection-locations)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Using the Data Model with a Fictitious Extended Error](#31-using-the-data-model-with-a-fictitious-extended-error)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Full IDL](#5-appendix-a-full-idl)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Extended Error Data Model ............................................................................ 8
-Relationship to Protocols and Other Structures ...................................................... 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-
-1.4
-1.5
-1.6
-1.7
-
-1.3.1
-
-1.3
-
-2.2.1
-
-2.1
-2.2
-
-2  Structures ............................................................................................................... 9
-Transport .......................................................................................................... 9
-Structure Syntax ................................................................................................ 9
-Common Types ............................................................................................ 9
-EEAString .............................................................................................. 9
-EEUString .............................................................................................. 9
-BinaryEEInfo .......................................................................................... 9
-ExtendedErrorParamTypesInternal .......................................................... 10
-ExtendedErrorParam ............................................................................. 10
-EEComputerNamePresent ...................................................................... 11
-EEComputerName ................................................................................. 11
-ExtendedErrorInfo ................................................................................. 12
-Extended Error Interface ............................................................................. 12
-Encoding an Extended Error ................................................................... 13
-Decoding an Extended Error ................................................................... 13
-Well-Known Detection Locations ................................................................... 13
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-
-2.2.2.1
-2.2.2.2
-
-2.2.2
-
-2.2.3
-
-3  Structure Examples ............................................................................................... 14
-Using the Data Model with a Fictitious Extended Error ........................................... 14
-
-3.1
-
-4  Security Considerations ......................................................................................... 15
-
-5  Appendix A: Full IDL .............................................................................................. 16
-
-6  Appendix B: Product Behavior ............................................................................... 18
-
-7  Change Tracking .................................................................................................... 19
-
-8  Index ..................................................................................................................... 20
-
-[MS-EERR] - v20240423
-ExtendedError Remote Data Structure
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 20
-
-1  Introduction
+## 1 Introduction
 
 This specification for encoding extended error information assumes that the reader has familiarity with
 the concepts and the requirements that are detailed in [MS-RPCE] and [C706].
@@ -669,7 +621,7 @@ an extended error.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -727,14 +679,15 @@ Release: April 23, 2024
 
 6 / 20
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -758,11 +711,11 @@ Note There is a charge to download the specification.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RPCH] Microsoft Corporation, "Remote Procedure Call over HTTP Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 In complex distributed systems, a situation can arise where an error encountered on one network
 node has to be communicated to another network node. A protocol that is used to transmit data
@@ -790,7 +743,8 @@ Release: April 23, 2024
 
 7 / 20
 
-1.3.1  Extended Error Data Model
+
+#### 1.3.1 Extended Error Data Model
 
 An extended error is one or more error records from an error sequence. Each error record in the
 error sequence contains up to four values that software agents can use to encode additional
@@ -816,7 +770,7 @@ the namespace definition for a detection location.
 
 The error code is an implementation-specific numeric value that specifies the error that occurred.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 This specification uses type serialization, as specified in [MS-RPCE] section 2.2.6, to do the actual
 encoding of the extended error. In turn, [MS-RPCE] and [MS-RPCH] use this specification to transmit
@@ -824,18 +778,18 @@ extended errors. The processing rules and the placement of the encoded extended 
 [MS-RPCE] and [MS-RPCH] messages are defined in [MS-RPCE] sections 2.2.2.8 and 2.2.2.9 and in
 [MS-RPCH] section 2.1.2.1.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This specification is applicable in complex, distributed systems where the benefit of quick and efficient
 troubleshooting outweighs the cost of the increase in message size that transmitting additional
 troubleshooting information causes. Because this specification makes no assumptions about network
 topology or network communication, it is applicable in a broad range of scenarios.
 
-1.6  Versioning and Capability Negotiation
+### 1.6 Versioning and Capability Negotiation
 
 None.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The generating component and detection location as specified in section 1.3 are vendor-extensible.
 Generating components in the inclusive range of 0 to 255 are reserved by Microsoft. A vendor
@@ -853,23 +807,24 @@ Release: April 23, 2024
 
 8 / 20
 
-2  Structures
 
-2.1  Transport
+## 2 Structures
+
+### 2.1 Transport
 
 This specification defines only encoding rules and does not define how the encoded data is transmitted
 on the network. As such, it does not have a transport. It relies upon other protocols that use it (see
 section 1.4) to carry it as its transport.
 
-2.2  Structure Syntax
+### 2.2 Structure Syntax
 
 This section defines the syntax for encoding the extended errors.
 
-2.2.1  Common Types
+#### 2.2.1 Common Types
 
 This section defines the types and structures used by this specification.
 
-2.2.1.1  EEAString
+##### 2.2.1.1 EEAString
 
 The EEAString structure encodes strings of ANSI characters, as specified in [ISO/IEC-8859-1], that
 contain troubleshooting information.
@@ -883,7 +838,7 @@ nLength:  This field MUST contain the size of pString in bytes.
 
 pString:  A NULL-terminated ANSI string that contains troubleshooting information.
 
-2.2.1.2  EEUString
+##### 2.2.1.2 EEUString
 
 The EEUString structure encodes Unicode strings that contain troubleshooting information. The
 EEComputerName structure uses this type.
@@ -897,7 +852,7 @@ nLength:  This field MUST contain the length of pString in characters.
 
 pString:  A NULL-terminated Unicode string that contains troubleshooting information.
 
-2.2.1.3  BinaryEEInfo
+##### 2.2.1.3 BinaryEEInfo
 
 The BinaryEEInfo structure encodes binary data that contains troubleshooting information.
 
@@ -913,11 +868,12 @@ Release: April 23, 2024
 
 9 / 20
 
-nSize:  This field MUST contain the size of pBlob in bytes.
+
+nSize:  This field MUST contain the size of pBlob in bytes.
 
 pBlob:  Binary data that contains troubleshooting information.
 
-2.2.1.4  ExtendedErrorParamTypesInternal
+##### 2.2.1.4 ExtendedErrorParamTypesInternal
 
 The ExtendedErrorParamTypesInternal enumeration defines the values that are valid for the Type
 field in the ExtendedErrorParam structure.
@@ -947,7 +903,7 @@ eeptiNone:  No additional details are present in this parameter.
 
 eeptiBinary:  The Blob member of the union is valid.
 
-2.2.1.5  ExtendedErrorParam
+##### 2.2.1.5 ExtendedErrorParam
 
 The ExtendedErrorParam structure contains a parameter, as described in section 1.3.1, that provides
 additional details about the error record.
@@ -980,7 +936,8 @@ Release: April 23, 2024
 
 10 / 20
 
-Type:  Indicates which member of the union is valid. ExtendedErrorParamTypesInternal lists all of the
+
+Type:  Indicates which member of the union is valid. ExtendedErrorParamTypesInternal lists all of the
 
 possible values.
 
@@ -1000,7 +957,7 @@ information.
 
 Blob:  A parameter of type BinaryEEInfo.
 
-2.2.1.6  EEComputerNamePresent
+##### 2.2.1.6 EEComputerNamePresent
 
 The EEComputerNamePresent enumeration defines the allowed values for the Type field in the
 EEComputerName structure.
@@ -1017,7 +974,7 @@ node identifier.
 
 eecnpNotPresent:  This structure does not contain a network node identifier.
 
-2.2.1.7  EEComputerName
+##### 2.2.1.7 EEComputerName
 
 The EEComputerName structure identifies the network node on which the error record was
 generated.
@@ -1062,7 +1019,8 @@ ExtendedError Remote Data Structure
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name:  Unicode string that identifies the network node on which the error record was generated.
+
+Name:  Unicode string that identifies the network node on which the error record was generated.
 
 The format in which the network node is identified is implementation-specific, and this information
 MUST be used for display purposes only. This specification does not define what the format is.
@@ -1070,7 +1028,7 @@ Software agents who use this structure SHOULD use a network node identifier that
 within a specific topology and is descriptive to a human reader. If Type is equal to
 eecnpNotPresent, the error record MUST be interpreted as generated on the local network node.
 
-2.2.1.8  ExtendedErrorInfo
+##### 2.2.1.8 ExtendedErrorInfo
 
 The ExtendedErrorInfo structure represents an error record.
 
@@ -1135,27 +1093,28 @@ Release: April 23, 2024
 
 12 / 20
 
-2.2.2  Extended Error Interface
+
+#### 2.2.2 Extended Error Interface
 
  The Extended Error Interface supports two operations: encoding and decoding.
 
 It does not contain any remote procedure call (RPC) methods. It only contains a type that MUST be
 encoded/decoded by using the type serialization functionality as specified in [MS-RPCE] section 2.2.6.
 
-2.2.2.1  Encoding an Extended Error
+##### 2.2.2.1 Encoding an Extended Error
 
 The encoding of the extended error is the output of marshaling the first element of the error
 sequence by using type serialization version 1, as specified in [MS-RPCE] section 2.2.6. Because the
 error records are linked by the Next field of the ExtendedErrorInfo structure, marshaling the first
 element marshals the entire error sequence.
 
-2.2.2.2  Decoding an Extended Error
+##### 2.2.2.2 Decoding an Extended Error
 
 The decoding of the extended error is done by unmarshaling the encoded extended error by using
 type serialization version 1, as specified in [MS-RPCE] section 2.2.6. Any violation of this specification
 MUST cause the entire decoding to fail.
 
-2.2.3  Well-Known Detection Locations
+#### 2.2.3 Well-Known Detection Locations
 
 This specification defines the following well-known detection locations and generating components that
 automated troubleshooting software agents can use for automatic failure diagnosis. If an
@@ -1185,9 +1144,10 @@ Release: April 23, 2024
 
 13 / 20
 
-3  Structure Examples
 
-3.1  Using the Data Model with a Fictitious Extended Error
+## 3 Structure Examples
+
+### 3.1 Using the Data Model with a Fictitious Extended Error
 
 The following example illustrates how the data model is used with a fictitious extended error taken
 from a Windows environment. In this example, the RPC runtime encountered a failure reading a
@@ -1233,7 +1193,8 @@ Release: April 23, 2024
 
 14 / 20
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 This specification has no security protection. It is recommended that software agents who use this
 specification evaluate the sensitivity of the data that is being encoded and provide protection from
@@ -1247,7 +1208,8 @@ Release: April 23, 2024
 
 15 / 20
 
-5  Appendix A: Full IDL
+
+## 5 Appendix A: Full IDL
 
 For ease of implementation, this specification provides the full IDL, where "ms-dtyp.idl" is the IDL
 found in [MS-DTYP] Appendix A.
@@ -1318,7 +1280,8 @@ Release: April 23, 2024
 
 16 / 20
 
- typedef struct tagEEComputerName
+
+ typedef struct tagEEComputerName
  {
  EEComputerNamePresent Type;
  [switch_type(short),switch_is(Type)] union {
@@ -1351,7 +1314,8 @@ Release: April 23, 2024
 
 17 / 20
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1414,7 +1378,8 @@ Release: April 23, 2024
 
 18 / 20
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1458,7 +1423,8 @@ Release: April 23, 2024
 
 19 / 20
 
-8  Index
+
+## 8 Index
 A
 
 Applicability 8

@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 59
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -205,151 +206,65 @@ Release: October 26, 2021
 
 2 / 59
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purpose](#211-system-purpose)
+    - [2.1.2 Applicability](#212-applicability)
+    - [2.1.3 System Components](#213-system-components)
+    - [2.1.4 Protocol Communications](#214-protocol-communications)
+    - [2.1.5 Relevant Standards](#215-relevant-standards)
+    - [2.2.1 for a detailed discussion of all protocols used within the File Access Services System.](#221-for-a-detailed-discussion-of-all-protocols-used-within-the-file-access-services-system)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+      - [2.3.2.1 System Influences](#2321-system-influences)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Access a File in a Workgroup](#251-access-a-file-in-a-workgroup)
+    - [2.5.2 Access a File in a Domain](#252-access-a-file-in-a-domain)
+    - [2.5.3 Two Applications Communicate via a Shared File](#253-two-applications-communicate-via-a-shared-file)
+    - [2.5.4 Access a Remote File Using WebDAV](#254-access-a-remote-file-using-webdav)
+    - [2.5.5 Supporting Use Cases](#255-supporting-use-cases)
+      - [2.5.5.1 List File Servers](#2551-list-file-servers)
+      - [2.5.5.2 List Shares](#2552-list-shares)
+      - [2.5.5.3 List Files in a Shared Directory - Application](#2553-list-files-in-a-shared-directory-application)
+      - [2.5.5.4 Open a File in an SMB File Share - Application](#2554-open-a-file-in-an-smb-file-share-application)
+      - [2.5.5.5 Perform a File Operation Using SMB](#2555-perform-a-file-operation-using-smb)
+      - [2.5.5.6 Open a File in an NFS File Share](#2556-open-a-file-in-an-nfs-file-share)
+      - [2.5.5.7 Perform File Operation Using NFS](#2557-perform-file-operation-using-nfs)
+      - [2.5.5.8 Directory Change Notification Using SMB](#2558-directory-change-notification-using-smb)
+      - [2.5.5.9 List Files in a Web Directory](#2559-list-files-in-a-web-directory)
+      - [2.5.5.10 Perform File Operation Using WebDAV](#25510-perform-file-operation-using-webdav)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Connection Disconnected](#271-connection-disconnected)
+    - [2.7.2 Internal Failures](#272-internal-failures)
+    - [2.7.3 System Configuration Corruption or Unavailability](#273-system-configuration-corruption-or-unavailability)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Access a File in a Workgroup](#31-example-1-access-a-file-in-a-workgroup)
+  - [3.2 Example 2: Access a File in a Domain](#32-example-2-access-a-file-in-a-domain)
+  - [3.3 Example 3: Two Applications Communicate Via a Shared File](#33-example-3-two-applications-communicate-via-a-shared-file)
+  - [3.4 Example 4: Access a Remote File Using WebDAV](#34-example-4-access-a-remote-file-using-webdav)
+  - [3.5 Common Tasks](#35-common-tasks)
+    - [3.5.1 Common Task 1: Open a File in an SMB File Share](#351-common-task-1-open-a-file-in-an-smb-file-share)
+    - [3.5.2 Common Task 2: Enumerate a Directory Using the SMB Protocol](#352-common-task-2-enumerate-a-directory-using-the-smb-protocol)
+    - [3.5.3 Common Task 3: Read a File Using the SMB Protocol](#353-common-task-3-read-a-file-using-the-smb-protocol)
+    - [3.5.4 Common Task 4: Close a File Using the SMB Protocol](#354-common-task-4-close-a-file-using-the-smb-protocol)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.3
-
-2.2
-
-2.1
-
-2.2.1
-
-2.4
-2.5
-
-2.3.2.1
-
-2.3.1
-2.3.2
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-
-2.5.1
-2.5.2
-2.5.3
-2.5.4
-2.5.5
-
-2  Functional Architecture ........................................................................................... 9
-Overview .......................................................................................................... 9
-System Purpose ........................................................................................... 9
-Applicability ................................................................................................. 9
-System Components ..................................................................................... 9
-Protocol Communications ............................................................................. 11
-Relevant Standards ..................................................................................... 13
-Protocol Summary ............................................................................................ 14
-Member Protocol Roles ................................................................................ 16
-Environment .................................................................................................... 16
-Dependencies on This System ...................................................................... 18
-Dependencies on Other Systems/Components ................................................ 18
-System Influences ................................................................................ 19
-Assumptions and Preconditions .......................................................................... 19
-Use Cases ....................................................................................................... 20
-Access a File in a Workgroup ........................................................................ 20
-Access a File in a Domain ............................................................................ 23
-Two Applications Communicate via a Shared File ............................................ 25
-Access a Remote File Using WebDAV ............................................................. 27
-Supporting Use Cases ................................................................................. 29
-List File Servers .................................................................................... 29
-List Shares ........................................................................................... 30
-List Files in a Shared Directory - Application ............................................. 31
-Open a File in an SMB File Share - Application .......................................... 32
-Perform a File Operation Using SMB ........................................................ 33
-Open a File in an NFS File Share ............................................................. 34
-Perform File Operation Using NFS............................................................ 36
-Directory Change Notification Using SMB ................................................. 37
-List Files in a Web Directory ................................................................... 37
-Perform File Operation Using WebDAV ..................................................... 38
-Versioning, Capability Negotiation, and Extensibility ............................................. 39
-Error Handling ................................................................................................. 39
-Connection Disconnected ............................................................................. 39
-Internal Failures ......................................................................................... 40
-System Configuration Corruption or Unavailability .......................................... 40
-Coherency Requirements .................................................................................. 40
-Security .......................................................................................................... 40
-Additional Considerations .................................................................................. 40
-
-2.5.5.1
-2.5.5.2
-2.5.5.3
-2.5.5.4
-2.5.5.5
-2.5.5.6
-2.5.5.7
-2.5.5.8
-2.5.5.9
-2.5.5.10
-
-2.7.1
-2.7.2
-2.7.3
-
-2.8
-2.9
-2.10
-
-2.6
-2.7
-
-3.1
-3.2
-3.3
-3.4
-3.5
-
-3  Examples ............................................................................................................... 41
-Example 1: Access a File in a Workgroup ............................................................ 41
-Example 2: Access a File in a Domain ................................................................. 42
-Example 3: Two Applications Communicate Via a Shared File ................................ 44
-Example 4: Access a Remote File Using WebDAV ................................................. 50
-Common Tasks ................................................................................................ 51
-Common Task 1: Open a File in an SMB File Share ......................................... 51
-Common Task 2: Enumerate a Directory Using the SMB Protocol ...................... 52
-Common Task 3: Read a File Using the SMB Protocol ...................................... 53
-Common Task 4: Close a File Using the SMB Protocol ...................................... 54
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-4  Microsoft Implementations ................................................................................... 56
-
-3 / 59
-
-[MS-FASOD] - v20211026
-File Access Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4.1
-
-Product Behavior .............................................................................................. 56
-
-5  Change Tracking .................................................................................................... 57
-
-6  Index ..................................................................................................................... 58
-
-[MS-FASOD] - v20211026
-File Access Services Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 59
-
-1  Introduction
+## 1 Introduction
 
 The File Access Services (FAS) protocols allow applications to access and share files located on a file
 server, using a network between them, in a secure and managed environment. File sharing supports
@@ -428,7 +343,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-using the direct data placement (DDP) capabilities, as defined in [RFC5040] section 2.1, of these
+
+using the direct data placement (DDP) capabilities, as defined in [RFC5040] section 2.1, of these
 transports. Benefits include reduced CPU overhead, lower latency and improved throughput.
 
 
@@ -442,7 +358,7 @@ Version 2 Protocol (described in [MS-CIFS], [MS-SMB], and [MS-SMB2] respectively
 [MS-WDV], [MS-WDVME], and [MS-WDVSE]). These protocols define a set of extensions for both
 the WebDAV client and server.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -451,7 +367,7 @@ to the accounts of all computers on a domain. It is the only computer to receive
 directly, and is specialized so as to ensure consistency and to eliminate the potential for
 conflicting entries in the Active Directory database. A domain has only one PDC.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -497,7 +413,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-PRSOD] Microsoft Corporation, "Print Services Protocols Overview".
+
+[MS-PRSOD] Microsoft Corporation, "Print Services Protocols Overview".
 
 [MS-RAP] Microsoft Corporation, "Remote Administration Protocol".
 
@@ -565,7 +482,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[RFC4918] Dusseault, L, Ed., "HTTP Extensions for Web Distributed Authoring and Versioning
+
+[RFC4918] Dusseault, L, Ed., "HTTP Extensions for Web Distributed Authoring and Versioning
 (WebDAV)", RFC 4918, June 2007, https://www.rfc-editor.org/info/rfc4918
 
 [RFC5040] Recio. R., Metzler, B., Culley, P., Hilland, J., et. al., "A Remote Direct Memory Access
@@ -590,11 +508,12 @@ Release: October 26, 2021
 
 8 / 59
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 This section describes the system components and their interrelationships.
 
-2.1  Overview
+### 2.1 Overview
 
 The primary components of the File Access Services (FAS) are a minimum of two computers, linked by
 a network. At least one of the computers acts as a server, providing remote access to data that is
@@ -602,7 +521,7 @@ allowed to be shared. The other computer acts as a client in order to request da
 machine. Note that there is no reason why any given computer cannot act as both client and server
 simultaneously. Typical installations consist of many more than two computers.
 
-2.1.1  System Purpose
+#### 2.1.1 System Purpose
 
 The purpose of the File Access Services (FAS) System is to allow applications to access and share files
 that are available on other networked computers. Applications generally have access to files on the
@@ -612,7 +531,7 @@ given computer (see [MS-FSMOD] for details), and any computer can serve as both 
 client. Once the files have been made available, FAS protocols are used to create, read, write, update,
 and delete files remotely.
 
-2.1.2  Applicability
+#### 2.1.2 Applicability
 
 The File Access Services Protocols are central to file and printer sharing, and to Group Policy
 distribution in Windows operating environments. If any of these functions are required, then File
@@ -624,7 +543,7 @@ performance. If the services are used over a WAN, a hosted cache and associated 
 compensate for message delay in communicating with the SMB file server, which is typically located
 centrally.
 
-2.1.3  System Components
+#### 2.1.3 System Components
 
 The File Access Services protocols interact with several external components as depicted in the
 following figure:
@@ -636,7 +555,8 @@ Release: October 26, 2021
 
 9 / 59
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-FASOD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -689,7 +609,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Internally, it contains a datastore to persist changes made to files through the file access
+
+Internally, it contains a datastore to persist changes made to files through the file access
 protocols. The datastore is an implementation-dependent local file system. A file service provides
 an abstraction of SMB Service, NFS Service, WebDAV Service, and DFS Service.
 
@@ -706,7 +627,7 @@ user to perform personal file management tasks. This type of program is classifi
 application, but it certainly has some aspects of an admin tool. For more details about admin
 tools, see [MS-FSMOD].
 
-2.1.4  Protocol Communications
+#### 2.1.4 Protocol Communications
 
 The following diagram depicts the overall communication among all components that enable file
 access. The solid lines represent communication between components. Each line is labeled with the
@@ -720,7 +641,8 @@ Release: October 26, 2021
 
 11 / 59
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-FASOD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -770,7 +692,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Component...
+
+Component...
 
 ...uses this
 protocol...
@@ -916,10 +839,10 @@ WDV], [MS-
 WDVME], [MS-
 WDVSE])
 
-2.1.5  Relevant Standards
+#### 2.1.5 Relevant Standards
 
 This section provides a brief summary of standards that are relevant to the FAS System. See section
-2.2.1 for a detailed discussion of all protocols used within the File Access Services System.
+#### 2.2.1 for a detailed discussion of all protocols used within the File Access Services System.
 
 13 / 59
 
@@ -928,7 +851,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The following standards are transport protocols directly used by the File Access Services System:
+
+The following standards are transport protocols directly used by the File Access Services System:
 
 Transmission Control Protocol (TCP), as specified in [RFC793].
 
@@ -1037,7 +961,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1178,7 +1103,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.2.1  Member Protocol Roles
+
+2.2.1  Member Protocol Roles
 
 This section describes all member protocol roles.
 
@@ -1229,7 +1155,7 @@ The Microsoft Web Distributed Authoring and Versioning (WebDAV) protocol extensi
 These extensions enhance their ability to function as a remote file system that accesses objects
 defined by uniform resource locators (URLs).
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces provided by this system of protocols, other systems that depend on this system,
@@ -1242,7 +1168,8 @@ Release: October 26, 2021
 
 16 / 59
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-FASOD].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
@@ -1265,13 +1192,14 @@ Release: October 26, 2021
 
 17 / 59
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-FASOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 Figure 4: File Access Services System distributed environment with five computers
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 The following external systems depend on the File Access Services System:
 
@@ -1283,7 +1211,7 @@ Print Services [MS-PRSOD]: For transferring a print image file to the print serv
 
 group policy client, which behaves for this purpose as a File Access Services Application.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The File Access Services (FAS) depend on the following external systems and components:
 
@@ -1309,7 +1237,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.3.2.1  System Influences
+
+##### 2.3.2.1 System Influences
 
 The File Access Services System can be influenced by the external systems and components shown in
 the following table.
@@ -1401,7 +1330,7 @@ Network Information Service [NIS] are consumed by the NFS file service.
 enables a client to publish and retrieve content for a file that is located on a share, as defined in
 [MS-SMB2].
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions need to be satisfied for the File Access Services System
 to operate successfully:
@@ -1421,7 +1350,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-RPC: Components of file client and file service that use Remote Procedure Call interfaces have all
+
+RPC: Components of file client and file service that use Remote Procedure Call interfaces have all
 prerequisites specified in [MS-RPCE] section 1.5 satisfied.
 
 Network Configuration: In order for system components running on different computers to
@@ -1441,13 +1371,13 @@ Directory Schema: In order for an NFS file service to implement user name-to-ID 
 [RFC2307], an LDAP store is available, such as described in [MS-ADOD], which is configured to include
 schema elements <uidNumber> and <gidNumber> from [RFC2307].
 
-2.5  Use Cases
+### 2.5 Use Cases
 
 This section describes the use cases for the File Access Services protocols. There are two levels of use
 cases: main use cases and supporting use cases. Relevant protocols are described in the supporting
 use cases.
 
-2.5.1  Access a File in a Workgroup
+#### 2.5.1 Access a File in a Workgroup
 
 Context of Use: When a user wants to read, create, or modify a file on a remote computer that is
 part of a workgroup, these file access operations can be implemented through the SMB or NFS
@@ -1460,7 +1390,8 @@ Release: October 26, 2021
 
 20 / 59
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-FASOD].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1498,7 +1429,8 @@ Release: October 26, 2021
 
 21 / 59
 
-uses the protocols described in [MS-BRWS], [MS-BRWSA], and [MS-RAP] to access the Browser
+
+uses the protocols described in [MS-BRWS], [MS-BRWSA], and [MS-RAP] to access the Browser
 Service in order to discover nearby computers that can host file shares.
 
 
@@ -1577,11 +1509,12 @@ Release: October 26, 2021
 
 22 / 59
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-FASOD].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
-2.5.2  Access a File in a Domain
+#### 2.5.2 Access a File in a Domain
 
 Context of Use: When the User wants to access a particular file within a domain DFS namespace,
 these access file operations can be implemented.
@@ -1613,7 +1546,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The Active Directory Service is a supporting actor. The File Access Services System stores DFS
+
+The Active Directory Service is a supporting actor. The File Access Services System stores DFS
 namespace information in an Active Directory-based system. Additionally, the File Access Services
 System locates its DFS Service component with Directory Services on the domain controller, and
 discovers the DFS Service by first locating the domain controller and then attempting to connect with
@@ -1691,11 +1625,12 @@ Release: October 26, 2021
 
 24 / 59
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-FASOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
-2.5.3  Two Applications Communicate via a Shared File
+#### 2.5.3 Two Applications Communicate via a Shared File
 
 Context of Use: When two Applications, one using NFS Access Protocols and the other using SMB
 Access Protocols, communicate via a shared file.
@@ -1716,7 +1651,8 @@ Release: October 26, 2021
 
 25 / 59
 
-Application1 is the primary actor that triggers this use case. Application1 is a program that is used to
+
+Application1 is the primary actor that triggers this use case. Application1 is a program that is used to
 create, open, read, write and/or delete files on the file server. It interacts with the File Access Services
 System through the File Client, using the SMB network access protocol.
 
@@ -1792,7 +1728,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Main Success Scenario
+
+Main Success Scenario
 
 Trigger: Users open Application1 and Application2 to communicate through the shared file.
 
@@ -1830,7 +1767,7 @@ Extensions
 
 None.
 
-2.5.4  Access a Remote File Using WebDAV
+#### 2.5.4 Access a Remote File Using WebDAV
 
 Context of Use: When a User wants to access a particular file within the WebDAV context.
 
@@ -1841,7 +1778,8 @@ Release: October 26, 2021
 
 27 / 59
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-FASOD].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -1878,7 +1816,8 @@ Release: October 26, 2021
 
 28 / 59
 
-The Authentication Services is a supporting actor that is used for authentication.
+
+The Authentication Services is a supporting actor that is used for authentication.
 
 
 
@@ -1921,9 +1860,9 @@ Extensions
 
 None.
 
-2.5.5  Supporting Use Cases
+#### 2.5.5 Supporting Use Cases
 
-2.5.5.1  List File Servers
+##### 2.5.5.1 List File Servers
 
 This use case supports the Access a File in a Workgroup use case (section 2.5.1).
 
@@ -1951,7 +1890,8 @@ Release: October 26, 2021
 
 29 / 59
 
-  User
+
+  User
 
 Precondition
 
@@ -1995,7 +1935,7 @@ master browser multiple times. Ultimately, the use case ends with failure.
 the application can attempt to establish a connection multiple times with this or with an alternate
 backup browser. Ultimately, the use case ends with failure.
 
-2.5.5.2  List Shares
+##### 2.5.5.2 List Shares
 
 This use case supports the Access a File in a Workgroup use case (section 2.5.1).
 
@@ -2028,7 +1968,8 @@ Release: October 26, 2021
 
 30 / 59
 
-
+
+
 
 The User has identified a file server.
 
@@ -2066,7 +2007,7 @@ can attempt to establish connection multiple times. Ultimately, the use case end
 
 3.  If user authorization fails, the use case ends with failure.
 
-2.5.5.3  List Files in a Shared Directory - Application
+##### 2.5.5.3 List Files in a Shared Directory - Application
 
 This use case supports the Access a File in a Workgroup use case (section 2.5.1) and Access a
 File in a Domain use case (section 2.5.2).
@@ -2103,7 +2044,8 @@ Release: October 26, 2021
 
 31 / 59
 
-Trigger: The Application receives a request from the User to display a list of files and directories in a
+
+Trigger: The Application receives a request from the User to display a list of files and directories in a
 given network share directory.
 
 1.  The Application directs the file client to invoke the procedure defined in the use case Open a File
@@ -2137,7 +2079,7 @@ Variation (b): Performing the operation using the protocol described in [MS-CIFS
 identical to the use case described in this section except that the protocol described in [MS-CIFS]
 section 2.2.5 is used instead of the protocol described in [MS-SMB2].
 
-2.5.5.4  Open a File in an SMB File Share - Application
+##### 2.5.5.4 Open a File in an SMB File Share - Application
 
 This use case supports the Access a File in a Workgroup use case (section 2.5.1), the Access a
 File in a Domain use case (section 2.5.2), and the Two Applications Communicate via a Shared
@@ -2180,7 +2122,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Main Success Scenario
+
+Main Success Scenario
 
 Trigger: Based on interactions with the User, the Application determines whether to open or create a
 file in a target directory.
@@ -2230,7 +2173,7 @@ Variation (b): Performing the operation using the protocol described in [MS-CIFS
 identical to the use case described in this section, except that the protocol described in [MS-CIFS]
 section 2.2.4.64 is used instead of the protocol described in [MS-SMB2].
 
-2.5.5.5  Perform a File Operation Using SMB
+##### 2.5.5.5 Perform a File Operation Using SMB
 
 This use case supports the Access a File in a Workgroup use case (section 2.5.1), the Access a
 File in a Domain use case (section 2.5.2) and the Two Applications Communicate via a Shared
@@ -2252,7 +2195,8 @@ Release: October 26, 2021
 
 33 / 59
 
-  SMB File Service
+
+  SMB File Service
 
 
 
@@ -2314,7 +2258,7 @@ Variation (b): Performing the requested operation (read, write, or delete) using
 described in [MS-CIFS]: All details identical to the use case described in this section, except that the
 protocol described in [MS-CIFS] section 2.2.4 is used instead of the protocol described in [MS-SMB2].
 
-2.5.5.6  Open a File in an NFS File Share
+##### 2.5.5.6 Open a File in an NFS File Share
 
 This use case supports the Two Applications Communicate via a Shared File use case (section
 2.5.3). The application accesses a file using the NFS version 2 protocol [RFC1094], or the NFS version
@@ -2327,7 +2271,8 @@ Release: October 26, 2021
 
 34 / 59
 
-Context of Use: To open or create a file when the User has located a shared directory and wants to
+
+Context of Use: To open or create a file when the User has located a shared directory and wants to
 open or create a file in that directory using an NFS network access protocol.
 
 Goal: To open or create a file in an NFS network share directory.
@@ -2409,11 +2354,12 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  If a protocol error code is returned from the NFS File Service, the Application displays an error
+
+3.  If a protocol error code is returned from the NFS File Service, the Application displays an error
 
 message corresponding to the RPC error code returned, and the use case aborts.
 
-2.5.5.7  Perform File Operation Using NFS
+##### 2.5.5.7 Perform File Operation Using NFS
 
 This use case supports the Two Applications Communicate via a Shared File use case (2.5.3).
 The application accesses an NFS file using the NFS version 2 protocol [RFC1094] or the NFS version 3
@@ -2490,7 +2436,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.5.5.8  Directory Change Notification Using SMB
+
+##### 2.5.5.8 Directory Change Notification Using SMB
 
 This use case supports the Two Applications Communicate via a Shared File use case (section
 2.5.3).
@@ -2550,7 +2497,7 @@ Extensions
 If a protocol error code is returned from the SMB File Service, the Application displays an error
 message corresponding to the error code returned, and the use case aborts.
 
-2.5.5.9  List Files in a Web Directory
+##### 2.5.5.9 List Files in a Web Directory
 
 This use case supports the Access a Remote File Using WebDAV use case (section 2.5.4).
 
@@ -2568,7 +2515,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Application
+
+  Application
 
   WebDAV Service
 
@@ -2614,9 +2562,9 @@ Extensions
 
 If the authentication fails, the use case ends with failure.
 
-2.5.5.10
+##### 2.5.5.10 Perform File Operation Using WebDAV
 
-Perform File Operation Using WebDAV
+
 
 This use case supports the Access a Remote File Using WebDAV use case (section 2.5.4).
 
@@ -2650,7 +2598,8 @@ Release: October 26, 2021
 
 38 / 59
 
-Preconditions
+
+Preconditions
 
 
 
@@ -2684,13 +2633,13 @@ requests ([RFC4918] section 9.7) is used instead of the GET method in step 2.
 Variation (b): If the User wants to delete a file in a web directory, the DELETE method of WebDAV
 HTTP requests ([RFC4918] section 9.7) is used instead of the GET method in step 2.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 None.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
-2.7.1  Connection Disconnected
+#### 2.7.1 Connection Disconnected
 
 A common failure scenario is an unexpected connection breakdown between the system and external
 entities. A disconnection can be caused by the network not being available, or by one of the
@@ -2725,13 +2674,14 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.7.2  Internal Failures
+
+#### 2.7.2 Internal Failures
 
 The File Access Service System is not protected against internal failures of its state, other than that
 described in the specifications of the member protocols. The components comprising the system
 mutually assume that each is authoritative at all times.
 
-2.7.3  System Configuration Corruption or Unavailability
+#### 2.7.3 System Configuration Corruption or Unavailability
 
 The system relies on the availability and consistency of its configuration data. Configuration consists of
 the data that determines the behavior of the system under specific conditions or for specific
@@ -2741,12 +2691,12 @@ determine whether the system can span across a network of computers.
 If the configuration data is not available, the protocol that needs the configuration data can assume a
 default value.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 Each file access protocol provides its own coherency mechanisms. There are no coherency
 mechanisms among dissimilar protocols.
 
-2.9  Security
+### 2.9 Security
 
 File Access Services System protocols support signing for message integrity, but they do not
 themselves support message encryption for privacy. Consequently, the system is normally deployed
@@ -2754,7 +2704,7 @@ on private networks, where messages are secure from eavesdropping. The use of Vi
 Network technology is recommended when File Access Services systems are deployed using the public
 Internet.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 None.
 
@@ -2765,7 +2715,8 @@ Release: October 26, 2021
 
 40 / 59
 
-3  Examples
+
+## 3 Examples
 
 This section contains a set of examples illustrating common uses of the File Access Services. These
 examples provide more details of the system summary use cases introduced in section 2.5. The
@@ -2793,7 +2744,7 @@ messages defined in version 2 of SMB file access protocols [MS-SMB2] and version
 protocols [RFC1813]. The semantics defined for these versions of the protocol can be mapped to other
 versions of the respective protocols.
 
-3.1  Example 1: Access a File in a Workgroup
+### 3.1 Example 1: Access a File in a Workgroup
 
 Access a File in a Workgroup is illustrative of typical User interaction with the File Access Services
 System as a User locates a file server and a share on it, obtains a directory listing, and then reads the
@@ -2841,7 +2792,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-FASOD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -2885,7 +2837,7 @@ sequence to obtain the contents of the file.
 
 sequence to close the file handle previously opened.
 
-3.2  Example 2: Access a File in a Domain
+### 3.2 Example 2: Access a File in a Domain
 
 The Access a File in a Domain use case illustrates a typical user interaction with the File Access
 Services System; the user locates a file within a DFS namespace and then reads it. This example
@@ -2907,7 +2859,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-FASOD].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2962,7 +2915,8 @@ Release: October 26, 2021
 
 43 / 59
 
-1.  The SMB client performs the Common Task 2 Enumerate a Directory Using the SMB Protocol
+
+1.  The SMB client performs the Common Task 2 Enumerate a Directory Using the SMB Protocol
 
 sequence to enumerate the contents of the directory and their attributes.
 
@@ -2984,7 +2938,7 @@ sequence to obtain the contents of the file.
 
 sequence to close the file handle previously opened.
 
-3.3  Example 3: Two Applications Communicate Via a Shared File
+### 3.3 Example 3: Two Applications Communicate Via a Shared File
 
 This example illustrates the interaction between two applications, one using the NFS File Access
 Protocol and another using the SMB File Access Protocol, to share a file on a remote file server. This
@@ -3047,7 +3001,8 @@ Release: October 26, 2021
 
 44 / 59
 
-<!-- Extracted images from page 45 -->
+
+<!-- Extracted images from page 45 -->
 ![Extracted image 1 from page 45]([MS-FASOD].images/page045-img01.png)
 <!-- /Extracted images from page 45 -->
 
@@ -3105,7 +3060,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-FASOD].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
@@ -3142,7 +3098,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 47 -->
+
+<!-- Extracted images from page 47 -->
 ![Extracted image 1 from page 47]([MS-FASOD].images/page047-img01.png)
 <!-- /Extracted images from page 47 -->
 
@@ -3201,7 +3158,8 @@ Release: October 26, 2021
 
 47 / 59
 
-<!-- Extracted images from page 48 -->
+
+<!-- Extracted images from page 48 -->
 ![Extracted image 1 from page 48]([MS-FASOD].images/page048-img01.png)
 <!-- /Extracted images from page 48 -->
 
@@ -3249,7 +3207,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-FASOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
@@ -3298,7 +3257,8 @@ Release: October 26, 2021
 
 49 / 59
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-FASOD].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
@@ -3313,7 +3273,7 @@ data.
 
 The file service responds to the file client with the contents of the file that the file client requested.
 
-3.4  Example 4: Access a Remote File Using WebDAV
+### 3.4 Example 4: Access a Remote File Using WebDAV
 
 Access a Remote File Using WebDAV illustrates a typical user interaction with the WebDAV service,
 as the user locates a file within a web directory, writes into it, and then reads the file. This example
@@ -3346,7 +3306,8 @@ Release: October 26, 2021
 
 50 / 59
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-FASOD].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -3377,9 +3338,9 @@ section 9.7).
 
 ([RFC4918] section 9.4).
 
-3.5  Common Tasks
+### 3.5 Common Tasks
 
-3.5.1  Common Task 1: Open a File in an SMB File Share
+#### 3.5.1 Common Task 1: Open a File in an SMB File Share
 
 The sequence described in this example details how an application opens a file on an SMB file share.
 
@@ -3390,7 +3351,8 @@ Release: October 26, 2021
 
 51 / 59
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-FASOD].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
@@ -3435,7 +3397,7 @@ response (see [MS-SMB2] section 2.2.14) that contains the result of the SMB2 CRE
 the SMB File service generates a handle that is returned to the File client for use when performing
 subsequent operations against the file.
 
-3.5.2  Common Task 2: Enumerate a Directory Using the SMB Protocol
+#### 3.5.2 Common Task 2: Enumerate a Directory Using the SMB Protocol
 
 The sequence described in this example details how the application uses the SMB file client to query
 file system attributes and enumerate a directory on the SMB file share using the SMB protocol.
@@ -3447,7 +3409,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-FASOD].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -3471,7 +3434,7 @@ enumeration is completed.
 4.  The SMB file service sends an SMB2 QUERY_DIRECTORY Response (described in [MS-SMB2]
 section 2.2.34) message back to the file client containing the requested enumeration results.
 
-3.5.3  Common Task 3: Read a File Using the SMB Protocol
+#### 3.5.3 Common Task 3: Read a File Using the SMB Protocol
 
 This example details how an application uses the file client to read the contents of a file on an SMB file
 share.
@@ -3483,7 +3446,8 @@ Release: October 26, 2021
 
 53 / 59
 
-<!-- Extracted images from page 54 -->
+
+<!-- Extracted images from page 54 -->
 ![Extracted image 1 from page 54]([MS-FASOD].images/page054-img01.png)
 ![Extracted image 2 from page 54]([MS-FASOD].images/page054-img02.png)
 <!-- /Extracted images from page 54 -->
@@ -3504,7 +3468,7 @@ until the response is STATUS_END_OF_FILE.
 
 section 2.2.20).
 
-3.5.4  Common Task 4: Close a File Using the SMB Protocol
+#### 3.5.4 Common Task 4: Close a File Using the SMB Protocol
 
 The sequence described in this example details how the Application uses the file client to close a
 previously open file or directory on the SMB file share.
@@ -3523,7 +3487,8 @@ File Access Services Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.  The SMB file service sends an SMB2 CLOSE response (see [MS-SMB2] section 2.2.16) message
+
+2.  The SMB file service sends an SMB2 CLOSE response (see [MS-SMB2] section 2.2.16) message
 
 back to the file client to indicate that the SMB file service has processed the SMB2 CLOSE request.
 This process is further described in [MS-SMB2] section 3.3.5.10.
@@ -3535,7 +3500,8 @@ Release: October 26, 2021
 
 55 / 59
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 There are no variations in the behavior of the File Access Services System in different versions of
 Windows beyond those described in the specifications of the protocols supported by the system, as
@@ -3587,7 +3553,7 @@ Exceptions, if any, are noted below. If a service pack number appears with the p
 behavior changed in that service pack. The new behavior also applies to subsequent service packs of
 the product unless otherwise specified.
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 [MS-FASOD] - v20211026
 File Access Services Protocols Overview
@@ -3596,7 +3562,8 @@ Release: October 26, 2021
 
 56 / 59
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -3635,7 +3602,8 @@ Release: October 26, 2021
 
 57 / 59
 
-6  Index
+
+## 6 Index
 A
 
 Access a file in a domain
@@ -3769,7 +3737,8 @@ System use cases
 
 58 / 59
 
-   access a remote file using webdav 27
+
+   access a remote file using webdav 27
    overview 20
    two applications communicate via a shared file 25
 

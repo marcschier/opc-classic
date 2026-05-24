@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 123
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: April 23, 2024
 
 2 / 123
 
-Date
+
+Date
 
 Revision
 History
@@ -541,454 +543,157 @@ Release: April 23, 2024
 
 3 / 123
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 15
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.1
-
-2.2.1.1
-
-2.1.1
-2.1.2
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-2.2.1.1.4
-2.2.1.1.5
-2.2.1.1.6
-2.2.1.1.7
-2.2.1.1.8
-2.2.1.1.9
-2.2.1.1.10
-2.2.1.1.11
-2.2.1.1.12
-2.2.1.1.13
-2.2.1.1.14
-2.2.1.1.15
-2.2.1.1.16
-2.2.1.1.17
-2.2.1.1.18
-2.2.1.1.19
-2.2.1.1.20
-2.2.1.1.21
-2.2.1.1.22
-2.2.1.1.23
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Client Authentication Requirements............................................................... 17
-Server-Side Binding .................................................................................... 17
-Message Syntax ............................................................................................... 18
-Common Data Types ................................................................................... 18
-Constants ............................................................................................ 18
-FRS_COMMUNICATION_PROTOCOL_VERSION ..................................... 18
-CONFIG_RDC_VERSION ................................................................... 18
-CONFIG_RDC_VERSION_COMPATIBLE ............................................... 18
-CONFIG_RDC_MAX_LEVELS .............................................................. 18
-CONFIG_RDC_MAX_NEEDLENGTH ..................................................... 18
-CONFIG_RDC_NEED_QUEUE_SIZE .................................................... 19
-CONFIG_RDC_HORIZONSIZE_MIN .................................................... 19
-CONFIG_RDC_HORIZONSIZE_MAX .................................................... 19
-CONFIG_RDC_HASHWINDOWSIZE_MIN ............................................. 19
-CONFIG_RDC_HASHWINDOWSIZE_MAX ............................................ 19
-CONFIG_RDC_SIMILARITY_DATASIZE ............................................... 19
-CONFIG_TRANSPORT_MAX_BUFFER_SIZE .......................................... 19
-CONFIG_FILEHASH_DATASIZE .......................................................... 19
-FRS_UPDATE_FLAG_GHOSTED_HEADER ............................................ 20
-FRS_UPDATE_FLAG_DATA ................................................................ 20
-TRUE ............................................................................................. 20
-FALSE ............................................................................................ 20
-FRS_UPDATE_FLAG_CLOCK_DECREMENTED ....................................... 20
-FRS_XPRESS_FILE_HEADER_SIZE ..................................................... 20
-XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE ..................................... 20
-XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE_WITH_FILE_HEADER ...... 21
-XPRESS_RDC_MAX_NB_NEEDS_FOR_COMPRESSION ........................... 21
-X_CONFIG_XPRESS_BLOCK_SIZE ..................................................... 21
-Enumerations ....................................................................................... 21
-TransportFlags ................................................................................ 21
-RDC_FILE_COMPRESSION_TYPES ...................................................... 21
-RDC_CHUNKER_ALGORITHM ............................................................ 22
-UPDATE_REQUEST_TYPE .................................................................. 22
-UPDATE_STATUS ............................................................................. 22
-RECORDS_STATUS .......................................................................... 23
-VERSION_REQUEST_TYPE ................................................................ 23
-VERSION_CHANGE_TYPE.................................................................. 23
-FRS_REQUESTED_STAGING_POLICY .................................................. 23
-Simple Type Definitions ......................................................................... 24
-FRS_REPLICA_SET_ID ..................................................................... 24
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-2.2.1.2.6
-2.2.1.2.7
-2.2.1.2.8
-2.2.1.2.9
-
-2.2.1.3.1
-
-2.2.1.3
-
-2.2.1.2
-
-[MS-FRS2] - v20240423
-Distributed File System Replication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 123
-
-2.2.1.4
-
-2.2.1.3.2
-2.2.1.3.3
-2.2.1.3.4
-2.2.1.3.5
-2.2.1.3.6
-2.2.1.3.7
-
-2.2.1.4.1
-2.2.1.4.2
-2.2.1.4.3
-2.2.1.4.4
-2.2.1.4.5
-2.2.1.4.6
-2.2.1.4.7
-2.2.1.4.8
-2.2.1.4.9
-2.2.1.4.10
-2.2.1.4.11
-2.2.1.4.12
-2.2.1.4.13
-2.2.1.4.14
-2.2.1.4.15
-
-FRS_CONTENT_SET_ID .................................................................... 24
-FRS_DATABASE_ID ......................................................................... 24
-FRS_MEMBER_ID ............................................................................ 24
-FRS_CONNECTION_ID ..................................................................... 25
-EPOQUE ......................................................................................... 25
-BYTE_PIPE ...................................................................................... 25
-Aggregate Definitions ............................................................................ 25
-FRS_VERSION_VECTOR ................................................................... 25
-FRS_EPOQUE_VECTOR ..................................................................... 25
-FRS_ID_GVSN ................................................................................ 26
-FRS_UPDATE .................................................................................. 26
-FRS_UPDATE_CANCEL_DATA ............................................................ 27
-FRS_RDC_SOURCE_NEED................................................................. 28
-FRS_RDC_PARAMETERS_FILTERMAX ................................................. 28
-FRS_RDC_PARAMETERS_FILTERPOINT ............................................... 29
-FRS_RDC_PARAMETERS_GENERIC .................................................... 29
-FRS_RDC_PARAMETERS ................................................................... 29
-FRS_RDC_FILEINFO ......................................................................... 30
-FRS_ASYNC_VERSION_VECTOR_RESPONSE ....................................... 30
-FRS_ASYNC_RESPONSE_CONTEXT .................................................... 31
-PFRS_SERVER_CONTEXT .................................................................. 31
-XPRESS Block ................................................................................. 31
-2.2.1.4.15.1
-XPRESS Block Header ................................................................. 32
-Directory Service Schema Elements ................................................................... 32
-msDFSR-LocalSettings ................................................................................ 34
-2.3.1
-msDFSR-Subscriber .................................................................................... 35
-2.3.2
-msDFSR-Subscription .................................................................................. 35
-2.3.3
-msDFSR-GlobalSettings ............................................................................... 36
-2.3.4
-msDFSR-ReplicationGroup ........................................................................... 36
-2.3.5
-msDFSR-Content ........................................................................................ 37
-2.3.6
-msDFSR-ContentSet ................................................................................... 37
-2.3.7
-msDFSR-Topology ...................................................................................... 37
-2.3.8
-msDFSR-Member ........................................................................................ 38
-2.3.9
-2.3.10
-Computer .................................................................................................. 38
-2.3.11  msDFSR-Connection ................................................................................... 38
-nTDSConnection ......................................................................................... 39
-2.3.12
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-3  Protocol Details ..................................................................................................... 41
-Common Details .............................................................................................. 41
-Abstract Data Model .................................................................................... 42
-Compression ........................................................................................ 43
-Decompression ..................................................................................... 43
-Timers ...................................................................................................... 43
-Initialization ............................................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-Timer Events .............................................................................................. 43
-Other Local Events ...................................................................................... 44
-Server Details .................................................................................................. 44
-Abstract Data Model .................................................................................... 44
-Timers ...................................................................................................... 44
-Initialization ............................................................................................... 44
-Message Processing Events and Sequencing Rules .......................................... 44
-FrsTransport Methods ............................................................................ 44
-CheckConnectivity (Opnum 0) ........................................................... 46
-EstablishConnection (Opnum 1) ........................................................ 46
-EstablishSession (Opnum 2) ............................................................. 48
-RequestUpdates (Opnum 3) .............................................................. 49
-RequestVersionVector (Opnum 4) ...................................................... 51
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-3.2.4.1.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-
-3.2
-
-[MS-FRS2] - v20240423
-Distributed File System Replication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 123
-
-3.2.5
-3.2.6
-
-3.3.1
-
-3.3
-
-3.3.2
-3.3.3
-3.3.4
-
-3.2.4.1.14.1
-3.2.4.1.14.2
-
-3.2.4.1.15
-3.2.4.1.16
-3.2.4.1.17
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-3.3.1.5
-
-3.2.4.1.6
-3.2.4.1.7
-3.2.4.1.8
-3.2.4.1.9
-3.2.4.1.10
-3.2.4.1.11
-3.2.4.1.12
-3.2.4.1.13
-3.2.4.1.14
-
-AsyncPoll (Opnum 5) ....................................................................... 53
-RequestRecords (Opnum 6) .............................................................. 54
-UpdateCancel (Opnum 7) ................................................................. 56
-RawGetFileData (Opnum 8) .............................................................. 57
-RdcGetSignatures (Opnum 9) ........................................................... 58
-RdcPushSourceNeeds (Opnum 10) ..................................................... 60
-RdcGetFileData (Opnum 11) ............................................................. 61
-RdcClose (Opnum 12) ...................................................................... 64
-InitializeFileTransferAsync (Opnum 13) .............................................. 64
-Custom Marshaling Format .......................................................... 67
-Compressed Data Format ............................................................ 69
-RawGetFileDataAsync (Opnum 15) .................................................... 69
-RdcGetFileDataAsync (Opnum 16) ..................................................... 70
-RdcFileDataTransferKeepAlive (Opnum 17) ......................................... 71
-Timer Events .............................................................................................. 72
-Other Local Events ...................................................................................... 72
-Client Details ................................................................................................... 72
-Abstract Data Model .................................................................................... 75
-Connection State Machine ...................................................................... 75
-Replicated Folder Session State Machine .................................................. 76
-Slow Sync ............................................................................................ 77
-Raw File Transfer .................................................................................. 79
-RDC File Transfer .................................................................................. 79
-Timers ...................................................................................................... 80
-Initialization ............................................................................................... 80
-Message Processing Events and Sequencing Rules .......................................... 81
-DisConnected ....................................................................................... 81
-EstablishConnection Completes ............................................................... 81
-EstablishSession Completes .................................................................... 81
-RequestVersionVector Completes ............................................................ 82
-AsyncPoll Completes .............................................................................. 83
-RequestUpdates Completes .................................................................... 84
-Requesting Updates (State Transitions) .............................................. 84
-Processing Updates .......................................................................... 85
-File Downloads ..................................................................................... 87
-stagingPolicy Parameter ................................................................... 87
-InitializeFileTransferAsync Completes ...................................................... 87
-RawGetFileData Completes..................................................................... 88
-RdcClose Completes .............................................................................. 89
-RawGetFileDataAsync Completes ............................................................ 89
-RdcGetSignatures Completes .................................................................. 90
-RdcPushSourceNeeds Completes ............................................................. 90
-RdcGetFileData Completes ..................................................................... 91
-RdcGetFileDataAsync Completes ............................................................. 92
-Request Records Completes ................................................................... 92
-Requesting Records (State Transitions) .............................................. 93
-Processing Records .......................................................................... 93
-3.3.4.17  UpdateCancel ....................................................................................... 93
-AsyncPoll Completes for REQUEST_SUBORDINATE_SYNC ........................... 94
-3.3.4.18
-Timer Events .............................................................................................. 94
-Other Local Events ...................................................................................... 94
-
-3.3.4.8
-3.3.4.9
-3.3.4.10
-3.3.4.11
-3.3.4.12
-3.3.4.13
-3.3.4.14
-3.3.4.15
-3.3.4.16
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-3.3.4.4
-3.3.4.5
-3.3.4.6
-
-3.3.4.16.1
-3.3.4.16.2
-
-3.3.4.6.1
-3.3.4.6.2
-
-3.3.4.7.1
-
-3.3.4.7
-
-3.3.5
-3.3.6
-
-4.1
-
-4  Protocol Examples ................................................................................................. 95
-Abstract Protocol Examples ............................................................................... 95
-Basic Content Distribution ............................................................................ 95
-Version Chain Vector Logic - Two Machines .................................................... 96
-Version Chain Vector Logic - Three Machines .................................................. 96
-Concurrent Updates and Tombstones ............................................................ 97
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-
-[MS-FRS2] - v20240423
-Distributed File System Replication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 123
-
-4.2
-
-4.1.5
-4.1.6
-
-4.2.1
-4.2.2
-4.2.3
-4.2.4
-
-4.3.1
-
-Directory Moves ......................................................................................... 98
-Name Conflicts ........................................................................................... 99
-Examples with Wire-Format Arguments ............................................................. 101
-RequestVersionVector ................................................................................ 101
-Requesting Updates ................................................................................... 101
-Marshaled Data Format .............................................................................. 103
-Ordering on UIDs and GVSNs ...................................................................... 104
-Configuration .................................................................................................. 104
-Example Objects in the DFS-R Object Hierarchy ............................................ 104
-
-4.3
-
-5  Security ............................................................................................................... 106
-Security Considerations for Implementers .......................................................... 106
-Index of Security Parameters ........................................................................... 106
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 107
-
-7  Appendix B: Product Behavior ............................................................................. 114
-
-8  Change Tracking .................................................................................................. 119
-
-9  Index ................................................................................................................... 120
-
-[MS-FRS2] - v20240423
-Distributed File System Replication Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 123
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Client Authentication Requirements](#211-client-authentication-requirements)
+    - [2.1.2 Server-Side Binding](#212-server-side-binding)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Types](#221-common-data-types)
+      - [2.2.1.1 Constants](#2211-constants)
+        - [2.2.1.1.1 FRS_COMMUNICATION_PROTOCOL_VERSION](#22111-frscommunicationprotocolversion)
+        - [2.2.1.1.2 CONFIG_RDC_VERSION](#22112-configrdcversion)
+        - [2.2.1.1.3 CONFIG_RDC_VERSION_COMPATIBLE](#22113-configrdcversioncompatible)
+        - [2.2.1.1.4 CONFIG_RDC_MAX_LEVELS](#22114-configrdcmaxlevels)
+        - [2.2.1.1.5 CONFIG_RDC_MAX_NEEDLENGTH](#22115-configrdcmaxneedlength)
+        - [2.2.1.1.6 CONFIG_RDC_NEED_QUEUE_SIZE](#22116-configrdcneedqueuesize)
+        - [2.2.1.1.7 CONFIG_RDC_HORIZONSIZE_MIN](#22117-configrdchorizonsizemin)
+        - [2.2.1.1.8 CONFIG_RDC_HORIZONSIZE_MAX](#22118-configrdchorizonsizemax)
+        - [2.2.1.1.9 CONFIG_RDC_HASHWINDOWSIZE_MIN](#22119-configrdchashwindowsizemin)
+        - [2.2.1.1.10 CONFIG_RDC_HASHWINDOWSIZE_MAX](#221110-configrdchashwindowsizemax)
+        - [2.2.1.1.11 CONFIG_RDC_SIMILARITY_DATASIZE](#221111-configrdcsimilaritydatasize)
+        - [2.2.1.1.12 CONFIG_TRANSPORT_MAX_BUFFER_SIZE](#221112-configtransportmaxbuffersize)
+        - [2.2.1.1.13 CONFIG_FILEHASH_DATASIZE](#221113-configfilehashdatasize)
+        - [2.2.1.1.14 FRS_UPDATE_FLAG_GHOSTED_HEADER](#221114-frsupdateflagghostedheader)
+        - [2.2.1.1.15 FRS_UPDATE_FLAG_DATA](#221115-frsupdateflagdata)
+        - [2.2.1.1.16 TRUE](#221116-true)
+        - [2.2.1.1.17 FALSE](#221117-false)
+        - [2.2.1.1.18 FRS_UPDATE_FLAG_CLOCK_DECREMENTED](#221118-frsupdateflagclockdecremented)
+        - [2.2.1.1.19 FRS_XPRESS_FILE_HEADER_SIZE](#221119-frsxpressfileheadersize)
+        - [2.2.1.1.20 XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE](#221120-xpressrdcmingetdatabuffersize)
+        - [2.2.1.1.21 XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE_WITH_FILE_HEADER](#221121-xpressrdcmingetdatabuffersizewithfileheader)
+        - [2.2.1.1.22 XPRESS_RDC_MAX_NB_NEEDS_FOR_COMPRESSION](#221122-xpressrdcmaxnbneedsforcompression)
+        - [2.2.1.1.23 X_CONFIG_XPRESS_BLOCK_SIZE](#221123-xconfigxpressblocksize)
+      - [2.2.1.2 Enumerations](#2212-enumerations)
+        - [2.2.1.2.1 TransportFlags](#22121-transportflags)
+        - [2.2.1.2.2 RDC_FILE_COMPRESSION_TYPES](#22122-rdcfilecompressiontypes)
+        - [2.2.1.2.3 RDC_CHUNKER_ALGORITHM](#22123-rdcchunkeralgorithm)
+        - [2.2.1.2.4 UPDATE_REQUEST_TYPE](#22124-updaterequesttype)
+        - [2.2.1.2.5 UPDATE_STATUS](#22125-updatestatus)
+        - [2.2.1.2.6 RECORDS_STATUS](#22126-recordsstatus)
+        - [2.2.1.2.7 VERSION_REQUEST_TYPE](#22127-versionrequesttype)
+        - [2.2.1.2.8 VERSION_CHANGE_TYPE](#22128-versionchangetype)
+        - [2.2.1.2.9 FRS_REQUESTED_STAGING_POLICY](#22129-frsrequestedstagingpolicy)
+      - [2.2.1.3 Simple Type Definitions](#2213-simple-type-definitions)
+        - [2.2.1.3.1 FRS_REPLICA_SET_ID](#22131-frsreplicasetid)
+        - [2.2.1.3.2 FRS_CONTENT_SET_ID](#22132-frscontentsetid)
+        - [2.2.1.3.3 FRS_DATABASE_ID](#22133-frsdatabaseid)
+        - [2.2.1.3.4 FRS_MEMBER_ID](#22134-frsmemberid)
+        - [2.2.1.3.5 FRS_CONNECTION_ID](#22135-frsconnectionid)
+        - [2.2.1.3.6 EPOQUE](#22136-epoque)
+        - [2.2.1.3.7 BYTE_PIPE](#22137-bytepipe)
+      - [2.2.1.4 Aggregate Definitions](#2214-aggregate-definitions)
+        - [2.2.1.4.1 FRS_VERSION_VECTOR](#22141-frsversionvector)
+        - [2.2.1.4.2 FRS_EPOQUE_VECTOR](#22142-frsepoquevector)
+        - [2.2.1.4.3 FRS_ID_GVSN](#22143-frsidgvsn)
+        - [2.2.1.4.4 FRS_UPDATE](#22144-frsupdate)
+        - [2.2.1.4.5 FRS_UPDATE_CANCEL_DATA](#22145-frsupdatecanceldata)
+        - [2.2.1.4.6 FRS_RDC_SOURCE_NEED](#22146-frsrdcsourceneed)
+        - [2.2.1.4.7 FRS_RDC_PARAMETERS_FILTERMAX](#22147-frsrdcparametersfiltermax)
+        - [2.2.1.4.8 FRS_RDC_PARAMETERS_FILTERPOINT](#22148-frsrdcparametersfilterpoint)
+        - [2.2.1.4.9 FRS_RDC_PARAMETERS_GENERIC](#22149-frsrdcparametersgeneric)
+        - [2.2.1.4.10 FRS_RDC_PARAMETERS](#221410-frsrdcparameters)
+        - [2.2.1.4.11 FRS_RDC_FILEINFO](#221411-frsrdcfileinfo)
+        - [2.2.1.4.12 FRS_ASYNC_VERSION_VECTOR_RESPONSE](#221412-frsasyncversionvectorresponse)
+        - [2.2.1.4.13 FRS_ASYNC_RESPONSE_CONTEXT](#221413-frsasyncresponsecontext)
+        - [2.2.1.4.14 PFRS_SERVER_CONTEXT](#221414-pfrsservercontext)
+        - [2.2.1.4.15 XPRESS Block](#221415-xpress-block)
+          - [2.2.1.4.15.1 XPRESS Block Header](#2214151-xpress-block-header)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 msDFSR-LocalSettings](#231-msdfsr-localsettings)
+    - [2.3.2 msDFSR-Subscriber](#232-msdfsr-subscriber)
+    - [2.3.3 msDFSR-Subscription](#233-msdfsr-subscription)
+    - [2.3.4 msDFSR-GlobalSettings](#234-msdfsr-globalsettings)
+    - [2.3.5 msDFSR-ReplicationGroup](#235-msdfsr-replicationgroup)
+    - [2.3.6 msDFSR-Content](#236-msdfsr-content)
+    - [2.3.7 msDFSR-ContentSet](#237-msdfsr-contentset)
+    - [2.3.8 msDFSR-Topology](#238-msdfsr-topology)
+    - [2.3.9 msDFSR-Member](#239-msdfsr-member)
+    - [2.3.10 Computer](#2310-computer)
+    - [2.3.11 msDFSR-Connection](#2311-msdfsr-connection)
+    - [2.3.12 nTDSConnection](#2312-ntdsconnection)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Compression](#3111-compression)
+      - [3.1.1.2 Decompression](#3112-decompression)
+    - [3.1.2 Timers](#312-timers)
+    - [3.3.2 and 3.2.2.](#332-and-322)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 DisConnected](#3341-disconnected)
+      - [3.3.4.2 EstablishConnection Completes](#3342-establishconnection-completes)
+      - [3.3.4.3 EstablishSession Completes](#3343-establishsession-completes)
+      - [3.3.4.4 RequestVersionVector Completes](#3344-requestversionvector-completes)
+      - [3.3.4.5 AsyncPoll Completes](#3345-asyncpoll-completes)
+      - [3.3.4.6 RequestUpdates Completes](#3346-requestupdates-completes)
+        - [3.3.4.6.1 Requesting Updates (State Transitions)](#33461-requesting-updates-state-transitions)
+        - [3.3.4.6.2 Processing Updates](#33462-processing-updates)
+      - [3.3.4.7 File Downloads](#3347-file-downloads)
+        - [3.3.4.7.1 stagingPolicy Parameter](#33471-stagingpolicy-parameter)
+      - [3.3.4.8 InitializeFileTransferAsync Completes](#3348-initializefiletransferasync-completes)
+      - [3.3.4.9 RawGetFileData Completes](#3349-rawgetfiledata-completes)
+      - [3.3.4.10 RdcClose Completes](#33410-rdcclose-completes)
+      - [3.3.4.11 RawGetFileDataAsync Completes](#33411-rawgetfiledataasync-completes)
+      - [3.3.4.12 RdcGetSignatures Completes](#33412-rdcgetsignatures-completes)
+      - [3.3.4.13 RdcPushSourceNeeds Completes](#33413-rdcpushsourceneeds-completes)
+      - [3.3.4.14 RdcGetFileData Completes](#33414-rdcgetfiledata-completes)
+      - [3.3.4.15 RdcGetFileDataAsync Completes](#33415-rdcgetfiledataasync-completes)
+      - [3.3.4.16 Request Records Completes](#33416-request-records-completes)
+        - [3.3.4.16.1 Requesting Records (State Transitions)](#334161-requesting-records-state-transitions)
+        - [3.3.4.16.2 Processing Records](#334162-processing-records)
+      - [3.3.4.17 UpdateCancel](#33417-updatecancel)
+      - [3.3.4.18 AsyncPoll Completes for REQUEST_SUBORDINATE_SYNC](#33418-asyncpoll-completes-for-requestsubordinatesync)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Abstract Protocol Examples](#41-abstract-protocol-examples)
+    - [4.1.1 Basic Content Distribution](#411-basic-content-distribution)
+    - [4.1.2 Version Chain Vector Logic - Two Machines](#412-version-chain-vector-logic-two-machines)
+    - [4.1.3 Version Chain Vector Logic - Three Machines](#413-version-chain-vector-logic-three-machines)
+    - [4.1.4 Concurrent Updates and Tombstones](#414-concurrent-updates-and-tombstones)
+    - [4.1.5 Directory Moves](#415-directory-moves)
+    - [4.1.6 Name Conflicts](#416-name-conflicts)
+  - [4.2 Examples with Wire-Format Arguments](#42-examples-with-wire-format-arguments)
+    - [4.2.1 RequestVersionVector](#421-requestversionvector)
+    - [4.2.2 Requesting Updates](#422-requesting-updates)
+    - [4.2.3 Marshaled Data Format](#423-marshaled-data-format)
+    - [4.2.4 Ordering on UIDs and GVSNs](#424-ordering-on-uids-and-gvsns)
+  - [4.3 Configuration](#43-configuration)
+    - [4.3.1 Example Objects in the DFS-R Object Hierarchy](#431-example-objects-in-the-dfs-r-object-hierarchy)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Distributed File System: Replication (DFS-R) Protocol is a remote procedure call (RPC) that
 replicates files between servers. DFS-R enables creation of multimaster optimistic file replication
@@ -1007,7 +712,7 @@ file system operations to continue independent of protocol operations.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1061,7 +766,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-scheduling and bandwidth throttling. This is a rewrite and new version of the File Replication
+
+scheduling and bandwidth throttling. This is a rewrite and new version of the File Replication
 Service (FRS). For more information, see [MS-FRS2].
 
 dynamic endpoint: A network-specific server address that is requested and assigned at run time.
@@ -1138,7 +844,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RDC FilterMax algorithm: The algorithm that RDC uses to determine the cut points in a file. The
+
+RDC FilterMax algorithm: The algorithm that RDC uses to determine the cut points in a file. The
 
 RDC FilterMax algorithm has the property that it will often find cut points that result in
 identical chunks being found in differing files, even when the files differ by insertions and
@@ -1219,7 +926,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
+
+this term does not imply or require that the algorithms described in [RFC4122] or [C706] has to
 be used for generating the UUID.
 
 version chain vector: A data structure that maps machine GUIDs to sets of version sequence
@@ -1245,14 +953,14 @@ the second change order represents.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1286,7 +994,8 @@ Release: April 23, 2024
 
 11 / 123
 
-[MS-FRS1] Microsoft Corporation, "File Replication Service Protocol".
+
+[MS-FRS1] Microsoft Corporation, "File Replication Service Protocol".
 
 [MS-FSCC] Microsoft Corporation, "File System Control Codes".
 
@@ -1308,12 +1017,12 @@ Release: April 23, 2024
 [RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
 Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-RPC] Microsoft Corporation, "Remote Procedure Call", http://msdn.microsoft.com/en-
 us/library/aa378651.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Distributed File System: Replication (DFS-R) Protocol is used to implement a multimaster file
 replication system. In this system, no single computer is a master, but rather all computers in the
@@ -1353,7 +1062,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The process of retrieving updates alternates with retrieving version chain vectors. A client first
+
+The process of retrieving updates alternates with retrieving version chain vectors. A client first
 registers a callback with the server to retrieve the latest version chain vector from the server. When
 receiving the server's version chain vector, the client retrieves all updates pertaining to it, using
 successive calls to the server. Finally, when a client cannot retrieve more updates from the version
@@ -1416,7 +1126,8 @@ Release: April 23, 2024
 
 13 / 123
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-FRS2].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1442,13 +1153,14 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Remote differential compression (RDC) is a file transfer protocol used for efficiently retrieving
+
+  Remote differential compression (RDC) is a file transfer protocol used for efficiently retrieving
 
 file data. For more information, see [MS-RDC].
 
   AsyncPoll is used for polling version chain vectors using a single pending asynchronous RPC call.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
  The Distributed File System: Replication (DFS-R) Protocol uses RPC, as specified in [C706] and [MS-
 RPCE], for all synchronization communication. DFS-R relies on authenticated, encrypted RPC traffic
@@ -1459,7 +1171,7 @@ provide a WMI interface that is used for monitoring the state of a member. The W
 an additional role in versions of DFS-R on the Windows client, where it is used for injecting
 configurations.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 DFS-R uses configuration information that is stored in Active Directory. Active Directory supplies the
 principal names of the replication partners and DFS-R uses these trusted names for authenticating
@@ -1467,12 +1179,12 @@ all replication traffic (which is over RPC). The principal names are given by th
 Active Directory. Section 2.3 specifies the configuration objects in Active Directory that are used by
 DFS-R.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Distributed File System: Replication (DFS-R) Protocol is used to replicate files in Active Directory
 environments. Support for these scenarios differs depending on the operating system in use.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1513,14 +1225,15 @@ Release: April 23, 2024
 
 15 / 123
 
-capability of using similarity for speeding up downloads of RDC files can be controlled by using flags
+
+capability of using similarity for speeding up downloads of RDC files can be controlled by using flags
 specified in section 2.2.1.2.1; the flags are communicated using the EstablishConnection method.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1537,9 +1250,10 @@ Release: April 23, 2024
 
 16 / 123
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 DFS-R uses authenticated and encrypted RPC for all replication traffic. The UUID of the RPC interface
 for the Distributed File System Replication protocol is 897e2e5f-93f3-4376-9c9c-fd2277495c27. The
@@ -1574,7 +1288,7 @@ establishing a binding handle to allow a server to authenticate RPC calls. This 
 handled opaquely by an RPC runtime that supports principal names, such as the Remote Procedure
 Call Extensions runtime. Recall that principal names are managed in Active Directory.
 
-2.1.1  Client Authentication Requirements
+#### 2.1.1 Client Authentication Requirements
 
 An implementation of the Distributed File System: Replication (DFS-R) Protocol MUST require the
 security provider used by RPC to mutually authenticate against the server.
@@ -1603,7 +1317,8 @@ Release: April 23, 2024
 
 17 / 123
 
-2.1.2  Server-Side Binding
+
+#### 2.1.2 Server-Side Binding
 
 As specified in section 2.1, the RPC server side of DFS-R uses DFSR_ENDPOINT_GUID with the RPC
 policy that specifies endpoint flags to "don't fail". DFSR_ENDPOINT_GUID is used to ensure that the
@@ -1611,21 +1326,21 @@ RPC runtime system can delegate incoming RPC calls to the correct executable. Al
 section 2.1, a server can bind on a static port or can use the endpoint UUID to register a dynamic
 endpoint.<2>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All multiple-byte integers represented in this document are in least-significant-byte-first order, called
 little-endian.
 
-2.2.1  Common Data Types
+#### 2.2.1 Common Data Types
 
-2.2.1.1  Constants
+##### 2.2.1.1 Constants
 
 Most of the following constants are used to define the allowable limits of parameters in the structures
 and function arguments of the interface. In these cases, the RPC library directly enforces these limits.
 
 Some definitions are to provide only a symbolic name to various constants.
 
-2.2.1.1.1 FRS_COMMUNICATION_PROTOCOL_VERSION
+###### 2.2.1.1.1 FRS_COMMUNICATION_PROTOCOL_VERSION
 
  #define FRS_COMMUNICATION_PROTOCOL_VERSION_W2K3R2  0x00050000
  #define FRS_COMMUNICATION_PROTOCOL_VERSION_LONGHORN_SERVER 0x00050002
@@ -1636,27 +1351,27 @@ These values specify the currently implemented DFS-R protocol version numbers. T
 version is a 32 bit integer value in which the high 16 bits represent the major version number and the
 low 16 bits represent the minor version number.  <3>
 
-2.2.1.1.2 CONFIG_RDC_VERSION
+###### 2.2.1.1.2 CONFIG_RDC_VERSION
 
  #define CONFIG_RDC_VERSION              (1)
 
 This indicates the major version of RDC. The major version increases when new features or
 capabilities are added. This version MUST be version 1.
 
-2.2.1.1.3 CONFIG_RDC_VERSION_COMPATIBLE
+###### 2.2.1.1.3 CONFIG_RDC_VERSION_COMPATIBLE
 
  #define CONFIG_RDC_VERSION_COMPATIBLE   (1)
 
 This indicates the minimum version of the RDC protocol that can work correctly with this version. The
 version MUST be 1.
 
-2.2.1.1.4 CONFIG_RDC_MAX_LEVELS
+###### 2.2.1.1.4 CONFIG_RDC_MAX_LEVELS
 
  #define CONFIG_RDC_MAX_LEVELS           (8)
 
 This indicates the maximum depth of signature generation and RDC recursion.
 
-2.2.1.1.5 CONFIG_RDC_MAX_NEEDLENGTH
+###### 2.2.1.1.5 CONFIG_RDC_MAX_NEEDLENGTH
 
 18 / 123
 
@@ -1665,54 +1380,55 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- #define CONFIG_RDC_MAX_NEEDLENGTH       (65536)
+
+ #define CONFIG_RDC_MAX_NEEDLENGTH       (65536)
 
 This indicates the maximum allowed length of an RDC need. An RDC need is an offset length-pair that
 prescribes a range of data that a client requests from the server.
 
-2.2.1.1.6 CONFIG_RDC_NEED_QUEUE_SIZE
+###### 2.2.1.1.6 CONFIG_RDC_NEED_QUEUE_SIZE
 
  #define CONFIG_RDC_NEED_QUEUE_SIZE      (20)
 
 This indicates the maximum number of source needs that can be in a single request.
 
-2.2.1.1.7 CONFIG_RDC_HORIZONSIZE_MIN
+###### 2.2.1.1.7 CONFIG_RDC_HORIZONSIZE_MIN
 
  #define CONFIG_RDC_HORIZONSIZE_MIN      (128)
 
 This indicates the minimum allowable RDC horizon parameter used by RDC.
 
-2.2.1.1.8 CONFIG_RDC_HORIZONSIZE_MAX
+###### 2.2.1.1.8 CONFIG_RDC_HORIZONSIZE_MAX
 
  #define CONFIG_RDC_HORIZONSIZE_MAX       (1024*16)
 
 This indicates the maximum allowable RDC horizon parameter used by RDC.
 
-2.2.1.1.9 CONFIG_RDC_HASHWINDOWSIZE_MIN
+###### 2.2.1.1.9 CONFIG_RDC_HASHWINDOWSIZE_MIN
 
  #define CONFIG_RDC_HASHWINDOWSIZE_MIN   (2)
 
 This indicates the minimum allowable RDC hash window parameter used by RDC.
 
-2.2.1.1.10
+###### 2.2.1.1.10 CONFIG_RDC_HASHWINDOWSIZE_MAX
 
-CONFIG_RDC_HASHWINDOWSIZE_MAX
+
 
  #define CONFIG_RDC_HASHWINDOWSIZE_MAX   (96)
 
 This indicates the maximum allowable RDC hash window parameter used by RDC.
 
-2.2.1.1.11
+###### 2.2.1.1.11 CONFIG_RDC_SIMILARITY_DATASIZE
 
-CONFIG_RDC_SIMILARITY_DATASIZE
+
 
  #define CONFIG_RDC_SIMILARITY_DATASIZE  (16)
 
 This indicates the size, in bytes, of the similarity data.
 
-2.2.1.1.12
+###### 2.2.1.1.12 CONFIG_TRANSPORT_MAX_BUFFER_SIZE
 
-CONFIG_TRANSPORT_MAX_BUFFER_SIZE
+
 
  #define CONFIG_TRANSPORT_MAX_BUFFER_SIZE (262144)
 
@@ -1721,9 +1437,9 @@ requests pieces of a file, such as in a basic transfer of file contents and when
 file or file metadata over RDC, it creates an RPC call with a buffer as an argument. The maximum
 allocated size of this buffer is bound by this constant.
 
-2.2.1.1.13
+###### 2.2.1.1.13 CONFIG_FILEHASH_DATASIZE
 
-CONFIG_FILEHASH_DATASIZE
+
 
 19 / 123
 
@@ -1732,13 +1448,14 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- #define CONFIG_FILEHASH_DATASIZE        (20)
+
+ #define CONFIG_FILEHASH_DATASIZE        (20)
 
 This indicates the size, in bytes, of the full file hash.
 
-2.2.1.1.14
+###### 2.2.1.1.14 FRS_UPDATE_FLAG_GHOSTED_HEADER
 
-FRS_UPDATE_FLAG_GHOSTED_HEADER
+
 
  #define FRS_UPDATE_FLAG_GHOSTED_HEADER  (0x04)
 
@@ -1751,33 +1468,33 @@ identified by the DATA stream ID, as specified in [MS-BKUP].
 Notice that hexadecimal notation for flags is used. Flags can be combined using the bitwise OR
 operation.
 
-2.2.1.1.15
+###### 2.2.1.1.15 FRS_UPDATE_FLAG_DATA
 
-FRS_UPDATE_FLAG_DATA
+
 
  #define FRS_UPDATE_FLAG_DATA           (0x08)
 
 The update request is for file data only.
 
-2.2.1.1.16
+###### 2.2.1.1.16 TRUE
 
-TRUE
+
 
  #define TRUE 1
 
 The truth value TRUE. In DFS-R Booleans are of type long.
 
-2.2.1.1.17
+###### 2.2.1.1.17 FALSE
 
-FALSE
+
 
  #define FALSE 0
 
 The truth value FALSE.
 
-2.2.1.1.18
+###### 2.2.1.1.18 FRS_UPDATE_FLAG_CLOCK_DECREMENTED
 
-FRS_UPDATE_FLAG_CLOCK_DECREMENTED
+
 
  #define FRS_UPDATE_FLAG_CLOCK_DECREMENTED  (0x10)
 
@@ -1785,15 +1502,15 @@ The presence of this bitmask value in an FRS_UPDATE structure's flags field indi
 is the result of a dirty shutdown on the remote partner, and the clock has been decremented by the
 remote partner. The client MAY assign a new GVSN when installing an update with that flag.
 
-2.2.1.1.19
+###### 2.2.1.1.19 FRS_XPRESS_FILE_HEADER_SIZE
 
-FRS_XPRESS_FILE_HEADER_SIZE
+
 
  #define FRS_XPRESS_FILE_HEADER_SIZE (0x4)
 
 The size of the FileHeader, as specified in section 3.2.4.1.12.
 
-2.2.1.1.20  XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE
+###### 2.2.1.1.20 XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE
 
 [MS-FRS2] - v20240423
 Distributed File System Replication Protocol
@@ -1802,12 +1519,13 @@ Release: April 23, 2024
 
 20 / 123
 
- #define XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE (0x2410)
+
+ #define XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE (0x2410)
 
 The minimum size of the buffer required to hold the fragment headers, the block header, and one
 compressed block, as specified in section 3.2.4.1.12.
 
-2.2.1.1.21  XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE_WITH_FILE_HEADER
+###### 2.2.1.1.21 XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE_WITH_FILE_HEADER
 
  #define XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE_WITH_FILE_HEADER
            (FRS_XPRESS_FILE_HEADER_SIZE + XPRESS_RDC_MIN_GET_DATA_BUFFER_SIZE)
@@ -1815,21 +1533,21 @@ compressed block, as specified in section 3.2.4.1.12.
 The minimum size of the buffer passed to the RdcGetFileData method, as specified in section
 3.2.4.1.12.
 
-2.2.1.1.22  XPRESS_RDC_MAX_NB_NEEDS_FOR_COMPRESSION
+###### 2.2.1.1.22 XPRESS_RDC_MAX_NB_NEEDS_FOR_COMPRESSION
 
  #define XPRESS_RDC_MAX_NB_NEEDS_FOR_COMPRESSION  (128)
 
 The maximum number of fragments in the list of fragments, as specified in section 3.2.4.1.12.
 
-2.2.1.1.23  X_CONFIG_XPRESS_BLOCK_SIZE
+###### 2.2.1.1.23 X_CONFIG_XPRESS_BLOCK_SIZE
 
  #define X_CONFIG_XPRESS_BLOCK_SIZE  (8192)
 
 The size of the compression block.
 
-2.2.1.2  Enumerations
+##### 2.2.1.2 Enumerations
 
-2.2.1.2.1 TransportFlags
+###### 2.2.1.2.1 TransportFlags
 
 The TransportFlags enumerated type has only one flag defined,
 TRANSPORT_SUPPORTS_RDC_SIMILARITY.
@@ -1844,7 +1562,7 @@ TRANSPORT_SUPPORTS_RDC_SIMILARITY:  This bitmask flag value is used to indicate 
 that a DFS-R server is capable of using the similarity features of RDC (as specified in [MS-RDC],
 section 3.1.5.4).
 
-2.2.1.2.2 RDC_FILE_COMPRESSION_TYPES
+###### 2.2.1.2.2 RDC_FILE_COMPRESSION_TYPES
 
 The RDC_FILE_COMPRESSION_TYPES enumerated type identifies the data compression algorithm
 used for the file transfer.
@@ -1862,13 +1580,14 @@ Release: April 23, 2024
 
 21 / 123
 
-RDC_UNCOMPRESSED:  Data is not compressed. This value MUST be sent whenever an
+
+RDC_UNCOMPRESSED:  Data is not compressed. This value MUST be sent whenever an
 
 RDC_FILE_COMPRESSION_TYPES enum value is required.
 
 RDC_XPRESS:  Not used.
 
-2.2.1.2.3 RDC_CHUNKER_ALGORITHM
+###### 2.2.1.2.3 RDC_CHUNKER_ALGORITHM
 
 The RDC_CHUNKER_ALGORITHM enumerated type identifies the RDC chunking algorithm used to
 generate the signatures for the file to be transferred.
@@ -1891,7 +1610,7 @@ RDC_FILTERPOINT:  Not used.
 
 RDC_MAXALGORITHM:  Not used.
 
-2.2.1.2.4 UPDATE_REQUEST_TYPE
+###### 2.2.1.2.4 UPDATE_REQUEST_TYPE
 
 The UPDATE_REQUEST_TYPE enumerated type specifies the type of updates being requested when
 the client calls the RequestUpdates method.
@@ -1913,7 +1632,7 @@ UPDATE_REQUEST_LIVE:  Request only non-tombstone updates that pertain to a versi
 
 vector.
 
-2.2.1.2.5 UPDATE_STATUS
+###### 2.2.1.2.5 UPDATE_STATUS
 
 In response to a request for updates, a server MUST use a value of the UPDATE_STATUS enumerated
 type to specify whether it was able to send all updates that pertain to an argument version chain
@@ -1932,7 +1651,8 @@ Release: April 23, 2024
 
 22 / 123
 
-UPDATE_STATUS_DONE:  There are no more updates that pertain to the argument version chain
+
+UPDATE_STATUS_DONE:  There are no more updates that pertain to the argument version chain
 vector. In other words, the server does not have any updates whose versions belong to the
 version chain vector passed in by the client.
 
@@ -1940,7 +1660,7 @@ UPDATE_STATUS_MORE:  There are potentially more updates (tombstone, if the clien
 
 tombstones; live, if the client requested live) from the argument version chain vector.
 
-2.2.1.2.6 RECORDS_STATUS
+###### 2.2.1.2.6 RECORDS_STATUS
 
 The RECORDS_STATUS enumerated type is used for an output parameter of a Slow Sync request. It
 indicates whether the server has more records in the scope of the replicated folder over which Slow
@@ -1956,7 +1676,7 @@ RECORDS_STATUS_DONE:  No more records are waiting to be transmitted on the serve
 
 RECORDS_STATUS_MORE:  More records are waiting to be transmitted on the server.
 
-2.2.1.2.7 VERSION_REQUEST_TYPE
+###### 2.2.1.2.7 VERSION_REQUEST_TYPE
 
 The VERSION_REQUEST_TYPE enumerated value is used to indicate what role the client version vector
 request has. For more information on version vectors see [MS-FRS1] section 3.1.1.11.
@@ -1980,7 +1700,7 @@ REQUEST_SUBORDINATE_SYNC:  Indicates that the client requests a version vector f
 
 server for selective single master mode.
 
-2.2.1.2.8 VERSION_CHANGE_TYPE
+###### 2.2.1.2.8 VERSION_CHANGE_TYPE
 
 A client version vector request uses a value of VERSION_CHANGE_TYPE to indicate whether it is
 requesting a version chain vector change notification or a full version chain vector.
@@ -2002,9 +1722,10 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CHANGE_ALL:  The client requests to receive the full version vector of the server.
 
-2.2.1.2.9 FRS_REQUESTED_STAGING_POLICY
+CHANGE_ALL:  The client requests to receive the full version vector of the server.
+
+###### 2.2.1.2.9 FRS_REQUESTED_STAGING_POLICY
 
 The FRS_REQUESTED_STAGING_POLICY enumerated type indicates the staging policy for the server
 to use.
@@ -2024,12 +1745,12 @@ STAGING_REQUIRED:  The client indicates to the server to store the served conten
 
 RESTAGING_REQUIRED:  The client indicates to the server to purge existing content from its cache.
 
-2.2.1.3  Simple Type Definitions
+##### 2.2.1.3 Simple Type Definitions
 
 In addition to the types defined in this section, DFS-R also uses the DWORDLONG, ULONGLONG, and
 WCHAR type, as specified in [MS-DTYP].
 
-2.2.1.3.1 FRS_REPLICA_SET_ID
+###### 2.2.1.3.1 FRS_REPLICA_SET_ID
 
 UID for a replica set.
 
@@ -2037,7 +1758,7 @@ This type is declared as follows:
 
  typedef GUID FRS_REPLICA_SET_ID;
 
-2.2.1.3.2 FRS_CONTENT_SET_ID
+###### 2.2.1.3.2 FRS_CONTENT_SET_ID
 
 UID for a content set.
 
@@ -2045,7 +1766,7 @@ This type is declared as follows:
 
  typedef GUID FRS_CONTENT_SET_ID;
 
-2.2.1.3.3 FRS_DATABASE_ID
+###### 2.2.1.3.3 FRS_DATABASE_ID
 
 UID for a DFS-R database.
 
@@ -2053,7 +1774,7 @@ This type is declared as follows:
 
  typedef GUID FRS_DATABASE_ID;
 
-2.2.1.3.4 FRS_MEMBER_ID
+###### 2.2.1.3.4 FRS_MEMBER_ID
 
 UID for a member (DFS-R).
 
@@ -2066,9 +1787,10 @@ Release: April 23, 2024
 
 24 / 123
 
- typedef GUID FRS_MEMBER_ID;
 
-2.2.1.3.5 FRS_CONNECTION_ID
+ typedef GUID FRS_MEMBER_ID;
+
+###### 2.2.1.3.5 FRS_CONNECTION_ID
 
 UID for a DFS-R connection.
 
@@ -2076,7 +1798,7 @@ This type is declared as follows:
 
  typedef GUID FRS_CONNECTION_ID;
 
-2.2.1.3.6 EPOQUE
+###### 2.2.1.3.6 EPOQUE
 
 The EPOQUE data type is used only in the FRS_EPOQUE_VECTOR (section 2.2.1.4.2). The
 FRS_EPOQUE_VECTOR is not used in protocol versions 0x00050000 and 0x00050002. However,
@@ -2087,7 +1809,7 @@ This type is declared as follows:
 
  typedef SYSTEMTIME EPOQUE;
 
-2.2.1.3.7 BYTE_PIPE
+###### 2.2.1.3.7 BYTE_PIPE
 
 A byte pipe, as defined by RPC.
 
@@ -2095,12 +1817,12 @@ This type is declared as follows:
 
  typedef pipe byte BYTE_PIPE;
 
-2.2.1.4  Aggregate Definitions
+##### 2.2.1.4 Aggregate Definitions
 
 In addition to the types defined in this section, DFS-R also uses the GUID and FILETIME types, as
 specified in [MS-DTYP] (sections 2.3.4.1 and 2.3.3, respectively).
 
-2.2.1.4.1 FRS_VERSION_VECTOR
+###### 2.2.1.4.1 FRS_VERSION_VECTOR
 
 An entry of a version chain vector.
 
@@ -2128,10 +1850,11 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-unsigned integers. The GVSNs that are included in this entry are the following: { (dbGuid, low+1), …,
+
+unsigned integers. The GVSNs that are included in this entry are the following: { (dbGuid, low+1), …,
 (dbGuid, high) }.
 
-2.2.1.4.2 FRS_EPOQUE_VECTOR
+###### 2.2.1.4.2 FRS_EPOQUE_VECTOR
 
 An entry of an epoque vector.
 
@@ -2146,7 +1869,7 @@ epoque:  Unused. MUST be 0. MUST be ignored on receipt.
 
 Epoque vectors are attributes of the response payload, as specified in section 2.2.1.4.12.
 
-2.2.1.4.3 FRS_ID_GVSN
+###### 2.2.1.4.3 FRS_ID_GVSN
 
 A (UID, GVSN) pair.
 
@@ -2160,7 +1883,7 @@ A (UID, GVSN) pair.
 An FRS_ID_GVSN encodes a pair that consists of a UID and a GVSN. It is used as part of the
 messages for Slow Sync.
 
-2.2.1.4.4 FRS_UPDATE
+###### 2.2.1.4.4 FRS_UPDATE
 
 A structure that contains file metadata related to a particular file being processed by Distributed File
 System Replication (DFS-R).
@@ -2194,7 +1917,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2265,7 +1989,7 @@ partner and the clock has been decremented by the remote
 partner. The client MAY assign a new GVSN when installing
 an update with this flag.
 
-2.2.1.4.5 FRS_UPDATE_CANCEL_DATA
+###### 2.2.1.4.5 FRS_UPDATE_CANCEL_DATA
 
 A structure that contains information about updates that were not processed by a client.
 
@@ -2276,7 +2000,8 @@ Release: April 23, 2024
 
 27 / 123
 
- typedef struct _FRS_UPDATE_CANCEL_DATA {
+
+ typedef struct _FRS_UPDATE_CANCEL_DATA {
    FRS_UPDATE blockingUpdate;
    FRS_CONTENT_SET_ID contentSetId;
    FRS_DATABASE_ID gvsnDatabaseId;
@@ -2336,7 +2061,7 @@ isParentUidValid:  MUST be zero.
 
 isBlockerValid:  MUST be zero.
 
-2.2.1.4.6 FRS_RDC_SOURCE_NEED
+###### 2.2.1.4.6 FRS_RDC_SOURCE_NEED
 
 A file range specification for RDC downloads.
 
@@ -2354,12 +2079,13 @@ Release: April 23, 2024
 
 28 / 123
 
-needSize:  The number of data (uncompressed), in bytes, to retrieve.
+
+needSize:  The number of data (uncompressed), in bytes, to retrieve.
 
 The client uses this structure to request source data from the server when downloading a file with
 RDC.
 
-2.2.1.4.7 FRS_RDC_PARAMETERS_FILTERMAX
+###### 2.2.1.4.7 FRS_RDC_PARAMETERS_FILTERMAX
 
 Configuration parameters for the RDC FilterMax algorithm.
 
@@ -2376,7 +2102,7 @@ windowSize:  See [MS-RDC] for the definition of the hash window parameter of the
 
 algorithm.
 
-2.2.1.4.8 FRS_RDC_PARAMETERS_FILTERPOINT
+###### 2.2.1.4.8 FRS_RDC_PARAMETERS_FILTERPOINT
 
 Configuration for the FilterPoint RDC algorithm. This algorithm and its configuration parameters are
 not used.
@@ -2390,7 +2116,7 @@ minChunkSize:  Unused. MUST be 0 and MUST be ignored on receipt.
 
 maxChunkSize:  Unused. MUST be 0 and MUST be ignored on receipt.
 
-2.2.1.4.9 FRS_RDC_PARAMETERS_GENERIC
+###### 2.2.1.4.9 FRS_RDC_PARAMETERS_GENERIC
 
 Binary large object (BLOB) for alternate RDC algorithms.
 
@@ -2405,9 +2131,9 @@ chunkerParameters:  Not used. This is a generic parameter block, which allows fo
 
 protocol versions.
 
-2.2.1.4.10
+###### 2.2.1.4.10 FRS_RDC_PARAMETERS
 
-FRS_RDC_PARAMETERS
+
 
 Union of RDC algorithm options.
 
@@ -2423,7 +2149,8 @@ Release: April 23, 2024
 
 29 / 123
 
-     [case(RDC_FILTERGENERIC)]
+
+     [case(RDC_FILTERGENERIC)]
        FRS_RDC_PARAMETERS_GENERIC filterGeneric;
      [case(RDC_FILTERMAX)]
        FRS_RDC_PARAMETERS_FILTERMAX filterMax;
@@ -2448,9 +2175,9 @@ The server returns an array of these structures, one each for each level of RDC 
 available. The client uses these parameters to ensure that the local signatures match the signatures
 that will be returned from the server.
 
-2.2.1.4.11
+###### 2.2.1.4.11 FRS_RDC_FILEINFO
 
-FRS_RDC_FILEINFO
+
 
 File information specific to RDC downloads.
 
@@ -2496,13 +2223,14 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-rdcFilterParameters:  The array of RDC chunker parameters used, one each for the levels of RDC
+
+rdcFilterParameters:  The array of RDC chunker parameters used, one each for the levels of RDC
 
 signatures that are available.
 
-2.2.1.4.12
+###### 2.2.1.4.12 FRS_ASYNC_VERSION_VECTOR_RESPONSE
 
-FRS_ASYNC_VERSION_VECTOR_RESPONSE
+
 
 Version chain vector response payload.
 
@@ -2527,9 +2255,9 @@ epoqueVectorCount:  Number of elements in the epoqueVector array.
 
 epoqueVector:  An array of FRS_EPOQUE_VECTOR pairs.
 
-2.2.1.4.13
+###### 2.2.1.4.13 FRS_ASYNC_RESPONSE_CONTEXT
 
-FRS_ASYNC_RESPONSE_CONTEXT
+
 
 Version chain vector response payload envelope.
 
@@ -2547,9 +2275,9 @@ status:  Error/success status of version vector request.
 
 result:  Response payload, comprising a version chain vector.
 
-2.2.1.4.14
+###### 2.2.1.4.14 PFRS_SERVER_CONTEXT
 
-PFRS_SERVER_CONTEXT
+
 
 Context handle that represents the requested file replication operation.
 
@@ -2557,7 +2285,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* PFRS_SERVER_CONTEXT;
 
-2.2.1.4.15  XPRESS Block
+###### 2.2.1.4.15 XPRESS Block
 
 A block of potentially compressed data.
 
@@ -2568,7 +2296,8 @@ Release: April 23, 2024
 
 31 / 123
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2602,7 +2331,7 @@ If the value of the Block Compressed Size field is less than the value of the Bl
 Uncompressed Size field, then the data has been compressed. For more information about
 decompressing compressed data, see section 3.1.1.2.
 
-2.2.1.4.15.1  XPRESS Block Header
+###### 2.2.1.4.15.1 XPRESS Block Header
 
 Stores information about the data stored in an XPRESS Block.
 
@@ -2663,7 +2392,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3  Directory Service Schema Elements
+
+### 2.3 Directory Service Schema Elements
 
 DFS-R is configured using Active Directory objects. File replication proceeds between computers
 within the same forest whose principal names are maintained and authenticated by Active Directory.
@@ -2766,7 +2496,8 @@ Release: April 23, 2024
 
 33 / 123
 
-Class
+
+Class
 
 Attribute
 
@@ -2835,7 +2566,7 @@ DFS-R.
 
 An object layout example is illustrated in section 4.3.1.
 
-2.3.1  msDFSR-LocalSettings
+#### 2.3.1 msDFSR-LocalSettings
 
 This object encapsulates the DFS-R settings that are local to a specific computer, and is stored as a
 child of the computer object representing that specific computer in the directory. By default, the
@@ -2856,7 +2587,8 @@ Release: April 23, 2024
 
 34 / 123
 
-Attributes of this object that are relevant for DFS-R are as follows.
+
+Attributes of this object that are relevant for DFS-R are as follows.
 
 msDFSR-Version: Optional, implementation-defined.<8>
 
@@ -2869,7 +2601,7 @@ The schema definition for this object is provided by the msDFSR-LocalSettings cl
 specified in [MS-ADSC]. ACLs are set on msDFSR-LocalSettings to protect changing or disclosing
 configuration information.
 
-2.3.2  msDFSR-Subscriber
+#### 2.3.2 msDFSR-Subscriber
 
 Objects of this class exist under the msDFSR-LocalSettings object and imply that this computer
 subscribes to a certain replication group.
@@ -2886,7 +2618,7 @@ At most, one msDFSR-Member object MUST be referenced from an msDFSR-Subscriber o
 The schema definition for this object is as specified by the msDFSR-Subscriber class definition in [MS-
 ADTS].
 
-2.3.3  msDFSR-Subscription
+#### 2.3.3 msDFSR-Subscription
 
 Each subscription object represents a replicated folder in the replication group that its parent
 subscribes to. Objects of this class exist on the msDFSR-Subscriber objects and imply that the
@@ -2926,7 +2658,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  msDFSR-Extension: In version 0x00050000 of the Distributed File System: Replication (DFS-R)
+
+  msDFSR-Extension: In version 0x00050000 of the Distributed File System: Replication (DFS-R)
 Protocol, MUST be set to 0 and MUST be ignored on receipt. In version 0x00050002 or later of
 DFS-R, contains a string that specifies a file name pattern to be used to exclude some files from
 data compression.<9>
@@ -2955,7 +2688,7 @@ one msDFSR-Content object MUST be referenced from an msDFSR-Subscription object.
 The schema definition for this object is as specified by the msDFSR-Subscription class definition in
 [MS-ADSC].
 
-2.3.4  msDFSR-GlobalSettings
+#### 2.3.4 msDFSR-GlobalSettings
 
 Replication topology configurations are grouped under the msDFSR-GlobalSettings object.
 
@@ -2972,7 +2705,7 @@ one msDFSR-GlobalSettings object for every domain where DFS-R is configured for 
 The schema definition for this object is provided by the msDFSR-GlobalSettings class definition in [MS-
 ADSC] section 2.109.
 
-2.3.5  msDFSR-ReplicationGroup
+#### 2.3.5 msDFSR-ReplicationGroup
 
 Container for content and topology objects. It is found under the msDFSR-GlobalSettings object.
 
@@ -3001,7 +2734,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  msDFSR-Options: Bit flags to control certain behavior. The following bits are used:
+
+  msDFSR-Options: Bit flags to control certain behavior. The following bits are used:
 
   0x1: Controls how the schedule is interpreted. If 0, the schedule is interpreted in UTC time
 
@@ -3019,7 +2753,7 @@ ReplicationGroup object.
 The schema definition for this object is as specified by the msDFSR-ReplicationGroup class definition in
 [MS-ADSC] section 2.112.
 
-2.3.6  msDFSR-Content
+#### 2.3.6 msDFSR-Content
 
 Container of replication group replicated folder objects.
 
@@ -3031,7 +2765,7 @@ be set on msDFSR-Content and inherited on child objects.
 The schema definition for this object is as specified by the msDFSR-Content class definition in [MS-
 ADSC] section 2.107.
 
-2.3.7  msDFSR-ContentSet
+#### 2.3.7 msDFSR-ContentSet
 
 Subscriber objects on multiple machines link to the same msDFSR-ContentSet, machine-specific
 attributes that are stored in the subscriber object as outlined before. The msDFSR-ContentSet object,
@@ -3056,7 +2790,7 @@ replication.
 The schema definition for this object is as specified by the msDFSR-ContentSet class definition in [MS-
 ADSC] section 2.108.
 
-2.3.8  msDFSR-Topology
+#### 2.3.8 msDFSR-Topology
 
 Container for all topology objects—namely, members and connections.
 
@@ -3070,12 +2804,13 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Each msDFSR-Topology MAY contain references to one or more msDFSR-Member objects.
+
+Each msDFSR-Topology MAY contain references to one or more msDFSR-Member objects.
 
 The schema definition for this object is as specified by the msDFSR-Topology class definition in [MS-
 ADSC] section 2.115.
 
-2.3.9  msDFSR-Member
+#### 2.3.9 msDFSR-Member
 
 Member objects represent a computer object in a replication group. Each computer that participates
 in a replication group MUST have one corresponding member (DFS-R) object.
@@ -3100,7 +2835,7 @@ the connection GUID to a string) and picks the first one.
 The schema definition for this object is as specified by the msDFSR-Member class definition in [MS-
 ADSC] section 2.111.
 
-2.3.10 Computer
+#### 2.3.10 Computer
 
 The following attribute of this object is relevant to DFS-R:
 
@@ -3109,7 +2844,7 @@ The following attribute of this object is relevant to DFS-R:
 The format of an FQDN follows the format of FQDN used in URIs. This format is specified in
 [RFC3986].
 
-2.3.11 msDFSR-Connection
+#### 2.3.11 msDFSR-Connection
 
 Each object of this class represents a directional connection between two machines only.
 
@@ -3142,7 +2877,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  All other bits are ignored and SHOULD be set to 0.
+
+  All other bits are ignored and SHOULD be set to 0.
 
 Each msDFSR-Connection object MUST NOT use the same msDFSR-Member object as the client and
 server.
@@ -3229,7 +2965,7 @@ from 0x0 to 0xF. A value of 0x0 indicates that the replication schedule is off f
 the schedule. A value of 0xF indicates that replication is on for that quarter-hour in the schedule with
 full bandwidth. The levels in between are used in an implementation-defined way.<17>
 
-2.3.12 nTDSConnection
+#### 2.3.12 nTDSConnection
 
 The schema definition for this object is as specified by the nTDSConnection class definition in [MS-
 ADSC] section 2.204. Each object of this class represents a directional connection between two
@@ -3242,7 +2978,8 @@ Release: April 23, 2024
 
 39 / 123
 
-Each nTDSConnection object MUST NOT use the same msDFSR-Member object as the client and
+
+Each nTDSConnection object MUST NOT use the same msDFSR-Member object as the client and
 server.
 
 The following attributes of this object are relevant to DFS-R.
@@ -3266,9 +3003,10 @@ Release: April 23, 2024
 
 40 / 123
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 The following diagram illustrates the main components of the Distributed File System: Replication
 (DFS-R) Protocol synchronization core.
@@ -3292,7 +3030,8 @@ Release: April 23, 2024
 
 41 / 123
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-FRS2].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -3303,7 +3042,7 @@ the server (upstream partner) to the client. DFS-R can be configured to replicat
 which case there are two separate instances of the protocol operating between a pair of machines.
 Each machine, then, is both a client and a server.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3315,7 +3054,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-explanation of how the protocol behaves. This document does not mandate that implementations
+
+explanation of how the protocol behaves. This document does not mandate that implementations
 adhere to this model as long as their external behavior is consistent with that described in this
 document.
 
@@ -3335,13 +3075,13 @@ Database: A store that holds the metadata of replicated files, including updates
 
 vectors.
 
-3.1.1.1  Compression
+##### 3.1.1.1 Compression
 
 Many of the FrsTransport methods use the LZ77+Huffman Compression algorithm, specified in [MS-
 XCA] section 2.1, to compress data. This document does not mandate that implementations adhere to
 this model as long as their external behavior is consistent with what is described in this document.
 
-3.1.1.2  Decompression
+##### 3.1.1.2 Decompression
 
 FrsTransport methods that compress data will always return information specifying the size of the
 original data. It is the caller’s responsibility to determine whether the returned data is compressed. If
@@ -3352,12 +3092,12 @@ uncompressed data.
 LZ77+Huffman Decompression algorithm, specified in [MS-XCA] section 2.2, is used to decompress
 the data.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 DFS-R is primarily an event-driven protocol. Actions are taken in response to external stimulus, such
 as changes in the File Replication Store. This implementation contains a few implementation-
 specific timers. These timers are summarized separately for the client and server behaviors in sections
-3.3.2 and 3.2.2.
+#### 3.3.2 and 3.2.2.
 
 3.1.3  Initialization
 
@@ -3380,7 +3120,8 @@ Release: April 23, 2024
 
 43 / 123
 
-3.1.6  Other Local Events
+
+3.1.6  Other Local Events
 
 Volume dismounts and errors. The per-replicated folder state gets reset when encountering errors
 that prevent processing files on the volume on which they reside. At the protocol level, such events
@@ -3440,7 +3181,8 @@ Release: April 23, 2024
 
 44 / 123
 
-Method
+
+Method
 
 Description
 
@@ -3563,7 +3305,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In the previous table, the term "Reserved for local use" means that the client MUST NOT send the
+
+In the previous table, the term "Reserved for local use" means that the client MUST NOT send the
 opnum, and the server behavior is undefined as it does not affect interoperability. <21>
 
 3.2.4.1.1 CheckConnectivity (Opnum 0)
@@ -3644,7 +3387,8 @@ Release: April 23, 2024
 
 46 / 123
 
-The EstablishConnection method establishes an outbound connection, uniquely identified by a
+
+The EstablishConnection method establishes an outbound connection, uniquely identified by a
 replication group ID/connection ID pair, from a client to a server. An outbound connection to the
 server is required before most other operations can be performed.
 
@@ -3734,7 +3478,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -3812,7 +3557,8 @@ Release: April 23, 2024
 
 48 / 123
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3901,7 +3647,8 @@ Release: April 23, 2024
 
 49 / 123
 
-   [out] DWORDLONG* gvsnVersion
+
+   [out] DWORDLONG* gvsnVersion
  );
 
 connectionId: The GUID of an outbound connection (see the objectGUID attribute specified in
@@ -3984,7 +3731,8 @@ Release: April 23, 2024
 
 50 / 123
 
-Validating the updates request: The server validates the updates request by performing the
+
+Validating the updates request: The server validates the updates request by performing the
 following checks.
 
 
@@ -4062,7 +3810,8 @@ Release: April 23, 2024
 
 51 / 123
 
-   [in] FRS_CONTENT_SET_ID contentSetId,
+
+   [in] FRS_CONTENT_SET_ID contentSetId,
    [in, range(REQUEST_NORMAL_SYNC,REQUEST_SUBORDINATE_SYNC)]
      VERSION_REQUEST_TYPE requestType,
    [in, range(CHANGE_NOTIFY,CHANGE_ALL)]
@@ -4146,7 +3895,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -4219,7 +3969,8 @@ Release: April 23, 2024
 
 53 / 123
 
-Return
+
+Return
 value/code
 
 Description
@@ -4295,7 +4046,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-uidVersion: A UID version. The parameter, along with uidDbGuid parameter, specifies an iterator into
+
+uidVersion: A UID version. The parameter, along with uidDbGuid parameter, specifies an iterator into
 the server's records. A value of zero specifies a request for all of a replicated folder's records from
 the server.
 
@@ -4384,7 +4136,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST send records starting at the record immediately following the record whose UID
+
+The server MUST send records starting at the record immediately following the record whose UID
 iterator is formed by the pair (uidDbGuid, uidVersion). If the iterator is zero then the server MUST
 begin returning records from the first of the replicated folder's records.
 
@@ -4462,7 +4215,8 @@ Release: April 23, 2024
 
 56 / 123
 
-
+
+
 
 If the input parameter cancelData is not valid (see section 2.2.1.4.5 for a definition of a valid
 FRS_UPDATE_CANCEL_DATA structure), then the server MUST fail the call with an
@@ -4544,7 +4298,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Validating the file transfer request: The server MUST validate the file transfer request by
+
+Validating the file transfer request: The server MUST validate the file transfer request by
 performing the following checks.
 
 
@@ -4619,7 +4374,8 @@ Release: April 23, 2024
 
 58 / 123
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4715,7 +4471,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.4.1.11  RdcPushSourceNeeds (Opnum 10)
+
+3.2.4.1.11  RdcPushSourceNeeds (Opnum 10)
 
 The RdcPushSourceNeeds method is used to register requests for file ranges on a server.
 
@@ -4802,7 +4559,8 @@ Release: April 23, 2024
 
 60 / 123
 
-
+
+
 
 If the server is not currently participating in the replication of the replicated folder that is
 associated with the specified server context, then the server MUST fail the call with the
@@ -4878,7 +4636,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4972,7 +4731,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dataBuffer. The server stops filling up dataBuffer when there is not enough space left to write the next
+
+dataBuffer. The server stops filling up dataBuffer when there is not enough space left to write the next
 data block, or when there are no more data blocks to send.
 
 Format of dataBuffer: The format of the dataBuffer parameter is as follows.
@@ -5071,7 +4831,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-XPRESS Block: Following the optional list of fragments is a variable size XPRESS Block, as specified
+
+XPRESS Block: Following the optional list of fragments is a variable size XPRESS Block, as specified
 in section 2.2.1.4.15.
 
 All the data is tightly packed—no padding bytes are added for alignment purposes.
@@ -5153,7 +4914,8 @@ Release: April 23, 2024
 
 64 / 123
 
-   [out] PFRS_SERVER_CONTEXT* serverContext,
+
+   [out] PFRS_SERVER_CONTEXT* serverContext,
    [out] FRS_RDC_FILEINFO** rdcFileInfo,
    [out, size_is(bufferSize), length_is(*sizeRead)]
      byte* dataBuffer,
@@ -5239,7 +5001,8 @@ Release: April 23, 2024
 
 65 / 123
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5322,7 +5085,8 @@ Release: April 23, 2024
 
 66 / 123
 
-If bufferSize is zero then the server SHOULD complete the call successfully with sizeRead set to zero,
+
+If bufferSize is zero then the server SHOULD complete the call successfully with sizeRead set to zero,
 or fail the call with an implementation-defined failure value.
 
 In the case where the client requests an RDC transfer, the server informs the client of the RDC
@@ -5407,7 +5171,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The format of the data between the headers depends on the value of streamType. These formats
+
+The format of the data between the headers depends on the value of streamType. These formats
 are described as follows.
 
 MS_TYPE_META_DATA (1): The metadata is written to the top of the marshaled file. The metadata
@@ -5479,7 +5244,8 @@ Release: April 23, 2024
 
 68 / 123
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5569,7 +5335,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The RawGetFileDataAsync method is used instead of calling RawGetFileData multiple times to obtain
+
+The RawGetFileDataAsync method is used instead of calling RawGetFileData multiple times to obtain
 file data. As specified in [MS-RPCE], the specification for asynchronous RPC, an RPC client pulls file
 data from the byte pipe until receiving an end-of-file notification from the pipe.
 
@@ -5644,7 +5411,8 @@ Release: April 23, 2024
 
 70 / 123
 
-serverContext: The context handle that represents the requested file replication operation. The client
+
+serverContext: The context handle that represents the requested file replication operation. The client
 
 MUST specify a server context that was retrieved by a previously successful call to the
 InitializeFileTransferAsync method in which the client set the rdcDesired parameter to TRUE.
@@ -5728,7 +5496,8 @@ Release: April 23, 2024
 
 71 / 123
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5818,7 +5587,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-FRS2].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -5845,7 +5615,8 @@ Release: April 23, 2024
 
 73 / 123
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-FRS2].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
@@ -5870,7 +5641,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The server completes an asynchronous poll request when it is ready with the version chain vector
+
+5.  The server completes an asynchronous poll request when it is ready with the version chain vector
 
 payload in response to the version chain vector request.
 
@@ -5933,7 +5705,8 @@ Release: April 23, 2024
 
 75 / 123
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-FRS2].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
@@ -5969,7 +5742,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 77 -->
+
+<!-- Extracted images from page 77 -->
 ![Extracted image 1 from page 77]([MS-FRS2].images/page077-img01.png)
 <!-- /Extracted images from page 77 -->
 
@@ -6000,7 +5774,8 @@ Release: April 23, 2024
 
 77 / 123
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-FRS2].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
@@ -6030,7 +5805,8 @@ Release: April 23, 2024
 
 78 / 123
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-FRS2].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -6072,7 +5848,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-FRS2].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -6106,7 +5883,7 @@ The client has to call either RdcGetFileData or RdcGetFileDataAsync, but cannot 
 
 <36>
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 For each configured connection, a client creates a separate state machine, as specified in the figure in
 section 3.3.1.1, and enters the DisConnected state in each state machine.
@@ -6118,11 +5895,12 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When a Connection object is added or removed, clients either establish (when added) or terminate
+
+When a Connection object is added or removed, clients either establish (when added) or terminate
 (when removed) logical connection objects. Clients can delay establishing a connection based on a
 configured schedule.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 In DFS-R, the client initiates all communication with the server. Only in a few cases does the server
 trigger a callback into the client when completing asynchronous RPC messages. For uniformity, the
@@ -6130,7 +5908,7 @@ message processing events are presented as triggered by a successful call to Est
 subsequent actions and messages are triggered by replies by the server. The initial client state is
 DisConnected.
 
-3.3.4.1  DisConnected
+##### 3.3.4.1 DisConnected
 
 Message Handling: None.
 
@@ -6144,7 +5922,7 @@ preceded by an EstablishConnection method.
 
 Error Handling: None.
 
-3.3.4.2  EstablishConnection Completes
+##### 3.3.4.2 EstablishConnection Completes
 
 Upon successful completion, the client has established an outbound connection with the server.
 
@@ -6179,7 +5957,7 @@ The client MUST transition to the Disconnected connection state. The client SHOU
 re-establish the connection by calling the EstablishConnection method after a time-out
 interval of its choice.
 
-3.3.4.3  EstablishSession Completes
+##### 3.3.4.3 EstablishSession Completes
 
 Upon successful completion the client has established a replicated folder session with the server.
 
@@ -6190,7 +5968,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Actions Triggered: The client MUST transition the replicated folder from the Restart session state to
+
+Actions Triggered: The client MUST transition the replicated folder from the Restart session state to
 the InSession session state. See section 3.3.1.2 for a summary of the replicated folder session state
 machine.
 
@@ -6245,7 +6024,7 @@ The client MUST remain in the Polling connection state and SHOULD
 call the EstablishSession method again for this replicated folder, after a
 time-out interval of its choice.
 
-3.3.4.4  RequestVersionVector Completes
+##### 3.3.4.4 RequestVersionVector Completes
 
 Upon successful completion the client has requested a version chain vector / version chain vector
 change notification from the server.
@@ -6279,7 +6058,8 @@ Release: April 23, 2024
 
 82 / 123
 
-3.3.4.5  AsyncPoll Completes
+
+##### 3.3.4.5 AsyncPoll Completes
 
 Upon successful completion the server has responded to a previous call by the client to the
 RequestVersionVector method for a particular replicated folder.
@@ -6355,7 +6135,8 @@ Release: April 23, 2024
 
 83 / 123
 
-3.3.4.6  RequestUpdates Completes
+
+##### 3.3.4.6 RequestUpdates Completes
 
 Upon successful completion, the server has returned at least some of the requested updates to the
 client.
@@ -6395,7 +6176,7 @@ The client MUST transition to the Disconnected connection state. The
 client SHOULD try to re-establish the connection by calling the
 EstablishConnection method after a time-out interval of its choice.
 
-3.3.4.6.1 Requesting Updates (State Transitions)
+###### 3.3.4.6.1 Requesting Updates (State Transitions)
 
 To obtain all updates whose GVSNs are contained in a version chain vector VV, the client might
 have to call the RequestUpdates method multiple times. The client is expected to maintain a state
@@ -6446,7 +6227,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in updateRequestType
+
+in updateRequestType
 
 out updateStatus
 
@@ -6474,7 +6256,7 @@ unsigned comparison of VSNs. The ordering on GVSNs is used to prune VV in the pr
 mentioned protocol by treating version chain vectors as sets of GVSNs, and then by removing
 elements that are lexicographically less than or equal to a given GVSN.
 
-3.3.4.6.2 Processing Updates
+###### 3.3.4.6.2 Processing Updates
 
 DFS-R ensures convergence by imposing a total ordering on updates. A total ordering is obtained from
 the fields (fence, attributes, createTime, clock, uidDbGuid, uidVersion, gvsnDbGuid, and
@@ -6522,7 +6304,8 @@ Release: April 23, 2024
 
 85 / 123
 
-Dangling child conflict: An update is a dangling child if its present field is nonzero; it is not a
+
+Dangling child conflict: An update is a dangling child if its present field is nonzero; it is not a
 replicated folder root; and its parent present field is 0.
 
 A well-formed set of updates does not contain any of the previously mentioned conflicts and such that
@@ -6594,7 +6377,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6612,7 +6396,7 @@ to 1, for each of its own replicated folders.
 VSNs 0–8 are reserved; therefore, the versions of all other UIDs that correspond to replicated files
 MUST start with at least version 9.
 
-3.3.4.7  File Downloads
+##### 3.3.4.7 File Downloads
 
 If a client receives an update whose gvsnVersion is larger than any corresponding update that it
 already has for the same UID and if the received update has the present field set to a nonzero value,
@@ -6620,7 +6404,7 @@ the client MUST download and persist file contents pertaining to the file. The c
 raw file transfer or use RDC file transfer to download the file. A file transfer with either protocol is
 initiated by a call to InitializeFileTransferAsync.
 
-3.3.4.7.1 stagingPolicy Parameter
+###### 3.3.4.7.1 stagingPolicy Parameter
 
 A staging area refers to a cache containing serialized replicated files. The cache need not be kept
 consistent with the File Replication Store. It is up to the client to detect possible inconsistencies and
@@ -6633,7 +6417,7 @@ to download files from a server.
 
 This does not affect the format of the data sent. The server SHOULD honor the request.
 
-3.3.4.8  InitializeFileTransferAsync Completes
+##### 3.3.4.8 InitializeFileTransferAsync Completes
 
 Upon successful completion, the client MUST proceed to download the full file contents.
 
@@ -6665,7 +6449,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  If the call to the InitializeFileTransferAsync method had set the rdcDesired parameter to 0 or if the
+
+3.  If the call to the InitializeFileTransferAsync method had set the rdcDesired parameter to 0 or if the
 
 server set the rdcSignatureLevels member in the FRS_RDC_FILEINFO structure to 0, the client
 MUST proceed by downloading the file contents using the RawGetFileData method or the
@@ -6721,7 +6506,7 @@ Any other non-zero error code
 
 The client MUST retry the download.
 
-3.3.4.9  RawGetFileData Completes
+##### 3.3.4.9 RawGetFileData Completes
 
 Upon successful completion, the client has received the next buffer of marshaled data (as specified in
 section 3.2.4.1.14) from the file identified by the specified server context.
@@ -6763,7 +6548,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error code
+
+Error code
 
 Client response
 
@@ -6781,9 +6567,9 @@ Any other non-zero error code
 
 The client MUST retry the download.
 
-3.3.4.10
+##### 3.3.4.10 RdcClose Completes
 
-RdcClose Completes
+
 
 Upon successful completion, the client has terminated the file transfer associated with the specified
 server context.
@@ -6814,9 +6600,9 @@ RPC errors
 The client MUST transition to the Disconnected connection state and destroy any client
 context associated with the server context.
 
-3.3.4.11
+##### 3.3.4.11 RawGetFileDataAsync Completes
 
-RawGetFileDataAsync Completes
+
 
 Recall that the RawGetFileDataAsync method is supported only in protocol version 0x00050002.
 
@@ -6834,9 +6620,9 @@ RdcClose.
 
 Error Handling: Same as for the RawGetFileData method.
 
-3.3.4.12
+##### 3.3.4.12 RdcGetSignatures Completes
 
-RdcGetSignatures Completes
+
 
 Upon successful completion, the client has received the requested signature data for the specified
 RDC recursion level.
@@ -6848,7 +6634,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This method uses the Remote Differential Compression Algorithm, as specified in [MS-RDC], when
+
+This method uses the Remote Differential Compression Algorithm, as specified in [MS-RDC], when
 replicating a changed file.
 
 Actions Triggered: For a given level, if the previous completed call set the value of the output
@@ -6912,9 +6699,9 @@ Any other non-zero error code
 
 The client MUST retry the download.
 
-3.3.4.13
+##### 3.3.4.13 RdcPushSourceNeeds Completes
 
-RdcPushSourceNeeds Completes
+
 
 The source needs specify byte ranges from the marshaled source file being transferred.
 
@@ -6934,7 +6721,8 @@ Release: April 23, 2024
 
 90 / 123
 
-The client MAY call this function multiple times but MUST NOT exceed more than
+
+The client MAY call this function multiple times but MUST NOT exceed more than
 CONFIG_RDC_NEED_QUEUE_SIZE (see section 2.2.1.1.6) source needs outstanding before retrieving
 them with the RdcGetFileData method or the RdcGetFileDataAsync method.
 
@@ -6971,9 +6759,9 @@ Any other non-zero error code
 
 The client MUST retry the download.
 
-3.3.4.14
+##### 3.3.4.14 RdcGetFileData Completes
 
-RdcGetFileData Completes
+
 
 This method uses the Remote Differential Compression Algorithm (as specified in [MS-RDC]) when
 replicating a changed file. The data stream returned by the RdcGetFileData method is composed of
@@ -7035,7 +6823,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error code
+
+Error code
 
 Client response
 
@@ -7043,9 +6832,9 @@ Any other non-zero error code
 
 The client MUST retry the download.
 
-3.3.4.15
+##### 3.3.4.15 RdcGetFileDataAsync Completes
 
-RdcGetFileDataAsync Completes
+
 
 Recall that RdcGetFileDataAsync is supported only in protocol version 0x00050002.
 
@@ -7060,9 +6849,9 @@ RdcClose.
 
 Error Handling: Same as for the RdcGetFileData method.
 
-3.3.4.16
+##### 3.3.4.16 Request Records Completes
 
-Request Records Completes
+
 
 Upon successful completion the server has returned at least some of the requested records to the
 client.
@@ -7109,7 +6898,7 @@ All other non-zero error codes
 The client SHOULD retry the records request after a timeout of its
 choice.<42>
 
-3.3.4.16.1  Requesting Records (State Transitions)
+###### 3.3.4.16.1 Requesting Records (State Transitions)
 
 [MS-FRS2] - v20240423
 Distributed File System Replication Protocol
@@ -7118,7 +6907,8 @@ Release: April 23, 2024
 
 92 / 123
 
-To obtain all records for live (non-tombstone) updates on the server, the client might have to call the
+
+To obtain all records for live (non-tombstone) updates on the server, the client might have to call the
 RequestRecords method multiple times. The client is expected to maintain a state machine of the
 following form.
 
@@ -7147,9 +6937,9 @@ protocol.
 Call the RequestRecords method again, setting the uidDbGuid parameter to
 rec.uidDbGuid and setting the uidVersion parameter to rec.uidVersion.
 
-3.3.4.16.2
+###### 3.3.4.16.2 Processing Records
 
-Processing Records
+
 
 For each record received from the server that is contained in both the server and client version
 vectors, the client determines whether there is a mismatch.
@@ -7162,9 +6952,9 @@ local database, this record is a mismatch.
 If the record was found to be a mismatch, the client engages in a resolution process. The policy for
 this resolution is implementation-dependent. <43>
 
-3.3.4.17
+##### 3.3.4.17 UpdateCancel
 
-UpdateCancel
+
 
 Upon successful completion, the client has notified the server that an update received from the server
 could not be processed by the client.
@@ -7203,7 +6993,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Error code
+
+Error code
 
 Client Response
 
@@ -7213,15 +7004,15 @@ The client MUST transition to the Disconnected connection state. The
 client SHOULD try to re-establish the connection by calling the
 EstablishConnection method after a time-out interval of its choice.
 
-3.3.4.18
+##### 3.3.4.18 AsyncPoll Completes for REQUEST_SUBORDINATE_SYNC
 
-AsyncPoll Completes for REQUEST_SUBORDINATE_SYNC
+
 
 A client can specify REQUEST_SUBORDINATE_SYNC in the requestType associated with a version
 chain vector request at any time. When such a version chain vector request is issued and how this
 version chain vector is used are both implementation specific.<44>
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 Connection schedules: When a client enters a connection schedule, it uses EstablishConnection to
 create a fresh logical connection with the server.
@@ -7230,7 +7021,7 @@ Update throttle time-outs: Client maintains a throttle in the frequency for requ
 This is entirely for the purpose of ensuring that frequently changing files do not overwhelm the
 network.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
@@ -7241,13 +7032,14 @@ Release: April 23, 2024
 
 94 / 123
 
-<!-- Extracted images from page 95 -->
+
+<!-- Extracted images from page 95 -->
 ![Extracted image 1 from page 95]([MS-FRS2].images/page095-img01.png)
 <!-- /Extracted images from page 95 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Abstract Protocol Examples
+### 4.1 Abstract Protocol Examples
 
 In the following examples, two machines—A and B—synchronize a common replicated folder using
 the DFS-R synchronization protocol. The examples are intended to illustrate the use of the basic DFS-
@@ -7268,7 +7060,7 @@ globally unique. The version chain vector of machine A consists of the map: {}, 
 sequence number count is initially at 0. The state of machine B is similar, except that the fid field
 associated with the share is most likely different.
 
-4.1.1  Basic Content Distribution
+#### 4.1.1 Basic Content Distribution
 
 Suppose that machine A creates two files, a and b, under the replicated folder root. DFS-R updates
 the database accordingly. In particular, the global version of A is incremented and this gvsn value is
@@ -7292,7 +7084,8 @@ Release: April 23, 2024
 
 95 / 123
 
-<!-- Extracted images from page 96 -->
+
+<!-- Extracted images from page 96 -->
 ![Extracted image 1 from page 96]([MS-FRS2].images/page096-img01.png)
 ![Extracted image 2 from page 96]([MS-FRS2].images/page096-img02.png)
 <!-- /Extracted images from page 96 -->
@@ -7308,7 +7101,7 @@ update its database.
 
 Figure 12: Database contents of machine B after file replication
 
-4.1.2  Version Chain Vector Logic - Two Machines
+#### 4.1.2 Version Chain Vector Logic - Two Machines
 
 Machines A and B are initially synchronized, and they have the same version chain vectors (these
 are intended to be synonyms)—for example, {A20, B30}. When a replicated file is edited on A, the
@@ -7318,7 +7111,7 @@ version chain vectors is computed first. In this case, it is {A21}, exactly the 
 resource. In the end of the session, after the new content is propagated to B, B's version chain vector
 is updated to {A21, B30} to reflect new state.
 
-4.1.3  Version Chain Vector Logic - Three Machines
+#### 4.1.3 Version Chain Vector Logic - Three Machines
 
 Assume now that the network has three machines, A, B, and C, and they are configured such that
 machine B receives updates from machine A, machine C from machine B, and machine A from
@@ -7346,7 +7139,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 97 -->
+
+<!-- Extracted images from page 97 -->
 ![Extracted image 1 from page 97]([MS-FRS2].images/page097-img01.png)
 ![Extracted image 2 from page 97]([MS-FRS2].images/page097-img02.png)
 <!-- /Extracted images from page 97 -->
@@ -7388,7 +7182,7 @@ Machine C
 
 {A22, B31, C50}  {A22, B31, C50}  {A22, B31, C50}
 
-4.1.4  Concurrent Updates and Tombstones
+#### 4.1.4 Concurrent Updates and Tombstones
 
 Machines can update different content concurrently, and synchronization propagates such changes
 seamlessly when there are no conflicts. For instance, A could modify a, and B could delete b.
@@ -7408,7 +7202,8 @@ Release: April 23, 2024
 
 97 / 123
 
-<!-- Extracted images from page 98 -->
+
+<!-- Extracted images from page 98 -->
 ![Extracted image 1 from page 98]([MS-FRS2].images/page098-img01.png)
 ![Extracted image 2 from page 98]([MS-FRS2].images/page098-img02.png)
 <!-- /Extracted images from page 98 -->
@@ -7425,7 +7220,7 @@ reconciled after synchronization.
 Figure 16: Database contents of machine A and machine B after replication, showing
 tombstone on machine A
 
-4.1.5  Directory Moves
+#### 4.1.5 Directory Moves
 
 FRS associates UIDs with resources. They identify resources irrespective of their names or location in
 the File Replication Store. A replicated directory p, for instance, can be renamed to q, while a child
@@ -7445,7 +7240,8 @@ Release: April 23, 2024
 
 98 / 123
 
-<!-- Extracted images from page 99 -->
+
+<!-- Extracted images from page 99 -->
 ![Extracted image 1 from page 99]([MS-FRS2].images/page099-img01.png)
 ![Extracted image 2 from page 99]([MS-FRS2].images/page099-img02.png)
 <!-- /Extracted images from page 99 -->
@@ -7453,7 +7249,7 @@ Release: April 23, 2024
 Figure 17: Example of "directory move" file replication sequence between machine A and
 machine B
 
-4.1.6  Name Conflicts
+#### 4.1.6 Name Conflicts
 
 If two machines create files with the same names, they will have a different UID to distinguish them
 as name conflicting files. Machines handle name conflicts by creating a tombstone for the name
@@ -7479,7 +7275,8 @@ Release: April 23, 2024
 
 99 / 123
 
-<!-- Extracted images from page 100 -->
+
+<!-- Extracted images from page 100 -->
 ![Extracted image 1 from page 100]([MS-FRS2].images/page100-img01.png)
 ![Extracted image 2 from page 100]([MS-FRS2].images/page100-img02.png)
 <!-- /Extracted images from page 100 -->
@@ -7509,15 +7306,16 @@ Release: April 23, 2024
 
 100 / 123
 
-<!-- Extracted images from page 101 -->
+
+<!-- Extracted images from page 101 -->
 ![Extracted image 1 from page 101]([MS-FRS2].images/page101-img01.png)
 <!-- /Extracted images from page 101 -->
 
 Figure 21: Database contents of machine A and machine B, showing tombstone conflict
 
-4.2  Examples with Wire-Format Arguments
+### 4.2 Examples with Wire-Format Arguments
 
-4.2.1  RequestVersionVector
+#### 4.2.1 RequestVersionVector
 
 The client can engage in a sequence of calls.
 
@@ -7573,7 +7371,7 @@ immediately invoke the AsyncPoll callback with the same version chain vector, bu
 server has made a change to its version chain vector that supersedes the version chain vector
 returned in the first response.
 
-4.2.2  Requesting Updates
+#### 4.2.2 Requesting Updates
 
 Suppose that versionVectorDiff in a request for updates consists of the following.
 
@@ -7584,7 +7382,8 @@ Release: April 23, 2024
 
 101 / 123
 
-{ { guid1, 10, 200 }, { guid1, 203, 300 }, { guid2, 12, 203} }
+
+{ { guid1, 10, 200 }, { guid1, 203, 300 }, { guid2, 12, 203} }
 
 The server returns gvsnDbGuid=guid1; gvsnVersion=272, (together with a full frsUpdate array). All
 FRS_UPDATEs whose versions belong to the delta.
@@ -7680,7 +7479,8 @@ Release: April 23, 2024
 
 102 / 123
 
-frsUpdate
+
+frsUpdate
 
 An array of 0 updates.
 
@@ -7766,7 +7566,7 @@ gvsnVersion
 
 0
 
-4.2.3  Marshaled Data Format
+#### 4.2.3 Marshaled Data Format
 
 As an illustration, a marshaled data stream can look like the following table.
 
@@ -7777,7 +7577,8 @@ Release: April 23, 2024
 
 103 / 123
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7816,7 +7617,7 @@ Metadata ends.
 
 ...more headers and data continue ...
 
-4.2.4  Ordering on UIDs and GVSNs
+#### 4.2.4 Ordering on UIDs and GVSNs
 
 Suppose that the first byte in guid1 is 0xFA and the first byte in guid2 is 0xFB, then:
 
@@ -7826,9 +7627,9 @@ and
 
 (guid1, 0x0000000000000005) < (guid2, 0x0000000000000004)
 
-4.3  Configuration
+### 4.3 Configuration
 
-4.3.1  Example Objects in the DFS-R Object Hierarchy
+#### 4.3.1 Example Objects in the DFS-R Object Hierarchy
 
 The following figure illustrates the object hierarchy required in Active Directory for storing
 configuration parameters for Windows implementations of DFS-R.
@@ -7840,7 +7641,8 @@ Release: April 23, 2024
 
 104 / 123
 
-<!-- Extracted images from page 105 -->
+
+<!-- Extracted images from page 105 -->
 ![Extracted image 1 from page 105]([MS-FRS2].images/page105-img01.png)
 <!-- /Extracted images from page 105 -->
 
@@ -7853,9 +7655,10 @@ Release: April 23, 2024
 
 105 / 123
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Chunk hashes used in the RDC sub-protocol are computed using a cryptographically weak hash. To
 check the integrity of a file transfer using RDC, DFS-R furthermore uses a stronger hash, a SHA1 hash
@@ -7865,7 +7668,7 @@ scope of these integrity checks. For instance, if seed files are permitted acros
 attack scenario, however constructed, is to inject a seed file, which is different from, but whose chunk
 hashes and file hash coincide with, a particular plaintext.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 DFS-R uses authenticated encrypted RPC for all replication communication. The relevant security
 parameters in this context are shown in the following table.
@@ -7887,7 +7690,8 @@ Release: April 23, 2024
 
 106 / 123
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 The Distributed File System: Replication (DFS-R) Protocol contains one interface, whose IDL definition
 is listed in this section. The IDL definition for this interface imports the "ms-dtyp.idl" file, as specified
@@ -7958,7 +7762,8 @@ Release: April 23, 2024
 
 107 / 123
 
-     unsigned long   attributes;
+
+     unsigned long   attributes;
      FILETIME        fence;
      FILETIME        clock;
      FILETIME        createTime;
@@ -8030,7 +7835,8 @@ Release: April 23, 2024
 
 108 / 123
 
-     RDC_FILTERGENERIC = 0,
+
+     RDC_FILTERGENERIC = 0,
      RDC_FILTERMAX = 1,
      RDC_FILTERPOINT = 2,
      RDC_MAXALGORITHM = 3
@@ -8106,7 +7912,8 @@ Release: April 23, 2024
 
 109 / 123
 
-     unsigned short      rdcChunkerAlgorithm;
+
+     unsigned short      rdcChunkerAlgorithm;
      [switch_is(rdcChunkerAlgorithm)] union
      {
          [case(RDC_FILTERGENERIC)] FRS_RDC_PARAMETERS_GENERIC filterGeneric;
@@ -8180,7 +7987,8 @@ Release: April 23, 2024
 
 110 / 123
 
-         [out] DWORD *upstreamFlags
+
+         [out] DWORD *upstreamFlags
          );
 
      DWORD
@@ -8256,7 +8064,8 @@ Release: April 23, 2024
 
 111 / 123
 
-         [out, size_is(bufferSize), length_is(*sizeRead)] byte *dataBuffer,
+
+         [out, size_is(bufferSize), length_is(*sizeRead)] byte *dataBuffer,
          [in, range(0, CONFIG_TRANSPORT_MAX_BUFFER_SIZE)] DWORD bufferSize,
          [out] DWORD *sizeRead,
          [out] long *isEndOfFile
@@ -8332,7 +8141,8 @@ Release: April 23, 2024
 
 112 / 123
 
- }
+
+ }
 
 [MS-FRS2] - v20240423
 Distributed File System Replication Protocol
@@ -8341,7 +8151,8 @@ Release: April 23, 2024
 
 113 / 123
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8409,7 +8220,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<8> Section 2.3.1: If not present or not equal to "1.0.0.0", Windows replaces it with "1.0.0.0".
+
+<8> Section 2.3.1: If not present or not equal to "1.0.0.0", Windows replaces it with "1.0.0.0".
 
 <9> Section 2.3.3: In version 0x00050002, 0x00050003, and 0x00050004 of the Distributed File
 System: Replication (DFS-R) Protocol, it contains a comma-separated list of 0 or more strings that
@@ -8504,7 +8316,8 @@ Release: April 23, 2024
 
 115 / 123
 
- Value
+
+ Value
 
  Limit in kilobytes per second
 
@@ -8576,7 +8389,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<30> Section 3.2.4.1.14: DFS-R in Windows Server 2003 R2 operating system and later always uses
+
+<30> Section 3.2.4.1.14: DFS-R in Windows Server 2003 R2 operating system and later always uses
 the following values.
 
  HorizonSize, level 11024
@@ -8654,7 +8468,8 @@ Distributed File System Replication Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Windows Server 2008
+
+  Windows Server 2008
 
   Windows Server 2008 R2
 
@@ -8710,7 +8525,8 @@ Release: April 23, 2024
 
 118 / 123
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -8754,7 +8570,8 @@ Release: April 23, 2024
 
 119 / 123
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -8901,7 +8718,8 @@ Examples
 
 120 / 123
 
-   object hierarchy example 104
+
+   object hierarchy example 104
    ordering on UIDs and GVSNs example 104
    requesting updates example 101
    RequestVersionVector example 101
@@ -9050,7 +8868,8 @@ msDFSR-Topology 37
 
 121 / 123
 
-N
+
+N
 
 Name conflicts example 99
 Normative references 11
@@ -9209,7 +9028,8 @@ UPDATE_STATUS 22
 
 122 / 123
 
-UPDATE_STATUS enumeration 22
+
+UPDATE_STATUS enumeration 22
 UpdateCancel (section 3.2.4.1.8 56, section 3.3.4.17
 
 93)

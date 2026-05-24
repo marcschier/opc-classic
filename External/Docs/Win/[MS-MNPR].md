@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 186
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: June 1, 2017
 
 2 / 186
 
-Date
+
+Date
 
 Revision
 History
@@ -488,448 +490,194 @@ Release: June 1, 2017
 
 3 / 186
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.2.1
-2.2.1.2.2
-2.2.1.2.3
-2.2.1.2.4
-2.2.1.2.5
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-2.2.2.1.4
-2.2.2.1.5
-2.2.2.1.6
-2.2.2.1.7
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Common Data Structures ............................................................................ 14
-Common Definitions .............................................................................. 14
-The x,y Coordinate System ............................................................... 14
-Common Field Values ............................................................................ 14
-BackMode ....................................................................................... 14
-BrushHatch ..................................................................................... 14
-BrushStyle ...................................................................................... 15
-PenStyle ......................................................................................... 15
-ROP2 ............................................................................................. 16
-Application Sharing ..................................................................................... 17
-CPCALLCAPS ........................................................................................ 17
-PROTCAPS_BITMAPCACHE ................................................................ 18
-PROTCAPS_CM ................................................................................ 19
-PROTCAPS_GENERAL ....................................................................... 20
-PROTCAPS_ORDERS ........................................................................ 22
-PROTCAPS_PM ................................................................................ 24
-PROTCAPS_SC ................................................................................ 25
-PROTCAPS_SCREEN ......................................................................... 25
-S20_CREATE ........................................................................................ 27
-S20_COLLISION ................................................................................... 28
-S20_DATA ........................................................................................... 28
-ActiveWindowPDU ........................................................................... 30
-Cursor Management Orders .............................................................. 31
-CursorId ................................................................................... 31
-CursorMove ............................................................................... 32
-SendColorCursor ........................................................................ 32
-SendColorCursorCacheId ............................................................ 33
-SendMonoCursor ....................................................................... 33
-Control Orders for Application Sharing ............................................... 34
-Cooperate ................................................................................. 34
-Granted Control ......................................................................... 35
-Notify State ............................................................................... 35
-Request Control ......................................................................... 36
-Control Orders for Application Sharing Enhanced ................................. 36
-Control Pause ............................................................................ 36
-Control Released ........................................................................ 37
-Control Revoked ........................................................................ 37
-Give Control .............................................................................. 38
-Give Control Reply ..................................................................... 38
-
-2.2.2.4.4.1
-2.2.2.4.4.2
-2.2.2.4.4.3
-2.2.2.4.4.4
-2.2.2.4.4.5
-
-2.2.2.4.2.1
-2.2.2.4.2.2
-2.2.2.4.2.3
-2.2.2.4.2.4
-2.2.2.4.2.5
-
-2.2.2.4.3.1
-2.2.2.4.3.2
-2.2.2.4.3.3
-2.2.2.4.3.4
-
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.2.4.1
-2.2.2.4.2
-
-2.2.2.4.4
-
-2.2.2.4.3
-
-[MS-MNPR] - v20170601
-Microsoft NetMeeting Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 186
-
-2.2.2.4.8
-
-2.2.2.4.5
-
-2.2.2.4.8.2
-
-2.2.2.4.8.1
-
-2.2.2.4.7.1
-
-2.2.2.4.5.1
-
-2.2.2.4.10.1
-
-2.2.2.4.8.1.1
-
-2.2.2.4.8.1.1.1
-
-2.2.2.4.6
-2.2.2.4.7
-
-2.2.2.4.7.1.1
-2.2.2.4.7.1.2
-
-2.2.2.4.4.6
-2.2.2.4.4.7
-2.2.2.4.4.8
-
-Pass Control .............................................................................. 39
-Take Control ............................................................................. 40
-Take Control Reply ..................................................................... 40
-Font List ......................................................................................... 41
-NETWORKFONT ......................................................................... 41
-Host Tracking .................................................................................. 43
-Input PDU ...................................................................................... 43
-IMEVENT .................................................................................. 44
-IMKEYBOARD ....................................................................... 44
-IMMOUSE ............................................................................ 45
-Shared Window List ......................................................................... 46
-SWLPACKETCHUNK .................................................................... 48
-NonRectData........................................................................ 48
-RectangleData ................................................................ 48
-SWLWINATTRIBUTES ................................................................. 49
-2.2.2.4.9
-Synchronization Order ..................................................................... 50
-2.2.2.4.10  Update Orders ................................................................................ 50
-Common Values for Multiple Parameters ....................................... 52
-ArcOrder ............................................................................. 52
-2.2.2.4.10.1.1
-CacheBitmapOrder ............................................................... 55
-2.2.2.4.10.1.2
-CacheColorTableOrder ........................................................... 55
-2.2.2.4.10.1.3
-ChordOrder ......................................................................... 56
-2.2.2.4.10.1.4
-2.2.2.4.10.1.5
-Compressed Bitmap .............................................................. 60
-2.2.2.4.10.1.6  DesktopScroll ....................................................................... 64
-2.2.2.4.10.1.7  DstBlt ................................................................................. 65
-EllipseOrder ......................................................................... 66
-2.2.2.4.10.1.8
-2.2.2.4.10.1.9
-ExtTextOrder ....................................................................... 69
-2.2.2.4.10.1.10  LineOrder ............................................................................ 73
-2.2.2.4.10.1.11  Mem3Blt.............................................................................. 75
-2.2.2.4.10.1.12  MemBlt ............................................................................... 78
-2.2.2.4.10.1.13  OE2 Control Flags ................................................................. 80
-2.2.2.4.10.1.14  OpaqueRect ......................................................................... 80
-2.2.2.4.10.1.15  BoundsData ......................................................................... 82
-2.2.2.4.10.1.16  TSHR_COLOR ....................................................................... 83
-2.2.2.4.10.1.17  TSHR_RGBQUAD .................................................................. 84
-2.2.2.4.10.1.18  TSHR_POINT16 .................................................................... 84
-2.2.2.4.10.1.19  TSHR_RECT16 ..................................................................... 84
-2.2.2.4.10.1.20  OrderTypes .......................................................................... 84
-2.2.2.4.10.1.21  PatBlt .................................................................................. 86
-2.2.2.4.10.1.22  PieOrder .............................................................................. 88
-2.2.2.4.10.1.23  PolyBezierOrder ................................................................... 92
-2.2.2.4.10.1.24  PolygonOrder ....................................................................... 93
-2.2.2.4.10.1.25  RectangleOrder .................................................................... 96
-2.2.2.4.10.1.26  RoundRectOrder ................................................................... 99
-2.2.2.4.10.1.27  SaveBitmap ........................................................................ 102
-2.2.2.4.10.1.28  ScreenBlt ........................................................................... 104
-2.2.2.4.10.1.29  TextOrder ........................................................................... 105
-2.2.2.4.10.1.30  UpdateBitmapPDU ............................................................... 108
-2.2.2.4.10.1.31  UpdatePalettePDU ............................................................... 109
-2.2.2.4.10.1.32  UpdateSynchronizePDU ........................................................ 109
-S20_DELETE ....................................................................................... 110
-S20_END ............................................................................................ 110
-S20_JOIN ........................................................................................... 111
-S20_LEAVE ......................................................................................... 111
-S20_RESPOND .................................................................................... 112
-Chat Protocol ............................................................................................ 113
-File Transfer Protocol ................................................................................. 113
-NetMeeting Object Manager ........................................................................ 114
-
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-2.2.3
-2.2.4
-2.2.5
-
-[MS-MNPR] - v20170601
-Microsoft NetMeeting Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 186
-
-NetMeeting Object Manager Hello........................................................... 115
-2.2.5.1
-NetMeeting Object Manager Lock Deny ................................................... 116
-2.2.5.2
-NetMeeting Object Manager Lock Grant .................................................. 117
-2.2.5.3
-NetMeeting Object Manager Lock Notify .................................................. 117
-2.2.5.4
-NetMeeting Object Manager Lock Request ............................................... 118
-2.2.5.5
-NetMeeting Object Manager More Data ................................................... 118
-2.2.5.6
-NetMeeting Object Manager Object Add .................................................. 119
-2.2.5.7
-NetMeeting Object Manager Object Catchup ............................................ 120
-2.2.5.8
-2.2.5.9
-NetMeeting Object Manager Object Delete .............................................. 123
-2.2.5.10  NetMeeting Object Manager Object Move ................................................ 124
-2.2.5.11  NetMeeting Object Manager Object Replace ............................................. 125
-2.2.5.12  NetMeeting Object Manager Object Update.............................................. 126
-2.2.5.13  NetMeeting Object Manager Unlock ........................................................ 127
-2.2.5.14  NetMeeting Object Manager Welcome ..................................................... 128
-2.2.5.15  NetMeeting Object Manager Workset Catchup .......................................... 128
-2.2.5.16  NetMeeting Object Manager Workset Clear .............................................. 129
-2.2.5.17  NetMeeting Object Manager Workset New ............................................... 130
-2.2.5.18  NetMeeting Object Manager WSGROUP Send Complete ............................. 131
-2.2.5.19  NetMeeting Object Manager WSGROUP Send Deny ................................... 132
-2.2.5.20  NetMeeting Object Manager WSGROUP Send Midway ............................... 133
-2.2.5.21  NetMeeting Object Manager WSGROUP Send Request ............................... 134
-2.2.5.22  Object Manager Data Packet Structures .................................................. 134
-2.2.5.22.1  NetMeeting Object Manager WSGROUP Info ....................................... 134
-2.2.5.22.2  NetMeeting Object Manager WSGROUP_REG_REC .............................. 135
-2.2.5.22.3  WB_GRAPHIC ................................................................................ 137
-TOOLTYPE ................................................................................ 140
-2.2.5.22.4  WB_GRAPHIC_DIB ......................................................................... 140
-2.2.5.22.5  WB_GRAPHIC_FREEHAND ............................................................... 141
-2.2.5.22.6  WB_GRAPHIC_TEXT ........................................................................ 141
-2.2.5.22.7  WB_PAGE_ORDER .......................................................................... 143
-2.2.5.22.8  WB_LOCK ...................................................................................... 144
-2.2.5.22.9  WB_SYNC ...................................................................................... 144
-2.2.5.22.10  WB_PERSON .................................................................................. 145
-Voice Communication Protocol ..................................................................... 146
-AudioCapability Element ....................................................................... 146
-Whiteboard Protocol Extensions ................................................................... 146
-MSTextPDU ......................................................................................... 147
-TEXTPDU_ATTRIB ................................................................................ 147
-POINT ........................................................................................... 148
-TEXTPDU_HEADER ............................................................................... 149
-VARIABLE_STRING ............................................................................... 149
-VARIABLE_STRING_HEADER ................................................................. 150
-Optional Elements in Q.931 Call SETUP PDU .................................................. 150
-Audio/Video Conferencing ........................................................................... 153
-User-User Signalling Information Element ............................................... 153
-nonStandardData Structure ................................................................... 154
-Alerting-UUIE Response PDU ................................................................. 155
-
-2.2.9.1
-2.2.9.2
-2.2.9.3
-
-2.2.7.3
-2.2.7.4
-2.2.7.5
-
-2.2.7.1
-2.2.7.2
-
-2.2.5.22.3.1
-
-2.2.7.2.1
-
-2.2.6.1
-
-2.2.6
-
-2.2.7
-
-2.2.8
-2.2.9
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ................................................................................................... 157
-Peer-to-Peer Protocol Details ............................................................................ 157
-Abstract Data Model ................................................................................... 157
-Timers ..................................................................................................... 157
-Initialization .............................................................................................. 157
-Higher-Layer Triggered Events .................................................................... 157
-Processing Events and Sequencing Rules ...................................................... 157
-S20 Protocol MCS Channel .................................................................... 157
-Standard Connection Establishment .................................................. 158
-Sequencing .................................................................................... 160
-
-3.1.5.1.1
-3.1.5.1.2
-
-3.1.5.1
-
-[MS-MNPR] - v20170601
-Microsoft NetMeeting Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 186
-
-3.1.5.1.3
-3.1.5.1.4
-
-3.1.5.1.4.1
-
-3.1.5.1.4.1.1
-
-Interaction between S20 Protocol and MCS ........................................ 163
-MCS Broadcast Transport Service Functions for S20 Protocol ............... 163
-MCS Broadcast Transport Service Events for the S20 Protocol ........ 164
-
-3.1.5.2
-3.1.5.3
-
-3.1.5.3.1
-
-3.1.5.4
-
-3.1.5.4.1
-
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-
-MCS Handling of Network Transmission, Time-outs, and
-Retransmissions .................................................................. 165
-State Machine Control State Transitions .................................................. 165
-NetMeeting Object Manager Initial Join Protocol ....................................... 166
-Sequencing .................................................................................... 167
-NetMeeting Object Manager Late Joiner Protocol ...................................... 168
-Sequencing .................................................................................... 169
-NetMeeting Object Manager Sequence Stamps ........................................ 170
-NetMeeting Chat Protocol ...................................................................... 171
-NetMeeting File Transfer Protocol ........................................................... 172
-NetMeeting Whiteboard Protocol ............................................................ 173
-Timer Events ............................................................................................. 173
-Other Local Events ..................................................................................... 173
-
-3.1.6
-3.1.7
-
-4.1
-
-4  Protocol Examples ............................................................................................... 174
-Sample Session Establishment Packet Flows ....................................................... 174
-Creating a New Application-Sharing Session with Multiple Nodes ..................... 174
-Joining an Existing Application-Sharing Session ............................................. 174
-Leaving an Application-Sharing Session ........................................................ 175
-Deleting a Node from an Application-Sharing Session ..................................... 175
-Ending an Application-Sharing Session ......................................................... 175
-UUIE Response PDU: Use Case Scenario ............................................................ 175
-
-4.1.1
-4.1.2
-4.1.3
-4.1.4
-4.1.5
-
-4.2
-
-5  Security ............................................................................................................... 177
-Security Considerations for Implementers .......................................................... 177
-Index of Security Parameters ........................................................................... 177
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 178
-
-7  Change Tracking .................................................................................................. 183
-
-8  Index ................................................................................................................... 184
-
-[MS-MNPR] - v20170601
-Microsoft NetMeeting Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-7 / 186
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Data Structures](#221-common-data-structures)
+      - [2.2.1.1 Common Definitions](#2211-common-definitions)
+        - [2.2.1.1.1 The x,y Coordinate System](#22111-the-xy-coordinate-system)
+      - [2.2.1.2 Common Field Values](#2212-common-field-values)
+        - [2.2.1.2.1 BackMode](#22121-backmode)
+        - [2.2.1.2.2 BrushHatch](#22122-brushhatch)
+        - [2.2.1.2.3 BrushStyle](#22123-brushstyle)
+        - [2.2.1.2.4 PenStyle](#22124-penstyle)
+        - [2.2.1.2.5 ROP2](#22125-rop2)
+    - [2.2.2 Application Sharing](#222-application-sharing)
+      - [2.2.2.1 CPCALLCAPS](#2221-cpcallcaps)
+        - [2.2.2.1.1 PROTCAPS_BITMAPCACHE](#22211-protcapsbitmapcache)
+        - [2.2.2.1.2 PROTCAPS_CM](#22212-protcapscm)
+        - [2.2.2.1.3 PROTCAPS_GENERAL](#22213-protcapsgeneral)
+        - [2.2.2.1.4 PROTCAPS_ORDERS](#22214-protcapsorders)
+        - [2.2.2.1.5 PROTCAPS_PM](#22215-protcapspm)
+        - [2.2.2.1.6 PROTCAPS_SC](#22216-protcapssc)
+        - [2.2.2.1.7 PROTCAPS_SCREEN](#22217-protcapsscreen)
+      - [2.2.2.2 S20_CREATE](#2222-s20create)
+      - [2.2.2.3 S20_COLLISION](#2223-s20collision)
+      - [2.2.2.4 S20_DATA](#2224-s20data)
+        - [2.2.2.4.1 ActiveWindowPDU](#22241-activewindowpdu)
+        - [2.2.2.4.2 Cursor Management Orders](#22242-cursor-management-orders)
+          - [2.2.2.4.2.1 CursorId](#222421-cursorid)
+          - [2.2.2.4.2.2 CursorMove](#222422-cursormove)
+          - [2.2.2.4.2.3 SendColorCursor](#222423-sendcolorcursor)
+          - [2.2.2.4.2.4 SendColorCursorCacheId](#222424-sendcolorcursorcacheid)
+          - [2.2.2.4.2.5 SendMonoCursor](#222425-sendmonocursor)
+        - [2.2.2.4.3 Control Orders for Application Sharing](#22243-control-orders-for-application-sharing)
+          - [2.2.2.4.3.1 Cooperate](#222431-cooperate)
+          - [2.2.2.4.3.2 Granted Control](#222432-granted-control)
+          - [2.2.2.4.3.3 Notify State](#222433-notify-state)
+          - [2.2.2.4.3.4 Request Control](#222434-request-control)
+        - [2.2.2.4.4 Control Orders for Application Sharing Enhanced](#22244-control-orders-for-application-sharing-enhanced)
+          - [2.2.2.4.4.1 Control Pause](#222441-control-pause)
+          - [2.2.2.4.4.2 Control Released](#222442-control-released)
+          - [2.2.2.4.4.3 Control Revoked](#222443-control-revoked)
+          - [2.2.2.4.4.4 Give Control](#222444-give-control)
+          - [2.2.2.4.4.5 Give Control Reply](#222445-give-control-reply)
+          - [2.2.2.4.4.6 Pass Control](#222446-pass-control)
+          - [2.2.2.4.4.7 Take Control](#222447-take-control)
+          - [2.2.2.4.4.8 Take Control Reply](#222448-take-control-reply)
+        - [2.2.2.4.5 Font List](#22245-font-list)
+          - [2.2.2.4.5.1 NETWORKFONT](#222451-networkfont)
+        - [2.2.2.4.6 Host Tracking](#22246-host-tracking)
+        - [2.2.2.4.7 Input PDU](#22247-input-pdu)
+          - [2.2.2.4.7.1 IMEVENT](#222471-imevent)
+            - [2.2.2.4.7.1.1 IMKEYBOARD](#2224711-imkeyboard)
+            - [2.2.2.4.7.1.2 IMMOUSE](#2224712-immouse)
+        - [2.2.2.4.8 Shared Window List](#22248-shared-window-list)
+          - [2.2.2.4.8.1 SWLPACKETCHUNK](#222481-swlpacketchunk)
+            - [2.2.2.4.8.1.1 NonRectData](#2224811-nonrectdata)
+              - [2.2.2.4.8.1.1.1 RectangleData](#22248111-rectangledata)
+          - [2.2.2.4.8.2 SWLWINATTRIBUTES](#222482-swlwinattributes)
+        - [2.2.2.4.9 Synchronization Order](#22249-synchronization-order)
+        - [2.2.2.4.10 Update Orders](#222410-update-orders)
+          - [2.2.2.4.10.1 Common Values for Multiple Parameters](#2224101-common-values-for-multiple-parameters)
+            - [2.2.2.4.10.1.1 ArcOrder](#22241011-arcorder)
+            - [2.2.2.4.10.1.2 CacheBitmapOrder](#22241012-cachebitmaporder)
+            - [2.2.2.4.10.1.3 CacheColorTableOrder](#22241013-cachecolortableorder)
+            - [2.2.2.4.10.1.4 ChordOrder](#22241014-chordorder)
+            - [2.2.2.4.10.1.5 Compressed Bitmap](#22241015-compressed-bitmap)
+            - [2.2.2.4.10.1.6 DesktopScroll](#22241016-desktopscroll)
+            - [2.2.2.4.10.1.7 DstBlt](#22241017-dstblt)
+            - [2.2.2.4.10.1.8 EllipseOrder](#22241018-ellipseorder)
+            - [2.2.2.4.10.1.9 ExtTextOrder](#22241019-exttextorder)
+            - [2.2.2.4.10.1.10 LineOrder](#222410110-lineorder)
+            - [2.2.2.4.10.1.11 Mem3Blt](#222410111-mem3blt)
+            - [2.2.2.4.10.1.12 MemBlt](#222410112-memblt)
+            - [2.2.2.4.10.1.13 OE2 Control Flags](#222410113-oe2-control-flags)
+            - [2.2.2.4.10.1.14 OpaqueRect](#222410114-opaquerect)
+            - [2.2.2.4.10.1.15 BoundsData](#222410115-boundsdata)
+            - [2.2.2.4.10.1.16 TSHR_COLOR](#222410116-tshrcolor)
+            - [2.2.2.4.10.1.17 TSHR_RGBQUAD](#222410117-tshrrgbquad)
+            - [2.2.2.4.10.1.18 TSHR_POINT16](#222410118-tshrpoint16)
+            - [2.2.2.4.10.1.19 TSHR_RECT16](#222410119-tshrrect16)
+            - [2.2.2.4.10.1.20 OrderTypes](#222410120-ordertypes)
+            - [2.2.2.4.10.1.21 PatBlt](#222410121-patblt)
+            - [2.2.2.4.10.1.22 PieOrder](#222410122-pieorder)
+            - [2.2.2.4.10.1.23 PolyBezierOrder](#222410123-polybezierorder)
+            - [2.2.2.4.10.1.24 PolygonOrder](#222410124-polygonorder)
+            - [2.2.2.4.10.1.25 RectangleOrder](#222410125-rectangleorder)
+            - [2.2.2.4.10.1.26 RoundRectOrder](#222410126-roundrectorder)
+            - [2.2.2.4.10.1.27 SaveBitmap](#222410127-savebitmap)
+            - [2.2.2.4.10.1.28 ScreenBlt](#222410128-screenblt)
+            - [2.2.2.4.10.1.29 TextOrder](#222410129-textorder)
+            - [2.2.2.4.10.1.30 UpdateBitmapPDU](#222410130-updatebitmappdu)
+            - [2.2.2.4.10.1.31 UpdatePalettePDU](#222410131-updatepalettepdu)
+            - [2.2.2.4.10.1.32 UpdateSynchronizePDU](#222410132-updatesynchronizepdu)
+      - [2.2.2.5 S20_DELETE](#2225-s20delete)
+      - [2.2.2.6 S20_END](#2226-s20end)
+      - [2.2.2.7 S20_JOIN](#2227-s20join)
+      - [2.2.2.8 S20_LEAVE](#2228-s20leave)
+      - [2.2.2.9 S20_RESPOND](#2229-s20respond)
+    - [2.2.3 Chat Protocol](#223-chat-protocol)
+    - [2.2.4 File Transfer Protocol](#224-file-transfer-protocol)
+    - [2.2.5 NetMeeting Object Manager](#225-netmeeting-object-manager)
+      - [2.2.5.1 NetMeeting Object Manager Hello](#2251-netmeeting-object-manager-hello)
+      - [2.2.5.2 NetMeeting Object Manager Lock Deny](#2252-netmeeting-object-manager-lock-deny)
+      - [2.2.5.3 NetMeeting Object Manager Lock Grant](#2253-netmeeting-object-manager-lock-grant)
+      - [2.2.5.4 NetMeeting Object Manager Lock Notify](#2254-netmeeting-object-manager-lock-notify)
+      - [2.2.5.5 NetMeeting Object Manager Lock Request](#2255-netmeeting-object-manager-lock-request)
+      - [2.2.5.6 NetMeeting Object Manager More Data](#2256-netmeeting-object-manager-more-data)
+      - [2.2.5.22 and subsections.](#22522-and-subsections)
+        - [2.2.5.22.1 NetMeeting Object Manager WSGROUP Info](#225221-netmeeting-object-manager-wsgroup-info)
+        - [2.2.5.22.2 NetMeeting Object Manager WSGROUP_REG_REC](#225222-netmeeting-object-manager-wsgroupregrec)
+        - [2.2.5.22.3 WB_GRAPHIC](#225223-wbgraphic)
+          - [2.2.5.22.3.1 TOOLTYPE](#2252231-tooltype)
+        - [2.2.5.22.4 WB_GRAPHIC_DIB](#225224-wbgraphicdib)
+        - [2.2.5.22.5 WB_GRAPHIC_FREEHAND](#225225-wbgraphicfreehand)
+        - [2.2.5.22.6 WB_GRAPHIC_TEXT](#225226-wbgraphictext)
+        - [2.2.5.22.7 WB_PAGE_ORDER](#225227-wbpageorder)
+        - [2.2.5.22.8 WB_LOCK](#225228-wblock)
+        - [2.2.5.22.9 WB_SYNC](#225229-wbsync)
+        - [2.2.5.22.10 WB_PERSON](#2252210-wbperson)
+    - [2.2.6 Voice Communication Protocol](#226-voice-communication-protocol)
+      - [2.2.6.1 AudioCapability Element](#2261-audiocapability-element)
+    - [2.2.7 Whiteboard Protocol Extensions](#227-whiteboard-protocol-extensions)
+      - [2.2.7.1 MSTextPDU](#2271-mstextpdu)
+      - [2.2.7.2 TEXTPDU_ATTRIB](#2272-textpduattrib)
+        - [2.2.7.2.1 POINT](#22721-point)
+      - [2.2.7.3 TEXTPDU_HEADER](#2273-textpduheader)
+      - [2.2.7.4 VARIABLE_STRING](#2274-variablestring)
+      - [2.2.7.5 VARIABLE_STRING_HEADER](#2275-variablestringheader)
+    - [2.2.8 Optional Elements in Q.931 Call SETUP PDU](#228-optional-elements-in-q931-call-setup-pdu)
+    - [2.2.9 Audio/Video Conferencing](#229-audiovideo-conferencing)
+      - [2.2.9.1 User-User Signalling Information Element](#2291-user-user-signalling-information-element)
+      - [2.2.9.2 nonStandardData Structure](#2292-nonstandarddata-structure)
+      - [2.2.9.3 Alerting-UUIE Response PDU](#2293-alerting-uuie-response-pdu)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Peer-to-Peer Protocol Details](#31-peer-to-peer-protocol-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 S20 Protocol MCS Channel](#3151-s20-protocol-mcs-channel)
+        - [3.1.5.1.1 Standard Connection Establishment](#31511-standard-connection-establishment)
+        - [3.1.5.1.2 Sequencing](#31512-sequencing)
+        - [3.1.5.1.3 Interaction between S20 Protocol and MCS](#31513-interaction-between-s20-protocol-and-mcs)
+        - [3.1.5.1.4 MCS Broadcast Transport Service Functions for S20 Protocol](#31514-mcs-broadcast-transport-service-functions-for-s20-protocol)
+          - [3.1.5.1.4.1 MCS Broadcast Transport Service Events for the S20 Protocol](#315141-mcs-broadcast-transport-service-events-for-the-s20-protocol)
+            - [3.1.5.1.4.1.1 MCS Handling of Network Transmission, Time-outs, and Retransmissions](#3151411-mcs-handling-of-network-transmission-time-outs-and-retransmissions)
+      - [3.1.5.2 State Machine Control State Transitions](#3152-state-machine-control-state-transitions)
+      - [3.1.5.3 NetMeeting Object Manager Initial Join Protocol](#3153-netmeeting-object-manager-initial-join-protocol)
+        - [3.1.5.3.1 Sequencing](#31531-sequencing)
+      - [3.1.5.4 NetMeeting Object Manager Late Joiner Protocol](#3154-netmeeting-object-manager-late-joiner-protocol)
+        - [3.1.5.4.1 Sequencing](#31541-sequencing)
+      - [3.1.5.5 NetMeeting Object Manager Sequence Stamps](#3155-netmeeting-object-manager-sequence-stamps)
+      - [3.1.5.6 NetMeeting Chat Protocol](#3156-netmeeting-chat-protocol)
+      - [3.1.5.7 NetMeeting File Transfer Protocol](#3157-netmeeting-file-transfer-protocol)
+      - [3.1.5.8 NetMeeting Whiteboard Protocol](#3158-netmeeting-whiteboard-protocol)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Sample Session Establishment Packet Flows](#41-sample-session-establishment-packet-flows)
+    - [4.1.1 Creating a New Application-Sharing Session with Multiple Nodes](#411-creating-a-new-application-sharing-session-with-multiple-nodes)
+    - [4.1.2 Joining an Existing Application-Sharing Session](#412-joining-an-existing-application-sharing-session)
+    - [4.1.3 Leaving an Application-Sharing Session](#413-leaving-an-application-sharing-session)
+    - [4.1.4 Deleting a Node from an Application-Sharing Session](#414-deleting-a-node-from-an-application-sharing-session)
+    - [4.1.5 Ending an Application-Sharing Session](#415-ending-an-application-sharing-session)
+  - [4.2 UUIE Response PDU: Use Case Scenario](#42-uuie-response-pdu-use-case-scenario)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The Microsoft NetMeeting Protocol specifies a set of extensions to the T.120 protocols. This set
 includes extensions to the T.126 and T.127 protocols. In addition, the NetMeeting product in
@@ -945,7 +693,7 @@ impact the existing functionality of the T.120 protocol.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -997,7 +745,8 @@ Release: June 1, 2017
 
 8 / 186
 
-multicasting: The process by which data is transmitted over a network to multiple recipients
+
+multicasting: The process by which data is transmitted over a network to multiple recipients
 
 simultaneously.
 
@@ -1050,14 +799,14 @@ assigned to the Whiteboard workset group.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1070,7 +819,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[H225] ITU-T, "Call signalling protocols and media stream packetization for packet-based multimedia
+
+[H225] ITU-T, "Call signalling protocols and media stream packetization for packet-based multimedia
 communication systems", Recommendation H.225.0, version 1.2, February 1998,
 http://www.itu.int/rec/T-REC-H.225.0-199802-S/e
 
@@ -1138,7 +888,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[T127] ITU-T, "Multipoint binary file transfer protocol", August 1995, http://www.itu.int/rec/T-REC-
+
+[T127] ITU-T, "Multipoint binary file transfer protocol", August 1995, http://www.itu.int/rec/T-REC-
 T.127-200708-I/en
 
 Note There is a charge to download the specification.
@@ -1154,7 +905,7 @@ http://www.itu.int/rec/T-REC-X.224-199511-I/en
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [G723.1] ITU-T, "Dual rate speech coder for multimedia communications transmitting at 5.3 and 6.3
 kbit/s", Recommendation G.723.1, March 1996, http://www.itu.int/rec/T-REC-G.723.1-199603-S/en
@@ -1165,7 +916,7 @@ us/library/dd145130.aspx
 [RFC1951] Deutsch, P., "DEFLATE Compressed Data Format Specification version 1.3", RFC 1951, May
 1996, https://www.rfc-editor.org/info/rfc1951
 
-1.3  Overview
+### 1.3 Overview
 
 This document describes extensions that are made by Microsoft to the T.120 protocol set. This
 document also describes extensions to the S20 protocol, which is a pre-T.120 protocol that is similar
@@ -1207,13 +958,14 @@ Release: June 1, 2017
 
 11 / 186
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-MNPR].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
 Figure 1: NetMeeting protocol stack
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Microsoft NetMeeting Protocol is implemented on top of the T.120 protocol set, as defined in
 [T120].
@@ -1243,11 +995,11 @@ port for subsequent communication.
 
 Port 1731 Audio call control (TCP/IP)
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Microsoft NetMeeting Protocol requires the TCP and UDP protocols as a transport layer.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Microsoft NetMeeting Protocol is used for multicasting multimedia communication.
 
@@ -1258,11 +1010,12 @@ Release: June 1, 2017
 
 12 / 186
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-MNPR].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The host advertises its capabilities in an S20_CREATE PDU message sent to the client.  The client in
 turn will advertise its capabilities back to the host using an S20_RESPOND PDU.  In addition, a client
@@ -1281,11 +1034,11 @@ the capability sets are received, the client and host each perform a merge opera
 capabilities and the peer capabilities so that all NetMeeting traffic on the wire is consistent with
 negotiated expectations and can be processed by each node.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The T.120 protocol uses the TCP port 1503. The Microsoft NetMeeting Protocol does not modify this.
 
@@ -1296,9 +1049,10 @@ Release: June 1, 2017
 
 13 / 186
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Microsoft NetMeeting Protocol specifies transport layers as in [T120].
 
@@ -1306,24 +1060,24 @@ The Ethernet, IP, TCP, and TPKT ([RFC1006] section 5) layers MUST be present. Th
 T.125, and the Microsoft NetMeeting Protocol SHOULD be present. User data MUST be present as the
 last bytes in each package or message.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Data Structures
+#### 2.2.1 Common Data Structures
 
 The following data structures and values are referred to in multiple locations in this document. They
 are initially defined and then referenced again from within the document.
 
-2.2.1.1  Common Definitions
+##### 2.2.1.1 Common Definitions
 
-2.2.1.1.1 The x,y Coordinate System
+###### 2.2.1.1.1 The x,y Coordinate System
 
 References to the x,y coordinate systems in this documentation are based on a system that defines
 the 0,0 position as the upper-left corner. Positive x numbers are defined as moving to the right in the
 coordinate system, and positive y numbers move down.
 
-2.2.1.2  Common Field Values
+##### 2.2.1.2 Common Field Values
 
-2.2.1.2.1 BackMode
+###### 2.2.1.2.1 BackMode
 
 The BackMode enumeration describes the background color that is used to fill a specific region on a
 drawing surface.
@@ -1338,7 +1092,7 @@ TRANSPARENT:  The region is filled with the background color before drawing is p
 
 OPAQUE:  The region is not filled with the background color before drawing is done.
 
-2.2.1.2.2 BrushHatch
+###### 2.2.1.2.2 BrushHatch
 
 The BrushHatch enumeration describes the six predefined logical hatch brushes that are maintained
 by the graphics device interface (GDI). These are used as fill patterns on a drawing surface.
@@ -1359,7 +1113,8 @@ Release: June 1, 2017
 
 14 / 186
 
- } BrushHatch;
+
+ } BrushHatch;
 
 HS_HORIZONTAL:  The lines are horizontal.
 
@@ -1373,7 +1128,7 @@ HS_CROSS:  Both HS_HORIZONTAL and HS_VERTICAL lines.
 
 HS_DIAGCROSS:  Both HS_FDIAGONAL and HS_BDIAGONAL lines.
 
-2.2.1.2.3 BrushStyle
+###### 2.2.1.2.3 BrushStyle
 
 The BrushStyle enumeration defines the style and pattern of a physical brush to be used on a drawing
 surface.
@@ -1394,7 +1149,7 @@ BS_HATCHED:  The brush uses a hatched style.
 
 BS_PATTERN:  The pattern brush is defined by a device-independent bitmap (DIB) specification.
 
-2.2.1.2.4 PenStyle
+###### 2.2.1.2.4 PenStyle
 
 The PenStyle enumeration defines the style and width of a pen to be used on a drawing surface.
 
@@ -1426,14 +1181,15 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-PS_NULL:  The pen is invisible.
+
+PS_NULL:  The pen is invisible.
 
 PS_INSIDEFRAME:  The pen is solid. When this pen is used with a bounding rectangle, the
 
 dimensions of the figure are shrunk so that it fits entirely in the bounding rectangle and takes into
 account the width of the pen. This applies only to geometric pens.
 
-2.2.1.2.5 ROP2
+###### 2.2.1.2.5 ROP2
 
 The ROP2 enumeration describes the binary raster operation codes that define how the graphics
 device interface (GDI) combines the bits from the selected pen with the bits in the destination bitmap.
@@ -1499,11 +1255,12 @@ Release: June 1, 2017
 
 16 / 186
 
-R2_MERGEPEN:  The pixel is a combination of the pen color and the screen color.
+
+R2_MERGEPEN:  The pixel is a combination of the pen color and the screen color.
 
 R2_WHITE:  The pixel is always drawn as white.
 
-2.2.2  Application Sharing
+#### 2.2.2 Application Sharing
 
 The Microsoft NetMeeting Protocol specifies a method of application sharing over the T.120 Multipoint
 Communication Service (MCS) layer by using the S20 MCS Channel.
@@ -1519,7 +1276,7 @@ the hardware architectures of the client and the server, multiple-byte little-en
 reordering can determine how this variable is marshaled by the sender and interpreted by the
 receiver.
 
-2.2.2.1  CPCALLCAPS
+##### 2.2.2.1 CPCALLCAPS
 
 The CPCALLCAPS structure defines the capabilities of an application-sharing session node.
 
@@ -1569,7 +1326,8 @@ Release: June 1, 2017
 
 17 / 186
 
-Cursor
+
+Cursor
 
 ...
 
@@ -1603,7 +1361,7 @@ Palette (8 bytes): A PROTCAPS_PM packet that describes the palette cache of the 
 
 Share (8 bytes): A PROTCAPS_SC packet that identifies the user.
 
-2.2.2.1.1 PROTCAPS_BITMAPCACHE
+###### 2.2.2.1.1 PROTCAPS_BITMAPCACHE
 
 The PROTCAPS_BITMAPCACHE structure describes the bitmap cache that is used by a node of an
 application-sharing session.
@@ -1647,7 +1405,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-...
+
+...
 
 capsSmallCacheNumEntries
 
@@ -1715,7 +1474,7 @@ obsolete5 (2 bytes): MUST be set to 0x7FFF.
 
 obsolete6 (2 bytes): MUST be set to 0x7FFF.
 
-2.2.2.1.2 PROTCAPS_CM
+###### 2.2.2.1.2 PROTCAPS_CM
 
 The PROTCAPS_CM structure describes the cursor capabilities of an application-sharing session
 node.
@@ -1727,7 +1486,8 @@ Release: June 1, 2017
 
 19 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1768,7 +1528,7 @@ capsCursorCacheSize (2 bytes): The number of elements that the cursor cache for 
 
 contain.
 
-2.2.2.1.3 PROTCAPS_GENERAL
+###### 2.2.2.1.3 PROTCAPS_GENERAL
 
 The PROTCAPS_GENERAL structure describes the general capabilities of an application-sharing
 session node.
@@ -1827,7 +1587,8 @@ Release: June 1, 2017
 
 20 / 186
 
-Value
+
+Value
 
 Meaning
 
@@ -1946,7 +1707,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-genCompressionLevel (2 bytes): The following values indicate the level of compression that are
+
+genCompressionLevel (2 bytes): The following values indicate the level of compression that are
 
 supported by the node:
 
@@ -1970,7 +1732,7 @@ receiver is allowed.
 
 pad1 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.1.4 PROTCAPS_ORDERS
+###### 2.2.2.1.4 PROTCAPS_ORDERS
 
 The PROTCAPS_ORDERS structure describes the orders that are supported by a node of an
 application-sharing session.
@@ -2037,7 +1799,8 @@ Release: June 1, 2017
 
 22 / 186
 
-capSize (2 bytes): MUST be set to 0x0054 (84).
+
+capSize (2 bytes): MUST be set to 0x0054 (84).
 
 capsDisplayDriver (16 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on
 
@@ -2146,7 +1909,8 @@ Release: June 1, 2017
 
 23 / 186
 
-Value  Meaning
+
+Value  Meaning
 
 0x11
 
@@ -2222,7 +1986,7 @@ receipt.
 
 pad2 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.1.5 PROTCAPS_PM
+###### 2.2.2.1.5 PROTCAPS_PM
 
 The PROTCAPS_PM structure describes the palette cache of an application-sharing session node.
 
@@ -2258,9 +2022,10 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-pad1 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.1.6 PROTCAPS_SC
+pad1 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
+
+###### 2.2.2.1.6 PROTCAPS_SC
 
 The PROTCAPS_SC structure identifies the user.
 
@@ -2290,7 +2055,7 @@ gccID (4 bytes): The same user identifier that is used in the Multipoint Communi
 (MCS) [T122] layer. For more information about the MCS user ID, see [T122] section 3
 (Definitions) in the ITU-T Recommendation.
 
-2.2.2.1.7 PROTCAPS_SCREEN
+###### 2.2.2.1.7 PROTCAPS_SCREEN
 
 The PROTCAPS_SCREEN structure describes the screen capabilities of an application-sharing
 session node.
@@ -2352,7 +2117,8 @@ Release: June 1, 2017
 
 25 / 186
 
-Value  Meaning
+
+Value  Meaning
 
 0x0002  Does not support 1-bit-per-pixel screens.
 
@@ -2419,7 +2185,8 @@ Release: June 1, 2017
 
 26 / 186
 
-Value  Meaning
+
+Value  Meaning
 
 0x0002  Does not support NetMeeting 3 compression of bitmaps.
 
@@ -2440,7 +2207,7 @@ Value  Meaning
 
 pad2 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.2  S20_CREATE
+##### 2.2.2.2 S20_CREATE
 
 The S20_CREATE packet is sent by a host to create a new application-sharing session.
 
@@ -2502,7 +2269,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-lenName (2 bytes): The length, in bytes, of nameData.
+
+lenName (2 bytes): The length, in bytes, of nameData.
 
 lenCaps (2 bytes): The length, in bytes, of capsData.
 
@@ -2512,7 +2280,7 @@ characters in length. The name of the user.
 
 capsData (204 bytes): A CPCALLCAPS structure that describes the capabilities of the sender.
 
-2.2.2.3  S20_COLLISION
+##### 2.2.2.3 S20_COLLISION
 
 The S20_COLLISION packet is sent to indicate that an application-sharing session already exists
 with the correlator that is specified in the original S20_CREATE packet. In the case of a collision, the
@@ -2555,7 +2323,7 @@ correlator (4 bytes): The unique identifier for the new session. The first two b
 identifier (above), followed by a monotonically increasing 2-byte sequence number that starts at
 zero.
 
-2.2.2.4  S20_DATA
+##### 2.2.2.4 S20_DATA
 
 The S20_DATA packet is used by a host or client to send data to an application-sharing session.
 
@@ -2599,7 +2367,8 @@ Release: June 1, 2017
 
 28 / 186
 
-Version/Type (2 bytes): MUST be set to 0x0037.
+
+Version/Type (2 bytes): MUST be set to 0x0037.
 
 user (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
@@ -2709,7 +2478,8 @@ Release: June 1, 2017
 
 29 / 186
 
-Value
+
+Value
 
 Meaning
 
@@ -2771,7 +2541,7 @@ datatype, compressionType, and compressedLength.
 
 data (variable): One of the data structures that are appropriate to the value of the datatype field.
 
-2.2.2.4.1 ActiveWindowPDU
+###### 2.2.2.4.1 ActiveWindowPDU
 
 The ActiveWindowPDU order manages the currently active, shared window.
 
@@ -2817,7 +2587,8 @@ Release: June 1, 2017
 
 30 / 186
 
-Value
+
+Value
 
 0x0002
 
@@ -2865,7 +2636,7 @@ identifier for the window that is being application-shared. Otherwise, this fiel
 
 data2 (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.4.2 Cursor Management Orders
+###### 2.2.2.4.2 Cursor Management Orders
 
 The following cursor management orders update the cursor position and shape of the receiver:
 
@@ -2891,7 +2662,7 @@ Contains a color cursor that the receiver SHOULD display.
 
 SendColorCursorCacheId  Contains the cache identifier of a cursor that the receiver SHOULD display.
 
-2.2.2.4.2.1  CursorId
+###### 2.2.2.4.2.1 CursorId
 
 The CursorId order instructs the receiver to display a system cursor.
 
@@ -2919,7 +2690,8 @@ Release: June 1, 2017
 
 31 / 186
 
-type (2 bytes): MUST be set to 0x0001.
+
+type (2 bytes): MUST be set to 0x0001.
 
 flags (2 bytes): MUST be set to 0x0000.
 
@@ -2941,7 +2713,7 @@ The standard arrow cursor is displayed.
 
 0x00007F00
 
-2.2.2.4.2.2  CursorMove
+###### 2.2.2.4.2.2 CursorMove
 
 The CursorMove order contains a cursor movement.
 
@@ -2989,7 +2761,7 @@ xPos (2 bytes): The new x-coordinate, in screen coordinates, of the cursor.
 
 yPos (2 bytes): The new y-coordinate, in screen coordinates, of the cursor.
 
-2.2.2.4.2.3  SendColorCursor
+###### 2.2.2.4.2.3 SendColorCursor
 
 The SendColorCursor order contains a color cursor that the receiver SHOULD use.
 
@@ -3023,7 +2795,8 @@ Release: June 1, 2017
 
 32 / 186
 
-Height
+
+Height
 
 cbXORMask
 
@@ -3060,7 +2833,7 @@ cbXORMask (2 bytes): The length, in bytes, of the color XOR bitmap of aBits.
 
 aBits (variable): The bits for a color XOR bitmap, followed by the bits for an AND mask.
 
-2.2.2.4.2.4  SendColorCursorCacheId
+###### 2.2.2.4.2.4 SendColorCursorCacheId
 
 The SendColorCursorCacheId order contains the cache identifier of a cursor that the receiver SHOULD
 use.
@@ -3088,7 +2861,7 @@ flags (2 bytes): MUST be set to 0x0000.
 
 cacheIndex (2 bytes): The cache identifier of the cursor that the receiver SHOULD display.
 
-2.2.2.4.2.5  SendMonoCursor
+###### 2.2.2.4.2.5 SendMonoCursor
 
 The SendMonoCursor order contains a monochrome cursor that the receiver SHOULD use.
 
@@ -3114,7 +2887,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-xHotSpot
+
+xHotSpot
 
 Width
 
@@ -3150,7 +2924,7 @@ aBits (variable): The bits for a monochrome XOR mask, followed by the bits for a
 
 mask.
 
-2.2.2.4.3 Control Orders for Application Sharing
+###### 2.2.2.4.3 Control Orders for Application Sharing
 
 The Control Orders for Application Sharing are specified below.
 
@@ -3172,7 +2946,7 @@ Indicates whether the sender is currently controllable.
 
 Request Control  Requests control of the receiver by the sender.
 
-2.2.2.4.3.1  Cooperate
+###### 2.2.2.4.3.1 Cooperate
 
 The Cooperate order indicates whether the sender is cooperating in controlling the host.
 
@@ -3206,7 +2980,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value  Meaning
+
+Value  Meaning
 
 0x0000  MUST be set to this value for NetMeeting version 3.
 
@@ -3222,7 +2997,7 @@ unused1 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored o
 
 unused2 (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.4.3.2  Granted Control
+###### 2.2.2.4.3.2 Granted Control
 
 The Granted Control order indicates that the sender has accepted control by the receiver.
 
@@ -3258,7 +3033,7 @@ obtained from S20 packets, such as S20_CREATE or S20_JOIN.
 
 This order is provided for backward compatibility with NetMeeting version 2.
 
-2.2.2.4.3.3  Notify State
+###### 2.2.2.4.3.3 Notify State
 
 The Notify State order is broadcast to indicate whether the sender is currently controllable.
 
@@ -3292,7 +3067,8 @@ Release: June 1, 2017
 
 35 / 186
 
-Value  Meaning
+
+Value  Meaning
 
 0x0000  The sender is not controllable.
 
@@ -3304,7 +3080,7 @@ control, controllerId MUST be set to 0x00000000.
 
 This order is provided for backward compatibility with NetMeeting version 2.
 
-2.2.2.4.3.4  Request Control
+###### 2.2.2.4.3.4 Request Control
 
 The Request Control order requests control of the receiver by the sender.
 
@@ -3333,7 +3109,7 @@ unused2 (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored o
 
 This order is provided for backward compatibility with NetMeeting version 2.
 
-2.2.2.4.4 Control Orders for Application Sharing Enhanced
+###### 2.2.2.4.4 Control Orders for Application Sharing Enhanced
 
 The following Control Orders for Enhanced Application Sharing are specified below.
 
@@ -3369,7 +3145,7 @@ Requests control of the receiver by the sender.
 
 Take Control Reply  Accepts or declines the request of the receiver to control the sender.
 
-2.2.2.4.4.1  Control Pause
+###### 2.2.2.4.4.1 Control Pause
 
 The Control Pause order informs the receiver that the sender has paused or unpaused control.
 
@@ -3380,7 +3156,8 @@ Release: June 1, 2017
 
 36 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3417,7 +3194,7 @@ hostControlId (4 bytes): The unique identifier that is sent with the initial Tak
 
 Control order.
 
-2.2.2.4.4.2  Control Released
+###### 2.2.2.4.4.2 Control Released
 
 The Control Released order indicates that the sender is releasing control.
 
@@ -3448,7 +3225,7 @@ hostControlId (4 bytes): The unique identifier that is sent with the initial Tak
 
 Control order.
 
-2.2.2.4.4.3  Control Revoked
+###### 2.2.2.4.4.3 Control Revoked
 
 The Control Revoked order indicates that the sender has revoked control by the receiver.
 
@@ -3474,7 +3251,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Msg (4 bytes): MUST contain the value 0x00008002.
+
+Msg (4 bytes): MUST contain the value 0x00008002.
 
 hostControlId
 
@@ -3486,7 +3264,7 @@ hostControlId (4 bytes): The unique identifier that is sent with the initial Tak
 
 Control order.
 
-2.2.2.4.4.4  Give Control
+###### 2.2.2.4.4.4 Give Control
 
 The Give Control order asks the receiver if it is willing to accept session control.
 
@@ -3518,7 +3296,7 @@ mcsPassFrom (4 bytes): The user identifier who is passing control. This field MU
 
 0x00000000 if the host is passing control.
 
-2.2.2.4.4.5  Give Control Reply
+###### 2.2.2.4.4.5 Give Control Reply
 
 The Give Control Reply order accepts or declines the request of the receiver to give control to the
 sender.
@@ -3553,7 +3331,8 @@ Release: June 1, 2017
 
 38 / 186
 
-hostControlId (4 bytes): The unique identifier that is used to match requests and replies. This field
+
+hostControlId (4 bytes): The unique identifier that is used to match requests and replies. This field
 can contain any 32-bit value but MUST NOT contain 0. The value is not globally unique. This is
 generated in the local node by incrementing a UINT counter. The counter wraps around if
 necessary, but 0 is never a valid value.
@@ -3611,7 +3390,7 @@ field can contain any 32-bit value but MUST NOT contain 0. The value is not glob
 is generated in the local node by incrementing a UINT counter. The counter wraps around if
 necessary, but 0 is never a valid value.
 
-2.2.2.4.4.6  Pass Control
+###### 2.2.2.4.4.6 Pass Control
 
 The Pass Control order passes control from the sender to the receiver.
 
@@ -3650,12 +3429,13 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-generated in the local node by incrementing a UINT counter. The counter wraps around if
+
+generated in the local node by incrementing a UINT counter. The counter wraps around if
 necessary, but 0 is never a valid value.
 
 mcsPassTo (4 bytes): The user identifier to which the sender wants to pass control.
 
-2.2.2.4.4.7  Take Control
+###### 2.2.2.4.4.7 Take Control
 
 The Take Control order requests control of the receiver by the sender.
 
@@ -3682,7 +3462,7 @@ field can contain any 32-bit value but MUST NOT contain 0. The value is not glob
 is generated in the local node by incrementing a UINT counter. The counter wraps around if
 necessary, but 0 is never a valid value.
 
-2.2.2.4.4.8  Take Control Reply
+###### 2.2.2.4.4.8 Take Control Reply
 
 The Take Control Reply order accepts or declines the request of the receiver to control the sender.
 
@@ -3742,7 +3522,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 0x00000002
 
@@ -3772,7 +3553,7 @@ can contain any 32-bit value but MUST NOT contain 0. The value is not globally u
 generated in the local node by incrementing a UINT counter. The counter wraps around if
 necessary, but 0 is never a valid value.
 
-2.2.2.4.5 Font List
+###### 2.2.2.4.5 Font List
 
 The Font List order describes the fonts that the sender has installed.
 
@@ -3803,7 +3584,7 @@ aFonts (variable): An array of NETWORKFONT structures. The length of this field 
 
 cFonts.
 
-2.2.2.4.5.1  NETWORKFONT
+###### 2.2.2.4.5.1 NETWORKFONT
 
 The NETWORKFONT structure is the font description that is sent across the network when negotiating
 font support.
@@ -3840,7 +3621,8 @@ Release: June 1, 2017
 
 41 / 186
 
-nfAspectY
+
+nfAspectY
 
 nfSigThins
 
@@ -3957,7 +3739,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-nfSigThins (2 bytes): The signature of the font, expressed as the sum of the width, in pixels, of the
+
+nfSigThins (2 bytes): The signature of the font, expressed as the sum of the width, in pixels, of the
 characters with ASCII codes from 0x02 through 0x7E, minus nfSigFats before dividing by two,
 with the sum divided by two.<12>
 
@@ -3990,7 +3773,7 @@ The codepage is unknown.
 
 nfMaxAscent (2 bytes): For fixed size fonts, set to 0x0064.<15>
 
-2.2.2.4.6 Host Tracking
+###### 2.2.2.4.6 Host Tracking
 
 The Host Tracking order notifies the receiver that the sender is starting or stopping application
 sharing.
@@ -4037,7 +3820,7 @@ HET_DESKTOPSHARED
 The sender is sharing the entire desktop. This flag MUST NOT be included in
 S20_DATA packets that have a datatype set to DT_HET30.
 
-2.2.2.4.7 Input PDU
+###### 2.2.2.4.7 Input PDU
 
 The Input PDU packet contains one or more input orders.
 
@@ -4063,7 +3846,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-aEvents (variable)
+
+aEvents (variable)
 
 ...
 
@@ -4073,9 +3857,9 @@ unused (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on
 
 aEvents (variable): An array of IMEVENT structures.
 
-2.2.2.4.7.1
+###### 2.2.2.4.7.1 IMEVENT
 
-IMEVENT
+
 
 The IMEVENT structure defines keyboard and mouse events.
 
@@ -4132,7 +3916,7 @@ data:  If the IMEVENT type equals IM_TYPE_3BUTTON, data will contain the IMMOUSE
 
 Otherwise, all other IMEVENT types will contain IMKEYBOARD packets.
 
-2.2.2.4.7.1.1  IMKEYBOARD
+###### 2.2.2.4.7.1.1 IMKEYBOARD
 
 The IMKEYBOARD packet specifies a keyboard event from the sender.
 
@@ -4158,7 +3942,8 @@ Release: June 1, 2017
 
 44 / 186
 
-flags (2 bytes): Flags from a WM_KEYUP or WM_SYSKEYUP message are combined by using the
+
+flags (2 bytes): Flags from a WM_KEYUP or WM_SYSKEYUP message are combined by using the
 
 bitwise OR operation of the following values:<16>
 
@@ -4249,7 +4034,7 @@ Bits marked 0 are obtained from either the WM_KEYUP or WM_SYSKEYUP events.
 
 keycode (2 bytes): The virtual key code of the keyboard event.
 
-2.2.2.4.7.1.2  IMMOUSE
+###### 2.2.2.4.7.1.2 IMMOUSE
 
 The IMMOUSE packet specifies a mouse event from the sender.
 
@@ -4318,7 +4103,8 @@ Release: June 1, 2017
 
 45 / 186
 
-Value
+
+Value
 
 A
 
@@ -4385,7 +4171,7 @@ x (2 bytes): The new x-coordinate of the cursor in screen coordinates.
 
 y (2 bytes): The new y-coordinate of the cursor in screen coordinates.
 
-2.2.2.4.8 Shared Window List
+###### 2.2.2.4.8 Shared Window List
 
 The Shared Window List order describes the windows of the sender to the receiver.
 
@@ -4427,7 +4213,8 @@ Release: June 1, 2017
 
 46 / 186
 
-nonRectInfo (variable)
+
+nonRectInfo (variable)
 
 ...
 
@@ -4531,14 +4318,15 @@ Release: June 1, 2017
 
 47 / 186
 
-  Any portion of the desktop of the sender that is not shared or obscured is represented as a
+
+  Any portion of the desktop of the sender that is not shared or obscured is represented as a
 
 non-shared area.
 
 The list that is sent can be either the full list of shared and obscuring windows, or simply updates
 to the existing list.
 
-2.2.2.4.8.1  SWLPACKETCHUNK
+###### 2.2.2.4.8.1 SWLPACKETCHUNK
 
 The SWLPACKETCHUNK structure contains the shape of non-rectangular windows in a shared window
 list.
@@ -4572,7 +4360,7 @@ array of RectangleData structures.
 
 This structure MUST be word-aligned with the other fields in a shared window list.
 
-2.2.2.4.8.1.1  NonRectData
+###### 2.2.2.4.8.1.1 NonRectData
 
 The NonRectData packet contains an array of RectangleData that are the components of non-
 rectangular shapes.
@@ -4598,9 +4386,9 @@ Length (2 bytes): The number of RectangleData structures that are used to compos
 
 rectangles (variable): Contains an array of RectangleData structures.
 
-2.2.2.4.8.1.1.1
+###### 2.2.2.4.8.1.1.1 RectangleData
 
-RectangleData
+
 
 The RectangleData packet contains information about rectangle data.
 
@@ -4630,7 +4418,8 @@ Release: June 1, 2017
 
 48 / 186
 
-DeltaLeft (2 bytes): The difference between the left edge of the last rectangle and the left edge of
+
+DeltaLeft (2 bytes): The difference between the left edge of the last rectangle and the left edge of
 
 the current rectangle, expressed in pixels. For the first rectangle, the last edge is considered to
 have a value of 0x0000.
@@ -4648,7 +4437,7 @@ DeltaBottom (2 bytes): The difference between the bottom edge of the last rectan
 bottom edge of the current rectangle, expressed in pixels. For the first rectangle, the last edge is
 considered to have a value of 0x0000.
 
-2.2.2.4.8.2  SWLWINATTRIBUTES
+###### 2.2.2.4.8.2 SWLWINATTRIBUTES
 
 The SWLWINATTRIBUTES structure describes a window.
 
@@ -4712,7 +4501,8 @@ Release: June 1, 2017
 
 49 / 186
 
-Value
+
+Value
 
 A
 
@@ -4766,7 +4556,7 @@ Position (8 bytes): A TSHR_RECT16 structure that specifies the left, top, right,
 
 the region, in order.
 
-2.2.2.4.9 Synchronization Order
+###### 2.2.2.4.9 Synchronization Order
 
 The Synchronization Order packet indicates to the client that it SHOULD begin processing for this
 application-sharing session.
@@ -4792,7 +4582,7 @@ destination (2 bytes): The MCS layer identifier of the client for which this ord
 
 identifier matches that of the receiving client, it SHOULD begin to process messages.
 
-2.2.2.4.10  Update Orders
+###### 2.2.2.4.10 Update Orders
 
 The Update Orders packet contains one or more update orders.
 
@@ -4826,7 +4616,8 @@ Release: June 1, 2017
 
 50 / 186
 
-updateType (2 bytes): One of the following values, which indicate the type of update orders that are
+
+updateType (2 bytes): One of the following values, which indicate the type of update orders that are
 
 contained in the structure.
 
@@ -4954,7 +4745,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Name
+
+Name
 
 Description
 
@@ -4972,13 +4764,13 @@ node.
 
 data (variable): An array of orders that are appropriate to the value of updateType.
 
-2.2.2.4.10.1  Common Values for Multiple Parameters
+###### 2.2.2.4.10.1 Common Values for Multiple Parameters
 
 Various order structures are described in this section.
 
-2.2.2.4.10.1.1
+###### 2.2.2.4.10.1.1 ArcOrder
 
-ArcOrder
+
 
 The ArcOrder packet contains an arc.
 
@@ -5060,7 +4852,8 @@ Release: June 1, 2017
 
 52 / 186
 
-last bounding rectangle that is used, this field contains the bitwise AND of the value
+
+last bounding rectangle that is used, this field contains the bitwise AND of the value
 OE2_CF_DELTACOORDS.
 
 OrderType (1 byte): If the order differs in type from the last, this field MUST contain the value
@@ -5177,7 +4970,8 @@ Release: June 1, 2017
 
 53 / 186
 
-Value  Description
+
+Value  Description
 
 N
 
@@ -5260,7 +5054,8 @@ Release: June 1, 2017
 
 54 / 186
 
-ArcDirection (1 byte): This value MUST be present if the corresponding bit from FieldBytes is set.
+
+ArcDirection (1 byte): This value MUST be present if the corresponding bit from FieldBytes is set.
 
 This represents the direction in which the arc SHOULD be drawn. Possible values are as follows:
 
@@ -5280,9 +5075,9 @@ The arc SHOULD be drawn clockwise.
 
 0x02
 
-2.2.2.4.10.1.2
+###### 2.2.2.4.10.1.2 CacheBitmapOrder
 
-CacheBitmapOrder
+
 
 The CacheBitmapOrder packet contains a bitmap to be cached.
 
@@ -5355,9 +5150,9 @@ iCacheEntry (2 bytes): The first byte is an index that specifies which bitmap ca
 
 Data (variable): Either the uncompressed bitmap data or a Compressed Bitmap structure.
 
-2.2.2.4.10.1.3
+###### 2.2.2.4.10.1.3 CacheColorTableOrder
 
-CacheColorTableOrder
+
 
 55 / 186
 
@@ -5366,7 +5161,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The CacheColorTableOrder packet contains a color table to be cached.
+
+The CacheColorTableOrder packet contains a color table to be cached.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -5415,9 +5211,9 @@ colorTableSize (2 bytes): The number of TSHR_RGBQUAD structures in the Data fiel
 
 Data (variable): An array of TSHR_RGBQUAD structures.
 
-2.2.2.4.10.1.4
+###### 2.2.2.4.10.1.4 ChordOrder
 
-ChordOrder
+
 
 The ChordOrder packet contains a chord.
 
@@ -5477,7 +5273,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-...
+
+...
 
 BrushOrgX (optional)
 
@@ -5572,7 +5369,8 @@ Release: June 1, 2017
 
 57 / 186
 
-Value  Description
+
+Value  Description
 
 H
 
@@ -5657,7 +5455,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-nXStart (2 bytes): This value MUST be present if the corresponding bit from FieldBytes is set. This
+
+nXStart (2 bytes): This value MUST be present if the corresponding bit from FieldBytes is set. This
 
 represents the x-coordinate of the first radial endpoint.
 
@@ -5734,7 +5533,8 @@ Release: June 1, 2017
 
 59 / 186
 
-Value
+
+Value
 
 Meaning
 
@@ -5750,9 +5550,9 @@ The arc SHOULD be drawn clockwise.
 
 0x02
 
-2.2.2.4.10.1.5
+###### 2.2.2.4.10.1.5 Compressed Bitmap
 
-Compressed Bitmap
+
 
 The Compressed Bitmap structure describes a compressed 4-bits-per-pixel or 8-bits-per-pixel bitmap.
 
@@ -5835,7 +5635,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3-Bit Structure Codes
+
+3-Bit Structure Codes
 
 Meaning
 
@@ -5945,7 +5746,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4-Bit Structure Codes  Meaning
+
+4-Bit Structure Codes  Meaning
 
 0xC
 
@@ -6050,7 +5852,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-8-Bit Structure Codes
+
+8-Bit Structure Codes
 
 Meaning
 
@@ -6165,15 +5968,16 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Any sequence of two BG_RUN codes MUST be separated by a single byte, which is the XOR of the byte
+
+Any sequence of two BG_RUN codes MUST be separated by a single byte, which is the XOR of the byte
 from the previous line with the foreground color. The same applies to any combination of
 MEGA_MEGA_BG_RUN, MEGA_BG_RUN, and BG_RUN.
 
 Note: 4 bits-per-pixel images MUST be expanded to a full byte before compression.
 
-2.2.2.4.10.1.6
+###### 2.2.2.4.10.1.6 DesktopScroll
 
-DesktopScroll
+
 
 The DesktopScroll packet contains a desktop scroll.
 
@@ -6266,7 +6070,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-xOrigin (2 bytes): This value MUST be present if the corresponding bit from FieldBytes is set. This
+
+xOrigin (2 bytes): This value MUST be present if the corresponding bit from FieldBytes is set. This
 represents the x-coordinate where the origin of the receiver's view of the desktop SHOULD be
 moved.
 
@@ -6274,9 +6079,9 @@ yOrigin (2 bytes): This value MUST be present if the corresponding bit from Fiel
 represents the y-coordinate where the origin of the receiver's view of the desktop SHOULD be
 moved.
 
-2.2.2.4.10.1.7
+###### 2.2.2.4.10.1.7 DstBlt
 
-DstBlt
+
 
 The DstBlt order contains a raster transfer of a rectangle.
 
@@ -6369,7 +6174,8 @@ Release: June 1, 2017
 
 65 / 186
 
-Value  Description
+
+Value  Description
 
 C
 
@@ -6410,9 +6216,9 @@ bRop (1 byte): This value MUST be present if the corresponding bit from FieldByt
 
 represents the high-order byte of a Windows GDI ternary raster operation code.<17>
 
-2.2.2.4.10.1.8
+###### 2.2.2.4.10.1.8 EllipseOrder
 
-EllipseOrder
+
 
 The EllipseOrder packet contains an ellipse.
 
@@ -6468,7 +6274,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-...
+
+...
 
 BrushOrgX (optional)
 
@@ -6593,7 +6400,8 @@ Release: June 1, 2017
 
 67 / 186
 
-Value  Description
+
+Value  Description
 
 I
 
@@ -6673,7 +6481,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-BrushStyle (1 byte): This value MUST be present if the corresponding bit from the FieldBytes field
+
+BrushStyle (1 byte): This value MUST be present if the corresponding bit from the FieldBytes field
 
 is set. This represents one of the BrushStyle values that are defined in section 2.2.1.2.3.
 
@@ -6703,9 +6512,9 @@ PenColor (3 bytes): This value MUST be present if the corresponding bit from Fie
 This represents the color value of the pen, which is specified by a byte array of a TSHR_COLOR
 structure.
 
-2.2.2.4.10.1.9
+###### 2.2.2.4.10.1.9 ExtTextOrder
 
-ExtTextOrder
+
 
 The ExtTextOrder packet contains a string to be displayed and positions for the individual characters.
 
@@ -6779,7 +6588,8 @@ Release: June 1, 2017
 
 69 / 186
 
-...
+
+...
 
 ...
 
@@ -6864,7 +6674,8 @@ Release: June 1, 2017
 
 70 / 186
 
-Value  Description
+
+Value  Description
 
 G
 
@@ -6953,7 +6764,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-BreakExtra (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
+
+BreakExtra (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
 BreakCount (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
@@ -7042,7 +6854,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 0x0004
 
@@ -7074,9 +6887,9 @@ letters of the string. The first 2 bytes of the array represent the length of th
 The entries that follow correspond directly to the characters in String and specify the delta
 distance to the subsequent character. This field can be from 2 to 257 bytes in length.
 
-2.2.2.4.10.1.10
+###### 2.2.2.4.10.1.10 LineOrder
 
-LineOrder
+
 
 The LineOrder packet contains a line.
 
@@ -7145,7 +6958,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-last bounding rectangle that was used, this field contains the bitwise AND of the value
+
+last bounding rectangle that was used, this field contains the bitwise AND of the value
 OE2_CF_DELTACOORDS.
 
 OrderType (1 byte): If the order differs in type from the last, this field MUST contain the value
@@ -7260,7 +7074,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-nYStart (2 bytes): This value MUST be present if the corresponding bit from FieldBytes is set. This
+
+nYStart (2 bytes): This value MUST be present if the corresponding bit from FieldBytes is set. This
 
 represents the y-coordinate within the window for the start of the line.
 
@@ -7294,9 +7109,9 @@ PenColor (3 bytes): This value MUST be present if the corresponding bit from Fie
 This represents the color value of the pen that is specified by a byte array of a TSHR_COLOR
 structure.
 
-2.2.2.4.10.1.11
+###### 2.2.2.4.10.1.11 Mem3Blt
 
-Mem3Blt
+
 
 The Mem3Blt packet contains a transfer from the bitmap cache to the screen through a brush.
 
@@ -7368,7 +7183,8 @@ Release: June 1, 2017
 
 75 / 186
 
-...
+
+...
 
 cacheIndex (optional)
 
@@ -7485,7 +7301,8 @@ Release: June 1, 2017
 
 76 / 186
 
-Value  Description
+
+Value  Description
 
 K
 
@@ -7563,7 +7380,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-BrushStyle (1 byte): This value MUST be present if the corresponding bit from FieldBytes is set.
+
+BrushStyle (1 byte): This value MUST be present if the corresponding bit from FieldBytes is set.
 
 This represents the BrushStyle values that are specified in section 2.2.1.2.3.
 
@@ -7580,9 +7398,9 @@ cacheIndex (2 bytes): This value MUST be present if the corresponding bit from F
 
 This represents the identifier of the bitmap in the cache.
 
-2.2.2.4.10.1.12
+###### 2.2.2.4.10.1.12 MemBlt
 
-MemBlt
+
 
 The MemBlt packet contains a transfer from the bitmap cache to the screen.
 
@@ -7659,7 +7477,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-0
+
+0
 
 1
 
@@ -7769,7 +7588,8 @@ Release: June 1, 2017
 
 79 / 186
 
-nTopRect (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
+
+nTopRect (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
 
 is set. This represents the y-coordinate within the window of the upper edge of the target
 rectangle.
@@ -7798,9 +7618,9 @@ cacheIndex (2 bytes): This value MUST be present if the corresponding bit from t
 
 field is set. This represents the identifier of the bitmap within the cache.
 
-2.2.2.4.10.1.13
+###### 2.2.2.4.10.1.13 OE2 Control Flags
 
-OE2 Control Flags
+
 
 The OE2 Control Flags enumeration defines the values that describe the contents and encoding of the
 Update Order that is related to drawing.
@@ -7832,9 +7652,9 @@ OE2_CF_DELTACOORDS:  The coordinates of the order-bounding rectangle are specifi
 
 byte delta values from those that are contained in the last order of the same type.
 
-2.2.2.4.10.1.14
+###### 2.2.2.4.10.1.14 OpaqueRect
 
-OpaqueRect
+
 
 The OpaqueRect packet contains an opaque rectangle.
 
@@ -7845,7 +7665,8 @@ Release: June 1, 2017
 
 80 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7945,7 +7766,8 @@ Release: June 1, 2017
 
 81 / 186
 
-Bounds (variable): A byte array of a BoundsData structure. This field is present only if
+
+Bounds (variable): A byte array of a BoundsData structure. This field is present only if
 
 pControlFlags contains the bitwise AND of the value OE2_CF_BOUNDS from the OE2 Control
 Flags enumeration.
@@ -7970,9 +7792,9 @@ ForeColor (3 bytes): This value MUST be present if the corresponding bit from th
 is set. This represents the color of the rectangle that is specified by a byte array of a
 TSHR_COLOR structure.
 
-2.2.2.4.10.1.15
+###### 2.2.2.4.10.1.15 BoundsData
 
-BoundsData
+
 
 The BoundsData structure describes a rectangular area. It encodes (x,y) values that are based on
 changes from the previous rectangular position. Each value can be either a 16-bit absolute value or an
@@ -8055,7 +7877,8 @@ Release: June 1, 2017
 
 82 / 186
 
-Where the bits are defined as:
+
+Where the bits are defined as:
 
 Value
 
@@ -8129,9 +7952,9 @@ X_DELTA_RIGHT (1 byte): An 8-bit x (right) value. Present when bit G is set in t
 
 Y_DELTA_BOTTOM (1 byte): An 8-bit y (bottom) value. Present when bit H is set in the flags field.
 
-2.2.2.4.10.1.16
+###### 2.2.2.4.10.1.16 TSHR_COLOR
 
-TSHR_COLOR
+
 
 The TSHR_COLOR structure specifies a color value. Each color channel is represented by using a
 standard scale of 0-255.
@@ -8164,11 +7987,12 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-blue (1 byte): The color value that represents the blue channel.
 
-2.2.2.4.10.1.17
+blue (1 byte): The color value that represents the blue channel.
 
-TSHR_RGBQUAD
+###### 2.2.2.4.10.1.17 TSHR_RGBQUAD
+
+
 
 The TSHR_RGBQUAD structure specifies a color value to use. The TSHR_RGBQUAD structure also
 contains a reserved field. Each color channel is represented by using a standard scale of 0-255.
@@ -8200,9 +8024,9 @@ rgbRed (1 byte): The color value that represents the red channel.
 
 rgbReserved (1 byte): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.4.10.1.18
+###### 2.2.2.4.10.1.18 TSHR_POINT16
 
-TSHR_POINT16
+
 
 A TSHR_POINT16 structure contains data that represents an (x,y) point. The scale and range of the
 structure depend on the use of TSHR_POINT16 by the implementation.
@@ -8226,9 +8050,9 @@ X (2 bytes): The location of the point on the x-axis.
 
 y (2 bytes): The location of the point on the y-axis.
 
-2.2.2.4.10.1.19
+###### 2.2.2.4.10.1.19 TSHR_RECT16
 
-TSHR_RECT16
+
 
 The TSHR_RECT16 structure specifies a rectangle that has coordinates that represent left, top, right,
 and bottom.
@@ -8260,9 +8084,9 @@ right (2 bytes): The x-coordinate of the right edge of the rectangle.
 
 Bottom (2 bytes): The y-coordinate of the lower edge of the rectangle.
 
-2.2.2.4.10.1.20
+###### 2.2.2.4.10.1.20 OrderTypes
 
-OrderTypes
+
 
 [MS-MNPR] - v20170601
 Microsoft NetMeeting Protocol
@@ -8271,7 +8095,8 @@ Release: June 1, 2017
 
 84 / 186
 
-The OrderTypes enumeration defines the types of application-sharing orders and what is contained in
+
+The OrderTypes enumeration defines the types of application-sharing orders and what is contained in
 each order.
 
  typedef  enum
@@ -8346,7 +8171,8 @@ Release: June 1, 2017
 
 85 / 186
 
-OE2_CHORD_ORDER:  The order contains a chord (ChordOrder).
+
+OE2_CHORD_ORDER:  The order contains a chord (ChordOrder).
 
 OE2_POLYBEZIER_ORDER:  The order contains one or more Bezier curves (PolyBezierOrder).
 
@@ -8354,9 +8180,9 @@ OE2_ROUNDRECT_ORDER:  The order contains a rectangle that has rounded corners
 
 (RoundRectOrder).
 
-2.2.2.4.10.1.21
+###### 2.2.2.4.10.1.21 PatBlt
 
-PatBlt
+
 
 The PatBlt order paints the specified rectangle by using the brush that is currently selected in the
 specified device context. The brush pixels and the surface pixels are combined according to the
@@ -8444,7 +8270,8 @@ Release: June 1, 2017
 
 86 / 186
 
-0
+
+0
 
 1
 
@@ -8565,7 +8392,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-BackColor (3 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
+
+BackColor (3 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
 
 is set. This represents the background color value that is specified by a byte array of a
 TSHR_COLOR structure.
@@ -8596,9 +8424,9 @@ BrushExtra (7 bytes): If BrushStyle is set to BS_PATTERN, this field is the last
 64-by-64 pixel monochrome bitmap of the brush, laid out in top-to-bottom, left-to-right order.
 Otherwise, this field is not used.
 
-2.2.2.4.10.1.22
+###### 2.2.2.4.10.1.22 PieOrder
 
-PieOrder
+
 
 The PieOrder order contains a pie wedge.
 
@@ -8658,7 +8486,8 @@ Release: June 1, 2017
 
 88 / 186
 
-...
+
+...
 
 BrushOrgX (optional)
 
@@ -8754,7 +8583,8 @@ Release: June 1, 2017
 
 89 / 186
 
-Value  Description
+
+Value  Description
 
 H
 
@@ -8837,7 +8667,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-nXStart (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field is
+
+nXStart (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field is
 
 set. This represents the x-coordinate of the first radial endpoint.
 
@@ -8914,7 +8745,8 @@ Release: June 1, 2017
 
 91 / 186
 
-Value
+
+Value
 
 Meaning
 
@@ -8930,9 +8762,9 @@ The arc SHOULD be drawn clockwise.
 
 0x02
 
-2.2.2.4.10.1.23
+###### 2.2.2.4.10.1.23 PolyBezierOrder
 
-PolyBezierOrder
+
 
 The PolyBezierOrder packet contains one or more Bezier curves.
 
@@ -9030,7 +8862,8 @@ Release: June 1, 2017
 
 92 / 186
 
-Value  Description
+
+Value  Description
 
 A
 
@@ -9099,9 +8932,9 @@ aPoints (variable): An array of TSHR_POINT16 structures that describe the curve.
 the number of bytes of data. Two bytes for each point follow: one byte for the x-coordinate and
 one byte for the y-coordinate.
 
-2.2.2.4.10.1.24
+###### 2.2.2.4.10.1.24 PolygonOrder
 
-PolygonOrder
+
 
 The PolygonOrder packet contains a polygon.
 
@@ -9112,7 +8945,8 @@ Release: June 1, 2017
 
 93 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9252,7 +9086,8 @@ Release: June 1, 2017
 
 94 / 186
 
-Value  Description
+
+Value  Description
 
 B
 
@@ -9330,7 +9165,8 @@ Release: June 1, 2017
 
 95 / 186
 
-BrushHatch (1 byte): If BrushStyle is set to BS_PATTERN, this field is the first byte of the 64-by-
+
+BrushHatch (1 byte): If BrushStyle is set to BS_PATTERN, this field is the first byte of the 64-by-
 
 64 pixel monochrome bitmap of the brush; it is laid out in top-to-bottom, left-to-right order. If set
 to BS_HATCHED, one of the BrushHatch values that are defined in section 2.2.1.2.2 and that
@@ -9381,9 +9217,9 @@ aPoints (variable): An array of TSHR_POINT16 structures that describe the curve.
 the number of bytes of data. Two bytes for each point follow: one byte for the x-coordinate and
 one byte for the y-coordinate.
 
-2.2.2.4.10.1.25
+###### 2.2.2.4.10.1.25 RectangleOrder
 
-RectangleOrder
+
 
 The RectangleOrder packet contains a rectangle.
 
@@ -9429,7 +9265,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-...
+
+...
 
 nBottomRect (optional)
 
@@ -9558,7 +9395,8 @@ Release: June 1, 2017
 
 97 / 186
 
-Value  Description
+
+Value  Description
 
 G
 
@@ -9637,7 +9475,8 @@ Release: June 1, 2017
 
 98 / 186
 
-BrushOrgY (1 byte): This value MUST be present if the corresponding bit from the FieldBytes field
+
+BrushOrgY (1 byte): This value MUST be present if the corresponding bit from the FieldBytes field
 is set. This represents the y-offset at which the brush begins. The offset is based on window
 coordinates where the origin of (0,0) is upper left.
 
@@ -9673,9 +9512,9 @@ PenColor (3 bytes): This value MUST be present if the corresponding bit from the
 set. This represents the color value of the pen that is specified by a byte array of a TSHR_COLOR
 structure.
 
-2.2.2.4.10.1.26
+###### 2.2.2.4.10.1.26 RoundRectOrder
 
-RoundRectOrder
+
 
 The RoundRectOrder packet contains a rectangle that has rounded corners.
 
@@ -9729,7 +9568,8 @@ Release: June 1, 2017
 
 99 / 186
 
-BackColor (optional)
+
+BackColor (optional)
 
 ForeColor (optional)
 
@@ -9824,7 +9664,8 @@ Release: June 1, 2017
 
 100 / 186
 
-Value  Description
+
+Value  Description
 
 G
 
@@ -9909,7 +9750,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-ForeColor (3 bytes): This value MUST be present if the corresponding bit from FieldBytes is set.
+
+ForeColor (3 bytes): This value MUST be present if the corresponding bit from FieldBytes is set.
 
 This represents the foreground color value that is specified by a byte array of a TSHR_COLOR
 structure.
@@ -9956,9 +9798,9 @@ PenColor (3 bytes): This value MUST be present if the corresponding bit from the
 set. This represents the color value of the pen that is specified by a byte array of a TSHR_COLOR
 structure.
 
-2.2.2.4.10.1.27
+###### 2.2.2.4.10.1.27 SaveBitmap
 
-SaveBitmap
+
 
 The SaveBitmap order contains a region of the screen that the receiver SHOULD save or restore.
 
@@ -10003,7 +9845,8 @@ Release: June 1, 2017
 
 102 / 186
 
-Operation
+
+Operation
 
 pControlFlags (1 byte): MUST be set to the value OE2_CF_STANDARD_ENC from the OE2 Control
 
@@ -10093,7 +9936,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-nRightRect (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
+
+nRightRect (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
 
 is set. This represents the x-coordinate within the window of the right edge of the rectangle.
 
@@ -10112,9 +9956,9 @@ Value  Meaning
 
 0x0001  SHOULD restore the referenced screen region.
 
-2.2.2.4.10.1.28
+###### 2.2.2.4.10.1.28 ScreenBlt
 
-ScreenBlt
+
 
 The ScreenBlt order contains a bit-block transfer between regions of the screen.
 
@@ -10184,7 +10028,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-0
+
+0
 
 1
 
@@ -10271,9 +10116,9 @@ nYSrc (4 bytes): This value MUST be present if the corresponding bit from the Fi
 
 set. This represents the y-coordinate of the top side of the source rectangle.
 
-2.2.2.4.10.1.29
+###### 2.2.2.4.10.1.29 TextOrder
 
-TextOrder
+
 
 [MS-MNPR] - v20170601
 Microsoft NetMeeting Protocol
@@ -10282,7 +10127,8 @@ Release: June 1, 2017
 
 105 / 186
 
-The TextOrder order contains a string.
+
+The TextOrder order contains a string.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -10424,7 +10270,8 @@ Release: June 1, 2017
 
 106 / 186
 
-Value  Description
+
+Value  Description
 
 A
 
@@ -10507,7 +10354,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-BreakCount (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
+
+BreakCount (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
 FontHeight (2 bytes): This value MUST be present if the corresponding bit from the FieldBytes field
 
@@ -10574,9 +10422,9 @@ String (variable): The text to be drawn. The first byte of the string is an inte
 
 length of the string. The string MUST be from 1 to 256 bytes in length.
 
-2.2.2.4.10.1.30
+###### 2.2.2.4.10.1.30 UpdateBitmapPDU
 
-UpdateBitmapPDU
+
 
 The UpdateBitmapPDU order updates a region of the screen.
 
@@ -10610,7 +10458,8 @@ Release: June 1, 2017
 
 108 / 186
 
-dataSize
+
+dataSize
 
 data (variable)
 
@@ -10638,9 +10487,9 @@ dataSize (2 bytes): The length, in bytes, of the data.
 
 data (variable): Either the uncompressed bitmap data or a Compressed Bitmap structure.
 
-2.2.2.4.10.1.31
+###### 2.2.2.4.10.1.31 UpdatePalettePDU
 
-UpdatePalettePDU
+
 
 The UpdatePalettePDU order describes the palette for UpdateBitmapPDU orders.
 
@@ -10667,9 +10516,9 @@ aColors (variable): An array of TSHR_COLOR structures, with each color specified
 
 the red, green, and blue components.
 
-2.2.2.4.10.1.32
+###### 2.2.2.4.10.1.32 UpdateSynchronizePDU
 
-UpdateSynchronizePDU
+
 
 The UpdateSynchronizePDU order resets the state of the connection.
 
@@ -10699,7 +10548,8 @@ Release: June 1, 2017
 
 109 / 186
 
-2.2.2.5  S20_DELETE
+
+##### 2.2.2.5 S20_DELETE
 
 The S20_DELETE packet is sent by a host to remove a client from an application-sharing session.
 
@@ -10752,7 +10602,7 @@ lenName (2 bytes): MUST be set to the value 0x0000.
 
 capsData (1 byte): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.6  S20_END
+##### 2.2.2.6 S20_END
 
 The S20_END packet is sent by a host to end an application-sharing session.
 
@@ -10794,7 +10644,8 @@ Release: June 1, 2017
 
 110 / 186
 
-user (2 bytes): The local identifier of the user, which is obtained from the Multipoint
+
+user (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
 Communication Service (MCS) [T122] layer. For more information about the MCS user ID, see
 [T122] section 3 (Definitions) in the ITU-T Recommendation.
@@ -10806,7 +10657,7 @@ lenName (2 bytes): SHOULD be set to the value 0x0000.
 
 capsData (1 byte): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.2.7  S20_JOIN
+##### 2.2.2.7 S20_JOIN
 
 The S20_JOIN packet is sent by a client to join an existing application-sharing session.
 
@@ -10862,7 +10713,7 @@ user. The default value of the nameData field is supplied by the user.<26>
 
 capsData (204 bytes): A CPCALLCAPS structure that describes the capabilities of the sender.
 
-2.2.2.8  S20_LEAVE
+##### 2.2.2.8 S20_LEAVE
 
 The S20_LEAVE packet is sent by a client to end its participation in an application-sharing session.
 
@@ -10873,7 +10724,8 @@ Release: June 1, 2017
 
 111 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10908,7 +10760,7 @@ Communication Server (MCS) [T122] layer. For more information about the MCS user
 correlator (4 bytes): The unique identifier for the new session. The first two bytes are the MCS user
 identifier (above) followed by a monotonically increasing 2-byte sequence number starting at zero.
 
-2.2.2.9  S20_RESPOND
+##### 2.2.2.9 S20_RESPOND
 
 The S20_RESPOND packet is sent from a host or client to respond to an S20_CREATE, S20_JOIN or
 S20_RESPONDmessage.
@@ -10963,7 +10815,8 @@ Release: June 1, 2017
 
 112 / 186
 
-User (2 bytes): The local identifier of the user, which is obtained from the Multipoint
+
+User (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
 Communication Service (MCS) [T122] layer. For more information about the MCS user ID, see
 [T122] section 3 (Definitions) in the ITU-T Recommendation.
@@ -10986,7 +10839,7 @@ GetComputerName().
 
 capsData (204 bytes): A CPCALLCAPS structure that describes the capabilities of the sender.
 
-2.2.3  Chat Protocol
+#### 2.2.3 Chat Protocol
 
 The Microsoft NetMeeting Protocol allows for peers to exchange text communication data in a packet
 utilizing MCS. Note that the Chat Protocol uses MCS for its transport layer.
@@ -11020,7 +10873,7 @@ data (variable): A null-terminated string that contains text data. Note that thi
 
 format and is transmitted in little-endian order.
 
-2.2.4  File Transfer Protocol
+#### 2.2.4 File Transfer Protocol
 
 Microsoft NetMeeting Protocol peers engage in File Transfer Protocol (FTP) through the International
 Telecommunications Union (ITU) T.127 standard, as specified in [T127], except for the following
@@ -11045,7 +10898,8 @@ Release: June 1, 2017
 
 113 / 186
 
-Constant
+
+Constant
 
 Value
 
@@ -11092,7 +10946,7 @@ value is obtained from the ASNFile_OfferPDU structure.
 A unique handle to identify the user throughout the file transfer session. Its
 value is obtained from the ASNFile_OfferPDU structure.
 
-2.2.5  NetMeeting Object Manager
+#### 2.2.5 NetMeeting Object Manager
 
 The NetMeeting Object Manager provides a generic way to manage abstract data. It manages the
 creation, sequence, access control, update, and order of any abstract object in a session that has two
@@ -11152,7 +11006,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Packet Name
+
+Packet Name
 
 OMNET_LOCK_GRANT
 
@@ -11281,7 +11136,7 @@ Sends an operation header plus an object segment in a
 data packet. Invoked when an object cannot be sent in a
 single buffer.
 
-2.2.5.1  NetMeeting Object Manager Hello
+##### 2.2.5.1 NetMeeting Object Manager Hello
 
 A 'late joiner' object manager instance broadcasts an OMNET_HELLO packet on the well-known
 ObManControl (Object Manager Control) channel after attaching to a domain that contains an
@@ -11299,7 +11154,8 @@ Release: June 1, 2017
 
 115 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -11341,7 +11197,7 @@ OM_CAPS_NO_COMPRESSION
 
 0x00000004
 
-2.2.5.2  NetMeeting Object Manager Lock Deny
+##### 2.2.5.2 NetMeeting Object Manager Lock Deny
 
 An object manager instance replies to the sender of an OMNET_LOCK_REQ packet with an
 OMNET_LOCK DENY packet to indicate an unsuccessful workset/object lock attempt.
@@ -11392,9 +11248,10 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-reserved (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.5.3  NetMeeting Object Manager Lock Grant
+reserved (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
+
+##### 2.2.5.3 NetMeeting Object Manager Lock Grant
 
 An object manager instance replies to the sender of an OMNET_LOCK_REQ packet with an
 OMNET_LOCK_GRANT packet to indicate a successful workset/object lock attempt.
@@ -11440,7 +11297,7 @@ data1 (2 bytes): An unsigned 16-bit integer correlator.
 
 reserved (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.5.4  NetMeeting Object Manager Lock Notify
+##### 2.2.5.4 NetMeeting Object Manager Lock Notify
 
 An object manager instance broadcasts an OMNET_LOCK_NOTIFY packet on the well-known
 ObManControl channel after relinquishing a workset lock to another object manager instance.
@@ -11487,13 +11344,14 @@ Release: June 1, 2017
 
 117 / 186
 
-worksetID (1 byte): An 8-bit workset ID defined within a workset group.
+
+worksetID (1 byte): An 8-bit workset ID defined within a workset group.
 
 data1 (2 bytes): An unsigned 16-bit integer correlator used to identify the locking instance.
 
 reserved (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.5.5  NetMeeting Object Manager Lock Request
+##### 2.2.5.5 NetMeeting Object Manager Lock Request
 
 The OMNET_LOCK_REQ packet is the initial message of the NetMeeting Object Manager workset
 locking protocol. An object manager instance attempts to lock a workset by enumerating the User
@@ -11543,7 +11401,7 @@ data1 (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on 
 
 reserved (4 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.5.6  NetMeeting Object Manager More Data
+##### 2.2.5.6 NetMeeting Object Manager More Data
 
 An object manager instance sends an OMNET_MORE_DATA packet on the workset group channel
 to continue transmission of a workset object. This packet is immediately followed by a data packet
@@ -11575,7 +11433,8 @@ Release: June 1, 2017
 
 118 / 186
 
-...
+
+...
 
 Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
@@ -11588,7 +11447,7 @@ dataLength (4 bytes): The total byte length of the following data packet.
 
 data (variable): Data packet containing a full or partial workset object, as specified in section
 
-2.2.5.22 and subsections.
+##### 2.2.5.22 and subsections.
 
 2.2.5.7  NetMeeting Object Manager Object Add
 
@@ -11659,7 +11518,8 @@ Release: June 1, 2017
 
 119 / 186
 
-...
+
+...
 
 Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
@@ -11733,7 +11593,8 @@ Release: June 1, 2017
 
 120 / 186
 
-The OMNET_OBJECT_CATCHUP message contains the OMNET_OBJECT_ADD message format and
+
+The OMNET_OBJECT_CATCHUP message contains the OMNET_OBJECT_ADD message format and
 specifies extra fields for the position, replace, and update stamps. Except for deleted workset objects,
 the OMNET_OBJECT_CATCHUP message is followed by a data packet that contains a workset object.
 
@@ -11821,7 +11682,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-position (1 byte): An enumerated relative position in the workset that is defined as FIRST or LAST.
+
+position (1 byte): An enumerated relative position in the workset that is defined as FIRST or LAST.
 
 Value  Meaning
 
@@ -11902,7 +11764,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.5.9  NetMeeting Object Manager Object Delete
+
+2.2.5.9  NetMeeting Object Manager Object Delete
 
 An object manager instance broadcasts an OMNET_OBJECT_DELETE message on the workset
 group channel to delete a specified object from a workset group. The object is uniquely identified by a
@@ -11989,7 +11852,8 @@ Release: June 1, 2017
 
 123 / 186
 
-2.2.5.10
+
+2.2.5.10
 
 NetMeeting Object Manager Object Move
 
@@ -12082,7 +11946,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-ObjectID_sequence (4 bytes): An unsigned 32-bit integer sequence number (3.1.5.5).
+
+ObjectID_sequence (4 bytes): An unsigned 32-bit integer sequence number (3.1.5.5).
 
 ObjectID_creator (2 bytes): An unsigned 16-bit integer MCS userid of the object manager instance
 
@@ -12170,7 +12035,8 @@ Release: June 1, 2017
 
 125 / 186
 
-flags (1 byte): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
+
+flags (1 byte): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
 seqStamp_genNumber (4 bytes): The current workset generation number of the operation
 
@@ -12258,7 +12124,8 @@ Release: June 1, 2017
 
 126 / 186
 
-Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
+
+Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
 Communication Service (MCS) [T122] layer. For more information about the MCS user ID, see
 [T122] section 3 (Definitions) in the ITU-T Recommendation.
@@ -12348,7 +12215,8 @@ Release: June 1, 2017
 
 127 / 186
 
-wsGroupID (1 byte): The workset group ID (unique to the domain). This value is generated
+
+wsGroupID (1 byte): The workset group ID (unique to the domain). This value is generated
 
 internally by the NetMeeting Object Manager. It consists of a value from 0 to 63 that is checked
 for uniqueness among other NetMeeting nodes present on the network.
@@ -12446,7 +12314,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-seqStamp_genNumber
+
+seqStamp_genNumber
 
 seqStamp_userID
 
@@ -12521,7 +12390,8 @@ Release: June 1, 2017
 
 129 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12628,7 +12498,8 @@ Release: June 1, 2017
 
 130 / 186
 
-Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
+
+Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
 Communication Service (MCS) [T122] layer. For more information about the MCS user ID, see
 [T122] section 3 (Definitions) in the ITU-T Recommendation.
@@ -12719,7 +12590,8 @@ Release: June 1, 2017
 
 131 / 186
 
-Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
+
+Sender (2 bytes): The local identifier of the user, which is obtained from the Multipoint
 
 Communication Service (MCS) [T122] layer. For more information about the MCS user ID, see
 [T122] section 3 (Definitions) in the ITU-T Recommendation.
@@ -12810,7 +12682,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Object ID sequence (4 bytes): An unsigned 32-bit integer sequence number.
+
+Object ID sequence (4 bytes): An unsigned 32-bit integer sequence number.
 
 Object ID creator (2 bytes): An unsigned 16-bit integer MCS user ID of the object manager
 
@@ -12900,7 +12773,8 @@ Release: June 1, 2017
 
 133 / 186
 
-2.2.5.21
+
+2.2.5.21
 
 NetMeeting Object Manager WSGROUP Send Request
 
@@ -12971,7 +12845,7 @@ receipt.
 
 Object Manager Data Packet Structures
 
-2.2.5.22.1  NetMeeting Object Manager WSGROUP Info
+###### 2.2.5.22.1 NetMeeting Object Manager WSGROUP Info
 
 A WSGROUP Info (WORKSET GROUP IDENTIFICATION OBJECT) structure identifies a workset within
 a domain. Objects of this form reside in workset #0 of ObManControl (Object Manager Control),
@@ -12997,7 +12871,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-idStamp
+
+idStamp
 
 channelID
 
@@ -13050,7 +12925,7 @@ wsGroupName (32 bytes): A client-supplied NULL-terminated workset group name, of
 characters, including the NULL. This field MUST contain only ASCII characters between0x2C and
 0x5B. This range includes all uppercase characters, all digits and certain punctuation marks.
 
-2.2.5.22.2  NetMeeting Object Manager WSGROUP_REG_REC
+###### 2.2.5.22.2 NetMeeting Object Manager WSGROUP_REG_REC
 
 A WSGROUP_REG_REC (WORKSET GROUP REGISTRATION OBJECTS) structure identifies a node's
 usage of a workset group. These objects can reside in any ObManControl (Object Manager Control)
@@ -13066,7 +12941,8 @@ Release: June 1, 2017
 
 135 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13153,7 +13029,8 @@ Release: June 1, 2017
 
 136 / 186
 
-2.2.5.22.3  WB_GRAPHIC
+
+###### 2.2.5.22.3 WB_GRAPHIC
 
 WB_GRAPHIC contains the header that is used on all graphic objects, such as lines, rectangles,
 ellipses, and freehand drawings, that are used when representing a whiteboard object.
@@ -13246,7 +13123,8 @@ Release: June 1, 2017
 
 137 / 186
 
-Value
+
+Value
 
 0x0006
 
@@ -13358,7 +13236,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -13478,7 +13357,8 @@ Release: June 1, 2017
 
 139 / 186
 
-Value
+
+Value
 
 Meaning
 
@@ -13517,7 +13397,7 @@ reserved1 (4 bytes): Reserved. MUST be set to zero and ignored upon receipt.
 
 reserved2 (4 bytes): Reserved. MUST be set to zero and ignored upon receipt.
 
-2.2.5.22.3.1  TOOLTYPE
+###### 2.2.5.22.3.1 TOOLTYPE
 
 The TOOLTYPE enumeration indicates the type of tool that is used to create a drawing.
 
@@ -13535,7 +13415,7 @@ The TOOLTYPE enumeration indicates the type of tool that is used to create a dra
    TOOLTYPE_FILLEDELIPSE
  } TOOLTYPE;
 
-2.2.5.22.4  WB_GRAPHIC_DIB
+###### 2.2.5.22.4 WB_GRAPHIC_DIB
 
 The WB_GRAPHIC_DIB packet consists of a header that is followed by a raw bitmap.
 
@@ -13563,7 +13443,8 @@ Release: June 1, 2017
 
 140 / 186
 
-data (variable)
+
+data (variable)
 
 ...
 
@@ -13571,7 +13452,7 @@ header (56 bytes): The basic information of the drawing. A WB_GRAPHIC structure.
 
 data (variable): The raw data definition of a bitmap in memory.
 
-2.2.5.22.5  WB_GRAPHIC_FREEHAND
+###### 2.2.5.22.5 WB_GRAPHIC_FREEHAND
 
 The WB_GRAPHIC_FREEHAND packet contains TSHR_POINT16 structures.
 
@@ -13606,7 +13487,7 @@ units of points.
 
 points (variable): An array of TSHR_POINT16 structures.
 
-2.2.5.22.6  WB_GRAPHIC_TEXT
+###### 2.2.5.22.6 WB_GRAPHIC_TEXT
 
 The WB_GRAPHIC_TEXT packet contains a string along with other data that is used to generate
 graphic text.
@@ -13651,7 +13532,8 @@ Release: June 1, 2017
 
 141 / 186
 
-...
+
+...
 
 stringCount
 
@@ -13730,7 +13612,8 @@ Release: June 1, 2017
 
 142 / 186
 
-strikeout (1 byte): A flag value that indicates whether the font is normal (0x00) or strikeout (0x01).
+
+strikeout (1 byte): A flag value that indicates whether the font is normal (0x00) or strikeout (0x01).
 
 Name
 
@@ -13798,7 +13681,7 @@ stringCount (2 bytes): The number of lines of text in text.
 
 text (variable): Null-terminated text strings.
 
-2.2.5.22.7  WB_PAGE_ORDER
+###### 2.2.5.22.7 WB_PAGE_ORDER
 
 The WB_PAGE_ORDER packet contains data that is used to build the page control object that is kept
 in the page control workset.
@@ -13833,7 +13716,8 @@ Release: June 1, 2017
 
 143 / 186
 
-...
+
+...
 
 ...
 
@@ -13847,7 +13731,7 @@ countPages (2 bytes): The number of active pages.
 
 pages (250 bytes): The byte array of worksets (in page order).
 
-2.2.5.22.8  WB_LOCK
+###### 2.2.5.22.8 WB_LOCK
 
 The WB_LOCK packet contains the type and owner who is currently locking the whiteboard contents.
 
@@ -13886,7 +13770,7 @@ seqStamp_userID (2 bytes): The MCS user ID of the issuing object manager instanc
 
 pad (2 bytes): Reserved. MUST be set to zero when sent and MUST be ignored on receipt.
 
-2.2.5.22.9  WB_SYNC
+###### 2.2.5.22.9 WB_SYNC
 
 The WB_SYNC packet contains synchronization data.
 
@@ -13920,7 +13804,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-zoomed
+
+zoomed
 
 length (4 bytes): The total byte length of this packet.
 
@@ -13936,7 +13821,7 @@ window.
 
 zoomed (2 bytes): The zoom synchronization participants.
 
-2.2.5.22.10  WB_PERSON
+###### 2.2.5.22.10 WB_PERSON
 
 The WB_PERSON packet contains the person object data.
 
@@ -14006,7 +13891,8 @@ Release: June 1, 2017
 
 145 / 186
 
-visibleRect (8 bytes): A TSHR_RECT16 structure that specifies the left, upper, right, and lower
+
+visibleRect (8 bytes): A TSHR_RECT16 structure that specifies the left, upper, right, and lower
 
 edges of the region, in order.
 
@@ -14028,12 +13914,12 @@ reserved1 (4 bytes): Reserved. MUST be set to zero and ignored on receipt.
 
 reserved2 (4 bytes): Reserved. MUST be set to zero and ignored on receipt.
 
-2.2.6  Voice Communication Protocol
+#### 2.2.6 Voice Communication Protocol
 
 Peer nodes engage in voice communication through the H.245 Protocol: Microsoft Extensions, as
 specified in [MS-H245].
 
-2.2.6.1  AudioCapability Element
+##### 2.2.6.1 AudioCapability Element
 
 The AudioCapability element is a Capability element. Capability elements are part of the
 capabilityTable field in the TerminalCapabilitySet request packet. The TerminalCapabilitySet
@@ -14066,7 +13952,7 @@ Codepoint (2 bytes): Indicates the type of audio codepoint in use. NetMeeting se
 
 g7231 code point, as specified in [H245].
 
-2.2.7  Whiteboard Protocol Extensions
+#### 2.2.7 Whiteboard Protocol Extensions
 
 Microsoft NetMeeting Protocol peers engage in whiteboard data-sharing by exchanging International
 Telecommunications Union (ITU) T.126 data, as specified in [T126], except for the following
@@ -14087,14 +13973,15 @@ Release: June 1, 2017
 
 146 / 186
 
-Up to 2000 bytes of bitmap data can be transferred per message, in the bitmapData field of
+
+Up to 2000 bytes of bitmap data can be transferred per message, in the bitmapData field of
 BitmapCreate or BitmapCreateContinue.
 
 Textual data is transferred in a T.126 nonStandardPDU message. The nonStandardIdentifier field of
 nonStandardParameter contains the Octet String "B5004C5354657874320", and the data field
 contains an MSTextPDU structure.
 
-2.2.7.1  MSTextPDU
+##### 2.2.7.1 MSTextPDU
 
 The MSTextPDU structure provides associated information for text data.
 
@@ -14114,7 +14001,7 @@ numberOfLines, or textString fields. A field only contains valid data if its att
 If the nonStandardPdu field in TEXTPDU_HEADER is set to textDeletePDU_chosen (31), the attrib
 field in MSTextPDU is not present.
 
-2.2.7.2  TEXTPDU_ATTRIB
+##### 2.2.7.2 TEXTPDU_ATTRIB
 
 The TEXTPDU_ATTRIB structure defines the attributes of an MSTextPDU structure.
 
@@ -14163,7 +14050,8 @@ Release: June 1, 2017
 
 147 / 186
 
-Value
+
+Value
 
 Description
 
@@ -14227,7 +14115,7 @@ One or more attributesFlag values in the TEXTPDU_ATTRIB field can be set that co
 textPenColor, textFillColor, textViewState, textZOrder, textAnchorPoint, textFont,
 numberOfLines, or textString fields. A field only contains valid data if its attribute flag is set.
 
-2.2.7.2.1 POINT
+###### 2.2.7.2.1 POINT
 
 The POINT structure specifies the coordinates of a point on the x, y axis. x and y are both LONG
 integers.
@@ -14254,7 +14142,8 @@ Release: June 1, 2017
 
 148 / 186
 
-2.2.7.3  TEXTPDU_HEADER
+
+##### 2.2.7.3 TEXTPDU_HEADER
 
 The TEXTPDU_HEADER structure describes what SHOULD be done with the text in an MSTextPDU
 structure.
@@ -14297,7 +14186,7 @@ workspaceHandle:  The device context of the window on which the text is drawn.
 If the nonStandardPdu field in TEXTPDU_HEADER is set to textDeletePDU_chosen (31), the attrib
 field in MSTextPDU is not present.
 
-2.2.7.4  VARIABLE_STRING
+##### 2.2.7.4 VARIABLE_STRING
 
 The VARIABLE_STRING structure contains a string.
 
@@ -14310,7 +14199,7 @@ header:  A VARIABLE_STRING_HEADER that describes the VARIABLE_STRING structure.
 
 string:  An array of ASCII characters.
 
-2.2.7.5  VARIABLE_STRING_HEADER
+##### 2.2.7.5 VARIABLE_STRING_HEADER
 
 The VARIABLE_STRING_HEADER structure describes a VARIABLE_STRING structure.
 
@@ -14330,11 +14219,12 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-start:  A TSHR_POINT16 structure that describes the column (in the X field) and the line (in the Y
+
+start:  A TSHR_POINT16 structure that describes the column (in the X field) and the line (in the Y
 
 variable) at which the string SHOULD be placed.
 
-2.2.8  Optional Elements in Q.931 Call SETUP PDU
+#### 2.2.8 Optional Elements in Q.931 Call SETUP PDU
 
 This section describes optional information elements within an [ITU-Q.931] Call SETUP Request PDU.
 This request is responsible for call control. The SETUP Request PDU is sent from the calling user to the
@@ -14410,7 +14300,8 @@ Release: June 1, 2017
 
 150 / 186
 
-TransitDelay (optional)
+
+TransitDelay (optional)
 
 PacketLayerBinaryParams (optional)
 
@@ -14471,7 +14362,8 @@ Release: June 1, 2017
 
 151 / 186
 
-Cause (4 bytes): Not used. MUST be set to 0 and ignored upon receipt.
+
+Cause (4 bytes): Not used. MUST be set to 0 and ignored upon receipt.
 
 CallIdentity (4 bytes): Not used. MUST be set to 0 and ignored upon receipt.
 
@@ -14538,7 +14430,8 @@ Release: June 1, 2017
 
 152 / 186
 
-2.2.9  Audio/Video Conferencing
+
+#### 2.2.9 Audio/Video Conferencing
 
 NetMeeting includes audio conferencing and video conferencing based on the H.323 [H323-1.2]
 infrastructure. NetMeeting interoperates with the generic H.323 protocol. NetMeeting use of H.323
@@ -14568,7 +14461,7 @@ messages are received and processed.
  Q.931 messages contain audio/video conference data. For more information, see [H323-1.2], [H225],
 and [ITU-Q.931].
 
-2.2.9.1  User-User Signalling Information Element
+##### 2.2.9.1 User-User Signalling Information Element
 
 The NetMeeting protocol sends the User-User Signalling Information Element specified in [ITU-Q.931]
 section 4.5.30. This element carries information that is not interpreted by the network. This
@@ -14604,7 +14497,7 @@ Protocol Discriminator (1 byte): Indicates the user protocol within the user inf
 The NetMeeting protocol sets this field to 0x00 for user-specific protocol, as specified in [ITU-
 Q.931] section 4.5.30.
 
-2.2.9.2  nonStandardData Structure
+##### 2.2.9.2 nonStandardData Structure
 
 The nonStandardData structure is part of the H.323 [H323-1.2] protocol. NetMeeting uses the
 nonStandardData structure to discover the status of nonstandard feature support.
@@ -14619,7 +14512,8 @@ Release: June 1, 2017
 
 153 / 186
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -14704,7 +14598,8 @@ Release: June 1, 2017
 
 154 / 186
 
-...
+
+...
 
 NONSTANDARD_DATA_TYPE (4 bytes): A 32-bit unsigned integer. MUST be set to 0x0002.
 This value indicates that the BinaryLargeObject describes an APPLICATION_DATA
@@ -14732,7 +14627,7 @@ Uniquely identifies the local participant.
 
 Reserved1 (8 bytes): Reserved. MUST be set to zero and MUST be ignored upon receipt.
 
-2.2.9.3  Alerting-UUIE Response PDU
+##### 2.2.9.3 Alerting-UUIE Response PDU
 
 The alerting response PDU is the part of the H.323 [H323-1.2] protocol that supports of the calling
 party's alert information during an incoming call.
@@ -14791,7 +14686,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Tokens (2 bytes): This data field is specified in [H225] section 7.3.1 Alerting. This field MAY be used
+
+Tokens (2 bytes): This data field is specified in [H225] section 7.3.1 Alerting. This field MAY be used
 
 with the NetMeeting protocol.<29>
 
@@ -14810,33 +14706,34 @@ Release: June 1, 2017
 
 156 / 186
 
-3  Protocol Details
 
-3.1  Peer-to-Peer Protocol Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Peer-to-Peer Protocol Details
+
+#### 3.1.1 Abstract Data Model
 
 There are no changes in the Microsoft NetMeeting Protocol from the abstract data model that is
 defined in [T120].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No timers are specified in the [T120] protocol. Microsoft NetMeeting Protocol implementations MAY
 use a connection time-out mechanism.<32>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 There are no changes in initialization procedure from those that are defined in [T120].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 Malformed, unrecognized, and out-of-sequence packets MUST be ignored by the host and the client.
 
-3.1.5.1  S20 Protocol MCS Channel
+##### 3.1.5.1 S20 Protocol MCS Channel
 
 Share v2.0 (S20) is the protocol that is used by Microsoft NetMeeting. It is functionally similar to
 T.120 but is an earlier legacy protocol.
@@ -14870,7 +14767,8 @@ Release: June 1, 2017
 
 157 / 186
 
-Packet Name
+
+Packet Name
 
 S20_CREATE
 
@@ -14932,7 +14830,7 @@ packet
 Used to inform another node that is attempting to create a share that it is
 already created.
 
-3.1.5.1.1 Standard Connection Establishment
+###### 3.1.5.1.1 Standard Connection Establishment
 
 The goal of the Standard Connection Establishment sequence is to exchange client and host settings
 and to negotiate common settings to use for the duration of the connection. This allows input,
@@ -14951,7 +14849,8 @@ Release: June 1, 2017
 
 158 / 186
 
-<!-- Extracted images from page 159 -->
+
+<!-- Extracted images from page 159 -->
 ![Extracted image 1 from page 159]([MS-MNPR].images/page159-img01.png)
 <!-- /Extracted images from page 159 -->
 
@@ -14992,7 +14891,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-host confirms each channel with an MCS Channel Join Confirm PDU ([MS-RDPBCGR] section
+
+host confirms each channel with an MCS Channel Join Confirm PDU ([MS-RDPBCGR] section
 2.2.1.9). The client sends an MCS Channel Join Request PDU only after it has received the MCS
 Channel Join Confirm PDU for the previously sent request.
 
@@ -15006,7 +14906,7 @@ messages (exchanged between client-side plug-ins and host-side applications).
 
 Connection details are covered in [T124] section 7 and [T125] section 11.
 
-3.1.5.1.2 Sequencing
+###### 3.1.5.1.2 Sequencing
 
 A typical sequence for a host that creates a session is as follows.
 
@@ -15017,7 +14917,8 @@ Release: June 1, 2017
 
 160 / 186
 
-<!-- Extracted images from page 161 -->
+
+<!-- Extracted images from page 161 -->
 ![Extracted image 1 from page 161]([MS-MNPR].images/page161-img01.png)
 <!-- /Extracted images from page 161 -->
 
@@ -15032,7 +14933,8 @@ Release: June 1, 2017
 
 161 / 186
 
-<!-- Extracted images from page 162 -->
+
+<!-- Extracted images from page 162 -->
 ![Extracted image 1 from page 162]([MS-MNPR].images/page162-img01.png)
 <!-- /Extracted images from page 162 -->
 
@@ -15088,7 +14990,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Packet Name
+
+Packet Name
 
 Description
 
@@ -15100,7 +15003,7 @@ negotiations.
 
 Examples of S20 events can be found in Protocol Examples (section 4)
 
-3.1.5.1.3 Interaction between S20 Protocol and MCS
+###### 3.1.5.1.3 Interaction between S20 Protocol and MCS
 
 Interactions between the Multipoint Communication Service (MCS) and S20 protocol for starting
 a share session can be summarized as follows:
@@ -15136,7 +15039,7 @@ The S20 protocol node detaches itself through MCS_DETACH_USER from the MCS sessi
 
 MCS provides the broadcast transport services for the Share v2.0 (S20) protocol.
 
-3.1.5.1.4 MCS Broadcast Transport Service Functions for S20 Protocol
+###### 3.1.5.1.4 MCS Broadcast Transport Service Functions for S20 Protocol
 
 Nodes use the following MCS functions for the broadcast transport service for the S20 protocol.
 
@@ -15179,7 +15082,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Function
+
+Function
 
 Description
 
@@ -15190,7 +15094,7 @@ MCS_CHANNEL_LEAVE  Leaves a channel in the MCS session. A node in the S20 protoc
 channel and the S20 protocol node broadcast channel after leaving or ending the
 application-sharing session.
 
-3.1.5.1.4.1  MCS Broadcast Transport Service Events for the S20 Protocol
+###### 3.1.5.1.4.1 MCS Broadcast Transport Service Events for the S20 Protocol
 
 According to network activities (such as incoming data, new user attach, user detach, and time-out),
 MCS sends the following events (notifications) to the S20 protocol nodes.
@@ -15271,7 +15175,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.5.1.4.1.1  MCS Handling of Network Transmission, Time-outs, and Retransmissions
+
+###### 3.1.5.1.4.1.1 MCS Handling of Network Transmission, Time-outs, and Retransmissions
 
 All the network transmission time-outs and retransmissions are specified within MCS. If a time-out
 causes the TCP connection to shut down, a user-detach indication with the lost nodes' user IDs MUST
@@ -15307,7 +15212,7 @@ MCS_CHANNEL_LEAVE_INDICATION event, but this node did not leave the channel volu
 the MCS_CHANNEL_LEAVE function. In this case, the S20 protocol node MUST destroy the share
 locally and detach itself through the MCS_DETACH_USER function from the MCS session.
 
-3.1.5.2  State Machine Control State Transitions
+##### 3.1.5.2 State Machine Control State Transitions
 
 The state machine for the S20 protocol has seven transitions between the four control states. The
 following table and diagram illustrate these seven transitions.
@@ -15358,7 +15263,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 166 -->
+
+<!-- Extracted images from page 166 -->
 ![Extracted image 1 from page 166]([MS-MNPR].images/page166-img01.png)
 <!-- /Extracted images from page 166 -->
 
@@ -15367,7 +15273,7 @@ sent out of order (for example, S20_JOIN while in the Share State) are ignored a
 
 Figure 6: S20 protocol control state transitions
 
-3.1.5.3  NetMeeting Object Manager Initial Join Protocol
+##### 3.1.5.3 NetMeeting Object Manager Initial Join Protocol
 
 During the initial connecting sequence of two NetMeeting nodes, a minimal Object Manager packet
 exchange is carried out between the two nodes. The first node created in the domain is considered the
@@ -15395,7 +15301,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.  Sends a high-priority OMNET_WSGROUP_SEND_REQ message to the host on its user ID channel
+
+4.  Sends a high-priority OMNET_WSGROUP_SEND_REQ message to the host on its user ID channel
 
 requesting INFO Workset (Workset #0).
 
@@ -15437,7 +15344,7 @@ caught up with the state of the workset group as of the initial join time.
 
   Sends an OMNET_OBJECT_UPDATE to indicate that workset retrieval is complete.
 
-3.1.5.3.1 Sequencing
+###### 3.1.5.3.1 Sequencing
 
 The following illustration describes a typical join sequence.  In this illustration, the host initiated the
 meeting.
@@ -15449,7 +15356,8 @@ Release: June 1, 2017
 
 167 / 186
 
-<!-- Extracted images from page 168 -->
+
+<!-- Extracted images from page 168 -->
 ![Extracted image 1 from page 168]([MS-MNPR].images/page168-img01.png)
 <!-- /Extracted images from page 168 -->
 
@@ -15460,7 +15368,7 @@ example, an OMNET_LOCK_DENY or OMNET_LOCK_NOTIFY can be issued in response to th
 OMNET_LOCK_REQ. Refer to section 2.2.5, NetMeeting Object Manager, for a complete list of all
 possible NetMeeting Object Manager packet request/response events.
 
-3.1.5.4  NetMeeting Object Manager Late Joiner Protocol
+##### 3.1.5.4 NetMeeting Object Manager Late Joiner Protocol
 
 The NetMeeting Object Manager implements the late joiner protocol to bring a late-joining instance up
 to date with the current contents of the workset group. When a NetMeeting client registers with a
@@ -15484,7 +15392,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  Requests to join the workset group channel by broadcasting the OMNET_HELLO message and
+
+2.  Requests to join the workset group channel by broadcasting the OMNET_HELLO message and
 
 waiting for replies.
 
@@ -15532,7 +15441,7 @@ message to the late joiner on its single node channel.
 
 caught up with the state of the workset group as of the initial join time.
 
-3.1.5.4.1 Sequencing
+###### 3.1.5.4.1 Sequencing
 
 The following illustration describes a typical late joiner sequence. In this illustration, Host-A initiated a
 meeting and Client-B had previously established a connection with Host-A. At a later time, Client-C
@@ -15545,7 +15454,8 @@ Release: June 1, 2017
 
 169 / 186
 
-<!-- Extracted images from page 170 -->
+
+<!-- Extracted images from page 170 -->
 ![Extracted image 1 from page 170]([MS-MNPR].images/page170-img01.png)
 <!-- /Extracted images from page 170 -->
 
@@ -15556,7 +15466,7 @@ example, an OMNET_LOCK_DENY or OMENT_LOCK_NOTIFY can be issued in response to th
 OMNET_LOCK_REQ. Refer to section 2.2.5, NetMeeting Object Manager, for a complete list of all
 possible NetMeeting Object Manager packet request/response events.
 
-3.1.5.5  NetMeeting Object Manager Sequence Stamps
+##### 3.1.5.5 NetMeeting Object Manager Sequence Stamps
 
 Operation Sequencing and Resequencing
 
@@ -15574,7 +15484,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Sequence Stamps
+
+Sequence Stamps
 
 The workset generation number is an unsigned integer that begins at zero when the workset is
 created; increments whenever the Object Manager performs a local operation; and accepts the greater
@@ -15620,7 +15531,7 @@ Else stamp_2 < stamp_1;
 
 Else stamp_2 < stamp_1.
 
-3.1.5.6  NetMeeting Chat Protocol
+##### 3.1.5.6 NetMeeting Chat Protocol
 
 The NetMeeting Chat Protocol utilizes MCS as its transport mechanism in order to transfer textual
 messages between peers. The following diagram illustrates the method of communication.
@@ -15632,14 +15543,15 @@ Release: June 1, 2017
 
 171 / 186
 
-<!-- Extracted images from page 172 -->
+
+<!-- Extracted images from page 172 -->
 ![Extracted image 1 from page 172]([MS-MNPR].images/page172-img01.png)
 ![Extracted image 2 from page 172]([MS-MNPR].images/page172-img02.png)
 <!-- /Extracted images from page 172 -->
 
 Figure 9: NetMeeting Chat Protocol communication method
 
-3.1.5.7  NetMeeting File Transfer Protocol
+##### 3.1.5.7 NetMeeting File Transfer Protocol
 
 Microsoft NetMeeting Protocol peers engage in File Transfer Protocol (FTP) through the International
 Telecommunications Union (ITU) T.127 standard, as specified in [T127], with the exception of the
@@ -15654,11 +15566,12 @@ Release: June 1, 2017
 
 172 / 186
 
-<!-- Extracted images from page 173 -->
+
+<!-- Extracted images from page 173 -->
 ![Extracted image 1 from page 173]([MS-MNPR].images/page173-img01.png)
 <!-- /Extracted images from page 173 -->
 
-3.1.5.8  NetMeeting Whiteboard Protocol
+##### 3.1.5.8 NetMeeting Whiteboard Protocol
 
 Microsoft NetMeeting Protocol peers engage in whiteboard data-sharing by exchanging International
 Telecommunications Union (ITU) T.126 data, as specified in [T126], with the exception of the
@@ -15667,11 +15580,11 @@ sequence.
 
 Figure 11: Typical sequencing during a whiteboard exchange
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -15682,9 +15595,10 @@ Release: June 1, 2017
 
 173 / 186
 
-4  Protocol Examples
 
-4.1  Sample Session Establishment Packet Flows
+## 4 Protocol Examples
+
+### 4.1 Sample Session Establishment Packet Flows
 
 The following sections provide examples that illustrate control packet flow for S20 session
 establishment:
@@ -15709,7 +15623,7 @@ Example four: Deleting a node from an application-sharing session in section 4.1
 
 Example five: Ending an application-sharing session (node creator action) in section 4.1.5.
 
-4.1.1  Creating a New Application-Sharing Session with Multiple Nodes
+#### 4.1.1 Creating a New Application-Sharing Session with Multiple Nodes
 
 This application-sharing session is between four nodes. One node (node A) shares an application
 and starts a new application-sharing session. Node B, node C, and node D are participants. The
@@ -15738,7 +15652,7 @@ it received their responses.
 S20_RESPOND packet but updates its share roster with only the name and capabilities of the
 sender node.
 
-4.1.2  Joining an Existing Application-Sharing Session
+#### 4.1.2 Joining an Existing Application-Sharing Session
 
 This application-sharing session is between five nodes. Node E is new and wants to join the
 application-sharing session with node A, node B, node C, and node D. The following list describes the
@@ -15763,7 +15677,8 @@ Release: June 1, 2017
 
 174 / 186
 
-4.  Node E broadcasts an S20_RESPOND packet that includes its name and capabilities to all the other
+
+4.  Node E broadcasts an S20_RESPOND packet that includes its name and capabilities to all the other
 
 nodes.
 
@@ -15771,7 +15686,7 @@ nodes.
 S20_RESPOND packet, but updates its share roster with only the name and capabilities of the
 sender node.
 
-4.1.3  Leaving an Application-Sharing Session
+#### 4.1.3 Leaving an Application-Sharing Session
 
 This application-sharing session is between five nodes. Node-E wants to leave the application-
 sharing session. The following list describes the steps that are involved:
@@ -15782,7 +15697,7 @@ sharing session. The following list describes the steps that are involved:
 
 They delete node E from their local share rosters.
 
-4.1.4  Deleting a Node from an Application-Sharing Session
+#### 4.1.4 Deleting a Node from an Application-Sharing Session
 
 This application-sharing session is between four nodes. Node A, the application-sharing session
 creator, wants to delete node D from the application-sharing session. The following list describes the
@@ -15794,7 +15709,7 @@ steps that are involved:
 from their local share rosters. Node D destroys its local share roster and leaves the application-
 sharing session.
 
-4.1.5  Ending an Application-Sharing Session
+#### 4.1.5 Ending an Application-Sharing Session
 
 This application-sharing session is between three nodes. Node A, the application-sharing session
 creator, wants to end the application-sharing session. The following list describes the steps that are
@@ -15806,7 +15721,7 @@ involved:
 
 leave the application-sharing session.
 
-4.2  UUIE Response PDU: Use Case Scenario
+### 4.2 UUIE Response PDU: Use Case Scenario
 
 This section describes a use case for the Alerting-UUIE Response PDU (section 2.2.9.3) in the
 NetMeeting protocol.
@@ -15832,7 +15747,8 @@ Release: June 1, 2017
 
 175 / 186
 
-DestinationInfo: This field contains the endpoint connection type. It can be a Terminal
+
+DestinationInfo: This field contains the endpoint connection type. It can be a Terminal
 
 connection type or a Gateway connection type. The Terminal connection type is used in
 most cases.
@@ -15872,9 +15788,10 @@ Release: June 1, 2017
 
 176 / 186
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 MCS and GCC packets are encoded and decoded by using ASN.1.
 
@@ -15882,7 +15799,7 @@ Transport Layer Security (TLS) is negotiated by following T.123, as specified in
 secure mode, X.244 payloads are encrypted by using TLS, as specified in [X224]. Additional TLS can
 also be used.<33>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -15893,7 +15810,8 @@ Release: June 1, 2017
 
 177 / 186
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -15969,7 +15887,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<7> Section 2.2.2.4.5.1: The NetMeeting application obtains various information about fonts used
+
+<7> Section 2.2.2.4.5.1: The NetMeeting application obtains various information about fonts used
 between application sharing from the following Windows GDI data structures:
 
   TEXTMETRIC: The TEXTMETRIC structure contains basic information about a physical font. All
@@ -16042,7 +15961,8 @@ Release: June 1, 2017
 
 179 / 186
 
-<13> Section 2.2.2.4.5.1: The NetMeeting application obtains various information about fonts used
+
+<13> Section 2.2.2.4.5.1: The NetMeeting application obtains various information about fonts used
 between application sharing from the following Windows GDI data structures:
 
   TEXTMETRIC: The TEXTMETRIC structure contains basic information about a physical font. All
@@ -16114,7 +16034,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  TEXTMETRIC: The TEXTMETRIC structure contains basic information about a physical font. All
+
+  TEXTMETRIC: The TEXTMETRIC structure contains basic information about a physical font. All
 sizes are specified in logical units; that is, they depend on the current mapping mode of the
 display context.
 
@@ -16186,7 +16107,8 @@ Microsoft NetMeeting Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<28> Section 2.2.9.3: NetMeeting implementations do not use the h245SecurityMode field. On
+
+<28> Section 2.2.9.3: NetMeeting implementations do not use the h245SecurityMode field. On
 NetMeeting implementations, this field is set to zero and ignored.
 
 <29> Section 2.2.9.3: NetMeeting implementations do not use the Tokens field. On NetMeeting
@@ -16211,7 +16133,8 @@ Release: June 1, 2017
 
 182 / 186
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -16223,7 +16146,8 @@ Release: June 1, 2017
 
 183 / 186
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 157
@@ -16356,7 +16280,8 @@ Messages
 
 184 / 186
 
-   File Transfer Protocol 113
+
+   File Transfer Protocol 113
    NetMeeting Object Manager 114
    Optional Elements in Q.931 Call SETUP PDU 150
    syntax 14
@@ -16507,7 +16432,8 @@ S20_LEAVE packet 111
 
 185 / 186
 
-S20_RESPOND [Protocol] 112
+
+S20_RESPOND [Protocol] 112
 S20_RESPOND packet 112
 SaveBitmap [Protocol] 102
 SaveBitmap packet 102

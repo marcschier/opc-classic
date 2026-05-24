@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 81
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 81
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Release: April 23, 2024
 
 3 / 81
 
-Date
+
+Date
 
 Revision
 History
@@ -612,262 +615,116 @@ Release: April 23, 2024
 
 4 / 81
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.4
-1.5
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 EventLog Remoting Protocol](#132-eventlog-remoting-protocol)
+    - [1.3.3 Localizable Human-Readable Event Descriptions and Other Strings](#133-localizable-human-readable-event-descriptions-and-other-strings)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 Server Requirements to Enable Remote Description String Rendering](#151-server-requirements-to-enable-remote-description-string-rendering)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+    - [1.8.1 Error Values](#181-error-values)
+    - [1.8.2 Event Log Names](#182-event-log-names)
+    - [1.8.3 Event Source Names](#183-event-source-names)
+    - [1.8.4 EventIDs](#184-eventids)
+    - [1.8.5 Event Categories](#185-event-categories)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server](#211-server)
+    - [2.1.2 Client](#212-client)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 RULONG](#221-rulong)
+    - [2.2.2 EventType](#222-eventtype)
+    - [2.2.3 EVENTLOGRECORD](#223-eventlogrecord)
+    - [2.2.4 EVENTLOG_FULL_INFORMATION](#224-eventlogfullinformation)
+      - [2.2.4.1 NT Object Path](#2241-nt-object-path)
+    - [2.2.5 RPC_SID](#225-rpcsid)
+    - [2.2.6 IELF_HANDLE](#226-ielfhandle)
+    - [2.2.7 EVENTLOG_HANDLE_A and EVENTLOG_HANDLE_W](#227-eventloghandlea-and-eventloghandlew)
+    - [2.2.8 RPC_CLIENT_ID](#228-rpcclientid)
+    - [2.2.9 Constants Used in Method Definitions](#229-constants-used-in-method-definitions)
+    - [2.2.10 Unicode Versus ANSI String Representations](#2210-unicode-versus-ansi-string-representations)
+    - [2.2.11 RPC_UNICODE_STRING](#2211-rpcunicodestring)
+    - [2.2.12 RPC_STRING](#2212-rpcstring)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Event Log Records](#3111-event-log-records)
+      - [3.1.1.2 Event Logs](#3112-event-logs)
+      - [3.1.1.3 Event Sources](#3113-event-sources)
+      - [3.1.1.4 EventID](#3114-eventid)
+      - [3.1.1.5 Context Handles](#3115-context-handles)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 ElfrOpenBELW (Opnum 9)](#3141-elfropenbelw-opnum-9)
+      - [3.1.4.2 ElfrOpenBELA (Opnum 16)](#3142-elfropenbela-opnum-16)
+      - [3.1.4.3 ElfrOpenELW (Opnum 7)](#3143-elfropenelw-opnum-7)
+      - [3.1.4.4 ElfrOpenELA (Opnum 14)](#3144-elfropenela-opnum-14)
+      - [3.1.4.5 ElfrRegisterEventSourceW (Opnum 8)](#3145-elfrregistereventsourcew-opnum-8)
+      - [3.1.4.6 ElfrRegisterEventSourceA (Opnum 15)](#3146-elfrregistereventsourcea-opnum-15)
+      - [3.1.4.7 ElfrReadELW (Opnum 10)](#3147-elfrreadelw-opnum-10)
+      - [3.1.4.8 ElfrReadELA (Opnum 17)](#3148-elfrreadela-opnum-17)
+      - [3.1.4.9 ElfrClearELFW (Opnum 0)](#3149-elfrclearelfw-opnum-0)
+      - [3.1.4.10 ElfrClearELFA (Opnum 12)](#31410-elfrclearelfa-opnum-12)
+      - [3.1.4.11 ElfrBackupELFW (Opnum 1)](#31411-elfrbackupelfw-opnum-1)
+      - [3.1.4.12 ElfrBackupELFA (Opnum 13)](#31412-elfrbackupelfa-opnum-13)
+      - [3.1.4.13 ElfrReportEventW (Opnum 11)](#31413-elfrreporteventw-opnum-11)
+      - [3.1.4.14 ElfrReportEventA (Opnum 18)](#31414-elfrreporteventa-opnum-18)
+      - [3.1.4.15 ElfrReportEventAndSourceW (Opnum 24)](#31415-elfrreporteventandsourcew-opnum-24)
+      - [3.1.4.16 ElfrReportEventExW (Opnum 25)](#31416-elfrreporteventexw-opnum-25)
+      - [3.1.4.17 ElfrReportEventExA (Opnum 26)](#31417-elfrreporteventexa-opnum-26)
+      - [3.1.4.18 ElfrNumberOfRecords (Opnum 4)](#31418-elfrnumberofrecords-opnum-4)
+      - [3.1.4.19 ElfrOldestRecord (Opnum 5)](#31419-elfroldestrecord-opnum-5)
+      - [3.1.4.20 ElfrGetLogInformation (Opnum 22)](#31420-elfrgetloginformation-opnum-22)
+      - [3.1.4.21 ElfrCloseEL (Opnum 2)](#31421-elfrcloseel-opnum-2)
+      - [3.1.4.22 ElfrDeregisterEventSource (Opnum 3)](#31422-elfrderegistereventsource-opnum-3)
+      - [3.1.4.23 ElfrChangeNotify (Opnum 6)](#31423-elfrchangenotify-opnum-6)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+    - [3.1.7 Server Configurations for Localizable Event Descriptions](#317-server-configurations-for-localizable-event-descriptions)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Client Processing of Event Descriptions and Other Localizable Strings](#3241-client-processing-of-event-descriptions-and-other-localizable-strings)
+        - [3.2.4.1.1 Loading Event Log Description Information](#32411-loading-event-log-description-information)
+        - [3.2.4.1.2 Retrieving Event Parameter Strings](#32412-retrieving-event-parameter-strings)
+        - [3.2.4.1.3 Retrieving Event Category Strings](#32413-retrieving-event-category-strings)
+        - [3.2.4.1.4 Retrieving Unexpanded Event Description Strings](#32414-retrieving-unexpanded-event-description-strings)
+        - [3.2.4.1.5 Expanding Unexpanded Event Description Strings](#32415-expanding-unexpanded-event-description-strings)
+          - [3.2.4.1.5.1 Inserting EVENTLOGRECORD Strings](#324151-inserting-eventlogrecord-strings)
+          - [3.2.4.1.5.2 Inserting Parameter Strings](#324152-inserting-parameter-strings)
+          - [3.2.4.1.5.3 Inserting SIDs and GUIDs](#324153-inserting-sids-and-guids)
+          - [3.2.4.1.5.4 Expanding Environment Variables](#324154-expanding-environment-variables)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Obtain Records Stored in an Event Log](#41-obtain-records-stored-in-an-event-log)
+  - [4.2 Write Events to an Event Log](#42-write-events-to-an-event-log)
+  - [4.3 Back Up the Event Log](#43-back-up-the-event-log)
+  - [4.4 Expanding Unexpanded Event Description Strings](#44-expanding-unexpanded-event-description-strings)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 11
-Background ............................................................................................... 11
-EventLog Remoting Protocol ......................................................................... 11
-Localizable Human-Readable Event Descriptions and Other Strings ................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Server Requirements to Enable Remote Description String Rendering ............... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Error Values ............................................................................................... 13
-Event Log Names ........................................................................................ 13
-Event Source Names ................................................................................... 13
-EventIDs ................................................................................................... 13
-Event Categories ........................................................................................ 13
-Standards Assignments ..................................................................................... 14
-
-1.8.1
-1.8.2
-1.8.3
-1.8.4
-1.8.5
-
-1.6
-1.7
-1.8
-
-1.5.1
-
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Server ....................................................................................................... 15
-Client ........................................................................................................ 15
-Common Data Types ........................................................................................ 15
-RULONG .................................................................................................... 15
-EventType ................................................................................................. 15
-EVENTLOGRECORD ..................................................................................... 16
-EVENTLOG_FULL_INFORMATION .................................................................. 19
-NT Object Path ..................................................................................... 19
-RPC_SID ................................................................................................... 20
-2.2.5
-IELF_HANDLE ............................................................................................. 20
-2.2.6
-EVENTLOG_HANDLE_A and EVENTLOG_HANDLE_W ........................................ 20
-2.2.7
-RPC_CLIENT_ID ......................................................................................... 21
-2.2.8
-2.2.9
-Constants Used in Method Definitions ............................................................ 21
-2.2.10  Unicode Versus ANSI String Representations .................................................. 21
-RPC_UNICODE_STRING ............................................................................... 21
-2.2.11
-RPC_STRING .............................................................................................. 22
-2.2.12
-
-2.2.4.1
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-
-3  Protocol Details ..................................................................................................... 23
-Server Details .................................................................................................. 23
-Abstract Data Model .................................................................................... 23
-Event Log Records ................................................................................ 23
-Event Logs ........................................................................................... 23
-Event Sources ...................................................................................... 25
-EventID ............................................................................................... 26
-Context Handles ................................................................................... 26
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 27
-Message Processing Events and Sequencing Rules .......................................... 27
-ElfrOpenBELW (Opnum 9) ...................................................................... 30
-ElfrOpenBELA (Opnum 16) ..................................................................... 31
-ElfrOpenELW (Opnum 7) ........................................................................ 32
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.2
-3.1.3
-3.1.4
-
-[MS-EVEN] - v20240423
-EventLog Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 81
-
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-
-ElfrOpenELA (Opnum 14) ....................................................................... 33
-ElfrRegisterEventSourceW (Opnum 8) ..................................................... 34
-ElfrRegisterEventSourceA (Opnum 15) ..................................................... 35
-ElfrReadELW (Opnum 10) ...................................................................... 36
-ElfrReadELA (Opnum 17) ....................................................................... 38
-ElfrClearELFW (Opnum 0) ...................................................................... 39
-ElfrClearELFA (Opnum 12) ..................................................................... 40
-ElfrBackupELFW (Opnum 1) ................................................................... 40
-ElfrBackupELFA (Opnum 13)................................................................... 41
-ElfrReportEventW (Opnum 11)................................................................ 41
-ElfrReportEventA (Opnum 18) ................................................................ 43
-ElfrReportEventAndSourceW (Opnum 24)................................................. 45
-ElfrReportEventExW (Opnum 25) ............................................................ 46
-ElfrReportEventExA (Opnum 26) ............................................................. 48
-ElfrNumberOfRecords (Opnum 4) ............................................................ 49
-ElfrOldestRecord (Opnum 5) ................................................................... 50
-ElfrGetLogInformation (Opnum 22) ......................................................... 50
-ElfrCloseEL (Opnum 2) .......................................................................... 51
-ElfrDeregisterEventSource (Opnum 3) ..................................................... 51
-ElfrChangeNotify (Opnum 6) .................................................................. 52
-Timer Events .............................................................................................. 52
-Other Local Events ...................................................................................... 52
-Server Configurations for Localizable Event Descriptions .................................. 53
-Client Details ................................................................................................... 53
-Abstract Data Model .................................................................................... 53
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Message Processing Events and Sequencing Rules .......................................... 53
-Client Processing of Event Descriptions and Other Localizable Strings .......... 56
-Loading Event Log Description Information ......................................... 56
-Retrieving Event Parameter Strings ................................................... 56
-Retrieving Event Category Strings ..................................................... 56
-Retrieving Unexpanded Event Description Strings ................................ 57
-Expanding Unexpanded Event Description Strings ............................... 57
-Inserting EVENTLOGRECORD Strings ............................................ 58
-Inserting Parameter Strings ........................................................ 58
-Inserting SIDs and GUIDs ........................................................... 58
-Expanding Environment Variables ................................................ 58
-Timer Events .............................................................................................. 59
-Other Local Events ...................................................................................... 59
-
-3.2.4.1.5.1
-3.2.4.1.5.2
-3.2.4.1.5.3
-3.2.4.1.5.4
-
-3.2.4.1.1
-3.2.4.1.2
-3.2.4.1.3
-3.2.4.1.4
-3.2.4.1.5
-
-3.2.4.1
-
-3.2.5
-3.2.6
-
-3.2
-
-3.1.5
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-4  Protocol Examples ................................................................................................. 60
-Obtain Records Stored in an Event Log ............................................................... 60
-Write Events to an Event Log ............................................................................. 61
-Back Up the Event Log ...................................................................................... 64
-Expanding Unexpanded Event Description Strings ................................................ 64
-
-4.1
-4.2
-4.3
-4.4
-
-5  Security ................................................................................................................. 66
-Security Considerations for Implementers ........................................................... 66
-Index of Security Parameters ............................................................................ 66
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 67
-
-7  Appendix B: Product Behavior ............................................................................... 72
-
-8  Change Tracking .................................................................................................... 78
-
-9  Index ..................................................................................................................... 79
-
-[MS-EVEN] - v20240423
-EventLog Remoting Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 81
-
-1  Introduction
+## 1 Introduction
 
 The EventLog Remoting Protocol is an RPC-based protocol that exposes remote procedure call (RPC)
 methods for reading events in both live event logs and backup event logs on remote computers.
@@ -882,7 +739,7 @@ version released with Windows Vista operating system is version 6.0.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -939,7 +796,8 @@ Release: April 23, 2024
 
 7 / 81
 
-globally unique identifier (GUID): A term used interchangeably with universally unique
+
+globally unique identifier (GUID): A term used interchangeably with universally unique
 
 identifier (UUID) in Microsoft protocol technical documents (TDs). Interchanging the usage of
 these terms does not imply or require a specific algorithm or mechanism to generate the value.
@@ -1015,7 +873,8 @@ Release: April 23, 2024
 
 8 / 81
 
-unexpanded description string: A localizable string containing replaceable insertion patterns
+
+unexpanded description string: A localizable string containing replaceable insertion patterns
 
 that are expanded by using a string-rendering algorithm, defined in section 3.2.4.1.5, to
 produce an event description string.
@@ -1048,14 +907,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1086,7 +945,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-EERR] Microsoft Corporation, "ExtendedError Remote Data Structure".
+
+[MS-EERR] Microsoft Corporation, "ExtendedError Remote Data Structure".
 
 [MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
@@ -1116,7 +976,7 @@ December 1997, https://www.rfc-editor.org/info/rfc2251
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-ANSI] Microsoft Corporation, "Unicode and Character Sets", http://msdn.microsoft.com/en-
 us/library/dd374083.aspx
@@ -1150,7 +1010,8 @@ Release: April 23, 2024
 
 10 / 81
 
-[MSFT-CVE-2021-31958] Microsoft Corporation, "Windows NTLM Elevation of Privilege Vulnerability",
+
+[MSFT-CVE-2021-31958] Microsoft Corporation, "Windows NTLM Elevation of Privilege Vulnerability",
 CVE-2021-31958, June 8, 2021, https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-
 2021-31958
 
@@ -1159,9 +1020,9 @@ Specification", May2006,
 https://github.com/tpn/pdfs/blob/master/Microsoft%20Portable%20Executable%20and%20Common
 %20Object%20File%20Format%20Specification%20-%201999%20(pecoff).pdf
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Background
+#### 1.3.1 Background
 
 Event logs allow applications or the operating system to store historical information that might be of
 interest to administrators. The information is organized as a sequential set of records , which are
@@ -1195,7 +1056,7 @@ event log, which is a read-only snapshot of a live event log. Backup event logs 
 archival purposes or for copying a backup event log from one computer to another for use by support
 personnel.
 
-1.3.2  EventLog Remoting Protocol
+#### 1.3.2 EventLog Remoting Protocol
 
 The EventLog Remoting Protocol provides a way to access event logs on remote computers.
 
@@ -1216,12 +1077,13 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The protocol sequencing model is as follows: The client performs an Open operation, issues other
+
+The protocol sequencing model is as follows: The client performs an Open operation, issues other
 requests, and finally performs a Close operation.
 
 For methods used by this protocol, see section 3.1.4.
 
-1.3.3  Localizable Human-Readable Event Descriptions and Other Strings
+#### 1.3.3 Localizable Human-Readable Event Descriptions and Other Strings
 
 Implementations in applicable Windows Server releases are structured in such a way that event logs
 are language-neutral, and the localizable description strings are built from strings loaded from
@@ -1232,7 +1094,7 @@ the event record as expressed by the EVENTLOGRECORD structure.
 
 See section 3.2.4.1.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The EventLog Remoting Protocol depends on RPC (as specified in [MS-RPCE]) for message transport.
 When RPC is used by the Eventlog Remoting Protocol, RPC uses named pipes as its transport
@@ -1245,7 +1107,7 @@ through the EventLog Remoting Protocol; rather, they are configured by modifying
 The EventLog Remoting Protocol Version 6.0, specified in [MS-EVEN6], is a replacement for this
 protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The EventLog Remoting Protocol has the prerequisites, as specified in [MS-RPCE], as being common to
 protocols depending on RPC.
@@ -1253,7 +1115,7 @@ protocols depending on RPC.
 A prerequisite for the successful use of the methods defined by this protocol is that the caller has
 appropriate read/write permissions for the resources held on the server, as specified in section 3.1.4.
 
-1.5.1  Server Requirements to Enable Remote Description String Rendering
+#### 1.5.1 Server Requirements to Enable Remote Description String Rendering
 
 Requirements for enabling rendering of remote description strings follow:
 
@@ -1268,13 +1130,13 @@ The server MUST implement the 'Server' role of the Server Message Block (SMB) Pr
 specified in [MS-SMB], and share the appropriate "$" shares (for example, "\\server\C$") for
 reading, so that the remote client can access the message files.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The EventLog Remoting Protocol<1> is used for accessing event logs, which can be used for many
 different purposes; for example, recording local security events or recording application start/stop
 events.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following area:
 
@@ -1285,7 +1147,8 @@ Release: April 23, 2024
 
 12 / 81
 
-
+
+
 
 Protocol Version: The RPC interface for this protocol has its own version number. Each specific
 version of the protocol requires one specific version of the RPC interface (for more information,
@@ -1295,11 +1158,11 @@ methods are supported by attempting to invoke the method; if the method is not s
 RPC runtime returns an "opnum out of range" error, as specified in [C706] and [MS-RPCE]. RPC
 versioning and capacity negotiation in this situation is as specified in [C706] and [MS-RPCE].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are five vendor-extensible fields relevant to the EventLog Remoting Protocol.
 
-1.8.1  Error Values
+#### 1.8.1 Error Values
 
 Any nonzero return value can represent an error. Vendors SHOULD use the values from the NTSTATUS
 number space, as specified in [MS-EERR].
@@ -1309,7 +1172,7 @@ The EventLog Remoting Protocol uses NTSTATUS values, as specified in [MS-ERREF] 
 their own values for this field as long as the C bit (0x20000000) is set, indicating that it is a customer
 code.
 
-1.8.2  Event Log Names
+#### 1.8.2 Event Log Names
 
 Each event log has a name that is a Unicode string. The EventLog Remoting Protocol supports both
 Unicode, as specified in [MS-DTYP], and ANSI strings. In this specification, ANSI strings refer to multi-
@@ -1319,19 +1182,19 @@ use of Unicode and ANSI strings in the EventLog Remoting Protocol is specified i
 name MUST be unique across all event logs on the same server. Event log names SHOULD<3> be
 prefixed with the name of the entity that created the event log to avoid collisions.
 
-1.8.3  Event Source Names
+#### 1.8.3 Event Source Names
 
 Each event source also has a name that is a Unicode string. This name MUST be unique across all
 event sources on the same server. An event source name typically identifies the software product to
 which a given event applies. Event source names SHOULD<4> be prefixed with a unique value (such
 as the name of the entity that created the event source) to avoid collisions.
 
-1.8.4  EventIDs
+#### 1.8.4 EventIDs
 
 EventIDs are integers that are unique on a per-event source basis. The combination of an event
 source name and an EventID uniquely identifies a specific kind of event.
 
-1.8.5  Event Categories
+#### 1.8.5 Event Categories
 
 Event categories are integers that are unique on a per-event source basis. The combination of an
 event source name and an event category suffices to uniquely identify a class of events. Unlike
@@ -1348,7 +1211,8 @@ Release: April 23, 2024
 
 13 / 81
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 The EventLog Remoting Protocol has no standards assignments, only private assignments made by
 Microsoft using allocation procedures specified in other protocols.
@@ -1374,16 +1238,17 @@ Release: April 23, 2024
 
 14 / 81
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The EventLog Remoting Protocol uses RPC as the primary transport protocol.
 
 Client remote retrieval and expansion of event description, event category, and parameter strings
 are done as specified in [MS-RRP] and [MS-SMB].
 
-2.1.1  Server
+#### 2.1.1 Server
 
 The server RPC interface is identified by UUID 82273FDC-E32A-18C3-3F78-827929DC23EA version
 0.0, using the RPC well-known endpoint \PIPE\eventlog. The server MUST specify RPC over named
@@ -1396,7 +1261,7 @@ The server MAY require the client connection to specify an authentication level 
 authentication (0x4), as specified in section 2.2.1.1.8 of [MS-RPCE]. The server SHOULD require the
 connection to use the packet-privacy authentication level (0x6).<5>
 
-2.1.2  Client
+#### 2.1.2 Client
 
 The client MUST use RPC over named pipes (that is, ncacn_np), as specified in [MS-RPCE], as the
 RPC protocol sequence to communicate with the server. The client MUST specify either SPNEGO
@@ -1405,12 +1270,12 @@ RPC protocol sequence to communicate with the server. The client MUST specify ei
 The client MUST specify packet-level integrity authentication (0x5) or higher, as specified in [MS-
 RPCE] section 2.2.1.1.8.<6>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types, the sections that follow use the definitions of BOOL, FILETIME, GUID,
 SID, and ULONG, as specified in [MS-DTYP].
 
-2.2.1  RULONG
+#### 2.2.1 RULONG
 
 The RULONG type is used by the ElfReadELW and ElfReadELA methods to specify the value for the
 NumberOfBytesToRead parameter.
@@ -1420,7 +1285,7 @@ This type is declared as follows:
  typedef [range(0, MAX_BATCH_BUFF)]
    unsigned long RULONG;
 
-2.2.2  EventType
+#### 2.2.2 EventType
 
 The EventType <7> is a 16-bit field that MUST be one of the following values.
 
@@ -1442,7 +1307,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -1492,7 +1358,7 @@ An event that records an audited security access attempt that fails. For
 example, if a user tries to access a network drive and is denied access, the
 attempt is logged as a Failure Audit event.
 
-2.2.3  EVENTLOGRECORD
+#### 2.2.3 EVENTLOGRECORD
 
 The EVENTLOGRECORD structure contains information on a single event. This structure is transferred
 as a set of bytes in the buffer passed in the ElfrReadELW (section 3.1.4.7) and
@@ -1535,7 +1401,8 @@ Release: April 23, 2024
 
 16 / 81
 
-EventType
+
+EventType
 
 EventCategory
 
@@ -1596,7 +1463,8 @@ Release: April 23, 2024
 
 17 / 81
 
-Reserved (4 bytes): MUST be set to 0x654c664C (which is ASCII for eLfL). This serves as a
+
+Reserved (4 bytes): MUST be set to 0x654c664C (which is ASCII for eLfL). This serves as a
 
 signature for the structure.
 
@@ -1673,7 +1541,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Computername (variable): Variable-length null-terminated string that assists in identifying the
+
+Computername (variable): Variable-length null-terminated string that assists in identifying the
 
 machine that generated the event. This string MUST NOT<8> be interpreted by the protocol, and
 can be in an arbitrary format.
@@ -1712,7 +1581,7 @@ Length2 (4 bytes): Same value as the Length field specified as the first member.
 
 copies, a buffer containing many events can easily be navigated in both directions.
 
-2.2.4  EVENTLOG_FULL_INFORMATION
+#### 2.2.4 EVENTLOG_FULL_INFORMATION
 
 The EVENTLOG_FULL_INFORMATION structure is used by the ElfrGetLogInformation (section 3.1.4.20)
 method to indicate whether an event log is full or not.
@@ -1725,7 +1594,7 @@ dwFull: If the event log is not full, dwFull MUST be set to zero. If the event l
 
 set to 1.
 
-2.2.4.1  NT Object Path
+##### 2.2.4.1 NT Object Path
 
 A string referred to as an NT Object Path is used by several methods to allow the specification of
 either a file path that is local to the server or a remote file path.
@@ -1744,11 +1613,12 @@ Release: April 23, 2024
 
 19 / 81
 
-For example, if the NT Object Path is \??\UNC\wmiscratch\scratch\x.x, the server interprets it as
+
+For example, if the NT Object Path is \??\UNC\wmiscratch\scratch\x.x, the server interprets it as
 indicating the UNC path \\wmiscratch\scratch\x.x. If the NT Object Path is instead \??\C:\scratch\x.x,
 the server interprets it as indicating the local file system path C:\scratch\x.x.
 
-2.2.5  RPC_SID
+#### 2.2.5 RPC_SID
 
 The RPC_SID structure is used by methods that write events.
 
@@ -1772,7 +1642,7 @@ The fields in this structure exactly correspond to the fields in the SID structu
 security identifier (SID)—a variable-length byte array that uniquely identifies a security principal—as
 specified in [MS-DTYP] section 2.4.2.
 
-2.2.6  IELF_HANDLE
+#### 2.2.6 IELF_HANDLE
 
 The IELF_HANDLE type defines a context handle (as specified in [C706]) to the target server.
 
@@ -1781,7 +1651,7 @@ The IELF_HANDLE type defines a context handle (as specified in [C706]) to the ta
 
 The detailed data type definitions are defined in section 3.1.1.5.
 
-2.2.7  EVENTLOG_HANDLE_A and EVENTLOG_HANDLE_W
+#### 2.2.7 EVENTLOG_HANDLE_A and EVENTLOG_HANDLE_W
 
 The event log remote interface on a particular server is referred to by a handle, which can be
 EVENTLOG_HANDLE_A or EVENTLOG_HANDLE_W. In the specific case of the event log remote
@@ -1803,7 +1673,8 @@ Release: April 23, 2024
 
 20 / 81
 
-2.2.8  RPC_CLIENT_ID
+
+#### 2.2.8 RPC_CLIENT_ID
 
 The RPC_CLIENT_ID structure is used in the ElfrChangeNotify (section 3.1.4.23) method for local
 method invocations only.
@@ -1822,7 +1693,7 @@ UniqueThread:  A 32-bit unsigned integer. Ignored when ElfrChangeNotify (section
 
 invoked remotely.
 
-2.2.9  Constants Used in Method Definitions
+#### 2.2.9 Constants Used in Method Definitions
 
 The following constants are used in various methods.
 
@@ -1851,7 +1722,7 @@ parameter).
 The maximum amount of data, in bytes, that can be read by a method (typically in a
 NumberOfBytesToRead parameter).
 
-2.2.10 Unicode Versus ANSI String Representations
+#### 2.2.10 Unicode Versus ANSI String Representations
 
 The EventLog Remoting Protocol supports both Unicode and ANSI strings. In this specification, ANSI
 strings refer to multi-byte strings in which the encoding is controlled by the current system code page.
@@ -1862,7 +1733,7 @@ Unicode.<10> For how clients choose a character set, see section 3.1.4. The way 
 string is converted to or from an ANSI string is implementation specific. In the occasional case in
 which the server cannot convert from Unicode to ANSI, the operation MUST fail.
 
-2.2.11 RPC_UNICODE_STRING
+#### 2.2.11 RPC_UNICODE_STRING
 
 EventLog Remoting Protocol APIs use the RPC_UNICODE_STRING structure to specify a Unicode
 string parameter.
@@ -1881,7 +1752,8 @@ Release: April 23, 2024
 
 21 / 81
 
-  *PRPC_UNICODE_STRING;
+
+  *PRPC_UNICODE_STRING;
 
 Length:  The length, in bytes, of the string pointed to by the Buffer member, not including the
 
@@ -1898,7 +1770,7 @@ Buffer:  A pointer to a string buffer. If MaximumLength is greater than zero, th
 
 contain a non-null value.
 
-2.2.12 RPC_STRING
+#### 2.2.12 RPC_STRING
 
 EventLog Remoting Protocol APIs use the RPC_STRING to specify an ANSI string parameter.
 
@@ -1928,12 +1800,13 @@ Release: April 23, 2024
 
 22 / 81
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The EventLog Remoting Protocol asks the RPC runtimes at both the client and server to perform a
 strict Network Data Representation (NDR) consistency check.<11>
 
-3.1  Server Details
+### 3.1 Server Details
 
 The event log server handles client requests for any of the methods, as specified in section 3.1.4,
 and operates on the logs and the configuration on the server. Any potential conflicts from the client
@@ -1943,21 +1816,21 @@ the clear request has to wait on the server's synchronization object before the 
 finishes. After the backup is done, the synchronization object is released and the clear request is able
 to pass through it, so that the server will handle the clear operation.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
 protocol behaves. This specification does not mandate that implementations adhere to this model as
 long as their external behavior is consistent with what is described in this specification.
 
-3.1.1.1  Event Log Records
+##### 3.1.1.1 Event Log Records
 
 An event log record is the structure that represents an occurrence of an event in the system.
 
 The event log record includes time, type, and category information, and corresponds to the
 EVENTLOGRECORD (section 2.2.3) structure.
 
-3.1.1.2  Event Logs
+##### 3.1.1.2 Event Logs
 
 The log is a persistent store of event log records. Event logs are of two types: live event logs,
 which can be written to and read from, and backup event logs, which can only be read from. The
@@ -1996,7 +1869,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Registry value
+
+Registry value
 
 Description
 
@@ -2082,7 +1956,8 @@ Release: April 23, 2024
 
 24 / 81
 
-3.1.1.3  Event Sources
+
+##### 3.1.1.3 Event Sources
 
 The event source is intended to identify the software that reports the event. It can be interpreted as
 the event provider. In the EventLog Remoting Protocol, the event source is specified as a string. The
@@ -2160,7 +2035,8 @@ Release: April 23, 2024
 
 25 / 81
 
-Registry Value
+
+Registry Value
 
 Description
 
@@ -2180,12 +2056,12 @@ EVENTLOG_INFORMATION_TYPE (0x0002)
 
 EVENTLOG_WARNING_TYPE (0x0004)
 
-3.1.1.4  EventID
+##### 3.1.1.4 EventID
 
 The EventID identifies the specific kind of event; this classification is relative to the event source
 that logs it.<13>
 
-3.1.1.5  Context Handles
+##### 3.1.1.5 Context Handles
 
 Clients obtain context handles for both reading and writing purposes. The methods for doing so are
 specified in section 3.1.4. The server MUST maintain a relationship between each particular handle
@@ -2235,7 +2111,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MajorVersion: The major version number of this structure definition.
+
+MajorVersion: The major version number of this structure definition.
 
 MinorVersion: The minor version number of this structure definition.
 
@@ -2249,11 +2126,11 @@ Name: The event log file name string.
 
 Unless otherwise specified, all handles in section 3.1.4 and its subsections are context handles.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 At initialization time, the EventLog Remoting Protocol server MUST register the RPC interface and
 begin listening on the RPC well-known endpoint that is specified in section 2.1. The server then
@@ -2264,7 +2141,7 @@ Therefore, the server creates a live event log with the name Application, if one
 exist. If creation of the event log (with the name Application) fails, the EventLog Remoting Protocol
 server does not start.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This section is an overview of the 21 RPC methods used by the EventLog Remoting Protocol. With one
 exception, there are two versions of each method that have one or more strings in the argument list:
@@ -2313,7 +2190,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2437,7 +2315,8 @@ Release: April 23, 2024
 
 28 / 81
 
-Method
+
+Method
 
 Description
 
@@ -2519,7 +2398,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-These methods MUST succeed if the caller has read access, independent of if the caller has write or
+
+These methods MUST succeed if the caller has read access, independent of if the caller has write or
 clear access (security permissions that allow the user to write to or clear the event log). The server
 has an access control list (ACL) that is used to control access to the log. The protocol has no methods
 for reading or setting that ACL. A caller with read access can read events, get log information (such as
@@ -2579,7 +2459,7 @@ return other, implementation-based return values, such as those returned from op
 components that are used to implement the protocol. Protocol implementers SHOULD only use return
 values listed in [MS-ERREF].
 
-3.1.4.1  ElfrOpenBELW (Opnum 9)
+##### 3.1.4.1 ElfrOpenBELW (Opnum 9)
 
 The ElfrOpenBELW (Opnum 9) method instructs the server to return a handle to a backup event log.
 The caller MUST have permission to read the file containing the backup event log for this to succeed.
@@ -2598,7 +2478,8 @@ Release: April 23, 2024
 
 30 / 81
 
-   [in] unsigned long MajorVersion,
+
+   [in] unsigned long MajorVersion,
    [in] unsigned long MinorVersion,
    [out] IELF_HANDLE* LogHandle
  );
@@ -2650,7 +2531,7 @@ STATUS_NO_MEMORY (0xC0000017).
 
 The server MUST return a value indicating success or failure for this operation.<16>
 
-3.1.4.2  ElfrOpenBELA (Opnum 16)
+##### 3.1.4.2 ElfrOpenBELA (Opnum 16)
 
 The ElfrOpenBELA (Opnum 16) method instructs the server to return a handle to a backup event
 log. The caller MUST have permission to read the file containing the backup event log for this to
@@ -2663,7 +2544,8 @@ Release: April 23, 2024
 
 31 / 81
 
-Note  The server has an Access Control List (ACL) that is used to control access to the log. The
+
+Note  The server has an Access Control List (ACL) that is used to control access to the log. The
 protocol has no methods for reading or setting that ACL.
 
  NTSTATUS ElfrOpenBELA(
@@ -2699,7 +2581,7 @@ The server MUST return a value indicating success or failure for this operation<
 This is identical to the ElfrOpenBELW (section 3.1.4.1) method except that the BackupFileName and
 UNCServerName are ANSI strings in this case.
 
-3.1.4.3  ElfrOpenELW (Opnum 7)
+##### 3.1.4.3 ElfrOpenELW (Opnum 7)
 
 The ElfrOpenELW method instructs the server to return a server context handle to a live event log.
 The caller MUST<18> have permission to read the file that contains the event log for this to succeed.
@@ -2730,7 +2612,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MajorVersion: Major version of the client. This value MUST be set to 1.
+
+MajorVersion: Major version of the client. This value MUST be set to 1.
 
 MinorVersion: Minor version of the client. This value MUST be set to 1.
 
@@ -2771,7 +2654,7 @@ memory resources. If that happens, the server MUST return STATUS_NO_MEMORY (0xC0
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.4  ElfrOpenELA (Opnum 14)
+##### 3.1.4.4 ElfrOpenELA (Opnum 14)
 
 The ElfrOpenELA (Opnum 14) method instructs the server to return a server context handle to a live
 event log. For this to succeed, the caller MUST have permission to read the file that contains the
@@ -2793,7 +2676,8 @@ Release: April 23, 2024
 
 33 / 81
 
-UNCServerName: A server interface handle. A pointer to an ANSI string (see [MSDN-ANSI])
+
+UNCServerName: A server interface handle. A pointer to an ANSI string (see [MSDN-ANSI])
 specifying the server, as specified in section 2.2.7. The client MUST map this string to an RPC binding
 handle, and the server MUST ignore this argument, as specified in [C706] sections 4.3.5 and 5.1.5.2.
 
@@ -2819,7 +2703,7 @@ MUST return an implementation-based, nonzero NTSTATUS value specified in [MS-ERR
 This is identical to the ElfrOpenELW (section 3.1.4.3) method except that the ModuleName,
 RegModuleName, and the UNCServerName are ANSI strings in this case.
 
-3.1.4.5  ElfrRegisterEventSourceW (Opnum 8)
+##### 3.1.4.5 ElfrRegisterEventSourceW (Opnum 8)
 
 The ElfrRegisterEventSourceW (Opnum 8) method instructs the server to return a server context
 handle to an event log for writing. The caller MUST have permission to write to the file containing the
@@ -2860,7 +2744,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The method MUST return STATUS_SUCCESS (0x00000000) on success; otherwise, it
+
+Return Values: The method MUST return STATUS_SUCCESS (0x00000000) on success; otherwise, it
 MUST return an implementation-based, nonzero NTSTATUS value specified in [MS-ERREF].
 
 In response to this request from the client, the server MUST determine what event log the client is
@@ -2885,7 +2770,7 @@ returns STATUS_NO_MEMORY (0xC0000017).
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.6  ElfrRegisterEventSourceA (Opnum 15)
+##### 3.1.4.6 ElfrRegisterEventSourceA (Opnum 15)
 
 The ElfrRegisterEventSourceA (Opnum 15) method instructs the server to return a server context
 handle to an event log for writing. The caller MUST have permission to write to the file containing the
@@ -2925,13 +2810,14 @@ Release: April 23, 2024
 
 35 / 81
 
-Return Values: The method MUST return STATUS_SUCCESS (0x00000000) on success; otherwise, it
+
+Return Values: The method MUST return STATUS_SUCCESS (0x00000000) on success; otherwise, it
 MUST return an implementation-based, nonzero NTSTATUS value specified in [MS-ERREF].
 
 This is identical to the ElfrRegisterEventSourceW (section 3.1.4.5) method except that the
 ModuleName, RegModuleName, and the UNCServerName parameters are ANSI strings in this case.
 
-3.1.4.7  ElfrReadELW (Opnum 10)
+##### 3.1.4.7 ElfrReadELW (Opnum 10)
 
 The ElfrReadELW (Opnum 10) method reads events from the event log; the server transmits these
 events to the client and advances the reader's position within the event log associated with the server
@@ -3010,7 +2896,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Buffer: The buffer in which to place data read from the event log.
+
+Buffer: The buffer in which to place data read from the event log.
 
 NumberOfBytesRead: Pointer to a variable that receives the number of bytes actually read by the
 method.
@@ -3081,7 +2968,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EVENTLOG_BACKWARDS_READ flag is set. In the case where EVENTLOG_SEQUENTIAL_READ and
+
+EVENTLOG_BACKWARDS_READ flag is set. In the case where EVENTLOG_SEQUENTIAL_READ and
 EVENTLOG_SEEK_READ are both set, the flag EVENTLOG_SEEK_READ is ignored, and the server will
 treat it as if only EVENTLOG_SEQUENTIAL_READ is set. If neither of the two flags are set, the server
 will treat it as if EVENTLOG_SEQUENTIAL_READ is set. In all of the cases, the server does not return
@@ -3094,7 +2982,7 @@ into the buffer.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.8  ElfrReadELA (Opnum 17)
+##### 3.1.4.8 ElfrReadELA (Opnum 17)
 
 The ElfrReadELA (Opnum 17) method reads events from the event log; the server transmits these
 events to the client and advances the reader's position within the event log associated with the server
@@ -3166,7 +3054,8 @@ Release: April 23, 2024
 
 38 / 81
 
-RecordOffset: Log entry record number at which the read operation is to start. Each event in a log
+
+RecordOffset: Log entry record number at which the read operation is to start. Each event in a log
 has a record number. This parameter MUST be ignored unless the EVENTLOG_SEEK_READ bit is set in
 the ReadFlags parameter.
 
@@ -3189,7 +3078,7 @@ specified in [MS-ERREF].
 This is identical to the ElfrReadELW (section 3.1.4.7) method except that the events placed in the
 buffer MUST be ANSI strings rather than [UNICODE] strings.
 
-3.1.4.9  ElfrClearELFW (Opnum 0)
+##### 3.1.4.9 ElfrClearELFW (Opnum 0)
 
 The ElfrClearELFW (Opnum 0) method instructs the server to clear an event log, and, optionally, to
 back up the event log before the clear operation takes place.
@@ -3233,7 +3122,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-path that specifies a file that already exists. If the BackupFileName is valid, the server MUST attempt
+
+path that specifies a file that already exists. If the BackupFileName is valid, the server MUST attempt
 to back up the log to the path specified in BackupFileName before the log is cleared. The method
 MUST fail the operation and not clear the log if the user does not have write access to the location
 specified by the BackupFileName parameter or if the backup does not succeed for any other
@@ -3251,9 +3141,9 @@ Additionally, the state of the log MUST be modified so that the next record writ
 number 1.<24> The server MUST return a value indicating success or failure for this operation. The
 server MUST return a value indicating success or failure for this operation.
 
-3.1.4.10
+##### 3.1.4.10 ElfrClearELFA (Opnum 12)
 
-ElfrClearELFA (Opnum 12)
+
 
 The ElfrClearELFA (Opnum 12) method instructs the server to clear an event log, and, optionally, to
 back up the event log before the clear operation takes place.
@@ -3278,9 +3168,9 @@ The ElfrClearELFA and ElfrClearELFW (section 3.1.4.9) methods are identical in f
 difference between the two methods is that the ElfrClearELFA method specifies BackupFileName as an
 ANSI string. The ElfrClearELFW method specifies BackupFileName as a UNICODE string.
 
-3.1.4.11
+##### 3.1.4.11 ElfrBackupELFW (Opnum 1)
 
-ElfrBackupELFW (Opnum 1)
+
 
 The ElfrBackupELFW (Opnum 1) method instructs the server to back up the event log to a specified
 file name.
@@ -3301,7 +3191,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BackupFileName: Provides a Unicode string (as specified in section 2.2.11) that points to an NT
+
+BackupFileName: Provides a Unicode string (as specified in section 2.2.11) that points to an NT
 Object Path of a file, (as specified in section 2.2.4.1), in which a current copy of the event log is to be
 placed. This MUST NOT be NULL or empty. The path is evalutated relative to the server.
 
@@ -3328,9 +3219,9 @@ Protocol implementers can choose to return other, implementation-based return va
 returned from operating system components that are used to implement the protocol. Protocol
 implementers SHOULD only use return values listed in [MS-ERREF].
 
-3.1.4.12
+##### 3.1.4.12 ElfrBackupELFA (Opnum 13)
 
-ElfrBackupELFA (Opnum 13)
+
 
 The ElfrBackupELFA (Opnum 13) method instructs the server to back up the event log to a specified
 file name.<26>
@@ -3356,9 +3247,9 @@ case:
 
   When BackUpFileName is an ANSI string.
 
-3.1.4.13
+##### 3.1.4.13 ElfrReportEventW (Opnum 11)
 
-ElfrReportEventW (Opnum 11)
+
 
 The ElfrReportEventW (Opnum 11) method writes events to the event log; the server receives these
 events from the client.
@@ -3370,7 +3261,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- NTSTATUS ElfrReportEventW(
+
+ NTSTATUS ElfrReportEventW(
    [in] IELF_HANDLE LogHandle,
    [in] unsigned long Time,
    [in] unsigned short EventType,
@@ -3438,7 +3330,8 @@ Release: April 23, 2024
 
 42 / 81
 
-TimeWritten: Unused. Can be set to any arbitrary value when sent, and any value sent by the client
+
+TimeWritten: Unused. Can be set to any arbitrary value when sent, and any value sent by the client
 MUST be ignored on receipt by the server.
 
 Return Values: The method MUST return STATUS_SUCCESS (0x00000000) on success; otherwise, it
@@ -3489,9 +3382,9 @@ reaches its maximum allowed size and can't be overwritten) and returns STATUS_DI
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.14
+##### 3.1.4.14 ElfrReportEventA (Opnum 18)
 
-ElfrReportEventA (Opnum 18)
+
 
 The ElfrReportEventA (Opnum 18) method writes events to the event log; the server receives these
 events from the client.
@@ -3508,7 +3401,8 @@ Release: April 23, 2024
 
 43 / 81
 
-   [in] unsigned short EventCategory,
+
+   [in] unsigned short EventCategory,
    [in] unsigned long EventID,
    [in, range(0, 256)] unsigned short NumStrings,
    [in, range(0, 61440)] unsigned long DataSize,
@@ -3575,13 +3469,14 @@ Release: April 23, 2024
 
 44 / 81
 
-This method is identical to the ElfrReportEventW (section 3.1.4.13) method except that the string
+
+This method is identical to the ElfrReportEventW (section 3.1.4.13) method except that the string
 arguments are ANSI strings in this case. Thus, the remarks in ElfrReportEventW (section 3.1.4.13)
 apply to this method as well.
 
-3.1.4.15
+##### 3.1.4.15 ElfrReportEventAndSourceW (Opnum 24)
 
-ElfrReportEventAndSourceW (Opnum 24)
+
 
 This method<32> instructs the server to write an event to an event log. It differs from the other
 methods for writing an event by specifying the event source at the time of the write. The other
@@ -3644,7 +3539,8 @@ Release: April 23, 2024
 
 45 / 81
 
-Strings: Strings containing text information specific to the event. This parameter MUST be a valid
+
+Strings: Strings containing text information specific to the event. This parameter MUST be a valid
 pointer. If the NumStrings parameter is zero, this parameter MUST be NULL. For example, an event
 relating to file deletion could use a string to specify the path of the file being deleted.
 
@@ -3669,9 +3565,9 @@ This method is almost identical to the ElfrReportEventW (section 3.1.4.13) metho
 SourceName parameter. The server uses this SourceName parameter to log the source into the event
 instead of retrieving the source name from the LogHandle parameter.
 
-3.1.4.16
+##### 3.1.4.16 ElfrReportEventExW (Opnum 25)
 
-ElfrReportEventExW (Opnum 25)
+
 
 The ElfrReportEventExW (Opnum 25) method<33> writes events to the event log; the server
 receives these events from the client.
@@ -3717,7 +3613,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NumStrings: The number of strings in the array pointed to by the Strings parameter. A value of zero
+
+NumStrings: The number of strings in the array pointed to by the Strings parameter. A value of zero
 
 indicates that no strings are present.
 
@@ -3788,7 +3685,8 @@ Release: April 23, 2024
 
 47 / 81
 
-The server MUST attempt to store the event source name in the event. This event source was
+
+The server MUST attempt to store the event source name in the event. This event source was
 originally specified when the ElfrRegisterEventSourceW (section 3.1.4.5) method or the
 ElfrRegisterEventSourceA (section 3.1.4.6) method was called. The event source name is attached to
 the LogHandle when the ElfrRegisterEventSourceW (section 3.1.4.5) method or the
@@ -3808,9 +3706,9 @@ Note: This method is almost identical to the ElfrReportEventW (section 3.1.4.13)
 the Time (second parameter) is replaced by TimeGenerated, enabling a more precise time to be
 logged; and there is no TimeWritten parameter.
 
-3.1.4.17
+##### 3.1.4.17 ElfrReportEventExA (Opnum 26)
 
-ElfrReportEventExA (Opnum 26)
+
 
 The ElfrReportEventExA (Opnum 26) method<36> writes events to the event log; the server receives
 these events from the client.
@@ -3860,7 +3758,8 @@ Release: April 23, 2024
 
 48 / 81
 
-DataSize: The number of bytes of event-specific raw binary data to write to the log. This binary data
+
+DataSize: The number of bytes of event-specific raw binary data to write to the log. This binary data
 is passed in the Data parameter. If the DataSize parameter is zero, event-specific data MUST NOT
 be present.
 
@@ -3894,9 +3793,9 @@ This method is identical to the ElfrReportEventExW (section 3.1.4.16) method exc
 arguments are ANSI strings in this case. Thus, the remarks in ElfrReportEventExW (section 3.1.4.16)
 apply to this method as well.
 
-3.1.4.18
+##### 3.1.4.18 ElfrNumberOfRecords (Opnum 4)
 
-ElfrNumberOfRecords (Opnum 4)
+
 
 The ElfrNumberOfRecords (Opnum 4) method instructs the server to report the number of records
 currently in the event log.
@@ -3929,9 +3828,10 @@ Release: April 23, 2024
 
 49 / 81
 
-3.1.4.19
 
-ElfrOldestRecord (Opnum 5)
+##### 3.1.4.19 ElfrOldestRecord (Opnum 5)
+
+
 
 The ElfrOldestRecord (Opnum 5) method instructs the server to report the record number of the oldest
 record in the event log.
@@ -3960,9 +3860,9 @@ associated log and return the number via the OldestRecordNumber parameter, and r
 the log is empty, the server MUST set the OldestRecordNumber parameter to 0.<38> This call MUST
 NOT update the internal state of the server.
 
-3.1.4.20
+##### 3.1.4.20 ElfrGetLogInformation (Opnum 22)
 
-ElfrGetLogInformation (Opnum 22)
+
 
 The ElfrGetLogInformation (Opnum 22) method instructs the server to return information on an event
 log.
@@ -3998,7 +3898,8 @@ Release: April 23, 2024
 
 50 / 81
 
-record. Otherwise, it MUST return an implementation-based, nonzero NTSTATUS value specified in
+
+record. Otherwise, it MUST return an implementation-based, nonzero NTSTATUS value specified in
 [MS-ERREF].
 
 In response to this request from the client, the server MUST first check that the handle is valid. The
@@ -4021,9 +3922,9 @@ be appended when the maximum size limitation of the log has been reached and the
 of the log cannot be overwritten. When this happens, a flag indicating that the event log is full is set in
 the log file. This method checks whether that flag is set or not.
 
-3.1.4.21
+##### 3.1.4.21 ElfrCloseEL (Opnum 2)
 
-ElfrCloseEL (Opnum 2)
+
 
 The ElfrCloseEL (Opnum 2) method instructs the server to close a handle to the event log, freeing
 resources on the server that maintained an association between the handle and the corresponding
@@ -4049,9 +3950,9 @@ ElfrOpenBELW (section 3.1.4.1) method, or the ElfrOpenBELA (section 3.1.4.2) met
 
 If the handle is valid, the server MUST free the resources taken by this handle in the server.<40>
 
-3.1.4.22
+##### 3.1.4.22 ElfrDeregisterEventSource (Opnum 3)
 
-ElfrDeregisterEventSource (Opnum 3)
+
 
 The ElfrDeregisterEventSource (Opnum 3) method instructs the server to close a handle to the event
 log, freeing resources on the server that maintained an association between the handle and the
@@ -4066,7 +3967,8 @@ Release: April 23, 2024
 
 51 / 81
 
- NTSTATUS ElfrDeregisterEventSource(
+
+ NTSTATUS ElfrDeregisterEventSource(
    [in, out] IELF_HANDLE* LogHandle
  );
 
@@ -4086,9 +3988,9 @@ ElfrDeregisterEventSource method has come from one of those two methods.<41>
 
 If the handle is valid, the server MUST free the resources taken by this handle in the server.
 
-3.1.4.23
+##### 3.1.4.23 ElfrChangeNotify (Opnum 6)
 
-ElfrChangeNotify (Opnum 6)
+
 
 The ElfrChangeNotify (Opnum 6) method is intended for local use.
 
@@ -4115,11 +4017,11 @@ is invalid.
 
 The server MUST return an error code if the handle is remote.<42>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -4130,7 +4032,8 @@ Release: April 23, 2024
 
 52 / 81
 
-3.1.7  Server Configurations for Localizable Event Descriptions
+
+#### 3.1.7 Server Configurations for Localizable Event Descriptions
 
 The server MAY store various localizable description strings in resource binary files formatted
 according to the Microsoft Portable Executable and Common Object File Format Specification, as
@@ -4160,7 +4063,7 @@ specify a "PrimaryModule" REG_EXPAND_SZ registry value under the
 HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\EventLog\<LogName> registry key as
 described in 3.1.1.2 in case the client cannot find the description string.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client side of this RPC protocol is simply a pass-through.
 
@@ -4169,19 +4072,19 @@ RRP]), remote SMB (as specified in [MS-SMB]), Local Security Authority (as speci
 and LDAP (as specified in [LDAP]) protocols to retrieve and assemble the event description string.
 For these operations, see section 3.2.4.1.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The client does not maintain state as part of the EventLog Remoting Protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 Calls made by the higher-layer protocol or application are passed directly to the transport. All return
 values from method invocations MUST be returned uninterpreted to the higher-layer protocol or
@@ -4194,7 +4097,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Methods in RPC Opnum Order
+
+Methods in RPC Opnum Order
 
 Method
 
@@ -4300,7 +4204,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 ElfrClearELFA
 
@@ -4407,7 +4312,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -4428,12 +4334,12 @@ Opnum: 26
 In the preceding table, the phrase "Reserved for local use" means that the client MUST NOT send the
 opnum, and the server behavior is undefined because it does not affect interoperability.
 
-3.2.4.1  Client Processing of Event Descriptions and Other Localizable Strings
+##### 3.2.4.1 Client Processing of Event Descriptions and Other Localizable Strings
 
 The event description and localizable strings are stored in server files as specified in section 3.1.7.
 The following subsections specify how the client accesses and displays them.
 
-3.2.4.1.1 Loading Event Log Description Information
+###### 3.2.4.1.1 Loading Event Log Description Information
 
 The localizable event log description is retrieved from DisplayNameFile and DisplayNameID by a
 client. The client MUST attempt to expand an environment variable, as described in section 3.2.4.1.5.4
@@ -4451,7 +4357,7 @@ resource string with the ID number specified by the "DisplayNameID" value data.<
 If either of these two values is missing, the client will use the event log name directly as the
 description string.
 
-3.2.4.1.2 Retrieving Event Parameter Strings
+###### 3.2.4.1.2 Retrieving Event Parameter Strings
 
 "ParameterMessageFile" data MAY contain environment variables enclosed in percent characters (%).
 The client MUST attempt to expand an environment variable as specified in section 3.2.4.1.5.4 to
@@ -4468,7 +4374,7 @@ strings with ID numbers corresponding to the parameter insertion code encountere
 process of expanding a description string for that source.<47> Parameter insertion rules are further
 described in 3.2.4.1.5.2.
 
-3.2.4.1.3 Retrieving Event Category Strings
+###### 3.2.4.1.3 Retrieving Event Category Strings
 
 If an event source contains localizable category names, the server machine MUST configure them
 via the CategoryMessageFile and CategoryCount registry values under the log registry key
@@ -4481,7 +4387,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CategoryMessageFile data MUST contain a single path to a category message file for this source.
+
+CategoryMessageFile data MUST contain a single path to a category message file for this source.
 The path data MAY contain environment variables that are enclosed by percent signs (%). The client
 MUST attempt to expand an environment variable as described in 3.2.4.1.5.4 to retrieve the full path
 to the resource file. If the client is accessing a remote source, it MUST then convert the expanded
@@ -4500,7 +4407,7 @@ and retrieve the category resource string with the ID number that is specified b
 EVENTLOGRECORD field.<50> The client MAY retrieve all category descriptions at once and cache
 them for subsequent access.
 
-3.2.4.1.4 Retrieving Unexpanded Event Description Strings
+###### 3.2.4.1.4 Retrieving Unexpanded Event Description Strings
 
 The Event Message File is a binary resource file defining unexpanded description strings for an
 event source, where the resource ID corresponds to the EventID. Thus, a string with the resource
@@ -4539,7 +4446,7 @@ file path to a UNC path: When the path begins with an "X:" pattern, where the fi
 letter and the second character is ":", the client MUST transform it to
 \\messageSourceServer\X$\path.
 
-3.2.4.1.5 Expanding Unexpanded Event Description Strings
+###### 3.2.4.1.5 Expanding Unexpanded Event Description Strings
 
 57 / 81
 
@@ -4548,7 +4455,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following insertion codes MAY appear as part of unexpanded description strings or during the
+
+The following insertion codes MAY appear as part of unexpanded description strings or during the
 process of expanding a description string.
 
 Insertion
@@ -4585,9 +4493,9 @@ substituted into the description string, then the "%1" inside the file name will
 insertion code and substituted with the whole file name, and so on, until the cap on the number of
 substitutions is reached (if such a cap is part of the client implementation).
 
-3.2.4.1.5.1
+###### 3.2.4.1.5.1 Inserting EVENTLOGRECORD Strings
 
-Inserting EVENTLOGRECORD Strings
+
 
 Individual EVENTLOGRECORD structures, as defined in 2.2.3, can have zero or more strings attached
 to them. The first EVENTLOGRECORD string MUST be specified in the unexpanded description
@@ -4599,9 +4507,9 @@ it MUST replace it with the first attached string.
 If EVENTLOGRECORD string insertion fails for any reason, the client SHOULD quote the insertion code
 verbatim.
 
-3.2.4.1.5.2
+###### 3.2.4.1.5.2 Inserting Parameter Strings
 
-Inserting Parameter Strings
+
 
 See 3.2.4.1.2 for how parameter strings are retrieved.
 
@@ -4610,9 +4518,9 @@ resource ID number n from the parameter message file.
 
 If parameter replacement fails for any reason, the client SHOULD quote the insertion code verbatim.
 
-3.2.4.1.5.3
+###### 3.2.4.1.5.3 Inserting SIDs and GUIDs
 
-Inserting SIDs and GUIDs
+
 
 Services that write Event Log entries MAY record the identity of Active Directory objects (for
 example, users) and security principals as insertion strings in (respectively) GUID (as specified in
@@ -4622,7 +4530,7 @@ names of objects.<55>
 If the client does not attempt to resolve SID or GUID insertion codes, or if resolving them fails for any
 reason, the client SHOULD quote SID and GUID strings verbatim.
 
-3.2.4.1.5.4  Expanding Environment Variables
+###### 3.2.4.1.5.4 Expanding Environment Variables
 
 58 / 81
 
@@ -4631,7 +4539,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Whenever the server machine registry contains a path to a message file, that (REG_EXPAND_SZ)
+
+Whenever the server machine registry contains a path to a message file, that (REG_EXPAND_SZ)
 path MAY contain a reference to an environment variable such as "%systemroot%" or
 "%systemdrive%".
 
@@ -4644,11 +4553,11 @@ replace "%systemdrive%" with the first two characters of that value.<56>
 Expanding environment variables other than "%systemroot%" and "%systemdrive%" are not part of
 this protocol. The client MAY employ other heuristics or leave these variables unexpanded.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -4659,9 +4568,10 @@ Release: April 23, 2024
 
 59 / 81
 
-4  Protocol Examples
 
-4.1  Obtain Records Stored in an Event Log
+## 4 Protocol Examples
+
+### 4.1 Obtain Records Stored in an Event Log
 
 In this example, a client application wants to obtain records stored in an event log. This involves the
 following steps:
@@ -4759,7 +4669,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     ULONG    NameLength;    = 0x0000000b
+
+     ULONG    NameLength;    = 0x0000000b
      [size_is(NameLength)] WCHAR Name[]; = {"Application"}
  } *IELF_HANDLE;
 
@@ -4812,7 +4723,7 @@ follows.
 
  The server removes its state for the handle and returns success.
 
-4.2  Write Events to an Event Log
+### 4.2 Write Events to an Event Log
 
 In this example, the client application wants to write events to an event log. This involves the
 following:
@@ -4824,7 +4735,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  To establish a connection to the server, the client application calls ElfrRegisterEventSourceW with
+
+1.  To establish a connection to the server, the client application calls ElfrRegisterEventSourceW with
 
 the following values for the parameters.
 
@@ -4894,7 +4806,8 @@ Release: April 23, 2024
 
 62 / 81
 
-           [in] PRPC_UNICODE_STRING
+
+           [in] PRPC_UNICODE_STRING
            ComputerName = {"Computer"},
            [in, unique] PRPC_SID UserSID = NULL,
            [in, size_is(NumStrings), unique]
@@ -4972,7 +4885,8 @@ Release: April 23, 2024
 
 63 / 81
 
-3.  When the client application is finished writing events, it releases the handle by calling
+
+3.  When the client application is finished writing events, it releases the handle by calling
 
 ElfrDeregisterEventSource with the following parameter.
 
@@ -4984,7 +4898,7 @@ ElfrDeregisterEventSource with the following parameter.
 
 The server removes its state for the handle and returns success.
 
-4.3  Back Up the Event Log
+### 4.3 Back Up the Event Log
 
 In the following example, the client application backs up a live event log file:
 
@@ -5017,7 +4931,7 @@ This step is the same as step 1 in the example in section 4.1. Refer to the exam
 After the function returns, the file "c:\BackupLog.evt" is the backup log file for the application
 log.
 
-4.4  Expanding Unexpanded Event Description Strings
+### 4.4 Expanding Unexpanded Event Description Strings
 
 In this example, assume that the unexpanded description string is "Error %2 occurred while
 performing operation %1 on file %3" and that the record strings (as specified in section 2.2.3) are as
@@ -5037,7 +4951,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Error Access Denied occurred while performing operation %1 on file %3
+
+ Error Access Denied occurred while performing operation %1 on file %3
 
 The next substitution replaces "%1" with "%%2", resulting in the following.
 
@@ -5060,9 +4975,10 @@ Release: April 23, 2024
 
 65 / 81
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Take care to enforce the read/write permissions specified in section 3.1.4 to prevent unauthorized
 access to event logs.
@@ -5070,7 +4986,7 @@ access to event logs.
 Note  Server prerequisites required for remote event description rendering (as defined in section
 1.5.1) can make the server more at risk to security attacks. Therefore, apply with caution.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -5085,7 +5001,8 @@ Release: April 23, 2024
 
 66 / 81
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided as follows, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] section 5, Appendix A: Full MS-DTYP IDL.
@@ -5155,7 +5072,8 @@ Release: April 23, 2024
 
 67 / 81
 
- ElfrDeregisterEventSource (
+
+ ElfrDeregisterEventSource (
      [in,out]        IELF_HANDLE * LogHandle
      );
 
@@ -5232,7 +5150,8 @@ Release: April 23, 2024
 
 68 / 81
 
-     [in]         unsigned long EventID,
+
+     [in]         unsigned long EventID,
      [in, range(0, 256)]       unsigned short NumStrings,
      [in, range(0, 61440)]  unsigned long DataSize,
      [in]         PRPC_UNICODE_STRING ComputerName,
@@ -5307,7 +5226,8 @@ Release: April 23, 2024
 
 69 / 81
 
-     [in]    unsigned long Time,
+
+     [in]    unsigned long Time,
      [in]    unsigned short EventType,
      [in]    unsigned short EventCategory,
      [in]    unsigned long EventID,
@@ -5382,7 +5302,8 @@ Release: April 23, 2024
 
 70 / 81
 
-   [in] PFILETIME TimeGenerated,
+
+   [in] PFILETIME TimeGenerated,
    [in] unsigned short EventType,
    [in] unsigned short EventCategory,
    [in] unsigned long EventID,
@@ -5405,7 +5326,8 @@ Release: April 23, 2024
 
 71 / 81
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5475,7 +5397,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<1> Section 1.6: On Windows Vista and later and Windows Server 2008 and later, the EventLog
+
+<1> Section 1.6: On Windows Vista and later and Windows Server 2008 and later, the EventLog
 Remoting Protocol Version 6.0 specified in [MS-EVEN6] is preferred because of its additional
 functionality.
 
@@ -5543,7 +5466,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The EventID layout is used by other operating system components besides the event log. Because of
+
+The EventID layout is used by other operating system components besides the event log. Because of
 this, the layout used by Windows has some additional structure (for example, a Facility field and a
 Code field) that is not used by the event log and that can be ignored in this context.
 
@@ -5612,7 +5536,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<31> Section 3.1.4.14: The API is not intended to support dynamically changing computer names.
+
+<31> Section 3.1.4.14: The API is not intended to support dynamically changing computer names.
 Current implementations of Windows cache the ComputerName parameter the first time a client calls
 the API, and use that name on subsequent calls until the machine is rebooted.
 
@@ -5679,7 +5604,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<46> Section 3.2.4.1.2: In Windows client implementations, these are not read for the Security log
+
+<46> Section 3.2.4.1.2: In Windows client implementations, these are not read for the Security log
 because of the subkey's highly restrictive permissions; in this case, the log name is a resource in the
 Event Viewer application.
 
@@ -5746,7 +5672,8 @@ EventLog Remoting Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the client implementations still have not succeeded, they leave the GUID string in the output as is. For
+
+the client implementations still have not succeeded, they leave the GUID string in the output as is. For
 information on implementing this lookup, see [RFC2251] and [MS-ADTS].
 
 <56> Section 3.2.4.1.5.4: As a fallback, Windows Event Viewer for SKUs later than Windows XP tries
@@ -5761,7 +5688,8 @@ Release: April 23, 2024
 
 77 / 81
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5805,7 +5733,8 @@ Release: April 23, 2024
 
 78 / 81
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -5944,7 +5873,8 @@ F
 
 79 / 81
 
-Fields - vendor-extensible 13
+
+Fields - vendor-extensible 13
 Fields – vendor-extensible 13
 Full IDL 67
 
@@ -6082,7 +6012,8 @@ Security
 
 80 / 81
 
-   implementer considerations 66
+
+   implementer considerations 66
    parameter index 66
 Sequencing rules
    client 53

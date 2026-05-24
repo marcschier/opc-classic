@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -172,138 +173,62 @@ Release: April 23, 2024
 
 2 / 36
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Algorithms](#14-relationship-to-protocols-and-other-algorithms)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Standards Assignments](#16-standards-assignments)
+- [2 Common Data Structures](#2-common-data-structures)
+  - [2.1 SYNC_GID](#21-syncgid)
+  - [2.2 REPLICA_GID](#22-replicagid)
+  - [2.3 SYNC_KNOWLEDGE](#23-syncknowledge)
+  - [2.4 REPLICA_KEY_MAP](#24-replicakeymap)
+  - [2.5 VECTOR_REPLICA_KEY](#25-vectorreplicakey)
+  - [2.6 VECTOR_CLOCK_VECTOR](#26-vectorclockvector)
+  - [2.7 CLOCK_VECTOR](#27-clockvector)
+  - [2.8 VECTOR_CLOCK_VECTOR_ELEMENT](#28-vectorclockvectorelement)
+  - [2.9 CLOCK_VECTOR_ELEMENT](#29-clockvectorelement)
+  - [2.10 VECTOR_RANGE_SET](#210-vectorrangeset)
+  - [2.11 RANGE_SET](#211-rangeset)
+  - [2.12 VECTOR_RANGE](#212-vectorrange)
+  - [2.13 RANGE](#213-range)
+  - [2.14 SYNC_CHANGE_INFORMATION](#214-syncchangeinformation)
+  - [2.15 VECTOR_CHANGE_SET_ENTRY](#215-vectorchangesetentry)
+  - [2.16 CHANGE_SET_ENTRY](#216-changesetentry)
+- [3 Algorithm Details](#3-algorithm-details)
+  - [3.1 Object Store Details](#31-object-store-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Per ReplicaEntry](#3111-per-replicaentry)
+      - [3.1.1.2 Per FileItemEntry](#3112-per-fileitementry)
+      - [3.1.1.3 Per ClockVectorElement](#3113-per-clockvectorelement)
+      - [3.1.1.4 Per ClockVectorEntry](#3114-per-clockvectorentry)
+      - [3.1.1.5 Per RangeEntry](#3115-per-rangeentry)
+      - [3.1.1.6 Per ChangeSetEntry](#3116-per-changesetentry)
+      - [3.1.1.7 Per Participant](#3117-per-participant)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Common Algorithms](#314-common-algorithms)
+      - [3.1.4.1 Algorithm for Querying Sync Knowledge for a Participant](#3141-algorithm-for-querying-sync-knowledge-for-a-participant)
+      - [3.1.4.2 Algorithm for Querying Change Information for a Participant](#3142-algorithm-for-querying-change-information-for-a-participant)
+      - [3.1.4.3 Algorithm for Creating the ChangeSetEntryList for a Participant Given Another](#3143-algorithm-for-creating-the-changesetentrylist-for-a-participant-given-another)
+      - [3.1.4.4 Algorithm for Updating the FSVCA Metadata When an Item Changes](#3144-algorithm-for-updating-the-fsvca-metadata-when-an-item-changes)
+      - [3.1.4.5 Algorithm for Updating the FSVCA Metadata for the Successfully Applied Items](#3145-algorithm-for-updating-the-fsvca-metadata-for-the-successfully-applied-items)
+- [4 Algorithm Examples](#4-algorithm-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Algorithms ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-
-2  Common Data Structures ......................................................................................... 7
-SYNC_GID ......................................................................................................... 7
-REPLICA_GID .................................................................................................... 7
-SYNC_KNOWLEDGE ............................................................................................ 8
-REPLICA_KEY_MAP ............................................................................................. 9
-VECTOR_REPLICA_KEY ..................................................................................... 10
-VECTOR_CLOCK_VECTOR ................................................................................. 10
-CLOCK_VECTOR ............................................................................................... 11
-VECTOR_CLOCK_VECTOR_ELEMENT ................................................................... 11
-CLOCK_VECTOR_ELEMENT ................................................................................ 11
-VECTOR_RANGE_SET ....................................................................................... 12
-RANGE_SET .................................................................................................... 12
-VECTOR_RANGE .............................................................................................. 13
-RANGE ............................................................................................................ 13
-SYNC_CHANGE_INFORMATION .......................................................................... 13
-VECTOR_CHANGE_SET_ENTRY .......................................................................... 16
-CHANGE_SET_ENTRY ....................................................................................... 16
-
-2.1
-2.2
-2.3
-2.4
-2.5
-2.6
-2.7
-2.8
-2.9
-2.10
-2.11
-2.12
-2.13
-2.14
-2.15
-2.16
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-
-3  Algorithm Details................................................................................................... 19
-Object Store Details ......................................................................................... 19
-Abstract Data Model .................................................................................... 19
-Per ReplicaEntry ................................................................................... 19
-Per FileItemEntry .................................................................................. 19
-Per ClockVectorElement ......................................................................... 20
-Per ClockVectorEntry ............................................................................. 20
-Per RangeEntry ..................................................................................... 20
-Per ChangeSetEntry .............................................................................. 20
-Per Participant ...................................................................................... 21
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Common Algorithms ................................................................................... 21
-Algorithm for Querying Sync Knowledge for a Participant ........................... 21
-Algorithm for Querying Change Information for a Participant ...................... 24
-Algorithm for Creating the ChangeSetEntryList for a Participant Given Another
-Participant’s Destination Knowledge ........................................................ 27
-Algorithm for Updating the FSVCA Metadata When an Item Changes ........... 30
-Algorithm for Updating the FSVCA Metadata for the Successfully Applied Items
- .......................................................................................................... 31
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.4
-3.1.4.5
-
-4  Algorithm Examples .............................................................................................. 32
-
-5  Security ................................................................................................................. 33
-Security Considerations for Implementers ........................................................... 33
-Index of Security Parameters ............................................................................ 33
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 34
-
-3 / 36
-
-[MS-FSVCA] - v20240423
-File Set Version Comparison Algorithms
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7  Change Tracking .................................................................................................... 35
-
-8  Index ..................................................................................................................... 36
-
-[MS-FSVCA] - v20240423
-File Set Version Comparison Algorithms
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 36
-
-1  Introduction
+## 1 Introduction
 
 The File Set Version Comparison Algorithms are designed to provide a compact representation of a
 given replica’s file version state and then generate the list of changes between two replicas. See
@@ -312,7 +237,7 @@ given replica’s file version state and then generate the list of changes betwe
 Sections 1.6 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -348,14 +273,14 @@ track deleted items and prevent their reintroduction into the synchronization co
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -373,31 +298,32 @@ Release: April 23, 2024
 
 5 / 36
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MSDN-MSF] Microsoft Corporation, "Microsoft Sync Framework", http://msdn.microsoft.com/en-
 us/library/bb902854.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 These algorithms describe how to build and serialize a compact representation of version state across
 a data set consisting of files and directories. It also describes how to use this compact version
 representation to generate a list of changes that a destination replica would need to apply in order to
 contain all the file and directory versions that the source replica tracks.
 
-1.4  Relationship to Protocols and Other Algorithms
+### 1.4 Relationship to Protocols and Other Algorithms
 
 This algorithm does not depend on any other algorithms or protocols. A protocol that depends on this
 algorithm would need to transfer file and directory data with the goal of keeping datasets that are
 stored at multiple endpoints synchronized with each other.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 This algorithm is appropriate for any protocol that tracks version state across file and directory data
 sets. Protocols can use this algorithm to reduce the number of bits transferred when determining what
 differences exist between data sets on different endpoints.
 
-1.6  Standards Assignments
+### 1.6 Standards Assignments
 
 None.
 
@@ -408,7 +334,8 @@ Release: April 23, 2024
 
 6 / 36
 
-2  Common Data Structures
+
+## 2 Common Data Structures
 
  The following data types are specified in [MS-DTYP].
 
@@ -423,7 +350,7 @@ MUST be represented in big-endian order (most-significant byte first).
 
 Unless otherwise indicated, numeric fields are integers of the specified byte length.
 
-2.1  SYNC_GID
+### 2.1 SYNC_GID
 
 The SYNC_GID structure represents an identifier for a file.
 
@@ -458,7 +385,7 @@ significant 63 bits of a FILETIME structure.
 
 UniqueId (16 bytes): This value is set to a GUID value.
 
-2.2  REPLICA_GID
+### 2.2 REPLICA_GID
 
 The REPLICA_GID structure represents an identifier for a replica of the synchronized dataset.
 
@@ -488,7 +415,8 @@ Release: April 23, 2024
 
 7 / 36
 
-2.3  SYNC_KNOWLEDGE
+
+### 2.3 SYNC_KNOWLEDGE
 
 The SYNC_KNOWLEDGE structure describes all the changes that the sync participant, which generated
 the knowledge, has tracked.
@@ -572,7 +500,8 @@ Release: April 23, 2024
 
 8 / 36
 
-Version (4 bytes): This value MUST be set to 5.
+
+Version (4 bytes): This value MUST be set to 5.
 
 Reserved1 (4 bytes): This value MUST be set to 0.
 
@@ -620,7 +549,7 @@ Reserved8 (1 byte): This value MUST be set to 1.
 
 Reserved9 (4 bytes): This value MUST be set to 0.
 
-2.4  REPLICA_KEY_MAP
+### 2.4 REPLICA_KEY_MAP
 
 The REPLICA_KEY_MAP structure specifies the mapping of a 4-byte index to the REPLICA_GID
 structures that are used to identify each sync participant participating in the synchronization
@@ -654,7 +583,8 @@ Release: April 23, 2024
 
 9 / 36
 
-...
+
+...
 
 Signature (4 bytes): This value MUST be set to 5.
 
@@ -665,7 +595,7 @@ ReplicaGidLength (2 bytes): This is the REPLICA_GID length in bytes and MUST be 
 B - ReplicaKeys (variable): A VECTOR_REPLICA_KEY element that contains a list of replicas that are
 referenced by the CLOCK_VECTOR_ELEMENT structures in the SYNC_KNOWLEDGE structure.
 
-2.5  VECTOR_REPLICA_KEY
+### 2.5 VECTOR_REPLICA_KEY
 
 The VECTOR_REPLICA_KEY structure represents a collection of REPLICA_GID structures, as specified
 in section 2.2, in the following format:
@@ -693,7 +623,7 @@ NumEntries (4 bytes): This is the number of entries in the vector.
 
 ReplicaGids (variable): An array of 0 or more REPLICA_GID structures.
 
-2.6  VECTOR_CLOCK_VECTOR
+### 2.6 VECTOR_CLOCK_VECTOR
 
 The VECTOR_CLOCK_VECTOR structure represents a collection of CLOCK_VECTOR structures, as
 specified in section 2.7, in the following format:
@@ -726,12 +656,13 @@ Release: April 23, 2024
 
 10 / 36
 
-ClockVectorEntries (variable): An array of 1 or more CLOCK_VECTOR structures. The
+
+ClockVectorEntries (variable): An array of 1 or more CLOCK_VECTOR structures. The
 
 ClockVectorElementEntries field of the first CLOCK_VECTOR structure in the array MUST have
 zero NumEntries.
 
-2.7  CLOCK_VECTOR
+### 2.7 CLOCK_VECTOR
 
 The CLOCK_VECTOR structure specifies the collection of VECTOR_CLOCK_VECTOR_ELEMENT
 structures, as specified in section 2.8, in the following format:
@@ -761,7 +692,7 @@ ClockVectorElementEntries (variable): A VECTOR_CLOCK_VECTOR_ELEMENT structure th
 
 contains a list of CLOCK_VECTOR_ELEMENT structures.
 
-2.8  VECTOR_CLOCK_VECTOR_ELEMENT
+### 2.8 VECTOR_CLOCK_VECTOR_ELEMENT
 
 The VECTOR_CLOCK_VECTOR_ELEMENT structure represents a collection of
 CLOCK_VECTOR_ELEMENT structures, as specified in section 2.9, in the following format:
@@ -789,7 +720,7 @@ NumEntries (4 bytes): This is the number of entries in the vector.
 
 ClockVectorElements (variable): An array of 0 or more CLOCK_VECTOR_ELEMENT structures.
 
-2.9  CLOCK_VECTOR_ELEMENT
+### 2.9 CLOCK_VECTOR_ELEMENT
 
 The CLOCK_VECTOR_ELEMENT structure describes the revision version of an item. It consists of the
 replica key and the replica tick count.
@@ -801,7 +732,8 @@ Release: April 23, 2024
 
 11 / 36
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -826,7 +758,7 @@ TickCount (8 bytes):  A monotonically increasing number that is specific to a re
 
 with a replica key to make a version.
 
-2.10  VECTOR_RANGE_SET
+### 2.10 VECTOR_RANGE_SET
 
 The VECTOR_RANGE_SET structure represents a collection of RANGE_SET structures, as specified in
 section 2.11, in the following format:
@@ -854,7 +786,7 @@ NumEntries (4 bytes):  This MUST be set to 1.
 
 RangeSet (variable): An array of 1 RANGE_SET structures.
 
-2.11  RANGE_SET
+### 2.11 RANGE_SET
 
 The RANGE_SET structure represents a collection of VECTOR_RANGE structures, as specified in section
 2.12, in the following format:
@@ -887,9 +819,10 @@ Release: April 23, 2024
 
 12 / 36
 
-Ranges (variable): A VECTOR_RANGE structure that contains the list of RANGE structures.
 
-2.12  VECTOR_RANGE
+Ranges (variable): A VECTOR_RANGE structure that contains the list of RANGE structures.
+
+### 2.12 VECTOR_RANGE
 
 The VECTOR_RANGE structure represents a collection of RANGE structures, as specified in section
 2.13, in the following format:
@@ -917,7 +850,7 @@ NumEntries (4 bytes): The number of entries in the Ranges field.
 
 Ranges (variable): An array of 1 or more RANGE structures.
 
-2.13  RANGE
+### 2.13 RANGE
 
 The RANGE structure describes a set of contiguous item identifiers to which the same clock vector
 applies. A range is represented by a lower bound, an upper bound and the clock vector that applies to
@@ -949,7 +882,7 @@ SyncGid (24 bytes): The SYNC_GID for the item that represents the lower bound of
 ClockTableVectorIndex (4 bytes): The index into the ClockVectorTable in a SYNC_KNOWLEDGE
 structure for the CLOCK_VECTOR that describes the set of updates tracked by the replica.
 
-2.14  SYNC_CHANGE_INFORMATION
+### 2.14 SYNC_CHANGE_INFORMATION
 
 The SYNC_CHANGE_INFORMATION structure represents the list of changed items tracked by the
 source replica when compared to the destination’s version state.
@@ -961,7 +894,8 @@ Release: April 23, 2024
 
 13 / 36
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1027,7 +961,8 @@ Release: April 23, 2024
 
 14 / 36
 
-WorkEstimateForSyncSession
+
+WorkEstimateForSyncSession
 
 WorkEstimateForChangeBatch
 
@@ -1104,7 +1039,8 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.15  VECTOR_CHANGE_SET_ENTRY
+
+### 2.15 VECTOR_CHANGE_SET_ENTRY
 
 The VECTOR_CHANGE_SET_ENTRY structure represents the list of changed items described in the
 sync change information structure, as specified in section 2.16, in the following format:
@@ -1134,7 +1070,7 @@ ChangeSetEntries (variable): A byte stream of 0 or more CHANGE_SET_ENTRY structu
 
 describe which items in the replica have changed.
 
-2.16  CHANGE_SET_ENTRY
+### 2.16 CHANGE_SET_ENTRY
 
 The CHANGE_SET_ENTRY structure represents an item that has changed in the source replica relative
 to the destination replica.
@@ -1181,7 +1117,8 @@ Release: April 23, 2024
 
 16 / 36
 
-CreateVersion
+
+CreateVersion
 
 ...
 
@@ -1256,7 +1193,8 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WinnerSyncGid (24 bytes): The ID for the winning object.
+
+WinnerSyncGid (24 bytes): The ID for the winning object.
 
 SyncChange (4 bytes): This field MUST contain one of the following values:
 
@@ -1305,11 +1243,12 @@ Release: April 23, 2024
 
 18 / 36
 
-3  Algorithm Details
 
-3.1  Object Store Details
+## 3 Algorithm Details
 
-3.1.1  Abstract Data Model
+### 3.1 Object Store Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this algorithm. The described organization is provided to facilitate the
@@ -1337,7 +1276,7 @@ DataFileItem: A FileItem object that represents a FileType of DataFile.
 
 DirectoryFileItem: A FileItem object with a FileType of DirectoryFile.
 
-3.1.1.1  Per ReplicaEntry
+##### 3.1.1.1 Per ReplicaEntry
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1346,7 +1285,7 @@ attributes:
 
 community.
 
-3.1.1.2  Per FileItemEntry
+##### 3.1.1.2 Per FileItemEntry
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1376,7 +1315,8 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 IsDeleted: A flag that is set when this item has been deleted from the dataset.
 
@@ -1388,7 +1328,7 @@ item, this is set to TRUE; otherwise it is FALSE.
 
 another item, this is the SYNC_GID for that winning item.
 
-3.1.1.3  Per ClockVectorElement
+##### 3.1.1.3 Per ClockVectorElement
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1401,7 +1341,7 @@ community that this ClockVectorElement describes.
 
 the ReplicaKey for this ClockVectorElement.
 
-3.1.1.4  Per ClockVectorEntry
+##### 3.1.1.4 Per ClockVectorEntry
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1410,7 +1350,7 @@ attributes:
 
 exactly one ClockVectorElement per Replica in the synchronization community.
 
-3.1.1.5  Per RangeEntry
+##### 3.1.1.5 Per RangeEntry
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1423,7 +1363,7 @@ describe the version state of the FileItems in this range.
 
 The end of the range is implied by the SyncGid of the next RangeEntry in the RangeList.
 
-3.1.1.6  Per ChangeSetEntry
+##### 3.1.1.6 Per ChangeSetEntry
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1451,13 +1391,14 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  WinnerSyncGid: If WinnerExists is TRUE, the SYNC_GID of the winning FileItem.
+
+  WinnerSyncGid: If WinnerExists is TRUE, the SYNC_GID of the winning FileItem.
 
   SyncChange: The type of change this entry represents, as specified in the SyncChange field in
 
 section 2.16.
 
-3.1.1.7  Per Participant
+##### 3.1.1.7 Per Participant
 
 Each Participant in the synchronization community MUST implement the following persistent
 attributes:
@@ -1499,17 +1440,17 @@ replica managed by this Participant.
 information no longer tracked in SyncKnowledge by this Participant due to the deletion of
 tombstones in the FileItemList.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Common Algorithms
+#### 3.1.4 Common Algorithms
 
-3.1.4.1  Algorithm for Querying Sync Knowledge for a Participant
+##### 3.1.4.1 Algorithm for Querying Sync Knowledge for a Participant
 
 The inputs for this algorithm are:
 
@@ -1522,7 +1463,8 @@ Release: April 23, 2024
 
 21 / 36
 
-  ClockVectorList: The ClockVectorList for the Participant.
+
+  ClockVectorList: The ClockVectorList for the Participant.
 
   RangeList: The RangeList for the Participant.
 
@@ -1600,7 +1542,8 @@ Release: April 23, 2024
 
 22 / 36
 
-  Set SyncKnowledge.ClockVectorTable.NumEntries to ClockVectorList.Count.
+
+  Set SyncKnowledge.ClockVectorTable.NumEntries to ClockVectorList.Count.
 
 
 
@@ -1685,7 +1628,8 @@ Release: April 23, 2024
 
 23 / 36
 
-3.1.4.2  Algorithm for Querying Change Information for a Participant
+
+##### 3.1.4.2 Algorithm for Querying Change Information for a Participant
 
 The inputs for this algorithm are the following:
 
@@ -1763,7 +1707,8 @@ Release: April 23, 2024
 
 24 / 36
 
-  Set SyncChangeInformation.ChangeSetList.ChangeSetEntry[0].ChangeDataSize to the size in
+
+  Set SyncChangeInformation.ChangeSetList.ChangeSetEntry[0].ChangeDataSize to the size in
 
 bytes for the CHANGE_SET_ENTRY structure.
 
@@ -1843,7 +1788,8 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Set
+
+  Set
 
 SyncChangeInformation.ChangeSetList.ChangeSetEntry[CurrentChangeSetEntry].CreateVersio
 n.TickCount to ChangeSetEntry.CreateReplicaTickCount.
@@ -1929,7 +1875,8 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Set SyncChangeInformation.ChangeSetList.ChangeSetEntry[CurrentChangeSetEntry].SyncGid to
+
+  Set SyncChangeInformation.ChangeSetList.ChangeSetEntry[CurrentChangeSetEntry].SyncGid to
 
 24-bytes of 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE.
 
@@ -1995,7 +1942,7 @@ synchronization session or to 1 if this is a recovery synchronization session.
 
   Set OutputBuffer to SyncChangeInformation.
 
-3.1.4.3  Algorithm for Creating the ChangeSetEntryList for a Participant Given Another
+##### 3.1.4.3 Algorithm for Creating the ChangeSetEntryList for a Participant Given Another
 
 Participant’s Destination Knowledge
 
@@ -2012,7 +1959,8 @@ Release: April 23, 2024
 
 27 / 36
 
-  FileItemList: The list of zero or more FileItemEntries describing the detailed version state
+
+  FileItemList: The list of zero or more FileItemEntries describing the detailed version state
 
 known for each item in the replica managed by this Participant.
 
@@ -2097,7 +2045,8 @@ File Set Version Comparison Algorithms
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If ItemChangeReplicaGid == DestinationSyncKnowledge.
 ReplicaKeyMap.ReplicaKeys.ReplicaGids[CurrentReplicaKey]:
@@ -2200,7 +2149,8 @@ Release: April 23, 2024
 
 29 / 36
 
-
+
+
 
 If AddToChangeList == TRUE:
 
@@ -2246,7 +2196,7 @@ End If
 
 End For
 
-3.1.4.4  Algorithm for Updating the FSVCA Metadata When an Item Changes
+##### 3.1.4.4 Algorithm for Updating the FSVCA Metadata When an Item Changes
 
 The inputs for this algorithm are the following:
 
@@ -2286,7 +2236,8 @@ Release: April 23, 2024
 
 30 / 36
 
-  Set FileItemEntry.CreateTickCount to the TickCount associated with the local replica in
+
+  Set FileItemEntry.CreateTickCount to the TickCount associated with the local replica in
 
 ClockVectorList.
 
@@ -2302,7 +2253,7 @@ ClockVectorList.
 
   Set WinningFileItem to 0.
 
-3.1.4.5  Algorithm for Updating the FSVCA Metadata for the Successfully Applied Items
+##### 3.1.4.5 Algorithm for Updating the FSVCA Metadata for the Successfully Applied Items
 
 The inputs for this algorithm are the following:
 
@@ -2367,7 +2318,8 @@ Release: April 23, 2024
 
 31 / 36
 
-4  Algorithm Examples
+
+## 4 Algorithm Examples
 
 None.
 
@@ -2378,13 +2330,14 @@ Release: April 23, 2024
 
 32 / 36
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2395,7 +2348,8 @@ Release: April 23, 2024
 
 33 / 36
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2435,7 +2389,8 @@ Release: April 23, 2024
 
 34 / 36
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2479,7 +2434,8 @@ Release: April 23, 2024
 
 35 / 36
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model - overview 19

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 57
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 57
 
-Date
+
+Date
 
 Revision
 History
@@ -542,7 +544,8 @@ Release: April 23, 2024
 
 3 / 57
 
-Date
+
+Date
 
 Revision
 History
@@ -575,214 +578,97 @@ Release: April 23, 2024
 
 4 / 57
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Security Extension Overview](#132-security-extension-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 System Access](#221-system-access)
+      - [2.2.1.1 Password Policies](#2211-password-policies)
+      - [2.2.1.2 Account Lockout Policies](#2212-account-lockout-policies)
+      - [2.2.1.3 Local Account Policies](#2213-local-account-policies)
+    - [2.2.2 Kerberos Policy](#222-kerberos-policy)
+    - [2.2.3 Event Log Policies](#223-event-log-policies)
+    - [2.2.4 Event Audit Policies](#224-event-audit-policies)
+    - [2.2.5 Registry Values](#225-registry-values)
+    - [2.2.6 Privilege Rights](#226-privilege-rights)
+    - [2.2.7 Registry Keys](#227-registry-keys)
+    - [2.2.8 Service General Setting](#228-service-general-setting)
+    - [2.2.9 File Security](#229-file-security)
+    - [2.2.10 Group Membership](#2210-group-membership)
+    - [2.2.11 User Account Control](#2211-user-account-control)
+      - [2.2.11.1 FilterAdministratorToken](#22111-filteradministratortoken)
+      - [2.2.11.2 ConsentPromptBehaviorAdmin](#22112-consentpromptbehavioradmin)
+      - [2.2.11.3 ConsentPromptBehaviorUser](#22113-consentpromptbehavioruser)
+      - [2.2.11.4 EnableInstallerDetection](#22114-enableinstallerdetection)
+      - [2.2.11.5 ValidateAdminCodeSignatures](#22115-validateadmincodesignatures)
+      - [2.2.11.6 EnableLUA](#22116-enablelua)
+      - [2.2.11.7 PromptOnSecureDesktop](#22117-promptonsecuredesktop)
+      - [2.2.11.8 EnableVirtualization](#22118-enablevirtualization)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative-Side Plug-in Details](#31-administrative-side-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Load Policy](#3151-load-policy)
+      - [3.1.5.2 Update Policy](#3152-update-policy)
+      - [3.1.5.3 Delete Setting Value](#3153-delete-setting-value)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client-Side Plug-in Details](#32-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Password Policies](#3251-password-policies)
+      - [3.2.5.2 Account Lockout Policies](#3252-account-lockout-policies)
+      - [3.2.5.3 Local Account Policies](#3253-local-account-policies)
+      - [3.2.5.4 Kerberos Policy](#3254-kerberos-policy)
+      - [3.2.5.5 Event Log Policies](#3255-event-log-policies)
+      - [3.2.5.6 Event Audit Policies](#3256-event-audit-policies)
+      - [3.2.5.7 Registry Values](#3257-registry-values)
+      - [3.2.5.8 Privilege Rights](#3258-privilege-rights)
+      - [3.2.5.9 Registry Keys](#3259-registry-keys)
+      - [3.2.5.10 Service General Setting](#32510-service-general-setting)
+      - [3.2.5.11 File Security](#32511-file-security)
+      - [3.2.5.12 Group Membership](#32512-group-membership)
+      - [3.2.5.13 User Account Control](#32513-user-account-control)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example Involving Password Policy](#41-example-involving-password-policy)
+  - [4.2 Example Involving Audit Settings](#42-example-involving-audit-settings)
+  - [4.3 Example of Configuring Group Membership](#43-example-of-configuring-group-membership)
+  - [4.4 Example of Configuring Multiple Types of Settings](#44-example-of-configuring-multiple-types-of-settings)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+    - [5.2.1 Security Parameters Affecting Behavior of the Protocol](#521-security-parameters-affecting-behavior-of-the-protocol)
+    - [5.2.2 System Security Parameters Carried by the Protocol](#522-system-security-parameters-carried-by-the-protocol)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Background ............................................................................................... 10
-Security Extension Overview ........................................................................ 10
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-System Access ........................................................................................... 14
-Password Policies .................................................................................. 14
-Account Lockout Policies ........................................................................ 16
-Local Account Policies ............................................................................ 17
-Kerberos Policy ........................................................................................... 17
-2.2.2
-Event Log Policies ....................................................................................... 18
-2.2.3
-Event Audit Policies ..................................................................................... 19
-2.2.4
-Registry Values .......................................................................................... 22
-2.2.5
-Privilege Rights .......................................................................................... 22
-2.2.6
-Registry Keys ............................................................................................. 23
-2.2.7
-Service General Setting ............................................................................... 24
-2.2.8
-2.2.9
-File Security ............................................................................................... 25
-2.2.10  Group Membership...................................................................................... 25
-2.2.11  User Account Control .................................................................................. 26
-FilterAdministratorToken ........................................................................ 26
-ConsentPromptBehaviorAdmin ................................................................ 27
-ConsentPromptBehaviorUser .................................................................. 27
-EnableInstallerDetection ........................................................................ 28
-ValidateAdminCodeSignatures ................................................................ 28
-EnableLUA ........................................................................................... 28
-PromptOnSecureDesktop ....................................................................... 29
-EnableVirtualization ............................................................................... 29
-
-2.2.11.1
-2.2.11.2
-2.2.11.3
-2.2.11.4
-2.2.11.5
-2.2.11.6
-2.2.11.7
-2.2.11.8
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 30
-Administrative-Side Plug-in Details ..................................................................... 30
-Abstract Data Model .................................................................................... 30
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-Load Policy ........................................................................................... 31
-Update Policy ....................................................................................... 31
-Delete Setting Value .............................................................................. 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Client-Side Plug-in Details ................................................................................. 32
-Abstract Data Model .................................................................................... 32
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-[MS-GPSB] - v20240423
-Group Policy: Security Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 57
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Process Group Policy ............................................................................. 33
-Message Processing Events and Sequencing Rules .......................................... 33
-Password Policies .................................................................................. 34
-3.2.5.1
-Account Lockout Policies ........................................................................ 35
-3.2.5.2
-Local Account Policies ............................................................................ 37
-3.2.5.3
-Kerberos Policy ..................................................................................... 40
-3.2.5.4
-Event Log Policies ................................................................................. 41
-3.2.5.5
-Event Audit Policies ............................................................................... 41
-3.2.5.6
-Registry Values ..................................................................................... 42
-3.2.5.7
-Privilege Rights ..................................................................................... 43
-3.2.5.8
-Registry Keys ....................................................................................... 43
-3.2.5.9
-Service General Setting ......................................................................... 44
-3.2.5.10
-3.2.5.11
-File Security ......................................................................................... 46
-3.2.5.12  Group Membership ................................................................................ 47
-3.2.5.13  User Account Control ............................................................................. 48
-Timer Events .............................................................................................. 48
-Other Local Events ...................................................................................... 48
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 49
-Example Involving Password Policy ..................................................................... 49
-Example Involving Audit Settings ....................................................................... 49
-Example of Configuring Group Membership ......................................................... 49
-Example of Configuring Multiple Types of Settings ................................................ 50
-
-4.1
-4.2
-4.3
-4.4
-
-5.1
-5.2
-
-5  Security ................................................................................................................. 51
-Security Considerations for Implementers ........................................................... 51
-Index of Security Parameters ............................................................................ 51
-Security Parameters Affecting Behavior of the Protocol .................................... 51
-System Security Parameters Carried by the Protocol ....................................... 51
-
-5.2.1
-5.2.2
-
-6  Appendix A: Product Behavior ............................................................................... 52
-
-7  Change Tracking .................................................................................................... 54
-
-8  Index ..................................................................................................................... 55
-
-[MS-GPSB] - v20240423
-Group Policy: Security Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 57
-
-1  Introduction
+## 1 Introduction
 
  This document specifies the Group Policy: Security Protocol Extension to the Group Policy: Core
 Protocol, as specified in [MS-GPOL].
@@ -790,7 +676,7 @@ Protocol, as specified in [MS-GPOL].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -854,7 +740,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-forest. For more information, see [MS-AUTHSOD] section 1.1.1.5.2 and [MS-ADTS]. When
+
+forest. For more information, see [MS-AUTHSOD] section 1.1.1.5.2 and [MS-ADTS]. When
 Active Directory is operating as Active Directory Lightweight Directory Services (AD LDS),
 several AD LDS DCs can run on one server. When Active Directory is operating as AD DS, only
 one AD DS DC can run on one server. However, several AD LDS DCs can coexist with one AD
@@ -928,21 +815,22 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-system access control list (SACL): An access control list (ACL) that controls the generation of
+
+system access control list (SACL): An access control list (ACL) that controls the generation of
 audit messages for attempts to access a securable object. The ability to get or set an object's
 SACL is controlled by a privilege typically held only by system administrators.
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -981,7 +869,7 @@ December 1997, https://www.rfc-editor.org/info/rfc2251
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-INF] Microsoft Corporation, "About INF Files", http://msdn.microsoft.com/en-
 us/library/aa376858.aspx
@@ -993,16 +881,17 @@ Release: April 23, 2024
 
 9 / 57
 
-[MSDN-PRIVS] Microsoft Corporation, "Authorization Constants", http://msdn.microsoft.com/en-
+
+[MSDN-PRIVS] Microsoft Corporation, "Authorization Constants", http://msdn.microsoft.com/en-
 us/library/aa375728.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 Group Policy: Security Protocol Extension enables security policies to be distributed to multiple
 client systems so that these systems can enact the policies in accordance with the intentions of the
 administrator.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol, as specified in [MS-GPOL], enables clients to discover and retrieve
 policy settings created by administrators of domains. These settings are propagated within Group
@@ -1026,7 +915,7 @@ A client-side plug-in uses the contents of the GPO to retrieve settings specific
 specific to its class. After its class-specific settings are retrieved, the client-side plug-in uses these
 settings to perform class-specific processing.
 
-1.3.2  Security Extension Overview
+#### 1.3.2 Security Extension Overview
 
 Security policies contain settings (which the protocol configures) that enable underlying security
 components to enforce the following:
@@ -1068,7 +957,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GPSB].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1092,7 +982,7 @@ security protocol client-side plug-in extracts the network location specified in
 security policy files by using the SMB protocol, and then uses the security policy files to configure the
 client's security settings.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on Group Policy: Core Protocol as specified in [MS-GPOL]. It also depends on
 the SMB Protocol, as specified in [MS-SMB], for transmitting Group Policy settings and instructions
@@ -1100,12 +990,12 @@ between the client and the GP server.
 
 Figure 1: Group Policy: Host Security Configuration protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for the Group Policy: Security Protocol Extension are the same as those for the
 Group Policy: Core Protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: Security Protocol Extension is only applicable within the Group Policy framework.
 
@@ -1116,16 +1006,17 @@ Release: April 23, 2024
 
 11 / 57
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 The Group Policy: Security Protocol Extension does not perform any explicit version checking on the
 received security policy.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Security Protocol Extension does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Group Policy: Security Protocol Extension defines CSE GUID and tool extension GUID, as
 specified in [MS-GPOL] section 1.8. The following table shows the assignments.
@@ -1147,9 +1038,10 @@ Release: April 23, 2024
 
 12 / 57
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Security Protocol Extension SHOULD<1> transport messages (in the form of files)
 over the Group Policy Protocol over the Server Message Block (SMB) Versions 2 and 3 Protocol, as
@@ -1159,7 +1051,7 @@ specified in [MS-SMB2]. The client-side plug-in MUST use this protocol's CSE GUI
 The Group Policy: Core Protocol uses this protocol's CSE GUID and tool extension GUID values (see
 section 1.9) to invoke this protocol only to access GPOs that require processing by this protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages exchanged in the Group Policy: Security Protocol Extension correspond to security policy
 files transferred by using the SMB Protocol. The protocol is driven through the exchange of these
@@ -1209,7 +1101,8 @@ Release: April 23, 2024
 
 13 / 57
 
-HeaderValue
+
+HeaderValue
 
 Purpose
 
@@ -1276,7 +1169,7 @@ implies that new security settings stored in registry keys can be created and po
 other stores, the plug-in maintains a precompiled list of mappings from setting name to the
 application programming interface (API) used to apply the setting.
 
-2.2.1  System Access
+#### 2.2.1 System Access
 
 The following topics specify various types of system access settings. The ABNF for this section MUST
 be as follows.
@@ -1288,7 +1181,7 @@ be as follows.
  Key = String
  Value = 1*DIGIT
 
-2.2.1.1  Password Policies
+##### 2.2.1.1 Password Policies
 
 This section defines settings that specify various supported password policies. The ABNF for valid keys
 that represent such policies MUST be as follows.
@@ -1302,7 +1195,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       "MinimumPasswordLength" / "PasswordComplexity" /
+
+       "MinimumPasswordLength" / "PasswordComplexity" /
        "PasswordHistorySize" / "ClearTextPassword" /
        "RequireLogonToChangePassword"
 
@@ -1395,7 +1289,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Setting key
+
+Setting key
 
 Explanation
 
@@ -1415,7 +1310,7 @@ passwords are not reused continually.
 
 RequireLogonToChangePassword  Setting is ignored.<2>
 
-2.2.1.2  Account Lockout Policies
+##### 2.2.1.2 Account Lockout Policies
 
 This section defines settings that specify the configuration of account lockout duration. The ABNF for
 valid keys that represent such policies MUST be as follows.
@@ -1471,7 +1366,8 @@ Release: April 23, 2024
 
 16 / 57
 
-2.2.1.3  Local Account Policies
+
+##### 2.2.1.3 Local Account Policies
 
 This section defines settings that specify the configuration of local guest and built-in Administrator
 accounts. The ABNF for valid keys that represent such policies MUST be as follows.
@@ -1517,7 +1413,7 @@ NewGuestName
 
 This setting specifies the name of the Guest account on the local computer.
 
-2.2.2  Kerberos Policy
+#### 2.2.2 Kerberos Policy
 
 This section defines settings that enable an administrator to configure user logon restrictions, as
 specified in [RFC1510].
@@ -1554,7 +1450,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Setting key
+
+Setting key
 
 Explanation
 
@@ -1588,7 +1485,7 @@ account. Validation of each request for a session ticket is optional because the
 takes time and can slow network access to services. The default is enabled. A nonzero
 value indicates the policy is enabled; otherwise, the policy is disabled.
 
-2.2.3  Event Log Policies
+#### 2.2.3 Event Log Policies
 
 There are three types of event log policies:
 
@@ -1634,7 +1531,8 @@ Release: April 23, 2024
 
 18 / 57
 
-Setting key
+
+Setting key
 
 Explanation
 
@@ -1674,7 +1572,7 @@ logs is not restricted.
 A nonzero value indicates that guest access to System, Security, and Application
 logs is restricted.
 
-2.2.4  Event Audit Policies
+#### 2.2.4 Event Audit Policies
 
 This section defines settings that enable an administrator to enforce audit account logon events. The
 syntax for the entries in this category MUST be as follows.
@@ -1719,7 +1617,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Setting key
+
+Setting key
 
 Explanation
 
@@ -1796,7 +1695,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Setting key
+
+Setting key
 
 Explanation
 
@@ -1882,13 +1782,14 @@ Release: April 23, 2024
 
 21 / 57
 
-Setting value  Explanation
+
+Setting value  Explanation
 
 4
 
 Indicates that this setting is set to None.
 
-2.2.5  Registry Values
+#### 2.2.5 Registry Values
 
 This section defines settings that enable an administrator to set registry entries. The syntax for the
 entries in this category MUST be as follows.
@@ -1949,7 +1850,7 @@ RegistryValue
 A value to be configured. The data type of this value MUST match the type that is specified
 in the RegistryValueType field.
 
-2.2.6  Privilege Rights
+#### 2.2.6 Privilege Rights
 
 This section defines settings that enable an administrator to control what accounts have what
 privileges. The syntax for the entries in this category MUST be as follows.
@@ -1963,7 +1864,8 @@ Release: April 23, 2024
 
 22 / 57
 
- HeaderValue = "Privilege Rights"
+
+ HeaderValue = "Privilege Rights"
  Settings = Setting / Setting Settings
  Setting = RightName Wsp "=" Wsp SidList LineBreak
  SidList = SidEnt / SidEnt Wsp "," Wsp SidList
@@ -2007,7 +1909,7 @@ For information about each privilege setting, see [MSDN-PRIVS].
 The SID element in the preceding syntax is a string representation of the security identifiers (SIDs) of
 accounts or groups and MUST conform to the syntax specified in [MS-DTYP] section 2.4.2.1.
 
-2.2.7  Registry Keys
+#### 2.2.7 Registry Keys
 
 This section defines settings that enable an administrator to specify how to protect registry keys on
 the client. The ABNF syntax for the entries in this category MUST be as follows.
@@ -2031,7 +1933,8 @@ Release: April 23, 2024
 
 23 / 57
 
-The ABNF specification for the SDDL element above can be found in [MS-DTYP] section 2.5.1.1.
+
+The ABNF specification for the SDDL element above can be found in [MS-DTYP] section 2.5.1.1.
 
 The following table provides an explanation for each of the parameters listed.
 
@@ -2068,7 +1971,7 @@ AclString
 A security descriptor that MUST be applied to the registry key. The security descriptor
 MUST conform to the syntax specified in [MS-DTYP] section 2.5.1.1.
 
-2.2.8  Service General Setting
+#### 2.2.8 Service General Setting
 
 This section defines settings that enable configuration of the startup type and discretionary access
 control lists (DACLs) on services running on the client machine. The syntax for the entries in this
@@ -2114,7 +2017,8 @@ Release: April 23, 2024
 
 24 / 57
 
-Setting key  Explanation
+
+Setting key  Explanation
 
 
 
@@ -2125,7 +2029,7 @@ AclString
 A security descriptor that, if present, MUST be applied to the service. The security descriptor
 MUST conform to the syntax specified in [MS-DTYP] section 2.5.1.1.
 
-2.2.9  File Security
+#### 2.2.9 File Security
 
 This section defines how to enable the administrator to specify how to protect files and directories on
 the client. The ABNF syntax for the entries in this category MUST be as follows.
@@ -2176,7 +2080,7 @@ AclString
 A security descriptor that MUST be applied to the file or directory. The security
 descriptor MUST conform to the syntax specified in [MS-DTYP] section 2.5.1.1.
 
-2.2.10 Group Membership
+#### 2.2.10 Group Membership
 
 This section defines settings that enable the administrator to control the membership of various
 groups. The ABNF syntax for the entries in this category MUST be as follows.
@@ -2191,7 +2095,8 @@ Release: April 23, 2024
 
 25 / 57
 
- Settings = Setting / Setting Settings
+
+ Settings = Setting / Setting Settings
  Setting = Key Wsp "=" Wsp ValueList LineBreak
  Key = GroupNameMembers / GroupNameMemberof
  GroupNameMembers = (GroupName / (%d42 SID)) "__Members"
@@ -2237,15 +2142,15 @@ member of.
 Each Value MUST conform to the syntax of the SID as specified in [MS-DTYP] section
 2.4.2.1 or to the GROUPNAMESTRING ABNF syntax specified here.
 
-2.2.11 User Account Control
+#### 2.2.11 User Account Control
 
 This section defines settings that enable the administrator to configure the behavior of the User
 Account Control feature. For details on how the settings listed in this section SHOULD<6> be defined,
 see sections 2.2.5 and 2.2.7.
 
-2.2.11.1
+##### 2.2.11.1 FilterAdministratorToken
 
-FilterAdministratorToken
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2262,7 +2167,8 @@ Release: April 23, 2024
 
 26 / 57
 
-Value
+
+Value
 
 Meaning
 
@@ -2273,9 +2179,9 @@ Meaning
  Only the built-in administrator account (RID 500) is placed into Admin Approval Mode. Approval is
 required when performing administrative tasks.
 
-2.2.11.2
+##### 2.2.11.2 ConsentPromptBehaviorAdmin
 
-ConsentPromptBehaviorAdmin
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2320,9 +2226,9 @@ either "Permit" or "Deny" for an operation that requires elevation of privilege 
 binaries. If the Consent Admin selects Permit, the operation will continue with the highest
 available privilege. This operation will happen on the secure desktop.<8>
 
-2.2.11.3
+##### 2.2.11.3 ConsentPromptBehaviorUser
 
-ConsentPromptBehaviorUser
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2345,7 +2251,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2356,9 +2263,9 @@ as a standard user.
 requires elevation of privilege will be prompted for an administrative user name and password. If
 the user enters valid credentials, the operation will continue with the applicable privilege.
 
-2.2.11.4
+##### 2.2.11.4 EnableInstallerDetection
 
-EnableInstallerDetection
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2380,9 +2287,9 @@ require elevation to install.
 
 privilege to install.
 
-2.2.11.5
+##### 2.2.11.5 ValidateAdminCodeSignatures
 
-ValidateAdminCodeSignatures
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2402,9 +2309,9 @@ privilege.
 
 0x00000001  Enforce cryptographic signatures on any interactive application that requests elevation of privilege.
 
-2.2.11.6
+##### 2.2.11.6 EnableLUA
 
-EnableLUA
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2429,15 +2336,16 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
 other User Account Control (UAC) policies.
 
-2.2.11.7
+##### 2.2.11.7 PromptOnSecureDesktop
 
-PromptOnSecureDesktop
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2457,9 +2365,9 @@ occur on the interactive user's desktop.
 
 0x00000001  This policy will force all UAC prompts to happen on the user's secure desktop.
 
-2.2.11.8
+##### 2.2.11.8 EnableVirtualization
 
-EnableVirtualization
+
 
 Key: SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
@@ -2488,16 +2396,17 @@ Release: April 23, 2024
 
 29 / 57
 
-3  Protocol Details
 
-3.1  Administrative-Side Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative-Side Plug-in Details
 
 The administrative-side plug-in participates in the security policy authoring and assignment steps, as
 specified in section 2. The security policy MUST be stored as a text file by using an .inf format, as
 specified in section 2.2. The security policies MUST be stored in a location accessible over the network
 (such as a network share) by using SMB.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The administrative-side plug-in maintains no state. It loads all the settings, as specified in section 2.2,
 in a <name of setting, value of setting> pair in memory.
@@ -2508,17 +2417,17 @@ policy wanted based on the abstract data model, creates a new policy or opens an
 appropriate, and displays it to the administrator. After the administrator modifies the policy, the
 changes are propagated back into the policy at the location wanted.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the administrative-side plug-in starts, it MUST get a scoped GPO path from the Group Policy:
 Core Protocol, as specified in [MS-GPOL] section 2.2.4, and perform the processing described in
 section 3.1.5.1, Load Policy.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Higher-layer triggered events occur in the following situations:
 
@@ -2534,7 +2443,7 @@ See section 3.1.5.2, Update Policy.
 
 3.1.5.3, Delete Setting Value.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The administrative-side plug-in reads extension-specific data from the remote storage location, as
 specified in section 3.2.5, steps 1-3. The administrative-side plug-in passes that information to an
@@ -2552,10 +2461,11 @@ Release: April 23, 2024
 
 30 / 57
 
-After every creation, modification, or deletion that affects the GptTmpl.inf file on SYSVOL, the
+
+After every creation, modification, or deletion that affects the GptTmpl.inf file on SYSVOL, the
 administrative tool MUST invoke the Group Policy Extension Update task ([MS-GPOL] section 3.3.4.4).
 
-3.1.5.1  Load Policy
+##### 3.1.5.1 Load Policy
 
 A Load Policy event occurs when an administrator initiates the administrative-side plug-in. When the
 administrative-side plug-in starts, it MUST get a scoped GPO path from the Group Policy: Core
@@ -2564,7 +2474,7 @@ GptTmpl.inf file from "<gpo path>\Machine\Microsoft\Windows NT\SecEdit\", where 
 the GPO path. File reads MUST be performed, as specified in section 3.2.5, steps 1-3. If the attempt to
 read the file fails, an error MUST be logged and processing stopped.
 
-3.1.5.2  Update Policy
+##### 3.1.5.2 Update Policy
 
 To update the policy settings in a GPO using administrative tool plug-ins, the state of that GPO on the
 Group Policy server MUST be updated with an update policy message. This MUST be accomplished
@@ -2601,13 +2511,13 @@ The tool MUST then issue an SMB file close operation.
 File names and paths SHOULD be regarded as case-insensitive. If the write fails, the administrative-
 side plug-in MUST display to the user that the operation failed.
 
-3.1.5.3  Delete Setting Value
+##### 3.1.5.3 Delete Setting Value
 
 A Delete Setting Value event occurs when an administrator removes a setting value. When a setting
 value is deleted, the setting is removed from memory and the processing described in section 3.1.5.2,
 Update Policy, is performed.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
@@ -2618,17 +2528,18 @@ Release: April 23, 2024
 
 31 / 57
 
-3.1.7  Other Local Events
+
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client-Side Plug-in Details
+### 3.2 Client-Side Plug-in Details
 
 The client-side plug-in interacts with the Group Policy framework, as specified in [MS-GPOL] section
 3.2. This plug-in MUST receive the security policy and apply it in accordance with the instructions of
 the administrator.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section defines a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -2659,11 +2570,11 @@ This protocol sets the following abstract data variables shared from [MS-EVEN]:
 
   RestrictGuestAccess ([MS-EVEN] section 3.1.1.2)
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When invoked by the Group Policy framework with a list of one or more applicable GPOs, the client-
 side plug-in MUST do the following: locate all the physical security policies within those GPOs, copy
@@ -2681,18 +2592,19 @@ Release: April 23, 2024
 
 32 / 57
 
-3.2.4  Higher-Layer Triggered Events
+
+#### 3.2.4 Higher-Layer Triggered Events
 
 The client-side plug-in implements one higher-layer triggered event: Process Group Policy.
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 The client-side plug-in implements the Process Group Policy abstract event interface, as specified in
 [MS-GPOL] section 3.2.4.1. The client-side plug-in does not make use of the Deleted GPO list,
 SessionFlags, or UserToken arguments. When the event is triggered, the client-side plug-in MUST
 take the actions described in section 3.2.5.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The client-side plug-in GPOs MUST be triggered by the Group Policy framework whenever applicable
 GPOs need to be processed. When such an event occurs, the client-side plug-in takes the appropriate
@@ -2746,14 +2658,15 @@ Release: April 23, 2024
 
 33 / 57
 
-In applying security policies, several Group Policy: Security Protocol Extension setting names
+
+In applying security policies, several Group Policy: Security Protocol Extension setting names
 correspond to Abstract Data Model shared variables for which the normative definition is provided in
 other documents (see section 3.2.1.) The setting name and the corresponding Abstract Data Model
 shared variables are provided in the following tables. For each such setting that is read from a GPO
 .inf file, the client-side plug-in MUST set the value of the ADM variable in the right-hand column of the
 table to the value for the setting in the left-hand column.
 
-3.2.5.1  Password Policies
+##### 3.2.5.1 Password Policies
 
 Password policies are set by doing the following:
 
@@ -2832,7 +2745,8 @@ Release: April 23, 2024
 
 34 / 57
 
-Group Policy: Security Protocol
+
+Group Policy: Security Protocol
 Extension
 
 ClearTextPassword
@@ -2871,7 +2785,7 @@ X (any value 0 to 999)
 
 -1*X*24*3600 * 10000000
 
-3.2.5.2  Account Lockout Policies
+##### 3.2.5.2 Account Lockout Policies
 
 Account Lockout policies are set by doing the following:
 
@@ -2918,7 +2832,8 @@ Release: April 23, 2024
 
 35 / 57
 
-
+
+
 
 The DomainInformation MUST be a PSAMPR_DOMAIN_INFO_BUFFER containing a
 SAMPR_DOMAIN_LOCKOUT_INFORMATION structure. The client-side plug-in MUST set
@@ -3007,7 +2922,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-following table and set the DOMAIN_LOGOFF_INFORMATION structure member to the
+
+following table and set the DOMAIN_LOGOFF_INFORMATION structure member to the
 corresponding value in the right-hand column of the following table.
 
 ForceLogoffWhenHourExpire value  DOMAIN_LOGOFF_INFORMATION ForceLogoff member value
@@ -3020,7 +2936,7 @@ ForceLogoffWhenHourExpire value  DOMAIN_LOGOFF_INFORMATION ForceLogoff member va
 
 0x8000000000000000
 
-3.2.5.3  Local Account Policies
+##### 3.2.5.3 Local Account Policies
 
 Local account policies are set by doing the following:
 
@@ -3093,7 +3009,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  A DesiredAccess parameter of MAXIMUM_ALLOWED.
+
+  A DesiredAccess parameter of MAXIMUM_ALLOWED.
 
   A UserId parameter of DOMAIN_USER_RID_ADMIN ([MS-SAMR] section 2.2.1.14).
 
@@ -3183,7 +3100,8 @@ Release: April 23, 2024
 
 38 / 57
 
-
+
+
 
 
 
@@ -3275,7 +3193,8 @@ Release: April 23, 2024
 
 39 / 57
 
-Perform external behavior consistent with locally invoking SamrSetInformationUser ([MS-SAMR]
+
+Perform external behavior consistent with locally invoking SamrSetInformationUser ([MS-SAMR]
 section 3.1.5.6.5). If SamrSetInformationUser returns an error, the GPSB client MUST stop processing
 Local Account policies and log an error.
 
@@ -3303,7 +3222,7 @@ The UserInformationClass MUST be set to UserNameInformation ([MS-SAMR] section 2
 The buffer MUST be set to the address of a SAMPR_USER_NAME_INFORMATION structure
 whose UserName member variable is set to the value of the NewGuestName setting.
 
-3.2.5.4  Kerberos Policy
+##### 3.2.5.4 Kerberos Policy
 
 If the Key value is any value other than those listed as valid in the table in section 2.2.2, the client
 MUST stop processing Kerberos policy settings and log an error.
@@ -3367,7 +3286,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Group Policy: Security Protocol
+
+Group Policy: Security Protocol
 Extension
 
 LSAD POLICY_DOMAIN_KERBEROS_TICKET_INFO
@@ -3385,7 +3305,7 @@ TicketValidateClient
 
 AuthenticationOptions bit POLICY_KERBEROS_VALIDATE_CLIENT
 
-3.2.5.5  Event Log Policies
+##### 3.2.5.5 Event Log Policies
 
 If the Key value is any value other than those listed as valid in the table in section 2.2.3,  the client
 SHOULD stop processing Event Log policy settings and log an error.
@@ -3443,7 +3363,7 @@ RestrictGuestAccess
 
 RestrictGuestAccess
 
-3.2.5.6  Event Audit Policies
+##### 3.2.5.6 Event Audit Policies
 
 If the DWORD registry value
 MACHINE\System\CurrentControlSet\Control\LSA\SCENoApplyLegacyAuditPolicy is set to 1 using the
@@ -3458,7 +3378,8 @@ Release: April 23, 2024
 
 41 / 57
 
-The value of the key element MUST be one of the values specified in the table in section 2.2.4;
+
+The value of the key element MUST be one of the values specified in the table in section 2.2.4;
 otherwise, the client MUST log an error and stop processing Event Audit Policies. The value element
 MUST be an integer; otherwise, the client logs an error and stop processing Event Audit Policies.
 
@@ -3549,7 +3470,7 @@ POLICY_AUDIT_EVENT_SUCCESS | POLICY_AUDIT_EVENT_FAILURE
 
 POLICY_AUDIT_EVENT_NONE
 
-3.2.5.7  Registry Values
+##### 3.2.5.7 Registry Values
 
 Settings in Registry Values (section 2.2.5) MUST be set by adding registry values.
 
@@ -3560,7 +3481,8 @@ Release: April 23, 2024
 
 42 / 57
 
-If the Key value is any value other than those listed as valid in the table in section 2.2.5, an error
+
+If the Key value is any value other than those listed as valid in the table in section 2.2.5, an error
 SHOULD be logged and the client MUST stop processing Registry Value settings.
 
 Registry values MUST be added by performing the external behavior consistent with locally invoking
@@ -3589,7 +3511,7 @@ The lpData MUST be set to the RegistryValue of the setting.
 
 The cbData MUST be set to the length in bytes of the RegistryValue of the setting.
 
-3.2.5.8  Privilege Rights
+##### 3.2.5.8 Privilege Rights
 
 Settings in Privilege Rights (section 2.2.6) MUST be set by adding privilege rights.
 
@@ -3617,7 +3539,7 @@ section 2.2.5.3). The LSAPR_USER_RIGHT_SET Entries member MUST be set to one. Th
 RightName string MUST correspond to the name of a valid privilege or user right as listed in [MS-
 LSAD] section 3.1.1.2.1 and 3.1.1.2.2 respectively.
 
-3.2.5.9  Registry Keys
+##### 3.2.5.9 Registry Keys
 
 Behavior for writing to registry keys and values is specified in [MS-RRP] section 4.2.
 
@@ -3643,7 +3565,8 @@ Release: April 23, 2024
 
 43 / 57
 
-
+
+
 
 The SecurityInformation MUST be set to OWNER_SECURITY_INFORMATION |
 GROUP_SECURITY_INFORMATION | DACL_SECURITY_INFORMATION |
@@ -3731,14 +3654,15 @@ Release: April 23, 2024
 
 44 / 57
 
-  GenericMapping is the generic mapping for registry objects.
+
+  GenericMapping is the generic mapping for registry objects.
 
 If PermPropagationMode is "2", the security descriptor Control field bit PD ([MS-DTYP] section 2.4.6)
 on the registry object for the Setting is set to 0.
 
-3.2.5.10
+##### 3.2.5.10 Service General Setting
 
-Service General Setting
+
 
 Settings in Service General Setting (section 2.2.8) MUST be set by applying start up configuration and
 security descriptors on services for each setting.
@@ -3829,7 +3753,8 @@ Release: April 23, 2024
 
 45 / 57
 
-
+
+
 
 The lpDisplayName MUST be set to the display name retrieved by performing external behavior
 consistent with locally invoking RQueryServiceConfigW ([MS-SCMR] section 3.1.4.17).
@@ -3858,9 +3783,9 @@ the form specified in [MS-DTYP] section 2.4.6.
 The cbBufSize MUST be set to Size, in bytes, of the buffer pointed to by the lpSecurityDescriptor
 parameter.
 
-3.2.5.11
+##### 3.2.5.11 File Security
 
-File Security
+
 
 Each File Security setting MUST be set by applying the security descriptors, propagation mode, and
 security descriptor (AclString) for each setting.
@@ -3921,7 +3846,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 IsContainerObject is set to TRUE.
 
@@ -3967,9 +3893,9 @@ Token is a token containing S-1-5-18 (Local System well known SID).
 If PermPropagationMode is "2", the security descriptor Control field bit PD, on the file object for the
 Setting is set to zero.
 
-3.2.5.12
+##### 3.2.5.12 Group Membership
 
-Group Membership
+
 
 Settings in Group Membership MUST be set by applying members and membership on a group for
 each setting.
@@ -4012,7 +3938,8 @@ Release: April 23, 2024
 
 47 / 57
 
-
+
+
 
 operation: add.
 
@@ -4066,9 +3993,9 @@ The MemberId MUST be set to the RID of the object specified by the SID or name i
 
 The Attributes MUST be set to zero.
 
-3.2.5.13
+##### 3.2.5.13 User Account Control
 
-User Account Control
+
 
 Settings in User Account Control (section 2.2.11) MUST be set by adding a registry value for each
 setting value tuple (Key, Value, Type, Data.). If the Key, Value, Type, and Data values do not together
@@ -4090,11 +4017,11 @@ The RegistryValueType is the Type value.
 
 The RegistryValue is the Data value.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -4105,9 +4032,10 @@ Release: April 23, 2024
 
 48 / 57
 
-4  Protocol Examples
 
-4.1  Example Involving Password Policy
+## 4 Protocol Examples
+
+### 4.1 Example Involving Password Policy
 
 In the following example, an administrator specifies that, for computers to which a certain GPO
 applies, a specified password policy is enforced:
@@ -4132,7 +4060,7 @@ Password history of 10 passwords is to be remembered and enforced.
  PasswordComplexity = 1
  PasswordHistorySize = 10
 
-4.2  Example Involving Audit Settings
+### 4.2 Example Involving Audit Settings
 
 In the following example, an administrator specifies that the designated audit settings be applied for
 computers to which a certain GPO applies:
@@ -4156,7 +4084,7 @@ computers to which a certain GPO applies:
  AuditProcessTracking = 3
  AuditAccountLogon = 1
 
-4.3  Example of Configuring Group Membership
+### 4.3 Example of Configuring Group Membership
 
 In the following example, an administrator specifies that, for computers to which a certain GPO
 applies, the group memberships are configured as assigned:
@@ -4174,7 +4102,8 @@ Release: April 23, 2024
 
 49 / 57
 
-4.  Group1 is part of Group3.
+
+4.  Group1 is part of Group3.
 
 5.  Group2 is part of Group1.
 
@@ -4191,7 +4120,7 @@ Release: April 23, 2024
  Group3__Memberof =
  Group3__Members = member4
 
-4.4  Example of Configuring Multiple Types of Settings
+### 4.4 Example of Configuring Multiple Types of Settings
 
 In the following example, an administrator specifies that for computers to which a certain GPO
 applies, all the settings specified in the previous sections are configured as designated.
@@ -4225,9 +4154,10 @@ Release: April 23, 2024
 
 50 / 57
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The ClearTextPassword flag, as specified in section 2.2.1.1, indicates whether passwords are to be
 stored by using reversible encryption. This policy provides support for applications that use protocols
@@ -4236,9 +4166,9 @@ using reversible encryption is essentially the same as storing plain-text versio
 this reason, this policy is not recommended unless application requirements outweigh the need to
 protect password information.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
-5.2.1  Security Parameters Affecting Behavior of the Protocol
+#### 5.2.1 Security Parameters Affecting Behavior of the Protocol
 
 Name of setting
 
@@ -4258,7 +4188,7 @@ Time interval (in minutes) that sets a maximum limit of how
 long a client can function without reapplying nonchanged
 GPOs.
 
-5.2.2  System Security Parameters Carried by the Protocol
+#### 5.2.2 System Security Parameters Carried by the Protocol
 
 Settings category
 
@@ -4317,7 +4247,8 @@ Release: April 23, 2024
 
 51 / 57
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4385,7 +4316,8 @@ Group Policy: Security Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<4> Section 2.2.4: Windows does not generate security audit event records for policy change failures.
+
+<4> Section 2.2.4: Windows does not generate security audit event records for policy change failures.
 
 <5> Section 2.2.4: Windows does not generate security audit event records for process tracking
 failures.
@@ -4412,7 +4344,8 @@ Release: April 23, 2024
 
 53 / 57
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4456,7 +4389,8 @@ Release: April 23, 2024
 
 54 / 57
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -4590,7 +4524,8 @@ I
 
 55 / 57
 
-Implementer - security considerations 51
+
+Implementer - security considerations 51
 Index of security parameters 51
 Informative references 9
 Initialization
@@ -4730,7 +4665,8 @@ Release: April 23, 2024
 
 56 / 57
 
-      group membership 47
+
+      group membership 47
       Kerberos policy 40
       local account policies 37
       overview 33

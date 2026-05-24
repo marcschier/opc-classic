@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 116
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 116
 
-Date
+
+Date
 
 Revision
 History
@@ -542,353 +544,148 @@ Release: April 23, 2024
 
 3 / 116
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Wireless/Wired Group Policy Administrative-Side Plug-in ................................. 12
-Wireless/Wired Group Policy Client-Side Plug-in .............................................. 13
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Wireless Group Policy Versioning and Capability Negotiation ............................ 14
-Wired Group Policy Versioning and Capability Negotiation ................................ 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-2.2.3
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.2.1
-
-2.2.1.2
-
-2.2.1.1
-
-2.2.1.2.1
-
-2.2.3.1.1
-2.2.3.1.2
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-2.2.1.1.4
-2.2.1.1.5
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Message Syntax ............................................................................................... 16
-Message Syntax for Wireless Group Policy ..................................................... 16
-Message Syntax for BLOB-Based Wireless Group Policy .............................. 16
-Wireless Policy Sub-BLOB ................................................................. 16
-Wireless Policy Data ......................................................................... 17
-Format of Wireless Profile Settings Data ............................................. 19
-Wireless Profile Settings Version A ..................................................... 19
-Wireless Profile Settings Version B ..................................................... 22
-Message Syntax for XML-Based Wireless Group Policy ............................... 27
-Message Syntax for XML-Based Wireless Profiles ................................. 28
-Message Syntax for Wired Group Policy ......................................................... 32
-Message Syntax for XML-Based Wired Profiles .......................................... 32
-Configuration Elements for EAP Methods ........................................................ 33
-Configuration Element Syntax for BLOB-Based Wireless Profiles .................. 33
-EAPTLS_CONN_PROPERTIES ............................................................. 34
-PEAP_CONN_PROP .......................................................................... 36
-PEAP_TLS_PHASE1_CONN_PROPERTIES ....................................... 37
-PEAP_INNER_METHOD_PROPERTY ............................................... 39
-EAPMSCHAPv2_CONN_PROPERTIES ................................................... 39
-Configuration Element Syntax for XML-Based Wired and Wireless Profiles .... 40
-EapHostConfig Element .................................................................... 40
-EapMethodType ............................................................................... 41
-BaseEapMethodConfig ...................................................................... 41
-BaseEap ......................................................................................... 42
-EapTlsConnectionProperties .............................................................. 42
-MsPeapConnectionProperties ............................................................. 43
-MsChapV2ConnectionPropertiesV1 ..................................................... 45
-ServerValidationParameters .............................................................. 45
-EapSimConnectionPropertiesV1 ......................................................... 45
-EapAkaConnectionPropertiesV1 ......................................................... 46
-EapAkaPrimeConnectionPropertiesV1 ................................................. 46
-EapTtlsConnectionPropertiesV1 ......................................................... 46
-EapTeapConnectionPropertiesV1 ........................................................ 47
-Directory Service Schema Elements ................................................................... 48
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-2.2.3.2.4
-2.2.3.2.5
-2.2.3.2.6
-2.2.3.2.7
-2.2.3.2.8
-2.2.3.2.9
-2.2.3.2.10
-2.2.3.2.11
-2.2.3.2.12
-2.2.3.2.13
-
-2.2.3.1.2.1
-2.2.3.1.2.2
-
-2.2.3.1.3
-
-2.2.3.2
-
-2.3
-
-3  Protocol Details ..................................................................................................... 50
-
-4 / 116
-
-[MS-GPWL] - v20240423
-Group Policy: Wireless/Wired Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.1
-
-3.1.1.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.5
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-Administrative-Side Plug-in Details ..................................................................... 50
-Abstract Data Model .................................................................................... 50
-ADConnection Handle ............................................................................ 50
-Timers ...................................................................................................... 50
-Initialization ............................................................................................... 50
-Higher-Layer Triggered Events ..................................................................... 51
-Policy Creation ...................................................................................... 51
-Policy Modification ................................................................................. 52
-Policy Deletion ...................................................................................... 52
-Message Processing Events and Sequencing Rules .......................................... 52
-Reading a Wireless or Wired Policy Object from Active Directory ................. 52
-Creating a Wireless or Wired Policy Object on Active Directory .................... 54
-Modifying a Wireless or Wired Policy Object on Active Directory .................. 58
-Deleting a Wireless or Wired Policy Object on Active Directory .................... 59
-Timer Events .............................................................................................. 60
-Other Local Events ...................................................................................... 60
-Client-Side Plug-in Details ................................................................................. 60
-Abstract Data Model .................................................................................... 60
-Timers ...................................................................................................... 61
-Initialization ............................................................................................... 61
-Higher-Layer Triggered Events ..................................................................... 61
-Message Processing Events and Sequencing Rules .......................................... 61
-Retrieving BLOB-Based Wireless Group Policy for a GPO ............................ 61
-Retrieving XML-Based Wireless Group Policy for a GPO .............................. 62
-Retrieving XML-Based Wired Group Policy for a GPO .................................. 62
-Timer Events .............................................................................................. 62
-Other Local Events ...................................................................................... 62
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.6
-3.2.7
-
-4.1
-4.2
-4.3
-
-4  Protocol Examples ................................................................................................. 63
-XML Wireless Group Policy - WPA2-Enterprise with PEAP-MSCHAPv2 ...................... 63
-XML Wired Group Policy – EAP-TLS with Local Certificates ..................................... 64
-Wireless Group Policy BLOB ............................................................................... 65
-Wireless Policy Sub-BLOB Token Streams ...................................................... 65
-4.3.1
-Wireless Policy Data Token Streams .............................................................. 66
-4.3.2
-First Wireless Profile Settings Version B Token Streams ................................... 66
-4.3.3
-EAPTLS_CONN_PROPERTIES Token Streams .................................................. 68
-4.3.4
-Second Wireless Profile Settings Version B Token Streams ............................... 68
-4.3.5
-PEAP_CONN_PROP Token Streams ................................................................ 70
-4.3.6
-PEAP_TLS_PHASE1_CONN_PROPERTIES Field Token Streams .......................... 70
-4.3.7
-PEAP_INNER_METHOD_PROPERTY Token Streams .......................................... 71
-4.3.8
-4.3.9
-EAPMSCHAPv2_CONN_PROPERTIES Token Streams ........................................ 71
-4.3.10  Wireless Profile Settings Version B Token Streams .......................................... 71
-Updating the SSID ........................................................................................... 73
-
-4.4
-
-5  Security ................................................................................................................. 75
-Security Considerations for Implementers ........................................................... 75
-Index of Security Parameters ............................................................................ 75
-
-5.1
-5.2
-
-6.1
-6.2
-6.3
-
-6  Appendix A: Schemas ............................................................................................ 76
-Wireless Policy Schema ..................................................................................... 76
-Wired Policy Schema ........................................................................................ 78
-Wireless LAN Profile Schema ............................................................................. 80
-Wireless LAN Profile v1 Schema .................................................................... 80
-Wireless LAN Profile v2 Schema .................................................................... 86
-Wireless LAN Profile v3 Schema .................................................................... 87
-Wireless LAN Profile v4 Schema .................................................................... 88
-Wireless LAN Profile v5 Schema .................................................................... 88
-Wired LAN Profile Schema ................................................................................. 88
-802.1X Schema ............................................................................................... 89
-
-6.3.1
-6.3.2
-6.3.3
-6.3.4
-6.3.5
-
-6.4
-6.5
-
-[MS-GPWL] - v20240423
-Group Policy: Wireless/Wired Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 116
-
-6.9
-
-6.6
-
-6.7
-6.8
-
-6.8.1
-6.8.2
-6.8.3
-
-6.6.1
-6.6.2
-6.6.3
-
-6.9.1
-6.9.2
-6.9.3
-
-EAPHostConfig Schema ..................................................................................... 91
-EapCommon Schema .................................................................................. 92
-BaseEapMethodConfig Schema ..................................................................... 92
-BaseEapConnectionPropertiesV1 Schema ....................................................... 93
-Microsoft EAP MsChapV2 Schema ....................................................................... 93
-Microsoft EAP TLS Schema ................................................................................ 94
-EapTlsConnectionPropertiesV1 Schema ......................................................... 94
-EapTlsConnectionPropertiesV2 Schema ......................................................... 96
-EapTlsConnectionPropertiesV3 Schema ......................................................... 96
-Microsoft EAP PEAP Schema .............................................................................. 97
-MsPeapConnectionPropertiesV1 Schema ........................................................ 97
-MsPeapConnectionPropertiesV2 Schema ........................................................ 99
-MsPeapConnectionPropertiesV3 Schema ........................................................ 99
-6.10  Microsoft EAP SIM Schema ............................................................................... 100
-EapSimConnectionPropertiesV1 Schema ....................................................... 100
-6.11  Microsoft EAP AKA Schema ............................................................................... 100
-EapAkaConnectionPropertiesV1 Schema ....................................................... 100
-6.12  Microsoft EAP AKA' Schema .............................................................................. 101
-EapAkaPrimeConnectionPropertiesV1 Schema ............................................... 101
-6.13  Microsoft EAP TTLS Schema.............................................................................. 102
-EapTtlsConnectionPropertiesV1 Schema ....................................................... 102
-6.14  Microsoft EAP TEAP Schema ............................................................................. 103
-EapTeapConnectionPropertiesV1 Schema ...................................................... 103
-Active Directory Schema for Class ms-net-ieee-80211-GroupPolicy ....................... 104
-Active Directory Schema for Class ms-net-ieee-8023-GroupPolicy ......................... 106
-
-6.15
-6.16
-
-6.13.1
-
-6.10.1
-
-6.11.1
-
-6.12.1
-
-6.14.1
-
-7  Appendix B: Product Behavior ............................................................................. 108
-
-8  Change Tracking .................................................................................................. 112
-
-9  Index ................................................................................................................... 113
-
-[MS-GPWL] - v20240423
-Group Policy: Wireless/Wired Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 116
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Wireless/Wired Group Policy Administrative-Side Plug-in](#131-wirelesswired-group-policy-administrative-side-plug-in)
+    - [1.3.2 Wireless/Wired Group Policy Client-Side Plug-in](#132-wirelesswired-group-policy-client-side-plug-in)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Wireless Group Policy Versioning and Capability Negotiation](#171-wireless-group-policy-versioning-and-capability-negotiation)
+    - [1.7.2 Wired Group Policy Versioning and Capability Negotiation](#172-wired-group-policy-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Message Syntax for Wireless Group Policy](#221-message-syntax-for-wireless-group-policy)
+      - [2.2.1.1 Message Syntax for BLOB-Based Wireless Group Policy](#2211-message-syntax-for-blob-based-wireless-group-policy)
+        - [2.2.1.1.1 Wireless Policy Sub-BLOB](#22111-wireless-policy-sub-blob)
+        - [2.2.1.1.2 Wireless Policy Data](#22112-wireless-policy-data)
+        - [2.2.1.1.3 Format of Wireless Profile Settings Data](#22113-format-of-wireless-profile-settings-data)
+        - [2.2.1.1.4 Wireless Profile Settings Version A](#22114-wireless-profile-settings-version-a)
+        - [2.2.1.1.5 Wireless Profile Settings Version B](#22115-wireless-profile-settings-version-b)
+      - [2.2.1.2 Message Syntax for XML-Based Wireless Group Policy](#2212-message-syntax-for-xml-based-wireless-group-policy)
+        - [2.2.1.2.1 Message Syntax for XML-Based Wireless Profiles](#22121-message-syntax-for-xml-based-wireless-profiles)
+    - [2.2.2 Message Syntax for Wired Group Policy](#222-message-syntax-for-wired-group-policy)
+      - [2.2.2.1 Message Syntax for XML-Based Wired Profiles](#2221-message-syntax-for-xml-based-wired-profiles)
+    - [2.2.3 Configuration Elements for EAP Methods](#223-configuration-elements-for-eap-methods)
+      - [2.2.3.1 Configuration Element Syntax for BLOB-Based Wireless Profiles](#2231-configuration-element-syntax-for-blob-based-wireless-profiles)
+        - [2.2.3.1.1 EAPTLS_CONN_PROPERTIES](#22311-eaptlsconnproperties)
+        - [2.2.3.1.2 PEAP_CONN_PROP](#22312-peapconnprop)
+          - [2.2.3.1.2.1 PEAP_TLS_PHASE1_CONN_PROPERTIES](#223121-peaptlsphase1connproperties)
+          - [2.2.3.1.2.2 PEAP_INNER_METHOD_PROPERTY](#223122-peapinnermethodproperty)
+        - [2.2.3.1.3 EAPMSCHAPv2_CONN_PROPERTIES](#22313-eapmschapv2connproperties)
+      - [2.2.3.2 Configuration Element Syntax for XML-Based Wired and Wireless Profiles](#2232-configuration-element-syntax-for-xml-based-wired-and-wireless-profiles)
+        - [2.2.3.2.1 EapHostConfig Element](#22321-eaphostconfig-element)
+        - [2.2.3.2.2 EapMethodType](#22322-eapmethodtype)
+        - [2.2.3.2.3 BaseEapMethodConfig](#22323-baseeapmethodconfig)
+        - [2.2.3.2.4 BaseEap](#22324-baseeap)
+        - [2.2.3.2.5 EapTlsConnectionProperties](#22325-eaptlsconnectionproperties)
+        - [2.2.3.2.6 MsPeapConnectionProperties](#22326-mspeapconnectionproperties)
+        - [2.2.3.2.7 MsChapV2ConnectionPropertiesV1](#22327-mschapv2connectionpropertiesv1)
+        - [2.2.3.2.8 ServerValidationParameters](#22328-servervalidationparameters)
+        - [2.2.3.2.9 EapSimConnectionPropertiesV1](#22329-eapsimconnectionpropertiesv1)
+        - [2.2.3.2.10 EapAkaConnectionPropertiesV1](#223210-eapakaconnectionpropertiesv1)
+        - [2.2.3.2.11 EapAkaPrimeConnectionPropertiesV1](#223211-eapakaprimeconnectionpropertiesv1)
+        - [2.2.3.2.12 EapTtlsConnectionPropertiesV1](#223212-eapttlsconnectionpropertiesv1)
+        - [2.2.3.2.13 EapTeapConnectionPropertiesV1](#223213-eapteapconnectionpropertiesv1)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative-Side Plug-in Details](#31-administrative-side-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 ADConnection Handle](#3111-adconnection-handle)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Policy Creation](#3141-policy-creation)
+      - [3.1.4.2 Policy Modification](#3142-policy-modification)
+      - [3.1.4.3 Policy Deletion](#3143-policy-deletion)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Reading a Wireless or Wired Policy Object from Active Directory](#3151-reading-a-wireless-or-wired-policy-object-from-active-directory)
+      - [3.1.5.2 Creating a Wireless or Wired Policy Object on Active Directory](#3152-creating-a-wireless-or-wired-policy-object-on-active-directory)
+      - [3.1.5.3 Modifying a Wireless or Wired Policy Object on Active Directory](#3153-modifying-a-wireless-or-wired-policy-object-on-active-directory)
+      - [3.1.5.4 Deleting a Wireless or Wired Policy Object on Active Directory](#3154-deleting-a-wireless-or-wired-policy-object-on-active-directory)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client-Side Plug-in Details](#32-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Retrieving BLOB-Based Wireless Group Policy for a GPO](#3251-retrieving-blob-based-wireless-group-policy-for-a-gpo)
+      - [3.2.5.2 Retrieving XML-Based Wireless Group Policy for a GPO](#3252-retrieving-xml-based-wireless-group-policy-for-a-gpo)
+      - [3.2.5.3 Retrieving XML-Based Wired Group Policy for a GPO](#3253-retrieving-xml-based-wired-group-policy-for-a-gpo)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 XML Wireless Group Policy - WPA2-Enterprise with PEAP-MSCHAPv2](#41-xml-wireless-group-policy-wpa2-enterprise-with-peap-mschapv2)
+  - [4.2 XML Wired Group Policy – EAP-TLS with Local Certificates](#42-xml-wired-group-policy-eap-tls-with-local-certificates)
+  - [4.3 Wireless Group Policy BLOB](#43-wireless-group-policy-blob)
+    - [4.3.1 Wireless Policy Sub-BLOB Token Streams](#431-wireless-policy-sub-blob-token-streams)
+    - [4.3.2 Wireless Policy Data Token Streams](#432-wireless-policy-data-token-streams)
+    - [4.3.3 First Wireless Profile Settings Version B Token Streams](#433-first-wireless-profile-settings-version-b-token-streams)
+    - [4.3.4 EAPTLS_CONN_PROPERTIES Token Streams](#434-eaptlsconnproperties-token-streams)
+    - [4.3.5 Second Wireless Profile Settings Version B Token Streams](#435-second-wireless-profile-settings-version-b-token-streams)
+    - [4.3.6 Machine Authentication: Computer](#436-machine-authentication-computer)
+    - [4.3.7 PEAP_TLS_PHASE1_CONN_PROPERTIES Field Token Streams](#437-peaptlsphase1connproperties-field-token-streams)
+    - [4.3.8 PEAP_INNER_METHOD_PROPERTY Token Streams](#438-peapinnermethodproperty-token-streams)
+    - [4.3.9 EAPMSCHAPv2_CONN_PROPERTIES Token Streams](#439-eapmschapv2connproperties-token-streams)
+    - [4.3.10 Wireless Profile Settings Version B Token Streams](#4310-wireless-profile-settings-version-b-token-streams)
+  - [4.4 Updating the SSID](#44-updating-the-ssid)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Schemas](#6-appendix-a-schemas)
+  - [6.1 Wireless Policy Schema](#61-wireless-policy-schema)
+  - [6.2 Wired Policy Schema](#62-wired-policy-schema)
+  - [6.3 Wireless LAN Profile Schema](#63-wireless-lan-profile-schema)
+    - [6.3.1 Wireless LAN Profile v1 Schema](#631-wireless-lan-profile-v1-schema)
+    - [6.3.2 Wireless LAN Profile v2 Schema](#632-wireless-lan-profile-v2-schema)
+    - [6.3.3 Wireless LAN Profile v3 Schema](#633-wireless-lan-profile-v3-schema)
+    - [6.3.4 Wireless LAN Profile v4 Schema](#634-wireless-lan-profile-v4-schema)
+    - [6.3.5 Wireless LAN Profile v5 Schema](#635-wireless-lan-profile-v5-schema)
+  - [6.4 Wired LAN Profile Schema](#64-wired-lan-profile-schema)
+  - [6.5 802.1X Schema](#65-8021x-schema)
+  - [6.6 EAPHostConfig Schema](#66-eaphostconfig-schema)
+    - [6.6.1 EapCommon Schema](#661-eapcommon-schema)
+    - [6.6.2 BaseEapMethodConfig Schema](#662-baseeapmethodconfig-schema)
+    - [6.6.3 BaseEapConnectionPropertiesV1 Schema](#663-baseeapconnectionpropertiesv1-schema)
+  - [6.7 Microsoft EAP MsChapV2 Schema](#67-microsoft-eap-mschapv2-schema)
+  - [6.8 Microsoft EAP TLS Schema](#68-microsoft-eap-tls-schema)
+    - [6.8.1 EapTlsConnectionPropertiesV1 Schema](#681-eaptlsconnectionpropertiesv1-schema)
+    - [6.8.2 EapTlsConnectionPropertiesV2 Schema](#682-eaptlsconnectionpropertiesv2-schema)
+    - [6.8.3 EapTlsConnectionPropertiesV3 Schema](#683-eaptlsconnectionpropertiesv3-schema)
+  - [6.9 Microsoft EAP PEAP Schema](#69-microsoft-eap-peap-schema)
+    - [6.9.1 MsPeapConnectionPropertiesV1 Schema](#691-mspeapconnectionpropertiesv1-schema)
+    - [6.9.2 MsPeapConnectionPropertiesV2 Schema](#692-mspeapconnectionpropertiesv2-schema)
+    - [6.9.3 MsPeapConnectionPropertiesV3 Schema](#693-mspeapconnectionpropertiesv3-schema)
+  - [6.10 Microsoft EAP SIM Schema](#610-microsoft-eap-sim-schema)
+    - [6.10.1 EapSimConnectionPropertiesV1 Schema](#6101-eapsimconnectionpropertiesv1-schema)
+  - [6.11 Microsoft EAP AKA Schema](#611-microsoft-eap-aka-schema)
+    - [6.11.1 EapAkaConnectionPropertiesV1 Schema](#6111-eapakaconnectionpropertiesv1-schema)
+  - [6.12 Microsoft EAP AKA' Schema](#612-microsoft-eap-aka-schema)
+    - [6.12.1 EapAkaPrimeConnectionPropertiesV1 Schema](#6121-eapakaprimeconnectionpropertiesv1-schema)
+  - [6.13 Microsoft EAP TTLS Schema](#613-microsoft-eap-ttls-schema)
+    - [6.13.1 EapTtlsConnectionPropertiesV1 Schema](#6131-eapttlsconnectionpropertiesv1-schema)
+  - [6.14 Microsoft EAP TEAP Schema](#614-microsoft-eap-teap-schema)
+    - [6.14.1 EapTeapConnectionPropertiesV1 Schema](#6141-eapteapconnectionpropertiesv1-schema)
+  - [6.15 Active Directory Schema for Class ms-net-ieee-80211-GroupPolicy](#615-active-directory-schema-for-class-ms-net-ieee-80211-grouppolicy)
+  - [6.16 Active Directory Schema for Class ms-net-ieee-8023-GroupPolicy](#616-active-directory-schema-for-class-ms-net-ieee-8023-grouppolicy)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 This document specifies the Group Policy: Wireless/Wired Protocol Extension, hereafter referred to as
 the Wireless/Wired Group Policy Protocol.
@@ -907,7 +704,7 @@ the Wireless/Wired Group Policy administrative-side and client-side plug-ins.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -959,7 +756,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-distinguished name (DN): A name that uniquely identifies an object by using the relative
+
+distinguished name (DN): A name that uniquely identifies an object by using the relative
 
 distinguished name (RDN) for the object, and the names of container objects and domains that
 contain the object. The distinguished name (DN) identifies the object and its location in a tree.
@@ -1030,7 +828,8 @@ Release: April 23, 2024
 
 8 / 116
 
-local area network (LAN): A group of computers and other devices dispersed over a relatively
+
+local area network (LAN): A group of computers and other devices dispersed over a relatively
 limited area and connected by a communications link that enables any device to interact with
 any other device on the network.
 
@@ -1094,7 +893,7 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -1106,10 +905,11 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1172,7 +972,8 @@ Release: April 23, 2024
 
 10 / 116
 
-[RFC4186] Haverinen, H., Ed., Salowey, J., "Extensible Authentication Protocol Method for Global
+
+[RFC4186] Haverinen, H., Ed., Salowey, J., "Extensible Authentication Protocol Method for Global
 System for Mobile Communications (GSM) Subscriber Identity Modules (EAP-SIM)", RFC 4186, January
 2006, https://www.rfc-editor.org/info/rfc4186
 
@@ -1203,7 +1004,7 @@ fi.org/system/files/WPA3%20Specification%20v3.3.pdf
 [XMLSCHEMA] World Wide Web Consortium, "XML Schema", September 2005,
 http://www.w3.org/2001/XMLSchema
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [ECMA-262] ECMA, "ECMAScript 2017 Language Specification", ECMA-262, http://www.ecma-
 international.org/publications/standards/Ecma-262.htm
@@ -1236,11 +1037,12 @@ Release: April 23, 2024
 
 11 / 116
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GPWL].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Wireless/Wired Group Policy Protocol depends on the Group Policy: Core Protocol [MS-GPOL].
 Three entities are involved in Group Policy protocol—the administrative-side plug-in, a generic data
@@ -1253,7 +1055,7 @@ client-side plug-ins. The administrative-side plug-in is used to specify Wireles
 settings. The client-side plug-in is used to retrieve configuration data from the generic data store and
 apply these settings to the client.
 
-1.3.1  Wireless/Wired Group Policy Administrative-Side Plug-in
+#### 1.3.1 Wireless/Wired Group Policy Administrative-Side Plug-in
 
 When an administrator uses an administrative tool to create a new wireless or wired Group Policy
 within a GPO, the administrative-side plug-in generates the data and saves it in the generic data store
@@ -1278,7 +1080,8 @@ Release: April 23, 2024
 
 12 / 116
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPWL].images/page013-img01.png)
 ![Extracted image 2 from page 13]([MS-GPWL].images/page013-img02.png)
 <!-- /Extracted images from page 13 -->
@@ -1289,7 +1092,7 @@ Similarly, when an administrator uses an administrative tool to read or delete a
 Group Policy within a GPO, the administrative-side plug-in uses appropriate LDAP functionality to read
 or delete the data in the generic data store. See section 3.1 for more information on these operations.
 
-1.3.2  Wireless/Wired Group Policy Client-Side Plug-in
+#### 1.3.2 Wireless/Wired Group Policy Client-Side Plug-in
 
 When certain client-side events (for example, client restart) take place, the client-side plug-in fetches
 the Wireless/Wired Group Policy Protocol data from the generic data store using LDAP search
@@ -1301,7 +1104,7 @@ the client; Server refers to the generic data store.
 
 Figure 3: Logical client/server LDAP search communication
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Wireless/Wired Group Policy Protocol depends on the Group Policy: Core Protocol [MS-GPOL]. The
 Wireless/Wired Group Policy Protocol is initiated only as part of the Group Policy: Core Protocol as
@@ -1314,7 +1117,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-GPWL].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1330,12 +1134,12 @@ services. However, the Wireless/Wired Group Policy protocol always uses LDAP as 
 
 Figure 4: Relationship of the Wireless/Wired Group Policy Protocol to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Core Protocol, as
 specified in [MS-GPOL] section 1.5.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Wireless/Wired Group Policy Protocol depends on the Group Policy: Core Protocol, as specified in
 [MS-GPOL]. The Wireless/Wired Group Policy Protocol is applicable only within the Group Policy
@@ -1350,9 +1154,9 @@ The Wireless/Wired Group Policy Protocol is appropriate only for use when the sa
 relevant to many clients. To configure individual clients with custom settings, use the client network
 configuration UI.<1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.7.1  Wireless Group Policy Versioning and Capability Negotiation
+#### 1.7.1 Wireless Group Policy Versioning and Capability Negotiation
 
 The wireless Group Policy provides versioning capability using protocol-specific configuration data
 stored in the generic data store.
@@ -1364,7 +1168,8 @@ Release: April 23, 2024
 
 14 / 116
 
-The administrative-side plug-in generates versioning data that reflects the wireless Group Policy
+
+The administrative-side plug-in generates versioning data that reflects the wireless Group Policy
 format type and wireless network security settings. There are two format types: binary large object
 (BLOB)-based and XML-based.
 
@@ -1396,7 +1201,7 @@ An XML-based wireless Group Policy takes precedence over a BLOB-based one. Withi
 higher version numbers take precedence. The wireless Group Policy client-side plug-in fetches the
 version with highest precedence that it can interpret from those available in the generic data store.
 
-1.7.2  Wired Group Policy Versioning and Capability Negotiation
+#### 1.7.2 Wired Group Policy Versioning and Capability Negotiation
 
 The XML-based format for the wired Group Policy does not provide versioning or capability
 negotiations. Currently, only one version of the XML format is defined. However, as described in
@@ -1404,11 +1209,11 @@ section 6.2, the XML schema (XSD) namespace contains versioning information so t
 capability negotiations can be added if necessary. For more information about the XML-based wired
 Group Policy, see section 2.2.2.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following table shows the Wireless/Wired Group Policy class identifiers.
 
@@ -1447,9 +1252,10 @@ Release: April 23, 2024
 
 15 / 116
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Wireless/Wired Group Policy Protocol uses the LDAP protocol [RFC2251] to read and write data to
 the remote Active Directory  data store. The client-side and administrative-side plug-ins MUST use
@@ -1458,7 +1264,7 @@ section 5.1.1) and SHOULD use the LDAP message security layer to provide message
 confidentiality protection services that are negotiated as part of the authentication (as specified in
 [MS-ADTS] section 5.1.2.1).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Wireless/Wired Group Policy MUST be read from and written to the generic data store using LDAP
 [RFC2251].
@@ -1482,9 +1288,9 @@ of class ms-net-ieee-80211-GroupPolicy.
 
 class ms-net-ieee-8023-GroupPolicy.
 
-2.2.1  Message Syntax for Wireless Group Policy
+#### 2.2.1 Message Syntax for Wireless Group Policy
 
-2.2.1.1  Message Syntax for BLOB-Based Wireless Group Policy
+##### 2.2.1.1 Message Syntax for BLOB-Based Wireless Group Policy
 
 For more information about BLOB-based policy, see section 1.7.1. The wireless policy data is specified
 in section 2.2.1.1.2. The format of the profile data of wireless policy data is specified in section
@@ -1496,7 +1302,7 @@ sub-BLOBs. There is no ordering requirement for the wireless policy sub-BLOBs.
 Multiple-byte fields (16-bit, 32-bit, and 64-bit fields) MUST be transmitted in little-endian byte order,
 unless otherwise specified.
 
-2.2.1.1.1 Wireless Policy Sub-BLOB
+###### 2.2.1.1.1 Wireless Policy Sub-BLOB
 
 Each wireless policy sub-BLOB MUST consist of the following 4-tuple:
 
@@ -1515,7 +1321,8 @@ Release: April 23, 2024
 
 16 / 116
 
-This format of the sub-BLOB MUST be as follows.
+
+This format of the sub-BLOB MUST be as follows.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1569,7 +1376,7 @@ WirelessPolicyData (variable): A BLOB of a length in bytes equal to the value of
 
 WirelessPolicyDataLength.
 
-2.2.1.1.2 Wireless Policy Data
+###### 2.2.1.1.2 Wireless Policy Data
 
 Wireless policy data contains wireless Group Policy settings as shown here. Among other fields, it
 contains an array of wireless profile settings. The format of the wireless profile settings depends on
@@ -1605,7 +1412,8 @@ Release: April 23, 2024
 
 17 / 116
 
-WirelessProfileSetting (variable)
+
+WirelessProfileSetting (variable)
 
 ...
 
@@ -1687,11 +1495,12 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-WirelessProfileSettingsData (variable): A BLOB of data specifying settings for a wireless
+
+WirelessProfileSettingsData (variable): A BLOB of data specifying settings for a wireless
 
 network to which domain clients can attempt to connect.
 
-2.2.1.1.3 Format of Wireless Profile Settings Data
+###### 2.2.1.1.3 Format of Wireless Profile Settings Data
 
 Profile setting data has two possible formats:
 
@@ -1702,7 +1511,7 @@ Profile setting data has two possible formats:
 Wireless profile setting version A MUST be used in wireless policy sub-BLOB version 1 and version 2.
 Wireless profile setting version B MUST be used in wireless policy sub-BLOB version 3.
 
-2.2.1.1.4 Wireless Profile Settings Version A
+###### 2.2.1.1.4 Wireless Profile Settings Version A
 
 This section specifies the profile settings data format for BLOB version 1 and version 2.
 
@@ -1756,7 +1565,8 @@ Release: April 23, 2024
 
 19 / 116
 
-MachineAuthenticationType
+
+MachineAuthenticationType
 
 GuestAuthentication
 
@@ -1836,7 +1646,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-For wireless policy sub-BLOB version 1, this value MUST be one of the following.
+
+For wireless policy sub-BLOB version 1, this value MUST be one of the following.
 
 Value  Meaning
 
@@ -1930,7 +1741,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EAPData (variable): A BLOB specifying EAP configuration settings to use while performing IEEE
+
+EAPData (variable): A BLOB specifying EAP configuration settings to use while performing IEEE
 802.1X authentication. The format of the BLOB is implementation-specific; if Microsoft EAP
 methods are used by the clients, the formats specified in section 2.2.3.1 MUST be used.
 
@@ -1992,7 +1804,7 @@ Description (variable): A Unicode string specifying a human-readable description
 
 network associated with the wireless profile setting.
 
-2.2.1.1.5 Wireless Profile Settings Version B
+###### 2.2.1.1.5 Wireless Profile Settings Version B
 
 This section specifies the profile Settings Data format for BLOB version 3.
 
@@ -2018,7 +1830,8 @@ Release: April 23, 2024
 
 22 / 116
 
-...
+
+...
 
 SSIDLength
 
@@ -2075,7 +1888,8 @@ Release: April 23, 2024
 
 23 / 116
 
-PreAuthThrottlePresent
+
+PreAuthThrottlePresent
 
 PreAuthMode
 
@@ -2160,7 +1974,8 @@ Release: April 23, 2024
 
 24 / 116
 
-Value
+
+Value
 
 Meaning
 
@@ -2255,7 +2070,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0
 
@@ -2342,7 +2158,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PreAuthMode (4 bytes): A 4-byte unsigned integer; this field specifies the IEEE 802.11i pre-
+
+PreAuthMode (4 bytes): A 4-byte unsigned integer; this field specifies the IEEE 802.11i pre-
 
 authentication mode that the domain client is to use to invoke any IEEE 802.11i pre-
 authentication capability while connecting to the wireless network. This value MUST be one of the
@@ -2414,7 +2231,7 @@ maximum lifetime of PMK cache entries that a domain client is to maintain while 
 802.11i PMK caching (as specified in [IEEE802.11i]) for a wireless network. This field MUST be in
 the range 300–86,400.
 
-2.2.1.2  Message Syntax for XML-Based Wireless Group Policy
+##### 2.2.1.2 Message Syntax for XML-Based Wireless Group Policy
 
 The XML-based wireless Group Policy MUST be packed as a single XML string that is constructed
 according to the wireless policy schema, as specified in Appendix A section 6.1. The syntax for fields in
@@ -2427,7 +2244,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-data types are defined by the World Wide Web Consortium's XML schema. For more details, see
+
+data types are defined by the World Wide Web Consortium's XML schema. For more details, see
 [XMLSCHEMA].
 
 The fields in the wireless policy XML string MUST be as follows:
@@ -2492,7 +2310,7 @@ enableWFD: An optional Boolean indicating whether Wi-Fi Peer-to-Peer connections
 [WF-P2P1.2], are allowed. If true or omitted, Wi-Fi Peer-to-Peer connections are allowed. If false,
 they are prohibited.<8>
 
-2.2.1.2.1 Message Syntax for XML-Based Wireless Profiles
+###### 2.2.1.2.1 Message Syntax for XML-Based Wireless Profiles
 
 [MS-GPWL] - v20240423
 Group Policy: Wireless/Wired Protocol Extension
@@ -2501,7 +2319,8 @@ Release: April 23, 2024
 
 28 / 116
 
-An XML-based WLAN profile is packed as a single XML string that MUST be constructed according to
+
+An XML-based WLAN profile is packed as a single XML string that MUST be constructed according to
 the XML schema as specified in Appendix A section 6.3.1. In accordance with this schema, primitive
 data types are defined by the World Wide Web Consortium's XML schema. For more information, see
 [XMLSCHEMA].
@@ -2598,7 +2417,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-encryption: The type of 802.11 encryption algorithm used by domain clients for connecting to this
+
+encryption: The type of 802.11 encryption algorithm used by domain clients for connecting to this
 
 WLAN. This field MUST have one of the following values:
 
@@ -2687,7 +2507,8 @@ Release: April 23, 2024
 
 30 / 116
 
-maxStart: This value MUST be defined in accordance with the MaxStart parameter, as specified in
+
+maxStart: This value MUST be defined in accordance with the MaxStart parameter, as specified in
 
 [IEEE802.1X].
 
@@ -2780,14 +2601,15 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-QoSDSCPToUPMappingAllowed: A Boolean value; if set to TRUE, DSCP To UP Mapping, as specified
+
+QoSDSCPToUPMappingAllowed: A Boolean value; if set to TRUE, DSCP To UP Mapping, as specified
 
 in [Wi-FiQoS], will be allowed when connecting to this profile.<12> When FALSE (default), DSCP
 To UP Mapping will not be allowed.
 
 See section 6.3.5 for additional information.
 
-2.2.2  Message Syntax for Wired Group Policy
+#### 2.2.2 Message Syntax for Wired Group Policy
 
 The wired Group Policy MUST be packed as a single XML string that is constructed according to the
 wired policy schema, as specified in Appendix A section 6.2. The syntax for fields in the XML string
@@ -2819,7 +2641,7 @@ are used only for the machine's network authentication and connectivity (for exa
 upgrades or administrative scripts), regardless of which user is logged on or whether any user is
 logged on; they are not used for any other purpose.<14>
 
-2.2.2.1  Message Syntax for XML-Based Wired Profiles
+##### 2.2.2.1 Message Syntax for XML-Based Wired Profiles
 
 An XML-based WLAN profile is packed as a single XML string that is constructed according to the
 XML schema (XSD) as specified in Appendix A section 6.4.<15>
@@ -2856,7 +2678,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-maxAuthFailures: The number of times the wired connection component on the domain client
+
+maxAuthFailures: The number of times the wired connection component on the domain client
 
 attempts IEEE 802.1X authentication in spite of failures.
 
@@ -2908,7 +2731,7 @@ EAPConfig: The EAP configuration used by the domain client while performing IEEE
 authentication, as specified in [RFC3748]. The content of this element is specified in section
 2.2.3.2.
 
-2.2.3  Configuration Elements for EAP Methods
+#### 2.2.3 Configuration Elements for EAP Methods
 
 The format of the EAP configuration elements is defined by the EAP method vendor. The following
 sections define the format of the EAP configuration elements only if the 802.1x schema (section 6.5) is
@@ -2916,7 +2739,7 @@ being used and Microsoft is the vendor of the EAP method being used on the clien
 the vendor of the EAP method being used on the client, then the format of the EAP configuration
 elements is defined by the EAP method vendor.
 
-2.2.3.1  Configuration Element Syntax for BLOB-Based Wireless Profiles
+##### 2.2.3.1 Configuration Element Syntax for BLOB-Based Wireless Profiles
 
 The BLOB-Based Wireless Profiles as specified in sections 2.2.1.1.4 and 2.2.1.1.5, contain a variable-
 length EAPData field. This field is a BLOB describing the Extensible Authentication Protocol
@@ -2941,7 +2764,8 @@ Release: April 23, 2024
 
 33 / 116
 
-EapType
+
+EapType
 
 EapData Format
 
@@ -2961,7 +2785,7 @@ A BLOB with EAP configuration settings to be used for this EAPType. Please conta
 corresponding vendor for the EAP method implementation on the client for the format of this
 data.
 
-2.2.3.1.1 EAPTLS_CONN_PROPERTIES
+###### 2.2.3.1.1 EAPTLS_CONN_PROPERTIES
 
 This data structure specifies the configuration for the Microsoft implementation of EAP-TLS as specified
 in [RFC2716], on the client. The fields are as follows.
@@ -3016,7 +2840,8 @@ Release: April 23, 2024
 
 34 / 116
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3106,7 +2931,8 @@ Release: April 23, 2024
 
 35 / 116
 
-CertHash (20 bytes): 20 bytes containing the hash of the certificate belonging to the trusted
+
+CertHash (20 bytes): 20 bytes containing the hash of the certificate belonging to the trusted
 root certification authority that the client trusts to accept a certificate of the authenticating
 server.
 
@@ -3127,7 +2953,7 @@ trusts either the trusted root certification authority indicated in the precedin
 TrustedCertHashInfo field or one from the list of TrustedCertHashInfo structures in this field
 to accept a certificate of the authenticating server.
 
-2.2.3.1.2 PEAP_CONN_PROP
+###### 2.2.3.1.2 PEAP_CONN_PROP
 
 This data structure specifies the configuration for Microsoft implementation of Protected Extensible
 Authentication Protocol (PEAP) Specification [MS-PEAP] on the client. The fields are as follows.
@@ -3178,7 +3004,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size (4 bytes): A 4-byte unsigned integer that is set to the total size of the PEAP_CONN_PROP data
+
+Size (4 bytes): A 4-byte unsigned integer that is set to the total size of the PEAP_CONN_PROP data
 structure in bytes plus (NumberOfEAPTypes + 1)* 4 plus the size of IdentityPrivacyString,
 including NULL character in bytes.
 
@@ -3251,7 +3078,7 @@ Padding (variable): Optional variable size field. Extends PEAP_CONN_PROP to the 
 
 the Size field.
 
-2.2.3.1.2.1  PEAP_TLS_PHASE1_CONN_PROPERTIES
+###### 2.2.3.1.2.1 PEAP_TLS_PHASE1_CONN_PROPERTIES
 
 This data structure specifies the configuration for Microsoft implementation of PEAP Specification
 Phase 1 on the client. The fields are as follows.
@@ -3263,7 +3090,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3349,7 +3177,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TrustedCertHashInfo structures for different trusted root certification authorities. The client
+
+TrustedCertHashInfo structures for different trusted root certification authorities. The client
 trusts any root certification authority indicated in the list of TrustedCertHashInfo structures in
 this field to accept a certificate of the authenticating server.
 
@@ -3360,7 +3189,7 @@ be a regular expression (as described in [ECMA-262], section 7.8.5). This field 
 client if PeapTlsPhase1NoValidateServerCert or PeapTlsPhase1NoValidateName is set to
 1.<25>
 
-2.2.3.1.2.2  PEAP_INNER_METHOD_PROPERTY
+###### 2.2.3.1.2.2 PEAP_INNER_METHOD_PROPERTY
 
 The PEAP_INNER_METHOD_PROPERTY specifies the parameters for an Inner EAP method for Microsoft
 implementation of Protected Extensible Authentication Protocol (PEAP) [MS-PEAP] on the client. The
@@ -3415,7 +3244,7 @@ InnerEapData (variable): A variable data indicating the parameters that the clie
 EAP method as described by InnerEapType. The format of this field depends on the value of
 InnerEapType. Contact the corresponding EAP method vendor for the format of this data.
 
-2.2.3.1.3 EAPMSCHAPv2_CONN_PROPERTIES
+###### 2.2.3.1.3 EAPMSCHAPv2_CONN_PROPERTIES
 
 This data structure specifies the configuration for Microsoft implementation of the EAP-MsChapV2 [MS-
 CHAP] method on the client. The fields are as follows.
@@ -3427,7 +3256,8 @@ Release: April 23, 2024
 
 39 / 116
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3470,7 +3300,7 @@ A
 LogonCreds: If set to 1, the client uses the logon username and password associated with the user
 for whom the authentication is being performed.
 
-2.2.3.2  Configuration Element Syntax for XML-Based Wired and Wireless Profiles
+##### 2.2.3.2 Configuration Element Syntax for XML-Based Wired and Wireless Profiles
 
 The XML-based wired and wireless profiles, as specified in section 2.2.1.2.1 and section 2.2.2.1,
 contain an optional element named EAPConfig. This element contains implementation-specific
@@ -3480,7 +3310,7 @@ Extensible Authentication Protocol (EAP) configuration settings to be used while
 The EAPConfig element contains one or more instances of the EapHostConfig
 element (section 2.2.3.2.1).
 
-2.2.3.2.1 EapHostConfig Element
+###### 2.2.3.2.1 EapHostConfig Element
 
 The EapHostConfig element is a string which MUST be formatted according to the XML schema in
 section 6.6. EapHostConfig contains the following elements:
@@ -3506,7 +3336,8 @@ Release: April 23, 2024
 
 40 / 116
 
-EapMethod\T
+
+EapMethod\T
 ype
 
 13 (EAP-TLS)
@@ -3568,7 +3399,7 @@ For other implementations of the EAP methods denoted by these EAPType values or 
 implementations of other EAP methods, please contact the corresponding vendors for the required
 contents of Config or ConfigBlob.
 
-2.2.3.2.2 EapMethodType
+###### 2.2.3.2.2 EapMethodType
 
 The EapMethodType complex type defines a string which MUST be formatted according to the XML
 schema in section 6.6.1. An element of type EapMethodType contains the following elements:
@@ -3592,7 +3423,7 @@ AuthorId: An unsigned 8-bit integer representing the IANA Private Enterprise Num
 [IANA-ENT], of the method author. The AuthorId and VendorId do not need to be the same for
 a particular method.
 
-2.2.3.2.3 BaseEapMethodConfig
+###### 2.2.3.2.3 BaseEapMethodConfig
 
 The BaseEapMethodConfig complex type defines a string which MUST be formatted according to the
 XML schema in section 6.6.2. An element of this type is a placeholder for the vendor-specific method
@@ -3606,12 +3437,13 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-All Microsoft EAP methods define the contents of the BaseEapMethodConfig to have the following
+
+All Microsoft EAP methods define the contents of the BaseEapMethodConfig to have the following
 contents:
 
 Eap: An element of type BaseEap (section 2.2.3.2.4), as specified in section 2.2.3.2.4.
 
-2.2.3.2.4 BaseEap
+###### 2.2.3.2.4 BaseEap
 
 All Microsoft EAP methods define the contents of the BaseEapMethodConfig (section 2.2.3.2.3) to
 contain one element of type BaseEap. Method-specific configuration is achieved by the elements of the
@@ -3631,7 +3463,7 @@ method to be used by the domain clients while using IEEE 802.1X authentication, 
 as specified in [RFC3748] section 6.2, and MUST be an EAP method type implemented by
 Microsoft.
 
-2.2.3.2.5 EapTlsConnectionProperties
+###### 2.2.3.2.5 EapTlsConnectionProperties
 
 The Microsoft implementation of EAP-TLS overrides the abstract type BaseEapTypeParameters with
 type EapTlsConnectionPropertiesV1. This type is defined to be a string formatted according to the
@@ -3678,7 +3510,8 @@ Release: April 23, 2024
 
 42 / 116
 
-TLSExtensions: An optional container for elements of other namespaces which enables future
+
+TLSExtensions: An optional container for elements of other namespaces which enables future
 
 enhancements to the schema.
 
@@ -3741,7 +3574,7 @@ Extensions: An optional container for elements of other namespaces that enables 
 
 enhancements to the schema.
 
-2.2.3.2.6 MsPeapConnectionProperties
+###### 2.2.3.2.6 MsPeapConnectionProperties
 
 The Microsoft implementation of PEAP overrides the abstract type BaseEapTypeParameters with
 type MsPeapConnectionPropertiesV1. This type is defined to be a string formatted according to the
@@ -3753,7 +3586,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-XML schema in section 6.9.1. The MsPeapConnectionPropertiesV1 type defines the following
+
+XML schema in section 6.9.1. The MsPeapConnectionPropertiesV1 type defines the following
 elements:
 
 ServerValidation: An optional element of type ServerValidationParameters (section 2.2.3.2.8).
@@ -3829,7 +3663,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PeapExtensionsV2: An extensible field reserved for future extensions to the Microsoft PEAP
+
+PeapExtensionsV2: An extensible field reserved for future extensions to the Microsoft PEAP
 
 implementation.
 
@@ -3844,7 +3679,7 @@ refused.
 PeapExtensionsV3: An extensible field reserved for future extensions to the Microsoft PEAP
 implementation.
 
-2.2.3.2.7 MsChapV2ConnectionPropertiesV1
+###### 2.2.3.2.7 MsChapV2ConnectionPropertiesV1
 
 The Microsoft implementation of EAP-MSCHAPv2 overrides the abstract type
 BaseEapTypeParameters with type MsChapV2ConnectionPropertiesV1. This type is defined to be a
@@ -3855,7 +3690,7 @@ UseWinLogonCredentials: An optional Boolean. If TRUE or absent, CHAP attempts to
 using the logged-on user's username and password, as specified in [MS-CHAP] section 3.2.5.2. If
 FALSE, it does not.
 
-2.2.3.2.8 ServerValidationParameters
+###### 2.2.3.2.8 ServerValidationParameters
 
 This type is referenced within the EapTlsConnectionPropertiesV1 schema (section 6.8.1) and the
 MsPeapConnectionPropertiesV1 schema (section 6.9.1). This type is defined to be a string formatted
@@ -3881,7 +3716,7 @@ TrustedRootCA: The thumbprint of a root certification authority that is trusted 
 certificates, represented as the hexadecimal encoding of the certificate hash. Multiple such
 elements can be present.
 
-2.2.3.2.9 EapSimConnectionPropertiesV1
+###### 2.2.3.2.9 EapSimConnectionPropertiesV1
 
 This type specifies the EAP configuration required for EAP-SIM as specified in [RFC4186]. It is defined
 as a complex element containing the following elements:
@@ -3898,7 +3733,8 @@ Release: April 23, 2024
 
 45 / 116
 
-DontRevealPermanentID: An optional Boolean flag indicating whether the client is allowed to reveal
+
+DontRevealPermanentID: An optional Boolean flag indicating whether the client is allowed to reveal
 
 permanent identity ([RFC4186] section 4.2) when pseudonym identity ([RFC4186] section 4.2) is
 available from previous authentications. If set to TRUE or absent, the client does not send
@@ -3916,9 +3752,9 @@ server. It also contains the Enabled attribute, which specifies whether the Real
 used. If Enabled is set to TRUE and no Realm string is specified, the derived realm ([RFC4186]
 section 4.2.1.5) is used. If Enabled is set to FALSE, any Realm string, if specified, is not used.
 
-2.2.3.2.10
+###### 2.2.3.2.10 EapAkaConnectionPropertiesV1
 
-EapAkaConnectionPropertiesV1
+
 
 This type specifies the EAP configuration required for EAP-AKA as specified in [RFC4187]. It is defined
 as a complex element containing the following elements:
@@ -3929,9 +3765,9 @@ ProviderName: As specified in section 2.2.3.2.9.
 
 Realm: As specified in section 2.2.3.2.9.
 
-2.2.3.2.11
+###### 2.2.3.2.11 EapAkaPrimeConnectionPropertiesV1
 
-EapAkaPrimeConnectionPropertiesV1
+
 
 This type specifies the EAP configuration required for EAP-AKA' as specified in [RFC5448]. It is defined
 as a complex element containing the following elements:
@@ -3952,9 +3788,9 @@ ProviderName: As specified in section 2.2.3.2.9.
 
 Realm: As specified in section 2.2.3.2.9.
 
-2.2.3.2.12
+###### 2.2.3.2.12 EapTtlsConnectionPropertiesV1
 
-EapTtlsConnectionPropertiesV1
+
 
 TtlsConfig: This type specifies the EAP configuration required for EAP-TTLS as specified in
 [RFC5281]. It is defined as a complex element containing the following elements:
@@ -3979,7 +3815,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DisablePrompt: An optional Boolean that specifies method behavior in case the server's
+
+DisablePrompt: An optional Boolean that specifies method behavior in case the server's
 
 certificate is not trusted as per the TTLS connection profile. If TRUE, certificate errors will
 cause the connection to be refused. If FALSE, the user is prompted to manually accept or
@@ -4030,9 +3867,9 @@ AnonymousIdentity: Contains a Unicode string specifying an alternate identity us
 of a user's true identity. It is sent in the EAP identity response message during the TTLS
 authentication. Anonymous identity usage is determined by the IdentityPrivacy element.
 
-2.2.3.2.13
+###### 2.2.3.2.13 EapTeapConnectionPropertiesV1
 
-EapTeapConnectionPropertiesV1
+
 
 TeapConfig: This type specifies the EAP configuration required for EAP-TEAP, as specified in
 [RFC7170]. It is defined as a complex element containing the following elements:
@@ -4054,7 +3891,8 @@ Release: April 23, 2024
 
 47 / 116
 
-DownloadTrustedServerRoot: An optional Boolean that specifies method behavior
+
+DownloadTrustedServerRoot: An optional Boolean that specifies method behavior
 in case the server's certificate is not trusted and the user manually accepts the
 certificate. If TRUE, additional server certificates pushed by the server will be added to
 the TrustedRootCAHashes element after a successful connection. If FALSE, no
@@ -4095,7 +3933,7 @@ authentication. Anonymous identity usage is determined by the
 IdentityPrivacy element. If IdentityPrivacy is FALSE,
 AnonymousIdentity is ignored.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Wireless/Wired Group Policy Protocol accesses the following directory service (DS) schema
 classes and attributes listed in the following table.
@@ -4130,7 +3968,8 @@ Release: April 23, 2024
 
 48 / 116
 
-Class
+
+Class
 
 Attribute
 
@@ -4161,14 +4000,15 @@ Release: April 23, 2024
 
 49 / 116
 
-3  Protocol Details
 
-3.1  Administrative-Side Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative-Side Plug-in Details
 
 The administrative-side plug-in has a user interface that allows an administrator to author policy
 objects on the Active Directory that have the format specified in section 2.2.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The abstract data model of the Wireless/Wired Group Policy Protocol for an administrator includes the
 abstract data model of Group Policy, as specified in [MS-GPOL] section 3.1.1. For more information
@@ -4218,17 +4058,17 @@ about the scoped GPO path are as specified in [MS-GPOL] section 2.2.2. The Activ
 corresponds to the policy type (policyType). The following sections refer to these entries as
 policyType, policyContainerPath, and policyClass.
 
-3.1.1.1  ADConnection Handle
+##### 3.1.1.1 ADConnection Handle
 
 The ADConnection Handle element is a handle to an ADConnection ([MS-ADTS] section 7.2). It is
 used to manage communication between the administrative-side plug-in and Active Directory
 servers.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the Wireless/Wired \Group Policy Protocol administrative-side plug-in starts, it gets a scoped
 Group Policy Object (GPO) path from the Group Policy: Core Protocol, as specified in [MS-GPOL].
@@ -4244,7 +4084,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To use LDAP, the administrative-side plug-in invokes the "Initialize an ADConnection" task ([MS-
+
+To use LDAP, the administrative-side plug-in invokes the "Initialize an ADConnection" task ([MS-
 ADTS] section 7.6.1.1) with the following parameters and stores the new TaskReturnADConnection
 returned from the task as the ADConnection Handle (section 3.1.1.1) element:
 
@@ -4265,12 +4106,12 @@ administrative-side plug-in then display the current policy information to the a
 
 It is recommended that the administrator be informed if this step fails.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The following section specifies the higher-layer triggered events and corresponding processing that the
 administrative-side plug-in MUST perform when those events take place.
 
-3.1.4.1  Policy Creation
+##### 3.1.4.1 Policy Creation
 
 The following section describes the process for a policy creation trigger for a policyType specified
 according to the table in section 3.1.1.
@@ -4313,7 +4154,8 @@ Release: April 23, 2024
 
 51 / 116
 
-3.1.4.2  Policy Modification
+
+##### 3.1.4.2 Policy Modification
 
 For a given policyType, the administrative-side plug-in MUST already have a reference to an Active
 Directory object that is an instance of the corresponding Active Directory class specified in the table
@@ -4333,7 +4175,7 @@ the administrative-side plug-in collects the new set of policy settings that inc
 settings from the administrator and formats them as specified in section 2.2. Then the administrative-
 side plug-in modifies this existing object, as specified in [RFC2251].
 
-3.1.4.3  Policy Deletion
+##### 3.1.4.3 Policy Deletion
 
 For a given policyType the administrative-side plug-in MUST already have a reference to an Active
 Directory object that is an instance of the corresponding Active Directory class specified in the table
@@ -4350,9 +4192,9 @@ GroupPolicy and stored under <ScopedGPOPath>\Microsoft\Windows\IEEE8023. When th
 administrator triggers a request to delete this policy using the administrative-side plug-in, the
 administrative-side plug-in deletes the existing policy object, as specified in [RFC2251], using delete.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Reading a Wireless or Wired Policy Object from Active Directory
+##### 3.1.5.1 Reading a Wireless or Wired Policy Object from Active Directory
 
 The following protocol sequences MUST be generated:
 
@@ -4387,7 +4229,8 @@ Release: April 23, 2024
 
 52 / 116
 
-2.  The plug-in MUST wait for a time-out period of at least 2 minutes (120 seconds) to receive an
+
+2.  The plug-in MUST wait for a time-out period of at least 2 minutes (120 seconds) to receive an
 LDAP BindResponse. If the plug-in fails to receive the LDAP BindResponse within this time-out
 period, it MUST terminate the reading of the wireless or wired policy.<37>
 
@@ -4492,7 +4335,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter   Value
+
+Parameter   Value
 
 ms-net-ieee-8023-GP-PolicyData: An XML string according to a well-defined schema. For more
 information, see section 2.2.
@@ -4514,7 +4358,7 @@ reuse the ADConnection Handle (section 3.1.1.1) for future requests.
 
 For details about creating, modifying, and deleting wired and wireless GPOs, see section 3.
 
-3.1.5.2  Creating a Wireless or Wired Policy Object on Active Directory
+##### 3.1.5.2 Creating a Wireless or Wired Policy Object on Active Directory
 
 When the administrative-side plug-in attempts to create a wireless or wired GPO for a GPO, the
 following protocol sequence MUST be generated.
@@ -4580,7 +4424,8 @@ Release: April 23, 2024
 
 54 / 116
 
-Parameter   Value
+
+Parameter   Value
 
 attributes
 
@@ -4674,7 +4519,8 @@ Release: April 23, 2024
 
 55 / 116
 
-5.  The administrative-side plug-in MUST search under the ScopedGPOPath for the existence of a
+
+5.  The administrative-side plug-in MUST search under the ScopedGPOPath for the existence of a
 
 container by sending an LDAP Search message with the parameters shown in the following table.
 
@@ -4771,7 +4617,8 @@ Release: April 23, 2024
 
 56 / 116
 
-Parameter   Value
+
+Parameter   Value
 
 Entry
 
@@ -4866,11 +4713,12 @@ Release: April 23, 2024
 
 57 / 116
 
-9.  An LDAP UnbindRequest is be made by the plug-in that corresponds to the previous LDAP
+
+9.  An LDAP UnbindRequest is be made by the plug-in that corresponds to the previous LDAP
 BindRequest to close the connection, unless the plug-in will reuse the ADConnection
 Handle (section 3.1.1.1) for future requests.
 
-3.1.5.3  Modifying a Wireless or Wired Policy Object on Active Directory
+##### 3.1.5.3 Modifying a Wireless or Wired Policy Object on Active Directory
 
 When the administrative-side plug-in attempts to modify an existing wireless or wired GPO for a GPO,
 the following protocol sequence MUST be generated:
@@ -4960,7 +4808,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter   Value
+
+Parameter   Value
 
   ms-net-ieee-80211-GP-PolicyGUID MUST be set the same as the one identified in step 2
 
@@ -5008,7 +4857,7 @@ section 3.3.4.4.
 BindRequest to close the connection, unless the plug-in will reuse the ADConnection
 Handle (section 3.1.1.1) for future requests.
 
-3.1.5.4  Deleting a Wireless or Wired Policy Object on Active Directory
+##### 3.1.5.4 Deleting a Wireless or Wired Policy Object on Active Directory
 
 When the administrative-side plug-in attempts to delete an existing wireless or wired GPO for a GPO,
 the following protocol sequence MUST be generated:
@@ -5035,7 +4884,8 @@ Release: April 23, 2024
 
 59 / 116
 
-Parameter   Value
+
+Parameter   Value
 
 Entry
 
@@ -5076,21 +4926,21 @@ section 3.3.4.4.
 BindRequest to close the connection, unless the plug-in will reuse the ADConnection
 Handle (section 3.1.1.1) for future requests.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client-Side Plug-in Details
+### 3.2 Client-Side Plug-in Details
 
 During policy application, the wireless or wired plug-in is invoked after the Group Policy: Core
 Protocol, as specified in [MS-GPOL], computes a list of GPOs for which the Wireless/Wired Group
 Policy Protocol is to be invoked.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5111,14 +4961,15 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 When a wireless policy client-side plug-in applies a BLOB-based wireless Group Policy, it MAY maintain
 a timer that controls the time at which to check for updates to the currently applied policy. This timer
 is configured using the pollingInterval configuration retrieved as part of the BLOB-based wireless
 policy object specified in section 2.2.1.1.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Beyond the initialization required for Group Policy itself, the wireless Group Policy client-side plug-in
 SHOULD<38> fetch the policy objects available in the generic data store and selects the wireless
@@ -5129,7 +4980,7 @@ Policy client-side plug-in fetches the first object of the wired Group Policy po
 Active Directory. Retrieval and selection of wired Group Policy occurs independently from wireless
 Group Policy, and one of each can be selected during initialization.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The plug-in implements the abstract event interface, as specified in [MS-GPOL] section 3.2.4. Upon
 retrieving updated policy, the client of the Group Policy: Core Protocol, as specified in [MS-GPOL],
@@ -5152,7 +5003,7 @@ are specified in [MS-GPOL] section 3.2.4.
 
 The plug-in does not make use of the flags or security token arguments.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 When the event described in section 3.2.4 is triggered, the plug-in selects the last GPO in the list of
 new or changed GPOs passed by the Group Policy Core Protocol. Using the DN path of this highest-
@@ -5165,7 +5016,7 @@ section 2.2. Additional entries in the contents that are not included in section
 the wireless or wired plug-in. The plug-in MUST provide policy settings to the wireless and wired
 connection components in the client's operating system.
 
-3.2.5.1  Retrieving BLOB-Based Wireless Group Policy for a GPO
+##### 3.2.5.1 Retrieving BLOB-Based Wireless Group Policy for a GPO
 
 The wireless Group Policy Protocol plug-in gets scoped GPO path (scoped GPO distinguished
 name (DN)) from the Group Policy client, as specified in section 3.2.4. The plug-in MUST issue an
@@ -5178,7 +5029,8 @@ Release: April 23, 2024
 
 61 / 116
 
-
+
+
 
 
 
@@ -5196,7 +5048,7 @@ filter:  (objectClass= msieee80211-Policy)
 
 For the specification of msieee80211-Policy, see [MS-ADSC] section 2.156.
 
-3.2.5.2  Retrieving XML-Based Wireless Group Policy for a GPO
+##### 3.2.5.2 Retrieving XML-Based Wireless Group Policy for a GPO
 
 The wireless Group Policy plug-in gets a scoped GPO path (Scoped GPO DN) from the Group Policy
 protocol client (as specified in section 3.2.4). The plug-in MUST issue an LDAP SearchRequest with the
@@ -5223,7 +5075,7 @@ For the specification of ms-net-ieee-80211-GP-PolicyData, see section 6.15 and a
 ADSC]. If the specified filter returns multiple policy objects, the first LDAPMessage buffer is used to
 read the policy data. If the policy contains multiple Unicode strings, the first string is used.
 
-3.2.5.3  Retrieving XML-Based Wired Group Policy for a GPO
+##### 3.2.5.3 Retrieving XML-Based Wired Group Policy for a GPO
 
 The wired Group Policy plug-in gets a scoped GPO path (GPO DN) from the Group Policy client (as
 specified in section 3.2.4). The plug-in MUST issue an LDAP SearchRequest with the following
@@ -5250,12 +5102,12 @@ For the specification of ms-net-ieee-8023-GP-PolicyData, see section 6.16, and a
 ADSC]. If the specified filter returns multiple policy objects, the first LDAPMessage buffer is used to
 read the policy data. If the policy contains multiple Unicode strings, the first string is used.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 When the timer specified in section 3.2.2 expires, the client MUST recheck for BLOB-based wireless
 policy updates using the method specified in section 3.2.5.1.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -5266,9 +5118,10 @@ Release: April 23, 2024
 
 62 / 116
 
-4  Protocol Examples
 
-4.1  XML Wireless Group Policy - WPA2-Enterprise with PEAP-MSCHAPv2
+## 4 Protocol Examples
+
+### 4.1 XML Wireless Group Policy - WPA2-Enterprise with PEAP-MSCHAPv2
 
 This sample profile uses Protected Extensible Authentication Protocol [MS-PEAP] with Microsoft
 Challenge Handshake Authentication Protocol [MS-CHAP] to provide password-based authentication to
@@ -5338,7 +5191,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                                    </baseEap:Eap>
+
+                                    </baseEap:Eap>
 
 <msPeap:EnableQuarantineChecks>false</msPeap:EnableQuarantineChecks>
 
@@ -5354,7 +5208,7 @@ Release: April 23, 2024
      </MSM>
  </WLANProfile>
 
-4.2  XML Wired Group Policy – EAP-TLS with Local Certificates
+### 4.2 XML Wired Group Policy – EAP-TLS with Local Certificates
 
 This profile sample shows a wired network profile used to connect to a network that uses Extensible
 Authentication Protocol Transport Level Security (EAP-TLS) certificates stored on the local machine for
@@ -5411,11 +5265,12 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         </security>
+
+         </security>
      </MSM>
  </LANProfile>
 
-4.3  Wireless Group Policy BLOB
+### 4.3 Wireless Group Policy BLOB
 
 This policy sample shows a BLOB which contains profiles for three wireless networks. The first network
 is secured using Wired Equivalent Privacy (WEP), with authentication provided via EAP-TLS. The
@@ -5459,7 +5314,7 @@ BB C5 3E 61 74 E2 14 00 00 00 A4 34 89 15 9A 52 0F 0D 93 D0 32 CC AF 37 E7 FE 20
 01 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00 00 80 00 00 00 C0 A8 00
 00
 
-4.3.1  Wireless Policy Sub-BLOB Token Streams
+#### 4.3.1 Wireless Policy Sub-BLOB Token Streams
 
 The following table shows token streams relating to the Wireless Policy Sub-BLOB (section 2.2.1.1.1).
 
@@ -5486,13 +5341,14 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Token Stream
+
+Token Stream
 
 Description
 
 30 2A … 00 00 (1016 bytes)   Wireless Policy Data: see section 4.3.2
 
-4.3.2  Wireless Policy Data Token Streams
+#### 4.3.2 Wireless Policy Data Token Streams
 
 The following table shows token streams relating to the Wireless Policy Data (section 2.2.1.1.2).
 
@@ -5538,7 +5394,7 @@ WirelessProfileSettingsLength: 0x100 = 256 bytes
 
 54 00 … 00 00 (256 bytes)  Wireless Profile Settings Data: see section 4.3.10
 
-4.3.3  First Wireless Profile Settings Version B Token Streams
+#### 4.3.3 First Wireless Profile Settings Version B Token Streams
 
 The following table shows token streams relating to the first Wireless Profile Settings version
 B (section 2.2.1.1.5).
@@ -5588,7 +5444,8 @@ Enable8021x: True
 
 66 / 116
 
-Token Stream
+
+Token Stream
 
 03 00 00 00
 
@@ -5708,7 +5565,8 @@ PmkCacheTTLSecPresent
 
 67 / 116
 
-4.3.4  EAPTLS_CONN_PROPERTIES Token Streams
+
+#### 4.3.4 EAPTLS_CONN_PROPERTIES Token Streams
 
 The following table shows token streams relating to EAPTLS_CONN_PROPERTIES (section 2.2.3.1.1),
 the EAPData field for EAP-TLS.
@@ -5786,7 +5644,7 @@ BE 36 A4 56 2F B2 EE 05 DB B3 D3 23 23 AD F4
 
 TrustedCertHashInfo\CertHash
 
-4.3.5  Second Wireless Profile Settings Version B Token Streams
+#### 4.3.5 Second Wireless Profile Settings Version B Token Streams
 
 The following table shows token streams relating to the second Wireless Profile Settings version
 B (section 2.2.1.1.5).
@@ -5816,7 +5674,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Token
+
+Token
 
 01 00 00 00
 
@@ -5899,9 +5758,9 @@ EAPType: PEAP
 EAPDataLen: 0x6E = 110 bytes
 
 (110 bytes)EAPData: see section
-4.3.6
+#### 4.3.6 Machine Authentication: Computer
 
-Machine Authentication: Computer
+
 Credentials
 
 Machine Authentication Type: User
@@ -5943,7 +5802,8 @@ PmkCacheTTLSecPresent: True
 
 69 / 116
 
-Token
+
+Token
 
 02 00 00 00
 
@@ -6005,7 +5865,7 @@ InnerMethodProperties: see section 4.3.8
 
 Padding
 
-4.3.7  PEAP_TLS_PHASE1_CONN_PROPERTIES Field Token Streams
+#### 4.3.7 PEAP_TLS_PHASE1_CONN_PROPERTIES Field Token Streams
 
 The following table shows token streams relating to
 PEAP_TLS_PHASE1_CONN_PROPERTIES (section 2.2.3.1.2.1), the PeapTlsProperties field from
@@ -6044,7 +5904,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Token Stream
+
+Token Stream
 
 14 00 00 00
 
@@ -6072,7 +5933,7 @@ TrustedCertHashInfo\CertHash
 
 ServerName: Null
 
-4.3.8  PEAP_INNER_METHOD_PROPERTY Token Streams
+#### 4.3.8 PEAP_INNER_METHOD_PROPERTY Token Streams
 
 The following table shows token streams relating to
 PEAP_INNER_METHOD_PROPERTY (section 2.2.3.1.2.2), the InnerMethodProperties field from
@@ -6098,7 +5959,7 @@ InnerEapType: The format of InnerEapData is EAPMSCHAPv2_CONN_PROPERTIES
 
 InnerEapData: see section 4.3.9
 
-4.3.9  EAPMSCHAPv2_CONN_PROPERTIES Token Streams
+#### 4.3.9 EAPMSCHAPv2_CONN_PROPERTIES Token Streams
 
 The following table shows token streams relating to
 EAPMSCHAPv2_CONN_PROPERTIES (section 2.2.3.1.3), the InnerEapData field from
@@ -6114,7 +5975,7 @@ Version: 1
 
 Flags: LogonCreds: True
 
-4.3.10 Wireless Profile Settings Version B Token Streams
+#### 4.3.10 Wireless Profile Settings Version B Token Streams
 
 The following table shows token streams relating to the third Wireless Profile Settings version
 B (section 2.2.1.1.5) data.
@@ -6134,7 +5995,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Token Stream
+
+Token Stream
 
 Description
 
@@ -6257,7 +6119,8 @@ PreAuthThrottlePresent
 
 72 / 116
 
-Token Stream
+
+Token Stream
 
 Description
 
@@ -6288,7 +6151,7 @@ PmkCacheSizePresent
 PmkCacheTTLSec: Ignored due to
 PmkCacheTTLSecPresent
 
-4.4  Updating the SSID
+### 4.4 Updating the SSID
 
 In the following example, a scenario is considered in which the IT administrator has changed the
 service set identifier (SSID) of the corporate wireless network from CORPWLAN to HQWLAN. The
@@ -6340,7 +6203,8 @@ Release: April 23, 2024
 
 73 / 116
 
-1.  On a domain client computer that is a member of the test domain, the client-side plug-in is
+
+1.  On a domain client computer that is a member of the test domain, the client-side plug-in is
 
 informed, as described in [MS-GPOL], that there is a new wireless policy for the computer GPO
 associated with the domain and indicated by the path "testdomain\policies\defaultPolicy\Machine".
@@ -6375,9 +6239,10 @@ Release: April 23, 2024
 
 74 / 116
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Section 2.1, Transport, recommends that the administrative-side and client-side plug-ins use the LDAP
 bind mechanism for authentication, and that they use the LDAP message security layer for
@@ -6385,7 +6250,7 @@ confidentiality and integrity of the protocol messages (as specified in [MS-ADTS
 Wireless/Wired Group Policy Protocol does not have any security considerations beyond those specified
 in [MS-GPOL], section 5.1 for the Group Policy: Core Protocol.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters for the Wireless/Wired Group Policy Protocol. The following security
 parameters are accessed by the wireless and wired connection components in the operating system.
@@ -6408,9 +6273,10 @@ Release: April 23, 2024
 
 75 / 116
 
-6  Appendix A: Schemas
 
-6.1  Wireless Policy Schema
+## 6 Appendix A: Schemas
+
+### 6.1 Wireless Policy Schema
 
  <?xml version="1.0" encoding="utf-8" ?>
  <xs:schema targetNamespace="http://www.microsoft.com/networking/WLAN/policy/v1"
@@ -6483,7 +6349,8 @@ Release: April 23, 2024
 
 76 / 116
 
-           <xs:complexType>
+
+           <xs:complexType>
              <xs:sequence>
                <!-- flag to indicate whether A/C is used -->
                <xs:element name="enableAutoConfig" type="xs:boolean" />
@@ -6560,7 +6427,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                   <xs:sequence>
+
+                   <xs:sequence>
                      <xs:element name="network" type="networkItemType" maxOccurs="unbounded"
 />
 
@@ -6611,7 +6479,7 @@ profile
    </xs:element>
  </xs:schema>
 
-6.2  Wired Policy Schema
+### 6.2 Wired Policy Schema
 
  <?xml version="1.0" encoding="utf-8" ?>
  <xs:schema targetNamespace="http://www.microsoft.com/networking/LAN/policy/v1"
@@ -6635,7 +6503,8 @@ Release: April 23, 2024
 
 78 / 116
 
-   <!-- element definitions section -->
+
+   <!-- element definitions section -->
    <xs:element name="LANPolicy">
      <xs:complexType>
        <xs:sequence>
@@ -6711,12 +6580,13 @@ Release: April 23, 2024
 
 79 / 116
 
-   </xs:element>
+
+   </xs:element>
  </xs:schema>
 
-6.3  Wireless LAN Profile Schema
+### 6.3 Wireless LAN Profile Schema
 
-6.3.1  Wireless LAN Profile v1 Schema
+#### 6.3.1 Wireless LAN Profile v1 Schema
 
  <?xml version="1.0" encoding="UTF-8" ?>
  <xs:schema targetNamespace="http://www.microsoft.com/networking/WLAN/profile/v1"
@@ -6783,7 +6653,8 @@ Release: April 23, 2024
 
 80 / 116
 
-                     <xs:any namespace="##other" processContents="lax" minOccurs="0"
+
+                     <xs:any namespace="##other" processContents="lax" minOccurs="0"
 maxOccurs="unbounded" />
                    </xs:sequence>
                  </xs:complexType>
@@ -6859,7 +6730,8 @@ Release: April 23, 2024
 
 81 / 116
 
-              <xs:element name="RoamingConsortium" minOccurs="0">
+
+              <xs:element name="RoamingConsortium" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                      <xs:element name="OUI" minOccurs="0" maxOccurs="256">
@@ -6936,7 +6808,8 @@ Release: April 23, 2024
 
 82 / 116
 
-                     <!-- optional flag indicating QoS DSCP To UP Mapping allowed (v5
+
+                     <!-- optional flag indicating QoS DSCP To UP Mapping allowed (v5
 namespace) (default false)-->
                      <!--
                      <xs:element name="QoSDSCPToUPMappingAllowed" type="xs:boolean"
@@ -7011,7 +6884,8 @@ Release: April 23, 2024
 
 83 / 116
 
-                           <xs:any namespace="##other" processContents="lax" minOccurs="0"
+
+                           <xs:any namespace="##other" processContents="lax" minOccurs="0"
 maxOccurs="unbounded" />
                          </xs:sequence>
                        </xs:complexType>
@@ -7088,7 +6962,8 @@ Release: April 23, 2024
 
 84 / 116
 
-                       </xs:simpleType>
+
+                       </xs:simpleType>
                      </xs:element>
 
                      <!-- the default value is "disabled" -->
@@ -7164,7 +7039,8 @@ Release: April 23, 2024
 
 85 / 116
 
-                     <xs:any namespace="##other" processContents="lax" minOccurs="0"
+
+                     <xs:any namespace="##other" processContents="lax" minOccurs="0"
 maxOccurs="unbounded" />
                    </xs:sequence>
                  </xs:complexType>
@@ -7210,7 +7086,7 @@ maxOccurs="unbounded" />
    </xs:element>
  </xs:schema>
 
-6.3.2  Wireless LAN Profile v2 Schema
+#### 6.3.2 Wireless LAN Profile v2 Schema
 
  <?xml version="1.0" encoding="UTF-8" ?>
  <xs:schema targetNamespace="http://www.microsoft.com/networking/WLAN/profile/v2"
@@ -7237,7 +7113,8 @@ Release: April 23, 2024
 
 86 / 116
 
-               <xs:maxLength value="32" />
+
+               <xs:maxLength value="32" />
              </xs:restriction>
            </xs:simpleType>
          </xs:element>
@@ -7290,7 +7167,7 @@ Release: April 23, 2024
 
  </xs:schema>
 
-6.3.3  Wireless LAN Profile v3 Schema
+#### 6.3.3 Wireless LAN Profile v3 Schema
 
 <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -7311,7 +7188,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     <xs:complexType>
+
+     <xs:complexType>
        <xs:sequence>
          <!-- Flag for specifying Mac Address Randomization on this profile, default set by
 policy -->
@@ -7327,7 +7205,7 @@ same profile -->
 
  </xs:schema>
 
-6.3.4  Wireless LAN Profile v4 Schema
+#### 6.3.4 Wireless LAN Profile v4 Schema
 
 <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -7343,7 +7221,7 @@ The Wireless LAN Profile v4 Schema is available.
 
  </xs:schema>
 
-6.3.5  Wireless LAN Profile v5 Schema
+#### 6.3.5 Wireless LAN Profile v5 Schema
 
 <?xml version="1.0" encoding="UTF-8" ?>
 
@@ -7361,7 +7239,7 @@ policy (Default false) -->
 
  </xs:schema>
 
-6.4  Wired LAN Profile Schema
+### 6.4 Wired LAN Profile Schema
 
  <?xml version="1.0" encoding="UTF-8" ?>
  <xs:schema targetNamespace="http://www.microsoft.com/networking/LAN/profile/v1"
@@ -7380,7 +7258,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <!--  LAN network settings
+
+ <!--  LAN network settings
    -->
  <xs:element name="MSM">
  <xs:complexType>
@@ -7425,7 +7304,7 @@ Release: April 23, 2024
    </xs:element>
    </xs:schema>
 
-6.5  802.1X Schema
+### 6.5 802.1X Schema
 
  <?xml version="1.0" encoding="utf-8" ?>
  <xs:schema
@@ -7454,7 +7333,8 @@ Release: April 23, 2024
 
 89 / 116
 
-   -->
+
+   -->
    <xs:element name="fallbackGuestAuth" type="xs:boolean" minOccurs="0" />
  <!--  the default value is "false"
    -->
@@ -7531,7 +7411,8 @@ Release: April 23, 2024
 
 90 / 116
 
- <xs:restriction base="xs:string">
+
+ <xs:restriction base="xs:string">
    <xs:enumeration value="machineOrUser" />
    <xs:enumeration value="machine" />
    <xs:enumeration value="user" />
@@ -7590,7 +7471,7 @@ default is false
    </xs:element>
    </xs:schema>
 
-6.6  EAPHostConfig Schema
+### 6.6 EAPHostConfig Schema
 
    <?xml version="1.0" ?>
  <xs:schema
@@ -7606,7 +7487,8 @@ Release: April 23, 2024
 
 91 / 116
 
-  xmlns:baseEap="http://www.microsoft.com/provisioning/BaseEapMethodConfig"
+
+  xmlns:baseEap="http://www.microsoft.com/provisioning/BaseEapMethodConfig"
   xmlns:eapCommon="http://www.microsoft.com/provisioning/EapCommon"
   version="1.0">
 
@@ -7643,7 +7525,7 @@ namespace="##other"/>
     </xs:element>
  </xs:schema>
 
-6.6.1  EapCommon Schema
+#### 6.6.1 EapCommon Schema
 
  <?xml version="1.0" ?>
  <xs:schema
@@ -7674,7 +7556,8 @@ Release: April 23, 2024
 
 92 / 116
 
-6.6.2  BaseEapMethodConfig Schema
+
+#### 6.6.2 BaseEapMethodConfig Schema
 
  <?xml version="1.0" ?>
  <xs:schema
@@ -7702,7 +7585,7 @@ contact the corresponding vendors. !-->
 
  </xs:schema>
 
-6.6.3  BaseEapConnectionPropertiesV1 Schema
+#### 6.6.3 BaseEapConnectionPropertiesV1 Schema
 
  <?xml version="1.0" ?>
  <xs:schema
@@ -7732,7 +7615,7 @@ contact the corresponding vendors. !-->
     <xs:element name="Eap" type="BaseEapParameters"/>
  </xs:schema>
 
-6.7  Microsoft EAP MsChapV2 Schema
+### 6.7 Microsoft EAP MsChapV2 Schema
 
 The following defines the XML schema for specifying configuration settings for Microsoft
 implementation of the MS-ChapV2 EAP method.
@@ -7744,7 +7627,8 @@ Release: April 23, 2024
 
 93 / 116
 
- <?xml version="1.0" ?>
+
+ <?xml version="1.0" ?>
  <xs:schema
        targetNamespace="http://www.microsoft.com/provisioning/MsChapV2ConnectionPropertiesV1"
        elementFormDefault="qualified"
@@ -7776,9 +7660,9 @@ namespace="##other"/>
     </xs:element>
  </xs:schema>
 
-6.8  Microsoft EAP TLS Schema
+### 6.8 Microsoft EAP TLS Schema
 
-6.8.1  EapTlsConnectionPropertiesV1 Schema
+#### 6.8.1 EapTlsConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the TLS method.
@@ -7817,7 +7701,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                         type="CredentialsSourceParameters"
+
+                         type="CredentialsSourceParameters"
                          minOccurs="0"
                    />
                    <xs:element
@@ -7893,7 +7778,8 @@ Release: April 23, 2024
 
 95 / 116
 
-       <!--This is obsolete, instead use PerformServerValidation tag defined in the EapType
+
+       <!--This is obsolete, instead use PerformServerValidation tag defined in the EapType
 tag.-->
        <xs:attribute
           name="PerformServerValidation"
@@ -7915,7 +7801,7 @@ tag.-->
     </xs:simpleType>
  </xs:schema>
 
-6.8.2  EapTlsConnectionPropertiesV2 Schema
+#### 6.8.2 EapTlsConnectionPropertiesV2 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the TLS method.
@@ -7939,7 +7825,7 @@ namespace="##other" />
     </xs:complexType>
  </xs:schema>
 
-6.8.3  EapTlsConnectionPropertiesV3 Schema
+#### 6.8.3 EapTlsConnectionPropertiesV3 Schema
 
 The following defines the XML schema for specifying configuration settings related to certificate
 filtering for the Microsoft EAP implementation of the TLS method.
@@ -7963,7 +7849,8 @@ Release: April 23, 2024
 
 96 / 116
 
-      <xs:complexType name="FilterInfoParams">
+
+      <xs:complexType name="FilterInfoParams">
          <xs:sequence>
    <xs:element name="AllPurposeEnabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
    <xs:element name="CAHashList" type="CAHashListParams" minOccurs="0" maxOccurs="1"/>
@@ -8017,9 +7904,9 @@ namespace="##any"/>
 
  </xs:schema>
 
-6.9  Microsoft EAP PEAP Schema
+### 6.9 Microsoft EAP PEAP Schema
 
-6.9.1  MsPeapConnectionPropertiesV1 Schema
+#### 6.9.1 MsPeapConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the PEAP method.
@@ -8036,7 +7923,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-xmlns:extendedPeap="http://www.microsoft.com/provisioning/MsPeapConnectionPropertiesV2"
+
+xmlns:extendedPeap="http://www.microsoft.com/provisioning/MsPeapConnectionPropertiesV2"
 targetNamespace="http://www.microsoft.com/provisioning/MsPeapConnectionPropertiesV1"
 elementFormDefault="qualified" version="1.0">
  <xs:import namespace="http://www.microsoft.com/provisioning/BaseEapConnectionPropertiesV1"
@@ -8113,11 +8001,12 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </xs:sequence>
+
+ </xs:sequence>
  </xs:complexType>
  </xs:schema>
 
-6.9.2  MsPeapConnectionPropertiesV2 Schema
+#### 6.9.2 MsPeapConnectionPropertiesV2 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the PEAP method.
@@ -8155,7 +8044,7 @@ maxOccurs="1"/>
     </xs:complexType>
  </xs:schema>
 
-6.9.3  MsPeapConnectionPropertiesV3 Schema
+#### 6.9.3 MsPeapConnectionPropertiesV3 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the PEAP method.
@@ -8185,12 +8074,13 @@ Release: April 23, 2024
 
 99 / 116
 
-   </xs:complexType>
+
+   </xs:complexType>
 </xs:schema>
 
-6.10  Microsoft EAP SIM Schema
+### 6.10 Microsoft EAP SIM Schema
 
-6.10.1 EapSimConnectionPropertiesV1 Schema
+#### 6.10.1 EapSimConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the SIM method.
@@ -8229,9 +8119,9 @@ namespace="##other"/>
     </xs:element>
  </xs:schema>
 
-6.11  Microsoft EAP AKA Schema
+### 6.11 Microsoft EAP AKA Schema
 
-6.11.1 EapAkaConnectionPropertiesV1 Schema
+#### 6.11.1 EapAkaConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the AKA method.
@@ -8254,7 +8144,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-             <xs:sequence>
+
+             <xs:sequence>
                  <xs:element name="DontRevealPermanentID" type="xs:boolean" minOccurs="0"
 maxOccurs="1"/>
                  <xs:element name="ProviderName" type="xs:string" minOccurs="0"
@@ -8276,9 +8167,9 @@ namespace="##other"/>
     </xs:element>
  </xs:schema>
 
-6.12  Microsoft EAP AKA' Schema
+### 6.12 Microsoft EAP AKA' Schema
 
-6.12.1 EapAkaPrimeConnectionPropertiesV1 Schema
+#### 6.12.1 EapAkaPrimeConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the AKA' method.
@@ -8326,11 +8217,12 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </xs:schema>
 
-6.13  Microsoft EAP TTLS Schema
+ </xs:schema>
 
-6.13.1 EapTtlsConnectionPropertiesV1 Schema
+### 6.13 Microsoft EAP TTLS Schema
+
+#### 6.13.1 EapTtlsConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the TTLS method.
@@ -8399,7 +8291,8 @@ Release: April 23, 2024
 
 102 / 116
 
-     <xs:complexType name="MSCHAPv2AuthenticationParameters">
+
+     <xs:complexType name="MSCHAPv2AuthenticationParameters">
          <xs:sequence>
              <xs:element name="UseWinlogonCredentials" type="xs:boolean" default="false"
 minOccurs="0"/>
@@ -8412,9 +8305,9 @@ minOccurs="0"/>
      </xs:simpleType>
  </xs:schema>
 
-6.14  Microsoft EAP TEAP Schema
+### 6.14 Microsoft EAP TEAP Schema
 
-6.14.1 EapTeapConnectionPropertiesV1 Schema
+#### 6.14.1 EapTeapConnectionPropertiesV1 Schema
 
 The following defines the XML schema for specifying configuration settings for the Microsoft EAP
 implementation of the TEAP method.
@@ -8488,7 +8381,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-            <xs:element name="InnerMethodConfig" type="InnerMethodConfigParameters"
+
+            <xs:element name="InnerMethodConfig" type="InnerMethodConfigParameters"
 
 minOccurs="0" maxOccurs="unbounded"/>
 
@@ -8530,7 +8424,7 @@ namespace="##other"/>
     </xs:complexType>
 </xs:schema>
 
-6.15  Active Directory Schema for Class ms-net-ieee-80211-GroupPolicy
+### 6.15 Active Directory Schema for Class ms-net-ieee-80211-GroupPolicy
 
  # -----------------------------------------------------------------------
  #   define schemas for these attributes:
@@ -8575,7 +8469,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- isSingleValued: TRUE
+
+ isSingleValued: TRUE
  systemOnly: FALSE
  searchFlags: 0
  rangeUpper: 4194304
@@ -8652,11 +8547,12 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- changetype: ntdsSchemaModify
+
+ changetype: ntdsSchemaModify
  add: schemaUpdateNow
  schemaUpdateNow: 1
 
-6.16  Active Directory Schema for Class ms-net-ieee-8023-GroupPolicy
+### 6.16 Active Directory Schema for Class ms-net-ieee-8023-GroupPolicy
 
  # -----------------------------------------------------------------------
  #   define schemas for these attributes:
@@ -8727,7 +8623,8 @@ Release: April 23, 2024
 
 106 / 116
 
- #   Reload the schema cache to pick up altered classes and attributes
+
+ #   Reload the schema cache to pick up altered classes and attributes
  # -----------------------------------------------------------------------
  dn:
  changetype: ntdsSchemaModify
@@ -8782,7 +8679,8 @@ Release: April 23, 2024
 
 107 / 116
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -8919,7 +8817,8 @@ Yes
 
 108 / 116
 
-Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
+
+Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
 (KB) number appears with a product name, the behavior changed in that update. The new behavior
 also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
@@ -8987,7 +8886,8 @@ Group Policy: Wireless/Wired Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<11> Section 2.2.1.2.1:  TransitionMode is available in Windows Server 2022 and later.
+
+<11> Section 2.2.1.2.1:  TransitionMode is available in Windows Server 2022 and later.
 
 <12> Section 2.2.1.2.1:  QoSDSCPToUPMappingAllowed is available in Windows 11, version 24H2
 operating system and later, and in Windows Server 2025 and later.
@@ -9054,7 +8954,8 @@ Release: April 23, 2024
 
 110 / 116
 
-<26> Section 2.2.3.2.1: The Config element is not applicable in Windows XP, Windows Server 2003,
+
+<26> Section 2.2.3.2.1: The Config element is not applicable in Windows XP, Windows Server 2003,
 Windows Vista, and Windows Server 2008.
 
 <27> Section 2.2.3.2.1: The ConfigBlob element is not applicable in Windows XP and Windows Server
@@ -9104,7 +9005,8 @@ Release: April 23, 2024
 
 111 / 116
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -9194,7 +9096,8 @@ Release: April 23, 2024
 
 112 / 116
 
-9  Index
+
+## 9 Index
 8
 
 802.1X schema 89
@@ -9365,7 +9268,8 @@ Data model - abstract
 
 113 / 116
 
-   client-side plug-in 60
+
+   client-side plug-in 60
 Directory service schema elements 48
 
       policy modification 52
@@ -9535,7 +9439,8 @@ Microsoft EAP TLS schema
 
 114 / 116
 
-   EapTlsConnectionPropertiesV3 96
+
+   EapTlsConnectionPropertiesV3 96
 Microsoft EAP TTLS schema
    EapTtlsConnectionPropertiesV1 102
 
@@ -9685,7 +9590,8 @@ V
 
 115 / 116
 
-Vendor-extensible fields 15
+
+Vendor-extensible fields 15
 Version A - BLOB-based wireless group policy 19
 Version B - BLOB-based wireless group policy 22
 Versioning

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 413
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 413
 
-Date
+
+Date
 
 Revision
 History
@@ -532,7 +534,8 @@ Release: April 23, 2024
 
 3 / 413
 
-Date
+
+Date
 
 Revision
 History
@@ -589,689 +592,316 @@ Release: April 23, 2024
 
 4 / 413
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Fax Server Protocol](#131-fax-server-protocol)
+    - [1.3.2 Fax Client Protocol](#132-fax-client-protocol)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Common Custom-Marshaling Rules](#221-common-custom-marshaling-rules)
+      - [2.2.1.1 Single Data Type Instance](#2211-single-data-type-instance)
+      - [2.2.1.2 Array of N Data Type Instances](#2212-array-of-n-data-type-instances)
+      - [2.2.1.3 Marshaling Referenced Data Types](#2213-marshaling-referenced-data-types)
+    - [2.2.2 FAX_ENUM_MESSAGE_FOLDER](#222-faxenummessagefolder)
+    - [2.2.3 FAX_ENUM_CONFIG_OPTION](#223-faxenumconfigoption)
+    - [2.2.4 FAX_ENUM_PERSONAL_PROF_TYPES](#224-faxenumpersonalproftypes)
+    - [2.2.5 FAX_JOB_ENTRY](#225-faxjobentry)
+    - [2.2.6 _FAX_JOB_ENTRY](#226-faxjobentry)
+    - [2.2.7 FAX_PORT_INFO](#227-faxportinfo)
+    - [2.2.8 _FAX_PORT_INFO](#228-faxportinfo)
+    - [2.2.9 FAX_ROUTING_METHOD](#229-faxroutingmethod)
+    - [2.2.10 FAX_DEVICE_STATUS](#2210-faxdevicestatus)
+    - [2.2.11 FAX_LOG_CATEGORY](#2211-faxlogcategory)
+    - [2.2.12 FAX_COVERPAGE_INFO_EXW](#2212-faxcoverpageinfoexw)
+    - [2.2.13 FAX_JOB_PARAMW](#2213-faxjobparamw)
+    - [2.2.14 FAX_JOB_PARAM_EXW](#2214-faxjobparamexw)
+    - [2.2.15 FAX_MESSAGE_PROPS](#2215-faxmessageprops)
+    - [2.2.16 FAX_OUTBOX_CONFIG](#2216-faxoutboxconfig)
+    - [2.2.17 _FAX_OUTBOX_CONFIG](#2217-faxoutboxconfig)
+    - [2.2.18 FAX_REASSIGN_INFO](#2218-faxreassigninfo)
+    - [2.2.19 FAX_SERVER_ACTIVITY](#2219-faxserveractivity)
+    - [2.2.20 _FAX_SERVER_ACTIVITY](#2220-faxserveractivity)
+    - [2.2.21 FAX_SPECIFIC_ACCESS_RIGHTS](#2221-faxspecificaccessrights)
+    - [2.2.22 FAX_VERSION](#2222-faxversion)
+    - [2.2.23 _FAX_VERSION](#2223-faxversion)
+    - [2.2.24 FAX_ACCOUNT_INFO_0](#2224-faxaccountinfo0)
+    - [2.2.25 FAX_ACTIVITY_LOGGING_CONFIGW](#2225-faxactivityloggingconfigw)
+    - [2.2.26 _FAX_ACTIVITY_LOGGING_CONFIGW](#2226-faxactivityloggingconfigw)
+    - [2.2.27 FAX_ARCHIVE_CONFIGW](#2227-faxarchiveconfigw)
+    - [2.2.28 FAX_CONFIGURATIONW](#2228-faxconfigurationw)
+    - [2.2.29 _FAX_CONFIGURATIONW](#2229-faxconfigurationw)
+    - [2.2.30 FAX_DEVICE_PROVIDER_INFO](#2230-faxdeviceproviderinfo)
+    - [2.2.31 FAX_GENERAL_CONFIG](#2231-faxgeneralconfig)
+    - [2.2.32 FAX_GLOBAL_ROUTING_INFOW](#2232-faxglobalroutinginfow)
+    - [2.2.33 _FAX_GLOBAL_ROUTING_INFOW](#2233-faxglobalroutinginfow)
+    - [2.2.34 FAX_JOB_ENTRY_EX_1](#2234-faxjobentryex1)
+    - [2.2.35 FAX_JOB_ENTRY_EXW](#2235-faxjobentryexw)
+    - [2.2.36 FAX_JOB_STATUS](#2236-faxjobstatus)
+    - [2.2.37 FAX_MESSAGE_1](#2237-faxmessage1)
+    - [2.2.38 FAX_MESSAGEW](#2238-faxmessagew)
+    - [2.2.39 RPC_FAX_OUTBOUND_ROUTING_GROUPW](#2239-rpcfaxoutboundroutinggroupw)
+    - [2.2.40 _RPC_FAX_OUTBOUND_ROUTING_GROUPW](#2240-rpcfaxoutboundroutinggroupw)
+    - [2.2.41 RPC_FAX_OUTBOUND_ROUTING_RULEW](#2241-rpcfaxoutboundroutingrulew)
+    - [2.2.42 _RPC_FAX_OUTBOUND_ROUTING_RULEW](#2242-rpcfaxoutboundroutingrulew)
+      - [2.2.42.1 _FAX_RULE_DESTINATION_DEVICE_ID](#22421-faxruledestinationdeviceid)
+      - [2.2.42.2 _FAX_RULE_DESTINATION_GROUP_NAME](#22422-faxruledestinationgroupname)
+    - [2.2.43 FAX_PRINTER_INFOW](#2243-faxprinterinfow)
+    - [2.2.44 FAX_PERSONAL_PROFILEW](#2244-faxpersonalprofilew)
+    - [2.2.45 FAX_PORT_INFO_EXW](#2245-faxportinfoexw)
+    - [2.2.46 _FAX_PORT_INFO_EXW](#2246-faxportinfoexw)
+    - [2.2.47 FAX_RECEIPTS_CONFIGW](#2247-faxreceiptsconfigw)
+    - [2.2.48 _FAX_RECEIPTS_CONFIGW](#2248-faxreceiptsconfigw)
+    - [2.2.49 FAX_ROUTING_EXTENSION_INFO](#2249-faxroutingextensioninfo)
+    - [2.2.50 FAX_TAPI_LINECOUNTRY_ENTRYW](#2250-faxtapilinecountryentryw)
+    - [2.2.51 FAX_TAPI_LINECOUNTRY_LISTW](#2251-faxtapilinecountrylistw)
+    - [2.2.52 Fax-Specific Errors](#2252-fax-specific-errors)
+    - [2.2.53 FAX_ENUM_MSG_FLAGS](#2253-faxenummsgflags)
+    - [2.2.54 FAX_ENUM_RULE_STATUS](#2254-faxenumrulestatus)
+    - [2.2.55 FAX_ENUM_DEVICE_RECEIVE_MODE](#2255-faxenumdevicereceivemode)
+    - [2.2.56 FAX_ENUM_SMTP_AUTH_OPTIONS](#2256-faxenumsmtpauthoptions)
+    - [2.2.57 FAX_ENUM_PROVIDER_STATUS](#2257-faxenumproviderstatus)
+    - [2.2.58 FAX_ENUM_JOB_OP](#2258-faxenumjobop)
+    - [2.2.59 FAX_ENUM_GROUP_STATUS](#2259-faxenumgroupstatus)
+    - [2.2.60 FAX_JOB_EXTENDED_STATUS_ENUM](#2260-faxjobextendedstatusenum)
+    - [2.2.61 FAX_TIME](#2261-faxtime)
+    - [2.2.62 _FAX_TIME](#2262-faxtime)
+    - [2.2.63 FAX_ENUM_EVENT_TYPE](#2263-faxenumeventtype)
+    - [2.2.64 FAX_ENUM_DEVICE_STATUS](#2264-faxenumdevicestatus)
+    - [2.2.65 FAX_ENUM_PRIORITY_TYPE](#2265-faxenumprioritytype)
+    - [2.2.66 FAX_EVENT](#2266-faxevent)
+    - [2.2.67 FAX_EVENT_EX](#2267-faxeventex)
+      - [2.2.67.1 FAX_EVENT_EX_JOB_INFO](#22671-faxeventexjobinfo)
+      - [2.2.67.2 FAX_EVENT_EX_CONFIG_TYPE](#22672-faxeventexconfigtype)
+      - [2.2.67.3 FAX_EVENT_EX_ACTIVITY_INFO](#22673-faxeventexactivityinfo)
+      - [2.2.67.4 FAX_EVENT_EX_NEW_CALL](#22674-faxeventexnewcall)
+      - [2.2.67.5 FAX_EVENT_EX_QUEUE_STATES](#22675-faxeventexqueuestates)
+      - [2.2.67.6 FAX_EVENT_EX_DEVICE_STATUS](#22676-faxeventexdevicestatus)
+    - [2.2.68 FAX_EVENT_EX_1](#2268-faxeventex1)
+      - [2.2.68.1 FAX_EVENT_EX_1_JOB_INFO](#22681-faxeventex1jobinfo)
+      - [2.2.68.2 FAX_EVENT_EX_1_CONFIG_TYPE](#22682-faxeventex1configtype)
+      - [2.2.68.3 FAX_EVENT_EX_1_ACTIVITY_INFO](#22683-faxeventex1activityinfo)
+      - [2.2.68.4 FAX_EVENT_EX_1_NEW_CALL](#22684-faxeventex1newcall)
+      - [2.2.68.5 FAX_EVENT_EX_1_QUEUE_STATES](#22685-faxeventex1queuestates)
+      - [2.2.68.6 FAX_EVENT_EX_1_DEVICE_STATUS](#22686-faxeventex1devicestatus)
+    - [2.2.69 FAX_EVENT_DEVICE_STATUS](#2269-faxeventdevicestatus)
+    - [2.2.70 FAX_EVENT_JOB_1](#2270-faxeventjob1)
+    - [2.2.71 FAX_ENUM_JOB_EVENT_TYPE](#2271-faxenumjobeventtype)
+    - [2.2.72 FAX_EVENT_NEW_CALL](#2272-faxeventnewcall)
+    - [2.2.73 FAX_ENUM_CONFIG_TYPE](#2273-faxenumconfigtype)
+    - [2.2.74 FAX Data Types](#2274-fax-data-types)
+    - [2.2.75 PRODUCT_SKU_TYPE](#2275-productskutype)
+    - [2.2.76 FAX_ENUM_DELIVERY_REPORT_TYPES](#2276-faxenumdeliveryreporttypes)
+    - [2.2.77 FAX_ENUM_JOB_FIELDS](#2277-faxenumjobfields)
+    - [2.2.78 FAX_ENUM_COVERPAGE_FORMATS](#2278-faxenumcoverpageformats)
+    - [2.2.79 FAX_SPECIFIC_ACCESS_RIGHTS_2](#2279-faxspecificaccessrights2)
+    - [2.2.80 FAX_EVENT_JOB](#2280-faxeventjob)
+    - [2.2.81 FAX_RULE_DESTINATION](#2281-faxruledestination)
+    - [2.2.82 FAX_MAX_RPC_BUFFER](#2282-faxmaxrpcbuffer)
+    - [2.2.83 ALL_FAX_USER_ACCESS_RIGHTS](#2283-allfaxuseraccessrights)
+    - [2.2.84 Generic Outbound Routing Rule Constants](#2284-generic-outbound-routing-rule-constants)
+    - [2.2.85 Protocol and Fax API Version Constants](#2285-protocol-and-fax-api-version-constants)
+    - [2.2.86 MAX_FAX_STRING_LEN](#2286-maxfaxstringlen)
+    - [2.2.87 Default Routing Methods](#2287-default-routing-methods)
+    - [2.2.88 FAX_TAPI_LOCATIONS](#2288-faxtapilocations)
+    - [2.2.89 FAX_TAPI_LOCATION_INFO](#2289-faxtapilocationinfo)
+    - [2.2.90 FAX_SECURITY_DESCRIPTOR](#2290-faxsecuritydescriptor)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Fax Server Details](#31-fax-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Fax Server Interface](#3141-fax-server-interface)
+        - [3.1.4.1.1 Sequencing Rules](#31411-sequencing-rules)
+        - [3.1.4.1.2 FAX_Abort (Opnum 9)](#31412-faxabort-opnum-9)
+        - [3.1.4.1.3 FAX_AccessCheck (Opnum 25)](#31413-faxaccesscheck-opnum-25)
+        - [3.1.4.1.4 FAX_AccessCheckEx2 (Opnum 101)](#31414-faxaccesscheckex2-opnum-101)
+        - [3.1.4.1.5 FAX_AddOutboundGroup (Opnum 51)](#31415-faxaddoutboundgroup-opnum-51)
+        - [3.1.4.1.6 FAX_AddOutboundRule (Opnum 56)](#31416-faxaddoutboundrule-opnum-56)
+        - [3.1.4.1.7 FAX_CheckServerProtSeq (Opnum 26)](#31417-faxcheckserverprotseq-opnum-26)
+        - [3.1.4.1.8 FAX_CheckValidFaxFolder (Opnum 86)](#31418-faxcheckvalidfaxfolder-opnum-86)
+        - [3.1.4.1.9 FAX_ClosePort (Opnum 3)](#31419-faxcloseport-opnum-3)
+        - [3.1.4.1.10 FAX_ConnectFaxServer (Opnum 80)](#314110-faxconnectfaxserver-opnum-80)
+        - [3.1.4.1.11 FAX_ConnectionRefCount (Opnum 1)](#314111-faxconnectionrefcount-opnum-1)
+        - [3.1.4.1.12 FAX_CreateAccount (Opnum 93)](#314112-faxcreateaccount-opnum-93)
+        - [3.1.4.1.13 FAX_DeleteAccount (Opnum 94)](#314113-faxdeleteaccount-opnum-94)
+        - [3.1.4.1.14 FAX_EnableRoutingMethod (Opnum 14)](#314114-faxenableroutingmethod-opnum-14)
+        - [3.1.4.1.15 FAX_EndCopy (Opnum 72)](#314115-faxendcopy-opnum-72)
+        - [3.1.4.1.16 FAX_EndMessagesEnum (Opnum 64)](#314116-faxendmessagesenum-opnum-64)
+        - [3.1.4.1.17 FAX_EndServerNotification (Opnum 75)](#314117-faxendservernotification-opnum-75)
+        - [3.1.4.1.18 FAX_EnumAccounts (Opnum 95)](#314118-faxenumaccounts-opnum-95)
+        - [3.1.4.1.19 FAX_EnumerateProviders (Opnum 45)](#314119-faxenumerateproviders-opnum-45)
+        - [3.1.4.1.20 FAX_EnumGlobalRoutingInfo (Opnum 17)](#314120-faxenumglobalroutinginfo-opnum-17)
+        - [3.1.4.1.21 FAX_EnumJobs (Opnum 4)](#314121-faxenumjobs-opnum-4)
+        - [3.1.4.1.22 FAX_EnumJobsEx (Opnum 28)](#314122-faxenumjobsex-opnum-28)
+        - [3.1.4.1.23 FAX_EnumJobsEx2 (Opnum 88)](#314123-faxenumjobsex2-opnum-88)
+        - [3.1.4.1.24 FAX_EnumMessages (Opnum 65)](#314124-faxenummessages-opnum-65)
+        - [3.1.4.1.25 FAX_EnumMessagesEx (Opnum 91)](#314125-faxenummessagesex-opnum-91)
+        - [3.1.4.1.26 FAX_EnumOutboundGroups (Opnum 54)](#314126-faxenumoutboundgroups-opnum-54)
+        - [3.1.4.1.27 FAX_EnumOutboundRules (Opnum 59)](#314127-faxenumoutboundrules-opnum-59)
+        - [3.1.4.1.28 FAX_EnumPorts (Opnum 10)](#314128-faxenumports-opnum-10)
+        - [3.1.4.1.29 FAX_EnumPortsEx (Opnum 48)](#314129-faxenumportsex-opnum-48)
+        - [3.1.4.1.30 FAX_EnumRoutingExtensions (Opnum 78)](#314130-faxenumroutingextensions-opnum-78)
+        - [3.1.4.1.31 FAX_EnumRoutingMethods (Opnum 13)](#314131-faxenumroutingmethods-opnum-13)
+        - [3.1.4.1.32 FAX_GetAccountInfo (Opnum 96)](#314132-faxgetaccountinfo-opnum-96)
+        - [3.1.4.1.33 FAX_GetActivityLoggingConfiguration (Opnum 43)](#314133-faxgetactivityloggingconfiguration-opnum-43)
+        - [3.1.4.1.34 FAX_GetArchiveConfiguration (Opnum 41)](#314134-faxgetarchiveconfiguration-opnum-41)
+        - [3.1.4.1.35 FAX_GetConfigOption (Opnum 104)](#314135-faxgetconfigoption-opnum-104)
+        - [3.1.4.1.36 FAX_GetConfiguration (Opnum 19)](#314136-faxgetconfiguration-opnum-19)
+        - [3.1.4.1.37 FAX_GetCountryList (Opnum 30)](#314137-faxgetcountrylist-opnum-30)
+        - [3.1.4.1.38 FAX_GetDeviceStatus (Opnum 8)](#314138-faxgetdevicestatus-opnum-8)
+        - [3.1.4.1.39 FAX_GetExtensionData (Opnum 49)](#314139-faxgetextensiondata-opnum-49)
+        - [3.1.4.1.40 FAX_GetGeneralConfiguration (Opnum 97)](#314140-faxgetgeneralconfiguration-opnum-97)
+        - [3.1.4.1.41 FAX_GetJob (Opnum 5)](#314141-faxgetjob-opnum-5)
+        - [3.1.4.1.42 FAX_GetJobEx (Opnum 29)](#314142-faxgetjobex-opnum-29)
+        - [3.1.4.1.43 FAX_GetJobEx2 (Opnum 87)](#314143-faxgetjobex2-opnum-87)
+        - [3.1.4.1.44 FAX_GetLoggingCategories (Opnum 21)](#314144-faxgetloggingcategories-opnum-21)
+        - [3.1.4.1.45 FAX_GetMessage (Opnum 66)](#314145-faxgetmessage-opnum-66)
+        - [3.1.4.1.46 FAX_GetMessageEx (Opnum 89)](#314146-faxgetmessageex-opnum-89)
+        - [3.1.4.1.47 FAX_GetOutboxConfiguration (Opnum 38)](#314147-faxgetoutboxconfiguration-opnum-38)
+        - [3.1.4.1.48 FAX_GetPageData (Opnum 7)](#314148-faxgetpagedata-opnum-7)
+        - [3.1.4.1.49 FAX_GetPersonalCoverPagesOption (Opnum 40)](#314149-faxgetpersonalcoverpagesoption-opnum-40)
+        - [3.1.4.1.50 FAX_GetPersonalProfileInfo (Opnum 31)](#314150-faxgetpersonalprofileinfo-opnum-31)
+        - [3.1.4.1.51 FAX_GetPort (Opnum 11)](#314151-faxgetport-opnum-11)
+        - [3.1.4.1.52 FAX_GetPortEx (Opnum 46)](#314152-faxgetportex-opnum-46)
+        - [3.1.4.1.53 FAX_GetQueueStates (Opnum 32)](#314153-faxgetqueuestates-opnum-32)
+        - [3.1.4.1.54 FAX_GetReceiptsConfiguration (Opnum 34)](#314154-faxgetreceiptsconfiguration-opnum-34)
+        - [3.1.4.1.55 FAX_GetReceiptsOptions (Opnum 36)](#314155-faxgetreceiptsoptions-opnum-36)
+        - [3.1.4.1.56 FAX_GetRecipientsLimit (Opnum 84)](#314156-faxgetrecipientslimit-opnum-84)
+        - [3.1.4.1.57 FAX_GetRoutingInfo (Opnum 15)](#314157-faxgetroutinginfo-opnum-15)
+        - [3.1.4.1.58 FAX_GetSecurity (Opnum 23)](#314158-faxgetsecurity-opnum-23)
+        - [3.1.4.1.59 FAX_GetSecurityEx (Opnum 81)](#314159-faxgetsecurityex-opnum-81)
+        - [3.1.4.1.60 FAX_GetSecurityEx2 (Opnum 99)](#314160-faxgetsecurityex2-opnum-99)
+        - [3.1.4.1.61 FAX_GetServerActivity (Opnum 76)](#314161-faxgetserveractivity-opnum-76)
+        - [3.1.4.1.62 FAX_GetServerSKU (Opnum 85)](#314162-faxgetserversku-opnum-85)
+        - [3.1.4.1.63 FAX_GetServicePrinters (Opnum 0)](#314163-faxgetserviceprinters-opnum-0)
+        - [3.1.4.1.64 FAX_GetVersion (Opnum 37)](#314164-faxgetversion-opnum-37)
+        - [3.1.4.1.65 FAX_OpenPort (Opnum 2)](#314165-faxopenport-opnum-2)
+        - [3.1.4.1.66 FAX_ReadFile (Opnum 71)](#314166-faxreadfile-opnum-71)
+        - [3.1.4.1.67 FAX_ReAssignMessage (Opnum 102)](#314167-faxreassignmessage-opnum-102)
+        - [3.1.4.1.68 FAX_RefreshArchive (Opnum 82)](#314168-faxrefresharchive-opnum-82)
+        - [3.1.4.1.69 FAX_RegisterServiceProviderEx (Opnum 60)](#314169-faxregisterserviceproviderex-opnum-60)
+        - [3.1.4.1.70 FAX_RemoveMessage (Opnum 67)](#314170-faxremovemessage-opnum-67)
+        - [3.1.4.1.71 FAX_RemoveOutboundGroup (Opnum 53)](#314171-faxremoveoutboundgroup-opnum-53)
+        - [3.1.4.1.72 FAX_RemoveOutboundRule (Opnum 57)](#314172-faxremoveoutboundrule-opnum-57)
+        - [3.1.4.1.73 FAX_SendDocumentEx (Opnum 27)](#314173-faxsenddocumentex-opnum-27)
+        - [3.1.4.1.74 FAX_SetActivityLoggingConfiguration (Opnum 44)](#314174-faxsetactivityloggingconfiguration-opnum-44)
+        - [3.1.4.1.75 FAX_SetArchiveConfiguration (Opnum 42)](#314175-faxsetarchiveconfiguration-opnum-42)
+        - [3.1.4.1.76 FAX_SetConfiguration (Opnum 20)](#314176-faxsetconfiguration-opnum-20)
+        - [3.1.4.1.77 FAX_SetConfigWizardUsed (Opnum 77)](#314177-faxsetconfigwizardused-opnum-77)
+        - [3.1.4.1.78 FAX_SetDeviceOrderInGroup (Opnum 55)](#314178-faxsetdeviceorderingroup-opnum-55)
+        - [3.1.4.1.79 FAX_SetExtensionData (Opnum 50)](#314179-faxsetextensiondata-opnum-50)
+        - [3.1.4.1.80 FAX_SetGeneralConfiguration (Opnum 98)](#314180-faxsetgeneralconfiguration-opnum-98)
+        - [3.1.4.1.81 FAX_SetGlobalRoutingInfo (Opnum 18)](#314181-faxsetglobalroutinginfo-opnum-18)
+        - [3.1.4.1.82 FAX_SetJob (Opnum 6)](#314182-faxsetjob-opnum-6)
+        - [3.1.4.1.83 FAX_SetLoggingCategories (Opnum 22)](#314183-faxsetloggingcategories-opnum-22)
+        - [3.1.4.1.84 FAX_SetMessage (Opnum 103)](#314184-faxsetmessage-opnum-103)
+        - [3.1.4.1.85 FAX_SetOutboundGroup (Opnum 52)](#314185-faxsetoutboundgroup-opnum-52)
+        - [3.1.4.1.86 FAX_SetOutboundRule (Opnum 58)](#314186-faxsetoutboundrule-opnum-58)
+        - [3.1.4.1.87 FAX_SetOutboxConfiguration (Opnum 39)](#314187-faxsetoutboxconfiguration-opnum-39)
+        - [3.1.4.1.88 FAX_SetPort (Opnum 12)](#314188-faxsetport-opnum-12)
+        - [3.1.4.1.89 FAX_SetPortEx (Opnum 47)](#314189-faxsetportex-opnum-47)
+        - [3.1.4.1.90 FAX_SetQueue (Opnum 33)](#314190-faxsetqueue-opnum-33)
+        - [3.1.4.1.91 FAX_SetReceiptsConfiguration (Opnum 35)](#314191-faxsetreceiptsconfiguration-opnum-35)
+        - [3.1.4.1.92 FAX_SetRecipientsLimit (Opnum 83)](#314192-faxsetrecipientslimit-opnum-83)
+        - [3.1.4.1.93 FAX_SetRoutingInfo (Opnum 16)](#314193-faxsetroutinginfo-opnum-16)
+        - [3.1.4.1.94 FAX_SetSecurity (Opnum 24)](#314194-faxsetsecurity-opnum-24)
+        - [3.1.4.1.95 FAX_SetSecurityEx2 (Opnum 100)](#314195-faxsetsecurityex2-opnum-100)
+        - [3.1.4.1.96 FAX_StartCopyMessageFromServer (Opnum 69)](#314196-faxstartcopymessagefromserver-opnum-69)
+        - [3.1.4.1.97 FAX_StartCopyToServer (Opnum 68)](#314197-faxstartcopytoserver-opnum-68)
+        - [3.1.4.1.98 FAX_StartMessagesEnum (Opnum 63)](#314198-faxstartmessagesenum-opnum-63)
+        - [3.1.4.1.99 FAX_StartMessagesEnumEx (Opnum 90)](#314199-faxstartmessagesenumex-opnum-90)
+        - [3.1.4.1.100 FAX_StartServerNotification (Opnum 73)](#3141100-faxstartservernotification-opnum-73)
+        - [3.1.4.1.101 FAX_StartServerNotificationEx (Opnum 74)](#3141101-faxstartservernotificationex-opnum-74)
+        - [3.1.4.1.102 FAX_StartServerNotificationEx2 (Opnum 92)](#3141102-faxstartservernotificationex2-opnum-92)
+        - [3.1.4.1.103 FAX_UnregisterRoutingExtension (Opnum 62)](#3141103-faxunregisterroutingextension-opnum-62)
+        - [3.1.4.1.104 FAX_UnregisterServiceProviderEx (Opnum 61)](#3141104-faxunregisterserviceproviderex-opnum-61)
+        - [3.1.4.1.105 FAX_WriteFile (Opnum 70)](#3141105-faxwritefile-opnum-70)
+      - [3.1.4.2 FaxObs Server Interface](#3142-faxobs-server-interface)
+        - [3.1.4.2.1 Sequencing Rules](#31421-sequencing-rules)
+        - [3.1.4.2.2 FaxObs_ConnectionRefCount (Opnum 0)](#31422-faxobsconnectionrefcount-opnum-0)
+        - [3.1.4.2.3 FaxObs_GetVersion (Opnum 1)](#31423-faxobsgetversion-opnum-1)
+        - [3.1.4.2.4 FaxObs_GetInstallType (Opnum 2)](#31424-faxobsgetinstalltype-opnum-2)
+        - [3.1.4.2.5 FaxObs_OpenPort (Opnum 3)](#31425-faxobsopenport-opnum-3)
+        - [3.1.4.2.6 FaxObs_ClosePort (Opnum 4)](#31426-faxobscloseport-opnum-4)
+        - [3.1.4.2.7 FaxObs_SendDocument (Opnum 5)](#31427-faxobssenddocument-opnum-5)
+        - [3.1.4.2.8 FaxObs_GetQueueFileName (Opnum 6)](#31428-faxobsgetqueuefilename-opnum-6)
+        - [3.1.4.2.9 FaxObs_EnumJobs (Opnum 7)](#31429-faxobsenumjobs-opnum-7)
+        - [3.1.4.2.10 FaxObs_GetJob (Opnum 8)](#314210-faxobsgetjob-opnum-8)
+        - [3.1.4.2.11 FaxObs_SetJob (Opnum 9)](#314211-faxobssetjob-opnum-9)
+        - [3.1.4.2.12 FaxObs_GetPageData (Opnum 10)](#314212-faxobsgetpagedata-opnum-10)
+        - [3.1.4.2.13 FaxObs_GetDeviceStatus (Opnum 11)](#314213-faxobsgetdevicestatus-opnum-11)
+        - [3.1.4.2.14 FaxObs_Abort (Opnum 12)](#314214-faxobsabort-opnum-12)
+        - [3.1.4.2.15 FaxObs_EnumPorts (Opnum 13)](#314215-faxobsenumports-opnum-13)
+        - [3.1.4.2.16 FaxObs_GetPort (Opnum 14)](#314216-faxobsgetport-opnum-14)
+        - [3.1.4.2.17 FaxObs_SetPort (Opnum 15)](#314217-faxobssetport-opnum-15)
+        - [3.1.4.2.18 FaxObs_EnumRoutingMethods (Opnum 16)](#314218-faxobsenumroutingmethods-opnum-16)
+        - [3.1.4.2.19 FaxObs_EnableRoutingMethod (Opnum 17)](#314219-faxobsenableroutingmethod-opnum-17)
+        - [3.1.4.2.20 FaxObs_GetRoutingInfo (Opnum 18)](#314220-faxobsgetroutinginfo-opnum-18)
+        - [3.1.4.2.21 FaxObs_SetRoutingInfo (Opnum 19)](#314221-faxobssetroutinginfo-opnum-19)
+        - [3.1.4.2.22 FaxObs_EnumGlobalRoutingInfo (Opnum 20)](#314222-faxobsenumglobalroutinginfo-opnum-20)
+        - [3.1.4.2.23 FaxObs_SetGlobalRoutingInfo (Opnum 21)](#314223-faxobssetglobalroutinginfo-opnum-21)
+        - [3.1.4.2.24 FaxObs_GetConfiguration (Opnum 22)](#314224-faxobsgetconfiguration-opnum-22)
+        - [3.1.4.2.25 FaxObs_SetConfiguration (Opnum 23)](#314225-faxobssetconfiguration-opnum-23)
+        - [3.1.4.2.26 FaxObs_GetLoggingCategories (Opnum 24)](#314226-faxobsgetloggingcategories-opnum-24)
+        - [3.1.4.2.27 FaxObs_SetLoggingCategories (Opnum 25)](#314227-faxobssetloggingcategories-opnum-25)
+        - [3.1.4.2.28 FaxObs_GetTapiLocations (Opnum 26)](#314228-faxobsgettapilocations-opnum-26)
+        - [3.1.4.2.29 FaxObs_SetTapiLocations (Opnum 27)](#314229-faxobssettapilocations-opnum-27)
+        - [3.1.4.2.30 FaxObs_GetMapiProfiles (Opnum 28)](#314230-faxobsgetmapiprofiles-opnum-28)
+        - [3.1.4.2.31 FaxObs_StartClientServer (Opnum 29)](#314231-faxobsstartclientserver-opnum-29)
+        - [3.1.4.2.32 FaxObs_GetSecurityDescriptor (Opnum 31)](#314232-faxobsgetsecuritydescriptor-opnum-31)
+        - [3.1.4.2.33 FaxObs_SetSecurityDescriptor (Opnum 32)](#314233-faxobssetsecuritydescriptor-opnum-32)
+        - [3.1.4.2.34 FaxObs_GetSecurityDescriptorCount (Opnum 33)](#314234-faxobsgetsecuritydescriptorcount-opnum-33)
+        - [3.1.4.2.35 FaxObs_AccessCheck (Opnum 34)](#314235-faxobsaccesscheck-opnum-34)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Fax Client Details](#32-fax-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Sequencing Rules](#3241-sequencing-rules)
+      - [3.2.4.2 FAX_ClientEventQueue (Opnum 1)](#3242-faxclienteventqueue-opnum-1)
+      - [3.2.4.3 FAX_ClientEventQueueEx (Opnum 3)](#3243-faxclienteventqueueex-opnum-3)
+      - [3.2.4.4 FAX_CloseConnection (Opnum 2)](#3244-faxcloseconnection-opnum-2)
+      - [3.2.4.5 FAX_OpenConnection (Opnum 0)](#3245-faxopenconnection-opnum-0)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Message Exchanges While Sending a Fax](#41-message-exchanges-while-sending-a-fax)
+  - [4.2 Message Exchanges During Querying Server Configuration](#42-message-exchanges-during-querying-server-configuration)
+  - [4.3 Message Exchanges During Enumerating Fax Jobs](#43-message-exchanges-during-enumerating-fax-jobs)
+  - [4.4 Message Exchanges During Modifying Fax Jobs](#44-message-exchanges-during-modifying-fax-jobs)
+  - [4.5 Message Exchanges During Adding an Outbound Routing Rule](#45-message-exchanges-during-adding-an-outbound-routing-rule)
+  - [4.6 Message Exchanges During Registering and Unregistering for Server](#46-message-exchanges-during-registering-and-unregistering-for-server)
+  - [4.7 Message Exchanges During Granting Security Privileges to a User](#47-message-exchanges-during-granting-security-privileges-to-a-user)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: faxdatatypes.idl](#61-appendix-a1-faxdatatypesidl)
+  - [6.2 Appendix A.2: fax.idl](#62-appendix-a2-faxidl)
+  - [6.3 Appendix A.3: faxobs.idl](#63-appendix-a3-faxobsidl)
+  - [6.4 Appendix A.4: faxclient.idl](#64-appendix-a4-faxclientidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 11
-Glossary ......................................................................................................... 11
-References ...................................................................................................... 15
-Normative References ................................................................................. 15
-Informative References ............................................................................... 15
-Overview ........................................................................................................ 16
-Fax Server Protocol ..................................................................................... 16
-Fax Client Protocol ...................................................................................... 17
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 18
-Standards Assignments ..................................................................................... 18
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Common Data Types ........................................................................................ 19
-Common Custom-Marshaling Rules ............................................................... 19
-Single Data Type Instance ..................................................................... 20
-Array of N Data Type Instances .............................................................. 21
-Marshaling Referenced Data Types .......................................................... 21
-FAX_ENUM_MESSAGE_FOLDER .................................................................... 22
-FAX_ENUM_CONFIG_OPTION ....................................................................... 22
-FAX_ENUM_PERSONAL_PROF_TYPES ............................................................ 23
-FAX_JOB_ENTRY ........................................................................................ 23
-_FAX_JOB_ENTRY ....................................................................................... 26
-FAX_PORT_INFO ........................................................................................ 32
-_FAX_PORT_INFO ....................................................................................... 35
-FAX_ROUTING_METHOD .............................................................................. 37
-FAX_DEVICE_STATUS ................................................................................. 39
-FAX_LOG_CATEGORY .................................................................................. 45
-FAX_COVERPAGE_INFO_EXW ....................................................................... 47
-FAX_JOB_PARAMW ..................................................................................... 47
-FAX_JOB_PARAM_EXW ................................................................................ 49
-FAX_MESSAGE_PROPS ................................................................................ 51
-FAX_OUTBOX_CONFIG ................................................................................ 51
-_FAX_OUTBOX_CONFIG .............................................................................. 52
-FAX_REASSIGN_INFO ................................................................................. 54
-FAX_SERVER_ACTIVITY ............................................................................... 54
-_FAX_SERVER_ACTIVITY ............................................................................. 55
-FAX_SPECIFIC_ACCESS_RIGHTS .................................................................. 56
-FAX_VERSION ............................................................................................ 57
-_FAX_VERSION .......................................................................................... 58
-FAX_ACCOUNT_INFO_0 ............................................................................... 59
-FAX_ACTIVITY_LOGGING_CONFIGW ............................................................. 60
-_FAX_ACTIVITY_LOGGING_CONFIGW ........................................................... 61
-FAX_ARCHIVE_CONFIGW ............................................................................ 62
-FAX_CONFIGURATIONW .............................................................................. 63
-_FAX_CONFIGURATIONW ............................................................................ 65
-FAX_DEVICE_PROVIDER_INFO ..................................................................... 67
-FAX_GENERAL_CONFIG ............................................................................... 69
-FAX_GLOBAL_ROUTING_INFOW ................................................................... 73
-_FAX_GLOBAL_ROUTING_INFOW ................................................................. 73
-FAX_JOB_ENTRY_EX_1................................................................................ 75
-
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-2.2.13
-2.2.14
-2.2.15
-2.2.16
-2.2.17
-2.2.18
-2.2.19
-2.2.20
-2.2.21
-2.2.22
-2.2.23
-2.2.24
-2.2.25
-2.2.26
-2.2.27
-2.2.28
-2.2.29
-2.2.30
-2.2.31
-2.2.32
-2.2.33
-2.2.34
-
-[MS-FAX] - v20240423
-Fax Server and Client Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 413
-
-2.2.42.1
-2.2.42.2
-
-2.2.35
-2.2.36
-2.2.37
-2.2.38
-2.2.39
-2.2.40
-2.2.41
-2.2.42
-
-2.2.43
-2.2.44
-2.2.45
-2.2.46
-2.2.47
-2.2.48
-2.2.49
-2.2.50
-2.2.51
-2.2.52
-2.2.53
-2.2.54
-2.2.55
-2.2.56
-2.2.57
-2.2.58
-2.2.59
-2.2.60
-2.2.61
-2.2.62
-2.2.63
-2.2.64
-2.2.65
-2.2.66
-2.2.67
-
-2.2.68
-
-2.2.67.1
-2.2.67.2
-2.2.67.3
-2.2.67.4
-2.2.67.5
-2.2.67.6
-
-2.2.68.1
-2.2.68.2
-2.2.68.3
-2.2.68.4
-2.2.68.5
-2.2.68.6
-
-2.2.69
-2.2.70
-2.2.71
-2.2.72
-2.2.73
-2.2.74
-2.2.75
-2.2.76
-2.2.77
-2.2.78
-
-FAX_JOB_ENTRY_EXW ................................................................................ 80
-FAX_JOB_STATUS....................................................................................... 84
-FAX_MESSAGE_1 ........................................................................................ 89
-FAX_MESSAGEW ........................................................................................ 97
-RPC_FAX_OUTBOUND_ROUTING_GROUPW ................................................... 106
-_RPC_FAX_OUTBOUND_ROUTING_GROUPW ................................................. 106
-RPC_FAX_OUTBOUND_ROUTING_RULEW ..................................................... 108
-_RPC_FAX_OUTBOUND_ROUTING_RULEW .................................................... 108
-_FAX_RULE_DESTINATION_DEVICE_ID .................................................. 110
-_FAX_RULE_DESTINATION_GROUP_NAME .............................................. 110
-FAX_PRINTER_INFOW ................................................................................ 111
-FAX_PERSONAL_PROFILEW ........................................................................ 112
-FAX_PORT_INFO_EXW ............................................................................... 118
-_FAX_PORT_INFO_EXW .............................................................................. 119
-FAX_RECEIPTS_CONFIGW .......................................................................... 122
-_FAX_RECEIPTS_CONFIGW ......................................................................... 122
-FAX_ROUTING_EXTENSION_INFO ............................................................... 125
-FAX_TAPI_LINECOUNTRY_ENTRYW .............................................................. 126
-FAX_TAPI_LINECOUNTRY_LISTW ................................................................. 128
-Fax-Specific Errors ..................................................................................... 129
-FAX_ENUM_MSG_FLAGS ............................................................................. 129
-FAX_ENUM_RULE_STATUS .......................................................................... 130
-FAX_ENUM_DEVICE_RECEIVE_MODE ........................................................... 130
-FAX_ENUM_SMTP_AUTH_OPTIONS .............................................................. 130
-FAX_ENUM_PROVIDER_STATUS .................................................................. 131
-FAX_ENUM_JOB_OP ................................................................................... 132
-FAX_ENUM_GROUP_STATUS ....................................................................... 132
-FAX_JOB_EXTENDED_STATUS_ENUM........................................................... 132
-FAX_TIME ................................................................................................. 134
-_FAX_TIME ............................................................................................... 134
-FAX_ENUM_EVENT_TYPE ............................................................................ 135
-FAX_ENUM_DEVICE_STATUS ...................................................................... 136
-FAX_ENUM_PRIORITY_TYPE ........................................................................ 136
-FAX_EVENT ............................................................................................... 137
-FAX_EVENT_EX ......................................................................................... 139
-FAX_EVENT_EX_JOB_INFO .................................................................... 141
-FAX_EVENT_EX_CONFIG_TYPE .............................................................. 142
-FAX_EVENT_EX_ACTIVITY_INFO ............................................................ 143
-FAX_EVENT_EX_NEW_CALL .................................................................. 143
-FAX_EVENT_EX_QUEUE_STATES ........................................................... 144
-FAX_EVENT_EX_DEVICE_STATUS .......................................................... 145
-FAX_EVENT_EX_1 ...................................................................................... 146
-FAX_EVENT_EX_1_JOB_INFO ................................................................ 148
-FAX_EVENT_EX_1_CONFIG_TYPE .......................................................... 149
-FAX_EVENT_EX_1_ACTIVITY_INFO ........................................................ 149
-FAX_EVENT_EX_1_NEW_CALL ............................................................... 150
-FAX_EVENT_EX_1_QUEUE_STATES ........................................................ 151
-FAX_EVENT_EX_1_DEVICE_STATUS ....................................................... 152
-FAX_EVENT_DEVICE_STATUS ..................................................................... 153
-FAX_EVENT_JOB_1 .................................................................................... 153
-FAX_ENUM_JOB_EVENT_TYPE ..................................................................... 155
-FAX_EVENT_NEW_CALL .............................................................................. 155
-FAX_ENUM_CONFIG_TYPE .......................................................................... 156
-FAX Data Types ......................................................................................... 157
-PRODUCT_SKU_TYPE ................................................................................. 158
-FAX_ENUM_DELIVERY_REPORT_TYPES ........................................................ 158
-FAX_ENUM_JOB_FIELDS ............................................................................. 159
-FAX_ENUM_COVERPAGE_FORMATS ............................................................. 161
-
-[MS-FAX] - v20240423
-Fax Server and Client Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 413
-
-FAX_SPECIFIC_ACCESS_RIGHTS_2 ............................................................. 161
-2.2.79
-FAX_EVENT_JOB ....................................................................................... 162
-2.2.80
-FAX_RULE_DESTINATION ........................................................................... 163
-2.2.81
-FAX_MAX_RPC_BUFFER .............................................................................. 164
-2.2.82
-2.2.83
-ALL_FAX_USER_ACCESS_RIGHTS ................................................................ 164
-2.2.84  Generic Outbound Routing Rule Constants .................................................... 164
-Protocol and Fax API Version Constants ........................................................ 164
-2.2.85
-2.2.86  MAX_FAX_STRING_LEN .............................................................................. 165
-2.2.87  Default Routing Methods............................................................................. 165
-FAX_TAPI_LOCATIONS ............................................................................... 166
-2.2.88
-FAX_TAPI_LOCATION_INFO ........................................................................ 167
-2.2.89
-FAX_SECURITY_DESCRIPTOR ...................................................................... 168
-2.2.90
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ................................................................................................... 170
-Fax Server Details ........................................................................................... 170
-Abstract Data Model ................................................................................... 170
-Timers ..................................................................................................... 178
-Initialization .............................................................................................. 178
-Message Processing Events and Sequencing Rules ......................................... 178
-Fax Server Interface ............................................................................. 178
-Sequencing Rules ........................................................................... 186
-FAX_Abort (Opnum 9) ..................................................................... 190
-FAX_AccessCheck (Opnum 25) ......................................................... 191
-FAX_AccessCheckEx2 (Opnum 101) .................................................. 194
-FAX_AddOutboundGroup (Opnum 51) ............................................... 196
-FAX_AddOutboundRule (Opnum 56) ................................................. 197
-FAX_CheckServerProtSeq (Opnum 26) .............................................. 198
-FAX_CheckValidFaxFolder (Opnum 86) .............................................. 199
-FAX_ClosePort (Opnum 3) ............................................................... 200
-FAX_ConnectFaxServer (Opnum 80) ................................................. 201
-FAX_ConnectionRefCount (Opnum 1) ................................................ 202
-FAX_CreateAccount (Opnum 93) ...................................................... 204
-FAX_DeleteAccount (Opnum 94) ...................................................... 206
-FAX_EnableRoutingMethod (Opnum 14) ............................................ 207
-FAX_EndCopy (Opnum 72) .............................................................. 208
-FAX_EndMessagesEnum (Opnum 64) ................................................ 209
-FAX_EndServerNotification (Opnum 75) ............................................ 209
-FAX_EnumAccounts (Opnum 95) ...................................................... 210
-FAX_EnumerateProviders (Opnum 45) .............................................. 211
-FAX_EnumGlobalRoutingInfo (Opnum 17) ......................................... 212
-FAX_EnumJobs (Opnum 4) .............................................................. 213
-FAX_EnumJobsEx (Opnum 28) ......................................................... 214
-FAX_EnumJobsEx2 (Opnum 88) ....................................................... 216
-FAX_EnumMessages (Opnum 65) ..................................................... 218
-FAX_EnumMessagesEx (Opnum 91) .................................................. 219
-FAX_EnumOutboundGroups (Opnum 54) ........................................... 221
-FAX_EnumOutboundRules (Opnum 59) ............................................. 222
-FAX_EnumPorts (Opnum 10) ........................................................... 223
-FAX_EnumPortsEx (Opnum 48) ........................................................ 223
-FAX_EnumRoutingExtensions (Opnum 78) ......................................... 224
-FAX_EnumRoutingMethods (Opnum 13) ............................................ 225
-FAX_GetAccountInfo (Opnum 96) ..................................................... 226
-FAX_GetActivityLoggingConfiguration (Opnum 43) ............................. 228
-FAX_GetArchiveConfiguration (Opnum 41) ........................................ 229
-FAX_GetConfigOption (Opnum 104) .................................................. 230
-FAX_GetConfiguration (Opnum 19) ................................................... 232
-FAX_GetCountryList (Opnum 30) ...................................................... 233
-FAX_GetDeviceStatus (Opnum 8) ..................................................... 234
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-3.1.4.1.6
-3.1.4.1.7
-3.1.4.1.8
-3.1.4.1.9
-3.1.4.1.10
-3.1.4.1.11
-3.1.4.1.12
-3.1.4.1.13
-3.1.4.1.14
-3.1.4.1.15
-3.1.4.1.16
-3.1.4.1.17
-3.1.4.1.18
-3.1.4.1.19
-3.1.4.1.20
-3.1.4.1.21
-3.1.4.1.22
-3.1.4.1.23
-3.1.4.1.24
-3.1.4.1.25
-3.1.4.1.26
-3.1.4.1.27
-3.1.4.1.28
-3.1.4.1.29
-3.1.4.1.30
-3.1.4.1.31
-3.1.4.1.32
-3.1.4.1.33
-3.1.4.1.34
-3.1.4.1.35
-3.1.4.1.36
-3.1.4.1.37
-3.1.4.1.38
-
-[MS-FAX] - v20240423
-Fax Server and Client Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 413
-
-3.1.4.1.39
-3.1.4.1.40
-3.1.4.1.41
-3.1.4.1.42
-3.1.4.1.43
-3.1.4.1.44
-3.1.4.1.45
-3.1.4.1.46
-3.1.4.1.47
-3.1.4.1.48
-3.1.4.1.49
-3.1.4.1.50
-3.1.4.1.51
-3.1.4.1.52
-3.1.4.1.53
-3.1.4.1.54
-3.1.4.1.55
-3.1.4.1.56
-3.1.4.1.57
-3.1.4.1.58
-3.1.4.1.59
-3.1.4.1.60
-3.1.4.1.61
-3.1.4.1.62
-3.1.4.1.63
-3.1.4.1.64
-3.1.4.1.65
-3.1.4.1.66
-3.1.4.1.67
-3.1.4.1.68
-3.1.4.1.69
-3.1.4.1.70
-3.1.4.1.71
-3.1.4.1.72
-3.1.4.1.73
-3.1.4.1.74
-3.1.4.1.75
-3.1.4.1.76
-3.1.4.1.77
-3.1.4.1.78
-3.1.4.1.79
-3.1.4.1.80
-3.1.4.1.81
-3.1.4.1.82
-3.1.4.1.83
-3.1.4.1.84
-3.1.4.1.85
-3.1.4.1.86
-3.1.4.1.87
-3.1.4.1.88
-3.1.4.1.89
-3.1.4.1.90
-3.1.4.1.91
-3.1.4.1.92
-3.1.4.1.93
-3.1.4.1.94
-3.1.4.1.95
-3.1.4.1.96
-
-FAX_GetExtensionData (Opnum 49) ................................................. 235
-FAX_GetGeneralConfiguration (Opnum 97) ........................................ 236
-FAX_GetJob (Opnum 5) ................................................................... 237
-FAX_GetJobEx (Opnum 29) ............................................................. 239
-FAX_GetJobEx2 (Opnum 87) ............................................................ 240
-FAX_GetLoggingCategories (Opnum 21) ............................................ 241
-FAX_GetMessage (Opnum 66) .......................................................... 242
-FAX_GetMessageEx (Opnum 89) ...................................................... 244
-FAX_GetOutboxConfiguration (Opnum 38) ......................................... 245
-FAX_GetPageData (Opnum 7) .......................................................... 246
-FAX_GetPersonalCoverPagesOption (Opnum 40) ................................ 247
-FAX_GetPersonalProfileInfo (Opnum 31) ........................................... 248
-FAX_GetPort (Opnum 11) ................................................................ 249
-FAX_GetPortEx (Opnum 46) ............................................................ 250
-FAX_GetQueueStates (Opnum 32) .................................................... 251
-FAX_GetReceiptsConfiguration (Opnum 34) ....................................... 252
-FAX_GetReceiptsOptions (Opnum 36) ............................................... 253
-FAX_GetRecipientsLimit (Opnum 84) ................................................ 254
-FAX_GetRoutingInfo (Opnum 15) ..................................................... 254
-FAX_GetSecurity (Opnum 23) .......................................................... 255
-FAX_GetSecurityEx (Opnum 81) ....................................................... 256
-FAX_GetSecurityEx2 (Opnum 99) ..................................................... 258
-FAX_GetServerActivity (Opnum 76) .................................................. 259
-FAX_GetServerSKU (Opnum 85) ...................................................... 260
-FAX_GetServicePrinters (Opnum 0) .................................................. 260
-FAX_GetVersion (Opnum 37) ........................................................... 261
-FAX_OpenPort (Opnum 2) ............................................................... 262
-FAX_ReadFile (Opnum 71) ............................................................... 263
-FAX_ReAssignMessage (Opnum 102) ................................................ 264
-FAX_RefreshArchive (Opnum 82) ..................................................... 266
-FAX_RegisterServiceProviderEx (Opnum 60) ...................................... 266
-FAX_RemoveMessage (Opnum 67) ................................................... 268
-FAX_RemoveOutboundGroup (Opnum 53) ......................................... 269
-FAX_RemoveOutboundRule (Opnum 57) ........................................... 270
-FAX_SendDocumentEx (Opnum 27) .................................................. 271
-FAX_SetActivityLoggingConfiguration (Opnum 44) .............................. 274
-FAX_SetArchiveConfiguration (Opnum 42) ......................................... 275
-FAX_SetConfiguration (Opnum 20) ................................................... 277
-FAX_SetConfigWizardUsed (Opnum 77)............................................. 278
-FAX_SetDeviceOrderInGroup (Opnum 55) ......................................... 279
-FAX_SetExtensionData (Opnum 50) .................................................. 280
-FAX_SetGeneralConfiguration (Opnum 98) ........................................ 281
-FAX_SetGlobalRoutingInfo (Opnum 18) ............................................. 283
-FAX_SetJob (Opnum 6) ................................................................... 284
-FAX_SetLoggingCategories (Opnum 22) ............................................ 285
-FAX_SetMessage (Opnum 103) ........................................................ 286
-FAX_SetOutboundGroup (Opnum 52) ................................................ 287
-FAX_SetOutboundRule (Opnum 58) .................................................. 288
-FAX_SetOutboxConfiguration (Opnum 39) ......................................... 290
-FAX_SetPort (Opnum 12) ................................................................ 291
-FAX_SetPortEx (Opnum 47) ............................................................. 292
-FAX_SetQueue (Opnum 33) ............................................................. 293
-FAX_SetReceiptsConfiguration (Opnum 35) ....................................... 294
-FAX_SetRecipientsLimit (Opnum 83) ................................................. 295
-FAX_SetRoutingInfo (Opnum 16) ..................................................... 296
-FAX_SetSecurity (Opnum 24) .......................................................... 297
-FAX_SetSecurityEx2 (Opnum 100) ................................................... 298
-FAX_StartCopyMessageFromServer (Opnum 69) ................................ 300
-
-[MS-FAX] - v20240423
-Fax Server and Client Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 413
-
-3.1.4.2
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-3.1.4.2.9
-3.1.4.2.10
-3.1.4.2.11
-3.1.4.2.12
-3.1.4.2.13
-3.1.4.2.14
-3.1.4.2.15
-3.1.4.2.16
-3.1.4.2.17
-3.1.4.2.18
-3.1.4.2.19
-3.1.4.2.20
-3.1.4.2.21
-3.1.4.2.22
-3.1.4.2.23
-3.1.4.2.24
-3.1.4.2.25
-3.1.4.2.26
-3.1.4.2.27
-3.1.4.2.28
-3.1.4.2.29
-3.1.4.2.30
-3.1.4.2.31
-3.1.4.2.32
-3.1.4.2.33
-3.1.4.2.34
-3.1.4.2.35
-
-3.1.4.1.97
-FAX_StartCopyToServer (Opnum 68) ................................................ 301
-3.1.4.1.98
-FAX_StartMessagesEnum (Opnum 63) .............................................. 302
-FAX_StartMessagesEnumEx (Opnum 90) ........................................... 303
-3.1.4.1.99
-3.1.4.1.100  FAX_StartServerNotification (Opnum 73)........................................... 305
-3.1.4.1.101  FAX_StartServerNotificationEx (Opnum 74) ....................................... 306
-3.1.4.1.102  FAX_StartServerNotificationEx2 (Opnum 92) ..................................... 308
-3.1.4.1.103  FAX_UnregisterRoutingExtension (Opnum 62) .................................... 311
-3.1.4.1.104  FAX_UnregisterServiceProviderEx (Opnum 61) ................................... 311
-3.1.4.1.105  FAX_WriteFile (Opnum 70) .............................................................. 312
-FaxObs Server Interface ....................................................................... 313
-Sequencing Rules ........................................................................... 315
-FaxObs_ConnectionRefCount (Opnum 0) ........................................... 317
-FaxObs_GetVersion (Opnum 1) ........................................................ 318
-FaxObs_GetInstallType (Opnum 2) ................................................... 319
-FaxObs_OpenPort (Opnum 3) .......................................................... 320
-FaxObs_ClosePort (Opnum 4) .......................................................... 321
-FaxObs_SendDocument (Opnum 5) .................................................. 321
-FaxObs_GetQueueFileName (Opnum 6)............................................. 323
-FaxObs_EnumJobs (Opnum 7) ......................................................... 324
-FaxObs_GetJob (Opnum 8) .............................................................. 325
-FaxObs_SetJob (Opnum 9) .............................................................. 326
-FaxObs_GetPageData (Opnum 10) ................................................... 327
-FaxObs_GetDeviceStatus (Opnum 11) .............................................. 328
-FaxObs_Abort (Opnum 12) .............................................................. 329
-FaxObs_EnumPorts (Opnum 13) ...................................................... 330
-FaxObs_GetPort (Opnum 14) ........................................................... 331
-FaxObs_SetPort (Opnum 15) ........................................................... 332
-FaxObs_EnumRoutingMethods (Opnum 16) ....................................... 332
-FaxObs_EnableRoutingMethod (Opnum 17) ....................................... 333
-FaxObs_GetRoutingInfo (Opnum 18) ................................................ 334
-FaxObs_SetRoutingInfo (Opnum 19) ................................................. 335
-FaxObs_EnumGlobalRoutingInfo (Opnum 20) .................................... 336
-FaxObs_SetGlobalRoutingInfo (Opnum 21) ........................................ 337
-FaxObs_GetConfiguration (Opnum 22) .............................................. 338
-FaxObs_SetConfiguration (Opnum 23) .............................................. 339
-FaxObs_GetLoggingCategories (Opnum 24) ....................................... 340
-FaxObs_SetLoggingCategories (Opnum 25) ....................................... 341
-FaxObs_GetTapiLocations (Opnum 26) .............................................. 342
-FaxObs_SetTapiLocations (Opnum 27) .............................................. 342
-FaxObs_GetMapiProfiles (Opnum 28) ................................................ 343
-FaxObs_StartClientServer (Opnum 29) ............................................. 344
-FaxObs_GetSecurityDescriptor (Opnum 31) ....................................... 345
-FaxObs_SetSecurityDescriptor (Opnum 32) ....................................... 346
-FaxObs_GetSecurityDescriptorCount (Opnum 33) ............................... 347
-FaxObs_AccessCheck (Opnum 34) .................................................... 347
-Timer Events ............................................................................................. 349
-Other Local Events ..................................................................................... 349
-Fax Client Details ............................................................................................ 349
-Abstract Data Model ................................................................................... 349
-Timers ..................................................................................................... 349
-Initialization .............................................................................................. 349
-Message Processing Events and Sequencing Rules ......................................... 349
-Sequencing Rules ................................................................................. 350
-FAX_ClientEventQueue (Opnum 1) ......................................................... 350
-FAX_ClientEventQueueEx (Opnum 3) ..................................................... 351
-FAX_CloseConnection (Opnum 2) ........................................................... 352
-FAX_OpenConnection (Opnum 0) ........................................................... 353
-Timer Events ............................................................................................. 354
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-
-3.2.5
-
-[MS-FAX] - v20240423
-Fax Server and Client Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 413
-
-3.2.6
-
-Other Local Events ..................................................................................... 354
-
-4  Protocol Examples ............................................................................................... 355
-Message Exchanges While Sending a Fax ........................................................... 355
-Message Exchanges During Querying Server Configuration ................................... 357
-Message Exchanges During Enumerating Fax Jobs............................................... 358
-Message Exchanges During Modifying Fax Jobs ................................................... 359
-Message Exchanges During Adding an Outbound Routing Rule .............................. 360
-Message Exchanges During Registering and Unregistering for Server Notifications... 361
-Message Exchanges During Granting Security Privileges to a User ......................... 362
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security ............................................................................................................... 364
-Security Considerations for Implementers .......................................................... 364
-Index of Security Parameters ........................................................................... 364
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 365
-Appendix A.1: faxdatatypes.idl ......................................................................... 365
-Appendix A.2: fax.idl ....................................................................................... 370
-Appendix A.3: faxobs.idl .................................................................................. 382
-Appendix A.4: faxclient.idl ................................................................................ 386
-
-6.1
-6.2
-6.3
-6.4
-
-7  Appendix B: Product Behavior ............................................................................. 387
-
-8  Change Tracking .................................................................................................. 407
-
-9  Index ................................................................................................................... 408
-
-[MS-FAX] - v20240423
-Fax Server and Client Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-10 / 413
-
-1  Introduction
+## 1 Introduction
 
 The Fax Server and Client Remote Protocol Specification defines a protocol that is referred to as the
 Fax Server and Client Remote Protocol. This is a client/server protocol based on remote procedure
@@ -1280,7 +910,7 @@ call (RPC) that is used to send faxes and manage the fax server and its queues.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1341,7 +971,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dynamic endpoint: A network-specific server address that is requested and assigned at run time.
+
+dynamic endpoint: A network-specific server address that is requested and assigned at run time.
 
 For more information, see [C706].
 
@@ -1419,7 +1050,8 @@ Release: April 23, 2024
 
 12 / 413
 
-Network Data Representation (NDR): A specification that defines a mapping from Interface
+
+Network Data Representation (NDR): A specification that defines a mapping from Interface
 Definition Language (IDL) data types onto octet streams. NDR also refers to the runtime
 environment that implements the mapping facilities (for example, data provided to NDR). For
 more information, see [MS-RPCE] and [C706] section 14.
@@ -1492,7 +1124,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-back to the server in method calls to assist in identifying the state. For more information, see
+
+back to the server in method calls to assist in identifying the state. For more information, see
 [C706].
 
 security descriptor: A data structure containing the security information associated with a
@@ -1566,7 +1199,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-user account: See fax user account.
+
+user account: See fax user account.
 
 UTC (Coordinated Universal Time): A high-precision atomic time standard that approximately
 tracks Universal Time (UT). It is the basis for legal, civil time all over the Earth. Time zones
@@ -1589,14 +1223,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1618,7 +1252,7 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-EMFPLUS] Microsoft Corporation, "Enhanced Metafile Format Plus Extensions".
 
@@ -1633,7 +1267,8 @@ Release: April 23, 2024
 
 15 / 413
 
-[MSDN-AUTHN] Microsoft Corporation, "Authentication-Service Constants",
+
+[MSDN-AUTHN] Microsoft Corporation, "Authentication-Service Constants",
 http://msdn.microsoft.com/en-us/library/aa373556.aspx
 
 [MSDN-CSIDL] Microsoft Corporation, "CSIDL", http://msdn.microsoft.com/en-
@@ -1675,13 +1310,13 @@ us/library/ms726017(VS.85).aspx
 [RFC3302] Parsons, G., and Rafferty, J., "Tag Image File Format (TIFF) - image/tiff MIME Sub-Type
 Registration", RFC 3302, September 2002, https://www.rfc-editor.org/info/rfc3302
 
-1.3  Overview
+### 1.3 Overview
 
 The Fax Server and Client Remote Protocol manages and sends faxes, manages the fax server and its
 queues, and allows fax clients to act as RPC servers so that they can accept status notifications from
 fax servers acting as clients.
 
-1.3.1  Fax Server Protocol
+#### 1.3.1 Fax Server Protocol
 
 The Fax Server and Client Remote Protocol can be used to submit and manage faxes. It can be further
 used to change configuration on the fax server, for example, setting the Inbound routing
@@ -1698,7 +1333,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This protocol can be used either locally, where both the client and server are on the same machine, or
+
+This protocol can be used either locally, where both the client and server are on the same machine, or
 remotely, where the client and server are on different machines.
 
 Fax server provides for custom Fax Service Providers (FSPs) via the following RPC calls:
@@ -1713,7 +1349,7 @@ FAX_UnRegisterServiceProviderEx
 
 For these RPC calls, the vendor needs to register or unregister the FSP by using a GUID.
 
-1.3.2  Fax Client Protocol
+#### 1.3.2 Fax Client Protocol
 
 The Fax Server and Client Remote Protocol is used for notifications. When activity occurs on the
 server—for example, when a new fax is received, a change occurs in the status of an outgoing fax, or
@@ -1724,7 +1360,7 @@ event data as described in section 3.2.
 This can be used either locally, where both the client and server are on the same machine, or
 remotely, where the client and server are on different machines.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Fax Server and Client Remote Protocol is dependent on the following protocols:
 
@@ -1740,7 +1376,7 @@ TCP/IP (for RPC over TCP/IP)
 
 No protocols are dependent on the Fax Server and Client Remote Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Fax Server and Client Remote Protocol defines RPC interfaces, and therefore has the prerequisites
 specified in [MS-RPCE] section 1.5 as being common to RPC interfaces.
@@ -1748,7 +1384,7 @@ specified in [MS-RPCE] section 1.5 as being common to RPC interfaces.
 It is assumed that the protocol client has obtained the name of a server that supports the Fax Server
 and Client Remote Protocol before this protocol is invoked.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Fax Server and Client Remote Protocol is applicable only for operations between a computer that
 functions as a client and a computer that functions as a fax server. The protocol is intended for
@@ -1759,7 +1395,7 @@ The protocol can be used in a broad set of scenarios ranging from a home-use sce
 computer makes its fax server available for use by other computers, to an enterprise-use scenario
 where a fax server provides faxing services for many computers.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This section describes the versioning and capability negotiation performed during this protocol.
 
@@ -1770,7 +1406,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Supported Transports: The Fax Server and Client Remote Protocol uses RPC over TCP only.
+
+  Supported Transports: The Fax Server and Client Remote Protocol uses RPC over TCP only.
 
 
 
@@ -1809,11 +1446,11 @@ Localization: The protocol does not contain locale-specific information.
 
   Capability Negotiation: No capability negotiation mechanism is built into the protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1866,9 +1503,10 @@ Release: April 23, 2024
 
 18 / 413
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Fax Server and Client Remote Protocol uses the transport RPC over SMB, as specified in [MS-
 RPCE] section 2.1.1.1.<1>
@@ -1880,7 +1518,7 @@ This protocol uses RPC dynamic endpoints, as specified in [C706].
 
 This protocol MUST use the UUIDs as specified in section 1.9.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The Fax Server and Client Remote Protocol MUST specify that the RPC runtime support only the
 Network Data Representation (NDR) 20 transfer syntax, as specified in [C706] part 3. NDR is a
@@ -1911,7 +1549,7 @@ diagrams describing the custom-marshaled representation of the respective data t
 
 This protocol specification uses curly-braced string GUIDs as specified in [MS-DTYP] section 2.3.4.3.
 
-2.2.1  Common Custom-Marshaling Rules
+#### 2.2.1 Common Custom-Marshaling Rules
 
 A custom-marshaled data type is represented as a single Fixed_Portion block followed by a single
 Variable_Data block. For each field in the Variable_Data block, a corresponding offset value is
@@ -1932,7 +1570,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1980,7 +1619,7 @@ The following subsections describe the arrangement of the Fixed_Portion and Vari
 used when marshaling a data type or array of data types in a single byte-array buffer passed as an
 argument to a method call.
 
-2.2.1.1  Single Data Type Instance
+##### 2.2.1.1 Single Data Type Instance
 
 In this case the custom-marshaled data contains one Fixed_Portion block followed by the
 Variable_Data block.
@@ -2017,7 +1656,8 @@ Release: April 23, 2024
 
 20 / 413
 
-2.2.1.2  Array of N Data Type Instances
+
+##### 2.2.1.2 Array of N Data Type Instances
 
 In this case, the custom-marshaled data contains N Fixed_Portion blocks (one for each structure)
 followed by the Variable_Data block containing data referenced by offsets from all N Fixed_Portion
@@ -2054,7 +1694,7 @@ Variable_Data (variable): A sequence of zero or more optional fields (or variabl
 
 data in this field is referenced by offset from the Fixed_Portion blocks.
 
-2.2.1.3  Marshaling Referenced Data Types
+##### 2.2.1.3 Marshaling Referenced Data Types
 
 This section describes an array of N data type instances, each referencing by offset another data type
 instance.
@@ -2096,7 +1736,8 @@ Release: April 23, 2024
 
 21 / 413
 
-Referenced_Fixed_Portion_M (variable)
+
+Referenced_Fixed_Portion_M (variable)
 
 ...
 
@@ -2121,7 +1762,7 @@ Variable_Data (variable): A sequence of zero or more optional fields (or variabl
 data in this field is referenced by offset from the Fixed_Portion blocks and the
 Referenced_Fixed_Portion blocks.
 
-2.2.2  FAX_ENUM_MESSAGE_FOLDER
+#### 2.2.2 FAX_ENUM_MESSAGE_FOLDER
 
 The FAX_ENUM_MESSAGE_FOLDER enumeration defines possible locations for a fax message.
 
@@ -2140,7 +1781,7 @@ FAX_MESSAGE_FOLDER_SENTITEMS: The outgoing fax transmission archive, defined in 
 
 FAX_MESSAGE_FOLDER_QUEUE: The Outgoing and Incoming fax queue, defined in section 3.1.1.
 
-2.2.3  FAX_ENUM_CONFIG_OPTION
+#### 2.2.3 FAX_ENUM_CONFIG_OPTION
 
 The FAX_ENUM_CONFIG_OPTION enumeration identifies the configuration option to be returned by
 the FAX_GetConfigOption (section 3.1.4.1.35) method.
@@ -2164,7 +1805,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FAX_CONFIG_OPTION_QUEUE_STATE: Corresponds to the state of the queue in Queue State.
+
+FAX_CONFIG_OPTION_QUEUE_STATE: Corresponds to the state of the queue in Queue State.
 
 FAX_CONFIG_OPTION_ALLOWED_RECEIPTS: Corresponds to the type of receipts the server is
 
@@ -2174,7 +1816,7 @@ FAX_CONFIG_OPTION_INCOMING_FAXES_PUBLIC: Corresponds to the viewing permissions 
 
 incoming faxes.
 
-2.2.4  FAX_ENUM_PERSONAL_PROF_TYPES
+#### 2.2.4 FAX_ENUM_PERSONAL_PROF_TYPES
 
 The FAX_ENUM_PERSONAL_PROF_TYPES enumeration defines values to indicate personal
 profile types.
@@ -2189,7 +1831,7 @@ RECIPIENT_PERSONAL_PROF: Indicates a recipient profile.
 
 SENDER_PERSONAL_PROF: Indicates a sender profile.
 
-2.2.5  FAX_JOB_ENTRY
+#### 2.2.5 FAX_JOB_ENTRY
 
 The FAX_JOB_ENTRY structure describes one fax job. The structure includes information about the
 job type and status, the recipient's and the sender's personal profiles (section 3.1.1), scheduling
@@ -2234,7 +1876,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-JobId: A DWORD that indicates a unique number that identifies the fax jobs of interest. This is the
+
+JobId: A DWORD that indicates a unique number that identifies the fax jobs of interest. This is the
 
 same kind of job identifier number as the JobId parameter for the FAX_SetJob (section
 3.1.4.1.82) function.
@@ -2347,7 +1990,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -2463,7 +2107,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecipientName: A null-terminated character string that contains the name of the recipient of the fax,
+
+RecipientName: A null-terminated character string that contains the name of the recipient of the fax,
 
 if known, or a NULL pointer otherwise. This information comes from the recipient's personal
 profile.
@@ -2536,7 +2181,7 @@ DocumentName: A null-terminated character string that contains the document name
 
 NULL pointer otherwise.
 
-2.2.6  _FAX_JOB_ENTRY
+#### 2.2.6 _FAX_JOB_ENTRY
 
 The _FAX_JOB_ENTRY structure is the custom-marshaled variant of the FAX_JOB_ENTRY (section
 2.2.5) structure and describes one fax job. The structure includes information about the job type and
@@ -2553,7 +2198,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An application can call the FAX_GetJob (section 3.1.4.1.41) method to retrieve information about a
+
+An application can call the FAX_GetJob (section 3.1.4.1.41) method to retrieve information about a
 specified job at the server, information which is returned in a _FAX_JOB_ENTRY structure.
 
 An application can call the FAX_EnumJobs function (section 3.1.4.1.21) to enumerate all queued
@@ -2630,7 +2276,8 @@ Release: April 23, 2024
 
 27 / 413
 
-TsidOffset
+
+TsidOffset
 
 SenderNameOffset
 
@@ -2708,7 +2355,8 @@ Release: April 23, 2024
 
 28 / 413
 
-QueueStatus (4 bytes): A DWORD variable containing a set of bit flags indicating the job status
+
+QueueStatus (4 bytes): A DWORD variable containing a set of bit flags indicating the job status
 of the fax job identified by the JobId field. This field MUST be a bitwise OR combination of one
 or more of the Job Status values listed in section 3.1.1.
 
@@ -2831,7 +2479,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -2934,7 +2583,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -3017,7 +2667,8 @@ Release: April 23, 2024
 
 31 / 413
 
-SenderDept (variable)
+
+SenderDept (variable)
 
 ...
 
@@ -3071,7 +2722,7 @@ DocumentName (variable): A null-terminated character string that contains the do
 
 name.
 
-2.2.7  FAX_PORT_INFO
+#### 2.2.7 FAX_PORT_INFO
 
 The FAX_PORT_INFO structure describes one fax port. The data includes, among other items, a
 device identifier, the port's name and current status, and subscriber identifiers.
@@ -3089,7 +2740,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct {
+
+ typedef struct {
    DWORD SizeOfStruct;
    DWORD DeviceId;
    DWORD State;
@@ -3197,7 +2849,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -3314,7 +2967,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(section 3.1.4.1.28) function. When the fax server initiates an outgoing fax transmission, it
+
+(section 3.1.4.1.28) function. When the fax server initiates an outgoing fax transmission, it
 attempts to select the device with the highest priority and FPF_SEND port capability. If that device
 is not available, the server selects the next available device that follows in rank order, and so on.
 The value of the Priority member has no effect on incoming transmissions.
@@ -3332,7 +2986,7 @@ Csid: A pointer to a constant null-terminated character string that holds the ca
 (CSID). This identifier is usually a telephone number. Only English letters, numeric symbols, and
 punctuation marks (ASCII range 0x20 to 0x7F) can be used in a CSID.
 
-2.2.8  _FAX_PORT_INFO
+#### 2.2.8 _FAX_PORT_INFO
 
 The _FAX_PORT_INFO data structure is the custom-marshaled variant of the FAX_PORT_INFO
 (section 2.2.7) data structure. This structure describes one fax port. The data includes, among other
@@ -3396,7 +3050,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DeviceId
+
+DeviceId
 
 State
 
@@ -3466,7 +3121,8 @@ Release: April 23, 2024
 
 36 / 413
 
-DeviceName (variable): A null-terminated string that holds the name of the fax device of
+
+DeviceName (variable): A null-terminated string that holds the name of the fax device of
 
 interest.
 
@@ -3478,7 +3134,7 @@ Csid (variable): A null-terminated string that holds the called subscriber ident
 
 same description as for the Csid field of FAX_PORT_INFO.
 
-2.2.9  FAX_ROUTING_METHOD
+#### 2.2.9 FAX_ROUTING_METHOD
 
 The FAX_ROUTING_METHOD structure contains information about one fax routing method as it
 pertains to one fax device. This information describes one fax routing method (section 3.1.1). The
@@ -3546,7 +3202,8 @@ Release: April 23, 2024
 
 37 / 413
 
-DeviceNameOffset
+
+DeviceNameOffset
 
 GuidOffset
 
@@ -3623,7 +3280,8 @@ Release: April 23, 2024
 
 38 / 413
 
-FunctionName (variable)
+
+FunctionName (variable)
 
 ...
 
@@ -3660,7 +3318,7 @@ ExtensionFriendlyName (variable): A null-terminated character string that holds 
 
 friendly name to display for the fax routing extension binary.
 
-2.2.10 FAX_DEVICE_STATUS
+#### 2.2.10 FAX_DEVICE_STATUS
 
 The FAX_DEVICE_STATUS structure contains information about the current status of a fax device.
 In addition to the status, the structure includes data about whether the device is currently sending or
@@ -3700,7 +3358,8 @@ Release: April 23, 2024
 
 39 / 413
 
-...
+
+...
 
 Variable_Data (variable)
 
@@ -3764,7 +3423,8 @@ Release: April 23, 2024
 
 40 / 413
 
-TotalPages
+
+TotalPages
 
 TsidOffset
 
@@ -3850,7 +3510,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-being transmitted at the device, including the size of the cover page and the size of the fax
+
+being transmitted at the device, including the size of the cover page and the size of the fax
 body, if present. Otherwise, this field SHOULD be zero.
 
 StartTime (8 bytes): A FILETIME ([MS-DTYP] section 2.3.3) structure that specifies the starting
@@ -3973,7 +3634,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x20008000
 
@@ -4067,7 +3729,8 @@ Release: April 23, 2024
 
 43 / 413
 
-PhoneNumber (variable)
+
+PhoneNumber (variable)
 
 ...
 
@@ -4136,7 +3799,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-StatusString (variable): A null-terminated character string that holds a textual description of
+
+StatusString (variable): A null-terminated character string that holds a textual description of
 
 the fax device status.
 
@@ -4153,7 +3817,7 @@ structure is returned by the FaxObs_GetDeviceStatus (section 3.1.4.2.13) method,
 account is the client's Fax User Account that called the FaxObs_SendDocument (section
 3.1.4.2.7) method.
 
-2.2.11 FAX_LOG_CATEGORY
+#### 2.2.11 FAX_LOG_CATEGORY
 
 The FAX_LOG_CATEGORY structure describes one logging category. Each logging category is
 identified by a numeric identifier and is described by a user-friendly name. The fax server associates
@@ -4217,7 +3881,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Level
+
+Level
 
 NameOffset (4 bytes): Offset to the Name field in the Variable_Data portion of the structure
 
@@ -4322,7 +3987,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.12 FAX_COVERPAGE_INFO_EXW
+
+#### 2.2.12 FAX_COVERPAGE_INFO_EXW
 
 The FAX_COVERPAGE_INFO_EXW structure is used as an argument for the
 FAX_SendDocumentEx (section 3.1.4.1.73) call that specifies information about the fax cover page
@@ -4375,7 +4041,7 @@ lpwstrSubject: A pointer to a null-terminated character string that holds the co
 
 field.
 
-2.2.13 FAX_JOB_PARAMW
+#### 2.2.13 FAX_JOB_PARAMW
 
 The FAX_JOB_PARAMW structure contains information about a fax job, including information about
 the personal profiles (section 3.1.1) for the sender and the recipient of the fax. This structure is
@@ -4395,7 +4061,8 @@ Release: April 23, 2024
 
 47 / 413
 
-   [string] LPCWSTR SenderCompany;
+
+   [string] LPCWSTR SenderCompany;
    [string] LPCWSTR SenderDept;
    [string] LPCWSTR BillingCode;
    DWORD ScheduleAction;
@@ -4484,7 +4151,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The DRT_ATTACH_FAX value can be combined with the DRT_EMAIL value in one value by using an
+
+The DRT_ATTACH_FAX value can be combined with the DRT_EMAIL value in one value by using an
 OR operation.
 
 DeliveryReportAddress: A null-terminated character string. Contains the email address for the
@@ -4549,7 +4217,7 @@ returned by the FaxObs_SendDocument call that started the broadcast sequence.
 
 For more information about this member, see the FaxObs_SendDocument method.
 
-2.2.14 FAX_JOB_PARAM_EXW
+#### 2.2.14 FAX_JOB_PARAM_EXW
 
 The FAX_JOB_PARAM_EXW structure defines information about the new job to create when sending
 a fax message.
@@ -4564,7 +4232,8 @@ Release: April 23, 2024
 
 49 / 413
 
-   DWORD dwScheduleAction;
+
+   DWORD dwScheduleAction;
    SYSTEMTIME tmSchedule;
    DWORD dwReceiptDeliveryType;
    [string] LPWSTR lpwstrReceiptDeliveryAddress;
@@ -4647,7 +4316,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-hCall: Reserved.
+
+hCall: Reserved.
 
 Note  This value MUST be set to NULL.
 
@@ -4661,7 +4331,7 @@ dwPageCount: A DWORD value that holds the number of pages in the fax document po
 the lpcwstrFileName parameter of the FAX_SendDocumentEx (section 3.1.4.1.73) method. This
 value MUST be used only for fax documents in TIFF, which is the only supported format.
 
-2.2.15 FAX_MESSAGE_PROPS
+#### 2.2.15 FAX_MESSAGE_PROPS
 
 The FAX_MESSAGE_PROPS structure defines the properties of a fax message that can be set.
 
@@ -4700,7 +4370,7 @@ Determines whether this fax message is marked as read. If this bit
 is set, the message is marked as read. If this bit is reset, the
 message is marked as unread.
 
-2.2.16 FAX_OUTBOX_CONFIG
+#### 2.2.16 FAX_OUTBOX_CONFIG
 
 The FAX_OUTBOX_CONFIG structure defines information about outbox settings of the fax server.
 This data structure is used as a parameter to the FAX_SetOutboxConfiguration (section 3.1.4.1.87)
@@ -4725,7 +4395,8 @@ Release: April 23, 2024
 
 51 / 413
 
-  *PFAX_OUTBOX_CONFIG;
+
+  *PFAX_OUTBOX_CONFIG;
 
 dwSizeOfStruct: A DWORD ([MS-DTYP] section 2.2.9) value that holds the total size of the
 
@@ -4768,7 +4439,7 @@ outgoing fax transmissions. If this member is TRUE, the fax server SHOULD genera
 contains transmission-related information such as the transmitting subscriber identifier, date,
 time, and page count.
 
-2.2.17 _FAX_OUTBOX_CONFIG
+#### 2.2.17 _FAX_OUTBOX_CONFIG
 
 The _FAX_OUTBOX_CONFIG data type is the custom-marshaled variant of the
 FAX_OUTBOX_CONFIG (section 2.2.16) data structure. The _FAX_OUTBOX_CONFIG data type is
@@ -4803,7 +4474,8 @@ Release: April 23, 2024
 
 52 / 413
 
-Fixed_Portion (36 bytes):
+
+Fixed_Portion (36 bytes):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -4882,10 +4554,11 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-generates a brand that contains transmission-related information such as the transmitting
+
+generates a brand that contains transmission-related information such as the transmitting
 subscriber identifier, date, time, and page count.
 
-2.2.18 FAX_REASSIGN_INFO
+#### 2.2.18 FAX_REASSIGN_INFO
 
 The FAX_REASSIGN_INFO structure contains information about the reassignment of a fax.
 
@@ -4918,7 +4591,7 @@ bHasCoverPage: Boolean value that indicates whether the fax includes a cover pag
 
 is TRUE, the fax SHOULD include a cover page.
 
-2.2.19 FAX_SERVER_ACTIVITY
+#### 2.2.19 FAX_SERVER_ACTIVITY
 
 The FAX_SERVER_ACTIVITY structure defines information about the server's fax queue activity
 and the events reported by the fax server. This structure is used as an argument for
@@ -4953,7 +4626,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwRoutingMessages member used to count this job when the routing restarts. If this value is
+
+dwRoutingMessages member used to count this job when the routing restarts. If this value is
 nonzero, stopping the server MAY result in the loss of incoming messages.
 
 dwRoutingMessages: A DWORD that indicates the number of incoming messages being rerouted
@@ -4985,7 +4659,7 @@ dwInformationEvents: A DWORD that indicates the number of information entries ad
 
 system event log since the last time the fax server was started.
 
-2.2.20 _FAX_SERVER_ACTIVITY
+#### 2.2.20 _FAX_SERVER_ACTIVITY
 
 The _FAX_SERVER_ACTIVITY data type is the custom-marshaled variant of the
 FAX_SERVER_ACTIVITY data structure described in section 2.2.19. The _FAX_SERVER_ACTIVITY
@@ -5039,7 +4713,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwRoutingMessages
+
+dwRoutingMessages
 
 dwOutgoingMessages
 
@@ -5083,7 +4758,7 @@ dwWarningEvents (4 bytes): See the dwWarningEvents field for FAX_SERVER_ACTIVITY
 
 dwInformationEvents (4 bytes): See the dwInformation field for FAX_SERVER_ACTIVITY.
 
-2.2.21 FAX_SPECIFIC_ACCESS_RIGHTS
+#### 2.2.21 FAX_SPECIFIC_ACCESS_RIGHTS
 
 The FAX_SPECIFIC_ACCESS_RIGHTS enumeration defines specific access rights, which provide
 security when users query and manage fax jobs, fax devices, and fax documents.
@@ -5111,7 +4786,8 @@ Release: April 23, 2024
 
 56 / 413
 
-   FAX_GENERIC_WRITE = FAX_ACCESS_MANAGE_JOBS | FAX_ACCESS_MANAGE_CONFIG |
+
+   FAX_GENERIC_WRITE = FAX_ACCESS_MANAGE_JOBS | FAX_ACCESS_MANAGE_CONFIG |
 FAX_ACCESS_MANAGE_IN_ARCHIVE | FAX_ACCESS_MANAGE_OUT_ARCHIVE,
    FAX_GENERIC_EXECUTE = FAX_ACCESS_SUBMIT,
    FAX_GENERIC_ALL = FAX_ACCESS_SUBMIT | FAX_ACCESS_SUBMIT_NORMAL | FAX_ACCESS_SUBMIT_HIGH |
@@ -5168,7 +4844,7 @@ FAX_GENERIC_EXECUTE: Access rights needed to execute faxes.
 
 FAX_GENERIC_ALL: All access rights.
 
-2.2.22 FAX_VERSION
+#### 2.2.22 FAX_VERSION
 
 The FAX_VERSION structure contains information about the version of the fax server components.
 This structure is used by FAX_GetVersion (section 3.1.4.1.64).
@@ -5189,7 +4865,8 @@ Release: April 23, 2024
 
 57 / 413
 
- } FAX_VERSION,
+
+ } FAX_VERSION,
   *PFAX_VERSION;
 
 dwSizeOfStruct: A DWORD ([MS-DTYP] section 2.2.9) value that holds the total size of the
@@ -5234,7 +4911,7 @@ FAX_VER_FLAG_EVALUATION
 Indicates that the server component was built for evaluation
 purposes. Reserved for future use.
 
-2.2.23 _FAX_VERSION
+#### 2.2.23 _FAX_VERSION
 
 The _FAX_VERSION structure is the custom-marshaled variant of the FAX_VERSION (section
 2.2.22) structure. The _FAX_VERSION contains the same information about the version of the fax
@@ -5271,7 +4948,8 @@ Release: April 23, 2024
 
 58 / 413
 
-Fixed_Portion (20 bytes):
+
+Fixed_Portion (20 bytes):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -5314,7 +4992,7 @@ wMinorBuildNumber (2 bytes): See the wMinorBuildNumber field for FAX_VERSION.
 
 dwFlags (4 bytes): See the dwFlags field for FAX_VERSION.
 
-2.2.24 FAX_ACCOUNT_INFO_0
+#### 2.2.24 FAX_ACCOUNT_INFO_0
 
 A FAX_ACCOUNT_INFO_0 structure describes one Fax User Account. An array of the
 FAX_ACCOUNT_INFO_0 data type can be passed as an out parameter (as a byte array) in a
@@ -5353,7 +5031,8 @@ Release: April 23, 2024
 
 59 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5411,7 +5090,7 @@ name.
 
 For a remote (not local) user.
 
-2.2.25 FAX_ACTIVITY_LOGGING_CONFIGW
+#### 2.2.25 FAX_ACTIVITY_LOGGING_CONFIGW
 
 The FAX_ACTIVITY_LOGGING_CONFIGW structure is used as an input parameter for the
 FAX_SetActivityLoggingConfiguration (section 3.1.4.1.74) call.
@@ -5441,11 +5120,12 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpwstrDBPath: A pointer to a null-terminated character string that holds the directory on the server
+
+lpwstrDBPath: A pointer to a null-terminated character string that holds the directory on the server
 
 where the activity logging database files reside. <5>
 
-2.2.26 _FAX_ACTIVITY_LOGGING_CONFIGW
+#### 2.2.26 _FAX_ACTIVITY_LOGGING_CONFIGW
 
 The _FAX_ACTIVITY_LOGGING_CONFIGW structure is used as an output parameter for the
 FAX_GetActivityLoggingConfiguration (section 3.1.4.1.33) method call.
@@ -5522,7 +5202,8 @@ Release: April 23, 2024
 
 61 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5541,7 +5222,7 @@ lpwstrDBPath (variable): A null-terminated character string that holds the direc
 
 server where the activity logging database files reside.
 
-2.2.27 FAX_ARCHIVE_CONFIGW
+#### 2.2.27 FAX_ARCHIVE_CONFIGW
 
 The FAX_ARCHIVE_CONFIGW data type can be passed as an out parameter (as a byte array) in a
 FAX_GetArchiveConfiguration (section 3.1.4.1.34) call and as an in parameter for
@@ -5607,7 +5288,8 @@ Release: April 23, 2024
 
 62 / 413
 
-Padding
+
+Padding
 
 dwlArchiveSize
 
@@ -5668,7 +5350,7 @@ lpwstrFolder (variable)
 
 lpwstrFolder (variable): A null-terminated character string that holds the archive folder name.
 
-2.2.28 FAX_CONFIGURATIONW
+#### 2.2.28 FAX_CONFIGURATIONW
 
 The FAX_CONFIGURATIONW structure is used as an input parameter for the
 FAX_SetConfiguration (section 3.1.4.1.76) and FaxObs_SetConfiguration (section 3.1.4.2.25)
@@ -5688,7 +5370,8 @@ Release: April 23, 2024
 
 63 / 413
 
-   DWORD DirtyDays;
+
+   DWORD DirtyDays;
    BOOL Branding;
    BOOL UseDeviceTsid;
    BOOL ServerCp;
@@ -5764,7 +5447,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ArchiveDirectory: A pointer to a constant, null-terminated character string that holds the fully
+
+ArchiveDirectory: A pointer to a constant, null-terminated character string that holds the fully
 
 qualified path of the Fax Archive Folder fax server configuration setting. The path can be a UNC
 path or a path that begins with a drive letter. The fax server ignores this member if the
@@ -5778,7 +5462,7 @@ ProfileName: Reserved (not used) when this structure is used for FAX_SetConfigur
 When used for FaxObs_SetConfiguration (section 3.1.4.2.25), this member is a null-terminated
 character string containing the profile name fax server configuration setting.
 
-2.2.29 _FAX_CONFIGURATIONW
+#### 2.2.29 _FAX_CONFIGURATIONW
 
 The _FAX_CONFIGURATIONW data type is the custom-marshaled variant of the
 FAX_CONFIGURATIONW (section 2.2.28) structure. This data type is used as an output parameter
@@ -5843,7 +5527,8 @@ Release: April 23, 2024
 
 65 / 413
 
-UseDeviceTsid
+
+UseDeviceTsid
 
 ServerCp
 
@@ -5911,7 +5596,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Fixed_Portion_of_StopCheapTime (4 bytes): The Fixed_Portion block of a _FAX_TIME that
+
+Fixed_Portion_of_StopCheapTime (4 bytes): The Fixed_Portion block of a _FAX_TIME that
 indicates the hour and minute values of the stop cheap time fax server configuration setting.
 
 ArchiveOutgoingFaxes (4 bytes): A Boolean flag that specifies whether the fax server archives
@@ -5958,7 +5644,7 @@ FAX_GetConfiguration (section 3.1.4.1.36).
 When used for FaxObs_GetConfiguration (section 3.1.4.2.24), this member is a null-terminated
 character string containing the profile name fax server configuration setting.
 
-2.2.30 FAX_DEVICE_PROVIDER_INFO
+#### 2.2.30 FAX_DEVICE_PROVIDER_INFO
 
 An array of the FAX_DEVICE_PROVIDER_INFO data type can be passed as an out parameter (as a
 byte array) in a FAX_EnumerateProviders (section 3.1.4.1.19) call.
@@ -5992,7 +5678,8 @@ Release: April 23, 2024
 
 67 / 413
 
-Variable_Data (variable)
+
+Variable_Data (variable)
 
 ...
 
@@ -6068,7 +5755,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Status (4 bytes): A FAX_ENUM_PROVIDER_STATUS (section 2.2.57) enumeration which
+
+Status (4 bytes): A FAX_ENUM_PROVIDER_STATUS (section 2.2.57) enumeration which
 
 holds the status of the FSP.
 
@@ -6119,7 +5807,7 @@ telephony service provider associated with the devices for the FSP.
 
 lpcwstrGUID (variable): A null-terminated string which holds the GUID for the FSP.
 
-2.2.31 FAX_GENERAL_CONFIG
+#### 2.2.31 FAX_GENERAL_CONFIG
 
 The FAX_GENERAL_CONFIG data type can be passed as a byte–array parameter to
 FAX_SetGeneralConfiguration (section 3.1.4.1.80) and FAX_GetGeneralConfiguration (section
@@ -6150,7 +5838,8 @@ Release: April 23, 2024
 
 69 / 413
 
-...
+
+...
 
 ...
 
@@ -6214,7 +5903,8 @@ Release: April 23, 2024
 
 70 / 413
 
-dwQueueState
+
+dwQueueState
 
 bAutoCreateAccountOnConnect
 
@@ -6287,7 +5977,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bUseDeviceTSID (4 bytes): A Boolean value that specifies the current value of the use
+
+bUseDeviceTSID (4 bytes): A Boolean value that specifies the current value of the use
 
 device's TSID fax server configuration setting (section 3.1.1).
 
@@ -6378,12 +6069,13 @@ Release: April 23, 2024
 
 72 / 413
 
-lpcwstrArchiveLocation (variable): A null-terminated character string that indicates the
+
+lpcwstrArchiveLocation (variable): A null-terminated character string that indicates the
 
 archives folder location on the fax server file system. The portion preceding the terminating
 null character of this string MUST NOT end in a backslash (\) character.
 
-2.2.32 FAX_GLOBAL_ROUTING_INFOW
+#### 2.2.32 FAX_GLOBAL_ROUTING_INFOW
 
 An array of the FAX_GLOBAL_ROUTING_INFOW structure is used as an input parameter to
 FAX_SetGlobalRoutingInfo (section 3.1.4.1.81) and FaxObs_SetGlobalRoutingInfo (section
@@ -6432,7 +6124,7 @@ ExtensionFriendlyName: A pointer to a constant, null-terminated character string
 user-friendly name to display for the fax routing extensions that implement the fax routing
 method.
 
-2.2.33 _FAX_GLOBAL_ROUTING_INFOW
+#### 2.2.33 _FAX_GLOBAL_ROUTING_INFOW
 
 The _FAX_GLOBAL_ROUTING_INFOW structure is the custom-marshaled variant of the
 FAX_GLOBAL_ROUTING_INFOW data structure described in (section 2.2.32). A byte array of this
@@ -6449,7 +6141,8 @@ Release: April 23, 2024
 
 73 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6532,7 +6225,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Variable_Data (variable):
+
+Variable_Data (variable):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -6585,7 +6279,7 @@ ExtensionFriendlyName (variable): A null-terminated character string that holds 
 friendly name to display for the fax routing extensions that implements the fax routing
 method.
 
-2.2.34 FAX_JOB_ENTRY_EX_1
+#### 2.2.34 FAX_JOB_ENTRY_EX_1
 
 An array of the FAX_JOB_ENTRY_EX_1 data type can be passed as an out parameter (as a byte
 array) in the FAX_EnumJobsEx2 (section 3.1.4.1.23) call. The data type can also be passed as an
@@ -6606,7 +6300,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6679,7 +6374,8 @@ Release: April 23, 2024
 
 76 / 413
 
-...
+
+...
 
 ...
 
@@ -6750,7 +6446,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Priority (4 bytes): A FAX_ENUM_PRIORITY_TYPE (section 2.2.65) value that describes the
+
+Priority (4 bytes): A FAX_ENUM_PRIORITY_TYPE (section 2.2.65) value that describes the
 
 priority of the fax transmission. Used for outgoing faxes only.
 
@@ -6842,7 +6539,8 @@ Release: April 23, 2024
 
 78 / 413
 
-...
+
+...
 
 lpcwstrSenderUserName (variable)
 
@@ -6910,7 +6608,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwDeliveryReportType field is equal to DRT_EMAIL, the string is the address to which the
+
+dwDeliveryReportType field is equal to DRT_EMAIL, the string is the address to which the
 delivery receipt (DR) or non-delivery receipt (NDR) is sent. If the dwDeliveryReportType
 field is not equal to DRT_EMAIL, this string MUST NOT be present (its pointer MUST be NULL).
 
@@ -6922,7 +6621,7 @@ placed as specified in section 2.2.1 in the Variable_Data block for the structur
 described in section 2.2.1.3, along with the Variable_Data of pStatus fields for the other
 FAX_JOB_ENTRY_EX_1 structures in the array.
 
-2.2.35 FAX_JOB_ENTRY_EXW
+#### 2.2.35 FAX_JOB_ENTRY_EXW
 
 An array of the FAX_JOB_ENTRY_EXW data type can be passed as an out parameter (as a byte
 array) in the FAX_EnumJobsEx (section 3.1.4.1.22) calls. The data type can also be passed as an
@@ -6988,7 +6687,8 @@ Release: April 23, 2024
 
 80 / 413
 
-...
+
+...
 
 lpcwstrRecipientNumberOffset
 
@@ -7053,7 +6753,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpcwstrRecipientNameOffset (4 bytes): Offset to the lpcwstrRecipientName field in the
+
+lpcwstrRecipientNameOffset (4 bytes): Offset to the lpcwstrRecipientName field in the
 
 Variable_Data portion of the structure.
 
@@ -7135,7 +6836,8 @@ Release: April 23, 2024
 
 82 / 413
 
-lpcwstrRecipientName (variable)
+
+lpcwstrRecipientName (variable)
 
 ...
 
@@ -7203,7 +6905,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.36 FAX_JOB_STATUS
+
+#### 2.2.36 FAX_JOB_STATUS
 
 The FAX_JOB_STATUS data type can be passed as a pointer reference inside
 FAX_JOB_ENTRY_EXW (section 2.2.35) or FAX_JOB_ENTRY_EX_1 (section 2.2.34).
@@ -7278,7 +6981,8 @@ Release: April 23, 2024
 
 84 / 413
 
-tmScheduleTime (16 bytes)
+
+tmScheduleTime (16 bytes)
 
 ...
 
@@ -7347,7 +7051,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000002
 
@@ -7474,7 +7179,8 @@ because dialing restrictions exist (some countries and regions
 
 86 / 413
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -7573,7 +7279,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwRetries (4 bytes): For outgoing faxes only. This field is a DWORD that holds the number of
+
+dwRetries (4 bytes): For outgoing faxes only. This field is a DWORD that holds the number of
 
 failed transmission retries counted for the current fax job.
 
@@ -7649,7 +7356,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpcwstrDeviceName (variable): A null-terminated character string that holds the name of the
+
+lpcwstrDeviceName (variable): A null-terminated character string that holds the name of the
 
 device used to receive or send the fax message.
 
@@ -7661,7 +7369,7 @@ lpcwstrRoutingInfo (variable): For incoming faxes only. A null-terminated charac
 identifies the routing string for the fax. This string can include the telephone number of the
 called device.
 
-2.2.37 FAX_MESSAGE_1
+#### 2.2.37 FAX_MESSAGE_1
 
 An array of the FAX_MESSAGE_1 data type can be passed as an out parameter (as a byte array) in
 the FAX_EnumMessagesEx (section 3.1.4.1.25) call. This data type can also be passed as an out
@@ -7727,7 +7435,8 @@ Release: April 23, 2024
 
 89 / 413
 
-dwQueueStatus
+
+dwQueueStatus
 
 dwExtendedStatus
 
@@ -7784,7 +7493,8 @@ Release: April 23, 2024
 
 90 / 413
 
-tmTransmissionEndTime (16 bytes)
+
+tmTransmissionEndTime (16 bytes)
 
 ...
 
@@ -7854,7 +7564,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 0x00000004
 
@@ -7974,7 +7685,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -8065,7 +7777,8 @@ Release: April 23, 2024
 
 93 / 413
 
-tmSubmissionTime (16 bytes): A SYSTEMTIME that specifies the date and time the fax
+
+tmSubmissionTime (16 bytes): A SYSTEMTIME that specifies the date and time the fax
 
 message was submitted for sending. The time specified is expressed in UTC. Used for outgoing
 faxes only. This field is valid only if the FAX_JOB_FIELD_SUBMISSION_TIME bit is set in
@@ -8157,7 +7870,8 @@ Release: April 23, 2024
 
 94 / 413
 
-bServerReceiveFolder (4 bytes): Boolean value that specifies whether the fax has been
+
+bServerReceiveFolder (4 bytes): Boolean value that specifies whether the fax has been
 
 assigned or SHOULD be sent to the server receive folder. If this value is TRUE, the fax is sent
 to the server receive folder. If it is FALSE, the fax is sent to the appropriate account.
@@ -8232,7 +7946,8 @@ Release: April 23, 2024
 
 95 / 413
 
-...
+
+...
 
 lpcwstrDeviceName (variable)
 
@@ -8298,7 +8013,8 @@ Release: April 23, 2024
 
 96 / 413
 
-lpcwstrSenderUserName (variable): Null-terminated character string that specifies the name
+
+lpcwstrSenderUserName (variable): Null-terminated character string that specifies the name
 of the fax transmission sender of an outgoing fax job. This information is stored with the fax
 message as part of the sender's personal profile.
 
@@ -8329,7 +8045,7 @@ lpcwstrReceiptAddress (variable): Null-terminated character string that specifie
 
 address to which the fax service sends the delivery receipt when the job is finished.
 
-2.2.38 FAX_MESSAGEW
+#### 2.2.38 FAX_MESSAGEW
 
 An array of the FAX_MESSAGEW data type is passed as an out parameter (as a byte array) in the
 FAX_EnumMessages (section 3.1.4.1.24) call. This data type is also passed as an out parameter (as
@@ -8374,7 +8090,8 @@ Release: April 23, 2024
 
 97 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8440,7 +8157,8 @@ Release: April 23, 2024
 
 98 / 413
 
-tmSubmissionTime
+
+tmSubmissionTime
 
 ...
 
@@ -8503,7 +8221,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwJobType (4 bytes): A DWORD that specifies the job type of the archived fax.
+
+dwJobType (4 bytes): A DWORD that specifies the job type of the archived fax.
 
 Value/code
 
@@ -8624,7 +8343,8 @@ because dialing restrictions exist (some countries and regions
 
 100 / 413
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -8726,7 +8446,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-structure submitted as the lpJobParams argument to the FAX_SendDocumentEx (section
+
+structure submitted as the lpJobParams argument to the FAX_SendDocumentEx (section
 3.1.4.1.73) call that created the fax job), this field specifies a SYSTEMTIME ([MS-DTYP]
 section 2.3.13) structure that specifies the date and time originally used to send the fax. The
 time specified is expressed in UTC. Used for outgoing faxes only. This field is valid only if the
@@ -8809,7 +8530,8 @@ Release: April 23, 2024
 
 102 / 413
 
-...
+
+...
 
 ...
 
@@ -8866,7 +8588,8 @@ Release: April 23, 2024
 
 103 / 413
 
-...
+
+...
 
 ...
 
@@ -8923,7 +8646,8 @@ Release: April 23, 2024
 
 104 / 413
 
-...
+
+...
 
 lpcwstrExtendedStatus (variable): Null-terminated character string that holds a fax-extended
 
@@ -8984,7 +8708,7 @@ lpcwstrRoutingInfo (variable): Null-terminated character string that holds the r
 
 for the fax.
 
-2.2.39 RPC_FAX_OUTBOUND_ROUTING_GROUPW
+#### 2.2.39 RPC_FAX_OUTBOUND_ROUTING_GROUPW
 
 The RPC_FAX_OUTBOUND_ROUTING_GROUPW data type is used as an input argument for
 FAX_SetOutboundGroup (section 3.1.4.1.85). The group name contained by this structure describes
@@ -8999,7 +8723,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef struct {
+
+ typedef struct {
    DWORD dwSizeOfStruct;
    [string] LPWSTR lpwstrGroupName;
    [range(0,FAX_MAX_DEVICES_IN_GROUP)]
@@ -9036,7 +8761,7 @@ Status: Current status of the group from the enumeration FAX_ENUM_GROUP_STATUS (
 
 2.2.59).
 
-2.2.40 _RPC_FAX_OUTBOUND_ROUTING_GROUPW
+#### 2.2.40 _RPC_FAX_OUTBOUND_ROUTING_GROUPW
 
 The _RPC_FAX_OUTBOUND_ROUTING_GROUPW data type is used as an array of structures
 passed as an output byte-array argument for FAX_EnumOutboundGroups (section 3.1.4.1.26). The
@@ -9075,7 +8800,8 @@ Release: April 23, 2024
 
 106 / 413
 
-Fixed_Portion (16 bytes):
+
+Fixed_Portion (16 bytes):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -9159,7 +8885,8 @@ Release: April 23, 2024
 
 107 / 413
 
-2.2.41 RPC_FAX_OUTBOUND_ROUTING_RULEW
+
+#### 2.2.41 RPC_FAX_OUTBOUND_ROUTING_RULEW
 
 The RPC_FAX_OUTBOUND_ROUTING_RULEW data type is used as an input argument for
 FAX_SetOutboundRule (section 3.1.4.1.86). The information contained in this structure describes
@@ -9208,7 +8935,7 @@ bUseGroup: A Boolean value that indicates whether the group is used in the desti
 group MUST be used as the rule's destination. If FALSE, the device MUST be used as the rule's
 destination.
 
-2.2.42 _RPC_FAX_OUTBOUND_ROUTING_RULEW
+#### 2.2.42 _RPC_FAX_OUTBOUND_ROUTING_RULEW
 
 The _RPC_FAX_OUTBOUND_ROUTING_RULEW data type is used as an array of structures passed
 as an output byte-array argument for FAX_EnumOutboundRules (section 3.1.4.1.27). The
@@ -9238,7 +8965,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -9314,7 +9042,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Variable_Data (variable):
+
+Variable_Data (variable):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -9343,9 +9072,9 @@ Variable_Data_of_Destination (variable): The Variable_Data, if any, of the Desti
 
 union that specifies the destination of the rule.
 
-2.2.42.1
+##### 2.2.42.1 _FAX_RULE_DESTINATION_DEVICE_ID
 
-_FAX_RULE_DESTINATION_DEVICE_ID
+
 
 The _FAX_RULE_DESTINATION_DEVICE_ID data structure is custom marshaled as follows and
 uses the custom-marshaling rules defined in section 2.2.1.
@@ -9382,9 +9111,9 @@ dwDeviceId (4 bytes): A DWORD ([MS-DTYP] section 2.2.9) value that contains the 
 
 identifier (UID) of the device.
 
-2.2.42.2
+##### 2.2.42.2 _FAX_RULE_DESTINATION_GROUP_NAME
 
-_FAX_RULE_DESTINATION_GROUP_NAME
+
 
 The _FAX_RULE_DESTINATION_GROUP_NAME data structure is custom marshaled as follows and
 uses the custom-marshaling rules defined in section 2.2.1.
@@ -9413,7 +9142,8 @@ Release: April 23, 2024
 
 110 / 413
 
-Fixed_Portion (4 bytes):
+
+Fixed_Portion (4 bytes):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -9453,7 +9183,7 @@ lpwstrGroupName (variable): A null-terminated string that uniquely identifies a 
 
 name. The group name is case-insensitive.
 
-2.2.43 FAX_PRINTER_INFOW
+#### 2.2.43 FAX_PRINTER_INFOW
 
 An array of the FAX_PRINTER_INFOW data type can be passed as an out parameter (as a byte
 array) in the FAX_GetServicePrinters (section 3.1.4.1.63) call.
@@ -9508,7 +9238,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpwstrDriverNameOffset
+
+lpwstrDriverNameOffset
 
 Padding
 
@@ -9563,7 +9294,7 @@ lpwstrDriverName (variable): A null-terminated character string that holds the n
 
 driver for this printer.
 
-2.2.44 FAX_PERSONAL_PROFILEW
+#### 2.2.44 FAX_PERSONAL_PROFILEW
 
 The FAX_PERSONAL_PROFILEW structure contains information describing one personal profile
 (section 3.1.1). This structure is used by FAX_GetPersonalProfileInfo (section 3.1.4.1.50) to return
@@ -9584,7 +9315,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9657,7 +9389,8 @@ Release: April 23, 2024
 
 113 / 413
 
-lpwstrBillingCodeOffset
+
+lpwstrBillingCodeOffset
 
 lpwstrTSIDOffset
 
@@ -9738,7 +9471,8 @@ Release: April 23, 2024
 
 114 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9804,7 +9538,8 @@ Release: April 23, 2024
 
 115 / 413
 
-lpwstrZip (variable)
+
+lpwstrZip (variable)
 
 ...
 
@@ -9861,7 +9596,8 @@ Release: April 23, 2024
 
 116 / 413
 
-...
+
+...
 
 ...
 
@@ -9930,7 +9666,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpwstrTitle (variable): Null-terminated character string containing the title of the person
+
+lpwstrTitle (variable): Null-terminated character string containing the title of the person
 
 associated with this profile.
 
@@ -9962,7 +9699,7 @@ lpwstrTSID (variable): Null-terminated character string containing the transmitt
 
 identifier (TSID) associated with this profile.
 
-2.2.45 FAX_PORT_INFO_EXW
+#### 2.2.45 FAX_PORT_INFO_EXW
 
 The FAX_PORT_INFO_EXW structure defines information about a single fax device, known as a
 port. This structure is used for FAX_SetPortEx (section 3.1.4.1.89).
@@ -10007,7 +9744,8 @@ Release: April 23, 2024
 
 118 / 413
 
-lpcwstrProviderGUID: A null-terminated character string that holds the GUID of the fax device
+
+lpcwstrProviderGUID: A null-terminated character string that holds the GUID of the fax device
 
 provider.
 
@@ -10033,7 +9771,7 @@ lpwstrTsid: A null-terminated character string that holds the transmitting subsc
 
 faxes sent using this device. This identifier can be a telephone number.
 
-2.2.46 _FAX_PORT_INFO_EXW
+#### 2.2.46 _FAX_PORT_INFO_EXW
 
 The _FAX_PORT_INFO_EXW data type is the custom-marshaled variant of the
 FAX_PORT_INFO_EXW (section 2.2.45) structure. This data type is used for FAX_EnumPortsEx
@@ -10089,7 +9827,8 @@ Release: April 23, 2024
 
 119 / 413
 
-lpcwstrDeviceNameOffset
+
+lpcwstrDeviceNameOffset
 
 lpwstrDescriptionOffset
 
@@ -10162,7 +9901,8 @@ Release: April 23, 2024
 
 120 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10221,7 +9961,7 @@ lpwstrTsid (variable): A null-terminated character string that holds the transmi
 
 identifier for faxes sent using this device. This identifier can be a telephone number.
 
-2.2.47 FAX_RECEIPTS_CONFIGW
+#### 2.2.47 FAX_RECEIPTS_CONFIGW
 
 The FAX_RECEIPTS_CONFIGW structure defines the format for the receipt settings of the fax
 server. This structure is used by FAX_SetReceiptsConfiguration (section 3.1.4.1.91). The
@@ -10237,7 +9977,8 @@ Release: April 23, 2024
 
 121 / 413
 
-   DWORD dwSizeOfStruct;
+
+   DWORD dwSizeOfStruct;
    DWORD dwAllowedReceipts;
    FAX_ENUM_SMTP_AUTH_OPTIONS SMTPAuthOption;
    [string] LPWSTR lpwstrReserved;
@@ -10288,7 +10029,7 @@ bIsToUseForMSRouteThroughEmailMethod: If set to TRUE, the routing extension MUST
 
 DRT_EMAIL receipts settings to route incoming faxes by email.
 
-2.2.48 _FAX_RECEIPTS_CONFIGW
+#### 2.2.48 _FAX_RECEIPTS_CONFIGW
 
 The _FAX_RECEIPTS_CONFIGW data type is the custom-marshaled variant of the
 FAX_RECEIPTS_CONFIGW (section 2.2.47) structure. This data type is used by
@@ -10317,7 +10058,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -10391,7 +10133,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpwstrSMTPFromOffset (4 bytes): Offset to the lpwstrSMTPFrom field in the Variable_Data
+
+lpwstrSMTPFromOffset (4 bytes): Offset to the lpwstrSMTPFrom field in the Variable_Data
 
 block.
 
@@ -10455,7 +10198,7 @@ password is required. For Basic and Integrated authentication, a clear text pass
 over the wire. It is for the server to use the password that depends on the authentication
 mode.
 
-2.2.49 FAX_ROUTING_EXTENSION_INFO
+#### 2.2.49 FAX_ROUTING_EXTENSION_INFO
 
 The FAX_ROUTING_EXTENSION_INFO data type defines the format in which the routing
 extensions are enumerated and can be returned by a call to FAX_EnumRoutingExtensions (section
@@ -10470,7 +10213,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This data structure is custom marshaled as follows and uses the custom-marshaling rules defined in
+
+This data structure is custom marshaled as follows and uses the custom-marshaling rules defined in
 section 2.2.1.
 
 0  1  2  3  4  5  6  7  8  9
@@ -10548,7 +10292,8 @@ Release: April 23, 2024
 
 125 / 413
 
-lpcwstrExtensionNameOffset (4 bytes): Offset to the lpcwstrExtensionName field in the
+
+lpcwstrExtensionNameOffset (4 bytes): Offset to the lpcwstrExtensionName field in the
 
 Variable_Data portion of the structure.
 
@@ -10601,7 +10346,7 @@ lpcwstrExtensionName (variable): A null-terminated string which holds the name o
 
 telephony service provider associated with the devices for the FSP.
 
-2.2.50 FAX_TAPI_LINECOUNTRY_ENTRYW
+#### 2.2.50 FAX_TAPI_LINECOUNTRY_ENTRYW
 
 The FAX_TAPI_LINECOUNTRY_ENTRYW data type defines the arrangement of data inside the
 FAX_TAPI_LINECOUNTRY_LISTW (section 2.2.51) structure, which can be passed as an out
@@ -10633,7 +10378,8 @@ Release: April 23, 2024
 
 126 / 413
 
-...
+
+...
 
 ...
 
@@ -10712,7 +10458,8 @@ Release: April 23, 2024
 
 127 / 413
 
-2.2.51 FAX_TAPI_LINECOUNTRY_LISTW
+
+#### 2.2.51 FAX_TAPI_LINECOUNTRY_LISTW
 
 The FAX_TAPI_LINECOUNTRY_LISTW data type defines the structure that FAX_GetCountryList
 (section 3.1.4.1.37) can use to return the list of countries/regions from TAPI. For more information
@@ -10789,7 +10536,7 @@ FAX_TAPI_LINECOUNTRY_ENTRYW structures describing the list of countries and regi
 This array is custom marshaled within the Variable_Data block for the
 FAX_TAPI_LINECOUNTRY_LISTW data type as shown in section 2.2.1.2.
 
-2.2.52 Fax-Specific Errors
+#### 2.2.52 Fax-Specific Errors
 
 The following fax-specific errors can be returned by the server to the client and are of data type
 DWORD ([MS-DTYP] section 2.2.9).
@@ -10801,7 +10548,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10890,7 +10638,7 @@ FAX_ERR_RECIPIENTS_LIMIT
 The limit on the number of recipients for a single fax broadcast
 was reached.<23>
 
-2.2.53 FAX_ENUM_MSG_FLAGS
+#### 2.2.53 FAX_ENUM_MSG_FLAGS
 
 The FAX_ENUM_MSG_FLAGS enumeration defines the possible flags that specify the read or unread
 status of a fax message.
@@ -10911,7 +10659,8 @@ Release: April 23, 2024
 
 129 / 413
 
-2.2.54 FAX_ENUM_RULE_STATUS
+
+#### 2.2.54 FAX_ENUM_RULE_STATUS
 
 The FAX_ENUM_RULE_STATUS enumeration defines the possible status values for an outbound
 routing rule.
@@ -10939,7 +10688,7 @@ some invalid devices.
 
 FAX_RULE_STATUS_BAD_DEVICE: Indicates the rule's destination device is not valid.
 
-2.2.55 FAX_ENUM_DEVICE_RECEIVE_MODE
+#### 2.2.55 FAX_ENUM_DEVICE_RECEIVE_MODE
 
 The FAX_ENUM_DEVICE_RECEIVE_MODE enumeration constants describe the receive mode for a
 fax device.
@@ -10959,7 +10708,7 @@ number of rings.
 
 FAX_DEVICE_RECEIVE_MODE_MANUAL: Manually answer incoming calls.
 
-2.2.56 FAX_ENUM_SMTP_AUTH_OPTIONS
+#### 2.2.56 FAX_ENUM_SMTP_AUTH_OPTIONS
 
 The FAX_ENUM_SMTP_AUTH_OPTIONS enumeration defines the type of authentication used for
 SMTP connections.
@@ -10979,7 +10728,8 @@ Release: April 23, 2024
 
 130 / 413
 
-FAX_SMTP_AUTH_ANONYMOUS: The server will send fax transmission receipts using a non-
+
+FAX_SMTP_AUTH_ANONYMOUS: The server will send fax transmission receipts using a non-
 
 authenticated SMTP server. The server's name and port are defined in the
 FAX_RECEIPTS_CONFIGW (section 2.2.47) structure.
@@ -10994,7 +10744,7 @@ FAX_SMTP_AUTH_NTLM: The server will send fax transmission receipts using an NTLM
 authenticated SMTP server. The server's name, port, user name, and password are defined in the
 FAX_RECEIPTS_CONFIGW.
 
-2.2.57 FAX_ENUM_PROVIDER_STATUS
+#### 2.2.57 FAX_ENUM_PROVIDER_STATUS
 
 The FAX_ENUM_PROVIDER_STATUS enumeration defines load status types for Fax Service
 Providers (FSPs).
@@ -11041,7 +10791,7 @@ FAX_PROVIDER_STATUS_CANT_INIT: Error encountered while calling the initializatio
 the provider. Place the corresponding error in the dwLastError member of the
 FAX_DEVICE_PROVIDER_INFO or FAX_ROUTING_EXTENSION_INFO structures.
 
-2.2.58 FAX_ENUM_JOB_OP
+#### 2.2.58 FAX_ENUM_JOB_OP
 
 The FAX_ENUM_JOB_OP enumeration specifies the possible operations available on the current job.
 Security considerations (that is, access rights of the caller) are not taken into account.
@@ -11055,7 +10805,8 @@ Release: April 23, 2024
 
 131 / 413
 
- {
+
+ {
    FAX_JOB_OP_VIEW = 0x00000001,
    FAX_JOB_OP_PAUSE = 0x00000002,
    FAX_JOB_OP_RESUME = 0x00000004,
@@ -11079,7 +10830,7 @@ FAX_JOB_OP_RECIPIENT_INFO: Indicates that the job has recipient info.
 
 FAX_JOB_OP_SENDER_INFO: Indicates that the job has sender info.
 
-2.2.59 FAX_ENUM_GROUP_STATUS
+#### 2.2.59 FAX_ENUM_GROUP_STATUS
 
 The FAX_ENUM_GROUP_STATUS enumeration defines status types for outbound routing groups.
 
@@ -11107,7 +10858,7 @@ FAX_GROUP_STATUS_SOME_DEV_NOT_VALID: Some (but not all) of the devices in the gr
 are not available for sending outgoing faxes. Devices could be unavailable if they do not exist or
 are offline.
 
-2.2.60 FAX_JOB_EXTENDED_STATUS_ENUM
+#### 2.2.60 FAX_JOB_EXTENDED_STATUS_ENUM
 
 The FAX_JOB_EXTENDED_STATUS_ENUM enumeration defines the extended status values for a
 fax job. These are basic values provided for developers of an FSP. However, with the exception of
@@ -11125,7 +10876,8 @@ Release: April 23, 2024
 
 132 / 413
 
-   fjesDISCONNECTED = 1,
+
+   fjesDISCONNECTED = 1,
    fjesINITIALIZING = 2,
    fjesDIALING = 3,
    fjesTRANSMITTING = 4,
@@ -11199,13 +10951,14 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-fjesCALL_COMPLETED: The call was completed.
+
+fjesCALL_COMPLETED: The call was completed.
 
 fjesCALL_ABORTED: The call was aborted.
 
 fjesPROPRIETARY: Obsolete.
 
-2.2.61 FAX_TIME
+#### 2.2.61 FAX_TIME
 
 The FAX_TIME structure represents a time, using individual members for the current hour and
 minute. The time is expressed in Coordinated Universal Time (UTC). This structure is used in
@@ -11226,7 +10979,7 @@ Minute: A 16-bit unsigned integer that holds the current minute. This value MUST
 
 59 inclusive.
 
-2.2.62 _FAX_TIME
+#### 2.2.62 _FAX_TIME
 
 The _FAX_TIME data type is the custom marshaled variant of the FAX_TIME (section 2.2.61) data
 structure. The _FAX_TIME is used in FAX_GENERAL_CONFIG (section 2.2.31) data type and the
@@ -11281,7 +11034,8 @@ Release: April 23, 2024
 
 134 / 413
 
-2.2.63 FAX_ENUM_EVENT_TYPE
+
+#### 2.2.63 FAX_ENUM_EVENT_TYPE
 
 The FAX_ENUM_EVENT_TYPE enumeration defines types of events that the caller can specify to
 receive.<25>
@@ -11348,7 +11102,8 @@ Release: April 23, 2024
 
 135 / 413
 
-FAX_EVENT_TYPE_IN_ARCHIVE: Requests notifications about the removal of fax messages from
+
+FAX_EVENT_TYPE_IN_ARCHIVE: Requests notifications about the removal of fax messages from
 the incoming messages archive. Whenever a message is removed from the archive, the archive
 type and the message unique identifier are issued in a notification message.
 
@@ -11366,7 +11121,7 @@ FAX_EVENT_TYPE_LOCAL_ONLY: Specifies that the fax client (acting as RPC server) 
 
 accept only local (same computer) notifications.<27>
 
-2.2.64 FAX_ENUM_DEVICE_STATUS
+#### 2.2.64 FAX_ENUM_DEVICE_STATUS
 
 The FAX_ENUM_DEVICE_STATUS enumeration defines the possible status values of a fax device.
 
@@ -11388,7 +11143,7 @@ FAX_DEVICE_STATUS_RECEIVING: The device is currently receiving one or more fax j
 
 FAX_DEVICE_STATUS_RINGING: The device is currently ringing.
 
-2.2.65 FAX_ENUM_PRIORITY_TYPE
+#### 2.2.65 FAX_ENUM_PRIORITY_TYPE
 
 The FAX_ENUM_PRIORITY_TYPE enumeration defines types of priorities for outgoing faxes.
 
@@ -11412,7 +11167,8 @@ Release: April 23, 2024
 
 136 / 413
 
-2.2.66 FAX_EVENT
+
+#### 2.2.66 FAX_EVENT
 
 The FAX_EVENT structure represents the contents of an input/output (I/O) completion packet. The
 fax server sends the completion packet to notify a fax client application about an asynchronous fax
@@ -11517,7 +11273,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -11646,7 +11403,8 @@ Release: April 23, 2024
 
 138 / 413
 
-JobId: Specifies a unique number that identifies the fax job of interest. If this member is equal to the
+
+JobId: Specifies a unique number that identifies the fax job of interest. If this member is equal to the
 
 value 0xffffffff, it indicates an inactive fax job. Note that this number is not a print spooler
 identification number.
@@ -11663,7 +11421,7 @@ application specifies the base window message by using the MessageStart paramete
 FaxInitializeEventQueue function; the base window message MUST be greater than the WM_USER
 message.
 
-2.2.67 FAX_EVENT_EX
+#### 2.2.67 FAX_EVENT_EX
 
 The FAX_EVENT_EX structure defines information about asynchronous events delivered to
 applications that have registered to receive notification of fax events. This structure is passed as a
@@ -11725,7 +11483,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -11801,15 +11560,16 @@ Release: April 23, 2024
 
 140 / 413
 
-...
+
+...
 
 Variable_Data of EventInfo (variable): The Variable_Data of the EventInfo union. The six
 possible variants for the Variable_Data blocks of the EventInfo union are described in the
 next six sub-sections.
 
-2.2.67.1
+##### 2.2.67.1 FAX_EVENT_EX_JOB_INFO
 
-FAX_EVENT_EX_JOB_INFO
+
 
 The FAX_EVENT_EX_JOB_INFO data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -11881,7 +11641,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Variable_Data (variable):
+
+Variable_Data (variable):
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -11902,9 +11663,9 @@ Variable_Data of JobInfo (variable): The Variable_Data of a FAX_EVENT_JOB descri
 
 the status of an existing job in the queue or archives.
 
-2.2.67.2
+##### 2.2.67.2 FAX_EVENT_EX_CONFIG_TYPE
 
-FAX_EVENT_EX_CONFIG_TYPE
+
 
 The FAX_EVENT_EXCONFIG_TYPE data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -11967,9 +11728,10 @@ Release: April 23, 2024
 
 142 / 413
 
-2.2.67.3
 
-FAX_EVENT_EX_ACTIVITY_INFO
+##### 2.2.67.3 FAX_EVENT_EX_ACTIVITY_INFO
+
+
 
 The FAX_EVENT_EX_ACTIVITY_INFO data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -12020,9 +11782,9 @@ Fixed_Portion of ActivityInfo (40 bytes): Contains a FAX_SERVER_ACTIVITY (sectio
 event SHOULD only be sent when the message counters in the server activity structure
 change. No event is sent when an event log entry is added on the server.
 
-2.2.67.4
+##### 2.2.67.4 FAX_EVENT_EX_NEW_CALL
 
-FAX_EVENT_EX_NEW_CALL
+
 
 The FAX_EVENT_EX_NEW_CALL data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -12055,7 +11817,8 @@ Release: April 23, 2024
 
 143 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12088,9 +11851,9 @@ Padding (28 bytes): Padding to align the size of the Fixed_Portion of this data 
 
 required size of 40 bytes. For more information, see FAX_EVENT_EX (section 2.2.67).
 
-2.2.67.5
+##### 2.2.67.5 FAX_EVENT_EX_QUEUE_STATES
 
-FAX_EVENT_EX_QUEUE_STATES
+
 
 The FAX_EVENT_EX_QUEUE_STATES data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -12142,7 +11905,8 @@ Release: April 23, 2024
 
 144 / 413
 
-...
+
+...
 
 dwQueueStates (4 bytes): The dwQueueStates field contains the queue status. If this value is
 
@@ -12182,9 +11946,9 @@ Padding (36 bytes): Padding to align the size of the Fixed_Portion of this data 
 
 required size of 40 bytes. For more information, see FAX_EVENT_EX (section 2.2.67).
 
-2.2.67.6
+##### 2.2.67.6 FAX_EVENT_EX_DEVICE_STATUS
 
-FAX_EVENT_EX_DEVICE_STATUS
+
 
 The FAX_EVENT_EX_DEVICE_STATUS data structure is custom marshaled as follows, and uses the
 custom marshaling rules defined in section 2.2.1.
@@ -12238,7 +12002,8 @@ Release: April 23, 2024
 
 145 / 413
 
-...
+
+...
 
 DeviceStatus (8 bytes): The DeviceStatus field contains a FAX_EVENT_DEVICE_STATUS
 
@@ -12248,7 +12013,7 @@ Padding (32 bytes): Padding to align the size of the Fixed_Portion of this data 
 
 required size of 40 bytes. For more information, see FAX_EVENT_EX (section 2.2.67).
 
-2.2.68 FAX_EVENT_EX_1
+#### 2.2.68 FAX_EVENT_EX_1
 
 The FAX_EVENT_EX_1 structure defines information about asynchronous events delivered to
 applications that have been registered to receive notifications of fax events. This structure is passed
@@ -12315,7 +12080,8 @@ Release: April 23, 2024
 
 146 / 413
 
-...
+
+...
 
 dwSizeOfStruct (4 bytes): A DWORD ([MS-DTYP] section 2.2.9) containing the size, in bytes,
 
@@ -12390,13 +12156,14 @@ Release: April 23, 2024
 
 147 / 413
 
-Variable_Data of EventInfo (variable): The Variable_Data of the EventInfo union. The six
+
+Variable_Data of EventInfo (variable): The Variable_Data of the EventInfo union. The six
 possible variants for the Variable_Data blocks of the EventInfo union are described in the
 following six subsections.
 
-2.2.68.1
+##### 2.2.68.1 FAX_EVENT_EX_1_JOB_INFO
 
-FAX_EVENT_EX_1_JOB_INFO
+
 
 The FAX_EVENT_EX_1_JOB_INFO data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -12469,7 +12236,8 @@ Release: April 23, 2024
 
 148 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12488,9 +12256,9 @@ Variable_Data of JobInfo (variable): The Variable_Data of a FAX_EVENT_JOB_1 with
 
 status about an existing job in the queue or archives.
 
-2.2.68.2
+##### 2.2.68.2 FAX_EVENT_EX_1_CONFIG_TYPE
 
-FAX_EVENT_EX_1_CONFIG_TYPE
+
 
 The FAX_EVENT_EX_1_CONFIG_TYPE data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -12545,9 +12313,9 @@ the new configuration.
 Padding (36 bytes): Padding to align the size of the Fixed_Portion of this data structure to the
 required size of 40 bytes. For more information, see FAX_EVENT_EX_1 (section 2.2.68).
 
-2.2.68.3
+##### 2.2.68.3 FAX_EVENT_EX_1_ACTIVITY_INFO
 
-FAX_EVENT_EX_1_ACTIVITY_INFO
+
 
 The FAX_EVENT_EX_1_ACTIVITY_INFO data structure is custom marshaled as follows and uses
 the custom-marshaling rules defined in section 2.2.1.
@@ -12559,7 +12327,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12605,9 +12374,9 @@ Fixed_Portion of ActivityInfo (40 bytes): The Fixed_Portion of a FAX_SERVER_ACTI
 changed. This event SHOULD only be sent when the messages counters in the server activity
 structure change. No event is sent when an event log entry is added on the server.
 
-2.2.68.4
+##### 2.2.68.4 FAX_EVENT_EX_1_NEW_CALL
 
-FAX_EVENT_EX_1_NEW_CALL
+
 
 The FAX_EVENT_EX_1_NEW_CALL data structure is custom marshaled as follows and uses the
 custom-marshaling rules defined in section 2.2.1.
@@ -12653,7 +12422,8 @@ Release: April 23, 2024
 
 150 / 413
 
-...
+
+...
 
 ...
 
@@ -12673,9 +12443,9 @@ the fax service.
 Padding (28 bytes): Padding to align the size of the Fixed_Portion of this data structure to the
 required size of 40 bytes. For more information, see FAX_EVENT_EX_1 (section 2.2.68).
 
-2.2.68.5
+##### 2.2.68.5 FAX_EVENT_EX_1_QUEUE_STATES
 
-FAX_EVENT_EX_1_QUEUE_STATES
+
 
 The FAX_EVENT_EX_1_QUEUE_STATES data structure is custom marshaled as follows and uses
 the custom-marshaling rules defined in section 2.2.1.
@@ -12729,7 +12499,8 @@ Release: April 23, 2024
 
 151 / 413
 
-dwQueueStates (4 bytes): The dwQueueStates field contains the queue status. If this value is
+
+dwQueueStates (4 bytes): The dwQueueStates field contains the queue status. If this value is
 
 zero, both the incoming and outgoing queues are unblocked; otherwise, this value is a
 combination of one or more of the following values.
@@ -12770,9 +12541,9 @@ queue.
 Padding (36 bytes): Padding to align the size of the Fixed_Portion of this data structure to the
 required size of 40 bytes. For more information, see FAX_EVENT_EX_1 (section 2.2.68)
 
-2.2.68.6
+##### 2.2.68.6 FAX_EVENT_EX_1_DEVICE_STATUS
 
-FAX_EVENT_EX_1_DEVICE_STATUS
+
 
 The FAX_EVENT_EX_1_DEVICE_STATUS data structure is custom marshaled as follows and uses
 the custom-marshaling rules defined in section 2.2.1.
@@ -12826,7 +12597,8 @@ Release: April 23, 2024
 
 152 / 413
 
-...
+
+...
 
 DeviceStatus (8 bytes): The DeviceStatus field contains a FAX_EVENT_DEVICE_STATUS
 
@@ -12835,7 +12607,7 @@ DeviceStatus (8 bytes): The DeviceStatus field contains a FAX_EVENT_DEVICE_STATU
 Padding (32 bytes): Padding to align the size of the Fixed_Portion of this data structure to the
 required size of 40 bytes. For more information, see FAX_EVENT_EX_1 (section 2.2.68).
 
-2.2.69 FAX_EVENT_DEVICE_STATUS
+#### 2.2.69 FAX_EVENT_DEVICE_STATUS
 
 The FAX_EVENT_DEVICE_STATUS structure defines information about the status of a fax device.
 This structure is embedded in the FAX_EVENT_EX (section 2.2.67) and FAX_EVENT_EX_1 (section
@@ -12884,7 +12656,7 @@ dwNewStatus (4 bytes): A DWORD value indicating the new status. The value is a c
 
 of values from FAX_ENUM_DEVICE_STATUS (section 2.2.64).
 
-2.2.70 FAX_EVENT_JOB_1
+#### 2.2.70 FAX_EVENT_JOB_1
 
 The FAX_EVENT_JOB_1 structure defines information about notifications regarding a single job in
 the server's queue. This structure is embedded in the FAX_EVENT_EX (section 2.2.67) and
@@ -12915,7 +12687,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -13003,7 +12776,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -13021,7 +12795,7 @@ Variable_Data of pStatus (variable): The Variable_Data of a FAX_JOB_STATUS that
 
 contains the current status of the job.
 
-2.2.71 FAX_ENUM_JOB_EVENT_TYPE
+#### 2.2.71 FAX_ENUM_JOB_EVENT_TYPE
 
 The FAX_ENUM_JOB_EVENT_TYPE enumeration defines types of events for a single job.
 
@@ -13047,7 +12821,7 @@ messages.
 
 FAX_JOB_EVENT_TYPE_CHANGED: An archives message has changed.
 
-2.2.72 FAX_EVENT_NEW_CALL
+#### 2.2.72 FAX_EVENT_NEW_CALL
 
 The FAX_EVENT_NEW_CALL structure defines notifications regarding a new incoming call. This
 structure is embedded in the FAX_EVENT_EX (section 2.2.67) and FAX_EVENT_EX_1 (section
@@ -13078,7 +12852,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Variable_Data (variable)
 
@@ -13132,7 +12907,7 @@ lpwstrCallerId (variable): A null-terminated Unicode string that contains the ca
 
 incoming call.
 
-2.2.73 FAX_ENUM_CONFIG_TYPE
+#### 2.2.73 FAX_ENUM_CONFIG_TYPE
 
 The FAX_ENUM_CONFIG_TYPE enumeration indicates the type of configuration that has changed
 during a FAX_ENUM_EVENT_TYPE (section 2.2.63) event.
@@ -13158,7 +12933,8 @@ Release: April 23, 2024
 
 156 / 413
 
- } FAX_ENUM_CONFIG_TYPE;
+
+ } FAX_ENUM_CONFIG_TYPE;
 
 FAX_CONFIG_TYPE_RECEIPTS: The receipt configuration has changed.
 
@@ -13182,7 +12958,7 @@ FAX_CONFIG_TYPE_OUT_RULES: The outbound routing rules configuration has changed.
 
 FAX_CONFIG_TYPE_GENERAL_CONFIG: The general configuration has changed.
 
-2.2.74 FAX Data Types
+#### 2.2.74 FAX Data Types
 
 The FAX Data Types for the fax server and client interfaces.
 
@@ -13226,7 +13002,8 @@ Release: April 23, 2024
 
 157 / 413
 
-RPC_FAX_MSG_ENUM_HANDLE: A message enumeration handle.
+
+RPC_FAX_MSG_ENUM_HANDLE: A message enumeration handle.
 
 PRPC_FAX_MSG_ENUM_HANDLE: A pointer to a message enumeration handle.
 
@@ -13246,7 +13023,7 @@ RANGED_DWORD: A ranged DWORD ([MS-DTYP] section 2.2.9), see section 6.2 for spec
 
 LPRANGED_DWORD: A pointer to a ranged DWORD, see section 6.2 for specific usage.
 
-2.2.75 PRODUCT_SKU_TYPE
+#### 2.2.75 PRODUCT_SKU_TYPE
 
 The PRODUCT_SKU_TYPE enumeration provides values that identify the different Stock Keeping
 Unit (SKU) versions of an operating system.<28>
@@ -13282,7 +13059,7 @@ PRODUCT_SKU_SERVER_EMBEDDED: Server Embedded Edition.
 
 PRODUCT_SKU_WEB_SERVER: Server Web Server Edition.
 
-2.2.76 FAX_ENUM_DELIVERY_REPORT_TYPES
+#### 2.2.76 FAX_ENUM_DELIVERY_REPORT_TYPES
 
 The FAX_ENUM_DELIVERY_REPORT_TYPES enumeration defines the type of receipt delivered to
 the sender when the fax is successfully sent and when the fax transmission fails. It MAY also specify
@@ -13295,7 +13072,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-parameter MUST be a logical combination of one of the delivery method flags and optionally one of the
+
+parameter MUST be a logical combination of one of the delivery method flags and optionally one of the
 delivery grouping flags.
 
  typedef  enum
@@ -13339,7 +13117,7 @@ DRT_ATTACH_FAX: Delivery grouping flag indicating that a fax Tagged Image File F
 file MUST be attached to the receipt. This delivery grouping flag MUST NOT be combined with any
 delivery method flag except DRT_EMAIL.
 
-2.2.77 FAX_ENUM_JOB_FIELDS
+#### 2.2.77 FAX_ENUM_JOB_FIELDS
 
 The FAX_ENUM_JOB_FIELDS enumeration defines bit fields of valid fields in a job or message
 structure.
@@ -13368,7 +13146,8 @@ Release: April 23, 2024
 
 159 / 413
 
-   FAX_JOB_FIELD_RETRIES = 0x00004000,
+
+   FAX_JOB_FIELD_RETRIES = 0x00004000,
    FAX_JOB_FIELD_DELIVERY_REPORT_TYPE = 0x00008000,
    FAX_JOB_FIELD_SENDER_PROFILE = 0x00010000,
    FAX_JOB_FIELD_STATUS_SUB_STRUCT = 0x00020000,
@@ -13449,7 +13228,8 @@ Release: April 23, 2024
 
 160 / 413
 
-FAX_JOB_FIELD_DEVICE_ID: The presence of this flag indicates that the device id field is valid.
+
+FAX_JOB_FIELD_DEVICE_ID: The presence of this flag indicates that the device id field is valid.
 
 FAX_JOB_FIELD_MESSAGE_ID: The presence of this flag indicates that the message id field is
 
@@ -13471,7 +13251,7 @@ FAX_JOB_FIELD_MESSAGE_FLAGS: The presence of this flag indicates that the messag
 
 is valid.
 
-2.2.78 FAX_ENUM_COVERPAGE_FORMATS
+#### 2.2.78 FAX_ENUM_COVERPAGE_FORMATS
 
 The FAX_ENUM_COVERPAGE_FORMAT enumeration defines the types of cover page templates that
 the server MUST support. Each cover page MUST be described by one of the following values:
@@ -13486,7 +13266,7 @@ FAX_COVERPAGE_FMT_COV: Indicates it is a normal cover-page template.
 
 FAX_COVERPAGE_FMT_COV_SUBJECT_ONLY: Indicates it is a subject-only cover-page template.
 
-2.2.79 FAX_SPECIFIC_ACCESS_RIGHTS_2
+#### 2.2.79 FAX_SPECIFIC_ACCESS_RIGHTS_2
 
 The FAX_SPECIFIC_ACCESS_RIGHTS_2 enumeration defines specific access rights, which provide
 security when users query and manage fax jobs, fax devices, and fax document. The access rights
@@ -13519,7 +13299,8 @@ Release: April 23, 2024
 
 161 / 413
 
-FAX_ACCESS_MANAGE_OUT_JOBS: The user MAY manage all the outgoing jobs in the server's
+
+FAX_ACCESS_MANAGE_OUT_JOBS: The user MAY manage all the outgoing jobs in the server's
 
 queue.
 
@@ -13543,7 +13324,7 @@ FAX_GENERIC_EXECUTE_2: Access rights needed to execute faxes.
 
 FAX_GENERIC_ALL_2: All access rights.
 
-2.2.80 FAX_EVENT_JOB
+#### 2.2.80 FAX_EVENT_JOB
 
 The FAX_EVENT_JOB structure defines information about notifications regarding a single job in the
 server's queue. This structure is embedded in the FAX_EVENT_EX (section 2.2.67) structure as a
@@ -13601,7 +13382,8 @@ Release: April 23, 2024
 
 162 / 413
 
-pJobDataOffset
+
+pJobDataOffset
 
 dwlMessageId (8 bytes): A DWORDLONG ([MS-DTYP] section 2.2.13) value that contains the
 
@@ -13649,7 +13431,7 @@ Variable_Data of pStatus (variable): The Variable_Data of a FAX_JOB_STATUS that
 
 contains the current status of the job.
 
-2.2.81 FAX_RULE_DESTINATION
+#### 2.2.81 FAX_RULE_DESTINATION
 
 The FAX_RULE_DESTINATION union defines information about the outbound routing destination.
 
@@ -13677,14 +13459,15 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.82 FAX_MAX_RPC_BUFFER
+
+#### 2.2.82 FAX_MAX_RPC_BUFFER
 
 The FAX_MAX_RPC_BUFFER constant defines the largest buffer size that the client can use for
 buffers of variable length.
 
  #define FAX_MAX_RPC_BUFFER 0x100000
 
-2.2.83 ALL_FAX_USER_ACCESS_RIGHTS
+#### 2.2.83 ALL_FAX_USER_ACCESS_RIGHTS
 
 The ALL_FAX_USER_ACCESS_RIGHTS constant defines a combination of the fax-specific
 FAX_GENERIC_ALL_2 access rights (FAX_SPECIFIC_ACCESS_RIGHTS_2 in section 2.2.79) and
@@ -13719,7 +13502,7 @@ The constant definition is as follows.
  #define ALL_FAX_USER_ACCESS_RIGHTS (READ_CONTROL | WRITE_DAC | WRITE_OWNER |
 FAX_GENERIC_ALL_2)
 
-2.2.84 Generic Outbound Routing Rule Constants
+#### 2.2.84 Generic Outbound Routing Rule Constants
 
 The generic outbound routing rule constants define generic outbound routing rules for the country
 dialing code (ROUTING_RULE_COUNTRY_CODE_ANY) and the area dialing code
@@ -13741,7 +13524,7 @@ Any area code, or all area codes.
 
 0
 
-2.2.85 Protocol and Fax API Version Constants
+#### 2.2.85 Protocol and Fax API Version Constants
 
 These constants define identifiers for the four different versions of this protocol and the associated fax
 API.<30> They are defined as follows.
@@ -13761,7 +13544,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 0x00000000
 
@@ -13792,7 +13576,7 @@ Servers that implement the FAX_API_VERSION_1, FAX_API_VERSION_2, and FAX_API_VER
 protocol versions (and associated API versions) MUST implement the Fax Server Interface (section
 3.1.4.1).
 
-2.2.86 MAX_FAX_STRING_LEN
+#### 2.2.86 MAX_FAX_STRING_LEN
 
 The MAX_FAX_STRING_LEN constant defines the maximum number of characters that the client
 can use for null-terminated character strings sent in structure fields or method call parameters. This
@@ -13801,7 +13585,7 @@ such as FAX_RegisterServiceProviderEx (section 3.1.4.1.69).
 
  #define MAX_FAX_STRING_LEN 253
 
-2.2.87 Default Routing Methods
+#### 2.2.87 Default Routing Methods
 
 A fax server's initial state SHOULD reflect the preregistration of a default inbound routing extension
 and its default routing methods. The default routing methods SHOULD be identified with the GUID
@@ -13856,7 +13640,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.88 FAX_TAPI_LOCATIONS
+
+#### 2.2.88 FAX_TAPI_LOCATIONS
 
 The FAX_TAPI_LOCATIONS structure describes one TAPI location. This structure is used in the
 FAX_TAPI_LOCATION_INFO (section 2.2.89) structure. For more information about TAPI, see
@@ -13937,7 +13722,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TollPrefixesOffset (4 bytes): Offset to the TollPrefixes field in the Variable_Data block of the
+
+TollPrefixesOffset (4 bytes): Offset to the TollPrefixes field in the Variable_Data block of the
 
 structure.
 
@@ -13971,7 +13757,7 @@ TollPrefixes (variable): An optional null-terminated character string containing
 toll prefixes separated by a "," character. A toll prefix is a number and is represented in this
 string with decimal-digit characters.
 
-2.2.89 FAX_TAPI_LOCATION_INFO
+#### 2.2.89 FAX_TAPI_LOCATION_INFO
 
 The FAX_TAPI_LOCATION_INFO structure describes the configuration of all TAPI locations for a fax
 server. This structure is used as an input argument for the FaxObs_SetTapiLocations (section
@@ -14026,7 +13812,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NumLocations
+
+NumLocations
 
 TapiLocationsOffset
 
@@ -14064,7 +13851,7 @@ TapiLocations (variable): An array of FAX_TAPI_LOCATIONS, custom marshaled as
 
 described in section 2.2.1.2.
 
-2.2.90 FAX_SECURITY_DESCRIPTOR
+#### 2.2.90 FAX_SECURITY_DESCRIPTOR
 
 The FAX_SECURITY_DESCRIPTOR structure describes a fax security descriptor. This structure is
 used as an input argument for the FaxObs_SetSecurityDescriptor (section 3.1.4.2.33) method and
@@ -14103,7 +13890,8 @@ Release: April 23, 2024
 
 168 / 413
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -14168,16 +13956,17 @@ Release: April 23, 2024
 
 169 / 413
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, there are no additional timers or
 other states required on the client side of this protocol. Calls made by the higher-layer protocol or
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  Fax Server Details
+### 3.1 Fax Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of data organization that a possible implementation would
 maintain to participate in this protocol.
@@ -14241,7 +14030,8 @@ Release: April 23, 2024
 
 170 / 413
 
-
+
+
 
 The name of the routing group or the device identifier specifying where the routing rule
 applies.
@@ -14313,7 +14103,8 @@ Release: April 23, 2024
 
 171 / 413
 
-Fax access rights: Access rights applicable to the fax user account. The fax access rights are
+
+Fax access rights: Access rights applicable to the fax user account. The fax access rights are
 based on and include the standard access rights [MSDN-SAR] and include specific fax access
 rights for fax-specific purposes such as permission to send a fax. The fax access rights are
 applied to the fax user account using implementation-specific functionality. The fax access
@@ -14402,7 +14193,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Fax print queue: A print queue that can be shared from the computer that is both a fax server
+
+Fax print queue: A print queue that can be shared from the computer that is both a fax server
 
 and a print server, and that can be installed on the computer that is both a print client and a fax
 client, as described by the Print System Remote Protocol [MS-RPRN]. The printer driver
@@ -14491,7 +14283,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Fax User Account: An entry in a fax server-maintained list of operating-system users authorized
+
+Fax User Account: An entry in a fax server-maintained list of operating-system users authorized
 to send and receive faxes via the fax server. Each fax user account contains a data structure
 that holds an implementation-specific identifier for the authenticated user identity. The fax
 server creates the first fax user account at the time of the fax server's installation. <47> The
@@ -14601,7 +14394,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Job type: A DWORD that describes the type of a Fax Job and specifies whether the job is
+
+Job type: A DWORD that describes the type of a Fax Job and specifies whether the job is
 
 inbound (to be received, or received), outbound (to be sent, or sent), being routed (inbound or
 outbound), or unknown. The following are the permissible values for the job type.
@@ -14699,7 +14493,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -14798,7 +14593,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-list is initialized by the fax server to contain at least the special routing group named "<All
+
+list is initialized by the fax server to contain at least the special routing group named "<All
 devices>" representing all fax devices installed on the fax server.
 
 For each routing group, the fax server stores the following settings:
@@ -14875,7 +14671,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Stop cheap time: Fax server configuration setting that configures the stop time for the fax
+
+Stop cheap time: Fax server configuration setting that configures the stop time for the fax
 
 server's discount period applying to outgoing fax transmissions. The time value is expressed in
 UTC as a number of hours and a number of minutes. Together with the start cheap time, this
@@ -14897,18 +14694,18 @@ Use device's TSID: Fax server configuration setting that configures the fax serv
 device's TSID instead of the TSID specified by the fax client when submitting a fax job for
 transmission. This setting persists after shutdown or restart of the fax server.<62>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST listen on a well-known endpoint, as specified in [C706].
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  Fax Server Interface
+##### 3.1.4.1 Fax Server Interface
 
 This protocol MUST specify to the RPC runtime that it is to perform a strict Network Data
 Representation (NDR) data consistency check at target level 5.0 ([MS-RPCE] section 3).
@@ -14957,7 +14754,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 FAX_EnumJobs
 
@@ -15071,7 +14869,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -15186,7 +14985,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -15297,7 +15097,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -15410,7 +15211,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -15523,7 +15325,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -15638,7 +15441,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -15746,7 +15550,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.1 Sequencing Rules
+
+###### 3.1.4.1.1 Sequencing Rules
 
 The successful outcome of a series of RPC method calls depends on the sequence of calls made,
 because state is maintained on the server throughout the method invocations. It is valid to call RPC
@@ -15816,7 +15621,8 @@ Release: April 23, 2024
 
 186 / 413
 
-  FAX_GetQueueStates (section 3.1.4.1.53)
+
+  FAX_GetQueueStates (section 3.1.4.1.53)
 
   FAX_SetQueue (section 3.1.4.1.90)
 
@@ -15887,7 +15693,8 @@ Release: April 23, 2024
 
 187 / 413
 
-  FAX_RemoveMessage (section 3.1.4.1.70)
+
+  FAX_RemoveMessage (section 3.1.4.1.70)
 
   FAX_GetServerActivity (section 3.1.4.1.61)
 
@@ -15957,7 +15764,8 @@ Release: April 23, 2024
 
 188 / 413
 
-  FAX_SetPort (section 3.1.4.1.88)
+
+  FAX_SetPort (section 3.1.4.1.88)
 
   FAX_EnumRoutingMethods (section 3.1.4.1.31)
 
@@ -16016,7 +15824,7 @@ server.
 
   FAX_StartServerNotificationEx2 (section 3.1.4.1.102)
 
-3.1.4.1.2 FAX_Abort (Opnum 9)
+###### 3.1.4.1.2 FAX_Abort (Opnum 9)
 
 [MS-FAX] - v20240423
 Fax Server and Client Remote Protocol
@@ -16025,7 +15833,8 @@ Release: April 23, 2024
 
 189 / 413
 
-The FAX_Abort (Opnum 9) method is called by the client to abort the specified fax job on the
+
+The FAX_Abort (Opnum 9) method is called by the client to abort the specified fax job on the
 server. The value for the JobId parameter can be obtained using one of the following methods:
 FAX_EnumJobs (section 3.1.4.1.21), FAX_EnumJobsEx (section 3.1.4.1.22), or
 FAX_EnumJobsEx2 (section 3.1.4.1.23).
@@ -16128,7 +15937,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.3 FAX_AccessCheck (Opnum 25)
+
+###### 3.1.4.1.3 FAX_AccessCheck (Opnum 25)
 
 The FAX_AccessCheck (Opnum 25) method is called when the client needs to check whether the
 client's fax user account has certain access permissions on the server.
@@ -16261,7 +16071,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Fax-generic access rights
+
+Fax-generic access rights
 
 Meaning
 
@@ -16382,7 +16193,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Fax-specific access rights
+
+Fax-specific access rights
 
 Description
 
@@ -16478,11 +16290,12 @@ Release: April 23, 2024
 
 193 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol [MS-RPCE].
 
-3.1.4.1.4 FAX_AccessCheckEx2 (Opnum 101)
+###### 3.1.4.1.4 FAX_AccessCheckEx2 (Opnum 101)
 
 The FAX_AccessCheckEx2 (Opnum 101) method is called by the client when the client needs to
 check whether the client's fax user account has certain access permissions on the server.
@@ -16587,7 +16400,8 @@ Release: April 23, 2024
 
 194 / 413
 
-Fax-generic access rights
+
+Fax-generic access rights
 
 Description
 
@@ -16705,7 +16519,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(MAXIMUM_ALLOWED) and the server SHOULD set this output value to the actual rights that this
+
+(MAXIMUM_ALLOWED) and the server SHOULD set this output value to the actual rights that this
 caller is verified to have.
 
 Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
@@ -16743,7 +16558,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.5 FAX_AddOutboundGroup (Opnum 51)
+###### 3.1.4.1.5 FAX_AddOutboundGroup (Opnum 51)
 
 The FAX_AddOutboundGroup (Opnum 51) method is called by the client to add a new outbound
 routing group.
@@ -16802,7 +16617,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -16838,7 +16654,7 @@ Exceptions Thrown: No exceptions are thrown except those by the underlying RPC p
 
 RPCE].
 
-3.1.4.1.6 FAX_AddOutboundRule (Opnum 56)
+###### 3.1.4.1.6 FAX_AddOutboundRule (Opnum 56)
 
 The FAX_AddOutboundRule (Opnum 56) method is called by the client to add a new outbound rule
 for the specified outbound group to the fax server’s rules map. The value for the dwDeviceId
@@ -16888,7 +16704,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bUseGroup: A Boolean value that specifies whether the group SHOULD be used as the destination.
+
+bUseGroup: A Boolean value that specifies whether the group SHOULD be used as the destination.
 
 Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
@@ -16992,7 +16809,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.7 FAX_CheckServerProtSeq (Opnum 26)
+###### 3.1.4.1.7 FAX_CheckServerProtSeq (Opnum 26)
 
 [MS-FAX] - v20240423
 Fax Server and Client Remote Protocol
@@ -17001,7 +16818,8 @@ Release: April 23, 2024
 
 198 / 413
 
-The FAX_CheckServerProtSeq (Opnum 26) method is called by the client to validate whether a
+
+The FAX_CheckServerProtSeq (Opnum 26) method is called by the client to validate whether a
 specified protocol sequence is supported by the server.<70> In response, the server MUST validate
 the specified protocol sequence.
 
@@ -17067,7 +16885,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.8 FAX_CheckValidFaxFolder (Opnum 86)
+###### 3.1.4.1.8 FAX_CheckValidFaxFolder (Opnum 86)
 
 The FAX_CheckValidFaxFolder (Opnum 86) method is called by the client to check whether the
 specified path is accessible to the fax server.
@@ -17087,7 +16905,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-version reported by the server is FAX_API_VERSION_0 (0x00000000) or FAX_API_VERSION_1
+
+version reported by the server is FAX_API_VERSION_0 (0x00000000) or FAX_API_VERSION_1
 (0x00010000). For more information, see FAX_ConnectFaxServer (section 3.1.4.1.10).
 
  error_status_t FAX_CheckValidFaxFolder(
@@ -17161,7 +16980,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.9 FAX_ClosePort (Opnum 3)
+###### 3.1.4.1.9 FAX_ClosePort (Opnum 3)
 
 The FAX_ClosePort (Opnum 3) method is called by the client to close an open fax port. The client
 passes FaxPortHandle, which it received from a call to FAX_OpenPort (section 3.1.4.1.65).
@@ -17181,7 +17000,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FaxPortHandle: A pointer to a fax port handle.
+
+FaxPortHandle: A pointer to a fax port handle.
 
 Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
@@ -17209,9 +17029,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.10
+###### 3.1.4.1.10 FAX_ConnectFaxServer (Opnum 80)
 
-FAX_ConnectFaxServer (Opnum 80)
+
 
 The FAX_ConnectFaxServer (Opnum 80) method is called by the client to create a connection to
 the fax server.
@@ -17261,7 +17081,8 @@ Release: April 23, 2024
 
 201 / 413
 
-   [out, ref] PRPC_FAX_SVC_HANDLE pHandle
+
+   [out, ref] PRPC_FAX_SVC_HANDLE pHandle
  );
 
 hBinding: The RPC binding handle that is provided by the client RPC layer when the RPC call is made.
@@ -17339,9 +17160,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.11
+###### 3.1.4.1.11 FAX_ConnectionRefCount (Opnum 1)
 
-FAX_ConnectionRefCount (Opnum 1)
+
 
 [MS-FAX] - v20240423
 Fax Server and Client Remote Protocol
@@ -17350,7 +17171,8 @@ Release: April 23, 2024
 
 202 / 413
 
-The FAX_ConnectionRefCount (Opnum 1) method is called by the client.<73>
+
+The FAX_ConnectionRefCount (Opnum 1) method is called by the client.<73>
 
 In response, the server MUST connect, disconnect, or release a connection between the fax client and
 the fax server.
@@ -17436,7 +17258,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  The following sequence of calls on the same handle MUST result in an
+
+2.  The following sequence of calls on the same handle MUST result in an
 
 ERROR_INVALID_PARAMETER error:
 
@@ -17512,9 +17335,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.12
+###### 3.1.4.1.12 FAX_CreateAccount (Opnum 93)
 
-FAX_CreateAccount (Opnum 93)
+
 
 The FAX_CreateAccount (Opnum 93) method is called by the client to request a new fax user
 account to be created based on an existing valid operating system user account.
@@ -17535,7 +17358,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-fax access rights, depending on the authenticated user identity of the user account described by
+
+fax access rights, depending on the authenticated user identity of the user account described by
 the FAX_ACCOUNT_INFO_0 (section 2.2.24) structure,<77> and return ERROR_SUCCESS. The
 function MUST return ERROR_ALREADY_EXISTS if the account already exists.
 
@@ -17626,7 +17450,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -17694,9 +17519,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.13
+###### 3.1.4.1.13 FAX_DeleteAccount (Opnum 94)
 
-FAX_DeleteAccount (Opnum 94)
+
 
 The FAX_DeleteAccount (Opnum 94) method is called by the client to delete a fax user account
 previously created with FAX_CreateAccount (section 3.1.4.1.12).
@@ -17727,7 +17552,8 @@ Release: April 23, 2024
 
 206 / 413
 
-hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
+
+hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
 
 as an input hBinding argument for the FAX_ConnectFaxServer or
 FAX_ConnectionRefCount (section 3.1.4.1.11) method call used to connect to the fax server.
@@ -17777,9 +17603,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.14
+###### 3.1.4.1.14 FAX_EnableRoutingMethod (Opnum 14)
 
-FAX_EnableRoutingMethod (Opnum 14)
+
 
 The FAX_EnableRoutingMethod (Opnum 14) method is called by the client for a specified fax
 device (port).
@@ -17814,7 +17640,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RoutingGuid: A curly-braced GUID string that MUST specify the GUID that uniquely identifies the fax
+
+RoutingGuid: A curly-braced GUID string that MUST specify the GUID that uniquely identifies the fax
 routing method upon which to act. For more information about routing methods, see [MSDN-FRM].
 The routing methods and the associated curly-braced GUID string values that can be used for this
 parameter are discoverable by calling FAX_EnumRoutingMethods (section 3.1.4.1.31). Included
@@ -17859,9 +17686,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.15
+###### 3.1.4.1.15 FAX_EndCopy (Opnum 72)
 
-FAX_EndCopy (Opnum 72)
+
 
 The FAX_EndCopy (Opnum 72) method is called by the client to end a copy operation process from
 or to the server, and to close the respective copy handle.
@@ -17906,9 +17733,10 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.16
 
-FAX_EndMessagesEnum (Opnum 64)
+###### 3.1.4.1.16 FAX_EndMessagesEnum (Opnum 64)
+
+
 
 The FAX_EndMessagesEnum (Opnum 64) method is called by the client.
 
@@ -17949,9 +17777,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.17
+###### 3.1.4.1.17 FAX_EndServerNotification (Opnum 75)
 
-FAX_EndServerNotification (Opnum 75)
+
 
 The FAX_EndServerNotification (Opnum 75) method is called by the client to stop the
 notifications from the server, which were initiated by a call to FAX_StartServerNotification (section
@@ -17992,7 +17820,8 @@ Release: April 23, 2024
 
 209 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18009,9 +17838,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.18
+###### 3.1.4.1.18 FAX_EnumAccounts (Opnum 95)
 
-FAX_EnumAccounts (Opnum 95)
+
 
 The FAX_EnumAccounts (Opnum 95) method is called by the client to enumerate all the fax
 accounts on the server.
@@ -18077,7 +17906,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18131,9 +17961,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.19
+###### 3.1.4.1.19 FAX_EnumerateProviders (Opnum 45)
 
-FAX_EnumerateProviders (Opnum 45)
+
 
 The FAX_EnumerateProviders (Opnum 45) method is called by the client to enumerate all the
 FSPs installed on the server.
@@ -18175,7 +18005,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -18219,9 +18050,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.20
+###### 3.1.4.1.20 FAX_EnumGlobalRoutingInfo (Opnum 17)
 
-FAX_EnumGlobalRoutingInfo (Opnum 17)
+
 
 The FAX_EnumGlobalRoutingInfo (Opnum 17) method is called by the client to enumerate global
 routing information.
@@ -18265,7 +18096,8 @@ Release: April 23, 2024
 
 212 / 413
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -18314,9 +18146,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.21
+###### 3.1.4.1.21 FAX_EnumJobs (Opnum 4)
 
-FAX_EnumJobs (Opnum 4)
+
 
 The FAX_EnumJobs (Opnum 4) method is called by the client to enumerate all the fax jobs on the
 specified fax server.
@@ -18357,7 +18189,8 @@ Release: April 23, 2024
 
 213 / 413
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -18398,9 +18231,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.22
+###### 3.1.4.1.22 FAX_EnumJobsEx (Opnum 28)
 
-FAX_EnumJobsEx (Opnum 28)
+
 
 The FAX_EnumJobsEx (Opnum 28) method is called by the client to enumerate a specified set of
 jobs on the server's queue. The type of jobs to enumerate is described by the dwJobTypes argument.
@@ -18445,7 +18278,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the structure array. This data is serialized on the wire. The field length MUST be clamped to 32
+
+the structure array. This data is serialized on the wire. The field length MUST be clamped to 32
 bits before serialization.
 
 For example, when three jobs are successfully enumerated, the call returns ERROR_SUCCESS with
@@ -18546,7 +18380,8 @@ Release: April 23, 2024
 
 215 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18578,9 +18413,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.23
+###### 3.1.4.1.23 FAX_EnumJobsEx2 (Opnum 88)
 
-FAX_EnumJobsEx2 (Opnum 88)
+
 
 The FAX_EnumJobsEx2 (Opnum 88) method is called by the client to enumerate a specified set of
 jobs on the server's queue for a specific fax account. The type of jobs to enumerate is described by
@@ -18629,7 +18464,8 @@ Release: April 23, 2024
 
 216 / 413
 
-not taken into account. Otherwise, the lpcwstrAccountName parameter SHOULD indicate which
+
+not taken into account. Otherwise, the lpcwstrAccountName parameter SHOULD indicate which
 accounts are to be enumerated.
 
 lpcwstrAccountName: Pointer to a constant, null-terminated character string that indicates which
@@ -18734,7 +18570,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Format
+
+Format
 
 Description
 
@@ -18750,9 +18587,9 @@ Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlyin
 
 [MS-RPCE].
 
-3.1.4.1.24
+###### 3.1.4.1.24 FAX_EnumMessages (Opnum 65)
 
-FAX_EnumMessages (Opnum 65)
+
 
 The FAX_EnumMessages (Opnum 65) method is called by the client.
 
@@ -18825,7 +18662,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18873,9 +18711,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.25
+###### 3.1.4.1.25 FAX_EnumMessagesEx (Opnum 91)
 
-FAX_EnumMessagesEx (Opnum 91)
+
 
 The FAX_EnumMessagesEx (Opnum 91) method is called by the client. This message differs from
 the FAX_EnumMessages (section 3.1.4.1.24) in that this function takes a level parameter, which
@@ -18915,7 +18753,8 @@ Release: April 23, 2024
 
 219 / 413
 
-   [out, ref] LPDWORD lpdwLevel
+
+   [out, ref] LPDWORD lpdwLevel
  );
 
 hEnum: The enumeration handle returned through the lpHandle output argument by
@@ -19013,13 +18852,14 @@ Release: April 23, 2024
 
 220 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol, [MS-RPCE].
 
-3.1.4.1.26
+###### 3.1.4.1.26 FAX_EnumOutboundGroups (Opnum 54)
 
-FAX_EnumOutboundGroups (Opnum 54)
+
 
 The FAX_EnumOutboundGroups (Opnum 54) method is called by the client.
 
@@ -19103,12 +18943,13 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 protocol, [MS-RPCE].
 
-3.1.4.1.27
+###### 3.1.4.1.27 FAX_EnumOutboundRules (Opnum 59)
 
-FAX_EnumOutboundRules (Opnum 59)
+
 
 The FAX_EnumOutboundRules (Opnum 59) method is called by the client to enumerate all the
 outbound routing rules that are present on the specified fax server.
@@ -19189,9 +19030,10 @@ Release: April 23, 2024
 
 222 / 413
 
-3.1.4.1.28
 
-FAX_EnumPorts (Opnum 10)
+###### 3.1.4.1.28 FAX_EnumPorts (Opnum 10)
+
+
 
 The FAX_EnumPorts (Opnum 10) method is called by the client to obtain port state information.
 
@@ -19274,9 +19116,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.29
+###### 3.1.4.1.29 FAX_EnumPortsEx (Opnum 48)
 
-FAX_EnumPortsEx (Opnum 48)
+
 
 The FAX_EnumPortsEx (Opnum 48) method is called by the client to enumerate detailed port state
 information for each device that is connected to the fax server.
@@ -19288,7 +19130,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In response, the server MUST validate whether the client's fax user account has access to enumerate
+
+In response, the server MUST validate whether the client's fax user account has access to enumerate
 all the devices (ports) on the server. On success, the server MUST return information about all its
 devices in Buffer. It MUST also return the size of the returned information and the number of devices
 for which it successfully enumerated information.
@@ -19360,9 +19203,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.30
+###### 3.1.4.1.30 FAX_EnumRoutingExtensions (Opnum 78)
 
-FAX_EnumRoutingExtensions (Opnum 78)
+
 
 The FAX_EnumRoutingExtensions (Opnum 78) function is called by the client to enumerate all the
 routing extensions that are registered with the specified fax server. The function returns detailed
@@ -19378,7 +19221,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-routing extensions in Buffer. The server MUST also return the size of the returned information and the
+
+routing extensions in Buffer. The server MUST also return the size of the returned information and the
 number of routing extensions for which it successfully enumerated information.
 
 The client SHOULD free the returned buffer.
@@ -19452,9 +19296,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.31
+###### 3.1.4.1.31 FAX_EnumRoutingMethods (Opnum 13)
 
-FAX_EnumRoutingMethods (Opnum 13)
+
 
 The FAX_EnumRoutingMethods (Opnum 13) method is called by the client to enumerate all the
 routing methods for a specified port that are registered with the fax server in the fax server's list of
@@ -19469,7 +19313,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In response, the server MUST validate that the client's fax user account has access to query
+
+In response, the server MUST validate that the client's fax user account has access to query
 configuration. The server MUST allocate memory for the routing information array to be passed out
 and the server MUST fill the routing information array with data.
 
@@ -19555,9 +19400,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.32
+###### 3.1.4.1.32 FAX_GetAccountInfo (Opnum 96)
 
-FAX_GetAccountInfo (Opnum 96)
+
 
 [MS-FAX] - v20240423
 Fax Server and Client Remote Protocol
@@ -19566,7 +19411,8 @@ Release: April 23, 2024
 
 226 / 413
 
-The FAX_GetAccountInfo (Opnum 96) method is called by the client to retrieve information about
+
+The FAX_GetAccountInfo (Opnum 96) method is called by the client to retrieve information about
 a specified fax user account. The fax user account for which information is retrieved is specified by the
 lpcwstrAccountName parameter, which can be obtained using the FAX_EnumAccounts (section
 3.1.4.1.18) method.
@@ -19648,7 +19494,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -19679,9 +19526,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.33
+###### 3.1.4.1.33 FAX_GetActivityLoggingConfiguration (Opnum 43)
 
-FAX_GetActivityLoggingConfiguration (Opnum 43)
+
 
 The FAX_GetActivityLoggingConfiguration (Opnum 43) method is called by the client to retrieve
 the current activity logging configuration.
@@ -19739,7 +19586,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -19766,9 +19614,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.34
+###### 3.1.4.1.34 FAX_GetArchiveConfiguration (Opnum 41)
 
-FAX_GetArchiveConfiguration (Opnum 41)
+
 
 The FAX_GetArchiveConfiguration (Opnum 41) method is called by the client to retrieve the
 current archive configuration on the fax server. In response, the server returns archive configuration
@@ -19821,7 +19669,8 @@ Release: April 23, 2024
 
 229 / 413
 
-BufferSize: A pointer to a DWORD ([MS-DTYP] section 2.2.9) in which to return the size, in bytes, of
+
+BufferSize: A pointer to a DWORD ([MS-DTYP] section 2.2.9) in which to return the size, in bytes, of
 
 the buffer.
 
@@ -19878,9 +19727,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.35
+###### 3.1.4.1.35 FAX_GetConfigOption (Opnum 104)
 
-FAX_GetConfigOption (Opnum 104)
+
 
 The FAX_GetConfigOption (Opnum 104) is called by the client to retrieve a configuration setting at
 the server using an RPC_REQUEST packet.
@@ -19915,7 +19764,8 @@ Release: April 23, 2024
 
 230 / 413
 
-option: Identifies the configuration option to be returned. This parameter MUST be a value from the
+
+option: Identifies the configuration option to be returned. This parameter MUST be a value from the
 
 FAX_ENUM_CONFIG_OPTION (section 2.2.3) enumeration.
 
@@ -20010,7 +19860,8 @@ Release: April 23, 2024
 
 231 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -20046,9 +19897,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.36
+###### 3.1.4.1.36 FAX_GetConfiguration (Opnum 19)
 
-FAX_GetConfiguration (Opnum 19)
+
 
 The FAX_GetConfiguration (Opnum 19) method is called by the client to query the general
 configuration of the fax server that is described by the _FAX_CONFIGURATIONW (section 2.2.29)
@@ -20106,7 +19957,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 0x00000008
 
@@ -20131,9 +19983,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.37
+###### 3.1.4.1.37 FAX_GetCountryList (Opnum 30)
 
-FAX_GetCountryList (Opnum 30)
+
 
 The FAX_GetCountryList (Opnum 30) method is called by the client to retrieve the list of
 country/region information that is defined on the server. TAPI maintains this list, which contains
@@ -20203,7 +20055,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -20218,9 +20071,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.38
+###### 3.1.4.1.38 FAX_GetDeviceStatus (Opnum 8)
 
-FAX_GetDeviceStatus (Opnum 8)
+
 
 The FAX_GetDeviceStatus (Opnum 8) method is called by the client to retrieve information about a
 specified fax device (port).
@@ -20297,7 +20150,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -20325,9 +20179,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.39
+###### 3.1.4.1.39 FAX_GetExtensionData (Opnum 49)
 
-FAX_GetExtensionData (Opnum 49)
+
 
 The FAX_GetExtensionData (Opnum 49) method is called by the client to retrieve the private
 configuration data for a fax routing extension or a routing method. Such private configuration data is
@@ -20383,7 +20237,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-extensions or methods the format of this data depends on the respective routing extension or
+
+extensions or methods the format of this data depends on the respective routing extension or
 routing method and SHOULD be treated as opaque binary data by the fax server.
 
 lpdwDataSize: A pointer to a DWORD ([MS-DTYP] section 2.2.9) value that returns the size, in
@@ -20449,9 +20304,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.40
+###### 3.1.4.1.40 FAX_GetGeneralConfiguration (Opnum 97)
 
-FAX_GetGeneralConfiguration (Opnum 97)
+
 
 The FAX_GetGeneralConfiguration (Opnum 97) method is called by the client to request
 information about the general configuration at the server.
@@ -20484,7 +20339,8 @@ Release: April 23, 2024
 
 236 / 413
 
- );
+
+ );
 
 hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
 
@@ -20554,9 +20410,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.41
+###### 3.1.4.1.41 FAX_GetJob (Opnum 5)
 
-FAX_GetJob (Opnum 5)
+
 
 The FAX_GetJob (Opnum 5) method is called by the client to retrieve information regarding a
 specific job. The job is specified by the JobId parameter. The value for the JobId parameter can be
@@ -20579,7 +20435,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If the job is for an incoming fax, the client's fax user account MUST have the
 FAX_ACCESS_MANAGE_RECEIVE_FOLDER access rights or the incoming faxes MUST be public.
@@ -20682,13 +20539,14 @@ Release: April 23, 2024
 
 238 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol, [MS-RPCE].
 
-3.1.4.1.42
+###### 3.1.4.1.42 FAX_GetJobEx (Opnum 29)
 
-FAX_GetJobEx (Opnum 29)
+
 
 The FAX_GetJobEx (Opnum 29) is called by the client to retrieve information about a specified job
 at the server. The job is identified by the job message ID. The job message ID can be obtained using
@@ -20766,7 +20624,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -20793,9 +20652,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.43
+###### 3.1.4.1.43 FAX_GetJobEx2 (Opnum 87)
 
-FAX_GetJobEx2 (Opnum 87)
+
 
 The FAX_GetJobEx2 (Opnum 87) method is called by the client to retrieve information about a
 specified job. The job is identified by the job message ID. The job message ID can be obtained using
@@ -20851,7 +20710,8 @@ Release: April 23, 2024
 
 240 / 413
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -20936,9 +20796,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.44
+###### 3.1.4.1.44 FAX_GetLoggingCategories (Opnum 21)
 
-FAX_GetLoggingCategories (Opnum 21)
+
 
 The FAX_GetLoggingCategories (Opnum 21) method is called by the client. In response, the
 server MUST return the current logging categories for the fax server to which the client has connected.
@@ -20961,7 +20821,8 @@ Release: April 23, 2024
 
 241 / 413
 
-hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
+
+hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
 
 as an input hBinding argument for the FAX_ConnectFaxServer (section 3.1.4.1.10) or
 FAX_ConnectionRefCount (section 3.1.4.1.11) method call used to connect to the fax server.
@@ -21050,9 +20911,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.45
+###### 3.1.4.1.45 FAX_GetMessage (Opnum 66)
 
-FAX_GetMessage (Opnum 66)
+
 
 The FAX_GetMessage (Opnum 66) method is called by the client. The archive can be one of the
 enumerations that are defined by FAX_ENUM_MESSAGE_FOLDER (section 2.2.2) except
@@ -21067,7 +20928,8 @@ Release: April 23, 2024
 
 242 / 413
 
-In response, the server MUST validate that the message ID is for a valid message. The server MUST
+
+In response, the server MUST validate that the message ID is for a valid message. The server MUST
 validate that the client's fax user account has access to read the message.
 
 On success, the server MUST return the contents of the message and also its size.
@@ -21167,7 +21029,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -21192,9 +21055,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.46
+###### 3.1.4.1.46 FAX_GetMessageEx (Opnum 89)
 
-FAX_GetMessageEx (Opnum 89)
+
 
 The FAX_GetMessageEx (Opnum 89) method is called by the client to retrieve a particular
 message from one of the specified fax message archives. The dwlMessageId parameter specifies a
@@ -21251,7 +21114,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lppBuffer: A pointer to an array of FAX_MESSAGE_1 structures that contain the retrieved
+
+lppBuffer: A pointer to an array of FAX_MESSAGE_1 structures that contain the retrieved
 
 messages.
 
@@ -21341,9 +21205,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.47
+###### 3.1.4.1.47 FAX_GetOutboxConfiguration (Opnum 38)
 
-FAX_GetOutboxConfiguration (Opnum 38)
+
 
 The FAX_GetOutboxConfiguration (Opnum 38) method is called by the client to retrieve the
 outbox configuration at the server.
@@ -21366,7 +21230,8 @@ Release: April 23, 2024
 
 245 / 413
 
- );
+
+ );
 
 hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
 used as an input hBinding argument for the FAX_ConnectFaxServer (section 3.1.4.1.10) or
@@ -21413,9 +21278,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.48
+###### 3.1.4.1.48 FAX_GetPageData (Opnum 7)
 
-FAX_GetPageData (Opnum 7)
+
 
 The FAX_GetPageData (Opnum 7) method is called by the client to retrieve data in the first page of
 an outgoing fax job. The information that is returned in the buffer is an in-memory copy of the first
@@ -21448,7 +21313,8 @@ Release: April 23, 2024
 
 246 / 413
 
-hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
+
+hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
 
 as an input hBinding argument for the FAX_ConnectFaxServer (section 3.1.4.1.10) or
 FAX_ConnectionRefCount (section 3.1.4.1.11) method call used to connect to the fax server.
@@ -21514,9 +21380,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.49
+###### 3.1.4.1.49 FAX_GetPersonalCoverPagesOption (Opnum 40)
 
-FAX_GetPersonalCoverPagesOption (Opnum 40)
+
 
 The FAX_GetPersonalCoverPagesOption (Opnum 40) method is called by the client to retrieve
 information about the supported personal cover-page options.
@@ -21539,7 +21405,8 @@ Release: April 23, 2024
 
 247 / 413
 
-lpbPersonalCPAllowed: A pointer to a BOOL that receives the personal cover-pages option. If
+
+lpbPersonalCPAllowed: A pointer to a BOOL that receives the personal cover-pages option. If
 TRUE, the server allows sending personal cover pages. Otherwise, the server does not allow
 personal cover pages.
 
@@ -21563,9 +21430,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.50
+###### 3.1.4.1.50 FAX_GetPersonalProfileInfo (Opnum 31)
 
-FAX_GetPersonalProfileInfo (Opnum 31)
+
 
 The FAX_GetPersonalProfileInfo (Opnum 31) method is called by the client to retrieve
 information about the personal profile (section 3.1.1) of the sender or the receiver of a fax from the
@@ -21617,7 +21484,8 @@ Release: April 23, 2024
 
 248 / 413
 
-Buffer:  A pointer to a FAX_PERSONAL_PROFILEW in which to place the returned recipient or
+
+Buffer:  A pointer to a FAX_PERSONAL_PROFILEW in which to place the returned recipient or
 
 sender personal profile information.
 
@@ -21710,9 +21578,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.51
+###### 3.1.4.1.51 FAX_GetPort (Opnum 11)
 
-FAX_GetPort (Opnum 11)
+
 
 The FAX_GetPort (Opnum 11) method is called by the client to retrieve port status information for
 a requested port at the server.
@@ -21732,7 +21600,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- error_status_t FAX_GetPort(
+
+ error_status_t FAX_GetPort(
    [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
    [out, size_is(,*BufferSize)] LPBYTE* PortBuffer,
    [out, ref] LPDWORD BufferSize
@@ -21803,9 +21672,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.52
+###### 3.1.4.1.52 FAX_GetPortEx (Opnum 46)
 
-FAX_GetPortEx (Opnum 46)
+
 
 The FAX_GetPortEx (Opnum 46) method is called by the client to retrieve port status information
 for a requested port at the server. The device ID that is passed in SHOULD be obtained from
@@ -21831,7 +21700,8 @@ Release: April 23, 2024
 
 250 / 413
 
-   [out, size_is(, *BufferSize)] LPBYTE* Buffer,
+
+   [out, size_is(, *BufferSize)] LPBYTE* Buffer,
    [out, ref] LPDWORD BufferSize
  );
 
@@ -21896,9 +21766,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.53
+###### 3.1.4.1.53 FAX_GetQueueStates (Opnum 32)
 
-FAX_GetQueueStates (Opnum 32)
+
 
 The FAX_GetQueueStates (Opnum 32) method is called by the client to retrieve the state of the
 fax queues at the server.
@@ -21922,7 +21792,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pdwQueueStates: A pointer to a DWORD ([MS-DTYP] section 2.2.9) value that receives state
+
+pdwQueueStates: A pointer to a DWORD ([MS-DTYP] section 2.2.9) value that receives state
 
 information about the fax queue. If this value is zero, both the incoming and outgoing queues
 are unblocked. Otherwise, this value is a combination of one or more of the following values.
@@ -21982,9 +21853,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.54
+###### 3.1.4.1.54 FAX_GetReceiptsConfiguration (Opnum 34)
 
-FAX_GetReceiptsConfiguration (Opnum 34)
+
 
 The FAX_GetReceiptsConfiguration (Opnum 34) method is called by the client. On success, the
 server MUST return the receipt configuration information of the fax server.
@@ -22016,7 +21887,8 @@ Release: April 23, 2024
 
 252 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -22054,9 +21926,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.55
+###### 3.1.4.1.55 FAX_GetReceiptsOptions (Opnum 36)
 
-FAX_GetReceiptsOptions (Opnum 36)
+
 
 The FAX_GetReceiptsOptions (Opnum 36) method is called by the client to retrieve the supported
 receipt options on the server.
@@ -22120,13 +21992,14 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol [MS-RPCE].
 
-3.1.4.1.56
+###### 3.1.4.1.56 FAX_GetRecipientsLimit (Opnum 84)
 
-FAX_GetRecipientsLimit (Opnum 84)
+
 
 The FAX_GetRecipientsLimit (Opnum 84) method is called by the client to retrieve information
 about the recipient limit of a single broadcast job.
@@ -22173,9 +22046,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.57
+###### 3.1.4.1.57 FAX_GetRoutingInfo (Opnum 15)
 
-FAX_GetRoutingInfo (Opnum 15)
+
 
 The FAX_GetRoutingInfo (Opnum 15) method is called by the client to retrieve information about
 a specified routing method that is identified by the passed-in GUID.
@@ -22201,7 +22074,8 @@ Release: April 23, 2024
 
 254 / 413
 
-   [out, ref] LPDWORD RoutingInfoBufferSize
+
+   [out, ref] LPDWORD RoutingInfoBufferSize
  );
 
 FaxPortHandle: An RPC context handle that references a specified fax port.
@@ -22288,9 +22162,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.58
+###### 3.1.4.1.58 FAX_GetSecurity (Opnum 23)
 
-FAX_GetSecurity (Opnum 23)
+
 
 The FAX_GetSecurity (Opnum 23) method is called by the client to retrieve information about the
 fax security descriptor from the fax server.
@@ -22306,7 +22180,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Protocol version FAX_API_VERSION_3 (0x00030000) fax servers SHOULD fail this call by returning
+
+Protocol version FAX_API_VERSION_3 (0x00030000) fax servers SHOULD fail this call by returning
 ERROR_NOT_SUPPORTED (0x00000032). The fax client SHOULD NOT call this method if the protocol
 version reported by the server is FAX_API_VERSION_3 (0x00030000). For more information, see
 FAX_ConnectFaxServer (section 3.1.4.1.10). The fax client SHOULD call the
@@ -22368,9 +22243,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.59
+###### 3.1.4.1.59 FAX_GetSecurityEx (Opnum 81)
 
-FAX_GetSecurityEx (Opnum 81)
+
 
 The FAX_GetSecurityEx (Opnum 81) method is called by the clients to retrieve information about
 the fax security descriptor from the fax server.<134>
@@ -22393,7 +22268,8 @@ Release: April 23, 2024
 
 256 / 413
 
- error_status_t FAX_GetSecurityEx(
+
+ error_status_t FAX_GetSecurityEx(
    [in] handle_t hBinding,
    [in] SECURITY_INFORMATION SecurityInformation,
    [out, size_is(, *lpdwBufferSize)]
@@ -22486,9 +22362,10 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.1.60
 
-FAX_GetSecurityEx2 (Opnum 99)
+###### 3.1.4.1.60 FAX_GetSecurityEx2 (Opnum 99)
+
+
 
 The FAX_GetSecurityEx2 (Opnum 99) method is called by the client to retrieve information about
 the fax security descriptor from the fax server.
@@ -22559,7 +22436,8 @@ Release: April 23, 2024
 
 258 / 413
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -22609,9 +22487,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.61
+###### 3.1.4.1.61 FAX_GetServerActivity (Opnum 76)
 
-FAX_GetServerActivity (Opnum 76)
+
 
 The fax client application calls the FAX_GetServerActivity (Opnum 76) method to retrieve the
 status of the fax queue activity and event log reports.
@@ -22656,7 +22534,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -22676,9 +22555,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.62
+###### 3.1.4.1.62 FAX_GetServerSKU (Opnum 85)
 
-FAX_GetServerSKU (Opnum 85)
+
 
 The FAX_GetServerSKU (Opnum 85) method is called by the client. In response, the server returns
 the SKU of the fax server operating system.
@@ -22725,9 +22604,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.63
+###### 3.1.4.1.63 FAX_GetServicePrinters (Opnum 0)
 
-FAX_GetServicePrinters (Opnum 0)
+
 
 The fax client application calls the FAX_GetServicePrinters (Opnum 0) method to obtain a list of
 printers that are visible to the fax server.
@@ -22743,7 +22622,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-buffer containing an array of FAX_PRINTER_INFOW (section 2.2.43) structures, each of the
+
+buffer containing an array of FAX_PRINTER_INFOW (section 2.2.43) structures, each of the
 returned structures describing one enumerated printer. The server MUST also return the size of this
 information and the number of printers for which it enumerated the information successfully.
 
@@ -22814,9 +22694,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.64
+###### 3.1.4.1.64 FAX_GetVersion (Opnum 37)
 
-FAX_GetVersion (Opnum 37)
+
 
 The fax client application calls the FAX_GetVersion (Opnum 37) method to obtain the version of
 the fax server it is connected to.
@@ -22834,7 +22714,8 @@ Release: April 23, 2024
 
 261 / 413
 
-   [in, out] PFAX_VERSION pVersion
+
+   [in, out] PFAX_VERSION pVersion
  );
 
 hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
@@ -22863,9 +22744,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.65
+###### 3.1.4.1.65 FAX_OpenPort (Opnum 2)
 
-FAX_OpenPort (Opnum 2)
+
 
 The FAX_OpenPort (Opnum 2) method is called by the client. In response, the server opens a fax
 port for subsequent use in other fax methods, and it returns a fax port handle for use by the fax client
@@ -22914,7 +22795,8 @@ Release: April 23, 2024
 
 262 / 413
 
-Value/code
+
+Value/code
 
 Meaning
 
@@ -22982,9 +22864,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.66
+###### 3.1.4.1.66 FAX_ReadFile (Opnum 71)
 
-FAX_ReadFile (Opnum 71)
+
 
 The fax client application calls the FAX_ReadFile (Opnum 71) method to copy a file from the server
 (in chunks).
@@ -23013,7 +22895,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client MUST allocate the memory for the buffer before making the call and MUST free the buffer
+
+The client MUST allocate the memory for the buffer before making the call and MUST free the buffer
 when done with the data written by the server in the buffer.
 
  error_status_t FAX_ReadFile(
@@ -23082,9 +22965,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.67
+###### 3.1.4.1.67 FAX_ReAssignMessage (Opnum 102)
 
-FAX_ReAssignMessage (Opnum 102)
+
 
 The fax client application calls the FAX_ReAssignMessage (Opnum 102) method to reassign the
 specified fax message to a set of users.<144>
@@ -23102,7 +22985,8 @@ Release: April 23, 2024
 
 264 / 413
 
-The dwlMessageId parameter specifies a particular message and can be obtained using the
+
+The dwlMessageId parameter specifies a particular message and can be obtained using the
 FAX_EnumMessages (section 3.1.4.1.24) method or the FAX_EnumMessagesEx (section
 3.1.4.1.25) methods.
 
@@ -23210,13 +23094,14 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol [MS-RPCE].
 
-3.1.4.1.68
+###### 3.1.4.1.68 FAX_RefreshArchive (Opnum 82)
 
-FAX_RefreshArchive (Opnum 82)
+
 
 A fax client application calls the FAX_RefreshArchive (Opnum 82) method to notify the server that
 the archive folder has been changed and SHOULD be refreshed.<145>
@@ -23265,9 +23150,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.69
+###### 3.1.4.1.69 FAX_RegisterServiceProviderEx (Opnum 60)
 
-FAX_RegisterServiceProviderEx (Opnum 60)
+
 
 The fax client application calls the FAX_RegisterServiceProviderEx (Opnum 60) method to
 register a fax service provider (FSP) with the Fax Service. Registration takes place after the Fax
@@ -23294,7 +23179,8 @@ Release: April 23, 2024
 
 266 / 413
 
-   [in] DWORD dwCapabilities
+
+   [in] DWORD dwCapabilities
  );
 
 hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
@@ -23400,7 +23286,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23411,9 +23298,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.70
+###### 3.1.4.1.70 FAX_RemoveMessage (Opnum 67)
 
-FAX_RemoveMessage (Opnum 67)
+
 
 The fax client application calls the FAX_RemoveMessage (Opnum 67) method to remove a
 message from a specific Fax Archive Folder. The dwlMessageId parameter specifies a particular
@@ -23493,7 +23380,8 @@ Release: April 23, 2024
 
 268 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23510,9 +23398,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.71
+###### 3.1.4.1.71 FAX_RemoveOutboundGroup (Opnum 53)
 
-FAX_RemoveOutboundGroup (Opnum 53)
+
 
 The fax client application calls the FAX_RemoveOutboundGroup (Opnum 53) method to remove
 an existing outbound routing group from the fax server. The name of the group to remove is
@@ -23590,7 +23478,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23626,9 +23515,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.72
+###### 3.1.4.1.72 FAX_RemoveOutboundRule (Opnum 57)
 
-FAX_RemoveOutboundRule (Opnum 57)
+
 
 The FAX_RemoveOutboundRule (Opnum 57) method removes an existing outbound routing rule
 from the rules map. The default outbound rule cannot be removed.
@@ -23690,7 +23579,8 @@ Also returned if the fax server tried to return
 
 270 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23724,9 +23614,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.73
+###### 3.1.4.1.73 FAX_SendDocumentEx (Opnum 27)
 
-FAX_SendDocumentEx (Opnum 27)
+
 
 The FAX_SendDocumentEx (Opnum 27) method is called by the client.
 
@@ -23774,7 +23664,8 @@ Release: April 23, 2024
 
 271 / 413
 
-lpcwstrFileName: A pointer to a null-terminated character string that contains the name of the file,
+
+lpcwstrFileName: A pointer to a null-terminated character string that contains the name of the file,
 without path information, of the body of the fax in TIFF. The body file is previously copied to the
 server queue directory using the call sequence of FAX_StartCopyToServer (section
 3.1.4.1.97) to retrieve the file name from the server, FAX_WriteFile (section 3.1.4.1.105) to
@@ -23859,7 +23750,8 @@ because this error code is unsupported by the fax client
 
 272 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23977,7 +23869,8 @@ does not support the requested operation.<154>
 
 273 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -23997,9 +23890,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.74
+###### 3.1.4.1.74 FAX_SetActivityLoggingConfiguration (Opnum 44)
 
-FAX_SetActivityLoggingConfiguration (Opnum 44)
+
 
 The fax client application calls the FAX_SetActivityLoggingConfiguration (Opnum 44) method to
 set options for activity logging. This includes setting whether entries for incoming and outgoing
@@ -24074,7 +23967,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -24131,9 +24025,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.75
+###### 3.1.4.1.75 FAX_SetArchiveConfiguration (Opnum 42)
 
-FAX_SetArchiveConfiguration (Opnum 42)
+
 
 The fax client application calls the FAX_SetArchiveConfiguration (Opnum 42) method to set the
 archive configuration for a specific fax folder on the fax server.
@@ -24173,7 +24067,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-and if the bSizeQuotaWarning member is set to TRUE, an event log warning SHOULD be issued.
+
+and if the bSizeQuotaWarning member is set to TRUE, an event log warning SHOULD be issued.
 If an event log warning was already issued, no more events SHOULD be issued until the size of
 the archive drops below the dwSizeQuotaLowWatermark value. If a fax message stays in the
 archive longer than the dwAgeLimit value, it MAY be automatically deleted. If the dwAgeLimit
@@ -24289,13 +24184,14 @@ Release: April 23, 2024
 
 276 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol [MS-RPCE].
 
-3.1.4.1.76
+###### 3.1.4.1.76 FAX_SetConfiguration (Opnum 20)
 
-FAX_SetConfiguration (Opnum 20)
+
 
 The fax client application calls the FAX_SetConfiguration (Opnum 20) method to change the
 general configuration of the fax server. The FAX_CONFIGURATIONW (section 2.2.28) structure
@@ -24376,7 +24272,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -24404,9 +24301,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.77
+###### 3.1.4.1.77 FAX_SetConfigWizardUsed (Opnum 77)
 
-FAX_SetConfigWizardUsed (Opnum 77)
+
 
 The FAX_SetConfigWizardUsed (Opnum 77) method is called by the client. The server MUST
 validate that the client's fax user account has access to manage configuration information on the
@@ -24449,9 +24346,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.78
+###### 3.1.4.1.78 FAX_SetDeviceOrderInGroup (Opnum 55)
 
-FAX_SetDeviceOrderInGroup (Opnum 55)
+
 
 The FAX_SetDeviceOrderInGroup (Opnum 55) method is called by the client. The value for the
 dwDeviceId parameter can be obtained using the FAX_EnumPorts (section 3.1.4.1.28) method or
@@ -24466,7 +24363,8 @@ Release: April 23, 2024
 
 278 / 413
 
-The order is the 1-based location of the device in the group. The value of 1 indicates the device is
+
+The order is the 1-based location of the device in the group. The value of 1 indicates the device is
 ordered first in the group. The order of devices in the group determines the order in which they are
 used to send outgoing faxes when the group is selected by an outbound routing rule.
 
@@ -24560,7 +24458,8 @@ corrupted.
 
 279 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -24586,9 +24485,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.79
+###### 3.1.4.1.79 FAX_SetExtensionData (Opnum 50)
 
-FAX_SetExtensionData (Opnum 50)
+
 
 The fax client application calls the FAX_SetExtensionData (Opnum 50) method in order to write
 the private data for a routing extension or routing method for one or all fax devices installed on the
@@ -24643,7 +24542,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the specific GUID value whether the call is requesting to set routing extension data or routing
+
+the specific GUID value whether the call is requesting to set routing extension data or routing
 method data. If some data is already set for the specified GUID, the fax server SHOULD replace it
 with the new data that is pointed to by the pData parameter.
 
@@ -24716,9 +24616,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.80
+###### 3.1.4.1.80 FAX_SetGeneralConfiguration (Opnum 98)
 
-FAX_SetGeneralConfiguration (Opnum 98)
+
 
 The fax client application calls the FAX_SetGeneralConfiguration (Opnum 98) method to set the
 configuration options provided for the fax service. The FAX_GENERAL_CONFIG (section 2.2.31)
@@ -24744,7 +24644,8 @@ Release: April 23, 2024
 
 281 / 413
 
-   [in, ref, size_is(BufferSize)] const LPBYTE Buffer,
+
+   [in, ref, size_is(BufferSize)] const LPBYTE Buffer,
    [in, range(0,FAX_MAX_RPC_BUFFER)]
      DWORD BufferSize
  );
@@ -24853,7 +24754,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -24871,9 +24773,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.81
+###### 3.1.4.1.81 FAX_SetGlobalRoutingInfo (Opnum 18)
 
-FAX_SetGlobalRoutingInfo (Opnum 18)
+
 
 The fax client application calls the FAX_SetGlobalRoutingInfo (Opnum 18) method to set global
 routing properties such as the routing method priority.
@@ -24940,9 +24842,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.82
+###### 3.1.4.1.82 FAX_SetJob (Opnum 6)
 
-FAX_SetJob (Opnum 6)
+
 
 [MS-FAX] - v20240423
 Fax Server and Client Remote Protocol
@@ -24951,7 +24853,8 @@ Release: April 23, 2024
 
 283 / 413
 
-The FAX_SetJob (Opnum 6) method is called by the client. The value for the JobId parameter can
+
+The FAX_SetJob (Opnum 6) method is called by the client. The value for the JobId parameter can
 be obtained using one of the following methods: FAX_EnumJobs (section 3.1.4.1.21),
 FAX_EnumJobsEx (section 3.1.4.1.22), or FAX_EnumJobsEx2 (section 3.1.4.1.23).
 
@@ -25051,7 +24954,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -25098,9 +25002,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.83
+###### 3.1.4.1.83 FAX_SetLoggingCategories (Opnum 22)
 
-FAX_SetLoggingCategories (Opnum 22)
+
 
 The FAX_SetLoggingCategories (Opnum 22) method is called by the client. On success, the server
 MUST modify the current logging categories for the fax server to which the client has connected. A
@@ -25146,7 +25050,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -25198,9 +25103,9 @@ The FAX_LOG_CATEGORY array MUST be serialized. For more information, see [MSDN-
 FAX_LOG_CATEGORY]. The variable data fields, such as strings, SHOULD be filled with the offset to
 the string from the beginning of the buffer and not the actual address.
 
-3.1.4.1.84
+###### 3.1.4.1.84 FAX_SetMessage (Opnum 103)
 
-FAX_SetMessage (Opnum 103)
+
 
 The fax client application calls the FAX_SetMessage (Opnum 103) method to set the specific
 message properties for the message identified by its ID.<162> The dwlMessageId parameter specifies
@@ -25239,7 +25144,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwlMessageId: The unique ID number of the fax message.
+
+dwlMessageId: The unique ID number of the fax message.
 
 Folder: Identifies the location of the fax message. The value in this parameter MUST come from the
 
@@ -25306,9 +25212,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.85
+###### 3.1.4.1.85 FAX_SetOutboundGroup (Opnum 52)
 
-FAX_SetOutboundGroup (Opnum 52)
+
 
 The fax client application calls the FAX_SetOutboundGroup (Opnum 52) method to set a new
 device list to an existing group. The name of the group to remove is specified using the
@@ -25336,7 +25242,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pGroup: A pointer to an RPC_FAX_OUTBOUND_ROUTING_GROUPW buffer to set.
+
+pGroup: A pointer to an RPC_FAX_OUTBOUND_ROUTING_GROUPW buffer to set.
 
 Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
@@ -25416,9 +25323,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.86
+###### 3.1.4.1.86 FAX_SetOutboundRule (Opnum 58)
 
-FAX_SetOutboundRule (Opnum 58)
+
 
 A fax client application uses the FAX_SetOutboundRule (Opnum 58) method to set the information
 about an individual fax outbound routing rule.
@@ -25438,7 +25345,8 @@ Release: April 23, 2024
 
 288 / 413
 
-hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
+
+hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
 used as an input hBinding argument for the FAX_ConnectFaxServer (section 3.1.4.1.10) or
 FAX_ConnectionRefCount (section 3.1.4.1.11) method call used to connect to the fax server.
 
@@ -25539,9 +25447,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.87
+###### 3.1.4.1.87 FAX_SetOutboxConfiguration (Opnum 39)
 
-FAX_SetOutboxConfiguration (Opnum 39)
+
 
 289 / 413
 
@@ -25550,7 +25458,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The fax client application calls the FAX_SetOutboxConfiguration (Opnum 39) method to set the
+
+The fax client application calls the FAX_SetOutboxConfiguration (Opnum 39) method to set the
 current Outbox configuration such as the Discount Time.
 
 In response, the server MUST validate whether the client's fax user account has access to set an
@@ -25619,9 +25528,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.88
+###### 3.1.4.1.88 FAX_SetPort (Opnum 12)
 
-FAX_SetPort (Opnum 12)
+
 
 A fax client application uses the FAX_SetPort (Opnum 12) method to set fax device information.
 The function sets extension configuration properties that are stored at the device level, such as
@@ -25640,7 +25549,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- error_status_t FAX_SetPort(
+
+ error_status_t FAX_SetPort(
    [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
    [in] const FAX_PORT_INFO* PortInfo
  );
@@ -25726,9 +25636,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.89
+###### 3.1.4.1.89 FAX_SetPortEx (Opnum 47)
 
-FAX_SetPortEx (Opnum 47)
+
 
 A fax client application uses the FAX_SetPortEx (Opnum 47) method to set fax device information.
 The function sets extension configuration properties that are stored at the device level, such as enable
@@ -25741,7 +25651,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwDeviceId parameter can be obtained using the FAX_EnumPorts (section 3.1.4.1.28) method or
+
+dwDeviceId parameter can be obtained using the FAX_EnumPorts (section 3.1.4.1.28) method or
 the FAX_EnumPortsEx (section 3.1.4.1.29) method.
 
 In response, the server MUST validate whether the client's fax user account has access to the server.
@@ -25844,7 +25755,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -25857,9 +25769,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.90
+###### 3.1.4.1.90 FAX_SetQueue (Opnum 33)
 
-FAX_SetQueue (Opnum 33)
+
 
 The fax client application calls the FAX_SetQueue (Opnum 33) method to change the state of the
 server queue. In response, the server MUST validate whether the client's fax user account has
@@ -25945,7 +25857,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -25973,9 +25886,9 @@ Exceptions Thrown: No exceptions are thrown except those thrown by the underlyin
 
 [MS-RPCE].
 
-3.1.4.1.91
+###### 3.1.4.1.91 FAX_SetReceiptsConfiguration (Opnum 35)
 
-FAX_SetReceiptsConfiguration (Opnum 35)
+
 
 The FAX_SetReceiptsConfiguration (Opnum 35) method is called by the client. On success, the
 server MUST set the receipt configuration information that is used by the fax server to send delivery
@@ -26049,7 +25962,8 @@ pReceipts: the DRT_EMAIL flag is set within the
 
 294 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -26098,9 +26012,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol [MS-RPCE].
 
-3.1.4.1.92
+###### 3.1.4.1.92 FAX_SetRecipientsLimit (Opnum 83)
 
-FAX_SetRecipientsLimit (Opnum 83)
+
 
 The FAX_SetRecipientsLimit (Opnum 83) method is called by the client. A fax client application
 calls FAX_SetRecipientsLimit to set the recipient limit of a single broadcast job. On success, the
@@ -26136,13 +26050,14 @@ Release: April 23, 2024
 
 295 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol, [MS-RPCE].
 
-3.1.4.1.93
+###### 3.1.4.1.93 FAX_SetRoutingInfo (Opnum 16)
 
-FAX_SetRoutingInfo (Opnum 16)
+
 
 The FAX_SetRoutingInfo (Opnum 16) method is called by the client to set routing information for
 a fax routing method.
@@ -26232,7 +26147,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -26252,9 +26168,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.94
+###### 3.1.4.1.94 FAX_SetSecurity (Opnum 24)
 
-FAX_SetSecurity (Opnum 24)
+
 
 The FAX_SetSecurity (Opnum 24) method is called by the client. On success, the server MUST set
 the fax server's security descriptor.
@@ -26326,7 +26242,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -26407,9 +26324,9 @@ information
 The right to modify the system access control list (SACL) in the object's
 security descriptor (ACCESS_SYSTEM_SECURITY).
 
-3.1.4.1.95
+###### 3.1.4.1.95 FAX_SetSecurityEx2 (Opnum 100)
 
-FAX_SetSecurityEx2 (Opnum 100)
+
 
 The FAX_SetSecurityEx2 (Opnum 100) method is called by the client. On success, the server
 MUST set the fax server's security descriptor.
@@ -26432,7 +26349,8 @@ Release: April 23, 2024
 
 298 / 413
 
-   [in, unique, size_is(dwBufferSize)]
+
+   [in, unique, size_is(dwBufferSize)]
      const LPBYTE pSecurityDescriptor,
    [in, range(0,FAX_MAX_RPC_BUFFER)]
      DWORD dwBufferSize
@@ -26539,7 +26457,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The server MUST validate that the client has the following credentials to set security on the server.
+
+The server MUST validate that the client has the following credentials to set security on the server.
 
 Action
 
@@ -26566,9 +26485,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.96
+###### 3.1.4.1.96 FAX_StartCopyMessageFromServer (Opnum 69)
 
-FAX_StartCopyMessageFromServer (Opnum 69)
+
 
 The FAX_StartCopyMessageFromServer (Opnum 69) method is called by the fax client to start a
 copy operation of a fax message from the Fax Archive Folder (section 3.1.1) or of a fax job from the
@@ -26625,7 +26544,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return/error code values
+
+Return/error code values
 
 Description
 
@@ -26674,9 +26594,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.97
+###### 3.1.4.1.97 FAX_StartCopyToServer (Opnum 68)
 
-FAX_StartCopyToServer (Opnum 68)
+
 
 The client calls the FAX_StartCopyToServer (Opnum 68) method to start a copy of a file to the
 server queue directory (section 3.1.1) for which the client's fax user account has access to submit
@@ -26716,7 +26636,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD NOT write more than 255 characters, including the terminating null character, to the
+
+SHOULD NOT write more than 255 characters, including the terminating null character, to the
 returned character string.
 
 lpHandle: The copy handle identifying this copy operation.
@@ -26767,9 +26688,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.98
+###### 3.1.4.1.98 FAX_StartMessagesEnum (Opnum 63)
 
-FAX_StartMessagesEnum (Opnum 63)
+
 
 The FAX_StartMessagesEnum (Opnum 63) method is called by the client. On success, the server
 MUST start enumerating messages in one of the archives.
@@ -26806,7 +26727,8 @@ Release: April 23, 2024
 
 302 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -26858,9 +26780,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.99
+###### 3.1.4.1.99 FAX_StartMessagesEnumEx (Opnum 90)
 
-FAX_StartMessagesEnumEx (Opnum 90)
+
 
 The FAX_StartMessagesEnumEx (Opnum 90) method is called by the client. On success, the
 server MUST start enumerating messages in the specified archive folder.
@@ -26898,7 +26820,8 @@ Release: April 23, 2024
 
 303 / 413
 
-hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
+
+hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
 
 used as an input hBinding argument for the FAX_ConnectFaxServer or
 FAX_ConnectionRefCount (section 3.1.4.1.11) method call used to connect to the fax server.
@@ -27000,7 +26923,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The account name that lpcwstrAccountName indicates MUST be in one of the following formats. Any
+
+The account name that lpcwstrAccountName indicates MUST be in one of the following formats. Any
 other format is invalid.
 
 Format
@@ -27015,7 +26939,7 @@ For a local user that has machine_name as the local machine's name.
 
 For a nonlocal user.
 
-3.1.4.1.100  FAX_StartServerNotification (Opnum 73)
+###### 3.1.4.1.100 FAX_StartServerNotification (Opnum 73)
 
 The FAX_StartServerNotification (Opnum 73) method is called by the client to get notification
 about legacy events. On success, the server MUST start to notify the fax client about the occurring fax
@@ -27077,7 +27001,8 @@ Release: April 23, 2024
 
 305 / 413
 
-lpHandle: Returned subscription context handle. This handle can be used in the
+
+lpHandle: Returned subscription context handle. This handle can be used in the
 
 FAX_EndServerNotification (section 3.1.4.1.17) method.
 
@@ -27126,7 +27051,7 @@ calls FAX_EndServerNotification, and the server SHOULD call FAX_CloseConnection 
 
 Note  This method only supports TCP/IP as the transport protocol.
 
-3.1.4.1.101  FAX_StartServerNotificationEx (Opnum 74)
+###### 3.1.4.1.101 FAX_StartServerNotificationEx (Opnum 74)
 
 The FAX_StartServerNotificationEx (Opnum 74) method is called by the client to get notification
 about extended or legacy events. On success, the server MUST start to notify the fax client about the
@@ -27159,7 +27084,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lpcwstrEndPoint: A pointer to a string containing the client machine RPC server endpoint string.
+
+lpcwstrEndPoint: A pointer to a string containing the client machine RPC server endpoint string.
 
 The endpoint MUST be a TCP port between 1024 and 65534 (in increments of 10).
 
@@ -27266,7 +27192,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -27325,7 +27252,7 @@ specified by the bEventEx parameter. When the client no longer needs to receive 
 FAX_EndServerNotification; the server SHOULD call FAX_CloseConnection (section 3.2.4.4) to
 close the connection.
 
-3.1.4.1.102  FAX_StartServerNotificationEx2 (Opnum 92)
+###### 3.1.4.1.102 FAX_StartServerNotificationEx2 (Opnum 92)
 
 The FAX_StartServerNotificationEx2 (Opnum 92) method is called by the client to get notification
 about extended events. On success, the server MUST start to notify the fax client about the occurring
@@ -27362,7 +27289,8 @@ Release: April 23, 2024
 
 308 / 413
 
-lpcwstrAccountName: A pointer to a constant null-terminated character string that indicates which
+
+lpcwstrAccountName: A pointer to a constant null-terminated character string that indicates which
 account to enumerate. If this value is NULL, the current account's jobs are enumerated. Cross-
 account enumeration currently is not supported.
 
@@ -27464,7 +27392,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -27530,7 +27459,7 @@ FAX_ClientEventQueueEx (section 3.2.4.3). When the client no longer needs to rec
 notifications, it calls FAX_EndServerNotification (section 3.1.4.1.17), and the server SHOULD call
 FAX_CloseConnection (section 3.2.4.4) to close the connection.
 
-3.1.4.1.103  FAX_UnregisterRoutingExtension (Opnum 62)
+###### 3.1.4.1.103 FAX_UnregisterRoutingExtension (Opnum 62)
 
 The FAX_UnregisterRoutingExtension (Opnum 62) method unregisters an existing inbound
 routing extension.<178>
@@ -27551,7 +27480,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in, string, ref] LPCWSTR lpcwstrExtensionName
+
+   [in, string, ref] LPCWSTR lpcwstrExtensionName
  );
 
 hFaxHandle: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle
@@ -27585,7 +27515,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.1.104  FAX_UnregisterServiceProviderEx (Opnum 61)
+###### 3.1.4.1.104 FAX_UnregisterServiceProviderEx (Opnum 61)
 
 The FAX_UnregisterServiceProviderEx (Opnum 61) method is called when the client needs to
 unregister a fax service provider (FSP). In response, the server MUST validate that the client's fax
@@ -27628,11 +27558,12 @@ Release: April 23, 2024
 
 311 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol [MS-RPCE].
 
-3.1.4.1.105  FAX_WriteFile (Opnum 70)
+###### 3.1.4.1.105 FAX_WriteFile (Opnum 70)
 
 The FAX_WriteFile (Opnum 70) method is called by the client.
 
@@ -27720,7 +27651,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.2  FaxObs Server Interface
+
+##### 3.1.4.2 FaxObs Server Interface
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 5.0, as specified in [MS-RPCE] section 3.
@@ -27831,7 +27763,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -27946,7 +27879,8 @@ Release: April 23, 2024
 
 314 / 413
 
-Method
+
+Method
 
 Description
 
@@ -27995,7 +27929,7 @@ opnum, and the server behavior is undefined because it does not affect interoper
 All methods MUST NOT throw exceptions except those that are thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.1.4.2.1 Sequencing Rules
+###### 3.1.4.2.1 Sequencing Rules
 
 The successful outcome of a series of RPC method calls depends on the sequence of calls made; this
 is because state is maintained on the server throughout the method invocations. It is valid to call RPC
@@ -28032,7 +27966,8 @@ Release: April 23, 2024
 
 315 / 413
 
-  FaxObs_GetPageData (section 3.1.4.2.12)
+
+  FaxObs_GetPageData (section 3.1.4.2.12)
 
   FaxObs_GetDeviceStatus (section 3.1.4.2.13)
 
@@ -28102,7 +28037,8 @@ Release: April 23, 2024
 
 316 / 413
 
-  FaxObs_GetRoutingInfo (section 3.1.4.2.20)
+
+  FaxObs_GetRoutingInfo (section 3.1.4.2.20)
 
   FaxObs_SetRoutingInfo (section 3.1.4.2.21)
 
@@ -28117,7 +28053,7 @@ identifier before calling the following methods:
 
   FaxObs_Abort (section 3.1.4.2.14)
 
-3.1.4.2.2 FaxObs_ConnectionRefCount (Opnum 0)
+###### 3.1.4.2.2 FaxObs_ConnectionRefCount (Opnum 0)
 
 The FaxObs_ConnectionRefCount (Opnum 0) method is called by the client to connect to or
 disconnect from the server.
@@ -28180,7 +28116,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the fax-specific errors that are defined in section 2.2.52 or one of the other
 standard errors defined in [MS-ERREF] section 2.2. There are no predefined specific error codes to
 be returned by this method.
@@ -28189,7 +28126,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.3 FaxObs_GetVersion (Opnum 1)
+###### 3.1.4.2.3 FaxObs_GetVersion (Opnum 1)
 
 The client calls the FaxObs_GetVersion (Opnum 1) method to obtain the version number of the
 server.
@@ -28244,7 +28181,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.4 FaxObs_GetInstallType (Opnum 2)
+###### 3.1.4.2.4 FaxObs_GetInstallType (Opnum 2)
 
 The client calls the FaxObs_GetInstallType (Opnum 2) method to obtain information about the
 server installation.
@@ -28262,7 +28199,8 @@ Release: April 23, 2024
 
 318 / 413
 
-   [out] LPDWORD InstallType,
+
+   [out] LPDWORD InstallType,
    [out] LPDWORD InstalledPlatforms,
    [out] LPDWORD ProductType
  );
@@ -28349,7 +28287,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.5 FaxObs_OpenPort (Opnum 3)
+###### 3.1.4.2.5 FaxObs_OpenPort (Opnum 3)
 
 319 / 413
 
@@ -28358,7 +28296,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client calls the FaxObs_OpenPort (Opnum 3) method to open a fax port and obtain a fax port
+
+The client calls the FaxObs_OpenPort (Opnum 3) method to open a fax port and obtain a fax port
 handle.
 
 In response the server opens a fax port for subsequent use in other fax methods and returns a fax
@@ -28448,7 +28387,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -28473,7 +28413,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.6 FaxObs_ClosePort (Opnum 4)
+###### 3.1.4.2.6 FaxObs_ClosePort (Opnum 4)
 
 The client calls the FaxObs_ClosePort (Opnum 4) method to close a fax port and release the fax
 port handle obtained with a FaxObs_OpenPort (section 3.1.4.2.5) call.
@@ -28505,7 +28445,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.7 FaxObs_SendDocument (Opnum 5)
+###### 3.1.4.2.7 FaxObs_SendDocument (Opnum 5)
 
 The client calls the FaxObs_SendDocument (Opnum 5) method to send a document.
 
@@ -28533,7 +28473,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-set the third value of the Reserved member of JobParams to zero. In this case, the server SHOULD
+
+set the third value of the Reserved member of JobParams to zero. In this case, the server SHOULD
 ignore all other members of JobParams except the SizeOfStruct and Reserved members, queue the
 job to be broadcast, and on success return the new job identifier in the FaxJobId output parameter.
 
@@ -28606,7 +28547,8 @@ Release: April 23, 2024
 
 322 / 413
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -28663,7 +28605,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.8 FaxObs_GetQueueFileName (Opnum 6)
+###### 3.1.4.2.8 FaxObs_GetQueueFileName (Opnum 6)
 
 The client calls FaxObs_GetQueueFileName (Opnum 6) to obtain from the server the name of a
 new file located in the fax server queue directory. The client can copy to this file the fax data to be
@@ -28700,7 +28642,8 @@ Release: April 23, 2024
 
 323 / 413
 
-hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
+
+hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
 as an input hBinding argument for the FaxObs_ConnectionRefCount (section 3.1.4.2.2) method
 call used to connect to the fax server.
 
@@ -28723,7 +28666,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.9 FaxObs_EnumJobs (Opnum 7)
+###### 3.1.4.2.9 FaxObs_EnumJobs (Opnum 7)
 
 The FaxObs_EnumJobs (Opnum 7) method is called by the client to enumerate the fax jobs on the
 server.
@@ -28776,7 +28719,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -28815,9 +28759,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.10
+###### 3.1.4.2.10 FaxObs_GetJob (Opnum 8)
 
-FaxObs_GetJob (Opnum 8)
+
 
 The FaxObs_GetJob (Opnum 8) method is called by the client to retrieve information regarding a
 specific job. The job is specified by the JobId parameter. The value for JobId can be obtained by
@@ -28872,7 +28816,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -28889,9 +28834,9 @@ Exceptions thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.11
+###### 3.1.4.2.11 FaxObs_SetJob (Opnum 9)
 
-FaxObs_SetJob (Opnum 9)
+
 
 The FaxObs_SetJob (Opnum 9) method is called by the client to pause, resume, or cancel a fax job.
 The value for the JobId parameter can be obtained by calling the FaxObs_EnumJobs (section
@@ -28961,7 +28906,8 @@ Release: April 23, 2024
 
 326 / 413
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -29017,9 +28963,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.12
+###### 3.1.4.2.12 FaxObs_GetPageData (Opnum 10)
 
-FaxObs_GetPageData (Opnum 10)
+
 
 The FaxObs_GetPageData (Opnum 10) method is called by the client to retrieve the data from the
 first page of an outgoing fax job. The information that is returned in the buffer is an in-memory copy
@@ -29060,7 +29006,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Buffer: A pointer to the address of the returned buffer containing the first page of data in the fax
+
+Buffer: A pointer to the address of the returned buffer containing the first page of data in the fax
 
 document.
 
@@ -29119,9 +29066,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.13
+###### 3.1.4.2.13 FaxObs_GetDeviceStatus (Opnum 11)
 
-FaxObs_GetDeviceStatus (Opnum 11)
+
 
 The FaxObs_GetDeviceStatus (Opnum 11) method is called by the client to retrieve information
 about a specified fax device (port).
@@ -29154,7 +29101,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-StatusBuffer: A pointer to the address of the returned buffer containing a
+
+StatusBuffer: A pointer to the address of the returned buffer containing a
 
 FAX_DEVICE_STATUS (section 2.2.10) structure. The structure describes the status of one fax
 device.
@@ -29194,9 +29142,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.14
+###### 3.1.4.2.14 FaxObs_Abort (Opnum 12)
 
-FaxObs_Abort (Opnum 12)
+
 
 The FaxObs_Abort (Opnum 12) method is called by the client to abort the specified fax job on the
 server. The value for the JobId parameter can be obtained by calling the FaxObs_EnumJobs (section
@@ -29250,7 +29198,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -29282,9 +29231,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.15
+###### 3.1.4.2.15 FaxObs_EnumPorts (Opnum 13)
 
-FaxObs_EnumPorts (Opnum 13)
+
 
 The FaxObs_EnumPorts (Opnum 13) method is called by the client to enumerate the fax ports
 (devices) on the server and retrieve information describing these ports (devices).
@@ -29345,7 +29294,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -29361,9 +29311,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.16
+###### 3.1.4.2.16 FaxObs_GetPort (Opnum 14)
 
-FaxObs_GetPort (Opnum 14)
+
 
 The FaxObs_GetPort (Opnum 14) method is called by the client to retrieve status information from
 the server about the specified fax port (device).
@@ -29423,9 +29373,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.17
+###### 3.1.4.2.17 FaxObs_SetPort (Opnum 15)
 
-FaxObs_SetPort (Opnum 15)
+
 
 [MS-FAX] - v20240423
 Fax Server and Client Remote Protocol
@@ -29434,7 +29384,8 @@ Release: April 23, 2024
 
 331 / 413
 
-The client calls the FaxObs_SetPort (Opnum 15) method to change the configuration of a fax port
+
+The client calls the FaxObs_SetPort (Opnum 15) method to change the configuration of a fax port
 (device). The function sets extension configuration properties that are stored at the device level, such
 as enabling or disabling sending and receiving, and the automatic or manual answering of calls.
 
@@ -29494,9 +29445,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.18
+###### 3.1.4.2.18 FaxObs_EnumRoutingMethods (Opnum 16)
 
-FaxObs_EnumRoutingMethods (Opnum 16)
+
 
 The FaxObs_EnumRoutingMethods (Opnum 16) method is called by the client to enumerate all of
 the routing methods that are registered with the server for a specified port (device). The function
@@ -29521,7 +29472,8 @@ Release: April 23, 2024
 
 332 / 413
 
-   [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
+
+   [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
    [in, out, unique, size_is(,*RoutingInfoBufferSize)]
      LPBYTE* RoutingInfoBuffer,
    [in, out] LPDWORD RoutingInfoBufferSize,
@@ -29589,9 +29541,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.19
+###### 3.1.4.2.19 FaxObs_EnableRoutingMethod (Opnum 17)
 
-FaxObs_EnableRoutingMethod (Opnum 17)
+
 
 The FaxObs_EnableRoutingMethod (Opnum 17) method is called by the client to enable or
 disable a routing method for a fax port (device).
@@ -29614,7 +29566,8 @@ Release: April 23, 2024
 
 333 / 413
 
-   [in, string, unique] LPCWSTR RoutingGuid,
+
+   [in, string, unique] LPCWSTR RoutingGuid,
    [in] BOOL Enabled
  );
 
@@ -29666,9 +29619,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.20
+###### 3.1.4.2.20 FaxObs_GetRoutingInfo (Opnum 18)
 
-FaxObs_GetRoutingInfo (Opnum 18)
+
 
 The FaxObs_GetRoutingInfo (Opnum 18) method is called by the client to retrieve information
 about a routing method.
@@ -29700,7 +29653,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RoutingGuid: A curly braced GUID string that uniquely identifies the fax routing method for which to
+
+RoutingGuid: A curly braced GUID string that uniquely identifies the fax routing method for which to
 obtain the routing information. Fax routing methods are defined by a fax-routing extension and
 each method is identified by a GUID. For more information about routing methods, see [MSDN-
 FRM]. The routing methods and their curly braced GUID string values that can be used for this
@@ -29767,9 +29721,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.21
+###### 3.1.4.2.21 FaxObs_SetRoutingInfo (Opnum 19)
 
-FaxObs_SetRoutingInfo (Opnum 19)
+
 
 The FaxObs_SetRoutingInfo (Opnum 19) method is called by the client to set routing information
 for a fax routing method.
@@ -29797,7 +29751,8 @@ Release: April 23, 2024
 
 335 / 413
 
- );
+
+ );
 
 FaxPortHandle: An RPC context handle that references a specified fax port.
 
@@ -29865,9 +29820,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.22
+###### 3.1.4.2.22 FaxObs_EnumGlobalRoutingInfo (Opnum 20)
 
-FaxObs_EnumGlobalRoutingInfo (Opnum 20)
+
 
 The FaxObs_EnumGlobalRoutingInfo (Opnum 20) method is called by the client to enumerate
 global routing information.
@@ -29889,7 +29844,8 @@ Release: April 23, 2024
 
 336 / 413
 
-     LPBYTE* RoutingInfoBuffer,
+
+     LPBYTE* RoutingInfoBuffer,
    [in, out] LPDWORD RoutingInfoBufferSize,
    [out] LPDWORD MethodsReturned
  );
@@ -29952,9 +29908,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.23
+###### 3.1.4.2.23 FaxObs_SetGlobalRoutingInfo (Opnum 21)
 
-FaxObs_SetGlobalRoutingInfo (Opnum 21)
+
 
 The fax client calls the FaxObs_SetGlobalRoutingInfo (Opnum 21) method to set global routing
 properties, such as the routing method priority.
@@ -29975,7 +29931,8 @@ Release: April 23, 2024
 
 337 / 413
 
-hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
+
+hBinding: The RPC binding handle for this call. The client SHOULD reuse the RPC binding handle used
 as an input hBinding argument for the FaxObs_ConnectionRefCount (section 3.1.4.2.2) method
 call used to connect to the fax server.
 
@@ -30026,9 +29983,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.24
+###### 3.1.4.2.24 FaxObs_GetConfiguration (Opnum 22)
 
-FaxObs_GetConfiguration (Opnum 22)
+
 
 The FaxObs_GetConfiguration (Opnum 22) method is called by the client to retrieve information
 about the configuration of the fax server.
@@ -30067,7 +30024,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -30100,9 +30058,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.25
+###### 3.1.4.2.25 FaxObs_SetConfiguration (Opnum 23)
 
-FaxObs_SetConfiguration (Opnum 23)
+
 
 The client calls the FaxObs_SetConfiguration (Opnum 23) method to change the fax server
 configuration.
@@ -30156,7 +30114,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30193,9 +30152,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.26
+###### 3.1.4.2.26 FaxObs_GetLoggingCategories (Opnum 24)
 
-FaxObs_GetLoggingCategories (Opnum 24)
+
 
 The FaxObs_GetLoggingCategories (Opnum 24) method is called by the client to retrieve the
 current logging categories from the server. A logging category determines the errors or other events
@@ -30251,7 +30210,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30274,9 +30234,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.27
+###### 3.1.4.2.27 FaxObs_SetLoggingCategories (Opnum 25)
 
-FaxObs_SetLoggingCategories (Opnum 25)
+
 
 The FaxObs_SetLoggingCategories (Opnum 25) method is called by the client to set the current
 logging categories on the server. A logging category determines the errors or other events that the fax
@@ -30349,9 +30309,10 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.2.28
 
-FaxObs_GetTapiLocations (Opnum 26)
+###### 3.1.4.2.28 FaxObs_GetTapiLocations (Opnum 26)
+
+
 
 The FaxObs_GetTapiLocations (Opnum 26) method is called by the client to retrieve the current
 and other available TAPI locations configured for the server. The TAPI locations can be set by the
@@ -30422,9 +30383,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.29
+###### 3.1.4.2.29 FaxObs_SetTapiLocations (Opnum 27)
 
-FaxObs_SetTapiLocations (Opnum 27)
+
 
 The FaxObs_SetTapiLocations (Opnum 27) method is called by the client to set the current and
 other available TAPI locations for the server. The TAPI locations can be retrieved by the client with the
@@ -30437,7 +30398,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A TAPI location is described by a FAX_TAPI_LOCATIONS (section 2.2.88) data structure, which
+
+A TAPI location is described by a FAX_TAPI_LOCATIONS (section 2.2.88) data structure, which
 includes information such as a friendly name, country code, and area code for the respective location.
 For more information about TAPI, see [MSDN-TAPI2.2].
 
@@ -30489,9 +30451,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.30
+###### 3.1.4.2.30 FaxObs_GetMapiProfiles (Opnum 28)
 
-FaxObs_GetMapiProfiles (Opnum 28)
+
 
 The FaxObs_GetMapiProfiles (Opnum 28) method is called by the client to retrieve the names of
 the current MAPI profiles set for the fax server. For more information about MAPI profiles, see [MSDN-
@@ -30517,7 +30479,8 @@ Release: April 23, 2024
 
 343 / 413
 
-hBinding: A handle that is provided by the client RPC layer when the RPC call is made.
+
+hBinding: A handle that is provided by the client RPC layer when the RPC call is made.
 
 MapiProfiles: A pointer to the address of the returned buffer. This buffer contains a sequence of null-
 terminated character strings; each of these strings contains the name of a MAPI profile. The
@@ -30553,9 +30516,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.31
+###### 3.1.4.2.31 FaxObs_StartClientServer (Opnum 29)
 
-FaxObs_StartClientServer (Opnum 29)
+
 
 The FaxObs_StartClientServer (Opnum 29) method is called by the client to register itself to
 receive notifications of fax events from the server.
@@ -30598,7 +30561,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Context: A ULONG64 ([MS-DTYP] section 2.2.54) value that can be passed to
+
+Context: A ULONG64 ([MS-DTYP] section 2.2.54) value that can be passed to
 
 FAX_OpenConnection as a notification context. This context is equivalent to the subscription
 context used in the Fax Server Interface methods FAX_StartServerNotification (section
@@ -30626,9 +30590,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.32
+###### 3.1.4.2.32 FaxObs_GetSecurityDescriptor (Opnum 31)
 
-FaxObs_GetSecurityDescriptor (Opnum 31)
+
 
 The client calls FaxObs_GetSecurityDescriptor (Opnum 31) method to retrieve the fax security
 descriptor of the server. The client can set the fax security descriptor of the server with the
@@ -30683,7 +30647,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30705,9 +30670,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.33
+###### 3.1.4.2.33 FaxObs_SetSecurityDescriptor (Opnum 32)
 
-FaxObs_SetSecurityDescriptor (Opnum 32)
+
 
 The client calls FaxObs_SetSecurityDescriptor (Opnum 32) method to set the fax security
 descriptor of the server. The client can retrieve the security descriptor of the server with the
@@ -30789,7 +30754,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -30799,9 +30765,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.34
+###### 3.1.4.2.34 FaxObs_GetSecurityDescriptorCount (Opnum 33)
 
-FaxObs_GetSecurityDescriptorCount (Opnum 33)
+
 
 The client calls the FaxObs_GetSecurityDescriptorCount (Opnum 33) method to retrieve the total
 number of fax security descriptors from the server.
@@ -30827,9 +30793,9 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.4.2.35
+###### 3.1.4.2.35 FaxObs_AccessCheck (Opnum 34)
 
-FaxObs_AccessCheck (Opnum 34)
+
 
 The FaxObs_AccessCheck (Opnum 34) method is called by the client to check whether the
 currently logged-on client user account has access permissions to execute specific fax operations on
@@ -30861,7 +30827,8 @@ Release: April 23, 2024
 
 347 / 413
 
-Generic FaxObs Access Rights
+
+Generic FaxObs Access Rights
 
 Description
 
@@ -31009,7 +30976,8 @@ Release: April 23, 2024
 
 348 / 413
 
-Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
+
+Return Values: This method MUST return 0x00000000 (ERROR_SUCCESS) for success; otherwise, it
 MUST return one of the following error codes, one of the fax-specific errors that are defined in
 section 2.2.52, or one of the other standard errors defined in [MS-ERREF] section 2.2.
 
@@ -31036,32 +31004,32 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the server except the timers that are required in the
 underlying RPC protocol.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 This protocol does not attempt to reestablish a connection that is dropped by the lower layers.
 
-3.2  Fax Client Details
+### 3.2 Fax Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 No abstract data model is required.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This protocol uses nondefault behavior for the RPC Call Timeout timer that is defined in [MS-RPCE]
 section 3.3.2.2.2. The timer value that this protocol uses is 30000 milliseconds and it applies to all the
 methods that are described in this protocol.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server MUST listen on well-defined endpoints, as specified in [C706].
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The Message Processing Events and Sequencing Rules protocol MUST specify to the RPC runtime
 that it is to perform a strict NDR data consistency check at target level 5.0, as specified in [MS-RPCE]
@@ -31089,7 +31057,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -31122,7 +31091,7 @@ Opnum: 3
 All methods MUST NOT throw exceptions except those that are thrown by the underlying RPC protocol
 [MS-RPCE].
 
-3.2.4.1  Sequencing Rules
+##### 3.2.4.1 Sequencing Rules
 
 The following methods MUST be used by the fax server to open or close a connection to the fax client.
 These connections are used to deliver fax events to the client:
@@ -31138,7 +31107,7 @@ methods. FAX_CloseConnection MUST be called to release the connection to the fax
 
   FAX_ClientEventQueueEx (section 3.2.4.3)
 
-3.2.4.2  FAX_ClientEventQueue (Opnum 1)
+##### 3.2.4.2 FAX_ClientEventQueue (Opnum 1)
 
 The FAX_ClientEventQueue (Opnum 1) method is called by the fax server (acting as an RPC client
 for this call) when it needs to deliver a legacy fax event to the fax client (acting as an RPC server for
@@ -31167,7 +31136,8 @@ Release: April 23, 2024
 
 350 / 413
 
- );
+
+ );
 
 FaxPortHandle: A fax data type that indicates a context handle for this call.
 
@@ -31194,7 +31164,7 @@ Exceptions Thrown: No exceptions are thrown except those that are thrown by the 
 
 protocol, [MS-RPCE].
 
-3.2.4.3  FAX_ClientEventQueueEx (Opnum 3)
+##### 3.2.4.3 FAX_ClientEventQueueEx (Opnum 3)
 
 The FAX_ClientEventQueueEx (Opnum 3) method is called by the fax server (acting as an RPC
 client for this call) when it needs to deliver an extended fax event to the fax client (acting as an RPC
@@ -31235,7 +31205,8 @@ Release: April 23, 2024
 
 351 / 413
 
-If the client requested extended events by calling FAX_StartServerNotificationEx, the client MUST
+
+If the client requested extended events by calling FAX_StartServerNotificationEx, the client MUST
 use a FAX_EVENT_EX. If the client called FAX_StartServerNotificationEx2 to receive these
 events, the client MUST use a FAX_EVENT_EX_1.
 
@@ -31282,7 +31253,7 @@ protocol, [MS-RPCE].
 Data in FAX_ClientEventQueueEx is serialized. Pointers to variable size data (such as strings) are
 replaced with offsets from the beginning of the buffer.
 
-3.2.4.4  FAX_CloseConnection (Opnum 2)
+##### 3.2.4.4 FAX_CloseConnection (Opnum 2)
 
 The FAX_CloseConnection (Opnum 2) method is called by the fax server (acting as an RPC client
 for this call) when it needs to release the connection to the fax client (acting as an RPC server for this
@@ -31317,11 +31288,12 @@ Release: April 23, 2024
 
 352 / 413
 
-Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
+
+Exceptions Thrown: No exceptions are thrown except those that are thrown by the underlying RPC
 
 protocol, [MS-RPCE].
 
-3.2.4.5  FAX_OpenConnection (Opnum 0)
+##### 3.2.4.5 FAX_OpenConnection (Opnum 0)
 
 The FAX_OpenConnection (Opnum 0) method returns the context handle that is supplied by the
 FAX_StartServerNotification family of calls. This is done to provide a security layer, by verifying
@@ -31398,17 +31370,18 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The returned PRPC_FAX_HANDLE is the Context parameter cast to a HANDLE.
+
+The returned PRPC_FAX_HANDLE is the Context parameter cast to a HANDLE.
 
 The FAX_OpenConnection method returns the context handle supplied by the
 FAX_StartServerNotification family of calls. This is done to provide a security layer, by verifying
 that the notifications are coming from an expected source.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 Not applicable.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 This protocol does not attempt to re-establish a connection if dropped by the lower layers.
 
@@ -31419,13 +31392,14 @@ Release: April 23, 2024
 
 354 / 413
 
-<!-- Extracted images from page 355 -->
+
+<!-- Extracted images from page 355 -->
 ![Extracted image 1 from page 355]([MS-FAX].images/page355-img01.png)
 <!-- /Extracted images from page 355 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Message Exchanges While Sending a Fax
+### 4.1 Message Exchanges While Sending a Fax
 
 Figure 1: Message exchanges during the sending of a fax
 
@@ -31445,7 +31419,8 @@ Release: April 23, 2024
 
 355 / 413
 
-  Setting the recipient information: To describe the recipients of the fax message, the client
+
+  Setting the recipient information: To describe the recipients of the fax message, the client
 
 creates an array of FAX_PERSONAL_PROFILEW (section 2.2.44). The number of elements
 in the array is the number of recipients for the fax message.
@@ -31497,11 +31472,12 @@ Release: April 23, 2024
 
 356 / 413
 
-<!-- Extracted images from page 357 -->
+
+<!-- Extracted images from page 357 -->
 ![Extracted image 1 from page 357]([MS-FAX].images/page357-img01.png)
 <!-- /Extracted images from page 357 -->
 
-4.2  Message Exchanges During Querying Server Configuration
+### 4.2 Message Exchanges During Querying Server Configuration
 
 Figure 2: Message exchanges during the querying of server configuration
 
@@ -31540,11 +31516,12 @@ Release: April 23, 2024
 
 357 / 413
 
-<!-- Extracted images from page 358 -->
+
+<!-- Extracted images from page 358 -->
 ![Extracted image 1 from page 358]([MS-FAX].images/page358-img01.png)
 <!-- /Extracted images from page 358 -->
 
-4.3  Message Exchanges During Enumerating Fax Jobs
+### 4.3 Message Exchanges During Enumerating Fax Jobs
 
 Figure 3: Message exchanges when enumerating fax jobs
 
@@ -31582,11 +31559,12 @@ Release: April 23, 2024
 
 358 / 413
 
-<!-- Extracted images from page 359 -->
+
+<!-- Extracted images from page 359 -->
 ![Extracted image 1 from page 359]([MS-FAX].images/page359-img01.png)
 <!-- /Extracted images from page 359 -->
 
-4.4  Message Exchanges During Modifying Fax Jobs
+### 4.4 Message Exchanges During Modifying Fax Jobs
 
 Figure 4: Message exchanges when modifying fax jobs
 
@@ -31623,11 +31601,12 @@ Release: April 23, 2024
 
 359 / 413
 
-<!-- Extracted images from page 360 -->
+
+<!-- Extracted images from page 360 -->
 ![Extracted image 1 from page 360]([MS-FAX].images/page360-img01.png)
 <!-- /Extracted images from page 360 -->
 
-4.5  Message Exchanges During Adding an Outbound Routing Rule
+### 4.5 Message Exchanges During Adding an Outbound Routing Rule
 
 Figure 5: Message exchanges when adding an outbound routing rule
 
@@ -31675,7 +31654,8 @@ Release: April 23, 2024
 
 360 / 413
 
-<!-- Extracted images from page 361 -->
+
+<!-- Extracted images from page 361 -->
 ![Extracted image 1 from page 361]([MS-FAX].images/page361-img01.png)
 <!-- /Extracted images from page 361 -->
 
@@ -31684,7 +31664,7 @@ Release: April 23, 2024
 3.1.4.1.11) by using the faxHandle parameter that was obtained in step 1 and a value of 0 for the
 dwConnect argument.
 
-4.6  Message Exchanges During Registering and Unregistering for Server
+### 4.6 Message Exchanges During Registering and Unregistering for Server
 
 Notifications
 
@@ -31715,7 +31695,8 @@ Release: April 23, 2024
 
 361 / 413
 
-<!-- Extracted images from page 362 -->
+
+<!-- Extracted images from page 362 -->
 ![Extracted image 1 from page 362]([MS-FAX].images/page362-img01.png)
 <!-- /Extracted images from page 362 -->
 
@@ -31734,7 +31715,7 @@ FAX_EndServerNotification (section 3.1.4.1.17).
 3.1.4.1.11) by using the faxHandle parameter that was obtained in step 1 and a value of 0 for the
 dwConnect argument.
 
-4.7  Message Exchanges During Granting Security Privileges to a User
+### 4.7 Message Exchanges During Granting Security Privileges to a User
 
 Figure 7: Message exchanges when granting security privileges to a user
 
@@ -31768,7 +31749,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  To end the connection to the fax server, the client calls FAX_ConnectionRefCount (section
+
+5.  To end the connection to the fax server, the client calls FAX_ConnectionRefCount (section
 
 3.1.4.1.11) by using the faxHandle parameter that was obtained in step 1 and a value of 0 for the
 dwConnect argument.
@@ -31780,9 +31762,10 @@ Release: April 23, 2024
 
 363 / 413
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations for both authenticated and unauthenticated RPC used in this protocol are as
 specified in [MS-RPCE]. The client always performs authenticated RPC.
@@ -31795,7 +31778,7 @@ section 3.3.1.5.2.<219>
 The server performs access control checks based on the credentials of the client's fax user
 account.<220>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 This protocol defines no security parameters.
 
@@ -31806,12 +31789,13 @@ Release: April 23, 2024
 
 364 / 413
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full Interface Definition Languages (IDLs) for all interfaces
 defined in this protocol are provided in this appendix.
 
-6.1  Appendix A.1: faxdatatypes.idl
+### 6.1 Appendix A.1: faxdatatypes.idl
 
 For ease of implementation, the full IDL for the data types used by the Fax Server Interface and
 FaxObs Server Interface is provided as follows, where "ms-dtyp.idl" is the IDL found in [MS-DTYP]
@@ -31880,7 +31864,8 @@ Release: April 23, 2024
 
 365 / 413
 
-     [string] LPCWSTR DeliveryReportAddress;
+
+     [string] LPCWSTR DeliveryReportAddress;
      [string] LPCWSTR DocumentName;
      HCALL CallHandle;
      DWORD_PTR Reserved[3];
@@ -31956,7 +31941,8 @@ Release: April 23, 2024
 
 366 / 413
 
- typedef struct {
+
+ typedef struct {
    WORD Hour;
    WORD Minute;
  } FAX_TIME,
@@ -32033,7 +32019,8 @@ Release: April 23, 2024
 
 367 / 413
 
-     [unique, size_is(dwNumDevices)] LPDWORD    lpdwDevices;
+
+     [unique, size_is(dwNumDevices)] LPDWORD    lpdwDevices;
      FAX_ENUM_GROUP_STATUS                      Status;
  } RPC_FAX_OUTBOUND_ROUTING_GROUPW,
    *PRPC_FAX_OUTBOUND_ROUTING_GROUPW;
@@ -32109,7 +32096,8 @@ Release: April 23, 2024
 
 368 / 413
 
- typedef struct {
+
+ typedef struct {
    DWORD dwSizeOfStruct;
    BOOL bLogIncoming;
    BOOL bLogOutgoing;
@@ -32186,14 +32174,15 @@ Release: April 23, 2024
 
 369 / 413
 
-   SYSTEMTIME ScheduleTime;
+
+   SYSTEMTIME ScheduleTime;
    DWORD DeliveryReportType;
    LPCWSTR DeliveryReportAddress;
    LPCWSTR DocumentName;
  } FAX_JOB_ENTRY,
   *PFAX_JOB_ENTRY;
 
-6.2  Appendix A.2: fax.idl
+### 6.2 Appendix A.2: fax.idl
 
 For ease of implementation, the full IDL is provided as follows, where "ms-faxdatatypes.idl" is the IDL
 listed in section 6.1 of this appendix.
@@ -32259,7 +32248,8 @@ Release: April 23, 2024
 
 370 / 413
 
- error_status_t
+
+ error_status_t
  FAX_GetJob(
     [in] handle_t hBinding,
     [in] DWORD JobId,
@@ -32335,7 +32325,8 @@ Release: April 23, 2024
 
 371 / 413
 
- FAX_EnableRoutingMethod(
+
+ FAX_EnableRoutingMethod(
      [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
      [in, string, unique] LPCWSTR RoutingGuid,
      [in] BOOL Enabled
@@ -32411,7 +32402,8 @@ Release: April 23, 2024
 
 372 / 413
 
-     [out, size_is(,*lpdwBufferSize)] LPBYTE * pSecurityDescriptor,
+
+     [out, size_is(,*lpdwBufferSize)] LPBYTE * pSecurityDescriptor,
      [out, ref] LPDWORD lpdwBufferSize
      );
 
@@ -32486,7 +32478,8 @@ Release: April 23, 2024
 
 373 / 413
 
- (
+
+ (
      [in] handle_t hBinding,
      [in] DWORDLONG dwlMessageId,
      [in] FAX_ENUM_MESSAGE_FOLDER   dwFolder,
@@ -32560,7 +32553,8 @@ Release: April 23, 2024
 
 374 / 413
 
- FAX_GetArchiveConfiguration (
+
+ FAX_GetArchiveConfiguration (
      [in] handle_t                                    hFaxHandle,
      [in] FAX_ENUM_MESSAGE_FOLDER                     Folder,
      [out, size_is(,*BufferSize)] LPBYTE              *Buffer,
@@ -32637,7 +32631,8 @@ Release: April 23, 2024
 
 375 / 413
 
-     [in] handle_t                           hFaxHandle,
+
+     [in] handle_t                           hFaxHandle,
      [in,string] LPCWSTR                     lpcwstrComputerName,
      [in] DWORD                              dwDeviceId,
      [in,string] LPCWSTR                     lpcwstrNameGUID,
@@ -32714,7 +32709,8 @@ Release: April 23, 2024
 
 376 / 413
 
-     [out, ref] LPDWORD                                  lpdwDataSize,
+
+     [out, ref] LPDWORD                                  lpdwDataSize,
      [out, ref] LPDWORD                                  lpdwNumRules
      );
 
@@ -32790,7 +32786,8 @@ Release: April 23, 2024
 
 377 / 413
 
-     [in,out,string,ref] LPWSTR lpwstrServerFileName,
+
+     [in,out,string,ref] LPWSTR lpwstrServerFileName,
      [out,ref] PRPC_FAX_COPY_HANDLE lpHandle
  );
 
@@ -32867,7 +32864,8 @@ Release: April 23, 2024
 
 378 / 413
 
-     [in] handle_t   hFaxHandle,
+
+     [in] handle_t   hFaxHandle,
      [in] BOOL       bConfigWizardUsed
  );
 
@@ -32943,7 +32941,8 @@ Release: April 23, 2024
 
 379 / 413
 
- FAX_EnumJobsEx2(
+
+ FAX_EnumJobsEx2(
     [in] handle_t hBinding,
     [in] BOOL fAllAccounts,
     [in, string, unique] LPCWSTR lpcwstrAccountName,
@@ -33020,7 +33019,8 @@ Release: April 23, 2024
 
 380 / 413
 
- FAX_EnumAccounts(
+
+ FAX_EnumAccounts(
      [in] handle_t hBinding,
      [in] DWORD level,
      [out, size_is(,*BufferSize)] LPBYTE *Buffer,
@@ -33097,7 +33097,8 @@ Release: April 23, 2024
 
 381 / 413
 
-     [in, ref] PFAX_MESSAGE_PROPS    lpMessageProps
+
+     [in, ref] PFAX_MESSAGE_PROPS    lpMessageProps
  );
 
  error_status_t
@@ -33108,7 +33109,7 @@ Release: April 23, 2024
 
  }
 
-6.3  Appendix A.3: faxobs.idl
+### 6.3 Appendix A.3: faxobs.idl
 
 For ease of implementation, the full IDL for the FaxObs Server Interface is provided as follows, where
 "ms-faxdatatypes.idl" is the IDL listed in section 6.1 of this appendix.
@@ -33171,7 +33172,8 @@ Release: April 23, 2024
 
 382 / 413
 
-    [in, string, unique] LPCWSTR FileName,
+
+    [in, string, unique] LPCWSTR FileName,
     [in] const FAX_JOB_PARAMW *JobParams,
     [out] LPDWORD FaxJobId
     );
@@ -33248,7 +33250,8 @@ Release: April 23, 2024
 
 383 / 413
 
-    [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
+
+    [in] RPC_FAX_PORT_HANDLE FaxPortHandle,
     [in, out, unique, size_is(,*BufferSize)] LPBYTE *PortBuffer,
     [in,out] LPDWORD BufferSize
     );
@@ -33324,7 +33327,8 @@ Release: April 23, 2024
 
 384 / 413
 
- error_status_t
+
+ error_status_t
  FaxObs_GetLoggingCategories(
      [in] handle_t hBinding,
      [in, out, unique, size_is(,*BufferSize)] LPBYTE *Buffer,
@@ -33401,7 +33405,8 @@ Release: April 23, 2024
 
 385 / 413
 
- FaxObs_AccessCheck(
+
+ FaxObs_AccessCheck(
      [in] handle_t hBinding,
      [in] DWORD AccessMask,
      [out] LPDWORD fAccess
@@ -33409,7 +33414,7 @@ Release: April 23, 2024
 
  }
 
-6.4  Appendix A.4: faxclient.idl
+### 6.4 Appendix A.4: faxclient.idl
 
 For ease of implementation, the full IDL for the Fax Client Interface is provided as follows, where "ms-
 dtyp.idl" is the IDL found in [MS-DTYP] section 5 (Appendix A).
@@ -33467,7 +33472,8 @@ Release: April 23, 2024
 
 386 / 413
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -33535,7 +33541,8 @@ Release: April 23, 2024
 
 387 / 413
 
-<1> Section 2.1: In Windows, the fax client opens the underlying RPC over SMB transport for
+
+<1> Section 2.1: In Windows, the fax client opens the underlying RPC over SMB transport for
 communication with the fax server before calling FAX_ConnectFaxServer (section 3.1.4.1.10) or
 FAX_ConnectionRefCount (section 3.1.4.1.11) with a Connect argument of Connect (0x00000001)
 to connect with the fax server. The fax client closes the transport if the call made to connect to the fax
@@ -33600,7 +33607,8 @@ Release: April 23, 2024
 
 388 / 413
 
-<12> Section 2.2.52: The FAX_ERR_SRV_OUTOFMEMORY fax-specific error code uses the same
+
+<12> Section 2.2.52: The FAX_ERR_SRV_OUTOFMEMORY fax-specific error code uses the same
 numeric value as the standard Windows error code ERROR_CTX_WINSTATION_NAME_INVALID
 defined in [MS-ERREF] section 2.2.
 
@@ -33668,7 +33676,8 @@ Release: April 23, 2024
 
 389 / 413
 
-  FAX_SetOutboundRule (section 3.1.4.1.86)
+
+  FAX_SetOutboundRule (section 3.1.4.1.86)
 
   FAX_SetReceiptsConfiguration (section 3.1.4.1.91)
 
@@ -33753,7 +33762,8 @@ Release: April 23, 2024
 
 390 / 413
 
-<32> Section 3.1.1: In Windows, the fax server initializes the Archive Age Limit setting to a value
+
+<32> Section 3.1.1: In Windows, the fax server initializes the Archive Age Limit setting to a value
 of 0 (disabled) and saves the setting to Registry as a REG_DWORD value at
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Fax\ArchiveAgeLimit.
 
@@ -33821,7 +33831,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<46> Section 3.1.1: In Windows, the fax server initializes the fax transmission retry delay to a
+
+<46> Section 3.1.1: In Windows, the fax server initializes the fax transmission retry delay to a
 value of 10 (minutes) and saves the setting to Registry as a REG_DWORD value at
 HKEY_LOCAL_MACHINE\ SOFTWARE\ Microsoft\Fax\Retry Delay.
 
@@ -33886,7 +33897,8 @@ Release: April 23, 2024
 
 392 / 413
 
-<60> Section 3.1.1: In Windows, the fax server initializes the start cheap time setting to a value of
+
+<60> Section 3.1.1: In Windows, the fax server initializes the start cheap time setting to a value of
 zero hours, zero minutes and saves the setting to Registry as a REG_DWORD value at
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Fax\StartCheapTime.
 
@@ -33955,7 +33967,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<73> Section 3.1.4.1.11: The FAX_ConnectionRefCount method is not implemented in BackOffice
+
+<73> Section 3.1.4.1.11: The FAX_ConnectionRefCount method is not implemented in BackOffice
 Server 2000, Small Business Server 2000, Windows NT, or Windows 2000.
 
 <74> Section 3.1.4.1.11: In Windows, the fax print queues cannot be shared on the Small Business
@@ -34050,7 +34063,8 @@ Release: April 23, 2024
 
 394 / 413
 
-Authenticated user identity
+
+Authenticated user identity
 
 Default fax user access rights
 
@@ -34128,7 +34142,8 @@ Release: April 23, 2024
 
 395 / 413
 
-<91> Section 3.1.4.1.25: The Windows fax server implementations do not validate the hEnum
+
+<91> Section 3.1.4.1.25: The Windows fax server implementations do not validate the hEnum
 parameter except for the NULL check.
 
 <92> Section 3.1.4.1.26: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
@@ -34197,7 +34212,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -34270,7 +34286,8 @@ Release: April 23, 2024
 
 397 / 413
 
-<127> Section 3.1.4.1.52: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
+
+<127> Section 3.1.4.1.52: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
 stop the invalid call and throw an exception before the call reaches the fax server.
 
 <128> Section 3.1.4.1.53: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
@@ -34338,7 +34355,8 @@ Release: April 23, 2024
 
 398 / 413
 
-<146> Section 3.1.4.1.68: The Folder parameter is used in the following versions of Windows:
+
+<146> Section 3.1.4.1.68: The Folder parameter is used in the following versions of Windows:
 BackOffice Server 2000, Small Business Server 2000, Windows SBS 2003, Windows Home Server,
 Windows NT, Windows 2000, Windows XP, and Windows Server 2003.
 
@@ -34406,7 +34424,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-members. The Fax Client API method Fax_SetConfiguration (for more details, see [MSDN-FSCAR])
+
+members. The Fax Client API method Fax_SetConfiguration (for more details, see [MSDN-FSCAR])
 does validate the same FAX_CONFIGURATIONW members by checking that each Hour FAX_TIME
 member value is smaller than or equal to 24 hours and that each Minute FAX_TIME member value is
 smaller than or equal to 60 minutes.
@@ -34484,7 +34503,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Platform Configuration
+
+Platform Configuration
 
 Device Limit
 
@@ -34572,7 +34592,8 @@ Release: April 23, 2024
 
 401 / 413
 
-<176> Section 3.1.4.1.102: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
+
+<176> Section 3.1.4.1.102: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
 stop the invalid call and throw an exception before the call reaches the fax server.
 
 <177> Section 3.1.4.1.102: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
@@ -34641,7 +34662,8 @@ Release: April 23, 2024
 
 402 / 413
 
-generic write access. If the client does not have generic write access to the location, the call fails and,
+
+generic write access. If the client does not have generic write access to the location, the call fails and,
 in this case, there is no predefined specific error code to be returned by the server.
 
 <192> Section 3.1.4.2.8: In Windows, the fax server implementation of this method does not validate
@@ -34710,7 +34732,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<210> Section 3.1.4.2.26: In Windows the underlying RPC protocol [MS-RPCE] implementation can
+
+<210> Section 3.1.4.2.26: In Windows the underlying RPC protocol [MS-RPCE] implementation can
 stop the invalid call and throw an exception before the call reaches the fax server.
 
 <211> Section 3.1.4.2.28: In Windows, the underlying RPC protocol [MS-RPCE] implementation can
@@ -34778,7 +34801,8 @@ Release: April 23, 2024
 
 404 / 413
 
-5.  Manage service configuration: This privilege allows the user to view, and set the fax server's
+
+5.  Manage service configuration: This privilege allows the user to view, and set the fax server's
 
 configuration data.
 
@@ -34858,7 +34882,8 @@ Fax Server and Client Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-By default, this privilege is given to the administrators group.
+
+By default, this privilege is given to the administrators group.
 
 This privilege is not available on Windows Vista, Windows Server 2008, Windows 7, Windows
 Server 2008 R2, and Windows Home Server 2011. This privilege is applicable to Windows NT,
@@ -34871,7 +34896,8 @@ Release: April 23, 2024
 
 406 / 413
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -34915,7 +34941,8 @@ Release: April 23, 2024
 
 407 / 413
 
-9  Index
+
+## 9 Index
 _
 
 _ FAX_ACTIVITY_LOGGING_CONFIGW packet 61
@@ -35072,7 +35099,8 @@ fax
 
 408 / 413
 
-   FAX_GetPersonalCoverPagesOption method
+
+   FAX_GetPersonalCoverPagesOption method
 
 [Protocol] 247
 
@@ -35235,7 +35263,8 @@ FAX_EndCopy [Protocol] 208
 
 409 / 413
 
-FAX_EndCopy method 208
+
+FAX_EndCopy method 208
 FAX_EndMessagesEnum [Protocol] 209
 FAX_EndMessagesEnum method 209
 FAX_EndServerNotification [Protocol] 209
@@ -35379,7 +35408,8 @@ FAX_GetSecurity [Protocol] 255
 
 410 / 413
 
-FAX_GetSecurity method 255
+
+FAX_GetSecurity method 255
 FAX_GetSecurityEx [Protocol] 256
 FAX_GetSecurityEx method 256
 FAX_GetSecurityEx2 method 258
@@ -35522,7 +35552,8 @@ FAX_UnregisterServiceProviderEx method 311
 
 411 / 413
 
-FAX_VERSION structure 57
+
+FAX_VERSION structure 57
 FAX_WriteFile [Protocol] 312
 FAX_WriteFile method 312
 FaxClient IDL 386
@@ -35675,7 +35706,8 @@ PFAX_JOB_ENTRY 23
 
 412 / 413
 
-PFAX_JOB_PARAM_EXW 49
+
+PFAX_JOB_PARAM_EXW 49
 PFAX_JOB_PARAMW 47
 PFAX_MESSAGE_PROPS 51
 PFAX_OUTBOX_CONFIG 51

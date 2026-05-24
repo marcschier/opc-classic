@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -148,176 +149,74 @@ Release: September 16, 2024
 
 2 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Headers](#221-http-headers)
+      - [2.2.1.1 client-request-id](#2211-client-request-id)
+      - [2.2.1.2 return-client-request-id](#2212-return-client-request-id)
+      - [2.2.1.3 request-id](#2213-request-id)
+      - [2.2.1.4 api-version](#2214-api-version)
+      - [2.2.1.5 authorization](#2215-authorization)
+      - [2.2.1.6 accept](#2216-accept)
+    - [2.2.2 URI Parameters](#222-uri-parameters)
+      - [2.2.2.1 api-version](#2221-api-version)
+    - [2.2.3 Complex Types](#223-complex-types)
+      - [2.2.3.1 ErrorDetails](#2231-errordetails)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 ms-DS-Issuer-Certificates](#231-ms-ds-issuer-certificates)
+    - [2.3.2 ms-DS-Issuer-Public-Certificates](#232-ms-ds-issuer-public-certificates)
+    - [2.3.3 ms-DS-Key-Credential-Link](#233-ms-ds-key-credential-link)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Key Provisioning Server Details](#31-key-provisioning-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Key](#3151-key)
+        - [3.1.5.1.1 POST](#31511-post)
+          - [3.1.5.1.1.1 Request Body](#315111-request-body)
+          - [3.1.5.1.1.2 Response Body](#315112-response-body)
+          - [3.1.5.1.1.3 Processing Details](#315113-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Key Provisioning Client Details](#32-key-provisioning-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Key](#3251-key)
+        - [3.2.5.1.1 POST](#32511-post)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Provision a Key](#41-provision-a-key)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full JSON Schema](#6-appendix-a-full-json-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Data Types ........................................................................................ 10
-HTTP Headers ............................................................................................ 10
-client-request-id ................................................................................... 10
-return-client-request-id ......................................................................... 11
-request-id ............................................................................................ 11
-api-version ........................................................................................... 11
-authorization ........................................................................................ 11
-accept ................................................................................................. 12
-URI Parameters .......................................................................................... 12
-api-version ........................................................................................... 12
-Complex Types ........................................................................................... 12
-ErrorDetails .......................................................................................... 12
-Directory Service Schema Elements ................................................................... 13
-ms-DS-Issuer-Certificates ............................................................................ 13
-ms-DS-Issuer-Public-Certificates .................................................................. 14
-ms-DS-Key-Credential-Link .......................................................................... 14
-
-2.3.1
-2.3.2
-2.3.3
-
-2.2.2.1
-
-2.2.3.1
-
-2.2.3
-
-2.2.2
-
-2.3
-
-3.1
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3  Protocol Details ..................................................................................................... 15
-Key Provisioning Server Details .......................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Key ..................................................................................................... 15
-POST ............................................................................................. 15
-Request Body ............................................................................ 15
-Response Body .......................................................................... 16
-Processing Details ...................................................................... 16
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Key Provisioning Client Details ........................................................................... 18
-Abstract Data Model .................................................................................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher-Layer Triggered Events ..................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-Key ..................................................................................................... 19
-POST ............................................................................................. 19
-Timer Events .............................................................................................. 19
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.5.1.1
-
-3.2.5.1
-
-3.2.6
-
-3.2
-
-[MS-KPP] - v20240916
-Key Provisioning Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-3 / 26
-
-3.2.7
-
-Other Local Events ...................................................................................... 19
-
-4  Protocol Examples ................................................................................................. 20
-Provision a Key ................................................................................................ 20
-
-4.1
-
-5  Security ................................................................................................................. 21
-Security Considerations for Implementers ........................................................... 21
-Index of Security Parameters ............................................................................ 21
-
-5.1
-5.2
-
-6  Appendix A: Full JSON Schema .............................................................................. 22
-
-7  Appendix B: Product Behavior ............................................................................... 23
-
-8  Change Tracking .................................................................................................... 24
-
-9  Index ..................................................................................................................... 25
-
-[MS-KPP] - v20240916
-Key Provisioning Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Key Provisioning Protocol provides a mechanism for registering a set of cryptographic keys on a
 user and device pair.
@@ -325,7 +224,7 @@ user and device pair.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -391,7 +290,8 @@ Key Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-forest. For more information, see [MS-AUTHSOD] section 1.1.1.5.2 and [MS-ADTS]. When
+
+forest. For more information, see [MS-AUTHSOD] section 1.1.1.5.2 and [MS-ADTS]. When
 Active Directory is operating as Active Directory Lightweight Directory Services (AD LDS),
 several AD LDS DCs can run on one server. When Active Directory is operating as AD DS, only
 one AD DS DC can run on one server. However, several AD LDS DCs can coexist with one AD
@@ -453,7 +353,7 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -465,10 +365,11 @@ Key Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -531,15 +432,16 @@ Release: September 16, 2024
 
 7 / 26
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-KPP].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Key Provisioning Protocol provides for registration of cryptographic keys on a user and device
 pair.
@@ -555,13 +457,13 @@ using the Key Provisioning Protocol.
 key provisioning server: The server that implements the REST Web service that accepts and
 responds to key provisioning requests using the Key Provisioning Protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The following figure illustrates the relationship of this protocol to other protocols.
 
 Figure 1: Protocols related to the Key Provisioning Protocol
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Key Provisioning Protocol registers keys with User objects ([MS-ADSC] section 2.269) represented
 in a directory server. A server implementation of the Key Provisioning Protocol, or key provisioning
@@ -585,7 +487,8 @@ Release: September 16, 2024
 
 8 / 26
 
-
+
+
 
 
 
@@ -611,19 +514,19 @@ section 2.136).
 
 attribute ([MS-ADA2] section 2.358) on User objects.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Key Provisioning Protocol is applicable only for requests for key provisioning.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -634,9 +537,10 @@ Release: September 16, 2024
 
 9 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Key Provisioning Protocol consists of a single RESTful Web service.
 
@@ -656,9 +560,9 @@ All client messages to the key provisioning server MUST use Hypertext Transfer P
 Sockets Layer (HTTPS) and provide server authentication, which MUST use Transport Layer
 Security (TLS) 1.1 [RFC4346] or greater.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Headers
+#### 2.2.1 HTTP Headers
 
 This protocol accesses the HTTP headers listed in the following table.
 
@@ -695,7 +599,7 @@ authorization.
 Specifies which media types ([RFC2616] section 3.7) are
 acceptable for the response.
 
-2.2.1.1  client-request-id
+##### 2.2.1.1 client-request-id
 
 The client-request-id HTTP header is optional and can appear in either the request or the response.
 This header is used to provide the key provisioning server with a unique request identifier, which is
@@ -715,9 +619,10 @@ Release: September 16, 2024
 
 10 / 26
 
- client-request-id = String
 
-2.2.1.2  return-client-request-id
+ client-request-id = String
+
+##### 2.2.1.2 return-client-request-id
 
 The return-client-request-id HTTP header is optional. This header is sent in the request and is used by
 the key provisioning server to determine whether to return the client-specified client-request-id in the
@@ -727,7 +632,7 @@ The format of the return-client-request-id header, in ABNF, is as follows.
 
  return-client-request-id = "true"
 
-2.2.1.3  request-id
+##### 2.2.1.3 request-id
 
 The request-id HTTP header is a server-generated GUID in standard string representation (see
 [RFC4122] section 3 for the format). The key provisioning server SHOULD include this header in all
@@ -738,7 +643,7 @@ The format of the request-id header, in ABNF, is as follows.
  String = *(%x20-7E)
  request-id = String
 
-2.2.1.4  api-version
+##### 2.2.1.4 api-version
 
 The api-version header is an integer that indicates the API version that is expected by the client.
 Either this header or the api-version query parameter (section 2.2.2.1) MUST be included in all client
@@ -753,7 +658,7 @@ The format of the api-version header, in ABNF, is as follows.
   String = *(%x20-7E)
   api-version = String
 
-2.2.1.5  authorization
+##### 2.2.1.5 authorization
 
 The authorization HTTP header is required in the request and contains a JSON Web Token (JWT)
 that the client passes to the key provisioning server. The JWT contains claims that the key
@@ -771,7 +676,8 @@ Release: September 16, 2024
 
 11 / 26
 
-2.2.1.6  accept
+
+##### 2.2.1.6 accept
 
 The accept HTTP header is required in the request and specifies which media types ([RFC2616] section
 3.7) are acceptable for the response. "application/json" is the only acceptable media type for the Key
@@ -781,7 +687,7 @@ The format of the accept header, in ABNF, is as follows.
 
  accept = "application/json"
 
-2.2.2  URI Parameters
+#### 2.2.2 URI Parameters
 
 The following table summarizes the set of common URI parameters defined by this protocol.
 
@@ -793,7 +699,7 @@ Description
 
 Specifies the API version.
 
-2.2.2.1  api-version
+##### 2.2.2.1 api-version
 
 The api-version parameter is an integer that indicates the API version that is expected by the client.
 Either this header or the api-version HTTP header (section 2.2.1.4) MUST be included in all client
@@ -804,7 +710,7 @@ The format of the api-version parameter, in ABNF, is as follows.
   String = *(%x20-7E)
   api-version = String
 
-2.2.3  Complex Types
+#### 2.2.3 Complex Types
 
 The following table summarizes the set of complex type definitions included in this specification.
 
@@ -817,7 +723,7 @@ Description
 An object that stores data related to a key provisioning
 server error.
 
-2.2.3.1  ErrorDetails
+##### 2.2.3.1 ErrorDetails
 
 This object contains a collection of human-readable details that describe an error encountered by the
 key provisioning server. It can be used by the client role of the Key Provisioning Protocol for logging
@@ -838,7 +744,8 @@ Key Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-         "target": { "type": "string", "optional": false },
+
+         "target": { "type": "string", "optional": false },
          "clientrequestid": {  "type": "string", "optional": true },
          "time": { "type": "string", "optional": false },
          "innererror": {
@@ -871,7 +778,7 @@ trace: MUST be "null".
 
 context:  MUST be "null".
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol makes use of the Directory Service schema classes and attributes that are listed in the
 following table.
@@ -899,7 +806,7 @@ ms-DS-Issuer-Certificates, ms-DS-Issuer-Public-
 
 Certificates
 
-2.3.1  ms-DS-Issuer-Certificates
+#### 2.3.1 ms-DS-Issuer-Certificates
 
 The ms-DS-Issuer-Certificates attribute is a multivalued OCTET_STRING attribute (see [MS-ADTS]
 section 3.1.1.2.2.2, the String(Octet) syntax). Each value of the attribute is stored as a binary blob
@@ -914,18 +821,19 @@ Key Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-where [time] is the timestamp formatted as an integer representing the number of 100-nanosecond
+
+where [time] is the timestamp formatted as an integer representing the number of 100-nanosecond
 intervals that have elapsed since 12:00:00 midnight, January 1, 0001, UTC, and [binary value of an
 X.509 certificate] is the contents of an X.509 certificate [RFC5280] stored as an encrypted binary
 blob.
 
-2.3.2  ms-DS-Issuer-Public-Certificates
+#### 2.3.2 ms-DS-Issuer-Public-Certificates
 
 The ms-DS-Issuer-Public-Certificates attribute is a multivalued OCTET_STRING attribute (see [MS-
 ADTS] section 3.1.1.2.2.2, the String(Octet) syntax). Each value of the attribute is stored as a binary
 blob containing an X.509 certificate [RFC5280].
 
-2.3.3  ms-DS-Key-Credential-Link
+#### 2.3.3 ms-DS-Key-Credential-Link
 
 The ms-DS-Key-Credential-Link attribute is a multivalued DN-Binary attribute (see [MS-ADTS] section
 3.1.1.2.2.2, the Object(DN-Binary) syntax). Each value is formatted as follows:
@@ -943,27 +851,28 @@ Release: September 16, 2024
 
 14 / 26
 
-3  Protocol Details
 
-3.1  Key Provisioning Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Key Provisioning Server Details
 
-None.
-
-3.1.2  Timers
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.3  Initialization
+#### 3.1.2 Timers
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.3 Initialization
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.4 Higher-Layer Triggered Events
+
+None.
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The following resource is used by the Key Provisioning Protocol.
 
@@ -971,7 +880,7 @@ Resource
 
 key
 
-3.1.5.1  Key
+##### 3.1.5.1 Key
 
 Description
 
@@ -984,7 +893,7 @@ HTTP Method
 
 POST
 
-3.1.5.1.1 POST
+###### 3.1.5.1.1 POST
 
 Description
 
@@ -1006,7 +915,8 @@ Release: September 16, 2024
 
 15 / 26
 
-3.1.5.1.1.1  Request Body
+
+###### 3.1.5.1.1.1 Request Body
 
 The request body contains the following JSON-formatted object.
 
@@ -1020,7 +930,7 @@ The request body contains the following JSON-formatted object.
 
 kngc: Contains the base64-encoded public portion of an asymmetric key.
 
-3.1.5.1.1.2  Response Body
+###### 3.1.5.1.1.2 Response Body
 
 If the key provisioning server successfully creates and provisions a key in the directory, the HTTP 200
 status code is returned, along with a server-generated GUID in the request-id header. Additionally,
@@ -1060,7 +970,7 @@ DomainControllerFqdn: Contains the Domain Name System (DNS) address of the domai
 
 controller (DC) that the key was registered with.
 
-3.1.5.1.1.3  Processing Details
+###### 3.1.5.1.1.3 Processing Details
 
 The HTTP POST request is processed as follows.
 
@@ -1077,7 +987,8 @@ Key Provisioning Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.  The accept HTTP header MUST be present and contain the value "application/json".
+
+2.  The accept HTTP header MUST be present and contain the value "application/json".
 
 3.  The kngc property (section 3.1.5.1.1.1) MUST be present and base64-encoded.
 
@@ -1170,7 +1081,8 @@ format ([MS-DTYP] section 2.3.3).
 
 17 / 26
 
-KEYCREDENTIALLINK_ENTRY Identifier
+
+KEYCREDENTIALLINK_ENTRY Identifier
 
 Value
 
@@ -1206,17 +1118,17 @@ the HTTP status code set to 200 ("OK") and a server-generated GUID in the reques
 header. The response body MUST contain the UPN of the User object located in step 3 along
 with a server-generated GUID for the key identifier.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Key Provisioning Client Details
+### 3.2 Key Provisioning Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1239,27 +1151,28 @@ Release: September 16, 2024
 
 18 / 26
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The resources used for the Key Provisioning Protocol are defined in section 3.1.5.
 
-3.2.5.1  Key
+##### 3.2.5.1 Key
 
 The HTTP methods allowed for this resource are defined in section 3.1.5.1.
 
-3.2.5.1.1 POST
+###### 3.2.5.1.1 POST
 
 The POST message, including request and response body information, is defined in section 3.1.5.1.1
 and subsections.
@@ -1268,11 +1181,11 @@ When the client receives the response from the POST message, it SHOULD<3> check 
 property. If this property exists in the response, the client stores its value in the Data Store
 Information abstract data model element (section 3.2.1).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1283,7 +1196,8 @@ Release: September 16, 2024
 
 19 / 26
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following section shows an example of the requests and responses that are defined by the Key
 Provisioning Protocol.
@@ -1291,7 +1205,7 @@ Provisioning Protocol.
 Note  Throughout these examples, line breaks were added and irrelevant fields were removed to
 enhance readability.
 
-4.1  Provision a Key
+### 4.1 Provision a Key
 
 The following example shows a request to the key provisioning server to provision a key (section
 3.1.5.1.1.1) and the response (section 3.1.5.1.1.2).
@@ -1329,9 +1243,10 @@ Release: September 16, 2024
 
 20 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Key Provisioning Protocol uses HTTPS as a transport. Using Secure Sockets Layer (SSL) server
 certificate verification ensures that the client is communicating with the real key provisioning server
@@ -1341,7 +1256,7 @@ The input message uses an JSON Web Token for both authentication and authorizati
 provisioning server must validate that the security token is signed by a trusted identity provider, is
 within the token validity period, and that the target audience of the token is the server.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security Parameter
 
@@ -1362,7 +1277,8 @@ Release: September 16, 2024
 
 21 / 26
 
-6  Appendix A: Full JSON Schema
+
+## 6 Appendix A: Full JSON Schema
 
  {
      "description": "error details",
@@ -1418,7 +1334,8 @@ Release: September 16, 2024
 
 22 / 26
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1511,7 +1428,8 @@ Release: September 16, 2024
 
 23 / 26
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -1523,7 +1441,8 @@ Release: September 16, 2024
 
 24 / 26
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 15
@@ -1661,7 +1580,8 @@ Relationship to other protocols 8
 
 25 / 26
 
-request-id 11
+
+request-id 11
 return-client-request-id 11
 
 S

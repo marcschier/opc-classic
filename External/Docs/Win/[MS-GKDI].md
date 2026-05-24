@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 42
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -242,145 +243,63 @@ Release: April 23, 2024
 
 2 / 42
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 KDF Parameters](#221-kdf-parameters)
+    - [2.2.2 FFC DH Parameters](#222-ffc-dh-parameters)
+    - [2.2.3 Public Key Formats](#223-public-key-formats)
+      - [2.2.3.1 FFC DH Key](#2231-ffc-dh-key)
+      - [2.2.3.2 ECDH Key](#2232-ecdh-key)
+    - [2.2.4 Group Key Envelope](#224-group-key-envelope)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 ISDKey Server Details](#31-isdkey-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 GetKey (Opnum 0)](#3141-getkey-opnum-0)
+        - [3.1.4.1.1 Creating a New Root Key](#31411-creating-a-new-root-key)
+        - [3.1.4.1.2 Generating a Group Key](#31412-generating-a-group-key)
+        - [3.1.4.1.3 Creating or Updating a Server Configuration Object](#31413-creating-or-updating-a-server-configuration-object)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 ISDKey Client Details](#32-isdkey-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Client Side Processing](#3241-client-side-processing)
+      - [3.2.4.2 Retrieving a Group Key from a Server](#3242-retrieving-a-group-key-from-a-server)
+      - [3.2.4.3 Computing the Desired Group Key](#3243-computing-the-desired-group-key)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Data Types ........................................................................................ 13
-KDF Parameters ......................................................................................... 13
-FFC DH Parameters ..................................................................................... 14
-Public Key Formats ..................................................................................... 15
-FFC DH Key .......................................................................................... 15
-ECDH Key ............................................................................................ 16
-Group Key Envelope .................................................................................... 17
-Directory Service Schema Elements ................................................................... 20
-
-2.2.3.1
-2.2.3.2
-
-2.2.4
-
-2.3
-
-3.1
-
-3.1.4.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-
-3  Protocol Details ..................................................................................................... 22
-ISDKey Server Details ...................................................................................... 22
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 23
-Initialization ............................................................................................... 23
-Message Processing Events and Sequencing Rules .......................................... 24
-GetKey (Opnum 0) ................................................................................ 24
-Creating a New Root Key .................................................................. 27
-Generating a Group Key ................................................................... 28
-Creating or Updating a Server Configuration Object ............................. 30
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-ISDKey Client Details........................................................................................ 31
-Abstract Data Model .................................................................................... 31
-Timers ...................................................................................................... 31
-Initialization ............................................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-Client Side Processing............................................................................ 32
-Retrieving a Group Key from a Server ..................................................... 33
-Computing the Desired Group Key .......................................................... 34
-Timer Events .............................................................................................. 35
-Other Local Events ...................................................................................... 35
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.5
-3.1.6
-
-3.2.5
-3.2.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 36
-
-5  Security ................................................................................................................. 37
-Security Considerations for Implementers ........................................................... 37
-Index of Security Parameters ............................................................................ 37
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 38
-
-7  Appendix B: Product Behavior ............................................................................... 39
-
-3 / 42
-
-[MS-GKDI] - v20240423
-Group Key Distribution Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8  Change Tracking .................................................................................................... 40
-
-9  Index ..................................................................................................................... 41
-
-[MS-GKDI] - v20240423
-Group Key Distribution Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 42
-
-1  Introduction
+## 1 Introduction
 
 The Group Key Distribution Protocol is used by clients to obtain cryptographic keys that correspond to
 arbitrary security descriptors that can be evaluated by an Active Directory domain controller
@@ -394,7 +313,7 @@ see [CRYPTO].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -452,7 +371,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain controller (DC): The service, running on a server, that implements Active Directory, or
+
+domain controller (DC): The service, running on a server, that implements Active Directory, or
 the server hosting this service. The service hosts the data store for objects and interoperates
 with other DCs to ensure that a local change to an object replicates correctly across all DCs.
 When Active Directory is operating as Active Directory Domain Services (AD DS), the DC
@@ -527,7 +447,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-little-endian: Multiple-byte values that are byte-ordered with the least significant byte stored in
+
+little-endian: Multiple-byte values that are byte-ordered with the least significant byte stored in
 
 the memory location with the lowest address.
 
@@ -604,7 +525,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-of auditing takes place when the object is accessed. The security descriptor format is
+
+of auditing takes place when the object is accessed. The security descriptor format is
 specified in [MS-DTYP] section 2.4.6; a string representation of security descriptors, called
 SDDL, is specified in [MS-DTYP] section 2.5.1.
 
@@ -642,14 +564,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -671,7 +593,8 @@ Release: April 23, 2024
 
 8 / 42
 
-[FIPS186] FIPS PUBS, "Digital Signature Standard (DSS)", FIPS PUB 186-3, June 2009,
+
+[FIPS186] FIPS PUBS, "Digital Signature Standard (DSS)", FIPS PUB 186-3, June 2009,
 https://csrc.nist.gov/csrc/media/publications/fips/186/3/archive/2009-06-25/documents/fips_186-
 3.pdf
 
@@ -719,7 +642,7 @@ https://csrc.nist.gov/publications/detail/sp/800-108/final
 Logarithm Cryptography", March 2006, http://csrc.nist.gov/groups/ST/toolkit/documents/SP800-
 56Arev1_3-8-07.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CRYPTO] Menezes, A., Vanstone, S., and Oorschot, P., "Handbook of Applied Cryptography", 1997,
 https://cacr.uwaterloo.ca/hac/
@@ -737,7 +660,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-WPO] Microsoft Corporation, "Windows Protocols Overview".
+
+[MS-WPO] Microsoft Corporation, "Windows Protocols Overview".
 
 [MSDN-ALG] Microsoft Corporation, "CNG Algorithm Identifiers", http://msdn.microsoft.com/en-
 us/library/aa375534(VS.85).aspx
@@ -745,7 +669,7 @@ us/library/aa375534(VS.85).aspx
 [RFC3852] Housley, R., "Cryptographic Message Syntax (CMS)", RFC 3852, July 2004,
 https://www.rfc-editor.org/info/rfc3852
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Key Distribution Protocol is used to obtain cryptographic keys corresponding to arbitrary
 security descriptors that can be evaluated by an Active Directory DC. It can be used to obtain
@@ -776,7 +700,7 @@ store a small amount of state in Active Directory (sections 2.3 and 3.1.1), whic
 configuration information and one or more root key objects. Other than this, Group Key Distribution
 Protocol servers retain no state across RPC calls.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Group Key Distribution Protocol is built on the RPC interface, as specified in [C706] and [MS-
 RPCE], with the TCP/IP protocol sequence ncacn_ip_tcp as its transport.
@@ -791,7 +715,7 @@ The Group Key Distribution Protocol server runs on a domain controller (DC) in a
 Directory domain, as specified in section 1.5. Clients use the DC Locator functionality described in
 [MS-NRPC] section 3.5.4.3.1 to locate a DC.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Group Key Distribution Protocol is an RPC interface. As a result, it has the prerequisites specified
 in [MS-RPCE] that are common to RPC interfaces. In particular, the server has to be started and fully
@@ -804,7 +728,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Group Key Distribution Protocol is used between clients and servers. The Group Key Distribution
+
+The Group Key Distribution Protocol is used between clients and servers. The Group Key Distribution
 Protocol server runs on a DC with a DC functional level of DS_BEHAVIOR_WIN2012 or higher in an
 Active Directory domain. The client requires the ability to locate such a DC by using the DC Locator
 functionality specified in [MS-NRPC] section 3.5.4.3.1.
@@ -832,7 +757,7 @@ The server configuration object also needs protection from unauthorized modifica
 key objects require protection from unauthorized disclosure or modification. The server also requires a
 method of generating cryptographically strong random numbers for use as root keys in this protocol.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Key Distribution Protocol is appropriate for use when it is desirable to associate
 cryptographic keys with security descriptors in an Active Directory domain. It is only appropriate
@@ -841,7 +766,7 @@ at least one DC with a DC functional level of DS_BEHAVIOR_WIN2012 or higher, as 
 section 1.5. Also, this protocol is not appropriate when protection against untrusted domain
 administrators is desired, as specified in section 5.1.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This specification covers versioning issues in the following areas:
 
@@ -870,10 +795,11 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-algorithms are configured in the server configuration object, both server and client behavior is
+
+algorithms are configured in the server configuration object, both server and client behavior is
 undefined.
 
-1.8  Vendor Extensible Fields
+### 1.8 Vendor Extensible Fields
 
 No vendor-extensible fields are used by this protocol.
 
@@ -881,7 +807,7 @@ This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors 
 own HRESULT values, but they MUST set the C bit (0x20000000) for each vendor-defined value, to
 indicate that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following parameters are private Microsoft assignments.
 
@@ -932,9 +858,10 @@ Release: April 23, 2024
 
 12 / 42
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The client and server MUST communicate over RPC by using the TCP/IP protocol sequence
 ncacn_ip_tcp.
@@ -948,7 +875,7 @@ The server MUST use the RPC security extensions specified in [MS-RPCE]. It MUST 
 SPNEGO [MS-SPNG] [RFC4178] to negotiate security providers. The server MUST also register one or
 more security packages that can be negotiated by using this protocol.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it supports both the Network Data
 Representation (NDR) and NDR64 transfer syntaxes and provides a negotiation mechanism for
@@ -1011,7 +938,7 @@ ULONG
 A 32-bit unsigned integer (range: 0 through 4294967295 decimal). Because a ULONG
 is unsigned, its first bit (most significant bit (MSB)) is not reserved for signing.
 
-2.2.1  KDF Parameters
+#### 2.2.1 KDF Parameters
 
 The following specifies the format and field descriptions for the key derivation function (KDF)
 parameters structure.
@@ -1023,7 +950,8 @@ Release: April 23, 2024
 
 13 / 42
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1088,7 +1016,7 @@ L"SHA1"
 
 The SHA-1 algorithm, as specified in [FIPS180-3].
 
-2.2.2  FFC DH Parameters
+#### 2.2.2 FFC DH Parameters
 
 This structure specifies field parameters for use in deriving finite field cryptography (FFC) Diffie-
 Hellman (DH) ([SP800-56A] section 5.7.1) keys, as specified in section 3.1.4.1.2.
@@ -1127,7 +1055,8 @@ Release: April 23, 2024
 
 14 / 42
 
-...
+
+...
 
 Generator (variable)
 
@@ -1155,12 +1084,12 @@ algorithm ([SP800-56A] section 5.7.1). This field parameter is referred to as g 
 section 3.2. It MUST be encoded in big-endian format. The length of this field, in bytes, MUST be
 equal to the value of the Key length field.
 
-2.2.3  Public Key Formats
+#### 2.2.3 Public Key Formats
 
 The formats in this section are used by the Group Key Distribution Protocol server to return public
 keys to the client, as specified in section 3.1.4.1.
 
-2.2.3.1  FFC DH Key
+##### 2.2.3.1 FFC DH Key
 
 The following specifies the format and field descriptions for the FFC DH Key structure.
 
@@ -1204,7 +1133,8 @@ Release: April 23, 2024
 
 15 / 42
 
-Public key (variable)
+
+Public key (variable)
 
 ...
 
@@ -1230,7 +1160,7 @@ Public key (variable): The public key for the FFC DH algorithm ([SP800-56A] sect
 field parameter is referred to as y in [SP800-56A] section 3.2. It MUST be encoded in big-endian
 format. The length of this field, in bytes, MUST be equal to the value of the Key length field.
 
-2.2.3.2  ECDH Key
+##### 2.2.3.2 ECDH Key
 
 The following specifies the format and field descriptions for the Elliptic Curve Diffie-Hellman
 (ECDH) Key structure [RFC5114].
@@ -1279,7 +1209,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1305,7 +1236,7 @@ Y (variable): The y coordinate of the point P that represents the ECDH public ke
 referred to as y in [SP800-56A] section 3.2. It MUST be encoded in big-endian format. The length
 of this field, in bytes, MUST be equal to the value in the Key length field.
 
-2.2.4  Group Key Envelope
+#### 2.2.4 Group Key Envelope
 
 The following specifies the format and field descriptions for the Group Key Envelope structure.
 
@@ -1359,7 +1290,8 @@ Release: April 23, 2024
 
 17 / 42
 
-Private Key Length
+
+Private Key Length
 
 Public Key Length
 
@@ -1416,7 +1348,8 @@ Release: April 23, 2024
 
 18 / 42
 
-...
+
+...
 
 ...
 
@@ -1488,7 +1421,8 @@ Release: April 23, 2024
 
 19 / 42
 
-dwFlags field is set to 1, or if the L1 index field is set to zero and the value in the L2 index field
+
+dwFlags field is set to 1, or if the L1 index field is set to zero and the value in the L2 index field
 is not equal to 31.
 
 cbL2Key (4 bytes): A 32-bit unsigned integer. This field MUST be the length, in bytes, of the L2 key
@@ -1546,7 +1480,7 @@ set to 1, then the length, in bytes, of this field MUST be equal to the value of
 Length field. If this field is present and bit 31 of the dwFlags field is set to 0, the length of this
 field MUST be equal to 64 bytes.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Group Key Distribution Protocol accesses the directory service schema classes and attributes
 listed in the following table.
@@ -1562,7 +1496,8 @@ Release: April 23, 2024
 
 20 / 42
 
-Class
+
+Class
 
 Attributes
 
@@ -1601,11 +1536,12 @@ Release: April 23, 2024
 
 21 / 42
 
-3  Protocol Details
 
-3.1  ISDKey Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 ISDKey Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1670,7 +1606,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-They are replicated to all the servers in the Active Directory forest by Active Directory replication
+
+They are replicated to all the servers in the Active Directory forest by Active Directory replication
 mechanisms.
 
 Each root key data element contains the following attributes:
@@ -1713,11 +1650,11 @@ indicates that these ADM elements can be directly accessed from outside this pro
 authorized administrator can access these data elements directly by querying Active Directory at the
 RDN locations specified in section 1.9.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST register a dynamic endpoint with the RPC runtime. It MUST indicate to the RPC
 runtime that it is to negotiate security contexts using the SPNEGO protocol [MS-SPNG], and MUST
@@ -1737,7 +1674,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4  Message Processing Events and Sequencing Rules
+
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 6.0, as specified in [MS-RPCE] section 3.
@@ -1759,7 +1697,7 @@ The following is the only opnum method defined by this protocol.
 
 Opnum: 0
 
-3.1.4.1  GetKey (Opnum 0)
+##### 3.1.4.1 GetKey (Opnum 0)
 
 The syntax for the GetKey (Opnum 0) method consists of the following.
 
@@ -1804,7 +1742,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ppbOut: On successful processing of a request, the server MUST set this to a pointer that refers to
+
+ppbOut: On successful processing of a request, the server MUST set this to a pointer that refers to
 the output key binary large object (BLOB), as specified in section 2.2.4.
 
 Return Values: The server MUST return zero if it successfully processes the message received from
@@ -1884,7 +1823,8 @@ Release: April 23, 2024
 
 25 / 42
 
-5.  Using the method specified in [MS-DTYP] section 2.5.3.2, perform an access check with the
+
+5.  Using the method specified in [MS-DTYP] section 2.5.3.2, perform an access check with the
 
 pbTargetSD parameter value as the SecurityDescriptor, the caller's authorization context as the
 Token, 0x3 as the Access Request mask, and with the Object Tree and PrincipalSelfSubst SID set
@@ -1956,7 +1896,8 @@ Release: April 23, 2024
 
 26 / 42
 
-
+
+
 
 If the L2 component of GKID is equal to 31, return the L1 seed key corresponding to SK in
 the ppbOut parameter by using the format specified in section 2.2.4, with the L2 key field
@@ -1972,7 +1913,7 @@ If neither of the above two cases apply, construct the return value in the ppbOu
 using the format specified in section 2.2.4, with SK in the L2 key field and the next older L1
 seed key in the L1 key field.
 
-3.1.4.1.1 Creating a New Root Key
+###### 3.1.4.1.1 Creating a New Root Key
 
 If the root keys container in Active Directory on the DC is empty when a GetKey request is
 received by the server, the server MUST create a new root key object based on the default Server
@@ -2035,7 +1976,8 @@ Release: April 23, 2024
 
 27 / 42
 
-msKds-KDF-Param attribute to a KDF Parameters structure (section 2.2.1) that has the
+
+msKds-KDF-Param attribute to a KDF Parameters structure (section 2.2.1) that has the
 Hash algorithm name field set to the null-terminated Unicode string "SHA512".
 
   Check for the existence of the msKds-SecretAgreement-AlgorithmID attribute in the
@@ -2053,7 +1995,7 @@ attribute to 256.
 
 6.  Add this new root key object to the server's state, as specified in section 3.1.1.
 
-3.1.4.1.2 Generating a Group Key
+###### 3.1.4.1.2 Generating a Group Key
 
 This section specifies the processing rules for generating a group key for a given security
 descriptor, root key identifier, and group key identifier. The following notational conventions are
@@ -2120,7 +2062,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-To generate the group key, the server MUST first check the root key configuration attributes of the
+
+To generate the group key, the server MUST first check the root key configuration attributes of the
 RK object.
 
 1.  Check that RK.msKds-Version is equal to 1. Otherwise, return an error.
@@ -2206,7 +2149,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Having validated the root key configuration, the server MUST then compute the group private key
+
+2.  Having validated the root key configuration, the server MUST then compute the group private key
 
 in the following manner:
 
@@ -2233,7 +2177,7 @@ specified in [SP800-56A] section 5.6.1.2, with PrivKey(SD, RK, L0, L1, L2) as th
 d, and by using the domain parameters from [FIPS186] Appendix D.1.2.3, D.1.2.4, or
 D.1.2.5, respectively.
 
-3.1.4.1.3 Creating or Updating a Server Configuration Object
+###### 3.1.4.1.3 Creating or Updating a Server Configuration Object
 
 As specified in section 1.5, a Server Configuration object MUST be present in the Active Directory
 database for successful operation of this protocol. Server implementations MUST use the parameters
@@ -2320,25 +2264,26 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Refer to the data in the table of this section when updating the attributes of the Server
+
+Refer to the data in the table of this section when updating the attributes of the Server
 Configuration object and close the Active Directory connection when complete.
 
 Note  Active Directory schema information for the Server Configuration object is specified
 in [MS-ADSC] section 2.160.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 A server in the Active Directory forest MUST update its Server Configuration object and set of
 root key objects when the corresponding objects on the Active Directory DC are modified, either
 because of changes by an authorized user or as the result of Active Directory replication.
 
-3.2  ISDKey Client Details
+### 3.2 ISDKey Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2372,7 +2317,7 @@ descriptor and its group key identifier.
 Note  Each Group public key and Group seed key also contain a Boolean attribute that
 identifies whether the key was the current key at the time it was retrieved.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
@@ -2383,13 +2328,14 @@ Release: April 23, 2024
 
 31 / 42
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
-3.2.4.1  Client Side Processing
+##### 3.2.4.1 Client Side Processing
 
 The Group Key Distribution Protocol client receives requests from a higher layer. The caller requests
 the retrieval of a key for a given security descriptor, while optionally specifying a root key
@@ -2453,7 +2399,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.  If bit 31 of the dwFlags field of the returned Group Key Envelope is set to 0 and the L1 Key
+
+3.  If bit 31 of the dwFlags field of the returned Group Key Envelope is set to 0 and the L1 Key
 
 field is present, then:
 
@@ -2506,7 +2453,7 @@ mark the above key with the current attribute.
 Lastly, the client MUST compute the requested key, as specified in section 3.2.4.3, and return the
 result to the caller.
 
-3.2.4.2  Retrieving a Group Key from a Server
+##### 3.2.4.2 Retrieving a Group Key from a Server
 
 To retrieve a group key from the server, the client MUST perform a GetKey call, as specified in
 section 3.1.4.1. However, before making this call, the client MUST first perform the following:
@@ -2538,7 +2485,8 @@ Group Key Distribution Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2568,7 +2516,7 @@ After establishing and configuring the DC connection, the client MUST perform th
 (non-zero return codes) identically. If the GetKey method fails, the client MUST return an error
 to the caller.
 
-3.2.4.3  Computing the Desired Group Key
+##### 3.2.4.3 Computing the Desired Group Key
 
 The group key returned by the Group Key Distribution Protocol server might not have the same
 group key identifier requested by the client, as specified in section 3.1.4.1. At other times, the
@@ -2619,11 +2567,12 @@ Release: April 23, 2024
 
 34 / 42
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -2634,7 +2583,8 @@ Release: April 23, 2024
 
 35 / 42
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 To illustrate the operation of the Group Key Distribution Protocol, consider the example of a program
 designed to send encrypted email to users within an Active Directory forest from a domain-joined
@@ -2684,9 +2634,10 @@ Release: April 23, 2024
 
 36 / 42
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol generates group keys from root keys stored in Active Directory, and distributes them
 on the basis of authentication to an Active Directory domain. Therefore, security of this protocol
@@ -2715,7 +2666,7 @@ overflows, denial-of-service attacks, escalation of privilege, and disclosure of
 information about these concepts, secure development best practices, and common errors, see
 [HOWARD].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -2742,7 +2693,8 @@ Release: April 23, 2024
 
 37 / 42
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL
 found in [MS-DTYP] section 5. The syntax uses the IDL syntax extensions described in [MS-RPCE]
@@ -2773,7 +2725,8 @@ Release: April 23, 2024
 
 38 / 42
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2829,7 +2782,8 @@ Release: April 23, 2024
 
 39 / 42
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2873,7 +2827,8 @@ Release: April 23, 2024
 
 40 / 42
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3004,7 +2959,8 @@ P
 
 41 / 42
 
-Parameters - security index 37
+
+Parameters - security index 37
 Preconditions 10
 Prerequisites 10
 Product behavior 39

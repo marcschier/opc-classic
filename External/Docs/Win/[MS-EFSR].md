@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 94
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: September 16, 2024
 
 2 / 94
 
-Date
+
+Date
 
 Revision
 History
@@ -542,7 +544,8 @@ Release: September 16, 2024
 
 3 / 94
 
-Date
+
+Date
 
 Revision
 History
@@ -600,256 +603,114 @@ Release: September 16, 2024
 
 4 / 94
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 EFSRPC Identifiers](#221-efsrpc-identifiers)
+    - [2.2.2 EFSRPC Metadata](#222-efsrpc-metadata)
+      - [2.2.2.1 EFSRPC Metadata Version 1](#2221-efsrpc-metadata-version-1)
+        - [2.2.2.1.1 Key List Structure](#22211-key-list-structure)
+        - [2.2.2.1.2 Key List Entry](#22212-key-list-entry)
+        - [2.2.2.1.3 Public Key Information](#22213-public-key-information)
+        - [2.2.2.1.4 Certificate Data](#22214-certificate-data)
+        - [2.2.2.1.5 Encrypted FEK](#22215-encrypted-fek)
+      - [2.2.2.2 EFSRPC Metadata Version 2](#2222-efsrpc-metadata-version-2)
+        - [2.2.2.2.1 Protector List Structure](#22221-protector-list-structure)
+        - [2.2.2.2.2 EFSX Datum](#22222-efsx-datum)
+        - [2.2.2.2.3 Blob Datum](#22223-blob-datum)
+        - [2.2.2.2.4 Descriptor Datum](#22224-descriptor-datum)
+        - [2.2.2.2.5 Protector List Entry](#22225-protector-list-entry)
+        - [2.2.2.2.6 Protector Info Datum](#22226-protector-info-datum)
+        - [2.2.2.2.7 Key Agreement Datum](#22227-key-agreement-datum)
+        - [2.2.2.2.8 Fek Info Datum](#22228-fek-info-datum)
+        - [2.2.2.2.9 DPAPI-NG Datum](#22229-dpapi-ng-datum)
+      - [2.2.2.3 EFSRPC Metadata Version 3](#2223-efsrpc-metadata-version-3)
+    - [2.2.3 EFSRPC Raw Data Format](#223-efsrpc-raw-data-format)
+      - [2.2.3.1 Marshaled Stream](#2231-marshaled-stream)
+      - [2.2.3.2 Stream Data Segment](#2232-stream-data-segment)
+      - [2.2.3.3 Data Segment Encryption Header](#2233-data-segment-encryption-header)
+      - [2.2.3.4 Extended Header](#2234-extended-header)
+    - [2.2.4 PEXIMPORT_CONTEXT_HANDLE](#224-peximportcontexthandle)
+    - [2.2.5 EFS_EXIM_PIPE](#225-efseximpipe)
+    - [2.2.6 EFS_CERTIFICATE_BLOB](#226-efscertificateblob)
+    - [2.2.7 EFS_HASH_BLOB](#227-efshashblob)
+    - [2.2.8 ENCRYPTION_CERTIFICATE](#228-encryptioncertificate)
+    - [2.2.9 ENCRYPTION_CERTIFICATE_LIST](#229-encryptioncertificatelist)
+    - [2.2.10 ENCRYPTION_CERTIFICATE_HASH](#2210-encryptioncertificatehash)
+    - [2.2.11 ENCRYPTION_CERTIFICATE_HASH_LIST](#2211-encryptioncertificatehashlist)
+    - [2.2.12 EFS_RPC_BLOB](#2212-efsrpcblob)
+    - [2.2.13 ALG_ID](#2213-algid)
+    - [2.2.14 EFS_KEY_INFO](#2214-efskeyinfo)
+    - [2.2.15 EFS_COMPATIBILITY_INFO](#2215-efscompatibilityinfo)
+    - [2.2.16 EFS_ENCRYPTION_STATUS_INFO](#2216-efsencryptionstatusinfo)
+    - [2.2.17 EFS_DECRYPTION_STATUS_INFO](#2217-efsdecryptionstatusinfo)
+    - [2.2.18 ENCRYPTED_FILE_METADATA_SIGNATURE](#2218-encryptedfilemetadatasignature)
+    - [2.2.19 ENCRYPTION_PROTECTOR](#2219-encryptionprotector)
+    - [2.2.20 ENCRYPTION_PROTECTOR_LIST](#2220-encryptionprotectorlist)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 User-Certificate Binding](#3111-user-certificate-binding)
+      - [3.1.1.2 EFSRPC Server Control](#3112-efsrpc-server-control)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Application Requests for a User-Certificate Binding](#3141-application-requests-for-a-user-certificate-binding)
+        - [3.1.4.1.1 EFS Certificate Enrollment Algorithm](#31411-efs-certificate-enrollment-algorithm)
+          - [3.1.4.1.1.1 Inputs](#314111-inputs)
+          - [3.1.4.1.1.2 Outputs](#314112-outputs)
+          - [3.1.4.1.1.3 Internal Variables](#314113-internal-variables)
+          - [3.1.4.1.1.4 Processing Rules](#314114-processing-rules)
+            - [3.1.4.1.1.4.1 Building a List of CAs that Support a Particular Template](#3141141-building-a-list-of-cas-that-support-a-particular-template)
+            - [3.1.4.1.1.4.2 Creating a Request](#3141142-creating-a-request)
+      - [3.1.4.2 EFSRPC Interface](#3142-efsrpc-interface)
+        - [3.1.4.2.1 Receiving an EfsRpcOpenFileRaw Message (Opnum 0)](#31421-receiving-an-efsrpcopenfileraw-message-opnum-0)
+        - [3.1.4.2.2 Receiving an EfsRpcReadFileRaw Message (Opnum 1)](#31422-receiving-an-efsrpcreadfileraw-message-opnum-1)
+        - [3.1.4.2.3 Receiving an EfsRpcWriteFileRaw Message (Opnum 2)](#31423-receiving-an-efsrpcwritefileraw-message-opnum-2)
+        - [3.1.4.2.4 Receiving an EfsRpcCloseRaw Message (Opnum 3)](#31424-receiving-an-efsrpccloseraw-message-opnum-3)
+        - [3.1.4.2.5 Receiving an EfsRpcEncryptFileSrv Message (Opnum 4)](#31425-receiving-an-efsrpcencryptfilesrv-message-opnum-4)
+        - [3.1.4.2.6 Receiving an EfsRpcDecryptFileSrv Message (Opnum 5)](#31426-receiving-an-efsrpcdecryptfilesrv-message-opnum-5)
+        - [3.1.4.2.7 Receiving an EfsRpcQueryUsersOnFile Message (Opnum 6)](#31427-receiving-an-efsrpcqueryusersonfile-message-opnum-6)
+        - [3.1.4.2.8 Receiving an EfsRpcQueryRecoveryAgents Message (Opnum 7)](#31428-receiving-an-efsrpcqueryrecoveryagents-message-opnum-7)
+        - [3.1.4.2.9 Receiving an EfsRpcRemoveUsersFromFile Message (Opnum 8)](#31429-receiving-an-efsrpcremoveusersfromfile-message-opnum-8)
+        - [3.1.4.2.10 Receiving an EfsRpcAddUsersToFile Message (Opnum 9)](#314210-receiving-an-efsrpcadduserstofile-message-opnum-9)
+        - [3.1.4.2.11 Receiving an EfsRpcNotSupported Message (Opnum 11)](#314211-receiving-an-efsrpcnotsupported-message-opnum-11)
+        - [3.1.4.2.12 Receiving an EfsRpcFileKeyInfo Message (Opnum 12)](#314212-receiving-an-efsrpcfilekeyinfo-message-opnum-12)
+        - [3.1.4.2.13 Receiving an EfsRpcDuplicateEncryptionInfoFile Message (Opnum 13)](#314213-receiving-an-efsrpcduplicateencryptioninfofile-message-opnum-13)
+        - [3.1.4.2.14 Receiving an EfsRpcAddUsersToFileEx Message (Opnum 15)](#314214-receiving-an-efsrpcadduserstofileex-message-opnum-15)
+        - [3.1.4.2.15 Receiving an EfsRpcFileKeyInfoEx Message (Opnum 16)](#314215-receiving-an-efsrpcfilekeyinfoex-message-opnum-16)
+        - [3.1.4.2.16 Receiving an EfsRpcGetEncryptedFileMetadata Message (Opnum 18)](#314216-receiving-an-efsrpcgetencryptedfilemetadata-message-opnum-18)
+        - [3.1.4.2.17 Receiving an EfsRpcSetEncryptedFileMetadata Message (Opnum 19)](#314217-receiving-an-efsrpcsetencryptedfilemetadata-message-opnum-19)
+        - [3.1.4.2.18 Receiving an EfsRpcFlushEfsCache Message (Opnum 20)](#314218-receiving-an-efsrpcflushefscache-message-opnum-20)
+        - [3.1.4.2.19 Receiving an EfsRpcEncryptFileExSrv Message (Opnum 21)](#314219-receiving-an-efsrpcencryptfileexsrv-message-opnum-21)
+        - [3.1.4.2.20 Receiving an EfsRpcQueryProtectors (Opnum 22)](#314220-receiving-an-efsrpcqueryprotectors-opnum-22)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 13
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 18
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-2.2.2.1.4
-2.2.2.1.5
-
-2.2.2.2.1
-2.2.2.2.2
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-2.2.2.2.6
-2.2.2.2.7
-2.2.2.2.8
-2.2.2.2.9
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Common Data Types ........................................................................................ 20
-EFSRPC Identifiers ...................................................................................... 20
-EFSRPC Metadata ....................................................................................... 20
-EFSRPC Metadata Version 1 ................................................................... 21
-Key List Structure ............................................................................ 23
-Key List Entry ................................................................................. 23
-Public Key Information ..................................................................... 24
-Certificate Data ............................................................................... 26
-Encrypted FEK ................................................................................ 27
-EFSRPC Metadata Version 2 ................................................................... 28
-Protector List Structure .................................................................... 30
-EFSX Datum ................................................................................... 30
-Blob Datum .................................................................................... 32
-Descriptor Datum ............................................................................ 33
-Protector List Entry .......................................................................... 33
-Protector Info Datum ....................................................................... 34
-Key Agreement Datum ..................................................................... 34
-Fek Info Datum ............................................................................... 35
-DPAPI-NG Datum ............................................................................ 36
-EFSRPC Metadata Version 3 ................................................................... 36
-EFSRPC Raw Data Format ............................................................................ 38
-Marshaled Stream ................................................................................. 39
-Stream Data Segment ........................................................................... 40
-Data Segment Encryption Header ........................................................... 41
-Extended Header .................................................................................. 43
-PEXIMPORT_CONTEXT_HANDLE ................................................................... 43
-EFS_EXIM_PIPE .......................................................................................... 43
-EFS_CERTIFICATE_BLOB ............................................................................. 43
-EFS_HASH_BLOB ........................................................................................ 44
-ENCRYPTION_CERTIFICATE ......................................................................... 44
-ENCRYPTION_CERTIFICATE_LIST ................................................................. 44
-ENCRYPTION_CERTIFICATE_HASH ................................................................ 45
-ENCRYPTION_CERTIFICATE_HASH_LIST ........................................................ 45
-EFS_RPC_BLOB .......................................................................................... 45
-ALG_ID ..................................................................................................... 46
-EFS_KEY_INFO ........................................................................................... 46
-EFS_COMPATIBILITY_INFO .......................................................................... 46
-EFS_ENCRYPTION_STATUS_INFO ................................................................. 47
-EFS_DECRYPTION_STATUS_INFO ................................................................. 47
-ENCRYPTED_FILE_METADATA_SIGNATURE .................................................... 47
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-2.2.13
-2.2.14
-2.2.15
-2.2.16
-2.2.17
-2.2.18
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-
-2.2.2.3
-
-2.2.3
-
-[MS-EFSR] - v20240916
-Encrypting File System Remote (EFSRPC) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 94
-
-2.2.19
-2.2.20
-
-ENCRYPTION_PROTECTOR ........................................................................... 48
-ENCRYPTION_PROTECTOR_LIST ................................................................... 48
-
-3.1
-
-3.1.1
-
-3.1.4.2
-
-3.1.4.1
-
-3.1.4.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1.4.1
-3.1.4.1.1.4.2
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-3.1.4.1.1.3
-3.1.4.1.1.4
-
-3  Protocol Details ..................................................................................................... 50
-Server Details .................................................................................................. 50
-Abstract Data Model .................................................................................... 50
-User-Certificate Binding ......................................................................... 51
-EFSRPC Server Control .......................................................................... 52
-Timers ...................................................................................................... 52
-Initialization ............................................................................................... 52
-Message Processing Events and Sequencing Rules .......................................... 52
-Application Requests for a User-Certificate Binding .................................... 52
-EFS Certificate Enrollment Algorithm .................................................. 53
-Inputs ...................................................................................... 53
-Outputs .................................................................................... 53
-Internal Variables ...................................................................... 53
-Processing Rules ........................................................................ 53
-Building a List of CAs that Support a Particular Template ........... 53
-Creating a Request ............................................................... 54
-EFSRPC Interface .................................................................................. 55
-Receiving an EfsRpcOpenFileRaw Message (Opnum 0) ......................... 58
-Receiving an EfsRpcReadFileRaw Message (Opnum 1) .......................... 60
-Receiving an EfsRpcWriteFileRaw Message (Opnum 2) ......................... 60
-Receiving an EfsRpcCloseRaw Message (Opnum 3) .............................. 61
-Receiving an EfsRpcEncryptFileSrv Message (Opnum 4) ....................... 61
-Receiving an EfsRpcDecryptFileSrv Message (Opnum 5) ....................... 62
-Receiving an EfsRpcQueryUsersOnFile Message (Opnum 6) .................. 63
-Receiving an EfsRpcQueryRecoveryAgents Message (Opnum 7) ............. 63
-Receiving an EfsRpcRemoveUsersFromFile Message (Opnum 8) ............ 64
-Receiving an EfsRpcAddUsersToFile Message (Opnum 9) ...................... 64
-Receiving an EfsRpcNotSupported Message (Opnum 11) ...................... 65
-Receiving an EfsRpcFileKeyInfo Message (Opnum 12) .......................... 65
-Receiving an EfsRpcDuplicateEncryptionInfoFile Message (Opnum 13) ... 67
-Receiving an EfsRpcAddUsersToFileEx Message (Opnum 15) ................. 69
-Receiving an EfsRpcFileKeyInfoEx Message (Opnum 16) ....................... 70
-Receiving an EfsRpcGetEncryptedFileMetadata Message (Opnum 18) ..... 70
-Receiving an EfsRpcSetEncryptedFileMetadata Message (Opnum 19) ..... 70
-Receiving an EfsRpcFlushEfsCache Message (Opnum 20) ...................... 71
-Receiving an EfsRpcEncryptFileExSrv Message (Opnum 21) .................. 71
-Receiving an EfsRpcQueryProtectors (Opnum 22) ................................ 74
-Timer Events .............................................................................................. 74
-Other Local Events ...................................................................................... 75
-
-3.1.4.2.1
-3.1.4.2.2
-3.1.4.2.3
-3.1.4.2.4
-3.1.4.2.5
-3.1.4.2.6
-3.1.4.2.7
-3.1.4.2.8
-3.1.4.2.9
-3.1.4.2.10
-3.1.4.2.11
-3.1.4.2.12
-3.1.4.2.13
-3.1.4.2.14
-3.1.4.2.15
-3.1.4.2.16
-3.1.4.2.17
-3.1.4.2.18
-3.1.4.2.19
-3.1.4.2.20
-
-3.1.5
-3.1.6
-
-4  Protocol Examples ................................................................................................. 76
-
-5  Security ................................................................................................................. 78
-Security Considerations for Implementers ........................................................... 78
-Index of Security Parameters ............................................................................ 78
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 79
-
-7  Appendix B: Product Behavior ............................................................................... 84
-
-8  Change Tracking .................................................................................................... 92
-
-9  Index ..................................................................................................................... 93
-
-[MS-EFSR] - v20240916
-Encrypting File System Remote (EFSRPC) Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 94
-
-1  Introduction
+## 1 Introduction
 
 The Encrypting File System Remote (EFSRPC) Protocol is used for performing maintenance and
 management operations on encrypted data that is stored remotely and accessed over a network. It is
@@ -859,7 +720,7 @@ Encrypting File System (EFS).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -919,7 +780,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-certification authority (CA): A third party that issues public key certificates. Certificates serve
+
+certification authority (CA): A third party that issues public key certificates. Certificates serve
 
 to bind public keys to a user identity. Each user and certification authority (CA) can decide
 whether to trust another user or CA for a specific purpose, and whether this trust is to be
@@ -992,7 +854,8 @@ Release: September 16, 2024
 
 8 / 94
 
-Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
+
+Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
 
 file: A unit of data in the file system. An encrypted file consists of encrypted data along with the
@@ -1067,7 +930,8 @@ Release: September 16, 2024
 
 9 / 94
 
-NT file system (NTFS): A proprietary Microsoft file system. For more information, see [MSFT-
+
+NT file system (NTFS): A proprietary Microsoft file system. For more information, see [MSFT-
 
 NTFS].
 
@@ -1141,7 +1005,8 @@ Release: September 16, 2024
 
 10 / 94
 
-sparse file: A file containing large sections of data composed only of zeros. This file is marked as
+
+sparse file: A file containing large sections of data composed only of zeros. This file is marked as
 a sparse file in the file system, which saves disk space by only allocating as many ranges on
 disk as are required to completely reconstruct the non-zero data. When an attempt is made to
 read in the nonallocated portions of the file (also known as holes), the file system
@@ -1192,14 +1057,14 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1212,7 +1077,8 @@ Release: September 16, 2024
 
 11 / 94
 
-[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
+
+[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
 https://publications.opengroup.org/c706
 
 Note Registration is required to download the document.
@@ -1251,7 +1117,7 @@ December 1997, https://www.rfc-editor.org/info/rfc2251
 Certificate and Certificate Revocation List (CRL) Profile", RFC 5280, May 2008, https://www.rfc-
 editor.org/info/rfc5280
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [FIPS180-4] FIPS PUBS, "Secure Hash Standards (SHS)", March 2012,
 http://csrc.nist.gov/publications/fips/fips180-4/fips-180-4.pdf
@@ -1277,7 +1143,8 @@ Release: September 16, 2024
 
 12 / 94
 
-[MSFT-CVE-2021-43893] Microsoft Corporation, "Windows Encrypting File System (EFS) Elevation of
+
+[MSFT-CVE-2021-43893] Microsoft Corporation, "Windows Encrypting File System (EFS) Elevation of
 Privilege Vulnerability", CVE-2021-43893, December 14, 2021, https://msrc.microsoft.com/update-
 guide/vulnerability/CVE-2021-43893
 
@@ -1306,7 +1173,7 @@ http://www.itu.int/rec/T-REC-X.509/en
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.3  Overview
+### 1.3 Overview
 
 The Encrypting File System Remote Protocol (hereafter referred to as EFSRPC) is a Remote
 Procedure Call (RPC) interface that is used to manage data objects stored in an encrypted form.
@@ -1344,7 +1211,8 @@ Release: September 16, 2024
 
 13 / 94
 
-  Unprivileged user subjects, which are used for routine data access by ordinary users of the
+
+  Unprivileged user subjects, which are used for routine data access by ordinary users of the
 system. For convenience, this specification refers to such subjects as user certificate.
 
   Data Recovery Agents (DRAs), which are controlled by system administrators. The storage
@@ -1441,7 +1309,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-EFSR].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1489,7 +1358,8 @@ Release: September 16, 2024
 
 15 / 94
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-EFSR].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1502,13 +1372,14 @@ Release: September 16, 2024
 
 16 / 94
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-EFSR].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
 Figure 3: Message sequence for importing a file
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Encrypting File System Remote Protocol is built on the Microsoft Remote Procedure Call (RPC)
 interface (as specified in [C706] and [MS-RPCE]).  EFSRPC uses the Server Message Block (SMB)
@@ -1534,13 +1405,14 @@ Release: September 16, 2024
 
 17 / 94
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-EFSR].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
 Figure 4: Protocol relationships
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 To use EFSRPC with a remote server, the client is required to possess valid credentials recognized by
 the server and be able to pass authentication and authorization checks for access to the encrypted
@@ -1555,13 +1427,13 @@ user credentials and requires that the EFSRPC server be joined to the domain and
 Kerberos delegation.<2> Alternatively, the server can be configured for Kerberos constrained
 delegation (as specified in [MS-SFU]) for only the services used for user key storage.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is appropriate for remotely managing encrypted data objects on a server. It is used by
 Windows clients to manage EFSRPC-protected files on remote file servers using either version 1 or
 version 2 of the SMB Protocol. It does not specify any particular data protection mechanism.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas.
 
@@ -1576,7 +1448,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Protocol Versions: The RPC runtime negotiates the version of the EFSRPC interface, as specified in
+
+Protocol Versions: The RPC runtime negotiates the version of the EFSRPC interface, as specified in
 
 [C706]. The only supported version of this protocol is 1.0, as specified in section 3.1.4.2.
 
@@ -1592,7 +1465,7 @@ Capability Negotiation: Implicit negotiation of RPC security mechanisms can be p
 the security-related APIs specified in [C706] Chapter 13. The security mechanisms negotiated by
 Windows clients and servers are as specified in section 2.1.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 EFSRPC does not include any vendor-extensible fields.
 
@@ -1600,7 +1473,7 @@ This protocol uses Win32 error codes. These values are taken from the Windows er
 as specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated
 meaning. Using any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1629,9 +1502,10 @@ Release: September 16, 2024
 
 19 / 94
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The client and server MUST communicate over RPC, using named pipes over the Server Message
 Block (SMB) Protocol. The SMB version, capabilities, and authentication used for this connection are
@@ -1653,7 +1527,7 @@ security information with its binding for the EFSRPC methods. For EfsRpcOpenFile
 set the security options explicitly as noted in section 3. For all other EFSRPC methods, clients SHOULD
 use default values for the binding security information as specified in [MS-RPCE] section 3.3.2.3.1.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This section specifies the syntax of EFSRPC data types. In addition to the RPC base types and
 definitions specified in [C706] and [MS-DTYP], the additional data types described in the following
@@ -1663,7 +1537,7 @@ syntax only, as specified in [C706] Part 4.
 
 This specification uses GUID structures as specified in [MS-DTYP] section 2.3.4.2.
 
-2.2.1  EFSRPC Identifiers
+#### 2.2.1 EFSRPC Identifiers
 
 An EFSRPC identifier is used to uniquely refer to an encrypted data object on a remote server. The
 format of the identifier used is implementation-specific. It MUST be represented as a null-terminated
@@ -1671,7 +1545,7 @@ Unicode string in UTF-16 encoding. EFSRPC servers SHOULD use UncPaths for EFSRPC
 The server MUST return an error if it is passed an identifier that violates the syntactic rules imposed
 by its implementation.<6>
 
-2.2.2  EFSRPC Metadata
+#### 2.2.2 EFSRPC Metadata
 
 The EFSRPC Metadata is attached to an encrypted object and contains information required to decrypt
 it. The EFSRPC Metadata is used implicitly by the EFSRPC raw methods, because it forms part of the
@@ -1690,7 +1564,8 @@ Release: September 16, 2024
 
 20 / 94
 
-2.2.2.1  EFSRPC Metadata Version 1
+
+##### 2.2.2.1 EFSRPC Metadata Version 1
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -1756,7 +1631,8 @@ Release: September 16, 2024
 
 21 / 94
 
-Length (4 bytes): This field MUST contain a 32-bit unsigned integer equal to the length, in bytes, of
+
+Length (4 bytes): This field MUST contain a 32-bit unsigned integer equal to the length, in bytes, of
 the EFSRPC Metadata.<7>
 
 Reserved1 (4 bytes): MUST be set to zero and ignored upon receipt.
@@ -1847,7 +1723,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-DRF_key_list (variable)
+
+DRF_key_list (variable)
 
 ...
 
@@ -1860,7 +1737,7 @@ DRF_key_list (variable):  This MUST contain one or more entries. Each entry cons
 file’s FEK, encrypted with the public key of a DRA authorized to access the file. This MUST only
 be present if the value in the DRF offset field is nonzero.
 
-2.2.2.1.1 Key List Structure
+###### 2.2.2.1.1 Key List Structure
 
 The DDF and Key List structure in the EFSRPC Metadata MUST be formatted as follows.
 
@@ -1893,7 +1770,7 @@ Key List entries 1 ... n: A number of entries equal to the value in the length o
 
 individual entries MUST be formatted as specified in section 2.2.2.1.2.
 
-2.2.2.1.2 Key List Entry
+###### 2.2.2.1.2 Key List Entry
 
 Each individual Key List Entry MUST be formatted as follows.
 
@@ -1927,7 +1804,8 @@ Release: September 16, 2024
 
 23 / 94
 
-...
+
+...
 
 Length (4 bytes): MUST be equal to the length of this key list entry in bytes. It MUST be a 32-bit
 
@@ -2000,7 +1878,7 @@ Encrypted FEK (variable): This field MUST contain information about the FEK, enc
 indicated by the contents of the Flags field. It MUST be formatted as specified in section
 2.2.2.1.5.
 
-2.2.2.1.3 Public Key Information
+###### 2.2.2.1.3 Public Key Information
 
 [MS-EFSR] - v20240916
 Encrypting File System Remote (EFSRPC) Protocol
@@ -2009,7 +1887,8 @@ Release: September 16, 2024
 
 24 / 94
 
- The Public Key Information structure MUST be formatted as follows.
+
+ The Public Key Information structure MUST be formatted as follows.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -2097,7 +1976,8 @@ Release: September 16, 2024
 
 25 / 94
 
-Owner Hint (variable):  A security identifier (SID) in RPC marshaling format that is intended
+
+Owner Hint (variable):  A security identifier (SID) in RPC marshaling format that is intended
 to be used as a hint regarding the identity of the key owner. This item MUST be present only
 if the Offset to Owner Hint field is nonzero. The structure of an RPC SID is specified in [MS-
 DTYP] section 2.4.2.3.
@@ -2106,7 +1986,7 @@ Certificate Data (variable): This field MUST contain information about the X.509
 associated with the public key that is used to encrypt the FEK data in this key list entry. It
 MUST be formatted as specified in section 2.2.2.1.4.
 
-2.2.2.1.4 Certificate Data
+###### 2.2.2.1.4 Certificate Data
 
  The Certificate Data structure MUST be formatted as follows.
 
@@ -2168,7 +2048,8 @@ Release: September 16, 2024
 
 26 / 94
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2215,7 +2096,7 @@ Display Name (variable): A null-terminated Unicode string in UTF-16 encoding tha
 hint as to the friendly name that can be used to identify this certificate for display purposes.
 This field MUST be omitted if the Offset of Display Name field is 0.
 
-2.2.2.1.5 Encrypted FEK
+###### 2.2.2.1.5 Encrypted FEK
 
  The Encrypted FEK field in the DDF and DRF key list entries MUST consist of the following
 structure, encrypted as specified in the description of the Flags field for the key list entry.
@@ -2246,7 +2127,8 @@ Release: September 16, 2024
 
 27 / 94
 
-Key (variable)
+
+Key (variable)
 
 ...
 
@@ -2268,7 +2150,7 @@ Reserved (4 bytes): MUST be set to zero and ignored.
 
 Key (variable): The FEK for the file.
 
-2.2.2.2  EFSRPC Metadata Version 2
+##### 2.2.2.2 EFSRPC Metadata Version 2
 
 This metadata format is specified by an EFS Version of 4 or 5 in the EFSRPC metadata header<12>.
 This new metadata format is referred to as "Version 2" of the EFSRPC metadata, but do not confuse
@@ -2315,7 +2197,8 @@ Release: September 16, 2024
 
 28 / 94
 
-FekInfo_Datum
+
+FekInfo_Datum
 
 ...
 
@@ -2389,7 +2272,8 @@ Release: September 16, 2024
 
 29 / 94
 
-DDF_protector_list (variable): This field MUST contain one or more entries, each of which
+
+DDF_protector_list (variable): This field MUST contain one or more entries, each of which
 
 consists of a key protector as specified in section 2.2.2.2.5. Each key protector in this list is
 protected with a user public key.
@@ -2399,7 +2283,7 @@ of a key protector as specified in section 2.2.2.2.5. Each key protector in this
 with the public key of a DRA authorized to access the file. This MUST only be present if the
 value in the DRF offset field is nonzero.
 
-2.2.2.2.1 Protector List Structure
+###### 2.2.2.2.1 Protector List Structure
 
 The DDF and DRF Protector List structure in the Version 4 EFSRPC Metadata MUST be formatted as
 follows.
@@ -2439,7 +2323,7 @@ Protector_List_Entries (variable): A number of entries equal to the value in the
 
 field. The individual entries MUST be formatted as specified in section 2.2.2.2.5.
 
-2.2.2.2.2 EFSX Datum
+###### 2.2.2.2.2 EFSX Datum
 
 The EFSX Datum represents the base type for every datum within the Version 4 and Version 5 EFSRPC
 Metadata and MUST be formatted as follows.
@@ -2478,7 +2362,8 @@ Release: September 16, 2024
 
 30 / 94
 
-Value  Meaning
+
+Value  Meaning
 
 0x0000  The EFSX Datum has no defined role.
 
@@ -2577,7 +2462,8 @@ Release: September 16, 2024
 
 31 / 94
 
-Flags (2 bytes): Specifies datum flags. It MUST be a 16-bit unsigned integer in little-endian format.
+
+Flags (2 bytes): Specifies datum flags. It MUST be a 16-bit unsigned integer in little-endian format.
 
 The value of this field MUST be zero (0x0000) or a union of one or more of the following values.
 
@@ -2587,7 +2473,7 @@ Value  Meaning
 
 0x0002  The EFSX Datum is a complex datum containing nested datum structures.
 
-2.2.2.2.3 Blob Datum
+###### 2.2.2.2.3 Blob Datum
 
 The Blob Datum encapsulates an opaque binary object. It MUST be formatted as below.
 
@@ -2655,7 +2541,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.2.2.4 Descriptor Datum
+
+###### 2.2.2.2.4 Descriptor Datum
 
  The Descriptor Datum encapsulates a Unicode string in UTF-16 encoding. It MUST be formatted as
 below.
@@ -2688,7 +2575,7 @@ Descriptor_Text (variable): Contains a null-terminated, variable-sized Unicode s
 encoding. The Descriptor_Text MUST be entirely contained within the Descriptor Datum. The
 length of the Descriptor_Text MUST be at least 2 bytes to include the null terminator (0x0000).
 
-2.2.2.2.5 Protector List Entry
+###### 2.2.2.2.5 Protector List Entry
 
 Each individual Protector List Entry MUST be formatted as follows.
 
@@ -2739,7 +2626,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value  Meaning
+
+Value  Meaning
 
 0x0002  The protector was derived from a public/private key pair capable of performing asymmetric
 
@@ -2776,7 +2664,7 @@ nested datum structures MUST NOT overlap and MUST be entirely contained within t
 list entry. This field SHOULD contain a datum with a Role of 0x0002 (protector data) and a datum
 with a Type of EFSX_TYPE_PROTECTOR_INFO (0x0004).
 
-2.2.2.2.6 Protector Info Datum
+###### 2.2.2.2.6 Protector Info Datum
 
  The Protector Info Datum encapsulates information describing the origin of a protector. It MUST be
 formatted as below.
@@ -2810,7 +2698,7 @@ Data_Fields (variable): This field contains any number of nested EFSX_Datum stru
 nested datum structures MUST NOT overlap, and MUST be entirely contained within the protector
 info datum.
 
-2.2.2.2.7 Key Agreement Datum
+###### 2.2.2.2.7 Key Agreement Datum
 
 [MS-EFSR] - v20240916
 Encrypting File System Remote (EFSRPC) Protocol
@@ -2819,7 +2707,8 @@ Release: September 16, 2024
 
 34 / 94
 
- The Key Agreement datum encapsulates the parameters necessary to decrypt a key agreement
+
+ The Key Agreement datum encapsulates the parameters necessary to decrypt a key agreement
 protector (ProtectorType of 0x0001).
 
 0  1  2  3  4  5  6  7  8  9
@@ -2856,7 +2745,7 @@ Agreement datum. This field SHOULD contain three datum structures of type EFSX_T
 (0x0001) and Roles of 0x0007, 0x0008, and 0x0009. The public keys referenced by Roles
 0x0008 and 0x0009 MUST have BlobType set to 0x0001.
 
-2.2.2.2.8 Fek Info Datum
+###### 2.2.2.2.8 Fek Info Datum
 
  The Fek Info datum encapsulates the algorithm ID (ALG_ID) used for the FEK, the encrypted FEK,
 and the File IV. The FEK and File IV are both protected using advanced encryption standard (AES)
@@ -2903,12 +2792,13 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-These blobs MUST have Role fields set to 0x000a (for the encrypted FEK) and 0x000b (for the
+
+These blobs MUST have Role fields set to 0x000a (for the encrypted FEK) and 0x000b (for the
 encrypted File IV), respectively. The BlobType for these blobs MUST be 0x0004, indicating that
 the blob data contains a key wrapped with an AES 256 key encryption key, as defined in
 [RFC3394].
 
-2.2.2.2.9 DPAPI-NG Datum
+###### 2.2.2.2.9 DPAPI-NG Datum
 
 The DPAPI-NG datum encapsulates the parameters necessary to decrypt a DPAPI-NG protector
 (ProtectorType of 0x0003).
@@ -2946,7 +2836,7 @@ nested datum structures MUST NOT overlap and MUST be entirely contained within t
 datum. This field SHOULD contain at least one datum structure, each of which MUST be of type
 EFSX_TYPE_BLOB (0x0001), MUST have a Role of 0x0007, and MUST have BlobType of 0x0005.
 
-2.2.2.3  EFSRPC Metadata Version 3
+##### 2.2.2.3 EFSRPC Metadata Version 3
 
 This metadata format is specified by EFS Version 6 in the EFSRPC Metadata header<18>. This new
 metadata format is referred to as "Version 3" of the EFSRPC Metadata, but do not confuse this with
@@ -2984,7 +2874,8 @@ Release: September 16, 2024
 
 36 / 94
 
-...
+
+...
 
 ...
 
@@ -3051,7 +2942,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ClearTextRedirectionString (variable): An optional string in UTF-8 format.
+
+ClearTextRedirectionString (variable): An optional string in UTF-8 format.
 
 TotalHeaderLength (4 bytes): The length, in bytes, of the OriginalFileExtensionOffset,
 OriginalFileExtensionLength, PLOffset, EncryptedDataOffset, OriginalFileSize,
@@ -3100,7 +2992,7 @@ EncryptedData (variable): The encrypted data representing the file. This field's
 
 multiple of the encryption algorithm block size.
 
-2.2.3  EFSRPC Raw Data Format
+#### 2.2.3 EFSRPC Raw Data Format
 
 The EFSRPC raw data format is used by the EFSRPC raw methods. The output of the
 EfsRpcReadFileRaw method MUST conform to this format. The input to the EfsRpcWriteFileRaw method
@@ -3146,7 +3038,8 @@ Release: September 16, 2024
 
 38 / 94
 
-0x42
+
+0x42
 
 0x00
 
@@ -3181,7 +3074,7 @@ for EFSRPC Metadata) in the given file. They are optional and might not exist (f
 folders with no alternate streams). For more information on NTFS file streams, see [MSFT-NTFS].
 These fields MUST be formatted as specified in section 2.2.3.1.
 
-2.2.3.1  Marshaled Stream
+##### 2.2.3.1 Marshaled Stream
 
  A Marshaled Stream (including the EFSRPC Metadata stream) MUST be formatted as follows.
 
@@ -3231,7 +3124,8 @@ Release: September 16, 2024
 
 39 / 94
 
-...
+
+...
 
 Stream Data Segment 1 (variable)
 
@@ -3279,7 +3173,7 @@ some metadata for reassembling the segments. For encrypted streams, these segmen
 also contain some metadata to aid in decryption. They MUST be formatted as specified in section
 2.2.3.2.
 
-2.2.3.2  Stream Data Segment
+##### 2.2.3.2 Stream Data Segment
 
  Each stream data segment MUST be formatted as follows.
 
@@ -3311,7 +3205,8 @@ Release: September 16, 2024
 
 40 / 94
 
-0x52
+
+0x52
 
 0x00
 
@@ -3348,7 +3243,7 @@ omitted in accordance with the Data Segment Encryption Header. If the stream is 
 data MUST be encrypted with the FEK, using the algorithm indicated by the Algorithm field in the
 EFSRPC Metadata (specified in section 2.2.2) in the Cipher Block Chaining (CBC) mode.
 
-2.2.3.3  Data Segment Encryption Header
+##### 2.2.3.3 Data Segment Encryption Header
 
  The Data Segment Encryption Header MUST be formatted as follows.
 
@@ -3394,7 +3289,8 @@ Release: September 16, 2024
 
 41 / 94
 
-...
+
+...
 
 Extended Header (16 bytes, optional)
 
@@ -3458,7 +3354,8 @@ Release: September 16, 2024
 
 42 / 94
 
-2.2.3.4  Extended Header
+
+##### 2.2.3.4 Extended Header
 
 The Extended Header is an optional field within the Data Segment Encryption
 Header (section 2.2.3.3). If present, it MUST be formatted as follows.
@@ -3506,7 +3403,7 @@ Meaning
 
 Reserved (4 bytes): This field MUST be set to zero and ignored by the server.
 
-2.2.4  PEXIMPORT_CONTEXT_HANDLE
+#### 2.2.4 PEXIMPORT_CONTEXT_HANDLE
 
 The PEXIMPORT_CONTEXT_HANDLE data type is used to represent a pointer to a context handle. It
 MUST be treated as opaque by the client and used by the server, as specified in [C706].
@@ -3515,7 +3412,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* PEXIMPORT_CONTEXT_HANDLE;
 
-2.2.5  EFS_EXIM_PIPE
+#### 2.2.5 EFS_EXIM_PIPE
 
 The EFS_EXIM_PIPE type is used to represent a pipe for the EFSRPC raw methods. It consists of a set
 of callback routines for sending and receiving data, as specified in [C706].
@@ -3524,7 +3421,7 @@ This type is declared as follows:
 
  typedef pipe unsigned char EFS_EXIM_PIPE;
 
-2.2.6  EFS_CERTIFICATE_BLOB
+#### 2.2.6 EFS_CERTIFICATE_BLOB
 
 The EFS_CERTIFICATE_BLOB type is used to represent the encoded contents of an X.509 certificate.
 
@@ -3541,7 +3438,8 @@ Release: September 16, 2024
 
 43 / 94
 
-dwCertEncodingType:  The certificate encoding type. This MUST be set to one of the following
+
+dwCertEncodingType:  The certificate encoding type. This MUST be set to one of the following
 
 values. If set to any other value, the certificate is considered invalid and behavior is undefined.
 
@@ -3558,7 +3456,7 @@ cbData:  The number of bytes in the bData buffer.
 bData:  An encoded X.509 certificate. Its format is specified by the dwCertEncodingType member.
 For more information on ASN encoding, see [X690]. NDR encoding is specified in [C706].<21>
 
-2.2.7  EFS_HASH_BLOB
+#### 2.2.7 EFS_HASH_BLOB
 
 The EFS_HASH_BLOB type is used to represent an X.509 certificate hash.
 
@@ -3573,7 +3471,7 @@ bData:  The SHA-1 hash of an X.509 certificate. For more information on SHA-1, s
 
 4].<22>
 
-2.2.8  ENCRYPTION_CERTIFICATE
+#### 2.2.8 ENCRYPTION_CERTIFICATE
 
 The ENCRYPTION_CERTIFICATE type is used to represent a single X.509 certificate.
 
@@ -3592,7 +3490,7 @@ section 2.4.2.3.
 
 CertBlob:  A pointer to an EFS_CERTIFICATE_BLOB (2.2.6) structure.
 
-2.2.9  ENCRYPTION_CERTIFICATE_LIST
+#### 2.2.9 ENCRYPTION_CERTIFICATE_LIST
 
 The ENCRYPTION_CERTIFICATE_LIST type is used to represent a set of X.509 certificates. For more
 information on certificates, see [X509].
@@ -3609,13 +3507,14 @@ Release: September 16, 2024
 
 44 / 94
 
-nUsers:  The number of certificates in the list.
+
+nUsers:  The number of certificates in the list.
 
 Users:  A pointer to an array of pointers to ENCRYPTION_CERTIFICATE (2.2.8) structures. This array
 
 is of size nUsers.<23>
 
-2.2.10 ENCRYPTION_CERTIFICATE_HASH
+#### 2.2.10 ENCRYPTION_CERTIFICATE_HASH
 
 The ENCRYPTION_CERTIFICATE_HASH type is used to represent a single certificate hash. For more
 information on certificates, see [X509].
@@ -3641,7 +3540,7 @@ certification is assigned to. The subject name and the principal name can be the
 intended as a hint for display purposes, and is implementation-dependent. This field MAY be set to
 NULL if no such information is available.
 
-2.2.11 ENCRYPTION_CERTIFICATE_HASH_LIST
+#### 2.2.11 ENCRYPTION_CERTIFICATE_HASH_LIST
 
 The ENCRYPTION_CERTIFICATE_HASH_LIST type is used to represent a set of certificate hashes.
 
@@ -3656,7 +3555,7 @@ Users:  A pointer to an array of pointers to ENCRYPTION_CERTIFICATE_HASH (2.2.10
 
 This array is of size nCert_Hash.<24>
 
-2.2.12 EFS_RPC_BLOB
+#### 2.2.12 EFS_RPC_BLOB
 
 The EFS_RPC_BLOB type is used to represent a generic binary large object (BLOB) (that is, an
 opaque data type).
@@ -3676,9 +3575,10 @@ Release: September 16, 2024
 
 45 / 94
 
-bData:  The contents of the data object.<25>
 
-2.2.13 ALG_ID
+bData:  The contents of the data object.<25>
+
+#### 2.2.13 ALG_ID
 
 The ALG_ID type is used to denote an algorithm type for cryptographic keys. An implementation
 SHOULD<26> support all of the values shown in the following table. Implementations MAY<27>
@@ -3719,7 +3619,7 @@ This type is declared as follows:
 
  typedef unsigned int ALG_ID;
 
-2.2.14 EFS_KEY_INFO
+#### 2.2.14 EFS_KEY_INFO
 
 The EFS_KEY_INFO type is used to represent information about a key of a symmetric cryptosystem.
 
@@ -3742,7 +3642,7 @@ KeyLength:  The total length, in bytes, of the key. This value, multiplied by 8,
 or equal to the value of the Entropy member. Valid combinations of Entropy, Algorithm, and
 KeyLength are specified in section 2.2.13.
 
-2.2.15 EFS_COMPATIBILITY_INFO
+#### 2.2.15 EFS_COMPATIBILITY_INFO
 
 The EFS_COMPATIBILITY_INFO type is used to represent information about the compatibility
 restrictions of an encrypted file.
@@ -3757,13 +3657,14 @@ Release: September 16, 2024
 
 46 / 94
 
- } EFS_COMPATIBILITY_INFO;
+
+ } EFS_COMPATIBILITY_INFO;
 
 EfsVersion:  The EfsVersion associated with the EFSRPC Metadata. Valid values for the EfsVersion
 
 field are described in sections 2.2.2.1, 2.2.2.2, and 2.2.2.3.<29>
 
-2.2.16 EFS_ENCRYPTION_STATUS_INFO
+#### 2.2.16 EFS_ENCRYPTION_STATUS_INFO
 
 The EFS_ENCRYPTION_STATUS_INFO structure is used to represent the predicted outcome if an
 attempt were made to convert an unencrypted object to an encrypted state.
@@ -3781,7 +3682,7 @@ dwEncryptionError:  The error code returned if encryption were attempted. If the
 
 succeed, this value MUST be zero. Otherwise, it MUST be set to a nonzero value.
 
-2.2.17 EFS_DECRYPTION_STATUS_INFO
+#### 2.2.17 EFS_DECRYPTION_STATUS_INFO
 
 The EFS_DECRYPTION_STATUS_INFO type is used to represent the predicted outcome if an attempt
 were made to read the plaintext of an encrypted object.
@@ -3803,7 +3704,7 @@ cbHash:  The length in bytes of the appended certificate hash.
 If dwDecryptionError is nonzero, the preceding fields are followed by the hash of a certificate whose
 corresponding private key is required for the decryption to succeed.
 
-2.2.18 ENCRYPTED_FILE_METADATA_SIGNATURE
+#### 2.2.18 ENCRYPTED_FILE_METADATA_SIGNATURE
 
 The ENCRYPTED_FILE_METADATA_SIGNATURE structure is used by the client to prove to the server
 that it possesses a private key that is authorized to decrypt a given object.
@@ -3824,7 +3725,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -3868,7 +3770,7 @@ EfsStreamSignature:  The signature obtained by signing the SHA-1 hash of the new
 
 Metadata with the private RSA key corresponding to EncryptionCertificate.
 
-2.2.19 ENCRYPTION_PROTECTOR
+#### 2.2.19 ENCRYPTION_PROTECTOR
 
 The ENCRYPTION_PROTECTOR type is used to represent a single DPAPI-NG protector<30>, as
 specified in sections 2.2.2.2.5 and 2.2.2.2.9, or a Rights Management Services-based protector as
@@ -3891,7 +3793,7 @@ lpProtectorDescriptor:  A string that contains a protector rule associated with 
 non-NULL, non-empty, and otherwise follow the format rules for the ProtectorDescriptor field
 specified in section 3.1.4.2.19.
 
-2.2.20 ENCRYPTION_PROTECTOR_LIST
+#### 2.2.20 ENCRYPTION_PROTECTOR_LIST
 
 The ENCRYPTION_PROTECTOR_LIST<31> type is used to represent a set of
 ENCRYPTION_PROTECTOR protectors as specified in section 2.2.19.
@@ -3912,7 +3814,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-pProtectors:  A pointer to an array of pointers to ENCRYPTION_PROTECTOR (section 2.2.19)
+
+pProtectors:  A pointer to an array of pointers to ENCRYPTION_PROTECTOR (section 2.2.19)
 
 structures. This array is of size nProtectors.
 
@@ -3923,7 +3826,8 @@ Release: September 16, 2024
 
 49 / 94
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section specifies the behavior of the EFSRPC server in more detail. The client side of this protocol
 is simply a pass-through. There are no additional timers or other state requirements on the client side
@@ -3933,9 +3837,9 @@ protocol or application. The client SHOULD<32> attempt to associate the use of s
 mechanisms with its binding when making the EfsRpcOpenFileRaw call, so that the data transfer is
 protected from man-in-the-middle attacks.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -3996,7 +3900,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Operations to parse and manipulate the metadata obtained in this way, and in particular to add or
+
+  Operations to parse and manipulate the metadata obtained in this way, and in particular to add or
 
 remove access to specific user certificates for users who pass certain authorization checks.
 
@@ -4030,7 +3935,7 @@ necessary for performing EFSRPC operations on behalf of the user.
 
   A method of ascertaining the DRAs desired by an appropriate administrator at any time.
 
-3.1.1.1  User-Certificate Binding
+##### 3.1.1.1 User-Certificate Binding
 
 Applications requesting a user-certificate binding (section 3.1.4.1) must supply a security context
 for the user. The security context is used in two ways: to maintain per-user state based on the unique
@@ -4071,14 +3976,15 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-TemplateName (Public): A variable length, null-terminated Unicode string indicating the name of
+
+TemplateName (Public): A variable length, null-terminated Unicode string indicating the name of
 the certificate template to use in the enrollment operation. The server MUST initialize this to the
 default value of "EFS".
 
 Note  The abstract interface notation "(Public)" indicates that the Abstract Data Model element can be
 directly accessed from outside of this protocol.
 
-3.1.1.2  EFSRPC Server Control
+##### 3.1.1.2 EFSRPC Server Control
 
 The server has a parameter that indicates whether it is disabled. This parameter is kept in memory
 and not persisted across reboots. The parameter can be updated by external entities (that is, other
@@ -4090,11 +3996,11 @@ requests and return an error. The server MUST initialize this to the default val
 Note  The abstract interface notation "(Public)" indicates that the Abstract Data Model element can
 be directly accessed from outside this protocol.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol does not specify any timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 After the server is initialized, the well-known endpoint \pipe\lsarpc or \pipe\efsrpc MUST be
 available to remote callers, and the EFSRPC server MUST be available to service requests.<34> The
@@ -4103,9 +4009,9 @@ file system and transport underlying this named pipe MUST be fully initialized.
 When the server is initialized, it SHOULD<35> register one or more server principal
 name/authentication service pairs to enable clients to connect over secure RPC.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  Application Requests for a User-Certificate Binding
+##### 3.1.4.1 Application Requests for a User-Certificate Binding
 
 An application (including implementations of the EFSRPC protocol) can request a binding between a
 user and an EFS certificate. The application MUST provide a security context for the user. Using this
@@ -4139,9 +4045,10 @@ Release: September 16, 2024
 
 52 / 94
 
-6.  Otherwise, return an error.
 
-3.1.4.1.1 EFS Certificate Enrollment Algorithm
+6.  Otherwise, return an error.
+
+###### 3.1.4.1.1 EFS Certificate Enrollment Algorithm
 
 This algorithm describes the process used to enroll for an EFS certificate, and is triggered by the
 higher-layer event described in section 3.1.4.1. In order for an EFS server to enroll for a certificate,
@@ -4152,9 +4059,9 @@ implemented by the Active Directory domain controller (DC). All LDAP operations 
 algorithm are assumed to be performed against a DC located as described in [MS-ADOD] section
 2.7.7.3.1.
 
-3.1.4.1.1.1
+###### 3.1.4.1.1.1 Inputs
 
-Inputs
+
 
 The following values (specified in section 3.1.1.1) control the behavior of this algorithm.
 
@@ -4166,13 +4073,13 @@ The following values (specified in section 3.1.1.1) control the behavior of this
 
   TemplateName
 
-3.1.4.1.1.2  Outputs
+###### 3.1.4.1.1.2 Outputs
 
 On success, the output of this algorithm is a certificate and a private key.
 
-3.1.4.1.1.3
+###### 3.1.4.1.1.3 Internal Variables
 
-Internal Variables
+
 
 CAList: List of value pairs that contain the sanitized name and fully qualified domain name
 
@@ -4180,7 +4087,7 @@ CAList: List of value pairs that contain the sanitized name and fully qualified 
 
 Request: This certificate request is created based on an implementation-specific certificate template.
 
-3.1.4.1.1.4  Processing Rules
+###### 3.1.4.1.1.4 Processing Rules
 
 The following rules outline the steps necessary to initialize the algorithm state and to process an EFS
 certificate enrollment.
@@ -4198,7 +4105,7 @@ certificate enrollment.
 Continue to process the items in the list until the request is successful or there are no more
 items in the list.
 
-3.1.4.1.1.4.1  Building a List of CAs that Support a Particular Template
+###### 3.1.4.1.1.4.1 Building a List of CAs that Support a Particular Template
 
 The client performs the following steps to build a list of certificate authorities (CAs) supporting the
 template specified by the TemplateName input:
@@ -4210,7 +4117,8 @@ Release: September 16, 2024
 
 53 / 94
 
-
+
+
 
 Perform an LDAP search for the CA information (pKIEnrollmentService) objects (specified in
 [MS-WCCE] section 2.2.2.11.2) under the following container:
@@ -4236,7 +4144,7 @@ If the cACertificate attribute contains a value equal to the TemplateName field,
 pair to the CAList where the name is set to the value of the cn attribute, and FQDN is set to
 the value of the dNSHostName attribute.
 
-3.1.4.1.1.4.2  Creating a Request
+###### 3.1.4.1.1.4.2 Creating a Request
 
 The client creates an EFS certificate enrollment request using the procedure outlined below, restricting
 the set of templates in the request according to the TemplateName, RequireV3Template,
@@ -4293,7 +4201,8 @@ Release: September 16, 2024
 
 54 / 94
 
-3.1.4.2  EFSRPC Interface
+
+##### 3.1.4.2 EFSRPC Interface
 
 This protocol MUST instruct the RPC runtime to perform a strict NDR data consistency check at target
 level 6.0, as specified in [MS-RPCE] section 3.
@@ -4383,7 +4292,8 @@ Release: September 16, 2024
 
 55 / 94
 
-Method
+
+Method
 
 Description
 
@@ -4497,7 +4407,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 EfsRpcQueryProtectors
 
@@ -4620,7 +4531,8 @@ Release: September 16, 2024
 
 57 / 94
 
-Method
+
+Method
 
 Description
 
@@ -4677,7 +4589,7 @@ specified in [MS-RPCE] section 3.
 Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE].
 
-3.1.4.2.1 Receiving an EfsRpcOpenFileRaw Message (Opnum 0)
+###### 3.1.4.2.1 Receiving an EfsRpcOpenFileRaw Message (Opnum 0)
 
 The EfsRpcOpenFileRaw method is used to open an encrypted object on the server for backup or
 restore. It allocates resources that MUST be released by calling the EfsRpcCloseRaw method.<42>
@@ -4700,7 +4612,8 @@ Release: September 16, 2024
 
 58 / 94
 
-hContext: An implementation-specific context handle that is used in subsequent calls by the client to
+
+hContext: An implementation-specific context handle that is used in subsequent calls by the client to
 
 the EfsRpcReadFileRaw method, EfsRpcWriteFileRaw method, or EfsRpcCloseRaw method.
 
@@ -4800,7 +4713,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 If the CREATE_FOR_IMPORT flag is set, the server MUST attempt to create a container with the
 given name and prepare it for writing data received in future EfsRpcWriteFileRaw calls. The server
@@ -4822,7 +4736,7 @@ The server MUST ignore any flags that it does not support.
 
 On success, the server MUST create an appropriate context handle and return it to the client.
 
-3.1.4.2.2 Receiving an EfsRpcReadFileRaw Message (Opnum 1)
+###### 3.1.4.2.2 Receiving an EfsRpcReadFileRaw Message (Opnum 1)
 
 The method EfsRpcReadFileRaw is used by a client to obtain marshaled data for an encrypted object
 from the server.
@@ -4855,7 +4769,7 @@ indicate success.
 If an error is encountered during the read, the server MUST flush the pipe and SHOULD throw an RPC
 exception. The pipe MUST be flushed by performing a 0-byte write to the pipe.
 
-3.1.4.2.3 Receiving an EfsRpcWriteFileRaw Message (Opnum 2)
+###### 3.1.4.2.3 Receiving an EfsRpcWriteFileRaw Message (Opnum 2)
 
 The method EfsRpcWriteFileRaw is used to create an encrypted object on the server from the
 marshaled data provided by the client.
@@ -4876,7 +4790,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-EfsInPipe: A pipe structure. The pull procedure of this pipe is expected to provide the marshaled
+
+EfsInPipe: A pipe structure. The pull procedure of this pipe is expected to provide the marshaled
 
 data. The structure of this marshaled data is specified in section 2.2.3.
 
@@ -4891,7 +4806,7 @@ RPC exception.
 The server MUST read data from the pipe and write it to the object indicated by the context handle. If
 an error is encountered during the write, the server SHOULD throw an RPC exception.
 
-3.1.4.2.4 Receiving an EfsRpcCloseRaw Message (Opnum 3)
+###### 3.1.4.2.4 Receiving an EfsRpcCloseRaw Message (Opnum 3)
 
 The EfsRpcCloseRaw method is called to release any resources allocated by the EfsRpcOpenFileRaw
 method, or by subsequent calls to the EfsRpcReadFileRaw or EfsRpcWriteFileRaw methods.
@@ -4902,7 +4817,7 @@ method, or by subsequent calls to the EfsRpcReadFileRaw or EfsRpcWriteFileRaw me
 
 Return Values: This method has no return values.
 
-3.1.4.2.5 Receiving an EfsRpcEncryptFileSrv Message (Opnum 4)
+###### 3.1.4.2.5 Receiving an EfsRpcEncryptFileSrv Message (Opnum 4)
 
 The EfsRpcEncryptFileSrv method is used to convert a given object on the server to an encrypted state
 in the server's data store.
@@ -4948,7 +4863,8 @@ Release: September 16, 2024
 
 61 / 94
 
-The server  then performs the following actions to convert the object to an encrypted state in its data
+
+The server  then performs the following actions to convert the object to an encrypted state in its data
 store:
 
 
@@ -4971,7 +4887,7 @@ mentioned above.
 Upon completion of this request, the converted object MUST be accessible to the calling user for read
 and write methods of the storage encryption system.
 
-3.1.4.2.6 Receiving an EfsRpcDecryptFileSrv Message (Opnum 5)
+###### 3.1.4.2.6 Receiving an EfsRpcDecryptFileSrv Message (Opnum 5)
 
 The EfsRpcDecryptFileSrv method is used to convert an existing encrypted object to the unencrypted
 state in the server's data store.
@@ -5024,9 +4940,10 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Return 0 to indicate success.
 
-3.1.4.2.7 Receiving an EfsRpcQueryUsersOnFile Message (Opnum 6)
+  Return 0 to indicate success.
+
+###### 3.1.4.2.7 Receiving an EfsRpcQueryUsersOnFile Message (Opnum 6)
 
 The EfsRpcQueryUsersOnFile method is used by the client to query the metadata of an encrypted
 object for the X.509 certificates whose associated private keys can be used to decrypt the object.
@@ -5057,7 +4974,7 @@ EFSRPC Metadata and return a list of the hashes of all the certificates that hav
 to the object by implicit or explicit user action in the Users parameter. It MUST NOT include DRA
 certificates in this list.
 
-3.1.4.2.8 Receiving an EfsRpcQueryRecoveryAgents Message (Opnum 7)
+###### 3.1.4.2.8 Receiving an EfsRpcQueryRecoveryAgents Message (Opnum 7)
 
 The EfsRpcQueryRecoveryAgents method is used to query the EFSRPC Metadata of an encrypted
 object for the X.509 certificates of the data recovery agents whose private keys can be used to
@@ -5095,10 +5012,11 @@ Release: September 16, 2024
 
 63 / 94
 
-not added by virtue of being defined as DRAs in administrative policy. If no DRAs are defined on
+
+not added by virtue of being defined as DRAs in administrative policy. If no DRAs are defined on
 the object, the call MUST return success and this list MUST be empty.
 
-3.1.4.2.9 Receiving an EfsRpcRemoveUsersFromFile Message (Opnum 8)
+###### 3.1.4.2.9 Receiving an EfsRpcRemoveUsersFromFile Message (Opnum 8)
 
 The EfsRpcRemoveUsersFromFile method is used to revoke a user's access to an encrypted object.
 This method revokes the ability of the private key corresponding to a given X.509 certificate to
@@ -5135,7 +5053,7 @@ nonzero value.
 If none of the preceding errors occur, the server MUST remove the parts of the object's EFSRPC
 Metadata that refer to the user certificates listed in the Users structure.
 
-3.1.4.2.10  Receiving an EfsRpcAddUsersToFile Message (Opnum 9)
+###### 3.1.4.2.10 Receiving an EfsRpcAddUsersToFile Message (Opnum 9)
 
 The EfsRpcAddUsersToFile method is used to grant the possessors of the private keys corresponding
 to certain X.509 certificates the ability to decrypt the object.
@@ -5167,12 +5085,13 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If no object exists on the server with the specified name, or if the object exists and is not encrypted,
+
+If no object exists on the server with the specified name, or if the object exists and is not encrypted,
 the server MUST return a nonzero value. Otherwise, the server MUST modify the object's EFSRPC
 Metadata such that all the user certificates listed in the Users structure have the ability to decrypt the
 object.
 
-3.1.4.2.11  Receiving an EfsRpcNotSupported Message (Opnum 11)
+###### 3.1.4.2.11 Receiving an EfsRpcNotSupported Message (Opnum 11)
 
 On receiving the EfsRpcNotSupported method call, an EFSRPC server SHOULD implement the
 EfsRpcNotSupported method as specified in this section and return a nonzero value. However, a server
@@ -5220,7 +5139,7 @@ Return Values: The EFSRPC server SHOULD return a nonzero value. However, the ser
 
 process this as described in section 3.1.4.2.13.
 
-3.1.4.2.12  Receiving an EfsRpcFileKeyInfo Message (Opnum 12)
+###### 3.1.4.2.12 Receiving an EfsRpcFileKeyInfo Message (Opnum 12)
 
 The EfsRpcFileKeyInfo method is used to query and modify information about the keys used to
 encrypt a given object.
@@ -5243,7 +5162,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-FileName: An EFSRPC identifier, as specified in section 2.2.1.
+
+FileName: An EFSRPC identifier, as specified in section 2.2.1.
 
 InfoClass: One of the values in the following table. With the exception of UPDATE_KEY_USED
 
@@ -5337,7 +5257,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-If the value in the InfoClass parameter is equal to CHECK_DECRYPTION_STATUS, the server
+
+If the value in the InfoClass parameter is equal to CHECK_DECRYPTION_STATUS, the server
 SHOULD return ERROR_REQUIRES_INTERACTIVE_WINDOWSTATION ([MS-ERREF] section 2.2).
 The server MAY, instead, return an EFS_DECRYPTION_STATUS_INFO structure in the KeyInfo
 parameter, which provides a hint to the client what error code would be returned if decryption
@@ -5347,7 +5268,7 @@ If the value of the InfoClass parameter is equal to CHECK_COMPATIBILITY_INFO, th
 return an EFS_COMPATIBILITY_INFO structure in the KeyInfo parameter, which provides the
 EFSVersion of the EFSRPC metadata associated with the file.
 
-3.1.4.2.13  Receiving an EfsRpcDuplicateEncryptionInfoFile Message (Opnum 13)
+###### 3.1.4.2.13 Receiving an EfsRpcDuplicateEncryptionInfoFile Message (Opnum 13)
 
 The EfsRpcDuplicateEncryptionInfoFile method is used to duplicate the EFSRPC Metadata of one
 encrypted object and attach it to another encrypted object. This is typically done when copying objects
@@ -5425,7 +5346,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 0x00000100
 
@@ -5511,7 +5433,8 @@ Release: September 16, 2024
 
 68 / 94
 
-3.1.4.2.14  Receiving an EfsRpcAddUsersToFileEx Message (Opnum 15)
+
+###### 3.1.4.2.14 Receiving an EfsRpcAddUsersToFileEx Message (Opnum 15)
 
 The EfsRpcAddUsersToFileEx method is used to grant the possessors of the private keys
 corresponding to certain X.509 certificates the ability to decrypt the object.
@@ -5587,7 +5510,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.4.2.15  Receiving an EfsRpcFileKeyInfoEx Message (Opnum 16)
+
+###### 3.1.4.2.15 Receiving an EfsRpcFileKeyInfoEx Message (Opnum 16)
 
 On receiving the EfsRpcFileKeyInfoEx method call, an EFSRPC server SHOULD ignore the input
 parameters and return a nonzero value. The server MAY act on this method in an implementation-
@@ -5622,7 +5546,7 @@ KeyInfo: The server SHOULD ignore this parameter.<53>
 
 Return Values: The server SHOULD return a nonzero value.<54>
 
-3.1.4.2.16  Receiving an EfsRpcGetEncryptedFileMetadata Message (Opnum 18)
+###### 3.1.4.2.16 Receiving an EfsRpcGetEncryptedFileMetadata Message (Opnum 18)
 
 On receiving the EfsRpcGetEncryptedFileMetadata method call, an EFSRPC server SHOULD ignore the
 input parameters and return a nonzero value. The server MAY choose to act on this method in an
@@ -5644,7 +5568,7 @@ EfsStreamBlob: The server SHOULD ignore this parameter.<56>
 
 Return Values: The server SHOULD return a nonzero value.<57>
 
-3.1.4.2.17  Receiving an EfsRpcSetEncryptedFileMetadata Message (Opnum 19)
+###### 3.1.4.2.17 Receiving an EfsRpcSetEncryptedFileMetadata Message (Opnum 19)
 
 On receiving the EfsRpcSetEncryptedFileMetadata method call, an EFSRPC server SHOULD ignore the
 input parameters and return a nonzero value. The server MAY choose to act on this method in an
@@ -5657,7 +5581,8 @@ Release: September 16, 2024
 
 70 / 94
 
- DWORD EfsRpcSetEncryptedFileMetadata(
+
+ DWORD EfsRpcSetEncryptedFileMetadata(
    [in] handle_t binding_h,
    [in, string, ref] wchar_t* FileName,
    [in, unique] EFS_RPC_BLOB* OldEfsStreamBlob,
@@ -5685,7 +5610,7 @@ server.<61>
 
 Return Values: The server SHOULD return a nonzero value.<62>
 
-3.1.4.2.18  Receiving an EfsRpcFlushEfsCache Message (Opnum 20)
+###### 3.1.4.2.18 Receiving an EfsRpcFlushEfsCache Message (Opnum 20)
 
 The EfsRpcFlushEfsCache method causes EFS to flush the logical cache that holds all the sensitive
 information required to perform EFSRPC operations for the calling user.
@@ -5705,7 +5630,7 @@ client. The server MUST return a nonzero value if processing fails.
 The server MUST completely discard the logical cache being maintained on behalf of the calling user.
 The logical cache is as specified in section 3.1.1.
 
-3.1.4.2.19  Receiving an EfsRpcEncryptFileExSrv Message (Opnum 21)
+###### 3.1.4.2.19 Receiving an EfsRpcEncryptFileExSrv Message (Opnum 21)
 
 The EfsRpcEncryptFileExSrv method is used to convert a given object on the server to an encrypted
 state in the server's data store.<63>
@@ -5730,7 +5655,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ProtectorDescriptor: This parameter can be NULL. When it is non-NULL, it MUST contain either an
+
+ProtectorDescriptor: This parameter can be NULL. When it is non-NULL, it MUST contain either an
 
 RMS descriptor, which is the literal value of "EFSRMSDESC=" followed by an EnterpriseID
 (described below), followed by a "|" (pipe character), optionally followed by a GUID in curly braces
@@ -5806,7 +5732,8 @@ Release: September 16, 2024
 
 72 / 94
 
-       RPAREN  = %x29 ; right paren (")")
+
+       RPAREN  = %x29 ; right paren (")")
        PLUS    = %x2B ; plus sign ("+")
        COMMA   = %x2C ; comma (",")
        HYPHEN  = %x2D ; hyphen ("-")
@@ -5881,7 +5808,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-section 2.2.9.7, certificate for the calling user, specifying the client identity associated with the RPC
+
+section 2.2.9.7, certificate for the calling user, specifying the client identity associated with the RPC
 call ([MS-RPCE] section 3.3.3.4.3) as input for the security context. If an error is returned when
 looking up the template or creating a PL, the server MUST return a nonzero value.
 
@@ -5916,7 +5844,7 @@ object, formatted as specified in section 2.2.2.3.
 Upon completion of this request, the converted object MUST be accessible to the calling user for read
 and write methods of the storage encryption system.
 
-3.1.4.2.20  Receiving an EfsRpcQueryProtectors (Opnum 22)
+###### 3.1.4.2.20 Receiving an EfsRpcQueryProtectors (Opnum 22)
 
 The EfsRpcQueryProtectors method is used by the client to query the metadata of an encrypted
 object for protectors that are either RMS or DPAPI-NG and whose associated private keys can be
@@ -5940,7 +5868,7 @@ ppProtectorList: A pointer to a list of ENCRYPTION_PROTECTOR structures as speci
 
 Return Values: The server MUST return a nonzero value.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 This protocol does not specify any timers or timer events.
 
@@ -5951,7 +5879,8 @@ Release: September 16, 2024
 
 74 / 94
 
-3.1.6  Other Local Events
+
+#### 3.1.6 Other Local Events
 
 If an RPC connection between the client and the server is broken while transferring data using the
 EFSRPC raw methods, the server SHOULD take steps to de-allocate all resources allocated to that
@@ -5966,7 +5895,8 @@ Release: September 16, 2024
 
 75 / 94
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section contains a complete example of how EFSRPC is used. In the following example, a user
 (User) uses a Windows XP client to encrypt a file on a Windows SMB file server (Server1). The User
@@ -6030,7 +5960,8 @@ Release: September 16, 2024
 
 76 / 94
 
-Now, the encrypted file has been recreated on Server2. The Colleague can access this file using SMB
+
+Now, the encrypted file has been recreated on Server2. The Colleague can access this file using SMB
 and work with it as needed. The User has successfully utilized EFSRPC to allow the Colleague access to
 a critical file, using only secure EFSRPC methods.
 
@@ -6041,9 +5972,10 @@ Release: September 16, 2024
 
 77 / 94
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 It is recommended that encrypted data be stored so as to minimize the risk of information disclosure
 in case of offline attack. In particular, the plaintext of encrypted objects and all keying material are to
@@ -6064,7 +5996,7 @@ force attacks. The use of CALG_3DES is also deprecated at present. The use of CA
 strongly recommended. When using RSA for asymmetric cryptography, it is currently recommended
 that the keys used be at least 2,048 bits long.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security Parameter
 
@@ -6087,7 +6019,8 @@ Release: September 16, 2024
 
 78 / 94
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  For ease of implementation, the full Interface Definition Language (IDL) is provided here, where "ms-
 dtyp.idl" is the IDL found in [MS-DTYP] Appendix A.
@@ -6156,7 +6089,8 @@ Release: September 16, 2024
 
 79 / 94
 
- typedef struct _ENCRYPTION_CERTIFICATE_LIST {
+
+ typedef struct _ENCRYPTION_CERTIFICATE_LIST {
      [range(0,500)]         DWORD nUsers;
      [size_is(nUsers , )]   ENCRYPTION_CERTIFICATE ** Users;
  } ENCRYPTION_CERTIFICATE_LIST;
@@ -6229,7 +6163,8 @@ Release: September 16, 2024
 
 80 / 94
 
-     );
+
+     );
 
  long EfsRpcDecryptFileSrv(
      [in]            handle_t        binding_h,
@@ -6306,7 +6241,8 @@ Release: September 16, 2024
 
 81 / 94
 
-     [in, string]    wchar_t                       * FileName,
+
+     [in, string]    wchar_t                       * FileName,
      [in]    ENCRYPTION_CERTIFICATE_LIST   * EncryptionCertificates
      );
 
@@ -6383,7 +6319,8 @@ Release: September 16, 2024
 
 82 / 94
 
- void Opnum30NotUsedOnWire(void);
+
+ void Opnum30NotUsedOnWire(void);
 
  //local only method
  void Opnum31NotUsedOnWire(void);
@@ -6435,7 +6372,8 @@ Release: September 16, 2024
 
 83 / 94
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6504,7 +6442,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-XP Home Edition operating system and Windows XP Starter Edition operating system editions of
+
+XP Home Edition operating system and Windows XP Starter Edition operating system editions of
 Windows do not include EFS functionality and do not support EFSRPC.
 
 Windows 2000, Windows XP, and Windows Server 2003 do not use SSPI to secure the EFSRPC raw
@@ -6572,7 +6511,8 @@ Release: September 16, 2024
 
 85 / 94
 
-<12> Section 2.2.2.2:  Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
+
+<12> Section 2.2.2.2:  Windows 2000, Windows XP, Windows Server 2003, Windows Vista, Windows
 Server 2008,  Windows 7, Windows Server 2008 R2 operating system, Windows 8, Windows Server
 2012 operating system, Windows 8.1, and Windows Server 2012 R2 do not support EFS Version 5.
 
@@ -6641,7 +6581,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<24> Section 2.2.11: As a defensive measure against overflow attacks, the Windows implementation
+
+<24> Section 2.2.11: As a defensive measure against overflow attacks, the Windows implementation
 of the EFSRPC server restricts the number of entries in this array to 500, and returns an error if this
 size is exceeded. This restriction is represented in the range attribute of nCert_Hash.
 
@@ -6744,7 +6685,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<29> Section 2.2.15: Windows compatibility with EFSRPC Metadata versions is summarized by the
+
+<29> Section 2.2.15: Windows compatibility with EFSRPC Metadata versions is summarized by the
 following table.
 
 EfsVersion  Minimum operating system
@@ -6825,7 +6767,8 @@ Encrypting File System Remote (EFSRPC) Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The EfsRpcEncryptFileExSrv and EfsRpcQueryProtectors methods are not supported on Windows
+
+The EfsRpcEncryptFileExSrv and EfsRpcQueryProtectors methods are not supported on Windows
 2000, Windows XP, Windows Server 2003, Windows Vista, Windows Server 2008, Windows 7,
 Windows Server 2008 R2, Windows 8, Windows Server 2012, Windows 8.1, and Windows Server 2012
 R2.
@@ -6910,7 +6853,8 @@ Release: September 16, 2024
 
 89 / 94
 
-<46> Section 3.1.4.2.12: UPDATE_KEY_USED is only supported on Windows Server 2003.
+
+<46> Section 3.1.4.2.12: UPDATE_KEY_USED is only supported on Windows Server 2003.
 CHECK_DECRYPTION_STATUS and CHECK_ENCRYPTION_STATUS are not supported on Windows XP
 or Windows Server 2003. CHECK_COMPATIBILITY_INFO is not supported on Windows XP, Windows
 Server 2003, Windows Vista, or Windows Server 2008.
@@ -6977,7 +6921,8 @@ Release: September 16, 2024
 
 90 / 94
 
-If an encrypted object exists with the name specified in the FileName parameter, and its metadata
+
+If an encrypted object exists with the name specified in the FileName parameter, and its metadata
 does not match exactly with the contents of the OldEfsStreamBlob parameter, the server returns a
 nonzero value.
 
@@ -7027,7 +6972,8 @@ Release: September 16, 2024
 
 91 / 94
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -7039,7 +6985,8 @@ Release: September 16, 2024
 
 92 / 94
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model 50
@@ -7186,7 +7133,8 @@ Normative references 11
 
 93 / 94
 
-O
+
+O
 
 Overview (synopsis) 13
 

@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 139
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 139
 
-Date
+
+Date
 
 Revision
 History
@@ -523,487 +525,215 @@ Release: April 23, 2024
 
 3 / 139
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.2.2.1
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.2.3
-2.2.2.4
-2.2.2.5
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Data Types ........................................................................................ 15
-ADMINDATA_MAX_NAME_LEN ...................................................................... 15
-IIS_CRYPTO_BLOB ..................................................................................... 15
-PUBLIC_KEY_BLOB ................................................................................ 16
-SESSION_KEY_BLOB ............................................................................. 17
-ENCRYPTED_SESSION_KEY_ BLOB .................................................... 18
-HASH_BLOB ......................................................................................... 19
-CLEARTEXT_DATA_BLOB ....................................................................... 19
-ENCRYPTED_DATA_BLOB ....................................................................... 20
-CLEARTEXT_WITH_PREFIX_BLOB ...................................................... 20
-2.2.3
-Secure Session Negotiation Constants ........................................................... 21
-2.2.4
-METADATA_GETALL_RECORD ....................................................................... 21
-2.2.5
-METADATA_HANDLE ................................................................................... 23
-2.2.6
-METADATA_HANDLE_INFO........................................................................... 23
-2.2.7
-METADATA_RECORD ................................................................................... 24
-2.2.8
-METADATA_MASTER_ROOT_HANDLE ............................................................ 25
-MD_APP_ROOT ........................................................................................... 26
-2.2.9
-2.2.10  MD_APP_ISOLATED .................................................................................... 26
-2.2.11  MD_APP_APPPOOL_ID ................................................................................. 26
-2.2.12  MD_BACKUP_MAX_LEN ............................................................................... 27
-
-2.2.2.5.1
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.4.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 28
-IMSAdminBaseW Server Details ......................................................................... 28
-Abstract Data Model .................................................................................... 28
-Secure Session Context ......................................................................... 28
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 29
-Transferring Sensitive Data .................................................................... 31
-Secure Session Negotiation Server Role ............................................. 32
-Encrypting Data .............................................................................. 32
-Decrypting Data .............................................................................. 33
-Signed Hash Calculation ................................................................... 33
-Signed Hash Validation .................................................................... 33
-OpenKey (Opnum 17) ............................................................................ 34
-CloseKey (Opnum 18) ........................................................................... 35
-AddKey (Opnum 3) ............................................................................... 36
-CopyKey (Opnum 7) .............................................................................. 37
-DeleteKey (Opnum 4) ............................................................................ 38
-DeleteChildKeys (Opnum 5) ................................................................... 39
-
-3.1.4.1.1
-3.1.4.1.2
-3.1.4.1.3
-3.1.4.1.4
-3.1.4.1.5
-
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-[MS-IMSA] - v20240423
-Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 139
-
-DeleteData (Opnum 11) ......................................................................... 40
-3.1.4.8
-DeleteAllData (Opnum 14) ..................................................................... 42
-3.1.4.9
-CopyData (Opnum 15) ........................................................................... 44
-3.1.4.10
-EnumKeys (Opnum 6) ........................................................................... 46
-3.1.4.11
-R_EnumData (Opnum 12) ...................................................................... 47
-3.1.4.12
-Backup (Opnum 28) .............................................................................. 48
-3.1.4.13
-EnumBackups (Opnum 30) ..................................................................... 50
-3.1.4.14
-3.1.4.15  DeleteBackup (Opnum 31) ..................................................................... 51
-3.1.4.16
-ChangePermissions (Opnum 19) ............................................................. 52
-3.1.4.17  GetDataPaths (Opnum 16) ..................................................................... 53
-3.1.4.18  GetDataSetNumber (Opnum 23) ............................................................. 55
-3.1.4.19  GetHandleInfo (Opnum 21) .................................................................... 56
-3.1.4.20  GetLastChangeTime (Opnum 25) ............................................................ 56
-3.1.4.21  GetSystemChangeNumber (Opnum 22) ................................................... 57
-R_GetAllData (Opnum 13) ...................................................................... 58
-3.1.4.22
-R_GetData (Opnum 10) ......................................................................... 60
-3.1.4.23
-R_GetServerGuid (Opnum 33) ................................................................ 62
-3.1.4.24
-R_KeyExchangePhase1 (Opnum 26) ........................................................ 62
-3.1.4.25
-R_KeyExchangePhase2 (Opnum 27) ........................................................ 64
-3.1.4.26
-R_SetData (Opnum 9) ........................................................................... 65
-3.1.4.27
-RenameKey (Opnum 8) ......................................................................... 66
-3.1.4.28
-Restore (Opnum 29) ............................................................................. 67
-3.1.4.29
-SaveData (Opnum 20) ........................................................................... 69
-3.1.4.30
-3.1.4.31
-SetLastChangeTime (Opnum 24) ............................................................ 69
-3.1.4.32  UnmarshalInterface (Opnum 32) ............................................................. 70
-Timer Events .............................................................................................. 71
-Other Local Events ...................................................................................... 71
-IMSAdminBaseW Client Details .......................................................................... 71
-Abstract Data Model .................................................................................... 71
-Secure Session Context ......................................................................... 71
-Timers ...................................................................................................... 71
-Initialization ............................................................................................... 71
-Message Processing Events and Sequencing Rules .......................................... 72
-Secure Session Negotiation Client Role .................................................... 72
-R_KeyExchangePhase1 (Opnum 26) ........................................................ 72
-R_KeyExchangePhase2 (Opnum 27) ........................................................ 72
-R_SetData (Opnum 9) ........................................................................... 73
-R_GetData (Opnum 10) ......................................................................... 74
-R_EnumData (Opnum 12) ...................................................................... 74
-R_GetAllData (Opnum 13) ...................................................................... 74
-Timer Events .............................................................................................. 74
-Other Local Events ...................................................................................... 75
-IMSAdminBase2W Server Details ....................................................................... 75
-Abstract Data Model .................................................................................... 75
-Timers ...................................................................................................... 75
-Initialization ............................................................................................... 75
-Message Processing Events and Sequencing Rules .......................................... 75
-BackupWithPasswd (Opnum 34) ............................................................. 76
-EnumHistory (Opnum 39) ...................................................................... 77
-Export (Opnum 36) ............................................................................... 79
-Import (Opnum 37) ............................................................................... 80
-RestoreHistory (Opnum 38) .................................................................... 82
-RestoreWithPasswd (Opnum 35) ............................................................. 83
-Timer Events .............................................................................................. 84
-Other Local Events ...................................................................................... 84
-IMSAdminBase2W Client Details ........................................................................ 85
-Abstract Data Model .................................................................................... 85
-Timers ...................................................................................................... 85
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-3.2.4.7
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-3.3.4.4
-3.3.4.5
-3.3.4.6
-
-3.2.1.1
-
-3.2
-
-3.1.5
-3.1.6
-
-3.2.1
-
-3.2.2
-3.2.3
-3.2.4
-
-3.3
-
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.4
-
-3.3.5
-3.3.6
-
-3.4.1
-3.4.2
-
-[MS-IMSA] - v20240423
-Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 139
-
-3.5.4.1
-
-3.5
-
-3.4.3
-3.4.4
-3.4.5
-3.4.6
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.5
-3.5.6
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-3.6.5
-3.6.6
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-
-3.6
-
-3.7
-
-3.8
-
-3.7.5
-3.7.6
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-
-3.8.5
-3.8.6
-
-3.9.1
-3.9.2
-3.9.3
-3.9.4
-
-3.9
-
-3.7.4.1
-3.7.4.2
-3.7.4.3
-3.7.4.4
-3.7.4.5
-3.7.4.6
-
-3.8.4.1
-
-Initialization ............................................................................................... 85
-Message Processing Events and Sequencing Rules .......................................... 85
-Timer Events .............................................................................................. 85
-Other Local Events ...................................................................................... 85
-IMSAdminBase3W Server Details ....................................................................... 85
-Abstract Data Model .................................................................................... 85
-Timers ...................................................................................................... 85
-Initialization ............................................................................................... 85
-Message Processing Events and Sequencing Rules .......................................... 86
-GetChildPaths (Opnum 40) ..................................................................... 86
-Timer Events .............................................................................................. 88
-Other Local Events ...................................................................................... 88
-IMSAdminBase3W Client Details ........................................................................ 88
-Abstract Data Model .................................................................................... 88
-Timers ...................................................................................................... 88
-Initialization ............................................................................................... 88
-Message Processing Events and Sequencing Rules .......................................... 88
-Timer Events .............................................................................................. 88
-Other Local Events ...................................................................................... 88
-IWamAdmin Server Details ................................................................................ 89
-Abstract Data Model .................................................................................... 89
-Timers ...................................................................................................... 89
-Initialization ............................................................................................... 89
-Message Processing Events and Sequencing Rules .......................................... 89
-AppCreate (Opnum 3) ........................................................................... 89
-AppDelete (Opnum 4) ............................................................................ 90
-AppUnLoad (Opnum 5) .......................................................................... 91
-AppGetStatus (Opnum 6) ....................................................................... 92
-AppDeleteRecoverable (Opnum 7) ........................................................... 93
-AppRecover (Opnum 8) ......................................................................... 94
-Timer Events .............................................................................................. 94
-Other Local Events ...................................................................................... 94
-IWamAdmin2 Server Details .............................................................................. 94
-Abstract Data Model .................................................................................... 94
-Timers ...................................................................................................... 95
-Initialization ............................................................................................... 95
-Message Processing Events and Sequencing Rules .......................................... 95
-AppCreate2 (Opnum 9) .......................................................................... 95
-Timer Events .............................................................................................. 96
-Other Local Events ...................................................................................... 96
-IIISApplicationAdmin Server Details ................................................................... 96
-Abstract Data Model .................................................................................... 96
-Timers ...................................................................................................... 96
-Initialization ............................................................................................... 97
-Message Processing Events and Sequencing Rules .......................................... 97
-CreateApplication (Opnum 3) ................................................................. 97
-DeleteApplication (Opnum 4) .................................................................. 99
-CreateApplicationPool (Opnum 5) ............................................................ 99
-DeleteApplicationPool (Opnum 6) ........................................................... 100
-EnumerateApplicationsInPool (Opnum 7) ................................................ 101
-RecycleApplicationPool (Opnum 8) ......................................................... 101
-GetProcessMode (Opnum 9) .................................................................. 102
-Timer Events ............................................................................................. 103
-Other Local Events ..................................................................................... 103
-IIISCertObj Server Details ................................................................................ 103
-Abstract Data Model ................................................................................... 103
-Timers ..................................................................................................... 103
-Initialization .............................................................................................. 103
-
-3.9.4.1
-3.9.4.2
-3.9.4.3
-3.9.4.4
-3.9.4.5
-3.9.4.6
-3.9.4.7
-
-3.9.5
-3.9.6
-
-3.10
-
-3.10.1
-3.10.2
-3.10.3
-
-[MS-IMSA] - v20240423
-Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 139
-
-3.10.4  Message Processing Events and Sequencing Rules ......................................... 103
-InstanceName (Set) (Opnum 10) ........................................................... 105
-3.10.4.1
-IsInstalledRemote (Opnum 12) .............................................................. 105
-3.10.4.2
-3.10.4.3
-IsExportableRemote (Opnum 14) ........................................................... 106
-3.10.4.4  GetCertInfoRemote (Opnum 16) ............................................................ 107
-ImportFromBlob (Opnum 22) ................................................................ 108
-3.10.4.5
-ImportFromBlobGetHash (Opnum 23) .................................................... 109
-3.10.4.6
-ExportToBlob (Opnum 25) ..................................................................... 111
-3.10.4.7
-3.10.5
-Timer Events ............................................................................................. 112
-3.10.6  Other Local Events ..................................................................................... 112
-IIISCertObj Client Details ................................................................................. 112
-Abstract Data Model ................................................................................... 112
-3.11.1
-Timers ..................................................................................................... 113
-3.11.2
-3.11.3
-Initialization .............................................................................................. 113
-3.11.4  Message Processing Events and Sequencing Rules ......................................... 113
-InstanceName (Set) (Opnum 10) ........................................................... 113
-Timer Events ............................................................................................. 113
-3.11.5
-3.11.6  Other Local Events ..................................................................................... 113
-
-3.11.4.1
-
-3.11
-
-4  Protocol Examples ............................................................................................... 114
-General Hookup Example ................................................................................. 114
-BackupWithPasswd Call Example ....................................................................... 114
-EnumHistory Call Example................................................................................ 114
-Export Call Example ........................................................................................ 115
-Import Call Example ........................................................................................ 115
-RestoreHistory Call Example ............................................................................. 116
-RestoreWithPasswd Call Example ...................................................................... 116
-GetChildPaths Call Example .............................................................................. 117
-Reading Sensitive Data from the Server ............................................................. 118
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-
-5  Security ............................................................................................................... 120
-Security Considerations for Implementers .......................................................... 120
-Index of Security Parameters ........................................................................... 120
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 121
-
-7  Appendix B: Product Behavior ............................................................................. 128
-
-8  Change Tracking .................................................................................................. 134
-
-9  Index ................................................................................................................... 135
-
-[MS-IMSA] - v20240423
-Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 139
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 ADMINDATA_MAX_NAME_LEN](#221-admindatamaxnamelen)
+    - [2.2.2 IIS_CRYPTO_BLOB](#222-iiscryptoblob)
+      - [2.2.2.1 PUBLIC_KEY_BLOB](#2221-publickeyblob)
+      - [2.2.2.2 SESSION_KEY_BLOB](#2222-sessionkeyblob)
+        - [2.2.2.2.1 ENCRYPTED_SESSION_KEY_ BLOB](#22221-encryptedsessionkey-blob)
+      - [2.2.2.3 HASH_BLOB](#2223-hashblob)
+      - [2.2.2.4 CLEARTEXT_DATA_BLOB](#2224-cleartextdatablob)
+      - [2.2.2.5 ENCRYPTED_DATA_BLOB](#2225-encrypteddatablob)
+        - [2.2.2.5.1 CLEARTEXT_WITH_PREFIX_BLOB](#22251-cleartextwithprefixblob)
+    - [2.2.3 Secure Session Negotiation Constants](#223-secure-session-negotiation-constants)
+    - [2.2.4 METADATA_GETALL_RECORD](#224-metadatagetallrecord)
+    - [2.2.5 METADATA_HANDLE](#225-metadatahandle)
+    - [2.2.6 METADATA_HANDLE_INFO](#226-metadatahandleinfo)
+    - [2.2.7 METADATA_RECORD](#227-metadatarecord)
+    - [2.2.8 METADATA_MASTER_ROOT_HANDLE](#228-metadatamasterroothandle)
+    - [2.2.9 MD_APP_ROOT](#229-mdapproot)
+    - [2.2.10 MD_APP_ISOLATED](#2210-mdappisolated)
+    - [2.2.11 MD_APP_APPPOOL_ID](#2211-mdappapppoolid)
+    - [2.2.12 MD_BACKUP_MAX_LEN](#2212-mdbackupmaxlen)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IMSAdminBaseW Server Details](#31-imsadminbasew-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Secure Session Context](#3111-secure-session-context)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Transferring Sensitive Data](#3141-transferring-sensitive-data)
+        - [3.1.4.1.1 Secure Session Negotiation Server Role](#31411-secure-session-negotiation-server-role)
+        - [3.1.4.1.2 Encrypting Data](#31412-encrypting-data)
+        - [3.1.4.1.3 Decrypting Data](#31413-decrypting-data)
+        - [3.1.4.1.4 Signed Hash Calculation](#31414-signed-hash-calculation)
+        - [3.1.4.1.5 Signed Hash Validation](#31415-signed-hash-validation)
+      - [3.1.4.2 OpenKey (Opnum 17)](#3142-openkey-opnum-17)
+      - [3.1.4.3 CloseKey (Opnum 18)](#3143-closekey-opnum-18)
+      - [3.1.4.4 AddKey (Opnum 3)](#3144-addkey-opnum-3)
+      - [3.1.4.5 CopyKey (Opnum 7)](#3145-copykey-opnum-7)
+      - [3.1.4.6 DeleteKey (Opnum 4)](#3146-deletekey-opnum-4)
+      - [3.1.4.7 DeleteChildKeys (Opnum 5)](#3147-deletechildkeys-opnum-5)
+      - [3.1.4.8 DeleteData (Opnum 11)](#3148-deletedata-opnum-11)
+      - [3.1.4.9 DeleteAllData (Opnum 14)](#3149-deletealldata-opnum-14)
+      - [3.1.4.10 CopyData (Opnum 15)](#31410-copydata-opnum-15)
+      - [3.1.4.11 EnumKeys (Opnum 6)](#31411-enumkeys-opnum-6)
+      - [3.1.4.12 R_EnumData (Opnum 12)](#31412-renumdata-opnum-12)
+      - [3.1.4.13 Backup (Opnum 28)](#31413-backup-opnum-28)
+      - [3.1.4.14 EnumBackups (Opnum 30)](#31414-enumbackups-opnum-30)
+      - [3.1.4.15 DeleteBackup (Opnum 31)](#31415-deletebackup-opnum-31)
+      - [3.1.4.16 ChangePermissions (Opnum 19)](#31416-changepermissions-opnum-19)
+      - [3.1.4.17 GetDataPaths (Opnum 16)](#31417-getdatapaths-opnum-16)
+      - [3.1.4.18 GetDataSetNumber (Opnum 23)](#31418-getdatasetnumber-opnum-23)
+      - [3.1.4.19 GetHandleInfo (Opnum 21)](#31419-gethandleinfo-opnum-21)
+      - [3.1.4.20 GetLastChangeTime (Opnum 25)](#31420-getlastchangetime-opnum-25)
+      - [3.1.4.21 GetSystemChangeNumber (Opnum 22)](#31421-getsystemchangenumber-opnum-22)
+      - [3.1.4.22 R_GetAllData (Opnum 13)](#31422-rgetalldata-opnum-13)
+      - [3.1.4.23 R_GetData (Opnum 10)](#31423-rgetdata-opnum-10)
+      - [3.1.4.24 R_GetServerGuid (Opnum 33)](#31424-rgetserverguid-opnum-33)
+      - [3.1.4.25 R_KeyExchangePhase1 (Opnum 26)](#31425-rkeyexchangephase1-opnum-26)
+      - [3.1.4.26 R_KeyExchangePhase2 (Opnum 27)](#31426-rkeyexchangephase2-opnum-27)
+      - [3.1.4.27 R_SetData (Opnum 9)](#31427-rsetdata-opnum-9)
+      - [3.1.4.28 RenameKey (Opnum 8)](#31428-renamekey-opnum-8)
+      - [3.1.4.29 Restore (Opnum 29)](#31429-restore-opnum-29)
+      - [3.1.4.30 SaveData (Opnum 20)](#31430-savedata-opnum-20)
+      - [3.1.4.31 SetLastChangeTime (Opnum 24)](#31431-setlastchangetime-opnum-24)
+      - [3.1.4.32 UnmarshalInterface (Opnum 32)](#31432-unmarshalinterface-opnum-32)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 IMSAdminBaseW Client Details](#32-imsadminbasew-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Secure Session Context](#3211-secure-session-context)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Secure Session Negotiation Client Role](#3241-secure-session-negotiation-client-role)
+      - [3.2.4.2 R_KeyExchangePhase1 (Opnum 26)](#3242-rkeyexchangephase1-opnum-26)
+      - [3.2.4.3 R_KeyExchangePhase2 (Opnum 27)](#3243-rkeyexchangephase2-opnum-27)
+      - [3.2.4.4 R_SetData (Opnum 9)](#3244-rsetdata-opnum-9)
+      - [3.2.4.5 R_GetData (Opnum 10)](#3245-rgetdata-opnum-10)
+      - [3.2.4.6 R_EnumData (Opnum 12)](#3246-renumdata-opnum-12)
+      - [3.2.4.7 R_GetAllData (Opnum 13)](#3247-rgetalldata-opnum-13)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 IMSAdminBase2W Server Details](#33-imsadminbase2w-server-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 BackupWithPasswd (Opnum 34)](#3341-backupwithpasswd-opnum-34)
+      - [3.3.4.2 EnumHistory (Opnum 39)](#3342-enumhistory-opnum-39)
+      - [3.3.4.3 Export (Opnum 36)](#3343-export-opnum-36)
+      - [3.3.4.4 Import (Opnum 37)](#3344-import-opnum-37)
+      - [3.3.4.5 RestoreHistory (Opnum 38)](#3345-restorehistory-opnum-38)
+      - [3.3.4.6 RestoreWithPasswd (Opnum 35)](#3346-restorewithpasswd-opnum-35)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 IMSAdminBase2W Client Details](#34-imsadminbase2w-client-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 IMSAdminBase3W Server Details](#35-imsadminbase3w-server-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+      - [3.5.4.1 GetChildPaths (Opnum 40)](#3541-getchildpaths-opnum-40)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+  - [3.6 IMSAdminBase3W Client Details](#36-imsadminbase3w-client-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Message Processing Events and Sequencing Rules](#364-message-processing-events-and-sequencing-rules)
+    - [3.6.5 Timer Events](#365-timer-events)
+    - [3.6.6 Other Local Events](#366-other-local-events)
+  - [3.7 IWamAdmin Server Details](#37-iwamadmin-server-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Message Processing Events and Sequencing Rules](#374-message-processing-events-and-sequencing-rules)
+      - [3.7.4.1 AppCreate (Opnum 3)](#3741-appcreate-opnum-3)
+      - [3.7.4.2 AppDelete (Opnum 4)](#3742-appdelete-opnum-4)
+      - [3.7.4.3 AppUnLoad (Opnum 5)](#3743-appunload-opnum-5)
+      - [3.7.4.4 AppGetStatus (Opnum 6)](#3744-appgetstatus-opnum-6)
+      - [3.7.4.5 AppDeleteRecoverable (Opnum 7)](#3745-appdeleterecoverable-opnum-7)
+      - [3.7.4.6 AppRecover (Opnum 8)](#3746-apprecover-opnum-8)
+    - [3.7.5 Timer Events](#375-timer-events)
+    - [3.7.6 Other Local Events](#376-other-local-events)
+  - [3.8 IWamAdmin2 Server Details](#38-iwamadmin2-server-details)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Message Processing Events and Sequencing Rules](#384-message-processing-events-and-sequencing-rules)
+      - [3.8.4.1 AppCreate2 (Opnum 9)](#3841-appcreate2-opnum-9)
+    - [3.8.5 Timer Events](#385-timer-events)
+    - [3.8.6 Other Local Events](#386-other-local-events)
+  - [3.9 IIISApplicationAdmin Server Details](#39-iiisapplicationadmin-server-details)
+    - [3.9.1 Abstract Data Model](#391-abstract-data-model)
+    - [3.9.2 Timers](#392-timers)
+    - [3.9.3 Initialization](#393-initialization)
+    - [3.9.4 Message Processing Events and Sequencing Rules](#394-message-processing-events-and-sequencing-rules)
+      - [3.9.4.1 CreateApplication (Opnum 3)](#3941-createapplication-opnum-3)
+      - [3.9.4.2 DeleteApplication (Opnum 4)](#3942-deleteapplication-opnum-4)
+      - [3.9.4.3 CreateApplicationPool (Opnum 5)](#3943-createapplicationpool-opnum-5)
+      - [3.9.4.4 DeleteApplicationPool (Opnum 6)](#3944-deleteapplicationpool-opnum-6)
+      - [3.9.4.5 EnumerateApplicationsInPool (Opnum 7)](#3945-enumerateapplicationsinpool-opnum-7)
+      - [3.9.4.6 RecycleApplicationPool (Opnum 8)](#3946-recycleapplicationpool-opnum-8)
+      - [3.9.4.7 GetProcessMode (Opnum 9)](#3947-getprocessmode-opnum-9)
+    - [3.9.5 Timer Events](#395-timer-events)
+    - [3.9.6 Other Local Events](#396-other-local-events)
+  - [3.10 IIISCertObj Server Details](#310-iiiscertobj-server-details)
+    - [3.10.1 Abstract Data Model](#3101-abstract-data-model)
+    - [3.10.2 Timers](#3102-timers)
+    - [3.10.3 Initialization](#3103-initialization)
+    - [3.10.4 Message Processing Events and Sequencing Rules](#3104-message-processing-events-and-sequencing-rules)
+      - [3.10.4.1 InstanceName (Set) (Opnum 10)](#31041-instancename-set-opnum-10)
+      - [3.10.4.2 IsInstalledRemote (Opnum 12)](#31042-isinstalledremote-opnum-12)
+      - [3.10.4.3 IsExportableRemote (Opnum 14)](#31043-isexportableremote-opnum-14)
+      - [3.10.4.4 GetCertInfoRemote (Opnum 16)](#31044-getcertinforemote-opnum-16)
+      - [3.10.4.5 ImportFromBlob (Opnum 22)](#31045-importfromblob-opnum-22)
+      - [3.10.4.6 ImportFromBlobGetHash (Opnum 23)](#31046-importfromblobgethash-opnum-23)
+      - [3.10.4.7 ExportToBlob (Opnum 25)](#31047-exporttoblob-opnum-25)
+    - [3.10.5 Timer Events](#3105-timer-events)
+    - [3.10.6 Other Local Events](#3106-other-local-events)
+  - [3.11 IIISCertObj Client Details](#311-iiiscertobj-client-details)
+    - [3.11.1 Abstract Data Model](#3111-abstract-data-model)
+    - [3.11.2 Timers](#3112-timers)
+    - [3.11.3 Initialization](#3113-initialization)
+    - [3.11.4 Message Processing Events and Sequencing Rules](#3114-message-processing-events-and-sequencing-rules)
+      - [3.11.4.1 InstanceName (Set) (Opnum 10)](#31141-instancename-set-opnum-10)
+    - [3.11.5 Timer Events](#3115-timer-events)
+    - [3.11.6 Other Local Events](#3116-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 General Hookup Example](#41-general-hookup-example)
+  - [4.2 BackupWithPasswd Call Example](#42-backupwithpasswd-call-example)
+  - [4.3 EnumHistory Call Example](#43-enumhistory-call-example)
+  - [4.4 Export Call Example](#44-export-call-example)
+  - [4.5 Import Call Example](#45-import-call-example)
+  - [4.6 RestoreHistory Call Example](#46-restorehistory-call-example)
+  - [4.7 RestoreWithPasswd Call Example](#47-restorewithpasswd-call-example)
+  - [4.8 GetChildPaths Call Example](#48-getchildpaths-call-example)
+  - [4.9 Reading Sensitive Data from the Server](#49-reading-sensitive-data-from-the-server)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The Internet Information Services (IIS) IMSAdminBaseW Remote Protocol defines interfaces that
 provide Unicode-compliant methods for remotely accessing and administering the IIS metabase
@@ -1013,7 +743,7 @@ Management Console (MMC).
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1077,7 +807,8 @@ Release: April 23, 2024
 
 8 / 139
 
-Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
+
+Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
 
 globally unique identifier (GUID): A term used interchangeably with universally unique
@@ -1150,7 +881,8 @@ Release: April 23, 2024
 
 9 / 139
 
-object: In the DCOM protocol, a software entity that implements one or more object remote
+
+object: In the DCOM protocol, a software entity that implements one or more object remote
 protocol (ORPC) interfaces and which is uniquely identified, within the scope of an object
 exporter, by an object identifier (OID). For more information, see [MS-DCOM].
 
@@ -1226,7 +958,8 @@ Release: April 23, 2024
 
 10 / 139
 
-server: A computer on which the remote procedure call (RPC) server is executing.
+
+server: A computer on which the remote procedure call (RPC) server is executing.
 
 session key: A relatively short-lived symmetric key (a cryptographic key negotiated by the client
 and the server based on a shared secret). A session key's lifespan is bounded by the session
@@ -1268,14 +1001,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1295,7 +1028,8 @@ Release: April 23, 2024
 
 11 / 139
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-ERREF] Microsoft Corporation, "Windows Error Codes".
 
@@ -1313,7 +1047,7 @@ editor.org/info/rfc3280
 [RFC8017] Moriarty, K., Ed., Kaliski, B., Jonsson, J., and Rusch, A., "PKCS #1: RSA Cryptography
 Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8017
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-CoInitialize] Microsoft Corporation, "CoInitialize function", http://msdn.microsoft.com/en-
 us/library/ms678543.aspx
@@ -1321,7 +1055,7 @@ us/library/ms678543.aspx
 [SCHNEIER] Schneier, B., "Applied Cryptography, Second Edition", John Wiley and Sons, 1996, ISBN:
 0471117099.
 
-1.3  Overview
+### 1.3 Overview
 
 The Internet Information Services (IIS) IMSAdminBaseW Remote Protocol is a client/server
 protocol that is used for remotely managing a hierarchical configuration data store (metabase). The
@@ -1345,7 +1079,7 @@ request, it attempts to change the state of the node based on the request and re
 with the result of the operation. When the client is finished operating on the server nodes, it
 terminates the protocol by sending a request to close the RPC context handle.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
  The IIS IMSAdminBaseW Remote Protocol relies on the remote protocol described in [MS-DCOM],
 which uses RPC as a transport.
@@ -1359,7 +1093,8 @@ Release: April 23, 2024
 
 12 / 139
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 This protocol is implemented over DCOM and RPC and, as a result, has the prerequisites identified in
 [MS-DCOM] and [MS-RPCE] as being common to DCOM and RPC interfaces.
@@ -1367,11 +1102,11 @@ This protocol is implemented over DCOM and RPC and, as a result, has the prerequ
 The IIS IMSAdminBaseW Remote Protocol assumes that a client has obtained the name of a server
 that supports this protocol suite before the protocol is invoked.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
  This protocol is applicable when an application needs to remotely configure an IIS server.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1387,11 +1122,11 @@ Capability Negotiation: The IIS IMSAdminBaseW Remote Protocol does not support n
 the interface version to use. Instead, this protocol uses only the interface version number specified in
 the IDL for versioning and capability negotiation.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The IIS IMSAdminBaseW Remote Protocol does not have any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  The following parameters are private Microsoft assignments.
 
@@ -1460,7 +1195,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Parameter
+
+ Parameter
 
  Value
 
@@ -1494,9 +1230,10 @@ Release: April 23, 2024
 
 14 / 139
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use the remote protocol specified in [MS-DCOM] as its transport. On its behalf, the
 remote protocol uses the following RPC protocol sequence: RPC over TCP, as specified in [MS-
@@ -1524,7 +1261,7 @@ B80D-11D0-B9B9-00A0C922E750}, CLSID_WamAdmin using the UUID {61738644-F196-11D0-
 00C04FD919C1}, and CLSID_IISCertObj using the UUID {62B8CCBE-5A45-4372-8C4A-
 6A87DD3EDD60}.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706], [MS-DTYP], and [MS-OAUT],
 additional data types are defined as follows.
@@ -1532,7 +1269,7 @@ additional data types are defined as follows.
 All multiple-byte integer values in the messages declared in this section are stored using little-endian
 byte order.
 
-2.2.1  ADMINDATA_MAX_NAME_LEN
+#### 2.2.1 ADMINDATA_MAX_NAME_LEN
 
 The ADMINDATA_MAX_NAME_LEN constant is used to define maximum buffer size, such as the buffer
 that holds metabase subnodes or the buffer that contains the path to history files. The definition of
@@ -1540,7 +1277,7 @@ ADMINDATA_MAX_NAME_LEN follows.
 
  #define ADMINDATA_MAX_NAME_LEN     256
 
-2.2.2  IIS_CRYPTO_BLOB
+#### 2.2.2 IIS_CRYPTO_BLOB
 
 The IIS_CRYPTO_BLOB message defines a block of data, possibly encrypted, that is transferred
 between client and server. It is used to transfer public keys, hash information, and encrypted and
@@ -1558,7 +1295,8 @@ Release: April 23, 2024
 
 15 / 139
 
- } IIS_CRYPTO_BLOB;
+
+ } IIS_CRYPTO_BLOB;
 
 BlobSignature:  The structure signature for this binary large object (BLOB).
 
@@ -1611,7 +1349,7 @@ BlobDataLength:  The size, in bytes, of BlobData.
 
 BlobData:  A block of bytes that can be interpreted based on BlobSignature.
 
-2.2.2.1  PUBLIC_KEY_BLOB
+##### 2.2.2.1 PUBLIC_KEY_BLOB
 
 The PUBLIC_KEY_BLOB message is used to store information about RSA key exchange public keys
 and RSA signature public keys. It is used during secure session negotiation.
@@ -1656,7 +1394,8 @@ Release: April 23, 2024
 
 16 / 139
 
-...
+
+...
 
 PublicKeyBlobDataLength (4 bytes): A 32-bit unsigned integer. This field contains the total length
 
@@ -1706,7 +1445,7 @@ Modulus (variable): A variable-length array of bytes that stores the RSA public 
 
 bytes, of the Modulus field is BitLen/8.
 
-2.2.2.2  SESSION_KEY_BLOB
+##### 2.2.2.2 SESSION_KEY_BLOB
 
 The SESSION_KEY_BLOB is used to store session keys that are transferred during the secure
 session negotiation.
@@ -1739,7 +1478,8 @@ Release: April 23, 2024
 
 17 / 139
 
-...
+
+...
 
 SignedHash (variable)
 
@@ -1767,7 +1507,7 @@ SignedHash (variable): A variable-length array of bytes that contain the signed 
 
 session key.
 
-2.2.2.2.1 ENCRYPTED_SESSION_KEY_ BLOB
+###### 2.2.2.2.1 ENCRYPTED_SESSION_KEY_ BLOB
 
 The ENCRYPTED_SESSION_KEY_BLOB message layout is described in the following diagram.
 
@@ -1817,7 +1557,8 @@ Release: April 23, 2024
 
 18 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -1846,7 +1587,7 @@ AlgID type, which is encrypted by the algorithm specified by EncryptAlgID. The s
 SessionKey field is always the same as the size of the modulus of the public key used for
 encryption.
 
-2.2.2.3  HASH_BLOB
+##### 2.2.2.3 HASH_BLOB
 
 The HASH_BLOB message stores the hash that is exchanged during the secure session negotiation.
 
@@ -1877,7 +1618,7 @@ Reserved (4 bytes): This field MUST be set to 0x00000000 and MUST be ignored on 
 
 HashData (variable): A variable-length array that contains the hash.
 
-2.2.2.4  CLEARTEXT_DATA_BLOB
+##### 2.2.2.4 CLEARTEXT_DATA_BLOB
 
 The CLEARTEXT_DATA_BLOB message stores cleartext data that does not need encryption, but
 uses the IIS_CRYPTO_BLOB message to store the data.
@@ -1906,7 +1647,8 @@ Release: April 23, 2024
 
 19 / 139
 
-2.2.2.5  ENCRYPTED_DATA_BLOB
+
+##### 2.2.2.5 ENCRYPTED_DATA_BLOB
 
 The ENCRYPTED_DATA_BLOB message stores the encrypted, sensitive data that is transferred
 between client and server.
@@ -1960,7 +1702,7 @@ SignedHash (variable): A variable-length array of bytes that contains the signed
 
 EncryptedData field.
 
-2.2.2.5.1 CLEARTEXT_WITH_PREFIX_BLOB
+###### 2.2.2.5.1 CLEARTEXT_WITH_PREFIX_BLOB
 
 The CLEARTEXT_WITH_PREFIX_BLOB message is used to store cleartext data before it is encrypted
 and serialized into the BlobData field of the IIS_CRYPTO_BLOB message with the BlobSignature
@@ -1988,13 +1730,14 @@ Release: April 23, 2024
 
 20 / 139
 
-Reserved (4 bytes): This field MUST be set to zero and MUST be ignored on receipt.
+
+Reserved (4 bytes): This field MUST be set to zero and MUST be ignored on receipt.
 
 ClearTextData (variable): A variable-length array of bytes that contains cleartext data.
 
 ...
 
-2.2.3  Secure Session Negotiation Constants
+#### 2.2.3 Secure Session Negotiation Constants
 
 Constant/value
 
@@ -2016,7 +1759,7 @@ R_KeyExchangePhase2 call.
 The constant string used to calculate the hash sent by the server in response to the
 R_KeyExchangePhase2 call.
 
-2.2.4  METADATA_GETALL_RECORD
+#### 2.2.4 METADATA_GETALL_RECORD
 
 The METADATA_GETALL_RECORD structure defines an analogous structure to METADATA_RECORD
 but is used only to return data from a call to the R_GetAllData method. Data retrieval specifications
@@ -2078,7 +1821,8 @@ Release: April 23, 2024
 
 21 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -2206,7 +1950,8 @@ Release: April 23, 2024
 
 22 / 139
 
-dwMDDataLen:   An unsigned integer value that specifies the length, in bytes, of the data. If the
+
+dwMDDataLen:   An unsigned integer value that specifies the length, in bytes, of the data. If the
 
 data is a string, this value includes the ending null character. For lists of strings, this includes an
 additional terminating null character after the final string (double terminating null characters).
@@ -2229,7 +1974,7 @@ with each record in the array.
 
 dwMDDataTag:  A reserved member that is currently unused.
 
-2.2.5  METADATA_HANDLE
+#### 2.2.5 METADATA_HANDLE
 
 The METADATA_HANDLE represents a node of the configuration storage tree.
 
@@ -2237,7 +1982,7 @@ This type is declared as follows:
 
  typedef unsigned long METADATA_HANDLE, *PMETADATA_HANDLE;
 
-2.2.6  METADATA_HANDLE_INFO
+#### 2.2.6 METADATA_HANDLE_INFO
 
 The METADATA_HANDLE_INFO structure defines information about a handle to a metabase entry.
 
@@ -2279,7 +2024,8 @@ Release: April 23, 2024
 
 23 / 139
 
-2.2.7  METADATA_RECORD
+
+#### 2.2.7 METADATA_RECORD
 
 The METADATA_RECORD structure defines information about a metabase entry.
 
@@ -2393,7 +2139,8 @@ Release: April 23, 2024
 
 24 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -2477,7 +2224,7 @@ that will receive the data.
 
 dwMDDataTag:  A reserved member that is currently unused.
 
-2.2.8  METADATA_MASTER_ROOT_HANDLE
+#### 2.2.8 METADATA_MASTER_ROOT_HANDLE
 
 This predefined handle points to the root of the configuration storage tree. It is treated as a valid
 handle for operations that require a METADATA_HANDLE opened with the
@@ -2491,9 +2238,10 @@ Release: April 23, 2024
 
 25 / 139
 
- #define METADATA_MASTER_ROOT_HANDLE     0
 
-2.2.9  MD_APP_ROOT
+ #define METADATA_MASTER_ROOT_HANDLE     0
+
+#### 2.2.9 MD_APP_ROOT
 
 MD_APP_ROOT is a metabase data object defined by a METADATA_RECORD structure. The following
 METADATA_RECORD fields define MD_APP_ROOT.
@@ -2522,7 +2270,7 @@ STRING_METADATA
 
 0x00000002
 
-2.2.10 MD_APP_ISOLATED
+#### 2.2.10 MD_APP_ISOLATED
 
 MD_APP_ISOLATED is a metabase data object defined by a METADATA_RECORD structure. The
 following METADATA_RECORD fields define MD_APP_ISOLATED.
@@ -2549,7 +2297,7 @@ dwMDDataType  DWORD_METADATA
 
 0x00000001
 
-2.2.11 MD_APP_APPPOOL_ID
+#### 2.2.11 MD_APP_APPPOOL_ID
 
 MD_APP_APPPOOL_ID is a metabase data object defined by a METADATA_RECORD structure. The
 following METADATA_RECORD fields define MD_APP_APPPOOL_ID.
@@ -2571,7 +2319,8 @@ Release: April 23, 2024
 
 26 / 139
 
-Field
+
+Field
 
 Value
 
@@ -2589,7 +2338,7 @@ STRING_METADATA
 
 0x00000002
 
-2.2.12 MD_BACKUP_MAX_LEN
+#### 2.2.12 MD_BACKUP_MAX_LEN
 
 The MD_BACKUP_MAX_LEN constant is used to define the maximum size of a string that specifies a
 backup location. This constant is defined as follows.
@@ -2603,16 +2352,17 @@ Release: April 23, 2024
 
 27 / 139
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of the IWamAdmin, IWamAdmin2, and IIISApplicationAdmin interfaces are simply a
 pass-through. That is, no additional timers or other state is required on the client side of this protocol.
 Calls made by the higher-layer protocol or application are passed directly to the transport, and the
 results returned by the transport are passed directly back to the higher-layer protocol or application.
 
-3.1  IMSAdminBaseW Server Details
+### 3.1 IMSAdminBaseW Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The following information must be maintained by the server for use in responding to client queries and
 commands.
@@ -2652,7 +2402,7 @@ The server must keep the counter of changes that were done to the configuration 
 
 The server must keep record of last change time for each node.
 
-3.1.1.1  Secure Session Context
+##### 3.1.1.1 Secure Session Context
 
 When the client expects to exchange sensitive data marked with the METADATA_SECURE secure flag,
 it will negotiate secure session. As part of the secure session negotiation, both client and server will
@@ -2667,7 +2417,8 @@ Release: April 23, 2024
 
 28 / 139
 
-
+
+
 
 
 
@@ -2691,18 +2442,18 @@ The server's session key.
 
 The client's session key.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The IIS IMSAdminBaseW Remote Protocol server MUST be initialized by registering the RPC interface
 and listening on the RPC well-known endpoint, as specified in section 2.1. The server MUST then
 wait for IIS IMSAdminBaseW Remote Protocol clients to establish a connection.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IUnknown interface. Method opnum field values start with 3; opnum
 values 0 through 2 represent the IUnknown_QueryInterface, IUnknown_AddRef, and
@@ -2762,7 +2513,8 @@ Release: April 23, 2024
 
 29 / 139
 
-Method
+
+Method
 
 Description
 
@@ -2882,7 +2634,8 @@ Release: April 23, 2024
 
 30 / 139
 
-Method
+
+Method
 
 Description
 
@@ -2962,7 +2715,7 @@ IIS_CRYPTO_BLOB
 Defines a block of opaque data, possibly encrypted, for RPC marshaling between
 IIS and a client.
 
-3.1.4.1  Transferring Sensitive Data
+##### 3.1.4.1 Transferring Sensitive Data
 
 Some of the data that is transferred between client and server is of sensitive nature and needs to be
 protected. An example of sensitive data is a password. The IIS IMSAdminBaseW Remote Protocol
@@ -2982,7 +2735,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-There are four methods that take advantage of this protection:
+
+There are four methods that take advantage of this protection:
 
   R_GetData
 
@@ -2995,7 +2749,7 @@ Release: April 23, 2024
 Sensitive data is marked with the METADATA_SECURE secure flag in the METADATA_RECORD or
 METADATA_GETALL_RECORD structure.<2>
 
-3.1.4.1.1 Secure Session Negotiation Server Role
+###### 3.1.4.1.1 Secure Session Negotiation Server Role
 
 The purpose of the secure session negotiation is to exchange session keys and signature public
 keys between the server and client. The session keys are used for encryption and decryption of
@@ -3009,7 +2763,7 @@ in that order.
 The server MUST participate in the secure session negotiation initiated by the client. As a result of the
 secure session negotiation, the server will receive the client's session key and signature public key.
 
-3.1.4.1.2 Encrypting Data
+###### 3.1.4.1.2 Encrypting Data
 
 Some data transferred between the client and server must be encrypted before it is sent. Encrypted
 data will be transferred in an IIS_CRYPTO_BLOB message with the BlobSignature field set to
@@ -3056,7 +2810,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  Create an instance of an IIS_CRYPTO_BLOB message:
+
+5.  Create an instance of an IIS_CRYPTO_BLOB message:
 
   Set the BlobSignature field to ENCRYPTED_DATA_BLOB_SIGNATURE.
 
@@ -3066,7 +2821,7 @@ EncryptedDataLength + padding length + SignedHashLength.
 
   Store the ENCRYPTED_DATA_BLOB instance from the earlier step in the BlobData field.
 
-3.1.4.1.3 Decrypting Data
+###### 3.1.4.1.3 Decrypting Data
 
 Some data is encrypted before it is transferred between the client and server. The receiver MUST
 decrypt the data before it can be used. Encrypted data is stored in an IIS_CRYPTO_BLOB message
@@ -3102,7 +2857,7 @@ encrypted data MUST fail. Error messages from a failure are implementation-depen
 
 contain the final decrypted data.
 
-3.1.4.1.4 Signed Hash Calculation
+###### 3.1.4.1.4 Signed Hash Calculation
 
 The signed hash is used to provide integrity checking by the receiver.
 
@@ -3117,7 +2872,7 @@ and the client will use the client's signature private key) to sign the MD5 hash
 3.  The size of the signed hash will match the number of bits in the signature key. The 512-bit RSA
 signature keys will be used for signing, so the signed hash will always be 0x40 bytes long.
 
-3.1.4.1.5 Signed Hash Validation
+###### 3.1.4.1.5 Signed Hash Validation
 
 Validation is to be performed by the receiver to verify the integrity of the received data.
 
@@ -3130,7 +2885,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  Compute an MD5 hash of decrypted data.
+
+1.  Compute an MD5 hash of decrypted data.
 
 2.  Use the MD5 hash from previous step and the sender's signature public key to verify against the
 
@@ -3138,7 +2894,7 @@ SignedHash field stored in the IIS_CRYPTO_BLOB message. The server will use the 
 signature public key, and the client will use the server's signature public key for verification. If the
 signature does not match, the validation fails, as specified in [RFC8017].
 
-3.1.4.2  OpenKey (Opnum 17)
+##### 3.1.4.2 OpenKey (Opnum 17)
 
 The OpenKey method opens a node for read access, write access, or both. The returned handle can be
 used by several of the other methods in the IMSAdminBaseW interface.
@@ -3219,7 +2975,8 @@ Release: April 23, 2024
 
 34 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3273,7 +3030,7 @@ Return the following information to the client:
 
 The handle of the opened node.
 
-3.1.4.3  CloseKey (Opnum 18)
+##### 3.1.4.3 CloseKey (Opnum 18)
 
 The CloseKey method closes a handle to a node.
 
@@ -3309,7 +3066,8 @@ Release: April 23, 2024
 
 35 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3330,7 +3088,7 @@ ERROR_INVALID_HANDLE error.
 
   Decrease the internal lock count in the state of the handle and release the lock, if it is possible.
 
-3.1.4.4  AddKey (Opnum 3)
+##### 3.1.4.4 AddKey (Opnum 3)
 
 The AddKey method creates a node and adds it to the metabase as a subnode of an existing node at
 the specified path.
@@ -3400,7 +3158,8 @@ Release: April 23, 2024
 
 36 / 139
 
-  Check the handle parameter. This handle is valid if it is either the master root handle or a handle
+
+  Check the handle parameter. This handle is valid if it is either the master root handle or a handle
 returned from a previous OpenKey call. If the handle is invalid, return ERROR_INVALID_HANDLE
 error.
 
@@ -3419,7 +3178,7 @@ ERROR_ALREADY_EXISTS.
 specified by the hMDHandle parameter and the relative path specified by the pszMDPath
 parameter. If any intermediate nodes are required, the server creates these nodes.
 
-3.1.4.5  CopyKey (Opnum 7)
+##### 3.1.4.5 CopyKey (Opnum 7)
 
 The CopyKey method copies or moves a node, including its subnodes and data, to a specified
 destination. The copied or moved node becomes a subnode of the destination node.
@@ -3472,7 +3231,8 @@ Release: April 23, 2024
 
 37 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3552,7 +3312,7 @@ path.
 
 If the copy flag is set to FALSE, delete the source node.
 
-3.1.4.6  DeleteKey (Opnum 4)
+##### 3.1.4.6 DeleteKey (Opnum 4)
 
 The DeleteKey method deletes a node and all its data from the metabase. All of the subnodes are
 recursively deleted.
@@ -3567,7 +3327,8 @@ Release: April 23, 2024
 
 38 / 139
 
-   [unique, in, string] LPCWSTR pszMDPath
+
+   [unique, in, string] LPCWSTR pszMDPath
  );
 
 hMDHandle: An unsigned 32-bit integer value containing an open metabase handle specifying a node
@@ -3642,7 +3403,7 @@ combined with the relative path.
 
   Delete all child nodes of this node.
 
-3.1.4.7  DeleteChildKeys (Opnum 5)
+##### 3.1.4.7 DeleteChildKeys (Opnum 5)
 
 The DeleteChildKeys method deletes all subnodes of the specified node and any data they contain. It
 also recursively deletes all nodes below the subnodes.
@@ -3658,7 +3419,8 @@ Release: April 23, 2024
 
 39 / 139
 
- );
+
+ );
 
 hMDHandle: An unsigned 32-bit integer value containing an open metabase handle specifying the
 
@@ -3720,7 +3482,7 @@ ERROR_PATH_NOT_FOUND.
 
   Delete all child nodes of this subnode.
 
-3.1.4.8  DeleteData (Opnum 11)
+##### 3.1.4.8 DeleteData (Opnum 11)
 
 The DeleteData method deletes specific data entries from a node in the metabase.
 
@@ -3742,7 +3504,8 @@ Release: April 23, 2024
 
 40 / 139
 
-pszMDPath: A pointer to a Unicode string that contains the path of the node whose data is to be
+
+pszMDPath: A pointer to a Unicode string that contains the path of the node whose data is to be
 
 deleted, relative to the path of the hMDHandle parameter.
 
@@ -3850,7 +3613,8 @@ Release: April 23, 2024
 
 41 / 139
 
-
+
+
 
 The server SHOULD check whether the handle was opened for write access. If not, return
 E_ACCESSDENIED.<8>
@@ -3868,7 +3632,7 @@ not, return MD_ERROR_DATA_NOT_FOUND.
 specified by the dwMDIdentifier, delete this data from the node. Otherwise return
 MD_ERROR_DATA_NOT_FOUND.
 
-3.1.4.9  DeleteAllData (Opnum 14)
+##### 3.1.4.9 DeleteAllData (Opnum 14)
 
 The DeleteAllData method deletes all or a subset of local data associated with a particular node.
 
@@ -3948,7 +3712,8 @@ Release: April 23, 2024
 
 42 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -4054,9 +3819,10 @@ Release: April 23, 2024
 
 43 / 139
 
-3.1.4.10
 
-CopyData (Opnum 15)
+##### 3.1.4.10 CopyData (Opnum 15)
+
+
 
 The CopyData method copies or moves data between nodes.
 
@@ -4152,7 +3918,8 @@ Release: April 23, 2024
 
 44 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -4258,7 +4025,8 @@ Release: April 23, 2024
 
 45 / 139
 
-  MUST check whether the source relative path points to the existing node. If not, return
+
+  MUST check whether the source relative path points to the existing node. If not, return
 
 ERROR_PATH_NOT_FOUND.
 
@@ -4276,9 +4044,9 @@ error.<11>
 
   MUST, if the bMDCopyFlag parameter is set to false, remove the selected data from the source.
 
-3.1.4.11
+##### 3.1.4.11 EnumKeys (Opnum 6)
 
-EnumKeys (Opnum 6)
+
 
 The EnumKeys method enumerates the subnodes of the specified node.
 
@@ -4350,7 +4118,8 @@ Release: April 23, 2024
 
 46 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4389,9 +4158,9 @@ parameter. If there is no child with that index, return ERROR_NO_MORE_ITEMS.
 
   Copy the name of this child node to the pszMDName buffer.
 
-3.1.4.12
+##### 3.1.4.12 R_EnumData (Opnum 12)
 
-R_EnumData (Opnum 12)
+
 
 The R_EnumData method enumerates the data entries of a node in the metabase.
 
@@ -4434,7 +4203,8 @@ Release: April 23, 2024
 
 47 / 139
 
-positive nonzero values containing warnings or flags defined in the method implementation. For
+
+positive nonzero values containing warnings or flags defined in the method implementation. For
 more information about Win32 error codes and HRESULT values, see [MS-ERREF].
 
 Return value/code
@@ -4515,9 +4285,9 @@ number of data items associated with the node, return ERROR_NO_MORE_ITEMS.
 To return the data value to the client, build the IIS_CRYPTO_BLOB structure as specified in the
 rules of the R_GetData method.
 
-3.1.4.13
+##### 3.1.4.13 Backup (Opnum 28)
 
-Backup (Opnum 28)
+
 
 The Backup method backs up the metabase.
 
@@ -4533,7 +4303,8 @@ Release: April 23, 2024
 
 48 / 139
 
- );
+
+ );
 
 pszMDBackupName: A string of up to 100 Unicode characters that names the backup.
 
@@ -4635,7 +4406,8 @@ Release: April 23, 2024
 
 49 / 139
 
-  Check the pszMDBackupName parameter. If the length of the string is 100 characters or more, or
+
+  Check the pszMDBackupName parameter. If the length of the string is 100 characters or more, or
 if it contains any characters in the following set ('/', '\', '*', '.', '?', '"', '&', '!', '@', '#', '$', '%', '^',
 '(', ')', '=', '+', '|', '`', '~') return E_INVALIDARG.
 
@@ -4664,9 +4436,9 @@ name for the backup.
 The server saves the persisted data using the backup name and the version number as a key so
 that the data can be restored later.
 
-3.1.4.14
+##### 3.1.4.14 EnumBackups (Opnum 30)
 
-EnumBackups (Opnum 30)
+
 
 The EnumBackups method enumerates metabase backups with a specified backup name or all
 backups.
@@ -4723,7 +4495,8 @@ Release: April 23, 2024
 
 50 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4757,9 +4530,9 @@ pszMDBackupName buffer.
 
   Copy the backup time into the pftMDBackupTime parameter.
 
-3.1.4.15
+##### 3.1.4.15 DeleteBackup (Opnum 31)
 
-DeleteBackup (Opnum 31)
+
 
 The DeleteBackup method deletes a metabase backup.
 
@@ -4818,7 +4591,8 @@ Release: April 23, 2024
 
 51 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4851,9 +4625,9 @@ MD_BACKUP_HIGHEST_VERSION, find and delete the very last backup. Otherwise, find
 the backup with the requested version number. If a backup does not exist, return
 ERROR_FILE_NOT_FOUND.
 
-3.1.4.16
+##### 3.1.4.16 ChangePermissions (Opnum 19)
 
-ChangePermissions (Opnum 19)
+
 
 The ChangePermissions method changes permissions on an open handle.
 
@@ -4905,7 +4679,8 @@ Release: April 23, 2024
 
 52 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4954,9 +4729,9 @@ open read handles, return ERROR_PATH_BUSY.
 
 If access could be provided, the server updates the state of the handle.<14>
 
-3.1.4.17
+##### 3.1.4.17 GetDataPaths (Opnum 16)
 
-GetDataPaths (Opnum 16)
+
 
 The GetDataPaths method returns the paths of all nodes in the subtree relative to a specified starting
 node that contains the supplied identifier.
@@ -4992,7 +4767,8 @@ Release: April 23, 2024
 
 53 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -5102,7 +4878,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Check that the relative path points to a valid node. Otherwise, return ERROR_PATH_NOT_FOUND.
+
+  Check that the relative path points to a valid node. Otherwise, return ERROR_PATH_NOT_FOUND.
 
   On the destination node, find data based on the data ID and the data type. If the data type is set
 to anything but ALL_METADATA, check that the found data type is the same as the requested
@@ -5123,9 +4900,9 @@ If the size of the buffer as specified by the dwMDBufferSize parameter is insuff
 path data, set the pdwMDRequiredBufferSize parameter to the required buffer size and return
 ERROR_INSUFFICIENT_BUFFER.
 
-3.1.4.18
+##### 3.1.4.18 GetDataSetNumber (Opnum 23)
 
-GetDataSetNumber (Opnum 23)
+
 
 The GetDataSetNumber method returns the dataset number associated with a node in the metabase.
 A dataset number is a unique number identifying the data items at that node, including inherited data
@@ -5184,16 +4961,17 @@ Release: April 23, 2024
 
 55 / 139
 
-  Determine the metabase node that most closely matches the path specified by pszMDPath. If no
+
+  Determine the metabase node that most closely matches the path specified by pszMDPath. If no
 
 part of the path specified matches a node in the metabase, the server returns the data set number
 of the metabase key referenced by the hMDHandle parameter. Otherwise, the server returns the
 data set number of the most closely matching node. The dataset number for the
 METADATA_MASTER_ROOT_HANDLE is 1.
 
-3.1.4.19
+##### 3.1.4.19 GetHandleInfo (Opnum 21)
 
-GetHandleInfo (Opnum 21)
+
 
 The GetHandleInfo method returns information associated with the specified metabase handle.
 
@@ -5247,9 +5025,9 @@ Populate the supplied METADATA_HANDLE_INFO structure with the permission level f
 and the value of the system change number at the time the handle was opened. See
 GetSystemChangeNumber (section 3.1.4.21) for a specification of the system change number.
 
-3.1.4.20
+##### 3.1.4.20 GetLastChangeTime (Opnum 25)
 
-GetLastChangeTime (Opnum 25)
+
 
 The GetLastChangeTime method returns the last change time associated with a node in the
 metabase.
@@ -5268,7 +5046,8 @@ Release: April 23, 2024
 
 56 / 139
 
-hMDHandle: An unsigned 32-bit integer value containing an open metabase handle specifying the
+
+hMDHandle: An unsigned 32-bit integer value containing an open metabase handle specifying the
 
 key to be queried.
 
@@ -5327,9 +5106,9 @@ If the path exists and is valid, the server SHOULD return the time that the node
 the pftMDLastChangeTime structure. If bLocalTime is 0, the time is returned as UTC time.
 Otherwise the time is the local server time.<15>
 
-3.1.4.21
+##### 3.1.4.21 GetSystemChangeNumber (Opnum 22)
 
-GetSystemChangeNumber (Opnum 22)
+
 
 The GetSystemChangeNumber method returns the number of changes made to data since the
 metabase was created.
@@ -5355,7 +5134,8 @@ Release: April 23, 2024
 
 57 / 139
 
-Return
+
+Return
 value/code
 
 Description
@@ -5375,9 +5155,9 @@ When processing this call, the server MUST do the following:
 system change number is a 32-bit unsigned integer value that is incremented when a change is
 made to the metabase. This value SHOULD be persisted between metabase sessions.<16>
 
-3.1.4.22
+##### 3.1.4.22 R_GetAllData (Opnum 13)
 
-R_GetAllData (Opnum 13)
+
 
 The R_GetAllData method returns all data associated with a node in the metabase, including all
 values that the node inherits.
@@ -5448,7 +5228,8 @@ Release: April 23, 2024
 
 58 / 139
 
-dwMDDataType: An integer value specifying a data type. If this parameter is not set to
+
+dwMDDataType: An integer value specifying a data type. If this parameter is not set to
 
 ALL_METADATA, the data item will be returned only if its data type matches the specified type.
 
@@ -5550,7 +5331,8 @@ Release: April 23, 2024
 
 59 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -5609,9 +5391,9 @@ If no METADATA_RECORD entry with the METADATA_SECURE flag is found:
 CLEARTEXT_DATA_BLOB_SIGNATURE. Store the cleartext data in the BlobData field. Set the
 BlobDataLength field to match the length of the BlobData field.
 
-3.1.4.23
+##### 3.1.4.23 R_GetData (Opnum 10)
 
-R_GetData (Opnum 10)
+
 
 The R_GetData method returns a data entry from a particular node in the metabase.
 
@@ -5638,7 +5420,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pmdrMDData: A pointer to a METADATA_RECORD structure that describes the requested data.
+
+pmdrMDData: A pointer to a METADATA_RECORD structure that describes the requested data.
 
 pdwMDRequiredDataLen: A pointer to an integer value that contains the buffer length required, in
 
@@ -5732,7 +5515,8 @@ Release: April 23, 2024
 
 61 / 139
 
-The following set of steps MUST be performed by the server to encrypt or encode a data value and
+
+The following set of steps MUST be performed by the server to encrypt or encode a data value and
 build an IIS_CRYPTO_BLOB structure to be sent by the server.
 
 1.  Check whether the dwMDAttributes member of the METADATA_RECORD structure has the
@@ -5754,9 +5538,9 @@ field set to the ENCRYPTED_DATA_BLOB_SIGNATURE signature.
 CLEARTEXT_DATA_BLOB_SIGNATURE. Store the cleartext data in the BlobData field. Set the
 BlobDataLength field to match the length of the BlobData field.
 
-3.1.4.24
+##### 3.1.4.24 R_GetServerGuid (Opnum 33)
 
-R_GetServerGuid (Opnum 33)
+
 
 The R_GetServerGuid method returns a GUID for this DCOM object.
 
@@ -5794,9 +5578,9 @@ If this is the first time the method has been called on this DCOM object, genera
 return it to the client in the pServerGuid parameter. Subsequent calls to the same DCOM object
 MUST return the same GUID.
 
-3.1.4.25
+##### 3.1.4.25 R_KeyExchangePhase1 (Opnum 26)
 
-R_KeyExchangePhase1 (Opnum 26)
+
 
 The R_KeyExchangePhase1 method receives a pair of encrypted client keys and returns server
 encryption and session keys.
@@ -5814,7 +5598,8 @@ Release: April 23, 2024
 
 62 / 139
 
-   [out] IIS_CRYPTO_BLOB** ppServerSessionKeyBlob
+
+   [out] IIS_CRYPTO_BLOB** ppServerSessionKeyBlob
  );
 
 pClientKeyExchangeKeyBlob: A pointer to an IIS_CRYPTO_BLOB structure containing the encrypted
@@ -5895,16 +5680,17 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-10. Build an IIS_CRYPTO_BLOB structure with the BlobSignature field set to
+
+10. Build an IIS_CRYPTO_BLOB structure with the BlobSignature field set to
 PUBLIC_KEY_BLOB_SIGNATURE to store the server's signature public key.
 
 11. Send an IIS_CRYPTO_BLOB structure that was built in the previous three steps to the client in
 
 response to the R_KeyExchangePhase1 method.
 
-3.1.4.26
+##### 3.1.4.26 R_KeyExchangePhase2 (Opnum 27)
 
-R_KeyExchangePhase2 (Opnum 27)
+
 
 The R_KeyExchangePhase2 method receives the encrypted client session and hash keys in response to
 the R_KeyExchangePhase1 method and returns the encrypted server hash keys.
@@ -5974,7 +5760,8 @@ Release: April 23, 2024
 
 64 / 139
 
-3.  Value of HASH_TEXT_STRING_1, as specified in section 2.2.3.
+
+3.  Value of HASH_TEXT_STRING_1, as specified in section 2.2.3.
 
 4.  Compare the hash computed in the previous step with the hash received from the client. If they
 match, the client has proved that it owns the client's key exchange private key that matches the
@@ -5993,9 +5780,9 @@ HASH_BLOB_SIGNATURE and store the hash calculated in the previous step.
 
 7.  Send the IIS_CRYPTO_BLOB structure calculated in the previous step to the client.
 
-3.1.4.27
+##### 3.1.4.27 R_SetData (Opnum 9)
 
-R_SetData (Opnum 9)
+
 
 The R_SetData method sets a data item for a particular node in the metabase.
 
@@ -6064,7 +5851,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6124,9 +5912,9 @@ section 3.1.4.1.3.
 
 METADATA_RECORD is the cleartext data, and the dwMDDataLen field is its length.
 
-3.1.4.28
+##### 3.1.4.28 RenameKey (Opnum 8)
 
-RenameKey (Opnum 8)
+
 
 The RenameKey method renames a node in the metabase.
 
@@ -6151,7 +5939,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pszMDNewName: A pointer to a string that contains the new name for the node.
+
+pszMDNewName: A pointer to a string that contains the new name for the node.
 
 Return Values: A signed 32-bit value that indicates return status. If the method returns a negative
 
@@ -6224,9 +6013,9 @@ ERROR_ALREADY_EXISTS.
 
   Rename the  node without modifying the data.
 
-3.1.4.29
+##### 3.1.4.29 Restore (Opnum 29)
 
-Restore (Opnum 29)
+
 
 The Restore method restores the metabase from a backup.
 
@@ -6247,7 +6036,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwMDVersion: An integer value specifying either the version number of the backup to be restored or
+
+dwMDVersion: An integer value specifying either the version number of the backup to be restored or
 
 the following constant.
 
@@ -6336,9 +6126,9 @@ If the value of the dwMDVersion parameter is greater than MD_BACKUP_MAX_VERSION 
 and not equal to MD_BACKUP_HIGHEST_VERSION, the server MUST return the E_INVALIDARG
 error code.
 
-3.1.4.30
+##### 3.1.4.30 SaveData (Opnum 20)
 
-SaveData (Opnum 20)
+
 
 The SaveData method explicitly flushes the metabase data resident in memory to configuration
 storage.
@@ -6350,7 +6140,8 @@ Release: April 23, 2024
 
 68 / 139
 
- HRESULT SaveData();
+
+ HRESULT SaveData();
 
 This method has no parameters.
 
@@ -6388,9 +6179,9 @@ If a handle is open with write permissions, the server SHOULD return ERROR_PATH_
 
 Save all data in the metabase that has changed since the last time the metabase was saved.
 
-3.1.4.31
+##### 3.1.4.31 SetLastChangeTime (Opnum 24)
 
-SetLastChangeTime (Opnum 24)
+
 
 The SetLastChangeTime method sets the last change time associated with a node in the metabase.
 
@@ -6430,7 +6221,8 @@ Release: April 23, 2024
 
 69 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -6477,9 +6269,9 @@ If the path exists and is valid, the server SHOULD update the last modified time
 based on the value of the pftMDLastChangeTime structure. If bLocalTime is 0, the time is treated
 as UTC time. Otherwise the time is treated as the local server time.<21>
 
-3.1.4.32
+##### 3.1.4.32 UnmarshalInterface (Opnum 32)
 
-UnmarshalInterface (Opnum 32)
+
 
 The UnmarshalInterface method returns a pointer to the IMSAdminBaseW interface.
 
@@ -6520,23 +6312,24 @@ Release: April 23, 2024
 
 70 / 139
 
-3.1.5  Timer Events
+
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the server other than the timers that are required in the
 underlying RPC protocol.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.2  IMSAdminBaseW Client Details
+### 3.2 IMSAdminBaseW Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The client uses the abstract data model defined by the server; see section 3.1.1.
 
-3.2.1.1  Secure Session Context
+##### 3.2.1.1 Secure Session Context
 
 When the client expects to exchange sensitive data marked with the METADATA_SECURE secure flag,
 it will negotiate a secure session. As part of the secure session negotiation, both client and server
@@ -6568,12 +6361,12 @@ The server's session key.
 
 The client's session key.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST perform initialization according to the following rules when calling an RPC method:
 
@@ -6601,9 +6394,10 @@ Release: April 23, 2024
 
 71 / 139
 
-3.2.4  Message Processing Events and Sequencing Rules
 
-3.2.4.1  Secure Session Negotiation Client Role
+#### 3.2.4 Message Processing Events and Sequencing Rules
+
+##### 3.2.4.1 Secure Session Negotiation Client Role
 
 The client MUST negotiate a secure session when sensitive data is to be transferred; for more
 information, see 3.1.4.1.1.
@@ -6614,7 +6408,7 @@ R_KeyExchangePhase2 calls, as described in sections 3.2.4.2 and 3.2.4.3.
 As a result of secure session negotiation, the client will receive the server's session key and
 signature public key.
 
-3.2.4.2  R_KeyExchangePhase1 (Opnum 26)
+##### 3.2.4.2 R_KeyExchangePhase1 (Opnum 26)
 
 The client MUST perform the following steps to process R_KeyExchangePhase1:
 
@@ -6654,7 +6448,7 @@ field set to SESSION_KEY_BLOB_SIGNATURE.
 
 In the case of success, the client MUST proceed with the R_KeyExchangePhase2 method.
 
-3.2.4.3  R_KeyExchangePhase2 (Opnum 27)
+##### 3.2.4.3 R_KeyExchangePhase2 (Opnum 27)
 
 The client MUST call R_KeyExchangePhase2 after successful processing of R_KeyExchangePhase1 to
 complete the security session negotiation.
@@ -6680,7 +6474,8 @@ Release: April 23, 2024
 
 72 / 139
 
-
+
+
 
 
 
@@ -6722,7 +6517,7 @@ implementation-dependent.
 encrypt/decrypt data of a sensitive nature marked by the METADATA_SECURE secure flag with
 calls to the R_GetData, R_EnumData, R_GetAllData, and R_SetData methods.
 
-3.2.4.4  R_SetData (Opnum 9)
+##### 3.2.4.4 R_SetData (Opnum 9)
 
 The data value referenced by the pbMDData field of the METADATA_RECORD MUST be encrypted if
 the METADATA_SECURE attribute is set.
@@ -6762,7 +6557,8 @@ Release: April 23, 2024
 
 73 / 139
 
-3.2.4.5  R_GetData (Opnum 10)
+
+##### 3.2.4.5 R_GetData (Opnum 10)
 
 The secure session MUST be negotiated by the client prior to calling the R_GetData method.
 
@@ -6787,12 +6583,12 @@ CLEARTEXT_DATA_BLOB_SIGNATURE, the BlobData member inside the IIS_CRYPTO_BLOB wi
 be interpreted as a CLEARTEXT_DATA_BLOB message. The ClearTextData field represents the
 actual cleartext data.
 
-3.2.4.6  R_EnumData (Opnum 12)
+##### 3.2.4.6 R_EnumData (Opnum 12)
 
 The session negotiation requirement, IIS_CRYPTO_BLOB handling, and METADATA_RECORD handling
 is identical to that used by the R_GetData method.
 
-3.2.4.7  R_GetAllData (Opnum 13)
+##### 3.2.4.7 R_GetAllData (Opnum 13)
 
 The secure session MUST be negotiated by the client prior to calling the R_GetAllData method; see
 section 3.1.4.1.1.
@@ -6818,12 +6614,12 @@ actual cleartext data.
 
 The cleartext data retrieved in previous steps follows the METADATA_GETALL_RECORD format.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 A client's call of each method is the result of local application activity. The local application on the
 client computer specifies values for all input parameters. No other higher-layer triggered events are
@@ -6836,25 +6632,26 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-No additional local events are used on the client beyond the events maintained in the underlying RPC
+
+No additional local events are used on the client beyond the events maintained in the underlying RPC
 protocol.
 
-3.3  IMSAdminBase2W Server Details
+### 3.3 IMSAdminBase2W Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This interface uses the same data model as the IMSAdminBaseW interface.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 Initialization is specified in section 3.1.3.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IUnknown interface. The method opnum field values start with 3;
 opnum values 0 through 2 represent the IUnknown_QueryInterface, IUnknown_AddRef, and
@@ -6914,7 +6711,8 @@ Release: April 23, 2024
 
 75 / 139
 
-Method
+
+Method
 
 Description
 
@@ -6930,7 +6728,7 @@ When a remote call is made, the UUID and version number of the interface are spe
 abstract_syntax and abstract_syntax_vers fields of the incoming RPC_BIND packet, as specified
 in [MS-RPCE].
 
-3.3.4.1  BackupWithPasswd (Opnum 34)
+##### 3.3.4.1 BackupWithPasswd (Opnum 34)
 
 The BackupWithPasswd method backs up the metabase using a supplied password to encrypt all
 secure data.
@@ -7011,7 +6809,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-error code in the lower 16 bits. Zero or positive values indicate success, with the lower 16 bits in
+
+error code in the lower 16 bits. Zero or positive values indicate success, with the lower 16 bits in
 positive nonzero values containing warnings or flags defined in the method implementation. For
 more information about Win32 error codes and HRESULT values, see [MS-ERREF].
 
@@ -7072,7 +6871,7 @@ that the data can be restored later.
 
 password is provided, the function behaves exactly as the Backup method.
 
-3.3.4.2  EnumHistory (Opnum 39)
+##### 3.3.4.2 EnumHistory (Opnum 39)
 
 The EnumHistory method returns an enumerated history entry with a supplied index.
 
@@ -7095,7 +6894,8 @@ Release: April 23, 2024
 
 77 / 139
 
-pwdMDMajorVersion: A pointer to an integer value containing the predecimal version number for
+
+pwdMDMajorVersion: A pointer to an integer value containing the predecimal version number for
 
 the current enumerated history entry.
 
@@ -7195,7 +6995,8 @@ Release: April 23, 2024
 
 78 / 139
 
-
+
+
 
 The server will find the history entry that corresponds to the location passed in and the index
 number. For instance:
@@ -7220,7 +7021,7 @@ pftdMDHistoryTime parameter.
 If the index is past the last file in the history location, the server MUST return an
 ERROR_NO_MORE_ITEMS error code to indicate that there are no more items to the client.
 
-3.3.4.3  Export (Opnum 36)
+##### 3.3.4.3 Export (Opnum 36)
 
 The Export method exports a section of the metabase to a file.
 
@@ -7287,7 +7088,8 @@ Release: April 23, 2024
 
 79 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7335,7 +7137,7 @@ and its settings. Child nodes MUST NOT be included.
 
 client.
 
-3.3.4.4  Import (Opnum 37)
+##### 3.3.4.4 Import (Opnum 37)
 
 The Import method imports metabase data from an exported file into the metabase.
 
@@ -7374,7 +7176,8 @@ Release: April 23, 2024
 
 80 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -7477,7 +7280,8 @@ Release: April 23, 2024
 
 81 / 139
 
-3.3.4.5  RestoreHistory (Opnum 38)
+
+##### 3.3.4.5 RestoreHistory (Opnum 38)
 
 The RestoreHistory method restores a metabase history entry for a specific history version.
 
@@ -7575,7 +7379,8 @@ Release: April 23, 2024
 
 82 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -7636,7 +7441,7 @@ return the ERROR_INVALID_FLAGS error code.
 
 The server replaces the current metabase data with the data from the history entry specified.
 
-3.3.4.6  RestoreWithPasswd (Opnum 35)
+##### 3.3.4.6 RestoreWithPasswd (Opnum 35)
 
 The RestoreWithPasswd method restores the metabase from a backup, using a supplied password to
 decrypt the secure data.
@@ -7671,7 +7476,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwMDFlags: This parameter is reserved and MUST be set to zero.
+
+dwMDFlags: This parameter is reserved and MUST be set to zero.
 
 pszPasswd: A password string used to decrypt the secure properties in the metabase backup. If the
 password is not correct, an error is returned. If a password is not supplied, this method functions
@@ -7744,12 +7550,12 @@ is provided, the function behaves exactly as the Restore method.
 If the backup cannot be decrypted with the supplied password, the server MUST return the error
 code ERROR_WRONG_PASSWORD.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
@@ -7761,31 +7567,32 @@ Release: April 23, 2024
 
 84 / 139
 
-3.4  IMSAdminBase2W Client Details
 
-3.4.1  Abstract Data Model
+### 3.4 IMSAdminBase2W Client Details
+
+#### 3.4.1 Abstract Data Model
 
 None.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 The client MUST perform initialization according to the rules defined in section 3.2.3.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 The client SHOULD follow the rules defined in section 3.2.4.
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 A client's call of each method is the result of local application activity. The local application on the
 client computer specifies values for all input parameters. No other higher-layer triggered events are
@@ -7794,19 +7601,19 @@ processed. The values specified for input parameters are defined in section 2.
 No additional local events are used on the client beyond the events maintained in the underlying RPC
 protocol.
 
-3.5  IMSAdminBase3W Server Details
+### 3.5 IMSAdminBase3W Server Details
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 No specific abstract data model is required. This interface uses the same data model as the
 IMSAdminBaseW interface.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 This protocol uses DCOM initialization, as specified in [MS-DCOM].
 
@@ -7817,7 +7624,8 @@ Release: April 23, 2024
 
 85 / 139
 
-3.5.4  Message Processing Events and Sequencing Rules
+
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IUnknown interface. Method opnum field values start with 3; opnum
 values 0 through 2 represent the IUnknown_QueryInterface, IUnknown_AddRef, and
@@ -7850,7 +7658,7 @@ When a remote call is made, the UUID and version number of the interface are spe
 abstract_syntax and abstract_syntax_vers fields of the incoming RPC_BIND packet, as specified
 in [MS-RPCE].
 
-3.5.4.1  GetChildPaths (Opnum 40)
+##### 3.5.4.1 GetChildPaths (Opnum 40)
 
 The GetChildPaths method returns all child nodes of a specified path from a supplied metadata handle.
 
@@ -7887,7 +7695,8 @@ Release: April 23, 2024
 
 86 / 139
 
-pcchMDRequiredBufferSize: An integer value indicating the required size of the buffer if the
+
+pcchMDRequiredBufferSize: An integer value indicating the required size of the buffer if the
 
 supplied buffer proves to be insufficient. If the supplied buffer is sufficient, this value will not be
 adjusted.
@@ -7996,7 +7805,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8013,41 +7823,41 @@ the terminating null character, the server MUST return the HRESULT derived from 
 ERROR_INSUFFICIENT_BUFFER error code, and the server MUST set the
 pcchMDRequiredBufferSize value to the size needed.
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.5.6  Other Local Events
+#### 3.5.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.6  IMSAdminBase3W Client Details
+### 3.6 IMSAdminBase3W Client Details
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 None.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 The client MUST perform initialization according to the rules defined in section 3.5.3.
 
-3.6.4  Message Processing Events and Sequencing Rules
+#### 3.6.4 Message Processing Events and Sequencing Rules
 
 Client SHOULD follow the rules defined in 3.5.4.
 
-3.6.5  Timer Events
+#### 3.6.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.6.6  Other Local Events
+#### 3.6.6 Other Local Events
 
 A client's call of each method is the result of local application activity. The local application on the
 client computer specifies values for all input parameters. No other higher-layer triggered events are
@@ -8063,9 +7873,10 @@ Release: April 23, 2024
 
 88 / 139
 
-3.7  IWamAdmin Server Details
 
-3.7.1  Abstract Data Model
+### 3.7 IWamAdmin Server Details
+
+#### 3.7.1 Abstract Data Model
 
 The IWamAdmin interface makes use of the configuration storage (metabase) described in section
 3.1.1. Although the data elements stored in the metabase are not strictly part of the protocol, correct
@@ -8073,17 +7884,17 @@ client interoperation requires that they be set as specified in the message proc
 follow. The data elements MD_APP_ISOLATED and MD_APP_ROOT are specified in sections 2.2.10 and
 2.2.9, respectively.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 None.
 
-3.7.3  Initialization
+#### 3.7.3 Initialization
 
 The IWamAdmin server MUST be initialized by registering the RPC interface and listening on the RPC
 well-known endpoint, as specified in section 2.1. The server MUST then wait for IWamAdmin clients
 to establish a connection.
 
-3.7.4  Message Processing Events and Sequencing Rules
+#### 3.7.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IUnknown interface. Method opnum field values start with 3; opnum
 values 0 through 2 represent the IUnknown_QueryInterface, IUnknown_AddRef, and
@@ -8131,7 +7942,7 @@ Recover an application, restoring saved external state.
 
 Opnum: 8
 
-3.7.4.1  AppCreate (Opnum 3)
+##### 3.7.4.1 AppCreate (Opnum 3)
 
 The AppCreate method creates a new application at the specified metabase path.
 
@@ -8142,7 +7953,8 @@ Release: April 23, 2024
 
 89 / 139
 
- HRESULT AppCreate(
+
+ HRESULT AppCreate(
    [in, unique, string] LPCWSTR szMDPath,
    [in] BOOL fInProc
  );
@@ -8200,7 +8012,7 @@ fInProc parameter is FALSE.
 
 any trailing '/' if one was specified.
 
-3.7.4.2  AppDelete (Opnum 4)
+##### 3.7.4.2 AppDelete (Opnum 4)
 
 The AppDelete method deletes the application from the specified metabase path.
 
@@ -8218,7 +8030,8 @@ Release: April 23, 2024
 
 90 / 139
 
-fRecursive: A flag indicating whether application definitions are also to be deleted from all subkeys
+
+fRecursive: A flag indicating whether application definitions are also to be deleted from all subkeys
 
 (TRUE) or just from the application at this key (FALSE).
 
@@ -8274,7 +8087,7 @@ szMDPath.
 
 TRUE, remove these properties from all child paths of szMDPath.
 
-3.7.4.3  AppUnLoad (Opnum 5)
+##### 3.7.4.3 AppUnLoad (Opnum 5)
 
 The AppUnLoad method shuts down the specified application.
 
@@ -8302,7 +8115,8 @@ Release: April 23, 2024
 
 91 / 139
 
-Return
+
+Return
 value/code
 
 Description
@@ -8321,7 +8135,7 @@ When processing this call, the server MUST do the following:
 fRecursive parameter is TRUE, attempt to shutdown applications defined on all child paths of
 szMDPath.
 
-3.7.4.4  AppGetStatus (Opnum 6)
+##### 3.7.4.4 AppGetStatus (Opnum 6)
 
 The AppGetStatus method retrieves the status of the application defined at the specified metabase
 path.
@@ -8392,7 +8206,8 @@ Release: April 23, 2024
 
 92 / 139
 
-  Check that the path specified in the szMDPath parameter exists in the metabase. If it does not,
+
+  Check that the path specified in the szMDPath parameter exists in the metabase. If it does not,
 
 return ERROR_PATH_NOT_FOUND.
 
@@ -8406,7 +8221,7 @@ application, APPSTATUS_STOPPED MUST be returned. If application is running,
 APPSTATUS_RUNNING MUST be returned, otherwise APPSTATUS_STOPPED MUST be
 returned.<27>
 
-3.7.4.5  AppDeleteRecoverable (Opnum 7)
+##### 3.7.4.5 AppDeleteRecoverable (Opnum 7)
 
 The AppDeleteRecoverable method deletes the application from the specified metabase path and
 saves external state needed to recreate the application if it is recovered.
@@ -8477,7 +8292,8 @@ Release: April 23, 2024
 
 93 / 139
 
-3.7.4.6  AppRecover (Opnum 8)
+
+##### 3.7.4.6 AppRecover (Opnum 8)
 
 The AppRecover method recreates an application that was deleted by the AppDeleteRecoverable
 method.
@@ -8530,19 +8346,19 @@ If there is no application defined at the metabase path specified by szMDPath, r
 
 When processing this call, the server MAY mark the application in such a way as to allow it to be run.
 
-3.7.5  Timer Events
+#### 3.7.5 Timer Events
 
 No protocol timer events are required on the server other than the timers that are required in the
 underlying RPC protocol.
 
-3.7.6  Other Local Events
+#### 3.7.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.8  IWamAdmin2 Server Details
+### 3.8 IWamAdmin2 Server Details
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 This interface uses the same data model as the IWamAdmin interface, section 3.7.1.
 
@@ -8553,17 +8369,18 @@ Release: April 23, 2024
 
 94 / 139
 
-3.8.2  Timers
+
+#### 3.8.2 Timers
 
 None.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
 The IWamAdmin2 server MUST be initialized by registering the RPC interface and listening on the RPC
 well-known endpoint, as specified in section 2.1. The server MUST then wait for IWamAdmin2
 clients to establish a connection.
 
-3.8.4  Message Processing Events and Sequencing Rules
+#### 3.8.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IUnknown interface. Method opnum field values start with 3; opnum
 values 0 through 2 represent the IUnknown_QueryInterface, IUnknown_AddRef, and
@@ -8584,7 +8401,7 @@ AppCreate2  Create an application.
 
 Opnum: 9
 
-3.8.4.1  AppCreate2 (Opnum 9)
+##### 3.8.4.1 AppCreate2 (Opnum 9)
 
 The AppCreate2 method creates a new application at the specified metabase path.
 
@@ -8629,7 +8446,8 @@ Release: April 23, 2024
 
 95 / 139
 
-Return Values:  A signed 32-bit value that indicates return status. If the method returns a negative
+
+Return Values:  A signed 32-bit value that indicates return status. If the method returns a negative
 value, it failed. If the 12-bit facility code (bits 16–27) is set to 0x007, the value contains a Win32
 error code in the lower 16 bits. Zero or positive values indicate success, with the lower 16 bits in
 positive nonzero values containing warnings or flags defined in the method implementation. For
@@ -8674,23 +8492,23 @@ dwAppMode parameter.
 
 any trailing '/' if one was specified.
 
-3.8.5  Timer Events
+#### 3.8.5 Timer Events
 
 No protocol timer events are required on the server other than the timers that are required in the
 underlying RPC protocol.
 
-3.8.6  Other Local Events
+#### 3.8.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.9  IIISApplicationAdmin Server Details
+### 3.9 IIISApplicationAdmin Server Details
 
-3.9.1  Abstract Data Model
+#### 3.9.1 Abstract Data Model
 
 This interface uses the same data model as the IWamAdmin interface, section 3.7.1.
 
-3.9.2  Timers
+#### 3.9.2 Timers
 
 None.
 
@@ -8701,13 +8519,14 @@ Release: April 23, 2024
 
 96 / 139
 
-3.9.3  Initialization
+
+#### 3.9.3 Initialization
 
 The IIISApplicationAdmin server MUST be initialized by registering the RPC interface and listening on
 the RPC well-known endpoint, as specified in section 2.1. The server MUST then wait for
 IIISApplicationAdmin clients to establish a connection.
 
-3.9.4  Message Processing Events and Sequencing Rules
+#### 3.9.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IUnknown interface. Method opnum field values start with 3; opnum
 values 0 through 2 represent the IUnknown_QueryInterface, IUnknown_AddRef, and
@@ -8761,7 +8580,7 @@ Retrieve the application execution mode for the IIS server.
 
 Opnum: 9
 
-3.9.4.1  CreateApplication (Opnum 3)
+##### 3.9.4.1 CreateApplication (Opnum 3)
 
 The CreateApplication method creates a new application at the specified metabase path.
 
@@ -8785,7 +8604,8 @@ Release: April 23, 2024
 
 97 / 139
 
-Value
+
+Value
 
 Meaning
 
@@ -8883,7 +8703,8 @@ Release: April 23, 2024
 
 98 / 139
 
-
+
+
 
 
 
@@ -8896,7 +8717,7 @@ ERROR_NOT_FOUND.
 
 szAppPoolId.
 
-3.9.4.2  DeleteApplication (Opnum 4)
+##### 3.9.4.2 DeleteApplication (Opnum 4)
 
 The DeleteApplication method deletes the application from the specified metabase path.
 
@@ -8963,7 +8784,7 @@ szMDPath.
 
 szMDPath. If fRecursive is TRUE, remove these properties from all child paths of szMDPath.
 
-3.9.4.3  CreateApplicationPool (Opnum 5)
+##### 3.9.4.3 CreateApplicationPool (Opnum 5)
 
 The CreateApplicationPool method creates a new application pool.
 
@@ -8974,7 +8795,8 @@ Release: April 23, 2024
 
 99 / 139
 
- HRESULT CreateApplicationPool(
+
+ HRESULT CreateApplicationPool(
    [in, unique, string] LPCWSTR szPool
  );
 
@@ -9003,7 +8825,7 @@ When processing this call, the server MUST do the following:
 
   Create an application pool identified by the szPool parameter.
 
-3.9.4.4  DeleteApplicationPool (Opnum 6)
+##### 3.9.4.4 DeleteApplicationPool (Opnum 6)
 
 The DeleteApplicationPool method deletes an application pool.
 
@@ -9050,7 +8872,8 @@ Release: April 23, 2024
 
 100 / 139
 
-  Determine whether the application pool specified by the szPool parameter exists. If it does not,
+
+  Determine whether the application pool specified by the szPool parameter exists. If it does not,
 
 return ERROR_NOT_FOUND.
 
@@ -9061,7 +8884,7 @@ applications are associated with the pool, return ERROR_NOT_EMPTY.
 
   Delete the application pool.
 
-3.9.4.5  EnumerateApplicationsInPool (Opnum 7)
+##### 3.9.4.5 EnumerateApplicationsInPool (Opnum 7)
 
 The EnumerateApplicationsInPool method returns the metabase paths for the applications associated
 with the application pool.
@@ -9105,7 +8928,7 @@ When processing this call, the server MUST do the following:
 the szPool parameter. The paths are returned as contiguous, null-terminated strings in the
 bstrBuffer parameter.
 
-3.9.4.6  RecycleApplicationPool (Opnum 8)
+##### 3.9.4.6 RecycleApplicationPool (Opnum 8)
 
 The RecycleApplicationPool method restarts an application pool.
 
@@ -9125,7 +8948,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-error code in the lower 16 bits. Zero or positive values indicate success, with the lower 16 bits in
+
+error code in the lower 16 bits. Zero or positive values indicate success, with the lower 16 bits in
 positive nonzero values containing warnings or flags defined in the method implementation. For
 more information about Win32 error codes and HRESULT values, see [MS-ERREF].
 
@@ -9155,7 +8979,7 @@ If the application pool specified does not exist, return ERROR_PATH_NOT_FOUND.
 
   Attempt to recycle (shut down and restart) the application pool if it is running.
 
-3.9.4.7  GetProcessMode (Opnum 9)
+##### 3.9.4.7 GetProcessMode (Opnum 9)
 
 The GetProcessMode method retrieves the application execution mode for the IIS server.
 
@@ -9208,19 +9032,20 @@ Release: April 23, 2024
 
 102 / 139
 
-3.9.5  Timer Events
+
+#### 3.9.5 Timer Events
 
 No protocol timer events are required on the server other than the timers that are required in the
 underlying RPC protocol.
 
-3.9.6  Other Local Events
+#### 3.9.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.10  IIISCertObj Server Details
+### 3.10 IIISCertObj Server Details
 
-3.10.1 Abstract Data Model
+#### 3.10.1 Abstract Data Model
 
 The IIISCertObj interface manages IIS web server certificates. Web server certificates are stored in
 a server certificate store. They are referenced in the IIS metabase and used by the web server for
@@ -9231,17 +9056,17 @@ The IIISCertObj interface makes use of the configuration storage (metabase) desc
 client interoperation requires that they be set as specified in the message processing descriptions that
 follow.
 
-3.10.2 Timers
+#### 3.10.2 Timers
 
 None.
 
-3.10.3 Initialization
+#### 3.10.3 Initialization
 
 The IIISCertObj server MUST be initialized by registering the RPC interface and listening on the RPC
 well-known endpoint, as specified in section 2.1. The server MUST then wait for IIISCertObj clients to
 establish a connection.
 
-3.10.4 Message Processing Events and Sequencing Rules
+#### 3.10.4 Message Processing Events and Sequencing Rules
 
 This DCOM interface inherits the IDispatch interface. Method Opnum field values start with 7.
 
@@ -9282,7 +9107,8 @@ Release: April 23, 2024
 
 103 / 139
 
-Method
+
+Method
 
 Description
 
@@ -9381,7 +9207,8 @@ Release: April 23, 2024
 
 104 / 139
 
-Method
+
+Method
 
 Description
 
@@ -9390,9 +9217,9 @@ Opnum: 25
 In the preceding table, "Reserved for local use" means that the client MUST NOT send the opnum, and
 the server behavior is undefined because it does not affect interoperability.
 
-3.10.4.1
+##### 3.10.4.1 InstanceName (Set) (Opnum 10)
 
-InstanceName (Set) (Opnum 10)
+
 
 The InstanceName method sets the web server instance to be used by subsequent method calls.
 
@@ -9444,9 +9271,9 @@ If the number of characters in newVal is more than 260, return RPC_S_STRING_TOO_
 
   Save the value of the newVal parameter for use in subsequent calls on the interface.
 
-3.10.4.2
+##### 3.10.4.2 IsInstalledRemote (Opnum 12)
 
-IsInstalledRemote (Opnum 12)
+
 
 The IsInstalledRemote method determines if a certificate is associated with the specified
 InstanceName.
@@ -9464,7 +9291,8 @@ Release: April 23, 2024
 
 105 / 139
 
-Return Values: A signed 32-bit value that indicates return status. If the method returns a negative
+
+Return Values: A signed 32-bit value that indicates return status. If the method returns a negative
 
 value, it failed. If the 12-bit facility code (bits 16–27) is set to 0x007, the value contains a Win32
 error code in the lower 16 bits. Zero or positive values indicate success, with the lower 16 bits in
@@ -9503,9 +9331,9 @@ be retrieved on the target system, set retval to VARIANT_TRUE. If the certificat
 retrieved on the target system or if no certificate is referenced at the specified InstanceName, set
 retval to VARIANT_FALSE. Return S_OK.
 
-3.10.4.3
+##### 3.10.4.3 IsExportableRemote (Opnum 14)
 
-IsExportableRemote (Opnum 14)
+
 
 The IsExportableRemote method determines whether the server certificate associated with
 InstanceName can be exported.
@@ -9550,7 +9378,8 @@ Release: April 23, 2024
 
 106 / 139
 
-
+
+
 
 If the InstanceName (Set) method has not been called to set the web server instance, return
 E_INVALIDARG.
@@ -9563,9 +9392,9 @@ InstanceName, set retval to VARIANT_FALSE and return S_OK.
 exported. If the key can be retrieved and is exportable, set retval to VARIANT_TRUE, otherwise
 set retval to VARIANT_FALSE. Return S_OK.
 
-3.10.4.4
+##### 3.10.4.4 GetCertInfoRemote (Opnum 16)
 
-GetCertInfoRemote (Opnum 16)
+
 
 The GetCertInfoRemote method retrieves properties from a certificate associated with the specified
 InstanceName.
@@ -9633,7 +9462,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the equals character, '=' (0x003D). If there is more than one RDN contained in the Subject field,
+
+the equals character, '=' (0x003D). If there is more than one RDN contained in the Subject field,
 separate the type/value pairs with a newline character, '\n' (0x000A). Append a newline to the
 string.
 
@@ -9660,9 +9490,9 @@ If there are no errors encountered in accessing the certificate data, the Unicod
 into a SAFEARRAY of VT_UI1 and returned to the client in the BinaryVariant parameter. Otherwise,
 S_FALSE is returned.
 
-3.10.4.5
+##### 3.10.4.5 ImportFromBlob (Opnum 22)
 
-ImportFromBlob (Opnum 22)
+
 
 The ImportFromBlob method imports a previously exported certificate blob on the target machine.
 
@@ -9712,7 +9542,8 @@ Release: April 23, 2024
 
 108 / 139
 
-positive nonzero values containing warnings or flags defined in the method implementation. For
+
+positive nonzero values containing warnings or flags defined in the method implementation. For
 more information about Win32 error codes and HRESULT values, see [MS-ERREF].
 
 Return value/code
@@ -9778,9 +9609,9 @@ in the certificate store, return CRYPT_E_EXISTS; otherwise, continue processing 
 If bInstallToMetabase is set to 1 or VARIANT_TRUE, the imported certificate is associated with the
 web server instance specified by InstanceName.
 
-3.10.4.6
+##### 3.10.4.6 ImportFromBlobGetHash (Opnum 23)
 
-ImportFromBlobGetHash (Opnum 23)
+
 
 The ImportFromBlobGetHash method imports a previously exported certificate blob on the target
 machine. In addition to data returned by method ImportFromBlob, this method returns certificate
@@ -9807,7 +9638,8 @@ Release: April 23, 2024
 
 109 / 139
 
- );
+
+ );
 
 InstanceName: A string that specifies a web server instance.
 
@@ -9898,7 +9730,8 @@ Release: April 23, 2024
 
 110 / 139
 
-  Attempt to decrypt and import the decoded data with the password specified by Password. If
+
+  Attempt to decrypt and import the decoded data with the password specified by Password. If
 
 bAllowExport is set to 1 or VARIANT_TRUE, attempt to flag the imported certificate as
 exportable.<40>
@@ -9925,9 +9758,9 @@ in [RFC3280] section 4.1.2.3 from the imported certificate. Allocate a buffer to
 bytes; copy the hash to the allocated buffer; return the number of bytes in the hash in
 pcbCertHashSize; and set pCertHash to the address of the allocated buffer.<42>
 
-3.10.4.7
+##### 3.10.4.7 ExportToBlob (Opnum 25)
 
-ExportToBlob (Opnum 25)
+
 
 The ExportToBlob method exports the certificate referenced at InstanceName to a memory buffer.
 
@@ -9983,7 +9816,8 @@ Release: April 23, 2024
 
 111 / 139
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -10047,19 +9881,19 @@ buffer to return to the client in pBlobBinary; copy the data to the buffer point
 pBlobBinary; and return the number of bytes in the exported and encoded blob in pcbSize;
 otherwise, return an error.<45>
 
-3.10.5 Timer Events
+#### 3.10.5 Timer Events
 
 No protocol timer events are required on the server other than the timers that are required in the
 underlying RPC protocol.
 
-3.10.6 Other Local Events
+#### 3.10.6 Other Local Events
 
 No local events are maintained on the server other than the events that are maintained in the
 underlying RPC protocol.
 
-3.11  IIISCertObj Client Details
+### 3.11 IIISCertObj Client Details
 
-3.11.1 Abstract Data Model
+#### 3.11.1 Abstract Data Model
 
 The client must use the data model defined by the server in section 3.10.1.
 
@@ -10070,34 +9904,35 @@ Release: April 23, 2024
 
 112 / 139
 
-3.11.2 Timers
+
+#### 3.11.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages, as specified in [MS-RPCE] section 3.2.3.2.1.
 
-3.11.3 Initialization
+#### 3.11.3 Initialization
 
 The client creates an RPC association (or binding) to the server RPC before an RPC method is called.
 The client MAY create a separate association for each method invocation, or it MAY reuse an
 association for multiple invocations.
 
-3.11.4 Message Processing Events and Sequencing Rules
+#### 3.11.4 Message Processing Events and Sequencing Rules
 
-3.11.4.1
+##### 3.11.4.1 InstanceName (Set) (Opnum 10)
 
-InstanceName (Set) (Opnum 10)
+
 
 The client MUST call this method to set a web server instance before calling the following interface
 methods: IsInstalledRemote, IsExportableRemote, and GetCertInfoRemote. For other interface
 methods, the ServerInstance is specified as a parameter, and a preceding call to InstanceName has
 no effect.
 
-3.11.5 Timer Events
+#### 3.11.5 Timer Events
 
 No protocol timer events are required on the client beyond the timers required in the underlying RPC
 protocol.
 
-3.11.6 Other Local Events
+#### 3.11.6 Other Local Events
 
 No additional local events are used on the client beyond the events maintained in the underlying RPC
 protocol.
@@ -10109,9 +9944,10 @@ Release: April 23, 2024
 
 113 / 139
 
-4  Protocol Examples
 
-4.1  General Hookup Example
+## 4 Protocol Examples
+
+### 4.1 General Hookup Example
 
 The following example demonstrates how to get a handle that the DCOM Class Object can use to make
 the rest of the calls.
@@ -10146,7 +9982,7 @@ perform additional processing via the other methods defined on the interface.
 
 function to clear up the COM context.
 
-4.2  BackupWithPasswd Call Example
+### 4.2 BackupWithPasswd Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10175,7 +10011,7 @@ server for encrypting any protected data in the backup.
 
 The client then checks the return code from the function to determine whether the backup succeeded.
 
-4.3  EnumHistory Call Example
+### 4.3 EnumHistory Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10190,7 +10026,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The client calls the EnumHistory method and provides the following parameters:
+
+The client calls the EnumHistory method and provides the following parameters:
 
   An empty buffer with room for 100 WCHARs.
 
@@ -10218,7 +10055,7 @@ EnumHistory function to get the next entry.
 If the call returned the ERROR_NO_MORE_ITEMS error code, then the client concludes that it has
 processed all the history entries and has successfully finished.
 
-4.4  Export Call Example
+### 4.4 Export Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10243,7 +10080,7 @@ to include inherited properties because those flags are not passed.
 
 The client then checks the return code from the function to determine whether the export succeeded.
 
-4.5  Import Call Example
+### 4.5 Import Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10266,7 +10103,8 @@ Release: April 23, 2024
 
 115 / 139
 
-  A Unicode string that includes the terminating null character, which is used by the server as a
+
+  A Unicode string that includes the terminating null character, which is used by the server as a
 
 configuration path within the file specified in the previous parameter (for example,
 "/LM/W3SVC/1/"). The server uses this configuration path to select the subtree from the
@@ -10284,7 +10122,7 @@ MD_IMPORT_MERGE).
 
 The client then checks the return code from the function to determine whether the import succeeded.
 
-4.6  RestoreHistory Call Example
+### 4.6 RestoreHistory Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10309,7 +10147,7 @@ MD_HISTORY_LATEST.
 MD_HISTORY_LATEST, the server will restore the latest available version of history and ignore
 data passed as version parameters.
 
-4.7  RestoreWithPasswd Call Example
+### 4.7 RestoreWithPasswd Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10338,7 +10176,8 @@ Release: April 23, 2024
 
 116 / 139
 
-4.8  GetChildPaths Call Example
+
+### 4.8 GetChildPaths Call Example
 
 The client initiates a connection to the server through standard DCOM calls, as specified in [MS-
 DCOM].
@@ -10422,7 +10261,8 @@ Release: April 23, 2024
 
 117 / 139
 
-<!-- Extracted images from page 118 -->
+
+<!-- Extracted images from page 118 -->
 ![Extracted image 1 from page 118]([MS-IMSA].images/page118-img01.png)
 <!-- /Extracted images from page 118 -->
 
@@ -10430,7 +10270,7 @@ Release: April 23, 2024
 string. The client searches for an occurrence of double terminating null characters and, when found,
 processes the child path. The client continues parsing the buffer until the end of the data is reached.
 
-4.9  Reading Sensitive Data from the Server
+### 4.9 Reading Sensitive Data from the Server
 
 Figure 1: Message sequence for reading sensitive data from the server
 
@@ -10454,7 +10294,8 @@ Release: April 23, 2024
 
 118 / 139
 
-3.  The client performs phase 1 of the handshake. The client's key exchange key and signature key
+
+3.  The client performs phase 1 of the handshake. The client's key exchange key and signature key
 
 are generated, and public keys for both are sent to the server. private keys for both are stored
 by the client.
@@ -10514,9 +10355,10 @@ Release: April 23, 2024
 
 119 / 139
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Authenticated RPC has to be used by this protocol, as specified in [C706] section 13.
 
@@ -10531,7 +10373,7 @@ information, see section 3.1.4.1.1.
 The RPC/DCOM packet privacy feature has to be used for more robust protection of the data
 transferred over the IIS IMSAdminBaseW Remote Protocol.<47>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -10546,7 +10388,8 @@ Release: April 23, 2024
 
 120 / 139
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL found
 in [MS-DTYP] 5 and where "ms-dcom.idl" refers to the IDL found in [MS-DCOM] 6.
@@ -10620,7 +10463,8 @@ Release: April 23, 2024
 
 121 / 139
 
-         [in] METADATA_HANDLE hMDHandle,
+
+         [in] METADATA_HANDLE hMDHandle,
          [unique, in, string] LPCWSTR pszMDPath);
 
      HRESULT EnumKeys(
@@ -10697,7 +10541,8 @@ Release: April 23, 2024
 
 122 / 139
 
-         [in] METADATA_HANDLE hMDDestHandle,
+
+         [in] METADATA_HANDLE hMDDestHandle,
          [unique, in, string] LPCWSTR pszMDDestPath,
          [in] DWORD dwMDAttributes,
          [in] DWORD dwMDUserType,
@@ -10774,7 +10619,8 @@ Release: April 23, 2024
 
 123 / 139
 
-         [unique, in, string] LPCWSTR pszMDBackupName,
+
+         [unique, in, string] LPCWSTR pszMDBackupName,
          [in] DWORD dwMDVersion,
          [in] DWORD dwMDFlags);
 
@@ -10850,7 +10696,8 @@ Release: April 23, 2024
 
 124 / 139
 
- [
+
+ [
      object,
      uuid(f612954d-3b0b-4c56-9563-227b7be624b4),
      pointer_default(unique)
@@ -10927,7 +10774,8 @@ Release: April 23, 2024
 
 125 / 139
 
- interface IIISApplicationAdmin : IUnknown
+
+ interface IIISApplicationAdmin : IUnknown
  {
       HRESULT CreateApplication(
          [in, unique, string] LPCWSTR szMDPath,
@@ -11003,7 +10851,8 @@ Release: April 23, 2024
 
 126 / 139
 
-     [id(8)]
+
+     [id(8)]
      HRESULT IsExportableRemote(
          [out, retval] VARIANT_BOOL * retval
          );
@@ -11076,7 +10925,8 @@ Release: April 23, 2024
 
 127 / 139
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11146,7 +10996,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 3.1.4.1: Transferring sensitive data without IIS IMSAdminBaseW Remote Protocol-level
@@ -11214,7 +11065,8 @@ Release: April 23, 2024
 
 129 / 139
 
-<6> Section 3.1.4.6: On Windows Vista and later, and on Windows Server 2008 and later, there is no
+
+<6> Section 3.1.4.6: On Windows Vista and later, and on Windows Server 2008 and later, there is no
 check of the permission level of the metabase handle used in the DeleteKey method for metabase
 paths under and including /LM/W3SVC.
 
@@ -11281,7 +11133,8 @@ Release: April 23, 2024
 
 130 / 139
 
-<18> Section 3.1.4.28: On Windows Vista and later, and on Windows Server 2008 and later, there is
+
+<18> Section 3.1.4.28: On Windows Vista and later, and on Windows Server 2008 and later, there is
 no check of the permission level of the metabase handle used in the RenameKey method for paths
 under and including /LM/W3SVC.
 
@@ -11348,7 +11201,8 @@ Release: April 23, 2024
 
 131 / 139
 
-<AppCreate> method will allow applications to be created on any child path of the Web service key,
+
+<AppCreate> method will allow applications to be created on any child path of the Web service key,
 "/LM/W3SVC". Attempts to create an application on an invalid path will return an error.
 
 <30> Section 3.10.4: Returns ERROR_NOT_IMPLEMENTED. Opnum 7 is never used.
@@ -11415,7 +11269,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<41> Section 3.10.4.6: The Windows implementation exports certificates using the
+
+<41> Section 3.10.4.6: The Windows implementation exports certificates using the
 PFXExportCertStoreEx API. The encryption method of the exported data is dependent on the
 implementation of this API. On import via ImportFromBlob or ImportFromBlobGetHash the password is
 validated using PFXVerifyPassword and the import is performed by PFXImportCertStore.
@@ -11454,7 +11309,8 @@ Release: April 23, 2024
 
 133 / 139
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -11498,7 +11354,8 @@ Release: April 23, 2024
 
 134 / 139
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -11648,7 +11505,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EnumerateApplicationsInPool (Opnum 7) method 101
+
+EnumerateApplicationsInPool (Opnum 7) method 101
 EnumerateApplicationsInPool method 101
 EnumHistory (Opnum 39) method 77
 EnumHistory Call example 114
@@ -11793,7 +11651,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   timer events 74
+
+   timer events 74
    timers 71
 IMSAdminBaseW server
    abstract data model 28
@@ -11954,7 +11813,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   RestoreHistory (Opnum 38) 82
+
+   RestoreHistory (Opnum 38) 82
    RestoreWithPasswd (Opnum 35) 83
    SaveData (Opnum 20) 69
    Secure Session Negotiation Client Role 72
@@ -12109,7 +11969,8 @@ Internet Information Services (IIS) IMSAdminBaseW Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   server (section 3.1.5 71, section 3.3.5 84, section
+
+   server (section 3.1.5 71, section 3.3.5 84, section
 3.5.5 88, section 3.7.5 94, section 3.8.5 96,
 section 3.9.5 103, section 3.10.5 112)
 

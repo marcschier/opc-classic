@@ -63,7 +63,8 @@ Release: November 19, 2024
 
 1 / 497
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -304,7 +305,8 @@ Release: November 19, 2024
 
 2 / 497
 
-Date
+
+Date
 
 Revision
 History
@@ -500,70 +502,34 @@ Release: November 19, 2024
 
 3 / 497
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 HRESULT](#21-hresult)
+    - [2.1.1 HRESULT Values](#211-hresult-values)
+    - [2.1.2 HRESULT From WIN32 Error Code Macro](#212-hresult-from-win32-error-code-macro)
+  - [2.2 Win32 Error Codes](#22-win32-error-codes)
+  - [2.3 NTSTATUS](#23-ntstatus)
+    - [2.3.1 NTSTATUS Values](#231-ntstatus-values)
+  - [2.4 LDAP Error to Win32 Error Mapping](#24-ldap-error-to-win32-error-mapping)
+- [3 Structure Example](#3-structure-example)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Protocols and Other Structures ...................................................... 6
-Applicability Statement ....................................................................................... 6
-Versioning and Localization ................................................................................. 6
-Vendor Extensible Fields ..................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2.1.1
-2.1.2
-
-2  Structures ............................................................................................................... 7
-HRESULT .......................................................................................................... 7
-HRESULT Values ......................................................................................... 10
-HRESULT From WIN32 Error Code Macro ...................................................... 203
-Win32 Error Codes .......................................................................................... 203
-NTSTATUS ..................................................................................................... 377
-NTSTATUS Values ...................................................................................... 377
-LDAP Error to Win32 Error Mapping ................................................................... 490
-
-2.2
-2.3
-
-2.3.1
-
-2.4
-
-3  Structure Example ............................................................................................... 495
-
-4  Security Considerations ....................................................................................... 496
-
-5  Appendix A: Product Behavior ............................................................................. 497
-
-6  Change Tracking .................................................................................................. 500
-
-7  Index ................................................................................................................... 501
-
-[MS-ERREF] - v20241119
-Windows Error Codes
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-4 / 497
-
-1  Introduction
+## 1 Introduction
 
 The Windows Error Codes document is a companion reference to the protocol specifications. It
 documents the common usage details for those HRESULT values, Win32 error codes, and NTSTATUS
@@ -572,7 +538,7 @@ values that are referenced by specifications in the protocol documentation set.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -605,14 +571,14 @@ be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -631,11 +597,12 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 If a protocol returns HRESULTs, the protocol uses HRESULTs, as specified in section 2.1.
 
@@ -644,22 +611,22 @@ as specified in section 2.2.
 
 If a protocol uses NTSTATUS values, these values are specified in section 2.3.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The structures documented in this specification do not depend on any other structures or protocols.
 
 The structures in this document are returned by many protocols.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 The data types specified in this document are applicable for use in any protocol that needs to include a
 discrete set of error codes.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 The structures in the Windows Error Codes require no versioning or localization information.
 
-1.7  Vendor Extensible Fields
+### 1.7 Vendor Extensible Fields
 
 HRESULTs: Vendors can choose their own values, as long as the C bit (0x20000000) is set, indicating
 it is a customer code. The structures documented in this specification have no vendor-extensible
@@ -678,9 +645,10 @@ Release: November 19, 2024
 
 6 / 497
 
-2  Structures
 
-2.1  HRESULT
+## 2 Structures
+
+### 2.1 HRESULT
 
 The HRESULT numbering space is vendor-extensible. Vendors can supply their own values for this
 field, as long as the C bit (0x20000000) is set, indicating it is a customer code.
@@ -785,7 +753,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 9
 
@@ -909,7 +878,8 @@ Release: November 19, 2024
 
 8 / 497
 
-Value
+
+Value
 
 31
 
@@ -1037,7 +1007,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 56
 
@@ -1081,7 +1052,7 @@ The source of the error code is the open connectivity service.
 
 Code (2 bytes): The remainder of the error code.
 
-2.1.1  HRESULT Values
+#### 2.1.1 HRESULT Values
 
 Combining the fields of an HRESULT into a single, 32-bit numbering space, the following HRESULT
 values are defined, in addition to those derived from NTSTATUS values (section 2.3.1) and Win32
@@ -1148,7 +1119,8 @@ Consolidation of the storage file
 
 10 / 497
 
-Return value/code
+
+Return value/code
 
 STG_S_CONSOLIDATIONFAILED
 
@@ -1279,7 +1251,8 @@ Moniker reduced to itself.
 
 11 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -1414,7 +1387,8 @@ for the task principal.
 
 12 / 497
 
-Return value/code
+
+Return value/code
 
 0x0004D000
 
@@ -1538,7 +1512,8 @@ was not found in the cache.
 
 13 / 497
 
-Return value/code
+
+Return value/code
 
 0x00090312
 
@@ -1674,7 +1649,8 @@ reached end of file.
 
 14 / 497
 
-Return value/code
+
+Return value/code
 
 0x000D0FE8
 
@@ -1808,7 +1784,8 @@ pending.
 
 15 / 497
 
-Return value/code
+
+Return value/code
 
 0x000D1104
 
@@ -1942,7 +1919,8 @@ writer plug-ins failed.
 
 16 / 497
 
-Return value/code
+
+Return value/code
 
 0x000D2726
 
@@ -2075,7 +2053,8 @@ elements.
 
 17 / 497
 
-Return value/code
+
+Return value/code
 
 0x00262351
 
@@ -2210,7 +2189,8 @@ network location %1 started
 
 18 / 497
 
-Return value/code
+
+Return value/code
 
 0x400D005B
 
@@ -2343,7 +2323,8 @@ The client is reconnected.
 
 19 / 497
 
-Return value/code
+
+Return value/code
 
 0x400D2F01
 
@@ -2476,7 +2457,8 @@ Unable to initialize class cache.
 
 20 / 497
 
-Return value/code
+
+Return value/code
 
 0x8000400A
 
@@ -2616,7 +2598,8 @@ user name and password.
 
 21 / 497
 
-Return value/code
+
+Return value/code
 
 0x8000401B
 
@@ -2757,7 +2740,8 @@ The provided tracker
 
 22 / 497
 
-Return value/code
+
+Return value/code
 
 CO_E_TRACKER_CONFIG
 
@@ -2889,7 +2873,8 @@ to errors (such as low memory).
 
 23 / 497
 
-Return value/code
+
+Return value/code
 
 0x8001000C
 
@@ -3022,7 +3007,8 @@ disconnected from its clients.
 
 24 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3160,7 +3146,8 @@ initialized.
 
 25 / 497
 
-Return value/code
+
+Return value/code
 
 0x8001011A
 
@@ -3295,7 +3282,8 @@ security descriptor.
 
 26 / 497
 
-Return value/code
+
+Return value/code
 
 0x8001012A
 
@@ -3430,7 +3418,8 @@ are arranged in front of the
 
 27 / 497
 
-Return value/code
+
+Return value/code
 
 CO_E_ACESINWRONGORDER
 
@@ -3560,7 +3549,8 @@ Memory is locked.
 
 28 / 497
 
-Return value/code
+
+Return value/code
 
 0x8002000E
 
@@ -3691,7 +3681,8 @@ library.
 
 29 / 497
 
-Return value/code
+
+Return value/code
 
 0x8002802E
 
@@ -3827,7 +3818,8 @@ invalid object.
 
 30 / 497
 
-Return value/code
+
+Return value/code
 
 0x80030008
 
@@ -3963,7 +3955,8 @@ Invalid flag error.
 
 31 / 497
 
-Return value/code
+
+Return value/code
 
 0x80030100
 
@@ -4102,7 +4095,8 @@ valid CSS key.
 
 32 / 497
 
-Return value/code
+
+Return value/code
 
 0x80030308
 
@@ -4238,7 +4232,8 @@ Invalid rectangle.
 
 33 / 497
 
-Return value/code
+
+Return value/code
 
 OLE_E_INVALIDRECT
 
@@ -4369,7 +4364,8 @@ Invalid window handle.
 
 34 / 497
 
-Return value/code
+
+Return value/code
 
 0x80040110
 
@@ -4503,7 +4499,8 @@ data in Active Directory.
 
 35 / 497
 
-Return value/code
+
+Return value/code
 
 0x80040169
 
@@ -4635,7 +4632,8 @@ correct format.
 
 36 / 497
 
-Return value/code
+
+Return value/code
 
 0x800401C5
 
@@ -4763,7 +4761,8 @@ User input required for
 
 37 / 497
 
-Return value/code
+
+Return value/code
 
 MK_E_MUSTBOTHERUSER
 
@@ -4898,7 +4897,8 @@ Application was launched, but it
 
 38 / 497
 
-Return value/code
+
+Return value/code
 
 CO_E_APPDIDNTREG
 
@@ -5040,7 +5040,8 @@ One or more of the properties
 
 39 / 497
 
-Return value/code
+
+Return value/code
 
 SCHED_E_TASK_NOT_READY
 
@@ -5177,7 +5178,8 @@ The task XML is malformed.
 
 40 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004131D
 
@@ -5313,7 +5315,8 @@ aborted, likely because of
 
 41 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004D008
 
@@ -5445,7 +5448,8 @@ manager or resource manager
 
 42 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004D017
 
@@ -5577,7 +5581,8 @@ transactions.
 
 43 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004D026
 
@@ -5714,7 +5719,8 @@ the protocol.
 
 44 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004D106
 
@@ -5851,7 +5857,8 @@ thread has timed out waiting to
 
 45 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004E007
 
@@ -5984,7 +5991,8 @@ created must use object pooling
 
 46 / 497
 
-Return value/code
+
+Return value/code
 
 0x8004E02D
 
@@ -6112,7 +6120,8 @@ Server execution failed.
 
 47 / 497
 
-Return value/code
+
+Return value/code
 
 CO_E_SERVER_EXEC_FAILURE
 
@@ -6245,7 +6254,8 @@ Invalid flags specified.
 
 48 / 497
 
-Return value/code
+
+Return value/code
 
 0x8009000A
 
@@ -6377,7 +6387,8 @@ corrupt.
 
 49 / 497
 
-Return value/code
+
+Return value/code
 
 0x8009001D
 
@@ -6512,7 +6523,8 @@ from the user.
 
 50 / 497
 
-Return value/code
+
+Return value/code
 
 0x8009002F
 
@@ -6653,7 +6665,8 @@ verification is out of sequence.
 
 51 / 497
 
-Return value/code
+
+Return value/code
 
 0x80090311
 
@@ -6792,7 +6805,8 @@ before the context was
 
 52 / 497
 
-Return value/code
+
+Return value/code
 
 0x80090334
 
@@ -6921,7 +6935,8 @@ generate a referral for the
 
 53 / 497
 
-Return value/code
+
+Return value/code
 
 0x80090342
 
@@ -7041,7 +7056,8 @@ administrator.
 
 54 / 497
 
-Return value/code
+
+Return value/code
 
 0x80090355
 
@@ -7156,7 +7172,8 @@ target server with NLTM only
 
 55 / 497
 
-Return value/code
+
+Return value/code
 
 0x80091001
 
@@ -7291,7 +7308,8 @@ complete the decode operation.
 
 56 / 497
 
-Return value/code
+
+Return value/code
 
 0x80092001
 
@@ -7432,7 +7450,8 @@ the certificate.
 
 57 / 497
 
-Return value/code
+
+Return value/code
 
 0x80092013
 
@@ -7563,7 +7582,8 @@ The public key's algorithm
 
 58 / 497
 
-Return value/code
+
+Return value/code
 
 CRYPT_E_MISSING_PUBKEY_PARA
 
@@ -7701,7 +7721,8 @@ OSS ASN.1 Error: Invalid data.
 
 59 / 497
 
-Return value/code
+
+Return value/code
 
 0x80093012
 
@@ -7841,7 +7862,8 @@ error.
 
 60 / 497
 
-Return value/code
+
+Return value/code
 
 0x80093025
 
@@ -7979,7 +8001,8 @@ this protocol data unit (PDU).
 
 61 / 497
 
-Return value/code
+
+Return value/code
 
 0x80093109
 
@@ -8112,7 +8135,8 @@ configured to enforce role
 
 62 / 497
 
-Return value/code
+
+Return value/code
 
 0x80094009
 
@@ -8236,7 +8260,8 @@ The request contains no
 
 63 / 497
 
-Return value/code
+
+Return value/code
 
 CERTSRV_E_NO_CERT_TYPE
 
@@ -8367,7 +8392,8 @@ Alternate name.
 
 64 / 497
 
-Return value/code
+
+Return value/code
 
 0x80094810
 
@@ -8498,7 +8524,8 @@ include SMIME extension.
 
 65 / 497
 
-Return value/code
+
+Return value/code
 
 0x80096001
 
@@ -8638,7 +8665,8 @@ tables, or pad bytes are not 0.
 
 66 / 497
 
-Return value/code
+
+Return value/code
 
 0x8009700B
 
@@ -8777,7 +8805,8 @@ Error due to problem in ASN.1
 
 67 / 497
 
-Return value/code
+
+Return value/code
 
 DIGSIG_E_DECODE
 
@@ -8911,7 +8940,8 @@ the trust provider.
 
 68 / 497
 
-Return value/code
+
+Return value/code
 
 0x800B010A
 
@@ -9042,7 +9072,8 @@ because it is catatonic.
 
 69 / 497
 
-Return value/code
+
+Return value/code
 
 0x800D019A
 
@@ -9177,7 +9208,8 @@ or is invalid.
 
 70 / 497
 
-Return value/code
+
+Return value/code
 
 0x800F0207
 
@@ -9315,7 +9347,8 @@ A service installation section in
 
 71 / 497
 
-Return value/code
+
+Return value/code
 
 SPAPI_E_BAD_SERVICE_INSTALLSECT
 
@@ -9456,7 +9489,8 @@ There are no compatible drivers
 
 72 / 497
 
-Return value/code
+
+Return value/code
 
 SPAPI_E_NO_COMPAT_DRIVERS
 
@@ -9592,7 +9626,8 @@ disabled on this embedded
 
 73 / 497
 
-Return value/code
+
+Return value/code
 
 0x800F0239
 
@@ -9725,7 +9760,8 @@ while attempting to add the
 
 74 / 497
 
-Return value/code
+
+Return value/code
 
 SPAPI_E_DRIVER_STORE_ADD_FAILED
 
@@ -9864,7 +9900,8 @@ The user-specified time-out
 
 75 / 497
 
-Return value/code
+
+Return value/code
 
 SCARD_E_TIMEOUT
 
@@ -10003,7 +10040,8 @@ minimal requirements for
 
 76 / 497
 
-Return value/code
+
+Return value/code
 
 0x8010001B
 
@@ -10142,7 +10180,8 @@ The requested certificate does
 
 77 / 497
 
-Return value/code
+
+Return value/code
 
 SCARD_E_NO_SUCH_CERTIFICATE
 
@@ -10283,7 +10322,8 @@ Errors occurred accessing one
 
 78 / 497
 
-Return value/code
+
+Return value/code
 
 COMADMIN_E_OBJECTERRORS
 
@@ -10423,7 +10463,8 @@ missing or changed.
 
 79 / 497
 
-Return value/code
+
+Return value/code
 
 COMADMIN_E_REMOTEINTERFACE
 
@@ -10558,7 +10599,8 @@ application no longer exists.
 
 80 / 497
 
-Return value/code
+
+Return value/code
 
 0x80110430
 
@@ -10695,7 +10737,8 @@ Failed to start application
 
 81 / 497
 
-Return value/code
+
+Return value/code
 
 COMADMIN_E_CAN_NOT_START_APP
 
@@ -10832,7 +10875,8 @@ The COM+ registry database
 
 82 / 497
 
-Return value/code
+
+Return value/code
 
 COMADMIN_E_REGDB_SYSTEMERR
 
@@ -10971,7 +11015,8 @@ resource of type Distributed
 
 83 / 497
 
-Return value/code
+
+Return value/code
 
 0x80110808
 
@@ -11111,7 +11156,8 @@ more legacy components cannot
 
 84 / 497
 
-Return value/code
+
+Return value/code
 
 0x8011081B
 
@@ -11247,7 +11293,8 @@ processing is not safe at this
 
 85 / 497
 
-Return value/code
+
+Return value/code
 
 0x801F0007
 
@@ -11371,7 +11418,8 @@ filter specified.
 
 86 / 497
 
-Return value/code
+
+Return value/code
 
 ERROR_FLT_FILTER_NOT_FOUND
 
@@ -11499,7 +11547,8 @@ desktop composition is disabled.
 
 87 / 497
 
-Return value/code
+
+Return value/code
 
 0x80263002
 
@@ -11625,7 +11674,8 @@ The ability to install an owner is
 
 88 / 497
 
-Return value/code
+
+Return value/code
 
 TPM_E_INSTALL_DISABLED
 
@@ -11764,7 +11814,8 @@ key in a two-key function failed
 
 89 / 497
 
-Return value/code
+
+Return value/code
 
 TPM_E_AUTH2FAIL
 
@@ -11899,7 +11950,8 @@ Either the physicalPresence or
 
 90 / 497
 
-Return value/code
+
+Return value/code
 
 TPM_E_BAD_PRESENCE
 
@@ -12037,7 +12089,8 @@ attempted operation.
 
 91 / 497
 
-Return value/code
+
+Return value/code
 
 0x8028003E
 
@@ -12179,7 +12232,8 @@ The DAA command has no
 
 92 / 497
 
-Return value/code
+
+Return value/code
 
 TPM_E_DAA_RESOURCES
 
@@ -12316,7 +12370,8 @@ list for additional contexts.
 
 93 / 497
 
-Return value/code
+
+Return value/code
 
 TPM_E_NOCONTEXTSPACE
 
@@ -12452,7 +12507,8 @@ started.
 
 94 / 497
 
-Return value/code
+
+Return value/code
 
 0x80284009
 
@@ -12592,7 +12648,8 @@ communicating with the TBS.
 
 95 / 497
 
-Return value/code
+
+Return value/code
 
 0x8029010C
 
@@ -12734,7 +12791,8 @@ No entry with the specified key
 
 96 / 497
 
-Return value/code
+
+Return value/code
 
 TBSIMP_E_HASH_BAD_KEY
 
@@ -12876,7 +12934,8 @@ created because there are too
 
 97 / 497
 
-Return value/code
+
+Return value/code
 
 0x80290218
 
@@ -13005,7 +13064,8 @@ Collector Set properties.
 
 98 / 497
 
-Return value/code
+
+Return value/code
 
 0x80300104
 
@@ -13138,7 +13198,8 @@ The volume is fully decrypted
 
 99 / 497
 
-Return value/code
+
+Return value/code
 
 FVE_E_NOT_ENCRYPTED
 
@@ -13279,7 +13340,8 @@ encrypted because it is required
 
 100 / 497
 
-Return value/code
+
+Return value/code
 
 0x80310013
 
@@ -13421,7 +13483,8 @@ encrypted volume was updated
 
 101 / 497
 
-Return value/code
+
+Return value/code
 
 0x80310025
 
@@ -13558,7 +13621,8 @@ The layer does not exist.
 
 102 / 497
 
-Return value/code
+
+Return value/code
 
 0x80320005
 
@@ -13698,7 +13762,8 @@ The object is built in and,
 
 103 / 497
 
-Return value/code
+
+Return value/code
 
 FWP_E_BUILTIN_OBJECT
 
@@ -13834,7 +13899,8 @@ allowed range.
 
 104 / 497
 
-Return value/code
+
+Return value/code
 
 0x80320029
 
@@ -13971,7 +14037,8 @@ type.
 
 105 / 497
 
-Return value/code
+
+Return value/code
 
 0x80340002
 
@@ -14110,7 +14177,8 @@ too small.
 
 106 / 497
 
-Return value/code
+
+Return value/code
 
 0x80340017
 
@@ -14249,7 +14317,8 @@ The wireless local area network
 
 107 / 497
 
-Return value/code
+
+Return value/code
 
 0x80342001
 
@@ -14376,7 +14445,8 @@ registered for this type of file.
 
 108 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D000C
 
@@ -14507,7 +14577,8 @@ Failed to open a file.
 
 109 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_FILE_OPEN_FAILED
 
@@ -14641,7 +14712,8 @@ Invalid or corrupt data was
 
 110 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_INVALID_DATA
 
@@ -14784,7 +14856,8 @@ the stream format.
 
 111 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D0042
 
@@ -14922,7 +14995,8 @@ page a block.
 
 112 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_PAGING_ERROR
 
@@ -15056,7 +15130,8 @@ Insufficient data found.
 
 113 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D00CC
 
@@ -15194,7 +15269,8 @@ Media System Network Protocol.
 
 114 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D07F1
 
@@ -15334,7 +15410,8 @@ needed to play the requested
 
 115 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_INCOMPATIBLE_VERSION
 
@@ -15470,7 +15547,8 @@ was too large to be used.
 
 116 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D0BDA
 
@@ -15595,7 +15673,8 @@ Windows Media Player cannot
 
 117 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_MP3_FORMAT_NOT_FOUND
 
@@ -15706,7 +15785,8 @@ Web Help.
 
 118 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D0FB4
 
@@ -15835,7 +15915,8 @@ online store to get burn rights.
 
 119 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D0FCA
 
@@ -15955,7 +16036,8 @@ Windows Media Player has
 
 120 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -16083,7 +16165,8 @@ version='1.0'?>.
 
 121 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D0FE3
 
@@ -16209,7 +16292,8 @@ Web Help.
 
 122 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D0FF2
 
@@ -16339,7 +16423,8 @@ Image file might be corrupt.
 
 123 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1024
 
@@ -16473,7 +16558,8 @@ version.
 
 124 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1037
 
@@ -16609,7 +16695,8 @@ play the protected file. The
 
 125 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1052
 
@@ -16735,7 +16822,8 @@ have a callback available.
 
 126 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1062
 
@@ -16872,7 +16960,8 @@ in the current playlist.
 
 127 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1074
 
@@ -16996,7 +17085,8 @@ stored is not available.
 
 128 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D108A
 
@@ -17135,7 +17225,8 @@ file does not appear to be
 
 129 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D109B
 
@@ -17264,7 +17355,8 @@ currently.
 
 130 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D10AB
 
@@ -17392,7 +17484,8 @@ There is no child playlist
 
 131 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_WMPCORE_MEDIA_CHILD_PLAYLIST_UNAVAILABLE
 
@@ -17522,7 +17615,8 @@ The graph has no audio
 
 132 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_GRAPH_NOAUDIOLANGUAGESELECTED
 
@@ -17649,7 +17743,8 @@ For additional assistance, click
 
 133 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D10D4
 
@@ -17762,7 +17857,8 @@ then try again.
 
 134 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1127
 
@@ -17890,7 +17986,8 @@ file might not be valid.
 
 135 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D115C
 
@@ -18000,7 +18097,8 @@ obtain a disc that is intended for
 
 136 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1166
 
@@ -18114,7 +18212,8 @@ on the DVD.
 
 137 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1170
 
@@ -18231,7 +18330,8 @@ burning a CD.
 
 138 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D117C
 
@@ -18352,7 +18452,8 @@ then try again.
 
 139 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1188
 
@@ -18470,7 +18571,8 @@ remove the file from the list of
 
 140 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1193
 
@@ -18580,7 +18682,8 @@ different playlist name.
 
 141 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D119C
 
@@ -18698,7 +18801,8 @@ from an online store, go to the
 
 142 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11A7
 
@@ -18812,7 +18916,8 @@ playing the file. For additional
 
 143 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11B2
 
@@ -18923,7 +19028,8 @@ sound device installed on your
 
 144 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11BB
 
@@ -19030,7 +19136,8 @@ additional assistance, click Web
 
 145 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11C3
 
@@ -19149,7 +19256,8 @@ Web Help.
 
 146 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11CE
 
@@ -19263,7 +19371,8 @@ reinstalling the Player.
 
 147 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11D8
 
@@ -19373,7 +19482,8 @@ and that the disc is clean and
 
 148 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11E1
 
@@ -19484,7 +19594,8 @@ the Player is synchronizing, wait
 
 149 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D11F8
 
@@ -19604,7 +19715,8 @@ right-click the file in the library,
 
 150 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1206
 
@@ -19715,7 +19827,8 @@ instead.
 
 151 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1236
 
@@ -19825,7 +19938,8 @@ format that is supported by the
 
 152 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D123F
 
@@ -19938,7 +20052,8 @@ download manager cannot
 
 153 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D125D
 
@@ -20056,7 +20171,8 @@ restarts.
 
 154 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1268
 
@@ -20180,7 +20296,8 @@ that is not valid.
 
 155 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1327
 
@@ -20310,7 +20427,8 @@ you can download it.
 
 156 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D135D
 
@@ -20440,7 +20558,8 @@ It is not possible to register an
 
 157 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_NAMESPACE_DUPLICATE_CALLBACK
 
@@ -20578,7 +20697,8 @@ property or method.
 
 158 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1453
 
@@ -20711,7 +20831,8 @@ the requested playlist file.
 
 159 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D14B7
 
@@ -20848,7 +20969,8 @@ error. See the Troubleshooting
 
 160 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_PLUGIN_ERROR_REPORTED
 
@@ -20975,7 +21097,8 @@ Verify that other services or
 
 161 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D158B
 
@@ -21107,7 +21230,8 @@ active source while encoding.
 
 162 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1B61
 
@@ -21241,7 +21365,8 @@ stream from the source.
 
 163 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1B71
 
@@ -21380,7 +21505,8 @@ source or output video in the
 
 164 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1B83
 
@@ -21512,7 +21638,8 @@ The setting of the selected
 
 165 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_INVALID_DEVICE
 
@@ -21651,7 +21778,8 @@ channel .wav file.
 
 166 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1BA2
 
@@ -21786,7 +21914,8 @@ You must specify at least one
 
 167 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_NO_AUDIO_COMPAT
 
@@ -21923,7 +22052,8 @@ The video peak bit rate setting
 
 168 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_INVALID_VIDEO_PEAKRATE
 
@@ -22066,7 +22196,8 @@ This source type does not
 
 169 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_SOURCE_CANNOT_LOOP
 
@@ -22198,7 +22329,8 @@ functioning properly and a tape
 
 170 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D1BE2
 
@@ -22330,7 +22462,8 @@ The license is corrupted.
 
 171 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_DRM_UNABLE_TO_OPEN_LICENSE
 
@@ -22462,7 +22595,8 @@ time.
 
 172 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D272A
 
@@ -22593,7 +22727,8 @@ Contact Microsoft product
 
 173 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_DRM_LICENSE_CLOSE_ERROR
 
@@ -22727,7 +22862,8 @@ A required property was not set
 
 174 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_DRM_INVALID_PROPERTY
 
@@ -22853,7 +22989,8 @@ You cannot make any more
 
 175 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_DRM_SDMI_NOMORECOPIES
 
@@ -22978,7 +23115,8 @@ product support.
 
 176 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D2764
 
@@ -23108,7 +23246,8 @@ clock. Contact Microsoft product
 
 177 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D2774
 
@@ -23240,7 +23379,8 @@ opening the Digital Rights
 
 178 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_DRM_UNABLE_TO_OPEN_DATA_STORE
 
@@ -23361,7 +23501,8 @@ Contact Microsoft product
 
 179 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D278E
 
@@ -23483,7 +23624,8 @@ components on your computer.
 
 180 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D279A
 
@@ -23609,7 +23751,8 @@ license you just acquired
 
 181 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D280A
 
@@ -23722,7 +23865,8 @@ user. Try again later.
 
 182 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D2842
 
@@ -23853,7 +23997,8 @@ There is no license available for
 
 183 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_DRM_LICENSE_UNAVAILABLE
 
@@ -23989,7 +24134,8 @@ name or value is too long.
 
 184 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D28B3
 
@@ -24114,7 +24260,8 @@ restart your computer.
 
 185 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D2AFB
 
@@ -24245,7 +24392,8 @@ streaming media server.
 
 186 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D2EE9
 
@@ -24383,7 +24531,8 @@ from the server. The packets
 
 187 / 497
 
-Return value/code
+
+Return value/code
 
 NS_E_FIREWALL
 
@@ -24508,7 +24657,8 @@ the HTTP Server control
 
 188 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D2F0C
 
@@ -24631,7 +24781,8 @@ item) is not available.
 
 189 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00D32DB
 
@@ -24765,7 +24916,8 @@ the expected driver model.
 
 190 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0262005
 
@@ -24898,7 +25050,8 @@ buffer.
 
 191 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0262112
 
@@ -25037,7 +25190,8 @@ region is invalid.
 
 192 / 497
 
-Return value/code
+
+Return value/code
 
 0xC026230C
 
@@ -25178,7 +25332,8 @@ Specified monitor source mode
 
 193 / 497
 
-Return value/code
+
+Return value/code
 
 ERROR_GRAPHICS_INVALID_MONITOR_SOURCEMODESET
 
@@ -25316,7 +25471,8 @@ present source is already used
 
 194 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -25455,7 +25611,8 @@ already owned by a display
 
 195 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0262343
 
@@ -25593,7 +25750,8 @@ attribute than the current
 
 196 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0262356
 
@@ -25729,7 +25887,8 @@ An array passed to a function
 
 197 / 497
 
-Return value/code
+
+Return value/code
 
 ERROR_GRAPHICS_OPM_PARAMETER_ARRAY_TOO_SMALL
 
@@ -25852,7 +26011,8 @@ validate the graphics hardware.
 
 198 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0262512
 
@@ -25963,7 +26123,8 @@ and remote (remote desktop
 
 199 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0262580
 
@@ -26086,7 +26247,8 @@ computer.
 
 200 / 497
 
-Return value/code
+
+Return value/code
 
 0xC02625D6
 
@@ -26196,7 +26358,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC02625E0
 
@@ -26212,7 +26375,7 @@ running on a remote desktop
 session or on a terminal
 server session.
 
-2.1.2  HRESULT From WIN32 Error Code Macro
+#### 2.1.2 HRESULT From WIN32 Error Code Macro
 
 The HRESULT From WIN32 Error Code Macro converts a Win32 error code to an HRESULT using the
 pattern 0x8007XXXX, where XXXX is the first two bytes of the Win32 hex value 0x0000XXXX.
@@ -26224,7 +26387,7 @@ The macro is as follows:
  #define __HRESULT_FROM_WIN32(x) ((HRESULT)(x) <= 0 ? ((HRESULT)(x)) : ((HRESULT) (((x) &
 0x0000FFFF) | (FACILITY_WIN32 << 16) | 0x80000000)))
 
-2.2  Win32 Error Codes
+### 2.2 Win32 Error Codes
 
 All Win32 error codes MUST be in the range 0x0000 to 0xFFFF, although Win32 error codes can be
 used both in 16-bit fields (such as within the HRESULT type specified in section 2.1) as well as 32-bit
@@ -26281,7 +26444,8 @@ specified.
 
 202 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000003
 
@@ -26417,7 +26581,8 @@ The device is not ready.
 
 203 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000016
 
@@ -26556,7 +26721,8 @@ destination computer is not busy
 
 204 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000034
 
@@ -26689,7 +26855,8 @@ The name limit for the local
 
 205 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_TOO_MANY_NAMES
 
@@ -26825,7 +26992,8 @@ again.
 
 206 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000068
 
@@ -26963,7 +27131,8 @@ incorrect.
 
 207 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000007C
 
@@ -27097,7 +27266,8 @@ substituted drive.
 
 208 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000008C
 
@@ -27234,7 +27404,8 @@ The recipient process has
 
 209 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_SIGNAL_REFUSED
 
@@ -27375,7 +27546,8 @@ The operating system cannot run
 
 210 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_INVALID_MODULETYPE
 
@@ -27513,7 +27685,8 @@ specified.
 
 211 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000000D1
 
@@ -27641,7 +27814,8 @@ been removed from this location.
 
 212 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000000E5
 
@@ -27777,7 +27951,8 @@ owned by caller.
 
 213 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000012A
 
@@ -27915,7 +28090,8 @@ User profile cannot be loaded.
 
 214 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000216
 
@@ -28048,7 +28224,8 @@ An attempt was made to execute
 
 215 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_INSTRUCTION_MISALIGNMENT
 
@@ -28164,7 +28341,8 @@ Indicates that an attempt was
 
 216 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_NO_GUID_TRANSLATION
 
@@ -28278,7 +28456,8 @@ permissions for the process
 
 217 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_IO_PRIVILEGE_FAILED
 
@@ -28404,7 +28583,8 @@ The paging file cannot be
 
 218 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_FLOPPY_VOLUME
 
@@ -28525,7 +28705,8 @@ message.
 
 219 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000254
 
@@ -28652,7 +28833,8 @@ dynamic link library %hs is not
 
 220 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000262
 
@@ -28759,7 +28941,8 @@ that you have not previously
 
 221 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000026A
 
@@ -28883,7 +29066,8 @@ point faults.
 
 222 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000277
 
@@ -29011,7 +29195,8 @@ into safe mode.
 
 223 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000287
 
@@ -29139,7 +29324,8 @@ WOW assertion error.
 
 224 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_WOW_ASSERTION
 
@@ -29258,7 +29444,8 @@ A long jump has been executed.
 
 225 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_LONGJUMP
 
@@ -29382,7 +29569,8 @@ Debugger command
 
 226 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DBG_COMMAND_EXCEPTION
 
@@ -29490,7 +29678,8 @@ device.
 
 227 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000002C2
 
@@ -29616,7 +29805,8 @@ and no thread was available to
 
 228 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_NO_YIELD_PERFORMED
 
@@ -29741,7 +29931,8 @@ is underway.
 
 229 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000002E7
 
@@ -29866,7 +30057,8 @@ requirements have changed.
 
 230 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000002F5
 
@@ -30003,7 +30195,8 @@ column binding in an accessor.
 
 231 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000306
 
@@ -30135,7 +30328,8 @@ elsewhere.
 
 232 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000315
 
@@ -30263,7 +30457,8 @@ be performed in full-screen
 
 233 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_FULLSCREEN_MODE
 
@@ -30394,7 +30589,8 @@ under a volatile parent key.
 
 234 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000003FE
 
@@ -30527,7 +30723,8 @@ exist.
 
 235 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000042A
 
@@ -30663,7 +30860,8 @@ action if this service's process
 
 236 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000043A
 
@@ -30800,7 +30998,8 @@ A DLL initialization routine failed.
 
 237 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000045B
 
@@ -30929,7 +31128,8 @@ but that also failed.
 
 238 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000469
 
@@ -31068,7 +31268,8 @@ with synchronous operations.
 
 239 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_MESSAGE_SYNC_ONLY
 
@@ -31206,7 +31407,8 @@ renamed using the backup
 
 240 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000049A
 
@@ -31344,7 +31546,8 @@ computer name is invalid.
 
 241 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000004BB
 
@@ -31481,7 +31684,8 @@ The network transport endpoint
 
 242 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_ADDRESS_ALREADY_ASSOCIATED
 
@@ -31613,7 +31817,8 @@ The service is already registered.
 
 243 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_ALREADY_REGISTERED
 
@@ -31745,7 +31950,8 @@ does not have a domain
 
 244 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_NON_DOMAIN_SID
 
@@ -31877,7 +32083,8 @@ program because the license
 
 245 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000004FF
 
@@ -32001,7 +32208,8 @@ terminated.
 
 246 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000050C
 
@@ -32128,7 +32336,8 @@ incompatible.
 
 247 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000051B
 
@@ -32266,7 +32475,8 @@ The value provided as the
 
 248 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000052C
 
@@ -32398,7 +32608,8 @@ not be built.
 
 249 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000053D
 
@@ -32531,7 +32742,8 @@ exists.
 
 250 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DOMAIN_EXISTS
 
@@ -32662,7 +32874,8 @@ built-in accounts.
 
 251 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000055C
 
@@ -32802,7 +33015,8 @@ added to a local group because
 
 252 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000056D
 
@@ -32931,7 +33145,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_INVALID_HOOK_HANDLE
 
@@ -33065,7 +33280,8 @@ The window is not a combo box.
 
 254 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_WINDOW_NOT_COMBOBOX
 
@@ -33201,7 +33417,8 @@ parent.
 
 255 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000005A2
 
@@ -33337,7 +33554,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Win32 error codes
+
+Win32 error codes
 
 0x000005B4
 
@@ -33469,7 +33687,8 @@ installed.
 
 257 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000646
 
@@ -33593,7 +33812,8 @@ this is a valid Windows Installer
 
 258 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000655
 
@@ -33723,7 +33943,8 @@ you can access it, or contact the
 
 259 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000664
 
@@ -33833,7 +34054,8 @@ restriction policy.
 
 260 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000066D
 
@@ -33964,7 +34186,8 @@ No endpoint was found.
 
 261 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 RPC_S_NO_ENDPOINT_FOUND
 
@@ -34097,7 +34320,8 @@ The RPC failed and did not
 
 262 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 RPC_S_CALL_FAILED_DNE
 
@@ -34235,7 +34459,8 @@ The authentication level is
 
 263 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 RPC_S_UNKNOWN_AUTHN_LEVEL
 
@@ -34371,7 +34596,8 @@ The RPC server attempted an
 
 264 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 RPC_S_ZERO_DIVIDE
 
@@ -34513,7 +34739,8 @@ The workstation does not have a
 
 265 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_NO_TRUST_LSA_SECRET
 
@@ -34647,7 +34874,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_INVALID_DATATYPE
 
@@ -34780,7 +35008,8 @@ A communications failure
 
 267 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 RPC_S_COMM_FAILURE
 
@@ -34920,7 +35149,8 @@ The specified printer handle is
 
 268 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_ALREADY_WAITING
 
@@ -35063,7 +35293,8 @@ type.
 
 269 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000783
 
@@ -35199,7 +35430,8 @@ attribute is invalid for this
 
 270 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_INVALID_WINDOW_STYLE
 
@@ -35343,7 +35575,8 @@ The server could not be located.
 
 271 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_UnknownServer
 
@@ -35480,7 +35713,8 @@ A general network error
 
 272 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_NetworkError
 
@@ -35617,7 +35851,8 @@ No more print jobs can be
 
 273 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_JobNoRoom
 
@@ -35756,7 +35991,8 @@ The service name is invalid.
 
 274 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_BadServiceName
 
@@ -35897,7 +36133,8 @@ A centralized logon server
 
 275 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_LogonServerConflict
 
@@ -36040,7 +36277,8 @@ Deleting a user with a session is
 
 276 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_UserLogon
 
@@ -36179,7 +36417,8 @@ security database.
 
 277 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000008C9
 
@@ -36320,7 +36559,8 @@ use. Try again later.
 
 278 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000008EC
 
@@ -36458,7 +36698,8 @@ a remote temporary file.
 
 279 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000090D
 
@@ -36595,7 +36836,8 @@ This path component is invalid.
 
 280 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_BadComponent
 
@@ -36731,7 +36973,8 @@ a background process.
 
 281 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000958
 
@@ -36871,7 +37114,8 @@ been started.
 
 282 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_NetlogonNotStarted
 
@@ -37010,7 +37254,8 @@ perform a system shut down.
 
 283 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_UPSShutdownFailed
 
@@ -37149,7 +37394,8 @@ stopped, check the error log for
 
 284 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000009D6
 
@@ -37289,7 +37535,8 @@ Configuration record was not
 
 285 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 NERR_RplConfigNotFound
 
@@ -37430,7 +37677,8 @@ corrupt.
 
 286 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000A65
 
@@ -37568,7 +37816,8 @@ for an inter-DFS link.
 
 287 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000A77
 
@@ -37707,7 +37956,8 @@ complexity policy.
 
 288 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00000A91
 
@@ -37845,7 +38095,8 @@ package that is required by the
 
 289 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 Description
 
@@ -37988,7 +38239,8 @@ The supplied object has already
 
 290 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 PEERDIST_ERROR_ALREADY_INITIALIZED
 
@@ -38124,7 +38376,8 @@ be located.
 
 291 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000106D
 
@@ -38267,7 +38520,8 @@ must be empty to perform this
 
 292 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000010D4
 
@@ -38408,7 +38662,8 @@ Unable to retrieve the slot
 
 293 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_UNABLE_TO_INVENTORY_SLOT
 
@@ -38547,7 +38802,8 @@ not operational at this time.
 
 294 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 Description
 
@@ -38683,7 +38939,8 @@ The object already exists.
 
 295 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_OBJECT_ALREADY_EXISTS
 
@@ -38811,7 +39068,8 @@ is brought online.
 
 296 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000013A1
 
@@ -38945,7 +39203,8 @@ joining the cluster.
 
 297 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000013B2
 
@@ -39084,7 +39343,8 @@ The cluster node is already up.
 
 298 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000013C6
 
@@ -39213,7 +39473,8 @@ This resource cannot be created
 
 299 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_CLUSTER_MAXNUM_OF_RESOURCES_EXCEEDED
 
@@ -39332,7 +39593,8 @@ is possibly corrupt.
 
 300 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000013E0
 
@@ -39460,7 +39722,8 @@ The cluster configuration action
 
 301 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 Description
 
@@ -39591,7 +39854,8 @@ operation was attempted.
 
 302 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000171C
 
@@ -39719,7 +39983,8 @@ encrypted.
 
 303 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_ENCRYPTION_FAILED
 
@@ -39858,7 +40123,8 @@ opened with client-side
 
 304 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001782
 
@@ -39991,7 +40257,8 @@ invalid log block version.
 
 305 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000019D1
 
@@ -40132,7 +40399,8 @@ number of reserved log records
 
 306 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000019E2
 
@@ -40270,7 +40538,8 @@ invalid container state when
 
 307 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000019F3
 
@@ -40394,7 +40663,8 @@ are not supported.
 
 308 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001A33
 
@@ -40519,7 +40789,8 @@ is not online.
 
 309 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001A40
 
@@ -40647,7 +40918,8 @@ transactions.
 
 310 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001A9F
 
@@ -40774,7 +41046,8 @@ The operation could not be
 
 311 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_TM_VOLATILE
 
@@ -40902,7 +41175,8 @@ is only valid on a volume
 
 312 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001ABA
 
@@ -41030,7 +41304,8 @@ A close operation is pending on
 
 313 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_CTX_CLOSE_PENDING
 
@@ -41163,7 +41438,8 @@ graphics mode is not supported.
 
 314 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001B7D
 
@@ -41287,7 +41563,8 @@ your system administrator.
 
 315 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001B8F
 
@@ -41415,7 +41692,8 @@ The terminal server security
 
 316 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_CTX_SECURITY_LAYER_ERROR
 
@@ -41539,7 +41817,8 @@ controller. The event log might
 
 317 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00001F4C
 
@@ -41666,7 +41945,8 @@ unavailable.
 
 318 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002010
 
@@ -41800,7 +42080,8 @@ An operations error occurred.
 
 319 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002021
 
@@ -41936,7 +42217,8 @@ The object is a leaf object.
 
 320 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_IS_LEAF
 
@@ -42071,7 +42353,8 @@ The search results exceed the
 
 321 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_OFFSET_RANGE_ERROR
 
@@ -42206,7 +42489,8 @@ A required attribute is missing.
 
 322 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000207D
 
@@ -42342,7 +42626,8 @@ The aliased object is missing.
 
 323 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_ALIASED_OBJ_MISSING
 
@@ -42478,7 +42763,8 @@ object; the name identifies a
 
 324 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_NOT_AN_OBJECT
 
@@ -42619,7 +42905,8 @@ because it is owned by the
 
 325 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000020B2
 
@@ -42758,7 +43045,8 @@ in May-Contain list does not
 
 326 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000020C4
 
@@ -42895,7 +43183,8 @@ from the cache.
 
 327 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000020D5
 
@@ -43030,7 +43319,8 @@ found in the cache.
 
 328 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000020E6
 
@@ -43165,7 +43455,8 @@ The directory service is too busy
 
 329 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_DRA_BUSY
 
@@ -43303,7 +43594,8 @@ supported by this version of the
 
 330 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002107
 
@@ -43429,7 +43721,8 @@ on this computer.
 
 331 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002114
 
@@ -43567,7 +43860,8 @@ Either the source or the
 
 332 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002124
 
@@ -43678,7 +43972,8 @@ object has some special
 
 333 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000212D
 
@@ -43793,7 +44088,8 @@ tree deletion because the tree
 
 334 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002137
 
@@ -43907,7 +44203,8 @@ System32 directory.
 
 335 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002141
 
@@ -44044,7 +44341,8 @@ incorrect. Forward links can only
 
 336 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002151
 
@@ -44179,7 +44477,8 @@ not be completed due to a
 
 337 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002161
 
@@ -44304,7 +44603,8 @@ reset or increased.
 
 338 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000216E
 
@@ -44414,7 +44714,8 @@ this domain.
 
 339 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002177
 
@@ -44545,7 +44846,8 @@ A system flag has been set on
 
 340 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_MODIFYDN_DISALLOWED_BY_FLAG
 
@@ -44667,7 +44969,8 @@ The directory service cannot
 
 341 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_DIFFERENT_REPL_EPOCHS
 
@@ -44796,7 +45099,8 @@ The group cannot be converted
 
 342 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_DS_GROUP_CONVERSION_ERROR
 
@@ -44913,7 +45217,8 @@ decreasing the scheduled
 
 343 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000021AA
 
@@ -45041,7 +45346,8 @@ unique forest-wide.
 
 344 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002329
 
@@ -45174,7 +45480,8 @@ Invalid DNS type.
 
 345 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002550
 
@@ -45311,7 +45618,8 @@ server running on a read-only
 
 346 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002581
 
@@ -45441,7 +45749,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Win32 error codes
+
+Win32 error codes
 
 Description
 
@@ -45574,7 +45883,8 @@ DNS record already exists.
 
 348 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000025F0
 
@@ -45713,7 +46023,8 @@ The directory partition is not
 
 349 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 DNS_ERROR_DP_NOT_AVAILABLE
 
@@ -45843,7 +46154,8 @@ socket type requested.
 
 350 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000273A
 
@@ -45976,7 +46288,8 @@ an already connected socket.
 
 351 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002749
 
@@ -46103,7 +46416,8 @@ Item is not available locally.
 
 352 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 WSAEREMOTE
 
@@ -46238,7 +46552,8 @@ No such host is known.
 
 353 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00002AFA
 
@@ -46372,7 +46687,8 @@ An invalid QOS filter style was
 
 354 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 WSA_QOS_EFILTERSTYLE
 
@@ -46511,7 +46827,8 @@ already exists.
 
 355 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000032CC
 
@@ -46655,7 +46972,8 @@ bundle is pending deletion.
 
 356 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 Description
 
@@ -46788,7 +47106,8 @@ the queue too long.
 
 357 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000035F5
 
@@ -46919,7 +47238,8 @@ Error processing the transform
 
 358 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_IPSEC_IKE_PROCESS_ERR_TRANS
 
@@ -47059,7 +47379,8 @@ Failed to enabled trusted
 
 359 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_IPSEC_IKE_NOTCBPRIV
 
@@ -47176,7 +47497,8 @@ Invalid situation.
 
 360 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00003628
 
@@ -47304,7 +47626,8 @@ MM SAs to peer exceeded.
 
 361 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000363B
 
@@ -47442,7 +47765,8 @@ the application event log for
 
 362 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000036B2
 
@@ -47575,7 +47899,8 @@ assembly that is not installed.
 
 363 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000036C1
 
@@ -47697,7 +48022,8 @@ information present in the
 
 364 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000036CD
 
@@ -47836,7 +48162,8 @@ missing.
 
 365 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000036DE
 
@@ -47975,7 +48302,8 @@ literal was not closed.
 
 366 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000036EF
 
@@ -48112,7 +48440,8 @@ catalog for an assembly is
 
 367 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x000036FF
 
@@ -48247,7 +48576,8 @@ attributes, a missing attribute
 
 368 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x0000370E
 
@@ -48380,7 +48710,8 @@ The specified query is invalid.
 
 369 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_EVT_INVALID_QUERY
 
@@ -48507,7 +48838,8 @@ Left side arguments to binary
 
 370 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 ERROR_EVT_FILTER_INVARG
 
@@ -48628,7 +48960,8 @@ message could not be found.
 
 371 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00003AB5
 
@@ -48761,7 +49094,8 @@ The RC Manifest has an invalid
 
 372 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 Description
 
@@ -48884,7 +49218,8 @@ or MCCS 2.0 Revision 1
 
 373 / 497
 
-Win32 error codes
+
+Win32 error codes
 
 0x00003B92
 
@@ -48894,7 +49229,7 @@ ERROR_AMBIGUOUS_SYSTEM_DEVICE
 
 ERROR_SYSTEM_DEVICE_NOT_FOUND
 
-2.3  NTSTATUS
+### 2.3 NTSTATUS
 
 Description
 
@@ -48985,7 +49320,8 @@ Release: November 19, 2024
 
 374 / 497
 
-2.3.1  NTSTATUS Values
+
+#### 2.3.1 NTSTATUS Values
 
 By combining the NTSTATUS into a single 32-bit numbering space, the following NTSTATUS values are
 defined. Most values also have a defined default message that can be used to map the value to a
@@ -49102,7 +49438,8 @@ The given Timeout interval expired.
 
 375 / 497
 
-Return value/code
+
+Return value/code
 
 0x00000103
 
@@ -49228,7 +49565,8 @@ The page fault was a demand zero fault.
 
 376 / 497
 
-Return value/code
+
+Return value/code
 
 0x00000112
 
@@ -49364,7 +49702,8 @@ The current process is a cloned process.
 
 377 / 497
 
-Return value/code
+
+Return value/code
 
 0x0000012A
 
@@ -49494,7 +49833,8 @@ had to be created.
 
 378 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_SEGMENT_NOTIFICATION
 
@@ -49607,7 +49947,8 @@ OK to continue, or CANCEL to fail the DLL
 
 379 / 497
 
-Return value/code
+
+Return value/code
 
 0x4000000F
 
@@ -49736,7 +50077,8 @@ the Win32 x86 emulation subsystem.
 
 380 / 497
 
-Return value/code
+
+Return value/code
 
 0x4000001F
 
@@ -49870,7 +50212,8 @@ already been retrieved from the queue on
 
 381 / 497
 
-Return value/code
+
+Return value/code
 
 0x4000002F
 
@@ -50005,7 +50348,8 @@ Some data remains to be sent in the
 
 382 / 497
 
-Return value/code
+
+Return value/code
 
 RPC_NT_SEND_INCOMPLETE
 
@@ -50136,7 +50480,8 @@ not pinned on the specified VidPN present
 
 383 / 497
 
-Return value/code
+
+Return value/code
 
 N_NOT_PINNED
 
@@ -50271,7 +50616,8 @@ more restrictive access than intended.
 
 384 / 497
 
-Return value/code
+
+Return value/code
 
 0x8000000D
 
@@ -50405,7 +50751,8 @@ detected.
 
 385 / 497
 
-Return value/code
+
+Return value/code
 
 0x8000001E
 
@@ -50539,7 +50886,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_DEVICE_REQUIRES_CLEANING
 
@@ -50676,7 +51024,8 @@ state.
 
 387 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000001
 
@@ -50813,7 +51162,8 @@ There is no valid data in the file beyond
 
 388 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000012
 
@@ -50950,7 +51300,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_ACCESS_DENIED
 
@@ -51084,7 +51435,8 @@ on the disk is corrupt and unusable. Run
 
 390 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -51225,7 +51577,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_MUTANT_NOT_OWNED
 
@@ -51357,7 +51710,8 @@ due to other existing locks.
 
 392 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000056
 
@@ -51492,7 +51846,8 @@ The specified user account is already in
 
 393 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_MEMBER_IN_GROUP
 
@@ -51622,7 +51977,8 @@ allocate.
 
 394 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000076
 
@@ -51753,7 +52109,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_AGENTS_EXHAUSTED
 
@@ -51887,7 +52244,8 @@ paging files than the system supports.
 
 396 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000098
 
@@ -52012,7 +52370,8 @@ impersonation level was not provided.
 
 397 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00000A6
 
@@ -52152,7 +52511,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -52284,7 +52644,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -52419,7 +52780,8 @@ because the machine is unavailable or
 
 400 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00000DB
 
@@ -52550,7 +52912,8 @@ converted to the following error, which is
 
 401 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -52675,7 +53038,8 @@ argument.
 
 402 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00000F7
 
@@ -52814,7 +53178,8 @@ files on a redirected drive, but there were
 
 403 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_FILES_OPEN
 
@@ -52942,7 +53307,8 @@ transaction with one already in progress,
 
 404 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -53067,7 +53433,8 @@ example, assignment of a primary token
 
 405 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -53193,7 +53560,8 @@ application; it is a place holder for the
 
 406 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -53319,7 +53687,8 @@ system file %hs is bad or missing.
 
 407 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000144
 
@@ -53446,7 +53815,8 @@ The specified local group does not exist.
 
 408 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000152
 
@@ -53570,7 +53940,8 @@ configuration.
 
 409 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -53700,7 +54071,8 @@ other device that uses that IRQ was
 
 410 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -53831,7 +54203,8 @@ symbolic link in a registry key that
 
 411 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_KEY_HAS_CHILDREN
 
@@ -53971,7 +54344,8 @@ mutant such that its maximum count
 
 412 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000192
 
@@ -54105,7 +54479,8 @@ A requested file lock operation cannot be
 
 413 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -54247,7 +54622,8 @@ transaction.
 
 414 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000210
 
@@ -54383,7 +54759,8 @@ but the thread specified by the client ID
 
 415 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -54505,7 +54882,8 @@ The request needs to be retried.
 
 416 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000022E
 
@@ -54647,7 +55025,8 @@ port of the transport on the remote
 
 417 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000240
 
@@ -54771,7 +55150,8 @@ incorrectly.
 
 418 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000253
 
@@ -54898,7 +55278,8 @@ device path is invalid.
 
 419 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000262
 
@@ -55025,7 +55406,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -55167,7 +55549,8 @@ The file encryption attempt failed.
 
 421 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -55306,7 +55689,8 @@ Release: November 19, 2024
 
 422 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000029E
 
@@ -55445,7 +55829,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -55582,7 +55967,8 @@ not be changed.
 
 424 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00002C8
 
@@ -55711,7 +56097,8 @@ group is security enabled.
 
 425 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00002D7
 
@@ -55847,7 +56234,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -55975,7 +56363,8 @@ supported on the local machine.
 
 427 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00002F7
 
@@ -56114,7 +56503,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -56253,7 +56643,8 @@ correct format; it appears to be a 64-bit
 
 429 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000035B
 
@@ -56388,7 +56779,8 @@ loading.
 
 430 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_DRIVER_BLOCKED
 
@@ -56521,7 +56913,8 @@ log.
 
 431 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000038A
 
@@ -56658,7 +57051,8 @@ was made against a domain controller
 
 432 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -56777,7 +57171,8 @@ the machine a dialog will be displayed
 
 433 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -56912,7 +57307,8 @@ with respect to other operations.
 
 434 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000042B
 
@@ -57054,7 +57450,8 @@ The requested system device cannot be
 
 435 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_SYSTEM_DEVICE_NOT_FOUND
 
@@ -57191,7 +57588,8 @@ Invalid recursive dispatch attempt.
 
 436 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000705
 
@@ -57326,7 +57724,8 @@ not unique.
 
 437 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -57458,7 +57857,8 @@ rename operation is in progress.
 
 438 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0000802
 
@@ -57594,7 +57994,8 @@ support HMAC.
 
 439 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000A002
 
@@ -57727,7 +58128,8 @@ up to date with the current file contents.
 
 440 / 497
 
-Return value/code
+
+Return value/code
 
 0xC000A2A1
 
@@ -57862,7 +58264,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC0020009
 
@@ -57992,7 +58395,8 @@ The RPC failed.
 
 442 / 497
 
-Return value/code
+
+Return value/code
 
 0xC002001C
 
@@ -58123,7 +58527,8 @@ The authentication level is unknown.
 
 443 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0020032
 
@@ -58252,7 +58657,8 @@ integer by zero.
 
 444 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0020045
 
@@ -58388,7 +58794,8 @@ Invalid asynchronous RPC handle.
 
 445 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0020063
 
@@ -58525,7 +58932,8 @@ RPC pipe object.
 
 446 / 497
 
-Return value/code
+
+Return value/code
 
 0xC003005E
 
@@ -58661,7 +59069,8 @@ modem cable is properly attached and
 
 447 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00A000C
 
@@ -58794,7 +59203,8 @@ supported.
 
 448 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00A0028
 
@@ -58919,7 +59329,8 @@ administrator.
 
 449 / 497
 
-Return value/code
+
+Return value/code
 
 0xC00A0038
 
@@ -59057,7 +59468,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_CLUSTER_INVALID_REQUEST
 
@@ -59190,7 +59602,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_ACPI_FATAL
 
@@ -59327,7 +59740,8 @@ An attempt was made to use an incorrect
 
 452 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_ACPI_INVALID_TABLE
 
@@ -59468,7 +59882,8 @@ execution.
 
 453 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0150011
 
@@ -59604,7 +60019,8 @@ used in the document.
 
 454 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0150022
 
@@ -59745,7 +60161,8 @@ protocol that already exists.
 
 455 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -59878,7 +60295,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC0190026
 
@@ -60013,7 +60431,8 @@ section) a remote file under a transaction
 
 457 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -60147,7 +60566,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -60267,7 +60687,8 @@ and open a new one.
 
 459 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0190061
 
@@ -60410,7 +60831,8 @@ maximum allowable containers allocated
 
 460 / 497
 
-Return value/code
+
+Return value/code
 
 0xC01A0013
 
@@ -60550,7 +60972,8 @@ stream.
 
 461 / 497
 
-Return value/code
+
+Return value/code
 
 0xC01A0025
 
@@ -60684,7 +61107,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC01C0004
 
@@ -60815,7 +61239,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -60958,7 +61383,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC01D0008
 
@@ -61100,7 +61526,8 @@ existing condition. Try again later.
 
 465 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -61238,7 +61665,8 @@ invalid.
 
 466 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -61380,7 +61808,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC01E031B
 
@@ -61520,7 +61949,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC01E032D
 
@@ -61658,7 +62088,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -61797,7 +62228,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC01E0353
 
@@ -61936,7 +62368,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 0xC01E0435
 
@@ -62071,7 +62504,8 @@ handle.
 
 472 / 497
 
-Return value/code
+
+Return value/code
 
 0xC01E050D
 
@@ -62199,7 +62633,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -62304,7 +62739,8 @@ SIGNALING and
 
 474 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -62432,7 +62868,8 @@ monitor handle was passed to it.
 
 475 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -62551,7 +62988,8 @@ can be used.
 
 476 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -62693,7 +63131,8 @@ password could not be read from external
 
 477 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0210014
 
@@ -62831,7 +63270,8 @@ Windows.
 
 478 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0210027
 
@@ -62964,7 +63404,8 @@ explicit transaction.
 
 479 / 497
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -63103,7 +63544,8 @@ An FWP_RANGE is not valid.
 
 480 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0220021
 
@@ -63245,7 +63687,8 @@ will never match any objects.
 
 481 / 497
 
-Return value/code
+
+Return value/code
 
 0xC0220034
 
@@ -63383,7 +63826,8 @@ multicast address to the list.
 
 482 / 497
 
-Return value/code
+
+Return value/code
 
 0xC023000B
 
@@ -63526,7 +63970,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Return value/code
+
+Return value/code
 
 STATUS_NDIS_INVALID_ADDRESS
 
@@ -63667,7 +64112,8 @@ that does not match the packet
 
 484 / 497
 
-Return value/code
+
+Return value/code
 
 STATUS_IPSEC_WRONG_SA
 
@@ -63804,7 +64250,8 @@ The specified disk is not a virtual disk.
 
 485 / 497
 
-Return value/code
+
+Return value/code
 
 0xC03A0016
 
@@ -63858,7 +64305,7 @@ request.
 The current cluster functional level does
 not support this SMB dialect.
 
-2.4  LDAP Error to Win32 Error Mapping
+### 2.4 LDAP Error to Win32 Error Mapping
 
 Windows contains an implementation of the LDAP resultCode ([RFC2251] section 4.1.10) which is
 used by higher-layer protocols to interpret the results of an LDAP operation.
@@ -63995,7 +64442,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Valu
+
+Valu
 e:
 Deci
 mal
@@ -64250,7 +64698,8 @@ Release: November 19, 2024
 
 487 / 497
 
-Valu
+
+Valu
 e:
 Deci
 mal
@@ -64499,7 +64948,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Valu
+
+Valu
 e:
 Deci
 mal
@@ -64741,7 +65191,8 @@ EW_ERROR
 
 489 / 497
 
-Valu
+
+Valu
 e:
 Deci
 mal
@@ -64950,7 +65401,8 @@ Windows Error Codes
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-3  Structure Example
+
+## 3 Structure Example
 
  There are no structure examples.
 
@@ -64961,7 +65413,8 @@ Release: November 19, 2024
 
 491 / 497
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 These structures require no security considerations beyond those of the protocols that utilize them.
 
@@ -64972,7 +65425,8 @@ Release: November 19, 2024
 
 492 / 497
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -65042,7 +65496,8 @@ Release: November 19, 2024
 
 493 / 497
 
-Value
+
+Value
 
 Name
 
@@ -65160,7 +65615,8 @@ Release: November 19, 2024
 
 494 / 497
 
-Name
+
+Name
 
 Value
 
@@ -65191,7 +65647,8 @@ Release: November 19, 2024
 
 495 / 497
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -65237,7 +65694,8 @@ Release: November 19, 2024
 
 496 / 497
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 6

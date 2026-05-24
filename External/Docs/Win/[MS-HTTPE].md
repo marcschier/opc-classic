@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 17
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -203,121 +204,56 @@ Release: April 23, 2024
 
 2 / 17
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Request-URI](#221-request-uri)
+    - [2.2.2 Host Header](#222-host-header)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Sending an HTTP Request](#3141-sending-an-http-request)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving an HTTP Request](#3251-receiving-an-http-request)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Request Sent Through a Proxy](#41-request-sent-through-a-proxy)
+  - [4.2 Request Not Sent Through a Proxy](#42-request-not-sent-through-a-proxy)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Request-URI ................................................................................................ 8
-Host Header ................................................................................................. 8
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.4.1
-
-3.1.5
-3.1.6
-3.1.7
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ....................................................................................................... 9
-Client Details ..................................................................................................... 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Sending an HTTP Request ........................................................................ 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-Server Details .................................................................................................. 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Receiving an HTTP Request .................................................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 11
-Request Sent Through a Proxy ........................................................................... 11
-Request Not Sent Through a Proxy ..................................................................... 11
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 12
-Security Considerations for Implementers ........................................................... 12
-Index of Security Parameters ............................................................................ 12
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 13
-
-7  Change Tracking .................................................................................................... 15
-
-8  Index ..................................................................................................................... 16
-
-[MS-HTTPE] - v20240423
-Hypertext Transfer Protocol (HTTP) Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 17
-
-1  Introduction
+## 1 Introduction
 
 The Hypertext Transfer Protocol (HTTP) Extensions Protocol specifies a set of extensions to Hypertext
 Transfer Protocol (HTTP) dealing with the internationalization of host names and query strings.
@@ -325,7 +261,7 @@ Transfer Protocol (HTTP) dealing with the internationalization of host names and
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -386,7 +322,8 @@ Release: April 23, 2024
 
 4 / 17
 
-Internationalized Domain Names for Applications (IDNA): An encoding process that
+
+Internationalized Domain Names for Applications (IDNA): An encoding process that
 transforms a string of Unicode characters into a smaller, restricted character set. IDNA
 encoding is commonly used for creating domain names that can be represented in the ASCII
 character set that is supported in the Domain Name System (DNS) of the Internet. IDNA uses
@@ -409,14 +346,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -452,7 +389,8 @@ Release: April 23, 2024
 
 5 / 17
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [ISO/IEC-8859-1] International Organization for Standardization, "Information Technology -- 8-Bit
 Single-Byte Coded Graphic Character Sets -- Part 1: Latin Alphabet No. 1", ISO/IEC 8859-1, 1998,
@@ -471,7 +409,7 @@ Generic Syntax", RFC 2396, August 1998, https://www.rfc-editor.org/info/rfc2396
 [RFC6943] Thaler, D., Ed., "Issues in Identifier Comparison for Security Purposes", RFC 6943, May
 2013, http://www.rfc-editor.org/rfc/rfc6943.txt
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies a set of extensions to the Hypertext Transfer Protocol (HTTP) [RFC2616]
 dealing with internationalization of host names, with query strings, and with the path syntax.
@@ -500,14 +438,14 @@ characters, as opposed to requiring IDNA encoding to get an ASCII string to incl
 A second extension is that the syntax of the path component of a URI is extended to allow square
 brackets "[" and "]" without being percent encoded.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This document specifies extensions to HTTP, and retains the same relationships to other protocols as
 the base HTTP protocol does. For encoding formats, the query extension in this document is an
 alternative to the encoding format specified in [RFC2616] and the Host header extension in this
 document is an alternative to the IDNA encoding format.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 These extensions assume that the client and the server have both been configured to use the same
 code page.
@@ -519,22 +457,23 @@ Release: April 23, 2024
 
 6 / 17
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The extensions in this document are applicable only to environments where clients and servers all use
 the same code page. Furthermore, they are also applicable only to environments where either no
 HTTP proxy is present between the client and the server, or any HTTP proxies support the more liberal
 URI syntax defined in this document.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -545,17 +484,18 @@ Release: April 23, 2024
 
 7 / 17
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Messages are transported as specified in [RFC2616].
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The syntax is as specified in [RFC2616], except as follows.
 
-2.2.1  Request-URI
+#### 2.2.1 Request-URI
 
 The URI requested appears in the Request-URI field as specified in [RFC2616] section 5.1.2. It used
 the syntax restrictions in [RFC2396], which specifies that the query component of a URI can use only
@@ -580,7 +520,7 @@ This specification extends this syntax to allow the "[" and "]" characters as fo
 
  pchar       = unreserved / pct-encoded / sub-delims / ":" / "@" / "[" / "]"
 
-2.2.2  Host Header
+#### 2.2.2 Host Header
 
 HTTP is defined in [RFC2616] as using text encoded in ISO-8859-1 [ISO/IEC-8859-1]. The Host
 header is specified in [RFC2616] section 14.23 with a more restricted syntax, however. It uses the
@@ -600,11 +540,12 @@ Release: April 23, 2024
 
 8 / 17
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Client Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -616,17 +557,17 @@ CodePage: The American National Standards Institute (ANSI) code page that the cl
 
 configured to use. See [MS-UCODEREF] section 2.2.1 for more details.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None beyond what is specified in [RFC2616].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None beyond what is specified in [RFC2616].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Sending an HTTP Request
+##### 3.1.4.1 Sending an HTTP Request
 
 When a higher-layer protocol or application requests the content for a given URI, the HTTP
 implementation MUST construct the HTTP request as specified in [RFC2616], except as follows.
@@ -640,15 +581,15 @@ IDNA algorithm as specified in [RFC5890] and [TR46], but MAY<3> instead be encod
 [RFC3629] or encoded in the configured CodePage as specified in [MS-UCODEREF] section
 3.1.5.1.1.2.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None beyond what is specified in [RFC2616].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None beyond what is specified in [RFC2616].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None beyond what is specified in [RFC2616].
 
@@ -659,9 +600,10 @@ Release: April 23, 2024
 
 9 / 17
 
-3.2  Server Details
 
-3.2.1  Abstract Data Model
+### 3.2 Server Details
+
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -673,21 +615,21 @@ CodePage: The ANSI code page that the server is configured to use. See [MS-UCODE
 
 2.2.1 for more details.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None beyond what is specified in [RFC2616].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None beyond what is specified in [RFC2616].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None beyond what is specified in [RFC2616].
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving an HTTP Request
+##### 3.2.5.1 Receiving an HTTP Request
 
 When an HTTP Request message is received, the HTTP server MUST validate it and process it as
 specified in [RFC2616], except as follows.
@@ -708,11 +650,11 @@ server MAY<5> instead reverse the order of checks; that is, first attempt to int
 encoded in the server's CodePage and if it is not a valid string in that CodePage, then interpret it as
 being encoded in UTF-8.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None beyond what is specified in [RFC2616].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None beyond what is specified in [RFC2616].
 
@@ -723,7 +665,8 @@ Release: April 23, 2024
 
 10 / 17
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following examples, the client and server are both configured to use the ANSI Baltic code page
 (code page 1257), and an application requests that "http://bønne.contoso.com/path?søster" be
@@ -732,7 +675,7 @@ LETTER O WITH STROKE ("ø" which is Unicode U+00F8). Note that in neither exampl
 encoded in ISO-8859-1 (that is, with octet value 248 = 0xF8) as HTTP would normally require for all
 headers.
 
-4.1  Request Sent Through a Proxy
+### 4.1 Request Sent Through a Proxy
 
 In this example, the request is being sent through a proxy, so the Request-URI includes a host name.
 Since the host and query portions of the URI both contain a non-ASCII character, the client has
@@ -760,7 +703,7 @@ In the Host header, the client chooses to use the ANSI Baltic code page (octet v
 instead of the IDNA form. As such, other HTTP utilities might misinterpret the "ø" as being (in
 ISO-8859-1) a CEDILLA ("¸" which is Unicode U+00B8) and display it as "b¸nne.contoso.com".
 
-4.2  Request Not Sent Through a Proxy
+### 4.2 Request Not Sent Through a Proxy
 
 In this example, the request is not sent through a proxy, so the Request-URI does not contain a host
 name. Since the host and query portions of the URI both contain a non-ASCII character, the client has
@@ -792,9 +735,10 @@ Release: April 23, 2024
 
 11 / 17
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations are discussed in [RFC2616] section 15. Since the query component and the
 Host header are often used for comparison against expected strings, and since the extensions in this
@@ -803,7 +747,7 @@ algorithms operate correctly, typically by normalizing a string to some common f
 comparison. For further discussion of security considerations for comparison algorithms, see
 [RFC6943].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -814,7 +758,8 @@ Release: April 23, 2024
 
 12 / 17
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -883,7 +828,8 @@ Hypertext Transfer Protocol (HTTP) Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-also applies to subsequent updates unless otherwise specified. If a product edition appears with the
+
+also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
 
 Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
@@ -918,7 +864,8 @@ Release: April 23, 2024
 
 14 / 17
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -962,7 +909,8 @@ Release: April 23, 2024
 
 15 / 17
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1093,7 +1041,8 @@ Timer events
 
 16 / 17
 
-Timers
+
+Timers
    client 9
    server 10
 Tracking changes 15

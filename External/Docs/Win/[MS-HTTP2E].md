@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 19
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -155,128 +156,59 @@ Release: April 23, 2024
 
 2 / 19
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 The TLS_RENEG_PERMITTED Setting](#221-the-tlsrenegpermitted-setting)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Upgrade from HTTP/1.1](#3131-upgrade-from-http11)
+      - [3.1.3.2 Transport Layer Security](#3132-transport-layer-security)
+      - [3.1.3.3 Prior Knowledge](#3133-prior-knowledge)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Connection Termination](#3171-connection-termination)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+      - [3.2.3.1 Upgrade from HTTP/1.1](#3231-upgrade-from-http11)
+      - [3.2.3.2 Transport Layer Security](#3232-transport-layer-security)
+      - [3.2.3.3 Prior Knowledge](#3233-prior-knowledge)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Connection Termination](#3271-connection-termination)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 5
-Relationship to Other Protocols ............................................................................ 5
-Prerequisites/Preconditions ................................................................................. 5
-Applicability Statement ....................................................................................... 5
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Message Syntax ................................................................................................. 7
-The TLS_RENEG_PERMITTED Setting .............................................................. 7
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3.1.3.1
-3.1.3.2
-3.1.3.3
-
-3  Protocol Details ....................................................................................................... 8
-Client Details ..................................................................................................... 8
-Abstract Data Model ...................................................................................... 8
-Timers ........................................................................................................ 8
-Initialization ................................................................................................. 8
-Upgrade from HTTP/1.1 ........................................................................... 8
-Transport Layer Security .......................................................................... 8
-Prior Knowledge ...................................................................................... 8
-Higher-Layer Triggered Events ....................................................................... 8
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events ................................................................................................ 9
-Other Local Events ........................................................................................ 9
-Connection Termination ........................................................................... 9
-Server Details .................................................................................................... 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Upgrade from HTTP/1.1 ........................................................................... 9
-Transport Layer Security ........................................................................ 10
-Prior Knowledge .................................................................................... 10
-Higher-Layer Triggered Events ..................................................................... 10
-Message Processing Events and Sequencing Rules .......................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-Connection Termination ......................................................................... 11
-
-3.2.3.1
-3.2.3.2
-3.2.3.3
-
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2.1
-3.2.2
-3.2.3
-
-3.2.7.1
-
-3.1.7.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 12
-
-5  Security ................................................................................................................. 15
-Security Considerations for Implementers ........................................................... 15
-Index of Security Parameters ............................................................................ 15
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 16
-
-7  Change Tracking .................................................................................................... 17
-
-8  Index ..................................................................................................................... 18
-
-[MS-HTTP2E] - v20240423
-Hypertext Transfer Protocol Version 2 (HTTP/2) Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 19
-
-1  Introduction
+## 1 Introduction
 
 The Hypertext Transfer Protocol Version 2 (HTTP/2) Extension specifies a profile of and an extension
 to the Hypertext Transfer Protocol (HTTP) version 2.
@@ -284,7 +216,7 @@ to the Hypertext Transfer Protocol (HTTP) version 2.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -302,14 +234,14 @@ TLS is standardized in the IETF TLS working group.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -340,7 +272,8 @@ Release: April 23, 2024
 
 4 / 19
 
-[RFC7234] Fielding, R., Nottingham, M., Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1:
+
+[RFC7234] Fielding, R., Nottingham, M., Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1:
 Caching", RFC 7234, June 2014, https://www.rfc-editor.org/info/rfc7234
 
 [RFC7235] Fielding, R., and Reschke, J., Eds., "Hypertext Transfer Protocol -- HTTP/1.1:
@@ -349,11 +282,11 @@ Authentication", RFC 7235, June 2014, https://www.rfc-editor.org/info/rfc7235
 [RFC7540] Belshe, M., Peon, R., and Thomson, M., Ed., "Hypertext Transfer Protocol Version 2
 (HTTP/2)", May 2015, https://www.rfc-editor.org/info/rfc7540
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This document specifies a profile of and an extension to the Hypertext Transfer Protocol (HTTP)
 version 2, which is defined by [RFC7540].
@@ -362,7 +295,7 @@ The profile relaxes certain requirements of the base protocol in the interests o
 interoperability. The accompanying extension permits implementations to negotiate further relaxation
 when both sides agree.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 [RFC7540] defines an optimized expression of the semantics of the Hypertext Transfer Protocol.
 HTTP/2 enables a more efficient use of network resources and a reduced perception of latency by
@@ -376,11 +309,11 @@ and [RFC7235] remain unchanged.
 This document describes a profile of [RFC7540] intended to provide broader interoperability with
 existing implementations of Transport Layer Security (TLS).
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites and preconditions are as specified in [RFC7540] section 3.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This profile applies when implementing version 2 of the Hypertext Transfer Protocol (HTTP). The
 profile restricts which connection methods are supported. Certain implementations of Transport
@@ -399,17 +332,18 @@ Release: April 23, 2024
 
 5 / 19
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 Sending the TLS_RENEG_PERMITTED setting (section 2.2.1) indicates the sender’s capability and
 willingness to employ TLS renegotiation. Only if both peers have indicated that renegotiation is
 acceptable to them can renegotiation be employed.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 A new setting is defined for HTTP/2 in the "HTTP/2 Settings" registry:
 
@@ -430,18 +364,19 @@ Release: April 23, 2024
 
 6 / 19
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Messages are transported as specified in [RFC7540] sections including, but not limited to, 3, 4, and 5.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The syntax is as specified in [RFC7540] sections including, but not limited to, 6 and 7. One additional
 setting value is defined in this section.
 
-2.2.1  The TLS_RENEG_PERMITTED Setting
+#### 2.2.1 The TLS_RENEG_PERMITTED Setting
 
 This document defines a new setting value in HTTP/2, TLS_RENEG_PERMITTED, with code 0x10 and
 an initial value of 0x00.
@@ -480,31 +415,32 @@ Release: April 23, 2024
 
 7 / 19
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 Client behavior is as specified in [RFC7540], except as described in this section.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The client must track the current value of TLS_RENEG_PERMITTED for both itself and the server.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No additional timers are defined.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 As specified in [RFC7540] section 3, connections are initiated via HTTP/1.1 upgrade, via TLS, or via
 emission of the connection preface immediately upon TCP connection to a server already known to
 support HTTP/2. See the following sections.
 
-3.1.3.1  Upgrade from HTTP/1.1
+##### 3.1.3.1 Upgrade from HTTP/1.1
 
 Clients SHOULD NOT attempt to perform an Upgrade to HTTP/2.
 
-3.1.3.2  Transport Layer Security
+##### 3.1.3.2 Transport Layer Security
 
 Connection over Transport Layer Security (TLS) functions as specified in [RFC7540] section 3.3,
 with the modifications described in this section.
@@ -521,12 +457,12 @@ higher and a cipher suite included in the client’s ClientHello message.
 Clients SHOULD set the TLS_RENEG_PERMITTED setting to a non-zero value if their TLS library and
 the negotiated TLS version support renegotiation, and the client is willing<2> to employ it.
 
-3.1.3.3  Prior Knowledge
+##### 3.1.3.3 Prior Knowledge
 
 Clients MUST NOT immediately send the HTTP/2 connection preface on a TCP connection, even to a
 server known to support HTTP/2.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Events from the higher layer (for example, the provision of a client certificate) could change the
 client’s willingness to employ TLS renegotiation. The client SHOULD re-evaluate the currently-set
@@ -542,12 +478,13 @@ Hypertext Transfer Protocol Version 2 (HTTP/2) Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-received a value for TLS_RENEG_PERMITTED from the server which accepts client-initiated
+
+received a value for TLS_RENEG_PERMITTED from the server which accepts client-initiated
 renegotiation, the client MAY relay this event to the TLS layer. If the client has not both sent and
 received a value for TLS_RENEG_PERMITTED which supports client-initiated renegotiation, the client
 MUST NOT trigger TLS renegotiation.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Upon receipt of a new value for TLS_RENEG_PERMITTED from the server, the client MUST update its
 cached value for the server on the current connection.
@@ -559,38 +496,38 @@ offers server-initiated renegotiation. If the client has not both sent and recei
 TLS_RENEG_PERMITTED which permits server-initiated renegotiation, the client MUST treat the
 renegotiation attempt as a connection error of type PROTOCOL_ERROR.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No additional timer events are defined.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 Other events are handled as specified in [RFC7540], except as described in this section.
 
-3.1.7.1  Connection Termination
+##### 3.1.7.1 Connection Termination
 
 Before terminating a connection, whether due to an error or a timeout, a client MAY<3> send a
 GOAWAY frame as specified in [RFC7540] section 6.8.
 
-3.2  Server Details
+### 3.2 Server Details
 
 Server behavior is as specified in [RFC7540], except as described in this section.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The server must track the current value of TLS_RENEG_PERMITTED for both itself and the client.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No additional timers are defined.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 As specified in [RFC7540] section 3, connections are initiated via HTTP/1.1 upgrade, via TLS, or via
 emission of the connection preface immediately upon TCP connection to a server already known to
 support HTTP/2. See the following sections.
 
-3.2.3.1  Upgrade from HTTP/1.1
+##### 3.2.3.1 Upgrade from HTTP/1.1
 
 This profile does not support this connection method. Servers SHOULD NOT accept offers from clients
 to upgrade to HTTP/2, and SHOULD NOT include HTTP/2 in an Upgrade header on HTTP/1.1
@@ -603,7 +540,8 @@ Release: April 23, 2024
 
 9 / 19
 
-3.2.3.2  Transport Layer Security
+
+##### 3.2.3.2 Transport Layer Security
 
 Connection over Transport Layer Security (TLS) functions as specified in [RFC7540] section 3.3,
 with the modifications described in this section.
@@ -620,12 +558,12 @@ cipher suite is included in [RFC7540] Appendix A.
 Servers SHOULD set the TLS_RENEG_PERMITTED setting to a non-zero value if their TLS library and
 the negotiated TLS version support renegotiation, and the server is willing<5> to employ it.
 
-3.2.3.3  Prior Knowledge
+##### 3.2.3.3 Prior Knowledge
 
 This profile does not support this connection method. Servers SHOULD refuse to accept such
 connections.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Events from the higher layer could change the server’s willingness to employ TLS renegotiation. The
 server SHOULD re-evaluate the currently-set value for TLS_RENEG_PERMITTED and send a new value
@@ -639,7 +577,7 @@ event to the TLS layer. If the server has not both sent and received a value for
 TLS_RENEG_PERMITTED which permits server-initiated renegotiation, the server MUST NOT trigger
 TLS renegotiation.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Upon receipt of a new value for TLS_RENEG_PERMITTED from the client, the server MUST update its
 cached value for the client on the current connection.
@@ -651,11 +589,11 @@ client-initiated renegotiation. If the server has not both sent and received a v
 TLS_RENEG_PERMITTED which permits client-initiated renegotiation, the server MUST treat the
 renegotiation attempt as a connection error of type PROTOCOL_ERROR.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No additional timer events are defined.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Other events are handled as specified in [RFC7540], except as described in this section.
 
@@ -666,7 +604,8 @@ Release: April 23, 2024
 
 10 / 19
 
-3.2.7.1  Connection Termination
+
+##### 3.2.7.1 Connection Termination
 
 Before terminating a connection, whether due to an error or a timeout, a server MAY<6> send a
 GOAWAY frame as specified in [RFC7540] section 6.8.
@@ -678,7 +617,8 @@ Release: April 23, 2024
 
 11 / 19
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In this example, the client attempts to access a protected resource. Because it has a client certificate
 configured, it advertises its willingness to renegotiate immediately.
@@ -801,7 +741,8 @@ Release: April 23, 2024
 
 12 / 19
 
-Frame
+
+Frame
 
 
 
@@ -923,7 +864,8 @@ will make no further requests.
 
 13 / 19
 
-The server notifies the TCP layer to close the connection, after optionally sending a GOAWAY frame
+
+The server notifies the TCP layer to close the connection, after optionally sending a GOAWAY frame
 itself.
 
 Frame
@@ -950,9 +892,10 @@ Release: April 23, 2024
 
 14 / 19
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations of HTTP/2 are discussed in [RFC7540] section 10. In addition to those
 common to any HTTP/2 implementation, this profile relaxes the cryptographic requirements of the
@@ -966,7 +909,7 @@ HTTP/1.1 are advised to initially offer only those cipher suites considered acce
 either. If the TLS negotiation fails, the implementation can retry with additional cipher suites and
 without the request for HTTP/2.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None, other than those specified in [RFC7540] sections 9.2, 11.4, and Appendix A.
 
@@ -977,7 +920,8 @@ Release: April 23, 2024
 
 15 / 19
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1029,7 +973,8 @@ Release: April 23, 2024
 
 16 / 19
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1073,7 +1018,8 @@ Release: April 23, 2024
 
 17 / 19
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1204,7 +1150,8 @@ V
 
 18 / 19
 
-Vendor-extensible fields 6
+
+Vendor-extensible fields 6
 Versioning 6
 
 [MS-HTTP2E] - v20240423

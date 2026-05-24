@@ -64,7 +64,8 @@ Release: April 7, 2021
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -306,7 +307,8 @@ Release: April 7, 2021
 
 2 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -454,151 +456,64 @@ Release: April 7, 2021
 
 3 / 30
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+      - [2.2.2.1 BeginSession](#2221-beginsession)
+      - [2.2.2.2 Session](#2222-session)
+      - [2.2.2.3 EndSession](#2223-endsession)
+    - [2.2.3 Elements](#223-elements)
+      - [2.2.3.1 BeginSession Element](#2231-beginsession-element)
+      - [2.2.3.2 Session Element](#2232-session-element)
+      - [2.2.3.3 EndSession Element](#2233-endsession-element)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+      - [2.2.5.1 sessionId Simple Type](#2251-sessionid-simple-type)
+    - [2.2.6 Attributes](#226-attributes)
+      - [2.2.6.1 SessionID Attribute](#2261-sessionid-attribute)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 SessionIdleTimer](#3121-sessionidletimer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 BeginSession](#3141-beginsession)
+      - [3.1.4.2 Session](#3142-session)
+      - [3.1.4.3 EndSession](#3143-endsession)
+      - [3.1.4.4 Faults](#3144-faults)
+    - [3.1.5 Timer Events](#315-timer-events)
+      - [3.1.5.1 SessionIdletimer Event](#3151-sessionidletimer-event)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full WSDL](#6-appendix-a-full-wsdl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ....................................................................................... 9
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-
-2  Messages ............................................................................................................... 10
-Transport ........................................................................................................ 10
-Common Message Syntax ................................................................................. 10
-Namespaces .............................................................................................. 10
-Messages ................................................................................................... 10
-BeginSession ........................................................................................ 11
-Session ................................................................................................ 11
-EndSession .......................................................................................... 12
-Elements ................................................................................................... 13
-BeginSession Element ........................................................................... 13
-Session Element ................................................................................... 14
-EndSession Element .............................................................................. 14
-Complex Types ........................................................................................... 14
-Simple Types ............................................................................................. 15
-sessionId Simple Type ........................................................................... 15
-Attributes .................................................................................................. 15
-SessionID Attribute ............................................................................... 15
-Groups ...................................................................................................... 15
-Attribute Groups ......................................................................................... 15
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-
-2.2.4
-2.2.5
-
-2.2.7
-2.2.8
-
-2.2.5.1
-
-2.2.6.1
-
-2.2.6
-
-3.1
-
-3.1.2.1
-
-3.1.1
-3.1.2
-
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 16
-Server Details .................................................................................................. 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-SessionIdleTimer .................................................................................. 16
-Initialization ............................................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 17
-BeginSession ........................................................................................ 17
-Session ................................................................................................ 18
-EndSession .......................................................................................... 18
-Faults .................................................................................................. 19
-Timer Events .............................................................................................. 20
-SessionIdletimer Event .......................................................................... 20
-Other Local Events ...................................................................................... 20
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-
-3.1.5.1
-
-3.1.6
-
-3.1.5
-
-4  Protocol Examples ................................................................................................. 21
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Full WSDL .......................................................................................... 25
-
-7  Appendix B: Product Behavior ............................................................................... 26
-
-4 / 30
-
-[MS-DSML] - v20210407
-Directory Services Markup Language (DSML) 2.0 Protocol Extensions
-Copyright © 2021 Microsoft Corporation
-Release: April 7, 2021
-
-8  Change Tracking .................................................................................................... 28
-
-9  Index ..................................................................................................................... 29
-
-[MS-DSML] - v20210407
-Directory Services Markup Language (DSML) 2.0 Protocol Extensions
-Copyright © 2021 Microsoft Corporation
-Release: April 7, 2021
-
-5 / 30
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of Microsoft extensions to the Directory Services Markup Language (DSML) 2.0
 Protocol specified in [DSML2]. These extensions are referred to as SOAP session extensions (SSE)
@@ -608,7 +523,7 @@ they make it possible to maintain state information across multiple request/resp
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -670,7 +585,8 @@ Release: April 7, 2021
 
 6 / 30
 
-SOAP message: An XML document consisting of a mandatory SOAP envelope, an optional SOAP
+
+SOAP message: An XML document consisting of a mandatory SOAP envelope, an optional SOAP
 header, and a mandatory SOAP body. See [SOAP1.2-1/2007] section 5 for more information.
 
 SOAP session extensions (SSE): Extensions to DSML that make it possible to maintain state
@@ -701,14 +617,14 @@ XML schema uses XML syntax for its language.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -739,7 +655,8 @@ Release: April 7, 2021
 
 7 / 30
 
-[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
+
+[XMLNS] Bray, T., Hollander, D., Layman, A., et al., Eds., "Namespaces in XML 1.0 (Third Edition)",
 W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-20091208/
 
 [XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
@@ -749,7 +666,7 @@ W3C Recommendation, December 2009, https://www.w3.org/TR/2009/REC-xml-names-2009
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-ADTS] Microsoft Corporation, "Active Directory Technical Specification".
 
@@ -758,7 +675,7 @@ Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 [RFC2696] Weider, C., Herron, A., Anantha, A., and Howes, T., "LDAP Control Extension for Simple
 Paged Results Manipulation", RFC 2696, September 1999, https://www.rfc-editor.org/info/rfc2696
 
-1.3  Overview
+### 1.3 Overview
 
 The Directory Services Markup Language (DSML) Protocol [DSML2] is a protocol that specifies the
 encoding of directory service (DS) operations in XML [XML10] documents using a SOAP [SOAP1.1]
@@ -807,7 +724,8 @@ Release: April 7, 2021
 
 8 / 30
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-DSML].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -820,7 +738,7 @@ model of the directory [MS-ADTS]. That is, directory objects that were added to 
 of the session stay added, objects that were removed stay removed, and objects that were modified
 stay modified.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 SSE is an extension to DSML and is built on top of its SOAP binding ([DSML2] section 6) over
 Hypertext Transfer Protocol (HTTP). Therefore, these extensions are dependent on DSML [DSML2]
@@ -830,26 +748,26 @@ SSE and DSML use SOAP over HTTP as shown in the following layering diagram.
 
 Figure 1: SSE protocol layers
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 SSE is suitable where the DSML protocol is already in use with a SOAP binding, and a means of
 correlating operations across multiple request/response messages is required. These extensions are
 not applicable outside of DSML or with alternative non-SOAP bindings of DSML, such as a file binding
 described in [DSML2] section 7.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -860,20 +778,21 @@ Release: April 7, 2021
 
 9 / 30
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 SOAP session extensions (SSE) use HTTP as the transport protocol over which SOAP 1.1
 [SOAP1.1] messages are sent.
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions that are used by this protocol. The syntax of the definitions
 uses XML Schema (XSD) as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and Web Services
 Description Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific prefix for each XML namespace that is used,
@@ -914,7 +833,7 @@ http://www.w3.org/2001/XMLSchema
 
 [XMLSCHEMA1]
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 SSE defines a set of SOAP headers that can be attached to DSML SOAP request messages by a
 client. SSE headers can be used for the following:
@@ -964,7 +883,8 @@ Release: April 7, 2021
 
 10 / 30
 
-Header
+
+Header
 
 Description
 
@@ -972,7 +892,7 @@ with a BeginSession operation. The SOAP body to which this header is attached MU
 processed in the context of the session. That is, it MUST be processed as if the session were
 terminated after the request message completed processing.
 
-2.2.2.1  BeginSession
+##### 2.2.2.1 BeginSession
 
 A client MUST attach a <BeginSession> header to a DSML SOAP message that contains a
 <dsml:batchRequest> payload in order to instruct the server to initiate a new session and to process
@@ -1006,7 +926,7 @@ message.
    </soap:Body>
  </soap:Envelope>
 
-2.2.2.2  Session
+##### 2.2.2.2 Session
 
 A client MUST attach a <Session> header to a DSML SOAP message that contains a
 <dsml:batchRequest> payload in order to instruct the server that the payload MUST be processed in
@@ -1038,7 +958,8 @@ Release: April 7, 2021
 
 11 / 30
 
-The following XML shows a <Session> header and a <dsml:batchRequest> payload as sent by a
+
+The following XML shows a <Session> header and a <dsml:batchRequest> payload as sent by a
 client in a SOAP message.
 
 [SOAP]
@@ -1083,7 +1004,7 @@ Instead, if the server is returning this <Session> header in response to a Sessi
 operation performed by the client, then the sessionId MUST be the same value as that passed in by
 the client.
 
-2.2.2.3  EndSession
+##### 2.2.2.3 EndSession
 
 A client MUST attach an <EndSession> header to a DSML SOAP message in order to instruct the
 server to terminate the specified session after the <dsml:batchRequest> payload has been processed
@@ -1107,7 +1028,8 @@ Release: April 7, 2021
 
 12 / 30
 
-The following XML shows an <EndSession> header and a <dsml:batchRequest> payload in a SOAP
+
+The following XML shows an <EndSession> header and a <dsml:batchRequest> payload in a SOAP
 message.
 
 [SOAP]
@@ -1127,7 +1049,7 @@ message.
 In the preceding script, sessionId MUST be an identifier that was returned from the server in a
 previously received <Session> header. It is of type sessionId (section 2.2.5.1).
 
-2.2.3  Elements
+#### 2.2.3 Elements
 
 The following table summarizes the set of common XML schema element definitions defined by this
 specification. XML schema element definitions that are specific to a particular operation are described
@@ -1147,7 +1069,7 @@ EndSession
 
 The XML schema definition for the <EndSession> element.
 
-2.2.3.1  BeginSession Element
+##### 2.2.3.1 BeginSession Element
 
 The BeginSession element encloses an XML header necessary to initiate a DSML SOAP message that
 contains the <dsml:batchRequest> payload.
@@ -1180,7 +1102,8 @@ Release: April 7, 2021
 
 13 / 30
 
-2.2.3.2  Session Element
+
+##### 2.2.3.2 Session Element
 
 The Session element encloses an XML header necessary to a DSML SOAP message that contains the
 <dsml:batchRequest> payload to instruct the server the payload MUST be processed in the context of
@@ -1217,7 +1140,7 @@ soap:mustUnderstand
 
 [SOAP1.1]  See [SOAP1.1] section 4.2.3.
 
-2.2.3.3  EndSession Element
+##### 2.2.3.3 EndSession Element
 
 The EndSession element encloses an XML header necessary to a DSML SOAP message that contains
 the <dsml:batchRequest> payload to instruct the server the payload has been processed and to
@@ -1254,7 +1177,7 @@ soap:mustUnderstand
 
 [SOAP1.1]  See [SOAP1.1] section 4.2.3.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML schema complex type definitions.
 
@@ -1265,7 +1188,8 @@ Release: April 7, 2021
 
 14 / 30
 
-2.2.5  Simple Types
+
+#### 2.2.5 Simple Types
 
 The following table specifies the set of common XML schema simple type definitions that are defined in
 SSE. XML schema simple type definitions that are specific to a particular operation are specified in the
@@ -1277,7 +1201,7 @@ sessionId
 
 Uniquely identifies a session on the server.
 
-2.2.5.1  sessionId Simple Type
+##### 2.2.5.1 sessionId Simple Type
 
 The sessionId is the type used for the SessionID attribute in the <Session> and <EndSession>
 headers.
@@ -1288,7 +1212,7 @@ headers.
     />
  </xs:simpleType>
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 The following table summarizes the set of common XML schema attribute definitions defined by this
 specification. XML schema attribute definitions that are specific to a particular operation are described
@@ -1298,7 +1222,7 @@ Attribute  Description
 
 SessionID  The XML schema definition for the SessionID attribute.
 
-2.2.6.1  SessionID Attribute
+##### 2.2.6.1 SessionID Attribute
 
 The SessionID is an attribute in the <Session> (section 2.2.3.2) and <EndSession> (section 2.2.3.3)
 elements, the value of which uniquely identifies an existing session. It is assigned by the server and
@@ -1309,11 +1233,11 @@ returned in the response to a BeginSession (section 2.2.3.1) message.
    use="required"
  />
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML schema attribute group definitions.
 
@@ -1324,16 +1248,17 @@ Release: April 7, 2021
 
 15 / 30
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. This organization is provided to further clarify the explanation
@@ -1373,14 +1298,14 @@ will be terminated by the server even if the client does not send an
 
 Note  The preceding conceptual data can be implemented using a variety of techniques.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  SessionIdleTimer
+##### 3.1.2.1 SessionIdleTimer
 
 This per-session timer controls the amount of time that a session is allowed to remain idle before the
 server terminates it.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The SessionTable MUST be initialized to be empty. That is, the protocol extension starts with no
 sessions created.
@@ -1392,10 +1317,11 @@ Release: April 7, 2021
 
 16 / 30
 
-MaxSessionsAllowed, MaxSessionsAllowedPerIp, and MaxSessionIdleTimeAllowed MUST be
+
+MaxSessionsAllowed, MaxSessionsAllowedPerIp, and MaxSessionIdleTimeAllowed MUST be
 initialized.<6>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table shows the processing events that are defined for DSML:
 
@@ -1417,7 +1343,7 @@ Faults
 
 Performs an action if the session request cannot be processed.
 
-3.1.4.1  BeginSession
+##### 3.1.4.1 BeginSession
 
 Note  Abstract data model objects that are referenced in this section are defined in section 3.1.1.
 SOAP fault processing is specified in section 3.1.4.4.
@@ -1467,12 +1393,13 @@ Release: April 7, 2021
 
 17 / 30
 
-Once the operations have successfully completed, or if there were no operations to perform, the
+
+Once the operations have successfully completed, or if there were no operations to perform, the
 server MUST generate a DSML response message [DSML2], with a <Session> header (section
 2.2.2.2). The SessionID attribute of the <Session> header MUST be assigned the value of the
 SessionID object of the allocated SessionTableEntry.
 
-3.1.4.2  Session
+##### 3.1.4.2 Session
 
 Note  Abstract data model objects that are referenced in this section are defined in section 3.1.1.
 SOAP fault processing is specified in section 3.1.4.4.
@@ -1504,7 +1431,7 @@ response message [DSML2] with a <Session> header (see section 2.2.2.2). The Sess
 of that <Session> header MUST be assigned the value of the SessionID object of the retrieved
 SessionTableEntry.
 
-3.1.4.3  EndSession
+##### 3.1.4.3 EndSession
 
 Note  Abstract data model objects that are referenced in this section are defined in section 3.1.1.
 SOAP fault processing is specified in section 3.1.4.4.
@@ -1534,7 +1461,8 @@ Directory Services Markup Language (DSML) 2.0 Protocol Extensions
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-SessionTableEntry. DSML operations have the form of a <dsml:batchRequest> element with zero or
+
+SessionTableEntry. DSML operations have the form of a <dsml:batchRequest> element with zero or
 more child elements. The server SHOULD save any state changes in the Session object of the
 SessionTableEntry to correlate these operations with future operations.
 
@@ -1548,7 +1476,7 @@ The server MUST dispose of the removed SessionTableEntry, including the state sa
 SessionTableEntry.Session. The server MAY<8> wait for some time after it has removed the
 SessionTableEntry from the SessionTable before disposing of the SessionTableEntry.
 
-3.1.4.4  Faults
+##### 3.1.4.4 Faults
 
 If the session request cannot be processed, the server MUST return the following SOAP fault:
 
@@ -1594,15 +1522,16 @@ Release: April 7, 2021
 
 19 / 30
 
-3.1.5  Timer Events
 
-3.1.5.1  SessionIdletimer Event
+#### 3.1.5 Timer Events
+
+##### 3.1.5.1 SessionIdletimer Event
 
 When the timer represented by the <SessionIdleTimer> element of a SessionTableEntry expires,
 the server MUST perform an <EndSession> operation on the session associated with that
 SessionTableEntry. The idle session timer expires after reaching MaxSessionIdleTimeAllowed.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
@@ -1613,7 +1542,8 @@ Release: April 7, 2021
 
 20 / 30
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In this section, a complete session exchange is shown, consisting of the following steps:
 
@@ -1682,7 +1612,8 @@ Release: April 7, 2021
 
 21 / 30
 
-       </dsml:searchRequest>
+
+       </dsml:searchRequest>
      </dsml:batchRequest>
    </soap:Body>
  </soap:Envelope>
@@ -1751,7 +1682,8 @@ Directory Services Markup Language (DSML) 2.0 Protocol Extensions
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
- <soap:Envelope>
+
+ <soap:Envelope>
    <soap:Header>
      <ad:Session xmlns:ad="urn:schema-microsoft-com:activedirectory:dsmlv2"
        ad:SessionID="12345"/>
@@ -1772,9 +1704,10 @@ Release: April 7, 2021
 
 23 / 30
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Each session that the client asks the server to create consumes storage on the server. A server
 implementation can limit the number of sessions that a single client is permitted to have open at one
@@ -1790,7 +1723,7 @@ the second client's SessionId. A server implementation can perform additional va
 ensure that the client using a particular SessionId in a <Session> or <EndSession> header is the
 same client that created the session.<9>
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -1801,7 +1734,8 @@ Release: April 7, 2021
 
 24 / 30
 
-6  Appendix A: Full WSDL
+
+## 6 Appendix A: Full WSDL
 
 This specification does not describe a Web Service protocol and does not specify Web Services
 Description Language (WSDL).
@@ -1813,7 +1747,8 @@ Release: April 7, 2021
 
 25 / 30
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1881,7 +1816,8 @@ Directory Services Markup Language (DSML) 2.0 Protocol Extensions
 Copyright © 2021 Microsoft Corporation
 Release: April 7, 2021
 
-do not use a prefix will generate a fault from the server. The server response to all successful requests
+
+do not use a prefix will generate a fault from the server. The server response to all successful requests
 uses the "ad:" prefix. See Protocol Examples (section 4).
 
 <4> Section 2.2.2.3: The DSML client in DSML Services for Windows uses the prefix "ad:" for the
@@ -1943,7 +1879,8 @@ Release: April 7, 2021
 
 27 / 30
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1980,7 +1917,8 @@ Release: April 7, 2021
 
 28 / 30
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2111,7 +2049,8 @@ Release: April 7, 2021
 
 29 / 30
 
-V
+
+V
 
 Vendor-extensible fields 9
 Versioning 9

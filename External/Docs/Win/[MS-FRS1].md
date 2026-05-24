@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 250
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ Release: September 16, 2024
 
 2 / 250
 
-Date
+
+Date
 
 Revision
 History
@@ -543,7 +545,8 @@ Release: September 16, 2024
 
 3 / 250
 
-Date
+
+Date
 
 Revision
 History
@@ -562,528 +565,224 @@ Release: September 16, 2024
 
 4 / 250
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 9
-Glossary ........................................................................................................... 9
-References ...................................................................................................... 14
-Normative References ................................................................................. 14
-Informative References ............................................................................... 15
-Overview ........................................................................................................ 15
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 18
-NtFrsApi .................................................................................................... 18
-FRSRPC ..................................................................................................... 18
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-1.7.1
-1.7.2
-
-1.8
-1.9
-
-2.2.3
-
-2.1
-2.2
-
-2.2.2.1
-
-2.2.1
-2.2.2
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Common Data Types ........................................................................................ 20
-WCHAR and PWCHAR .................................................................................. 20
-NtFrsApi Common Data Types ...................................................................... 20
-NTFRSAPI_INFO .................................................................................... 20
-FRSRPC Common Data Types ....................................................................... 22
-GVSN .................................................................................................. 22
-CHANGE_ORDER_COMMAND .................................................................. 22
-CO_RECORD_EXTENSION_WIN2K ........................................................... 29
-CHANGE_ORDER_RECORD_EXTENSION ................................................... 29
-COMM_PACKET and PCOMM_PACKET ....................................................... 30
-COMM_PACKET Elements ....................................................................... 35
-COMM_BOP .................................................................................... 35
-COMM_COMMAND ........................................................................... 35
-COMM_TO ...................................................................................... 36
-COMM_FROM .................................................................................. 37
-COMM_REPLICA .............................................................................. 38
-COMM_CXTION ............................................................................... 38
-COMM_JOIN_GUID .......................................................................... 39
-COMM_LAST_JOIN_TIME .................................................................. 39
-COMM_VVECTOR ............................................................................. 39
-COMM_JOIN_TIME ........................................................................... 40
-COMM_REPLICA_VERSION_GUID ...................................................... 40
-COMM_COMPRESSION_GUID ............................................................ 41
-COMM_BLOCK ................................................................................. 41
-COMM_BLOCK_SIZE ........................................................................ 41
-COMM_FILE_SIZE ............................................................................ 42
-COMM_FILE_OFFSET ........................................................................ 42
-COMM_GVSN .................................................................................. 42
-COMM_CO_GUID ............................................................................. 43
-COMM_CO_SEQUENCE_NUMBER ....................................................... 43
-COMM_REMOTE_CO ......................................................................... 44
-COMM_CO_EXT_WIN2K ................................................................... 44
-COMM_CO_EXTENSION_2 ................................................................ 44
-COMM_EOP ..................................................................................... 45
-DATA_EXTENSION_CHECKSUM ............................................................... 45
-DATA_EXTENSION_PREFIX ..................................................................... 46
-DATA_EXTENSION_RETRY_TIMEOUT ....................................................... 46
-STAGE_HEADER .................................................................................... 46
-
-2.2.3.6.1
-2.2.3.6.2
-2.2.3.6.3
-2.2.3.6.4
-2.2.3.6.5
-2.2.3.6.6
-2.2.3.6.7
-2.2.3.6.8
-2.2.3.6.9
-2.2.3.6.10
-2.2.3.6.11
-2.2.3.6.12
-2.2.3.6.13
-2.2.3.6.14
-2.2.3.6.15
-2.2.3.6.16
-2.2.3.6.17
-2.2.3.6.18
-2.2.3.6.19
-2.2.3.6.20
-2.2.3.6.21
-2.2.3.6.22
-2.2.3.6.23
-
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-
-[MS-FRS1] - v20240916
-File Replication Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 250
-
-2.3
-
-2.3.1
-
-Directory Service Schema Elements ................................................................... 49
-DFS Active Directory Configuration ............................................................... 51
-NTFRS Settings Object ........................................................................... 52
-2.3.1.1
-NTFRS Replica Set Object ...................................................................... 53
-2.3.1.2
-NTFRS Member Object ........................................................................... 55
-2.3.1.3
-NTDS Active Directory Service Agent (nTDSDSA) Object ............................ 55
-2.3.1.4
-NTDS Active Directory Service Agent Read Only (nTDSDSARO) Object ........ 56
-2.3.1.5
-NTDS Connection Object ........................................................................ 56
-2.3.1.6
-Computer Object .................................................................................. 57
-2.3.1.7
-NTFRS Subscriptions Container ............................................................... 57
-2.3.1.8
-2.3.1.9
-NTFRS Subscriber Object ....................................................................... 57
-2.3.1.10  Object Types ........................................................................................ 58
-Top class ............................................................................................. 59
-2.3.1.11
-SYSVOL Active Directory Configuration .......................................................... 59
-NTFRS Settings Object ........................................................................... 60
-NTFRS Replica Set Object ...................................................................... 60
-NTFRS Member Object ........................................................................... 61
-NTDS Connection Object ........................................................................ 61
-Computer Object .................................................................................. 61
-NTFRS Subscriptions Container ............................................................... 61
-NTFRS Subscriber Object ....................................................................... 61
-FRS Performance Counters ................................................................................ 61
-FileReplicaConn Object ................................................................................ 62
-FileReplicaSet ............................................................................................. 63
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-2.3.2.4
-2.3.2.5
-2.3.2.6
-2.3.2.7
-
-2.3.2
-
-2.4
-
-2.4.1
-2.4.2
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-3.1.1.3
-3.1.1.4
-3.1.1.5
-3.1.1.6
-3.1.1.7
-3.1.1.8
-3.1.1.9
-3.1.1.10
-
-3  Protocol Details ..................................................................................................... 68
-Common Details .............................................................................................. 68
-Abstract Data Model .................................................................................... 68
-File System .......................................................................................... 68
-Replica Set Object ................................................................................. 68
-Member Object (Replica Member Object) ................................................. 69
-Replica Tree ......................................................................................... 69
-IDTable ............................................................................................... 69
-Inbound Log Object (InLog) ................................................................... 70
-Outbound Log Object (OutLog) ............................................................... 70
-Connection Object ................................................................................. 70
-Staging File Object ................................................................................ 71
-Change Order Object ............................................................................. 71
-3.1.1.10.1
-Local Change Order ......................................................................... 71
-Retry Change Order ......................................................................... 72
-3.1.1.10.2
-3.1.1.10.3  Directed Change Order ..................................................................... 72
-3.1.1.10.4  Out-of-Order Change Order .............................................................. 72
-Skip-VV-Update Change Order .......................................................... 72
-3.1.1.10.5
-Version Vector Object ............................................................................ 73
-Communication Packet Object ................................................................ 73
-Timers ...................................................................................................... 74
-Initialization ............................................................................................... 74
-Message Processing Events and Sequencing Rules .......................................... 74
-Timer Events .............................................................................................. 74
-Both Short and Long DS Polling Interval Timers ........................................ 74
-Other Local Events ...................................................................................... 78
-FRSAPI Interface .............................................................................................. 78
-Abstract Data Model .................................................................................... 79
-Timers ...................................................................................................... 79
-Initialization ............................................................................................... 79
-Message Processing Events and Sequencing Rules .......................................... 80
-NtFrsApi_Rpc_Set_DsPollingIntervalW (Opnum 4) ..................................... 81
-NtFrsApi_Rpc_Get_DsPollingIntervalW (Opnum 5) .................................... 82
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.1.11
-3.1.1.12
-
-3.2.4.1
-3.2.4.2
-
-3.1.5.1
-
-3.1.6
-
-3.2
-
-[MS-FRS1] - v20240916
-File Replication Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 250
-
-3.3
-
-3.2.5
-3.2.6
-
-3.3.1
-3.3.2
-
-3.3.2.1
-
-3.3.2.1.1
-3.3.2.1.2
-
-3.3.3
-3.3.4
-
-3.3.4.1
-
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-
-3.3.4.1.1
-3.3.4.1.2
-3.3.4.1.3
-3.3.4.1.4
-3.3.4.1.5
-3.3.4.1.6
-
-3.3.4.2
-3.3.4.3
-3.3.4.4
-
-3.3.4.4.1
-3.3.4.4.2
-3.3.4.4.3
-3.3.4.4.4
-
-NtFrsApi_Rpc_InfoW (Opnum 7) ............................................................. 83
-NtFrsApi_Rpc_IsPathReplicated (Opnum 8) .............................................. 84
-NtFrsApi_Rpc_WriterCommand (Opnum 9) ............................................... 86
-NtFrsApi_Rpc_ForceReplication (Opnum 10) ............................................. 88
-Timer Events .............................................................................................. 89
-Other Local Events ...................................................................................... 89
-FRSRPC Interface ............................................................................................. 89
-Abstract Data Model .................................................................................... 89
-Timers ...................................................................................................... 89
-Connection Schedule Timer .................................................................... 89
-SYSVOL Connection ScheduleTimer ................................................... 89
-DFS Connection Schedule ................................................................. 90
-Initialization ............................................................................................... 90
-Message Processing Events and Sequencing Rules .......................................... 90
-Change Orders ..................................................................................... 91
-File Is Added/Updated on the Upstream Partner .................................. 94
-File Is Removed on the Upstream Partner ........................................... 94
-File Is Renamed on the Upstream Partner ........................................... 94
-Folder Is Created/Updated on the Upstream Partner ............................ 95
-Folder Is Removed on the Upstream Partner ....................................... 95
-Folder Is Renamed on the Upstream Partner ....................................... 96
-FrsRpcStartPromotionParent Message (Opnum 2) ..................................... 96
-FrsNOP Message (Opnum 3) ................................................................... 98
-FrsRpcSendCommPkt (Opnum 0) ............................................................ 99
-Common Details .............................................................................. 99
-COMM_COMMAND Is CMD_NEED_JOIN ............................................. 101
-COMM_COMMAND Is CMD_START_JOIN ............................................ 101
-COMM_COMMAND Is CMD_JOINING ................................................. 101
-Connection VVJoin .................................................................... 102
-Common Details for Initial Syncing a File and a Folder ............. 102
-Initial Syncing a File ............................................................ 104
-Initial Syncing a Folder ......................................................... 104
-CMD_VVJOIN_DONE Once Initial Sync Is Done ........................ 104
-COMM_COMMAND Is CMD_JOINED ................................................... 104
-COMM_COMMAND Is CMD_REMOTE_CO ............................................ 105
-Requesting a Staging File ........................................................... 108
-Acknowledging the Change Is Done ............................................. 110
-COMM_COMMAND Is CMD_SEND_STAGE .......................................... 114
-COMM_COMMAND Is CMD_RECEIVING_STAGE .................................. 116
-COMM_COMMAND Is CMD_REMOTE_CO_DONE .................................. 117
-COMM_COMMAND Is CMD_ABORT_FETCH ......................................... 117
-COMM_COMMAND Is CMD_RETRY_FETCH .......................................... 117
-COMM_COMMAND Is CMD_VVJOIN_DONE ......................................... 117
-COMM_COMMAND Is CMD_UNJOIN_REMOTE ..................................... 117
-FrsRpcVerifyPromotionParent (Opnum 1) ................................................ 118
-Establishing a Connection Session .......................................................... 118
-Timer Events ............................................................................................. 120
-Other Local Events ..................................................................................... 120
-PERFFRS Interface .......................................................................................... 120
-
-3.3.4.4.4.1.1
-3.3.4.4.4.1.2
-3.3.4.4.4.1.3
-3.3.4.4.4.1.4
-
-3.3.4.4.6.1
-3.3.4.4.6.2
-
-3.3.4.4.4.1
-
-3.3.4.4.7
-3.3.4.4.8
-3.3.4.4.9
-3.3.4.4.10
-3.3.4.4.11
-3.3.4.4.12
-3.3.4.4.13
-
-3.3.4.4.5
-3.3.4.4.6
-
-3.3.4.5
-3.3.4.6
-
-3.3.5
-3.3.6
-
-3.4
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ............................................................................................... 121
-Connection Establishment Sequence .................................................................. 122
-Change Order Handling Sequence ..................................................................... 123
-COMM_PACKET ............................................................................................... 126
-SYSVOL Initial Sync ......................................................................................... 128
-Replica DC Sends Out CMD_NEED_JOIN to PDC ............................................. 130
-PDC Sends Out CMD_START_JOIN to Replica DC ........................................... 132
-Replica DC Sends Out CMD_JOINING ........................................................... 134
-
-4.4.1
-4.4.2
-4.4.3
-
-[MS-FRS1] - v20240916
-File Replication Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 250
-
-4.5.2
-
-4.4.4
-4.4.5
-4.4.6
-4.4.7
-4.4.8
-4.4.9
-4.4.10
-
-4.5
-
-4.5.1
-
-PDC Sends Out CMD_JOINED ...................................................................... 136
-PDC Sends Out CMD_REMOTE_CO ............................................................... 138
-Replica DC Sends Out CMD_SEND_STAGE .................................................... 142
-PDC Sends Out CMD_RECEIVING_STAGE...................................................... 146
-Replica DC Sends Out CMD_REMOTE_CO_DONE ............................................ 151
-Once All Change Orders are Sent Out, PDC Sends Out CMD_VVJOIN_DONE ...... 156
-Replica DC Sends Out CMD_UNJOIN_REMOTE ............................................... 157
-Normal Sync ................................................................................................... 159
-Copy a File ................................................................................................ 159
-Upstream Partner Sends Out CMD_REMOTE_CO ...................................... 159
-Downstream Partner Sends Out CMD_SEND_STAGE 1 .............................. 162
-Upstream Partner Sends Out CMD_RECEIVING_STAGE 1 .......................... 165
-Downstream Partner Sends Out CMD_SEND_STAGE 2 .............................. 169
-Upstream Partner Sends Out CMD_RECEIVING_STAGE 2 .......................... 172
-Downstream Partner Sends Out CMD_REMOTE_CO_DONE ........................ 175
-Rename a File ........................................................................................... 179
-Upstream Partner Sends Out CMD_REMOTE_CO ...................................... 179
-Downstream Partner Sends Out CMD_SEND_STAGE ................................. 181
-Upstream Partner Sends Out CMD_RECEIVING_STAGE ............................. 185
-Downstream Partner Sends Out CMD_REMOTE_CO_DONE ........................ 189
-Remove a File ........................................................................................... 193
-Upstream Partner Sends Out CMD_REMOTE_CO ...................................... 193
-Downstream Partner Sends Out CMD_REMOTE_CO_DONE ........................ 195
-Copy an Empty Folder ................................................................................ 199
-Upstream Partner Sends Out CMD_REMOTE_CO ...................................... 199
-Downstream Partner Sends Out CMD_SEND_STAGE ................................. 202
-Upstream Partner Sends Out CMD_RECEIVING_STAGE ............................. 205
-Downstream Partner Sends Out CMD_REMOTE_CO_DONE ........................ 209
-Remove a Folder ....................................................................................... 213
-Upstream Partner Sends Out CMD_REMOTE_CO ...................................... 213
-Downstream Partner Sends Out CMD_REMOTE_CO_DONE ........................ 216
-Rename an Empty Folder ............................................................................ 219
-Upstream Partner Sends Out CMD_REMOTE_CO ...................................... 219
-Downstream Partner Sends Out CMD_SEND_STAGE ................................. 222
-Upstream Partner Sends Out CMD_RECEIVING_STAGE ............................. 225
-Downstream Partner Sends Out CMD_REMOTE_CO_DONE ........................ 230
-
-4.5.1.1
-4.5.1.2
-4.5.1.3
-4.5.1.4
-4.5.1.5
-4.5.1.6
-
-4.5.2.1
-4.5.2.2
-4.5.2.3
-4.5.2.4
-
-4.5.3.1
-4.5.3.2
-
-4.5.4.1
-4.5.4.2
-4.5.4.3
-4.5.4.4
-
-4.5.5.1
-4.5.5.2
-
-4.5.6.1
-4.5.6.2
-4.5.6.3
-4.5.6.4
-
-4.5.3
-
-4.5.4
-
-4.5.5
-
-4.5.6
-
-5  Security ............................................................................................................... 234
-Security Considerations for Implementers .......................................................... 234
-Index of Security Parameters ........................................................................... 234
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 235
-Appendix A.1: frsapi.idl .................................................................................... 235
-Appendix A.2: frsrpc.idl ................................................................................... 236
-
-6.1
-6.2
-
-7  Appendix B: Product Behavior ............................................................................. 238
-
-8  Change Tracking .................................................................................................. 247
-
-9  Index ................................................................................................................... 248
-
-[MS-FRS1] - v20240916
-File Replication Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 250
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 NtFrsApi](#171-ntfrsapi)
+    - [1.7.2 FRSRPC](#172-frsrpc)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 WCHAR and PWCHAR](#221-wchar-and-pwchar)
+    - [2.2.2 NtFrsApi Common Data Types](#222-ntfrsapi-common-data-types)
+      - [2.2.2.1 NTFRSAPI_INFO](#2221-ntfrsapiinfo)
+    - [2.2.3 FRSRPC Common Data Types](#223-frsrpc-common-data-types)
+      - [2.2.3.1 GVSN](#2231-gvsn)
+      - [2.2.3.2 CHANGE_ORDER_COMMAND](#2232-changeordercommand)
+      - [2.2.3.3 CO_RECORD_EXTENSION_WIN2K](#2233-corecordextensionwin2k)
+      - [2.2.3.4 CHANGE_ORDER_RECORD_EXTENSION](#2234-changeorderrecordextension)
+      - [2.2.3.5 COMM_PACKET and PCOMM_PACKET](#2235-commpacket-and-pcommpacket)
+      - [2.2.3.6 COMM_PACKET Elements](#2236-commpacket-elements)
+        - [2.2.3.6.1 COMM_BOP](#22361-commbop)
+        - [2.2.3.6.2 COMM_COMMAND](#22362-commcommand)
+        - [2.2.3.6.3 COMM_TO](#22363-commto)
+        - [2.2.3.6.4 COMM_FROM](#22364-commfrom)
+        - [2.2.3.6.5 COMM_REPLICA](#22365-commreplica)
+        - [2.2.3.6.6 COMM_CXTION](#22366-commcxtion)
+        - [2.2.3.6.7 COMM_JOIN_GUID](#22367-commjoinguid)
+        - [2.2.3.6.8 COMM_LAST_JOIN_TIME](#22368-commlastjointime)
+        - [2.2.3.6.9 COMM_VVECTOR](#22369-commvvector)
+        - [2.2.3.6.10 COMM_JOIN_TIME](#223610-commjointime)
+        - [2.2.3.6.11 COMM_REPLICA_VERSION_GUID](#223611-commreplicaversionguid)
+        - [2.2.3.6.12 COMM_COMPRESSION_GUID](#223612-commcompressionguid)
+        - [2.2.3.6.13 COMM_BLOCK](#223613-commblock)
+        - [2.2.3.6.14 COMM_BLOCK_SIZE](#223614-commblocksize)
+        - [2.2.3.6.15 COMM_FILE_SIZE](#223615-commfilesize)
+        - [2.2.3.6.16 COMM_FILE_OFFSET](#223616-commfileoffset)
+        - [2.2.3.6.17 COMM_GVSN](#223617-commgvsn)
+        - [2.2.3.6.18 COMM_CO_GUID](#223618-commcoguid)
+        - [2.2.3.6.19 COMM_CO_SEQUENCE_NUMBER](#223619-commcosequencenumber)
+        - [2.2.3.6.20 COMM_REMOTE_CO](#223620-commremoteco)
+        - [2.2.3.6.21 COMM_CO_EXT_WIN2K](#223621-commcoextwin2k)
+        - [2.2.3.6.22 COMM_CO_EXTENSION_2](#223622-commcoextension2)
+        - [2.2.3.6.23 COMM_EOP](#223623-commeop)
+      - [2.2.3.7 DATA_EXTENSION_CHECKSUM](#2237-dataextensionchecksum)
+      - [2.2.3.8 DATA_EXTENSION_PREFIX](#2238-dataextensionprefix)
+      - [2.2.3.9 DATA_EXTENSION_RETRY_TIMEOUT](#2239-dataextensionretrytimeout)
+      - [2.2.3.10 STAGE_HEADER](#22310-stageheader)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+    - [2.3.1 DFS Active Directory Configuration](#231-dfs-active-directory-configuration)
+      - [2.3.1.1 NTFRS Settings Object](#2311-ntfrs-settings-object)
+      - [2.3.1.2 NTFRS Replica Set Object](#2312-ntfrs-replica-set-object)
+      - [2.3.1.3 NTFRS Member Object](#2313-ntfrs-member-object)
+      - [2.3.1.4 NTDS Active Directory Service Agent (nTDSDSA) Object](#2314-ntds-active-directory-service-agent-ntdsdsa-object)
+      - [2.3.1.5 NTDS Active Directory Service Agent Read Only (nTDSDSARO) Object](#2315-ntds-active-directory-service-agent-read-only-ntdsdsaro-object)
+      - [2.3.1.6 NTDS Connection Object](#2316-ntds-connection-object)
+      - [2.3.1.7 Computer Object](#2317-computer-object)
+      - [2.3.1.8 NTFRS Subscriptions Container](#2318-ntfrs-subscriptions-container)
+      - [2.3.1.9 NTFRS Subscriber Object](#2319-ntfrs-subscriber-object)
+      - [2.3.1.10 Object Types](#23110-object-types)
+      - [2.3.1.11 Top class](#23111-top-class)
+    - [2.3.2 SYSVOL Active Directory Configuration](#232-sysvol-active-directory-configuration)
+      - [2.3.2.1 NTFRS Settings Object](#2321-ntfrs-settings-object)
+      - [2.3.2.2 NTFRS Replica Set Object](#2322-ntfrs-replica-set-object)
+      - [2.3.2.3 NTFRS Member Object](#2323-ntfrs-member-object)
+      - [2.3.2.4 NTDS Connection Object](#2324-ntds-connection-object)
+      - [2.3.2.5 Computer Object](#2325-computer-object)
+      - [2.3.2.6 NTFRS Subscriptions Container](#2326-ntfrs-subscriptions-container)
+      - [2.3.2.7 NTFRS Subscriber Object](#2327-ntfrs-subscriber-object)
+  - [2.4 FRS Performance Counters](#24-frs-performance-counters)
+    - [2.4.1 FileReplicaConn Object](#241-filereplicaconn-object)
+    - [2.4.2 FileReplicaSet](#242-filereplicaset)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 File System](#3111-file-system)
+      - [3.1.1.2 Replica Set Object](#3112-replica-set-object)
+      - [3.1.1.3 Member Object (Replica Member Object)](#3113-member-object-replica-member-object)
+      - [3.1.1.4 Replica Tree](#3114-replica-tree)
+      - [3.1.1.5 IDTable](#3115-idtable)
+      - [3.1.1.6 Inbound Log Object (InLog)](#3116-inbound-log-object-inlog)
+      - [3.1.1.7 Outbound Log Object (OutLog)](#3117-outbound-log-object-outlog)
+      - [3.1.1.8 Connection Object](#3118-connection-object)
+      - [3.1.1.9 Staging File Object](#3119-staging-file-object)
+      - [3.1.1.10 Change Order Object](#31110-change-order-object)
+        - [3.1.1.10.1 Local Change Order](#311101-local-change-order)
+        - [3.1.1.10.2 Retry Change Order](#311102-retry-change-order)
+        - [3.1.1.10.3 Directed Change Order](#311103-directed-change-order)
+        - [3.1.1.10.4 Out-of-Order Change Order](#311104-out-of-order-change-order)
+        - [3.1.1.10.5 Skip-VV-Update Change Order](#311105-skip-vv-update-change-order)
+      - [3.1.1.11 Version Vector Object](#31111-version-vector-object)
+      - [3.1.1.12 Communication Packet Object](#31112-communication-packet-object)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+    - [3.1.5 Timer Events](#315-timer-events)
+      - [3.1.5.1 Both Short and Long DS Polling Interval Timers](#3151-both-short-and-long-ds-polling-interval-timers)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 FRSAPI Interface](#32-frsapi-interface)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 NtFrsApi_Rpc_Set_DsPollingIntervalW (Opnum 4)](#3241-ntfrsapirpcsetdspollingintervalw-opnum-4)
+      - [3.2.4.2 NtFrsApi_Rpc_Get_DsPollingIntervalW (Opnum 5)](#3242-ntfrsapirpcgetdspollingintervalw-opnum-5)
+      - [3.2.4.3 NtFrsApi_Rpc_InfoW (Opnum 7)](#3243-ntfrsapirpcinfow-opnum-7)
+      - [3.2.4.4 NtFrsApi_Rpc_IsPathReplicated (Opnum 8)](#3244-ntfrsapirpcispathreplicated-opnum-8)
+      - [3.2.4.5 NtFrsApi_Rpc_WriterCommand (Opnum 9)](#3245-ntfrsapirpcwritercommand-opnum-9)
+      - [3.2.4.6 NtFrsApi_Rpc_ForceReplication (Opnum 10)](#3246-ntfrsapirpcforcereplication-opnum-10)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+  - [3.3 FRSRPC Interface](#33-frsrpc-interface)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 Connection Schedule Timer](#3321-connection-schedule-timer)
+        - [3.3.2.1.1 SYSVOL Connection ScheduleTimer](#33211-sysvol-connection-scheduletimer)
+        - [3.3.2.1.2 DFS Connection Schedule](#33212-dfs-connection-schedule)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 Change Orders](#3341-change-orders)
+        - [3.3.4.1.1 File Is Added/Updated on the Upstream Partner](#33411-file-is-addedupdated-on-the-upstream-partner)
+        - [3.3.4.1.2 File Is Removed on the Upstream Partner](#33412-file-is-removed-on-the-upstream-partner)
+        - [3.3.4.1.3 File Is Renamed on the Upstream Partner](#33413-file-is-renamed-on-the-upstream-partner)
+        - [3.3.4.1.4 Folder Is Created/Updated on the Upstream Partner](#33414-folder-is-createdupdated-on-the-upstream-partner)
+        - [3.3.4.1.5 Folder Is Removed on the Upstream Partner](#33415-folder-is-removed-on-the-upstream-partner)
+        - [3.3.4.1.6 Folder Is Renamed on the Upstream Partner](#33416-folder-is-renamed-on-the-upstream-partner)
+      - [3.3.4.2 FrsRpcStartPromotionParent Message (Opnum 2)](#3342-frsrpcstartpromotionparent-message-opnum-2)
+      - [3.3.4.3 FrsNOP Message (Opnum 3)](#3343-frsnop-message-opnum-3)
+      - [3.3.4.4 FrsRpcSendCommPkt (Opnum 0)](#3344-frsrpcsendcommpkt-opnum-0)
+        - [3.3.4.4.1 Common Details](#33441-common-details)
+        - [3.3.4.4.2 COMM_COMMAND Is CMD_NEED_JOIN](#33442-commcommand-is-cmdneedjoin)
+        - [3.3.4.4.3 COMM_COMMAND Is CMD_START_JOIN](#33443-commcommand-is-cmdstartjoin)
+        - [3.3.4.4.4 COMM_COMMAND Is CMD_JOINING](#33444-commcommand-is-cmdjoining)
+          - [3.3.4.4.4.1 Connection VVJoin](#334441-connection-vvjoin)
+            - [3.3.4.4.4.1.1 Common Details for Initial Syncing a File and a Folder](#3344411-common-details-for-initial-syncing-a-file-and-a-folder)
+            - [3.3.4.4.4.1.2 Initial Syncing a File](#3344412-initial-syncing-a-file)
+            - [3.3.4.4.4.1.3 Initial Syncing a Folder](#3344413-initial-syncing-a-folder)
+            - [3.3.4.4.4.1.4 CMD_VVJOIN_DONE Once Initial Sync Is Done](#3344414-cmdvvjoindone-once-initial-sync-is-done)
+        - [3.3.4.4.5 COMM_COMMAND Is CMD_JOINED](#33445-commcommand-is-cmdjoined)
+        - [3.3.4.4.6 COMM_COMMAND Is CMD_REMOTE_CO](#33446-commcommand-is-cmdremoteco)
+          - [3.3.4.4.6.1 and 3.3.4.4.6.2).](#334461-and-334462)
+          - [3.3.4.4.6.2 Acknowledging the Change Is Done](#334462-acknowledging-the-change-is-done)
+        - [3.3.4.4.7 COMM_COMMAND Is CMD_SEND_STAGE](#33447-commcommand-is-cmdsendstage)
+        - [3.3.4.4.8 COMM_COMMAND Is CMD_RECEIVING_STAGE](#33448-commcommand-is-cmdreceivingstage)
+        - [3.3.4.4.9 COMM_COMMAND Is CMD_REMOTE_CO_DONE](#33449-commcommand-is-cmdremotecodone)
+        - [3.3.4.4.10 COMM_COMMAND Is CMD_ABORT_FETCH](#334410-commcommand-is-cmdabortfetch)
+        - [3.3.4.4.11 COMM_COMMAND Is CMD_RETRY_FETCH](#334411-commcommand-is-cmdretryfetch)
+        - [3.3.4.4.12 COMM_COMMAND Is CMD_VVJOIN_DONE](#334412-commcommand-is-cmdvvjoindone)
+        - [3.3.4.4.13 COMM_COMMAND Is CMD_UNJOIN_REMOTE](#334413-commcommand-is-cmdunjoinremote)
+      - [3.3.4.5 FrsRpcVerifyPromotionParent (Opnum 1)](#3345-frsrpcverifypromotionparent-opnum-1)
+      - [3.3.4.6 Establishing a Connection Session](#3346-establishing-a-connection-session)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 PERFFRS Interface](#34-perffrs-interface)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Connection Establishment Sequence](#41-connection-establishment-sequence)
+  - [4.2 Change Order Handling Sequence](#42-change-order-handling-sequence)
+  - [4.3 COMM_PACKET](#43-commpacket)
+  - [4.4 SYSVOL Initial Sync](#44-sysvol-initial-sync)
+    - [4.4.1 Replica DC Sends Out CMD_NEED_JOIN to PDC](#441-replica-dc-sends-out-cmdneedjoin-to-pdc)
+    - [4.4.2 PDC Sends Out CMD_START_JOIN to Replica DC](#442-pdc-sends-out-cmdstartjoin-to-replica-dc)
+    - [4.4.3 Replica DC Sends Out CMD_JOINING](#443-replica-dc-sends-out-cmdjoining)
+    - [4.4.4 PDC Sends Out CMD_JOINED](#444-pdc-sends-out-cmdjoined)
+    - [4.4.5 PDC Sends Out CMD_REMOTE_CO](#445-pdc-sends-out-cmdremoteco)
+    - [4.4.6 Replica DC Sends Out CMD_SEND_STAGE](#446-replica-dc-sends-out-cmdsendstage)
+    - [4.4.7 PDC Sends Out CMD_RECEIVING_STAGE](#447-pdc-sends-out-cmdreceivingstage)
+    - [4.4.8 Replica DC Sends Out CMD_REMOTE_CO_DONE](#448-replica-dc-sends-out-cmdremotecodone)
+    - [4.4.9 Once All Change Orders are Sent Out, PDC Sends Out CMD_VVJOIN_DONE](#449-once-all-change-orders-are-sent-out-pdc-sends-out-cmdvvjoindone)
+    - [4.4.10 Replica DC Sends Out CMD_UNJOIN_REMOTE](#4410-replica-dc-sends-out-cmdunjoinremote)
+  - [4.5 Normal Sync](#45-normal-sync)
+    - [4.5.1 Copy a File](#451-copy-a-file)
+      - [4.5.1.1 Upstream Partner Sends Out CMD_REMOTE_CO](#4511-upstream-partner-sends-out-cmdremoteco)
+      - [4.5.1.2 Downstream Partner Sends Out CMD_SEND_STAGE 1](#4512-downstream-partner-sends-out-cmdsendstage-1)
+      - [4.5.1.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE 1](#4513-upstream-partner-sends-out-cmdreceivingstage-1)
+      - [4.5.1.4 Downstream Partner Sends Out CMD_SEND_STAGE 2](#4514-downstream-partner-sends-out-cmdsendstage-2)
+      - [4.5.1.5 Upstream Partner Sends Out CMD_RECEIVING_STAGE 2](#4515-upstream-partner-sends-out-cmdreceivingstage-2)
+      - [4.5.1.6 Downstream Partner Sends Out CMD_REMOTE_CO_DONE](#4516-downstream-partner-sends-out-cmdremotecodone)
+    - [4.5.2 Rename a File](#452-rename-a-file)
+      - [4.5.2.1 Upstream Partner Sends Out CMD_REMOTE_CO](#4521-upstream-partner-sends-out-cmdremoteco)
+      - [4.5.2.2 Downstream Partner Sends Out CMD_SEND_STAGE](#4522-downstream-partner-sends-out-cmdsendstage)
+      - [4.5.2.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE](#4523-upstream-partner-sends-out-cmdreceivingstage)
+      - [4.5.2.4 Downstream Partner Sends Out CMD_REMOTE_CO_DONE](#4524-downstream-partner-sends-out-cmdremotecodone)
+    - [4.5.3 Remove a File](#453-remove-a-file)
+      - [4.5.3.1 Upstream Partner Sends Out CMD_REMOTE_CO](#4531-upstream-partner-sends-out-cmdremoteco)
+      - [4.5.3.2 Downstream Partner Sends Out CMD_REMOTE_CO_DONE](#4532-downstream-partner-sends-out-cmdremotecodone)
+    - [4.5.4 Copy an Empty Folder](#454-copy-an-empty-folder)
+      - [4.5.4.1 Upstream Partner Sends Out CMD_REMOTE_CO](#4541-upstream-partner-sends-out-cmdremoteco)
+      - [4.5.4.2 Downstream Partner Sends Out CMD_SEND_STAGE](#4542-downstream-partner-sends-out-cmdsendstage)
+      - [4.5.4.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE](#4543-upstream-partner-sends-out-cmdreceivingstage)
+      - [4.5.4.4 Downstream Partner Sends Out CMD_REMOTE_CO_DONE](#4544-downstream-partner-sends-out-cmdremotecodone)
+    - [4.5.5 Remove a Folder](#455-remove-a-folder)
+      - [4.5.5.1 Upstream Partner Sends Out CMD_REMOTE_CO](#4551-upstream-partner-sends-out-cmdremoteco)
+      - [4.5.5.2 Downstream Partner Sends Out CMD_REMOTE_CO_DONE](#4552-downstream-partner-sends-out-cmdremotecodone)
+    - [4.5.6 Rename an Empty Folder](#456-rename-an-empty-folder)
+      - [4.5.6.1 Upstream Partner Sends Out CMD_REMOTE_CO](#4561-upstream-partner-sends-out-cmdremoteco)
+      - [4.5.6.2 Downstream Partner Sends Out CMD_SEND_STAGE](#4562-downstream-partner-sends-out-cmdsendstage)
+      - [4.5.6.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE](#4563-upstream-partner-sends-out-cmdreceivingstage)
+      - [4.5.6.4 Downstream Partner Sends Out CMD_REMOTE_CO_DONE](#4564-downstream-partner-sends-out-cmdremotecodone)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+  - [6.1 Appendix A.1: frsapi.idl](#61-appendix-a1-frsapiidl)
+  - [6.2 Appendix A.2: frsrpc.idl](#62-appendix-a2-frsrpcidl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 The File Replication Service (FRS) Protocol is used to replicate files and folders among servers on the
 network. This protocol enables duplicate files and folders to be maintained on multiple servers. FRS  is
@@ -1095,7 +794,7 @@ interfaces, packet formats, and data structures required for interoperation usin
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1152,7 +851,8 @@ Release: September 16, 2024
 
 9 / 250
 
-Distributed File System (DFS): A file system that logically groups physical shared folders located
+
+Distributed File System (DFS): A file system that logically groups physical shared folders located
 on different servers by transparently connecting them to one or more hierarchical namespaces.
 DFS also provides fault-tolerance and load-sharing capabilities.
 
@@ -1222,7 +922,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-file attribute: A 32-bit bitmask containing information on a file's properties. For instance,
+
+file attribute: A 32-bit bitmask containing information on a file's properties. For instance,
 
 0x00000001 is used for the read-only attribute.
 
@@ -1301,7 +1002,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-is already opened by another process. If the installation failed, FRS retries the installation of the
+
+is already opened by another process. If the installation failed, FRS retries the installation of the
 file or folder at a later time.
 
 Interface Definition Language (IDL): The International Standards Organization (ISO) standard
@@ -1376,7 +1078,8 @@ Release: September 16, 2024
 
 12 / 250
 
-Parent GUID: The GUID of the parent folder that contains a particular file or folder in the replica
+
+Parent GUID: The GUID of the parent folder that contains a particular file or folder in the replica
 
 tree.
 
@@ -1457,7 +1160,8 @@ Release: September 16, 2024
 
 13 / 250
 
-system volume (SYSVOL): A shared directory that stores the server copy of the domain's public
+
+system volume (SYSVOL): A shared directory that stores the server copy of the domain's public
 
 files that has to be shared for common access and replication throughout a domain.
 
@@ -1501,14 +1205,14 @@ the second change order represents.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1526,7 +1230,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[MS-ADA1] Microsoft Corporation, "Active Directory Schema Attributes A-L".
+
+[MS-ADA1] Microsoft Corporation, "Active Directory Schema Attributes A-L".
 
 [MS-ADA2] Microsoft Corporation, "Active Directory Schema Attributes M".
 
@@ -1567,12 +1272,12 @@ editor.org/info/rfc1321
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [SPN] Microsoft Corporation, "Service-Principal-Name Attribute", http://msdn.microsoft.com/en-
 us/library/ms679785.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The File Replication Service (FRS) Protocol is a multimaster replication protocol that is used to
 replicate files and folders across one or more members in an Active Directory domain. It works to
@@ -1593,7 +1298,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-propagate around the FRS topology. This causes the other members of the replica set to be aware of
+
+propagate around the FRS topology. This causes the other members of the replica set to be aware of
 and (absent a conflict) replicate the update.
 
 Each machine in a replication set keeps a volume sequence number (VSN) that is incremented
@@ -1659,7 +1365,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-name (referred to as a morphed name), and the loser gets to keep the original folder name. The
+
+name (referred to as a morphed name), and the loser gets to keep the original folder name. The
 rename is replicated out so all copies of the renamed folder object get the same new name.
 
 FRS supports four types of replica sets:
@@ -1701,7 +1408,7 @@ Programming Interface—Exposes functions to implement administrative and monito
 Each file or folder is assigned a GUID when it is first added to a replica set. All replicas in the replica
 set use the same GUID to refer to the file or folder.<1>
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The FRS Protocol relies directly on RPC, as specified in [C706] and [MS-RPCE] (for message
 transport), and Remote Registry Protocol, as specified in [MS-RRP] (for remote performance
@@ -1737,7 +1444,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-but display only the earlier domain functionality (for example, Windows Server 2003). However, a
+
+but display only the earlier domain functionality (for example, Windows Server 2003). However, a
 domain controller in a Windows Server 2008 functional level domain has to be running the Windows
 Server 2008 operating system. Network clients can authenticate or access resources in the domain or
 forest without being affected by the Windows Server 2003 domain or forest functional levels. These
@@ -1769,26 +1477,26 @@ If FRS Active Directory objects exist (see section 2.3), FRS is used to replicat
 
 If DFS-R objects exist, they are used to replicate replica sets, as described in [MS-DFSRH].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 FRS relies on the existence of a functional directory service. Machines using FRS optionally can be
 members of a domain and have appropriate credentials to access their partners. In particular, FRS
 relies on NTFRS member objects being present in the domain (see section 2.3).<2>
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The FRS Protocol is appropriate for file and folder replication within a domain.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Versioning and capability negotiation in an RPC-based protocol is done by using the version number
 on the interface itself.
 
-1.7.1  NtFrsApi
+#### 1.7.1 NtFrsApi
 
 The version for this RPC interface is 1.1.
 
-1.7.2  FRSRPC
+#### 1.7.2 FRSRPC
 
 The version for this RPC interface is 1.1.
 
@@ -1811,14 +1519,15 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-FRS cannot use any capabilities that are not available to this partner when sending packets to it
+
+FRS cannot use any capabilities that are not available to this partner when sending packets to it
 through FrsRpcSendCommPkt RPC calls.<3>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 FRS has no standards assignments. It uses the following UUIDs to identify its interfaces.
 
@@ -1846,9 +1555,10 @@ Release: September 16, 2024
 
 19 / 250
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 FRS is RPC-based, and both FRS interfaces MUST use the following protocol sequence:
 
@@ -1869,7 +1579,7 @@ FRS MUST have registered the following two security providers:<4>
 
  RPC_C_AUTHN_GSS_NEGOTIATE
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The following sections use RPC base types and definitions (as specified in [C706], [MS-RPCE], and
 [MS-RPCE] section 2.2.5.3.4.3) and system base types and definitions, as specified in [MS-DTYP].
@@ -1878,16 +1588,16 @@ This section defines a number of fields containing flags that are combined by us
 operation. Except where otherwise specified, all undefined flags MUST be set to zero, and ignored on
 receipt.
 
-2.2.1  WCHAR and PWCHAR
+#### 2.2.1 WCHAR and PWCHAR
 
  typedef wchar_t WCHAR, *PWCHAR;
 
-2.2.2  NtFrsApi Common Data Types
+#### 2.2.2 NtFrsApi Common Data Types
 
 The NtFrsApi interface uses the common data types specified in section 2.2. No additional common
 data types are required by this interface.
 
-2.2.2.1  NTFRSAPI_INFO
+##### 2.2.2.1 NTFRSAPI_INFO
 
  typedef struct NTFRSAPI_INFO {
    ULONG Major;
@@ -1912,7 +1622,8 @@ Release: September 16, 2024
 
 20 / 250
 
-Major:  A 32-bit, unsigned integer specifying the major version of the ntfrsapi.dll. This field MUST be
+
+Major:  A 32-bit, unsigned integer specifying the major version of the ntfrsapi.dll. This field MUST be
 
 zero (0).
 
@@ -2021,7 +1732,8 @@ Release: September 16, 2024
 
 21 / 250
 
-TotalChars:  A 32-bit unsigned integer specifying the server stored context for this call. This context
+
+TotalChars:  A 32-bit unsigned integer specifying the server stored context for this call. This context
 
 can be used in subsequent calls.
 
@@ -2033,12 +1745,12 @@ OffsetToFree:  A 32-bit unsigned integer specifying the offset to next free byte
 
 Lines:  A 8-bit character specifying the starting value of the variable length data buffer returned.
 
-2.2.3  FRSRPC Common Data Types
+#### 2.2.3 FRSRPC Common Data Types
 
 The FRSRPC interface uses the common data types defined in section 2.2. It also uses the data types
 defined within this section.
 
-2.2.3.1  GVSN
+##### 2.2.3.1 GVSN
 
 The GVSN structure, which contains a GUID and a VSN associated with a file that might require
 replication, MUST be formatted as follows:
@@ -2053,7 +1765,7 @@ VSN:  A 64-bit, unsigned integer containing the VSN for the originator GUID.
 
 GUID:  A field of type GUID that MUST contain the originator GUID.
 
-2.2.3.2  CHANGE_ORDER_COMMAND
+##### 2.2.3.2 CHANGE_ORDER_COMMAND
 
 The CHANGE_ORDER_COMMAND is referenced below in sections 2.2.3.6.20, 2.2.3.6.21, 2.2.3.6.22,
 and 2.2.3.10. It MUST be formatted as follows.
@@ -2091,7 +1803,8 @@ Release: September 16, 2024
 
 22 / 250
 
-   ULONGLONG AckVersion;
+
+   ULONGLONG AckVersion;
    ULONGLONG Spare2Ul1;
    GUID Spare1Guid;
    GUID Spare2Guid;
@@ -2198,7 +1911,8 @@ Release: September 16, 2024
 
 23 / 250
 
-Value
+
+Value
 
 Meaning
 
@@ -2312,7 +2026,8 @@ Release: September 16, 2024
 
 24 / 250
 
-Value
+
+Value
 
 Meaning
 
@@ -2419,7 +2134,8 @@ Release: September 16, 2024
 
 25 / 250
 
-Value
+
+Value
 
 Meaning
 
@@ -2531,7 +2247,8 @@ Release: September 16, 2024
 
 26 / 250
 
- Value
+
+ Value
 
  Meaning
 
@@ -2635,7 +2352,8 @@ Release: September 16, 2024
 
 27 / 250
 
-FileUsn:   A 64-bit, unsigned integer that indicates internal implementation-specific data on the
+
+FileUsn:   A 64-bit, unsigned integer that indicates internal implementation-specific data on the
 
 current replica member. This value is meaningful only on the current replica member and has no
 meaning on any other replica member. Once the change order is sent to another replica member,
@@ -2713,7 +2431,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-EventTime: USN journal event time that MUST be in the format of FILETIME, as specified in [MS-
+
+EventTime: USN journal event time that MUST be in the format of FILETIME, as specified in [MS-
 
 DTYP].
 
@@ -2729,7 +2448,7 @@ Padding: A 4-byte field (beyond the 522nd byte of FileName) that is not used and
 
 bytes of 0x00 and MUST be ignored by the receiver.
 
-2.2.3.3  CO_RECORD_EXTENSION_WIN2K
+##### 2.2.3.3 CO_RECORD_EXTENSION_WIN2K
 
 The CO_RECORD_EXTENSION_WIN2K structure MUST be formatted as follows:
 
@@ -2757,7 +2476,7 @@ OffsetLast: MUST be 0.
 
 DataChecksum: DATA_EXTENSION_CHECKSUM structure, as specified in section 2.2.3.7.
 
-2.2.3.4  CHANGE_ORDER_RECORD_EXTENSION
+##### 2.2.3.4 CHANGE_ORDER_RECORD_EXTENSION
 
 The CHANGE_ORDER_RECORD_EXTENSION structure MUST be formatted as follows.
 
@@ -2784,7 +2503,8 @@ Release: September 16, 2024
 
 29 / 250
 
-Major:  A 16-bit, unsigned integer that specifies the version of the
+
+Major:  A 16-bit, unsigned integer that specifies the version of the
 
 CHANGE_ORDER_RECORD_EXTENSION structure. MUST be one of the following two values.<10>
 
@@ -2820,7 +2540,7 @@ DataChecksum:  DATA_EXTENSION_CHECKSUM structure, as specified in section 2.2.3.
 
 DataRetryTimeout:  DATA_EXTENSION_RETRY_TIMEOUT structure, as specified in section 2.2.3.9.
 
-2.2.3.5  COMM_PACKET and PCOMM_PACKET
+##### 2.2.3.5 COMM_PACKET and PCOMM_PACKET
 
 The COMM_PACKET is the primary message used to accomplish file replication through FRS. It MUST
 be transmitted as the payload of the FrsRpcSendCommPkt method. By successively invoking
@@ -2861,7 +2581,8 @@ Release: September 16, 2024
 
 30 / 250
 
-COMM_CXTION: GUID and name of the connection over which this packet is transmitted, as specified
+
+COMM_CXTION: GUID and name of the connection over which this packet is transmitted, as specified
 in section 2.2.3.6.6.
 
 COMM_JOIN_GUID: GUID that identifies the last successful Join over the connection identified in the
@@ -2989,7 +2710,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- Meaning
+
+ Meaning
 
 cannot be fulfilled at this time and that
 the request SHOULD be retried at a later
@@ -3110,7 +2832,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -3213,7 +2936,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-See sections 2.2.3.6 through 2.2.3.6.23 for the definitions of the packet structures associated with
+
+See sections 2.2.3.6 through 2.2.3.6.23 for the definitions of the packet structures associated with
 each element type.
 
 Usage
@@ -3383,7 +3107,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Usage
+
+Usage
 
  Element type and value
 
@@ -3448,9 +3173,9 @@ DataName:   MUST be 0.
 
 DataHandle:   MUST be 0.
 
-2.2.3.6  COMM_PACKET Elements
+##### 2.2.3.6 COMM_PACKET Elements
 
-2.2.3.6.1 COMM_BOP
+###### 2.2.3.6.1 COMM_BOP
 
 The structure of the COMM_BOP packet element is as follows:
 
@@ -3473,7 +3198,7 @@ Data:   A 32-bit, unsigned integer that contains the data within this COMM_PACKE
 
 set to 0x00000000.
 
-2.2.3.6.2 COMM_COMMAND
+###### 2.2.3.6.2 COMM_COMMAND
 
 The COMM_COMMAND element contains the communication packet type. The structure of the
 COMM_COMMAND packet element is as follows:
@@ -3488,7 +3213,8 @@ Release: September 16, 2024
 
 35 / 250
 
-   ULONG Length;
+
+   ULONG Length;
    ULONG Data;
  } COMM_COMMAND,
   *PCOMM_COMMAND;
@@ -3589,7 +3315,7 @@ To request staging data from an upstream partner.
 
 0x00000228
 
-2.2.3.6.3 COMM_TO
+###### 2.2.3.6.3 COMM_TO
 
 [MS-FRS1] - v20240916
 File Replication Service Protocol
@@ -3598,7 +3324,8 @@ Release: September 16, 2024
 
 36 / 250
 
-The structure of the COMM_TO packet element is as follows:
+
+The structure of the COMM_TO packet element is as follows:
 
  typedef struct _COMM_TO {
    USHORT CommType;
@@ -3632,7 +3359,7 @@ Name:   A Unicode UTF-16 string that identifies the receiving partner. MUST be a
 
 array that contains a NULL-terminated string (0x0000) of 16-bit (Unicode) characters.
 
-2.2.3.6.4 COMM_FROM
+###### 2.2.3.6.4 COMM_FROM
 
 The structure of the COMM_FROM packet element is as follows:
 
@@ -3675,7 +3402,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.3.6.5 COMM_REPLICA
+
+###### 2.2.3.6.5 COMM_REPLICA
 
 The structure of the COMM_REPLICA packet element is as follows.
 
@@ -3711,7 +3439,7 @@ Name:   A Unicode UTF-16 string that identifies the affected replica set. MUST B
 array that contains a NULL (0x0000) terminated string of 16-bit (Unicode) characters. There are
 no other constraints on the format.
 
-2.2.3.6.6 COMM_CXTION
+###### 2.2.3.6.6 COMM_CXTION
 
 The structure of the COMM_CXTION packet element is as follows:
 
@@ -3750,11 +3478,12 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Name:   A Unicode UTF-16 string that identifies the connection. MUST be a variable-length array that
+
+Name:   A Unicode UTF-16 string that identifies the connection. MUST be a variable-length array that
 contains a NULL (0x0000) terminated string of 16-bit (Unicode) characters. There are no other
 constraints on the format.
 
-2.2.3.6.7 COMM_JOIN_GUID
+###### 2.2.3.6.7 COMM_JOIN_GUID
 
 The structure of the COMM_JOIN_GUID packet element is as follows:
 
@@ -3782,7 +3511,7 @@ Data:   A field of type GUID that specifies a GUID object that denotes the last 
 
 Each Join MUST be identified by a unique GUID.
 
-2.2.3.6.8 COMM_LAST_JOIN_TIME
+###### 2.2.3.6.8 COMM_LAST_JOIN_TIME
 
 The structure of the COMM_LAST_JOIN_TIME packet element is as follows:
 
@@ -3806,7 +3535,7 @@ the last successful connection join. If the value of Data is 0x0000000000000001,
 time is invalid. If this field contains a valid last join time, it MUST be in FILETIME format, as
 specified in [MS-DTYP].
 
-2.2.3.6.9 COMM_VVECTOR
+###### 2.2.3.6.9 COMM_VVECTOR
 
 The structure of the COMM_VVECTOR packet element is as follows:
 
@@ -3823,7 +3552,8 @@ Release: September 16, 2024
 
 39 / 250
 
- } COMM_VVECTOR,
+
+ } COMM_VVECTOR,
   *PCOMM_VVECTOR;
 
 CommType:   A 16-bit, unsigned integer that indicates the type of this COMM_PACKET element.
@@ -3840,9 +3570,9 @@ field. MUST be 0x000000018.
 
 Data:   The GVSN structure, as specified in section 2.2.3.1, being transmitted.
 
-2.2.3.6.10
+###### 2.2.3.6.10 COMM_JOIN_TIME
 
-COMM_JOIN_TIME
+
 
 The structure of the COMM_JOIN_TIME packet element is as follows:
 
@@ -3870,9 +3600,9 @@ Data:   A FILETIME (as specified in [MS-DTYP]) structure that specifies the UTC 
 
 partner builds this communication packet.
 
-2.2.3.6.11
+###### 2.2.3.6.11 COMM_REPLICA_VERSION_GUID
 
-COMM_REPLICA_VERSION_GUID
+
 
 The structure of the COMM_REPLICA_VERSION_GUID packet element is as follows:
 
@@ -3903,13 +3633,14 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Data:   A field of type GUID that specifies a GUID object that represents the machine that provided
+
+Data:   A field of type GUID that specifies a GUID object that represents the machine that provided
 
 the version vector on the last Join.
 
-2.2.3.6.12
+###### 2.2.3.6.12 COMM_COMPRESSION_GUID
 
-COMM_COMPRESSION_GUID
+
 
 The structure of the COMM_COMPRESSION_GUID packet element is as follows:
 
@@ -3936,9 +3667,9 @@ by any GUID sent in this field. A GUID value of 00000000-0000-0000-0000-00000000
 indicates uncompressed data. A GUID value of 64d2f7d2-2695-436d-8830-8d3c58701e15
 indicates LZNT1 compression, as specified in [MS-XCA] section 2.5.<11>
 
-2.2.3.6.13
+###### 2.2.3.6.13 COMM_BLOCK
 
-COMM_BLOCK
+
 
 The COMM_BLOCK packet element structure is as follows:
 
@@ -3964,9 +3695,9 @@ Data: A binary large object (BLOB) that contains the block of staging file data 
 
 transmitted.<12>
 
-2.2.3.6.14
+###### 2.2.3.6.14 COMM_BLOCK_SIZE
 
-COMM_BLOCK_SIZE
+
 
 The structure of the COMM_BLOCK_SIZE packet element is as follows:
 
@@ -3983,7 +3714,8 @@ Release: September 16, 2024
 
 41 / 250
 
-  *PCOMM_BLOCK_SIZE;
+
+  *PCOMM_BLOCK_SIZE;
 
 CommType:   A 16-bit, unsigned integer that indicates the type of this COMM_PACKET element.
 
@@ -3998,9 +3730,9 @@ element. If Data is 0, COMM_BLOCK MUST NOT be included in the packet. When sendi
 compressed data in the COMM_BLOCK element, this field MUST contain the size of the compressed
 data.
 
-2.2.3.6.15
+###### 2.2.3.6.15 COMM_FILE_SIZE
 
-COMM_FILE_SIZE
+
 
 The structure of the COMM_FILE_SIZE packet element is as follows.
 
@@ -4021,9 +3753,9 @@ field. MUST be 0x00000008.
 
 Data:   A 64-bit, unsigned integer that specifies the total size in bytes of the staged file.
 
-2.2.3.6.16
+###### 2.2.3.6.16 COMM_FILE_OFFSET
 
-COMM_FILE_OFFSET
+
 
 The structure of the COMM_FILE_OFFSET packet element is as follows.
 
@@ -4046,9 +3778,9 @@ Data:   A 64-bit, unsigned integer that specifies the offset of the data block i
 staged files require multiple packets to transfer. The offset here is relative to the first byte of the
 staged file.
 
-2.2.3.6.17
+###### 2.2.3.6.17 COMM_GVSN
 
-COMM_GVSN
+
 
 The structure of the COMM_GVSN packet element is as follows.
 
@@ -4059,7 +3791,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- typedef struct _COMM_GVSN {
+
+ typedef struct _COMM_GVSN {
    USHORT CommType;
    ULONG Length;
    ULONG DataLength;
@@ -4083,9 +3816,9 @@ Data:   MUST be a structure of type GVSN, as specified in section 2.2.3.1, for t
 
 transmitted.
 
-2.2.3.6.18
+###### 2.2.3.6.18 COMM_CO_GUID
 
-COMM_CO_GUID
+
 
 The structure of the COMM_CO_GUID packet element is as follows.
 
@@ -4113,9 +3846,9 @@ Data:   MUST be a field of type GUID that contains the GUID that denotes the cha
 
 being processed.
 
-2.2.3.6.19
+###### 2.2.3.6.19 COMM_CO_SEQUENCE_NUMBER
 
-COMM_CO_SEQUENCE_NUMBER
+
 
 The structure of the COMM_CO_SEQUENCE_NUMBER packet element is as follows.
 
@@ -4137,7 +3870,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Length:   A 32-bit, unsigned integer that indicates the length in bytes of the data following the Length
+
+Length:   A 32-bit, unsigned integer that indicates the length in bytes of the data following the Length
 
 field. MUST be 0x00000004.
 
@@ -4146,9 +3880,9 @@ Data:   A 32-bit, unsigned integer that MUST indicate the change order sequence 
 section 2.2.3.2). The sequence number MUST be incremented with each change order that goes
 into the outbound log. The sequence number MUST be a unique per replica set per machine.
 
-2.2.3.6.20
+###### 2.2.3.6.20 COMM_REMOTE_CO
 
-COMM_REMOTE_CO
+
 
 The structure of the COMM_REMOTE_CO packet element is as follows.
 
@@ -4177,9 +3911,9 @@ Data:   The CHANGE_ORDER_COMMAND message being transmitted.
 The CHANGE_ORDER_COMMAND structure defines a file replication service (FRS) change
 order. See the definition of the CHANGE_ORDER_COMMAND in section 2.2.3.2.
 
-2.2.3.6.21
+###### 2.2.3.6.21 COMM_CO_EXT_WIN2K
 
-COMM_CO_EXT_WIN2K
+
 
 The COMM_CO_EXT_WIN2K element contains a CO_RECORD_EXTENSION_WIN2K structure, which is
 an extension to the CHANGE_ORDER_COMMAND structure that is compatible with down-level clients
@@ -4207,9 +3941,9 @@ DataLength field. MUST be 0x00000028.
 
 Data:   The CO_RECORD_EXTENSION_WIN2K structure being transmitted (see section 2.2.3.3).
 
-2.2.3.6.22
+###### 2.2.3.6.22 COMM_CO_EXTENSION_2
 
-COMM_CO_EXTENSION_2
+
 
 [MS-FRS1] - v20240916
 File Replication Service Protocol
@@ -4218,7 +3952,8 @@ Release: September 16, 2024
 
 44 / 250
 
-The COMM_CO_EXTENSION_2 element MUST contain a CHANGE_ORDER_RECORD_EXTENSION
+
+The COMM_CO_EXTENSION_2 element MUST contain a CHANGE_ORDER_RECORD_EXTENSION
 structure, which is an extension to the CHANGE_ORDER_COMMAND structure. The structure of the
 COMM_CO_EXTENSION_2 packet element is as follows.
 
@@ -4242,9 +3977,9 @@ Data:   The data that is being transmitted in the form of a CHANGE_ORDER_RECORD_
 
 (see section 2.2.3.4).
 
-2.2.3.6.23
+###### 2.2.3.6.23 COMM_EOP
 
-COMM_EOP
+
 
 The structure of the COMM_EOP packet element is as follows.
 
@@ -4265,7 +4000,7 @@ field. MUST be 0x00000004.
 
 Data:   A 32-bit, unsigned integer that indicates the end of the packet. MUST be set to 0xFFFFFFFF.
 
-2.2.3.7  DATA_EXTENSION_CHECKSUM
+##### 2.2.3.7 DATA_EXTENSION_CHECKSUM
 
 The DATA_EXTENSION_CHECKSUM structure specifies an MD5 checksum. The structure of
 DATA_EXTENSION_CHECKSUM is as follows.
@@ -4291,7 +4026,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.2.3.8  DATA_EXTENSION_PREFIX
+
+##### 2.2.3.8 DATA_EXTENSION_PREFIX
 
 The DATA_EXTENSION_PREFIX structure contains a data component size and type. The structure of
 DATA_EXTENSION_PREFIX is as follows.
@@ -4318,7 +4054,7 @@ Meaning
 
 0x00000002  Data retry time-out record.
 
-2.2.3.9  DATA_EXTENSION_RETRY_TIMEOUT
+##### 2.2.3.9 DATA_EXTENSION_RETRY_TIMEOUT
 
 The DATA_EXTENSION_RETRY_TIMEOUT structure specifies retries to a change order and the time of
 the first try. The structure of DATA_EXTENSION_RETRY_TIMEOUT is as follows.
@@ -4343,9 +4079,9 @@ be ignored on receipt.
 
 FirstTryTime:   The UTC time of the first try of this change order. MUST be in FILETIME format.
 
-2.2.3.10
+##### 2.2.3.10 STAGE_HEADER
 
-STAGE_HEADER
+
 
 To prepare a file for replication to another computer, the computer that sends the file will construct a
 staging file. A staging file is an archive consisting of the original file contents (that is, its data) as
@@ -4362,7 +4098,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-backup format, as specified in [MS-BKUP]. An MD5 hash MUST be calculated over all stream data, so
+
+backup format, as specified in [MS-BKUP]. An MD5 hash MUST be calculated over all stream data, so
 the receiving system can verify the integrity of the transmitted file. If compression is enabled, the
 stream data MUST be compressed as 64-kilobyte blocks (the file data is read in 64-KB blocks to be
 compressed on each block).<13>
@@ -4442,7 +4179,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-NTFRS_STAGE_MINOR_1 is the earliest version. NTFRS_STAGE_MINOR_0 was never used in any
+
+NTFRS_STAGE_MINOR_1 is the earliest version. NTFRS_STAGE_MINOR_0 was never used in any
 products, and the server MUST NOT consider it to be a valid value.<14>
 
 The following field specifications in this section define the usage of the Minor values in the context
@@ -4523,7 +4261,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-ReparseDataPresent:  A 32-bit, unsigned integer that is set to a nonzero value if this replicated file
+
+ReparseDataPresent:  A 32-bit, unsigned integer that is set to a nonzero value if this replicated file
 is a reparse point. If the file is not a reparse point, ReparseDataPresent MUST be set to zero. If
 the replicated file is a reparse point, ReparseDataPresent MUST be set to a nonzero value, and the
 staging file will contain reparse data in addition to the actual file data. This field exists in staging
@@ -4562,7 +4301,7 @@ the second 16-bit, unsigned integer in the SECURITY_DESCRIPTOR.
 Once the MD5 digest is calculated, the bits MUST be restored to their previous state before being
 compressed (if necessary). The bits MUST be written to the staging file.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The protocol accesses the following Directory Service schema classes and attributes listed in the
 following tables.
@@ -4608,7 +4347,8 @@ Release: September 16, 2024
 
 49 / 250
 
-Class
+
+Class
 
 Attribute
 
@@ -4811,7 +4551,8 @@ Release: September 16, 2024
 
 50 / 250
 
-Class
+
+Class
 
 Attribute
 
@@ -4877,7 +4618,7 @@ change, including creation. It is 8 bytes in size.<18>
 Section 2.3.1 describes DFS Active Directory configuration. Section 2.3.2 describes SYSVOL Active
 Directory configuration.
 
-2.3.1  DFS Active Directory Configuration
+#### 2.3.1 DFS Active Directory Configuration
 
 The following figure specifies the hierarchy of FRS-related Active Directory containers and objects for
 DFS replica sets. The figure also specifies how several of these objects are linked together by using
@@ -4890,13 +4631,14 @@ Release: September 16, 2024
 
 51 / 250
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-FRS1].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
 Figure 1: Objects linked together by using reference attributes
 
-2.3.1.1  NTFRS Settings Object
+##### 2.3.1.1 NTFRS Settings Object
 
 An NTFRS settings object (class nTFRSSettings) is used to organize NTFRS replica set objects and
 other NTFRS settings objects into a hierarchy of FRS replica sets, each subtree of which is
@@ -4931,7 +4673,8 @@ Release: September 16, 2024
 
 52 / 250
 
-2.3.1.2  NTFRS Replica Set Object
+
+##### 2.3.1.2 NTFRS Replica Set Object
 
 Each NTFRS replica set object (class nTFRSReplicaSet) represents a replica set. A replica set consists
 of a number of replicas, each of which lives on a different computer.
@@ -5008,7 +4751,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The schedule attribute defines an 84-byte array that specifies the replication schedule for one week.
+
+The schedule attribute defines an 84-byte array that specifies the replication schedule for one week.
 Each bit in the byte array represents a 15-minute replication period. The possible values for each bit
 on the array MUST be as follows.
 
@@ -5113,7 +4857,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.3.1.3  NTFRS Member Object
+
+##### 2.3.1.3 NTFRS Member Object
 
 Each NTFRS member object (class nTFRSMember) corresponds to a computer that is part of a
 replica set.
@@ -5178,7 +4923,7 @@ within a domain.
 The schema definition for the NTFRS member object is provided by the nTFRSMember class definition,
 as specified in [MS-ADSC] section 2.209.
 
-2.3.1.4  NTDS Active Directory Service Agent (nTDSDSA) Object
+##### 2.3.1.4 NTDS Active Directory Service Agent (nTDSDSA) Object
 
 This object represents the AD DS and Active Directory service agent (DSA) process on the server, as
 specified in [MS-ADSC] section 2.205. This class is not used by FRS.
@@ -5194,7 +4939,8 @@ Release: September 16, 2024
 
 55 / 250
 
-2.3.1.5  NTDS Active Directory Service Agent Read Only (nTDSDSARO) Object
+
+##### 2.3.1.5 NTDS Active Directory Service Agent Read Only (nTDSDSARO) Object
 
 A subclass of the DSA, which is distinguished by its reduced privilege level, as specified in [MS-ADSC]
 section 2.206. This class is not used by FRS.
@@ -5203,7 +4949,7 @@ The attributes of this object defined for FRS are:
 
 fRSRootPath: Attribute not used by FRS.
 
-2.3.1.6  NTDS Connection Object
+##### 2.3.1.6 NTDS Connection Object
 
 Each NTDS connection object specifies a one-way replication connection from an Upstream Partner
 to the member object (section 2.3.1.3) containing this NTDS Connection Object. Each NTDS
@@ -5272,7 +5018,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Exactly one NTDS connection object MUST exist for each computer that replicates to each member of
+
+Exactly one NTDS connection object MUST exist for each computer that replicates to each member of
 a replica set. An NTDS connection object MUST be stored in the directory under the NTFRS member
 object to which it is inbound. The fromServer attribute of that object MUST point to the NTFRS
 member object to which it is outbound.
@@ -5280,7 +5027,7 @@ member object to which it is outbound.
 The NTDS connection object MUST use the schema definition provided by the nTDSConnection class
 definition, as specified in [MS-ADSC] section 2.204.
 
-2.3.1.7  Computer Object
+##### 2.3.1.7 Computer Object
 
 Each computer object represents a computer in the domain. The relationship between the NTFRS
 member object and the computer object is indicated by the frsComputerReference attribute. This
@@ -5295,7 +5042,7 @@ Exactly one computer object MUST exist for each computer within the domain.
 The computer object MUST use the schema definition provided by the computer class definition, as
 specified in [MS-ADSC] section 2.21.
 
-2.3.1.8  NTFRS Subscriptions Container
+##### 2.3.1.8 NTFRS Subscriptions Container
 
 The NTFRS subscriptions object (class nTFRSSubscriptions) is primarily used as a container to group
 NTFRS subscriber objects that apply to a particular computer.
@@ -5323,7 +5070,7 @@ member of at least one replica set subscription.
 The NTFRS subscriptions object MUST use the schema definition provided by the nTFRSSubscriptions
 class definition, as specified in [MS-ADSC] section 2.213.
 
-2.3.1.9  NTFRS Subscriber Object
+##### 2.3.1.9 NTFRS Subscriber Object
 
 Every NTFRS subscriber object (class nTFRSSubscriber) under a computer's computer object
 corresponds to a replica set that the computer is a member of.
@@ -5344,7 +5091,8 @@ Release: September 16, 2024
 
 57 / 250
 
-fRSMemberReference: MUST be a Unicode string that specifies the DN of the nTFRSMember object
+
+fRSMemberReference: MUST be a Unicode string that specifies the DN of the nTFRSMember object
 
 of the replica set it corresponds to.
 
@@ -5378,9 +5126,9 @@ fRSUpdateTimeout: Attribute not used by FRS.
 
 schedule: Attribute not used by FRS.
 
-2.3.1.10
+##### 2.3.1.10 Object Types
 
-Object Types
+
 
  Attribute name
 
@@ -5458,7 +5206,8 @@ Release: September 16, 2024
 
 58 / 250
 
- Attribute name
+
+ Attribute name
 
  Type
 
@@ -5482,9 +5231,9 @@ DN
 
 DN of server object (for SYSVOL).
 
-2.3.1.11
+##### 2.3.1.11 Top class
 
-Top class
+
 
 The top level class from which all classes are derived, as specified in [MS-ADSC] section 2.266.
 
@@ -5498,7 +5247,7 @@ fRSMemberReferenceBL: Attribute value is populated by DS and is a back link to t
 
 object.
 
-2.3.2  SYSVOL Active Directory Configuration
+#### 2.3.2 SYSVOL Active Directory Configuration
 
 SYSVOL replica sets have a different hierarchy of objects in Active Directory than DFS replica sets.
 See [MS-ADTS] for more information. This hierarchy is specified in the following figure.
@@ -5510,17 +5259,18 @@ Release: September 16, 2024
 
 59 / 250
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-FRS1].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
 Figure 2: SYSVOL replica set hierarchy of objects
 
-2.3.2.1  NTFRS Settings Object
+##### 2.3.2.1 NTFRS Settings Object
 
 Same as DFS replica sets.
 
-2.3.2.2  NTFRS Replica Set Object
+##### 2.3.2.2 NTFRS Replica Set Object
 
 Same as DFS replica sets with the following exception:
 
@@ -5534,13 +5284,14 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-2.3.2.3  NTFRS Member Object
+
+##### 2.3.2.3 NTFRS Member Object
 
 In SYSVOL replica sets, the serverReference attribute of the NTFRS member object points to the
 NTDS Settings objects (class nTDSDSA) that contain the NTDS connection objects that this member
 replicates from.
 
-2.3.2.4  NTDS Connection Object
+##### 2.3.2.4 NTDS Connection Object
 
 For SYSVOL replica sets, FRS uses both Volatile Connection objects (section 3.3.4.2) and
 connection objects that are generated by the Knowledge Consistency Checker (KCC) that are located
@@ -5553,7 +5304,7 @@ corresponds to the NTDS settings object that the NTDS connection object is locat
 outbound from the NTFRS member object that corresponds to the NTDS settings object that its
 fromServer attribute points to.<28>
 
-2.3.2.5  Computer Object
+##### 2.3.2.5 Computer Object
 
 Same as DFS replica sets, with the addition of the following attribute that FRS MUST use for SYSVOL
 replica sets:
@@ -5566,11 +5317,11 @@ represents the site in which the computer is located, and ServerName represents 
 portion up to the first ".") of the computer's name. Active Directory MUST define this attribute as a
 multi-string value, however FRS MUST access only the first string stored in this attribute.
 
-2.3.2.6  NTFRS Subscriptions Container
+##### 2.3.2.6 NTFRS Subscriptions Container
 
 Same as DFS replica sets.
 
-2.3.2.7  NTFRS Subscriber Object
+##### 2.3.2.7 NTFRS Subscriber Object
 
 Same as DFS replica sets, with the following exception.
 
@@ -5582,7 +5333,7 @@ following RDN, within the computer's NTFRS subscriptions object:
 Exactly one SYSVOL replica set subscriber object MUST be defined for each domain controller for
 every domain controller to have a copy of the domain SYSVOL.
 
-2.4  FRS Performance Counters
+### 2.4 FRS Performance Counters
 
 FRS maintains a set of performance counters. A vendor SHOULD implement the capability to respond
 to requests for FRS performance counters through the Windows Remote Registry Protocol, as specified
@@ -5597,7 +5348,8 @@ Release: September 16, 2024
 
 61 / 250
 
-2.4.1  FileReplicaConn Object
+
+#### 2.4.1 FileReplicaConn Object
 
 The FileReplicaConn performance object displays performance statistics of the Replicaconn object that
 defines replica connections to Distributed File System (DFS) roots.
@@ -5715,7 +5467,8 @@ Release: September 16, 2024
 
 62 / 250
 
- Counter name
+
+ Counter name
 
  Description
 
@@ -5723,7 +5476,7 @@ Unjoins
 
 Number of unjoins.
 
-2.4.2  FileReplicaSet
+#### 2.4.2 FileReplicaSet
 
 The FileReplicaSet performance object displays performance statistics of the Replicaset object that
 defines a replica set (that is, one or more replicas, shared volumes, or folders that store duplicates of
@@ -5825,7 +5578,8 @@ Release: September 16, 2024
 
 63 / 250
 
- Counter name
+
+ Counter name
 
  Description
 
@@ -5950,7 +5704,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- Counter name
+
+ Counter name
 
  Description
 
@@ -6067,7 +5822,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- Counter name
+
+ Counter name
 
  Description
 
@@ -6179,7 +5935,8 @@ Release: September 16, 2024
 
 66 / 250
 
- Counter name
+
+ Counter name
 
  Description
 
@@ -6238,17 +5995,18 @@ Release: September 16, 2024
 
 67 / 250
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the File Replication Service (FRS) Protocol, including abstract
 data models, interface method syntax, and message processing rules.
 
-3.1  Common Details
+### 3.1 Common Details
 
 All constants in section 3 that begin with ERROR_ have their values defined in [MS-ERREF] section
 2.2.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The organization is provided to explain how the protocol
@@ -6292,12 +6050,12 @@ Inbound Log
 
 The following sections describe the elements of the data model.
 
-3.1.1.1  File System
+##### 3.1.1.1 File System
 
 The file system is the store where replicated files reside and are changed. The store maintains file
 data and organizes the data in a way that is specific to the semantics of the store.
 
-3.1.1.2  Replica Set Object
+##### 3.1.1.2 Replica Set Object
 
 The Replica Set object represents a set of computers that replicate a specified folder tree and a
 common set of data among them. There will be one Replica Set object for every replica set. FRS
@@ -6309,7 +6067,8 @@ Release: September 16, 2024
 
 68 / 250
 
-maintains a list of Replica Set objects. FRS replicates files and folders inside each replica set
+
+maintains a list of Replica Set objects. FRS replicates files and folders inside each replica set
 independently.
 
 The Replica Set object maintains the following attributes:
@@ -6326,7 +6085,7 @@ fRSReplicaSetType: Either SYSVOL or DFS replicas.
 
 String: Identifies the replica set. Sometimes cannot be unique.
 
-3.1.1.3  Member Object (Replica Member Object)
+##### 3.1.1.3 Member Object (Replica Member Object)
 
 The Member object corresponds to a computer that is a part of the replica set. The Member object
 contains one or more Connection objects that define the upstream partners that a member
@@ -6359,7 +6118,7 @@ Directory:
 
 3.  All NTDS Connection objects which have one of their endpoints as the member.
 
-3.1.1.4  Replica Tree
+##### 3.1.1.4 Replica Tree
 
 A replica tree is a local folder (including all the files and folders underneath it) that usually is saved
 as a tree structure in the file system. The content under a Replica Tree is kept in sync with other
@@ -6367,7 +6126,7 @@ replica members.
 
 A replica tree cannot be a subtree of another replica tree.
 
-3.1.1.5  IDTable
+##### 3.1.1.5 IDTable
 
 The IDTable object stores persistent data associated with each file and folder in the replica set.
 There is one IDTable entry for each file and folder in the replica set. This data is used to uniquely
@@ -6379,7 +6138,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-identify each file and folder, and is used to determine if the file or folder needs to be replicated. The
+
+identify each file and folder, and is used to determine if the file or folder needs to be replicated. The
 information in the IDTable object is saved across restarts.
 
 The IDTable maintains the following attributes:
@@ -6413,7 +6173,7 @@ used, the server uses the reference number as the unique key to identify the fil
 is being implemented on a different file system, the vendor is free to choose a way to uniquely
 identify a file in a file system.<31>
 
-3.1.1.6  Inbound Log Object (InLog)
+##### 3.1.1.6 Inbound Log Object (InLog)
 
 The Inbound Log object stores pending change orders to be processed. The Inbound Log contains
 change orders arriving from all upstream partners. The change orders are logged in the order they
@@ -6423,7 +6183,7 @@ As entries are processed, acknowledgments are sent to the upstream partners. The
 tracks the progress of a change order and determines where to continue after a system crash or a
 retry of a failed operation. The information in the Inbound Log object is saved across restarts.
 
-3.1.1.7  Outbound Log Object (OutLog)
+##### 3.1.1.7 Outbound Log Object (OutLog)
 
 The outbound log object stores pending change orders to be sent to downstream partners. (The
 outbound log is different from the outbound connection outbound log, which stores pending change
@@ -6433,7 +6193,7 @@ OutlogChangeHistoryTime ADM element, even if all replication Partners have recei
 The minimum limit is 1 minute. The maximum limit is 0x7FFFFFFF minutes. The outbound log is saved
 across restarts.<32>
 
-3.1.1.8  Connection Object
+##### 3.1.1.8 Connection Object
 
 The Connection object represents a directional connection between two members. It tracks the state
 of each inbound and outbound connection for the replica set and tracks the delivery state of each
@@ -6448,7 +6208,8 @@ Release: September 16, 2024
 
 70 / 250
 
-Each Member object maintains a list of Connection objects, each of which contains the following data
+
+Each Member object maintains a list of Connection objects, each of which contains the following data
 about a connection.
 
 Direction: Inbound or outbound.
@@ -6476,7 +6237,7 @@ connection object keeps track of its last Join time.
 
 Partner Version Vector: Downstream partner's version vector.<33>
 
-3.1.1.9  Staging File Object
+##### 3.1.1.9 Staging File Object
 
 FRS uses staging files to transfer files between Partners during replication. There is one staging file
 per file replicated. The staging file for a file to be replicated is created by first writing a
@@ -6501,9 +6262,9 @@ File Data: Contents of the file. This data can be compressed.
 
 For the staging header, reparse data, and file data, see section 2.2.3.10.
 
-3.1.1.10
+##### 3.1.1.10 Change Order Object
 
-Change Order Object
+
 
 A change order is a message that contains information about a file or folder that has changed on a
 replica member. Change orders are stored in the inbound and outbound queues on each replica
@@ -6511,9 +6272,9 @@ member. For Change Order objects, see section 2.2.3.2.
 
 There are five types of change orders. A change order can fit into more than one category type.
 
-3.1.1.10.1
+###### 3.1.1.10.1 Local Change Order
 
-Local Change Order
+
 
 [MS-FRS1] - v20240916
 File Replication Service Protocol
@@ -6522,7 +6283,8 @@ Release: September 16, 2024
 
 71 / 250
 
-A local change order is a change order that is created because of a change to a file or folder on
+
+A local change order is a change order that is created because of a change to a file or folder on
 the local server. The local server becomes the originator of the change order and constructs a staging
 file.
 
@@ -6534,7 +6296,7 @@ A change order is referred to as a Remote Change Order if it is not a Local Chan
 When the downstream partner receives a change order with the CO_FLAG_LOCALCO flag, the
 change that this change order represents originated on the upstream partner.
 
-3.1.1.10.2  Retry Change Order
+###### 3.1.1.10.2 Retry Change Order
 
 A Retry Change Order is a change order that is a retry of a previous change order that was not
 replicated successfully due to a temporary condition. Both local and remote change orders become
@@ -6557,7 +6319,7 @@ implementation-specific value.<35>
 (CurrentTime - DATA_EXTENSION_RETRY_TIMEOUT.FirstTryTime) in CMD_REMOTE_CO is less
 than or equal to an implementation specific value.<36>
 
-3.1.1.10.3  Directed Change Order
+###### 3.1.1.10.3 Directed Change Order
 
 A directed change order is a change order that is directed at a single downstream partner and
 produced when a Partner is doing a VVJoin, such as during initial synchronization (see section
@@ -6569,7 +6331,7 @@ to which to send a change order.
 Directed change orders are identified by the CO_FLAG_DIRECTED_CO or the
 CO_FLAG_VVJOIN_TO_ORIG flag in the change order Flags field.
 
-3.1.1.10.4  Out-of-Order Change Order
+###### 3.1.1.10.4 Out-of-Order Change Order
 
 A change order is marked out-of-order to indicate that there was at least one more recent change
 order that was propagated before this change order. Every member that receives a change order
@@ -6582,9 +6344,9 @@ the retried change order, the retried change order is out of date and is NOT pro
 Out-of-order change orders are identified by the CO_FLAG_OUT_OF_ORDER flag inside the
 CHANGE_ORDER_COMMAND structure Flags field.
 
-3.1.1.10.5
+###### 3.1.1.10.5 Skip-VV-Update Change Order
 
-Skip-VV-Update Change Order
+
 
 72 / 250
 
@@ -6593,7 +6355,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-A change order is marked Skip-VV-Update when an earlier change order is pending to send to a
+
+A change order is marked Skip-VV-Update when an earlier change order is pending to send to a
 downstream partner. This indicates to the downstream partner that this change does not guarantee
 that it has received all the changes up to this point. It is also NOT used to update the version vector.
 This flag is written to the IDTable so that any future VVJoins pick it up.
@@ -6601,9 +6364,9 @@ This flag is written to the IDTable so that any future VVJoins pick it up.
 Skip-VV-Update change orders are identified by the CO_FLAG_SKIP_VV_UPDATE flag inside the
 CHANGE_ORDER_COMMAND structure Flags field.
 
-3.1.1.11
+##### 3.1.1.11 Version Vector Object
 
-Version Vector Object
+
 
 The version vector is a vector of tuples. Each tuple consists of an originator GUID and a Volume
 Sequence Number (VSN). There is one tuple for each member of the replica set. Each replica tree
@@ -6648,9 +6411,9 @@ On receipt of a change order, the originator GUID and the VSN of the change orde
 the version vector. This check (called version dampening) allows a member to recognize change
 orders for files or folders that have already been applied in the local replica tree.
 
-3.1.1.12
+##### 3.1.1.12 Communication Packet Object
 
-Communication Packet Object
+
 
 FRS uses communication packet objects to send data between replica members using
 FrsSendCommPkt during initial sync and normal sync.
@@ -6664,7 +6427,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Minor Version: Minor version number of the COMM_PACKET structure.
+
+Minor Version: Minor version number of the COMM_PACKET structure.
 
 Data Packet Length: Size in bytes of the data packet.
 
@@ -6672,7 +6436,7 @@ Data Packet Buffer: Actual data being transmitted is packaged into elements and 
 
 packet buffer.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 FRS periodically polls the directory service (DS) to obtain new or updated information about the
 replica set topology, schedules, and file and folder filters based on the following two timers:
@@ -6704,7 +6468,7 @@ The configuration change can be any of the following:
 
   Change in the replica set wide replication schedule.<38>
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When FRS is started on a new machine for the first time, the IDTable MUST be empty. If IDTable is
 not empty, FRS MUST assume the records in the IDTable are valid and this is not the first start of FRS
@@ -6718,7 +6482,7 @@ value.<39>
 The FRSStaticPort ADM element MUST be initialized to 0. If the server uses static port for the
 replication, the server MUST update this value to an implementation-specific port number.<40>
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 No message processing events and sequencing rules.
 
@@ -6729,9 +6493,10 @@ Release: September 16, 2024
 
 74 / 250
 
-3.1.5  Timer Events
 
-3.1.5.1  Both Short and Long DS Polling Interval Timers
+#### 3.1.5 Timer Events
+
+##### 3.1.5.1 Both Short and Long DS Polling Interval Timers
 
 On expiration, FRS MUST do the following:
 
@@ -6816,7 +6581,8 @@ Release: September 16, 2024
 
 75 / 250
 
-Once FRS detects a configuration change and realizes that it became a new member in a given replica
+
+Once FRS detects a configuration change and realizes that it became a new member in a given replica
 set, FRS MUST:
 
 1.  Add the replica tree root folder into the IDTable.
@@ -6895,7 +6661,8 @@ Release: September 16, 2024
 
 76 / 250
 
-
+
+
 
 
 
@@ -6973,7 +6740,8 @@ Release: September 16, 2024
 
 77 / 250
 
-Priority
+
+Priority
 class
 
 Behavior
@@ -7015,11 +6783,11 @@ For the SYSVOL replica set, the FRS service MUST detect the domain functional le
 in [MS-ADTS] section 6.1.4.3) during Active Directory Polling. FRS might not be used as the SYSVOL
 replication engine for some domain functional levels.<43><44>
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No other local events are processed.
 
-3.2  FRSAPI Interface
+### 3.2 FRSAPI Interface
 
 The NtFrsApi interface provides administrative and monitoring methods. These methods are useful for
 tools that can observe and control FRS replication. The version of this interface is 1.1.
@@ -7050,7 +6818,8 @@ Release: September 16, 2024
 
 78 / 250
 
-  NtFrsApi_Rpc_Set_DsPollingIntervalW
+
+  NtFrsApi_Rpc_Set_DsPollingIntervalW
 
 3.  Methods used for ForceReplication to overrule the connection schedule:
 
@@ -7058,7 +6827,7 @@ Release: September 16, 2024
 
 Opnum values 0 through 3 and 6 MUST NOT be used over the wire by this protocol.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a sample model of possible data organization that can be implemented to
 support this protocol. The purpose of this description is simply to help explain how this aspect of the
@@ -7107,11 +6876,11 @@ ForceReplicationAccessRequired: Specifies the permissions with which a user or p
 
 replication.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No other timers required.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 IsSetDsPollingIntervalAccessCheckEnabled SHOULD<45> be initialized to "None" or to an
 
@@ -7128,7 +6897,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-IsGetDsPollingIntervalAccessCheckEnabled SHOULD<47> be initialized to "None" or to an
+
+IsGetDsPollingIntervalAccessCheckEnabled SHOULD<47> be initialized to "None" or to an
 
 implementation-specific value.
 
@@ -7168,7 +6938,7 @@ ForceReplicationAccessRequired SHOULD<56> be initialized to "None" or to an impl
 
 specific value.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 On receiving each FRSAPI message, an FRS server MUST verify the access check flags (specified in
 section 3.2.1) for the corresponding request. If the flag is set to "None", the server MUST fail the call
@@ -7221,7 +6991,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Method
+
+Method
 
 Description
 
@@ -7251,7 +7022,7 @@ All methods MUST NOT throw exceptions.
 
 Opnum: 10
 
-3.2.4.1  NtFrsApi_Rpc_Set_DsPollingIntervalW (Opnum 4)
+##### 3.2.4.1 NtFrsApi_Rpc_Set_DsPollingIntervalW (Opnum 4)
 
 The NtFrsApi_Rpc_Set_DsPollingIntervalW method adjusts the interval at which Active Directory is
 polled (see section 3.1.5.1) for updates unless both LongInterval and ShortInterval are 0, and then
@@ -7313,7 +7084,8 @@ Release: September 16, 2024
 
 81 / 250
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol
 [MS-RPCE].
 
 Validating the NtFrsApi_Rpc_Set_DsPollingIntervalW request: The server must validate the
@@ -7359,7 +7131,7 @@ UseShortInterval.
 Note  An Active Directory polling cycle MUST NOT be initiated if one is already in progress. An
 implementation can either return an error or wait for the in-progress polling cycle to complete.
 
-3.2.4.2  NtFrsApi_Rpc_Get_DsPollingIntervalW (Opnum 5)
+##### 3.2.4.2 NtFrsApi_Rpc_Get_DsPollingIntervalW (Opnum 5)
 
 The NtFrsApi_Rpc_Get_DsPollingIntervalW method MUST return the current Active Directory polling
 intervals.
@@ -7394,7 +7166,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Return
+
+Return
 value/code
 
 Description
@@ -7442,7 +7215,7 @@ If GetDsPollingIntervalAccessRequired is set to "Write", the server MUST verify 
 has write access. If the caller does not have write access, the server MUST return
 FRS_ERR_INSUFFICIENT_PRIV.
 
-3.2.4.3  NtFrsApi_Rpc_InfoW (Opnum 7)
+##### 3.2.4.3 NtFrsApi_Rpc_InfoW (Opnum 7)
 
 The NtFrsApi_Rpc_InfoW method MUST return internal information. The method is not used in server-
 to-server interoperation. The vendor MUST fill the BLOB with implementation-dependent data
@@ -7482,7 +7255,8 @@ Release: September 16, 2024
 
 83 / 250
 
-Value
+
+Value
 
 ( 1 * 1024)
 
@@ -7560,7 +7334,7 @@ The vendor can implement this RPC call to dump the vendor's implementation speci
 the structure of this information is implementation-specific and has no bearing on the operations of
 the protocol.<62>
 
-3.2.4.4  NtFrsApi_Rpc_IsPathReplicated (Opnum 8)
+##### 3.2.4.4 NtFrsApi_Rpc_IsPathReplicated (Opnum 8)
 
 This method is not used by FRS.
 
@@ -7571,7 +7345,8 @@ Release: September 16, 2024
 
 84 / 250
 
- unsigned long NtFrsApi_Rpc_IsPathReplicated(
+
+ unsigned long NtFrsApi_Rpc_IsPathReplicated(
    [in] handle_t Handle,
    [in, string, unique] PWCHAR Path,
    [in] unsigned long ReplicaSetTypeOfInterest,
@@ -7672,7 +7447,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -7753,7 +7529,7 @@ Actions Triggered: The NtFrsApi_Rpc_IsPathReplicated method MUST return a value 
 a Path is part of a replica set of the type specified in the ReplicaSetTypeOfInterest parameter. The
 method is not used in server-to-server interoperation.
 
-3.2.4.5  NtFrsApi_Rpc_WriterCommand (Opnum 9)
+##### 3.2.4.5 NtFrsApi_Rpc_WriterCommand (Opnum 9)
 
 The NtFrsApi_Rpc_WriterCommand method MUST deactivate or reactivate the replication of the
 specified Replica Set.
@@ -7765,7 +7541,8 @@ Release: September 16, 2024
 
 86 / 250
 
- unsigned long NtFrsApi_Rpc_WriterCommand(
+
+ unsigned long NtFrsApi_Rpc_WriterCommand(
    [in] handle_t Handle,
    [in] unsigned long Command
  );
@@ -7863,14 +7640,15 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Actions Triggered: If the command is NTFRSAPI_WRITER_COMMAND_FREEZE, FRS MUST stop
+
+Actions Triggered: If the command is NTFRSAPI_WRITER_COMMAND_FREEZE, FRS MUST stop
 installing new files for all replica sets. If the command is NTFRSAPI_WRITER_COMMAND_THAW, FRS
 MUST resume installing new files. When FRS is frozen, the Partner continues to participate in
 replication, change orders are passed between partners, and staging files are transmitted to and
 from the partner. The staging files MUST remain in the staged state as long as FRS is frozen. Staging
 files can only be installed into the replica tree when FRS is in the thawed state.
 
-3.2.4.6  NtFrsApi_Rpc_ForceReplication (Opnum 10)
+##### 3.2.4.6 NtFrsApi_Rpc_ForceReplication (Opnum 10)
 
 This call MUST trigger replication on the connection even if the schedule is off.
 
@@ -7943,7 +7721,8 @@ Release: September 16, 2024
 
 88 / 250
 
-
+
+
 
 
 
@@ -7963,15 +7742,15 @@ succeed the call.
 Actions Triggered: The NtFrsApi_Rpc_ForceReplication method MUST force replication to occur
 outside the scheduled replication activity.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No other timer events.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 No other local events are required.
 
-3.3  FRSRPC Interface
+### 3.3 FRSRPC Interface
 
 The FRSRPC interface provides methods that support the initial replication activities needed when a
 server is promoted to a domain controller as well as subsequent replication activities. The version
@@ -7982,13 +7761,13 @@ FRSStaticPort element, if it is not set to 0. Otherwise, the server MUST impleme
 dynamically assigned endpoint. The server MUST use the UUID F5CC59B4-4264-101A-8C59-
 08002B2F8426. NTFRS MUST be layered above TCP/IP and RPC.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 No other abstract data models required.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
-3.3.2.1  Connection Schedule Timer
+##### 3.3.2.1 Connection Schedule Timer
 
 The replication schedule defines the periods during which replication takes place.
 
@@ -7999,7 +7778,7 @@ DFS replica set connections are using an on/off schedule (see section 3.3.2.1.2)
 
 Replication schedules MUST be stored in Coordinated Universal Time (UTC).
 
-3.3.2.1.1 SYSVOL Connection ScheduleTimer
+###### 3.3.2.1.1 SYSVOL Connection ScheduleTimer
 
 FRS MUST replicate SYSVOL using the same intra-site connection objects and schedule (section
 2.3.2.4) built by the DRSR, as specified in [MS-DRSR], for Active Directory replication.
@@ -8013,7 +7792,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  SYSVOL connection within a site. The connection is always considered to be on; any schedule
+
+  SYSVOL connection within a site. The connection is always considered to be on; any schedule
 
 MUST be ignored and the changed files replicated immediately.
 
@@ -8042,7 +7822,7 @@ schedule is essentially continuous replication. 0:00 means exactly on the hour.
 
  When set to zero times per hour, replication MUST NOT start.
 
-3.3.2.1.2 DFS Connection Schedule
+###### 3.3.2.1.2 DFS Connection Schedule
 
 When replication is set to be available in the schedule, replication MUST occur continuously. Unlike
 SYSVOL schedules, DFS replica set schedules are on/off schedules. As long as the schedule is open,
@@ -8050,7 +7830,7 @@ the connection stays in the Joined state and change orders MUST be sent out as t
 by the Upstream Partner. Any queued change orders in the upstream partner's outbound log MUST
 be sent first. When the schedule closes, FRS unjoins the connection.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 FRS MUST check Active Directory for replica set configurations (section 2.3). FRS MUST check if it
 is the primary member of the replica set by checking the frsPrimaryMember of the NTFRS replica set
@@ -8078,7 +7858,7 @@ unknown file or folder in its IDTable to be sent to corresponding downstream par
 section 3.3.4.4.4.1 through FrsSendCommPkt when the schedule for the connection is open (section
 3.3.4.4).
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 Methods in RPC Opnum Order
 
@@ -8089,7 +7869,8 @@ Release: September 16, 2024
 
 90 / 250
 
-Method
+
+Method
 
 Description
 
@@ -8160,7 +7941,7 @@ Opnum: 10
 
 All methods MUST NOT throw exceptions.
 
-3.3.4.1  Change Orders
+##### 3.3.4.1 Change Orders
 
 When a change happens in the local file system for the replica tree, the upstream partner MUST
 construct a change order to be sent to all downstream partners through FrsSendCommPkt.
@@ -8200,7 +7981,8 @@ Release: September 16, 2024
 
 91 / 250
 
-For each type of change, the upstream partner MUST call FrsRpcSendCommPkt to send a
+
+For each type of change, the upstream partner MUST call FrsRpcSendCommPkt to send a
 COMM_PACKET object to a downstream partner on each outbound connection.
 
 The COMM_PACKET object MUST be constructed as specified in section 2.2.3.5 with the following
@@ -8275,7 +8057,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  FileSize: For files, MUST be the file size. For folders, it MUST be 0.<71>
+
+  FileSize: For files, MUST be the file size. For folders, it MUST be 0.<71>
 
   FileOffset: MUST be 0.
 
@@ -8351,11 +8134,12 @@ Release: September 16, 2024
 
 93 / 250
 
-COMM_CO_EXTENSION_2: Constructed as specified in section 2.2.3.6.22.
+
+COMM_CO_EXTENSION_2: Constructed as specified in section 2.2.3.6.22.
 
 COMM_EOP: MUST be 0xFFFFFFFF.
 
-3.3.4.1.1 File Is Added/Updated on the Upstream Partner
+###### 3.3.4.1.1 File Is Added/Updated on the Upstream Partner
 
 Flags:
 
@@ -8396,7 +8180,7 @@ Updating an existing file: LocationCmd is not needed. MUST be 0xE. (CO_LOCATION_
 
 For an example, see section 4.5.1. <73>
 
-3.3.4.1.2 File Is Removed on the Upstream Partner
+###### 3.3.4.1.2 File Is Removed on the Upstream Partner
 
 Flags: MUST be a bitwise OR of the following flags.
 
@@ -8412,7 +8196,7 @@ LocationCmd: MUST be 0x2. (CO_LOCATION_DELETE on file.)
 
 For an example, see section 4.5.3. <39>
 
-3.3.4.1.3 File Is Renamed on the Upstream Partner
+###### 3.3.4.1.3 File Is Renamed on the Upstream Partner
 
 [MS-FRS1] - v20240916
 File Replication Service Protocol
@@ -8421,7 +8205,8 @@ Release: September 16, 2024
 
 94 / 250
 
-Flags:
+
+Flags:
 
 If the staging file is not compressed: MUST be a bitwise OR of the following flags.
 
@@ -8445,7 +8230,7 @@ LocationCmd: MUST be 0x000E. (CO_LOCATION_NO_CMD on the file.)
 
 For an example of renaming a file, see section 4.5.2.
 
-3.3.4.1.4 Folder Is Created/Updated on the Upstream Partner
+###### 3.3.4.1.4 Folder Is Created/Updated on the Upstream Partner
 
 Flags:
 
@@ -8480,7 +8265,7 @@ Updating an existing folder: MUST be 0xF. (CO_LOCATION_NO_CMD on folder.)
 
 For an example, see section 4.5.4.  <74>
 
-3.3.4.1.5 Folder Is Removed on the Upstream Partner
+###### 3.3.4.1.5 Folder Is Removed on the Upstream Partner
 
 Flags: MUST be a bitwise OR of the following flags.
 
@@ -8491,7 +8276,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  CO_FLAG_LOCALCO if originating on the upstream partner.
+
+  CO_FLAG_LOCALCO if originating on the upstream partner.
 
   CO_FLAG_LOCATION_CMD
 
@@ -8503,7 +8289,7 @@ LocationCmd: MUST be 0x3. (CO_LOCATION_DELETE on folder.)
 
 For an example, see section 4.4.5.  <75>
 
-3.3.4.1.6 Folder Is Renamed on the Upstream Partner
+###### 3.3.4.1.6 Folder Is Renamed on the Upstream Partner
 
 Flags:
 
@@ -8529,7 +8315,7 @@ LocationCmd: MUST be 0xF. (CO_LOCATION_NO_CMD on the folder.)
 
 For an example of renaming an empty folder, see section 4.5.6.
 
-3.3.4.2  FrsRpcStartPromotionParent Message (Opnum 2)
+##### 3.3.4.2 FrsRpcStartPromotionParent Message (Opnum 2)
 
 The FrsRpcStartPromotionParent method requests the server that is the Upstream Partner to start a
 volatile connection for the purpose of seeding the system volume (SYSVOL) folder on the
@@ -8561,7 +8347,8 @@ Release: September 16, 2024
 
 96 / 250
 
- );
+
+ );
 
 Handle: Binding handle obtained when the partner authenticates with the file replication service.
 
@@ -8639,7 +8426,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-initial sync is completed, NTFRS starts using the connection generated by Knowledge Consistency
+
+initial sync is completed, NTFRS starts using the connection generated by Knowledge Consistency
 Checker (KCC) for normal synchronization.
 
 On receiving this message, the server MUST validate the following:
@@ -8736,7 +8524,7 @@ Find the local replica as identified by ReplicaSetName by reading the Active Dir
 The first time promotion for SYSVOL MUST wait for connection establishment request (section
 3.3.4.4.4).
 
-3.3.4.3  FrsNOP Message (Opnum 3)
+##### 3.3.4.3 FrsNOP Message (Opnum 3)
 
 The FrsNOP method verifies that the RPC connection for this interface is functioning properly. This
 method is not used by FRS.
@@ -8748,7 +8536,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- unsigned long FrsNOP();
+
+ unsigned long FrsNOP();
 
 This method has no parameters.
 
@@ -8760,7 +8549,7 @@ The method MUST return 0.
 
 On receiving this message, the server MUST do nothing and return 0.
 
-3.3.4.4  FrsRpcSendCommPkt (Opnum 0)
+##### 3.3.4.4 FrsRpcSendCommPkt (Opnum 0)
 
 The FrsRpcSendCommPkt method transfers change order commands, files, and folders on an FRS
 connection.
@@ -8809,7 +8598,7 @@ There are 12 types of COMM_PACKETs (see section 2.2.3.6.2). If machine A sends a
 packet to machine B with COMM_PACKET.COMM_COMMAND set to CMD_XXXX, a simple way to
 describe this is as follows: Machine A sends CMD_XXXX to machine B.
 
-3.3.4.4.1 Common Details
+###### 3.3.4.4.1 Common Details
 
 On receiving an FrsRpcSendCommPkt call, the server MUST validate the COMM_PACKET object.
 
@@ -8822,7 +8611,8 @@ Release: September 16, 2024
 
 99 / 250
 
-MUST start with COMM_BOP and end with COMM_EOP.
+
+MUST start with COMM_BOP and end with COMM_EOP.
 
 CsId MUST be 1.
 
@@ -8893,9 +8683,10 @@ Release: September 16, 2024
 
 100 / 250
 
-COMM_EOP: 0xFFFFFFFF.
 
-3.3.4.4.2 COMM_COMMAND Is CMD_NEED_JOIN
+COMM_EOP: 0xFFFFFFFF.
+
+###### 3.3.4.4.2 COMM_COMMAND Is CMD_NEED_JOIN
 
 The downstream partner sent CMD_NEED_JOIN to inform the upstream partner that a Join
 operation is needed (section 3.3.4.6). The upstream partner MUST respond with a CMD_START_JOIN
@@ -8911,7 +8702,7 @@ Other elements are specified in section 3.3.4.4.1.
 
 See sections 4.1 and 4.4.1 for examples of the use of this command.
 
-3.3.4.4.3 COMM_COMMAND Is CMD_START_JOIN
+###### 3.3.4.4.3 COMM_COMMAND Is CMD_START_JOIN
 
 The upstream Partner sent CMD_START_JOIN to indicate that it is alive and a connection session
 MUST be established. The downstream partner MUST respond with a CMD_JOINING packet to
@@ -8938,7 +8729,7 @@ Other elements are specified in section 3.3.4.4.1.
 
 See sections 4.1 and 4.4.2 for examples of the use of this command.
 
-3.3.4.4.4 COMM_COMMAND Is CMD_JOINING
+###### 3.3.4.4.4 COMM_COMMAND Is CMD_JOINING
 
 A downstream partner sent CMD_JOINING, trying to establish a connection session (3.3.4.6). The
 server MUST be the upstream partner. The server MUST have a corresponding outbound
@@ -8962,7 +8753,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-A connection session cannot be established if the partner times are out of sync by an implementation-
+
+A connection session cannot be established if the partner times are out of sync by an implementation-
 specific Maximum Partner Clock Skew value (unless this is a volatile connection for SYSVOL seeding).
 FRS MUST compare the time when the packet was built by the partner (P_IN.COMM_JOIN_TIME) to
 the time when the packet was received (the current time). If the time difference is larger than the
@@ -9000,7 +8792,7 @@ following section.
 If a connection VVJoin does not need to be performed, the upstream partner MUST send unknown
 change orders to the downstream partner based on the downstream partner version vector.
 
-3.3.4.4.4.1  Connection VVJoin
+###### 3.3.4.4.4.1 Connection VVJoin
 
 FRS MUST perform Connection VVJoin when either of the following conditions is true:
 
@@ -9018,7 +8810,7 @@ sent before its child's change order. Once all change orders that the downstream
 know yet are sent to the downstream partner and are processed, the upstream partner MUST send out
 CMD_VVJOIN_DONE to the downstream partner to indicate that the Connection VVJoin is done.
 
-3.3.4.4.4.1.1  Common Details for Initial Syncing a File and a Folder
+###### 3.3.4.4.4.1.1 Common Details for Initial Syncing a File and a Folder
 
 When initial syncing either a file or folder, the upstream partner MUST call the downstream
 partner through FrsRpcSendCommPkt to send a CMD_REMOTE_CO packet containing a change
@@ -9039,7 +8831,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Flags: Specified in sections Initial Syncing a File and Initial Syncing a Folder.
+
+Flags: Specified in sections Initial Syncing a File and Initial Syncing a Folder.
 
 IFlags: Specified in sections Initial Syncing a File and Initial Syncing a Folder.
 
@@ -9109,7 +8902,8 @@ Release: September 16, 2024
 
 103 / 250
 
-Spare2GUID: MUST be 0.
+
+Spare2GUID: MUST be 0.
 
 Spare1Wcs: MUST be 0.
 
@@ -9117,7 +8911,7 @@ Spare2Wcs: MUST be 0.
 
 Spare2Bin: MUST be 0.
 
-3.3.4.4.4.1.2  Initial Syncing a File
+###### 3.3.4.4.4.1.2 Initial Syncing a File
 
 If the change order that the downstream partner has not known yet is a file, the change order
 MUST be constructed as follows.
@@ -9138,7 +8932,7 @@ LocationCmd: MUST be 0.
 
 Other attributes are specified in section 3.3.4.4.4.1.1.
 
-3.3.4.4.4.1.3  Initial Syncing a Folder
+###### 3.3.4.4.4.1.3 Initial Syncing a Folder
 
 If the change order that the downstream partner has not known yet is a folder, the change order
 MUST be constructed as follows.
@@ -9160,13 +8954,13 @@ LocationCmd: MUST be 1.
 
 Other attributes are specified in section 3.3.4.4.4.1.1.
 
-3.3.4.4.4.1.4  CMD_VVJOIN_DONE Once Initial Sync Is Done
+###### 3.3.4.4.4.1.4 CMD_VVJOIN_DONE Once Initial Sync Is Done
 
 Once all the change orders that the downstream partner does not know are sent to the
 downstream partner and are processed, the upstream partner MUST send out a CMD_VVJOIN_DONE
 communication packet through FrsRpcSendCommPkt.
 
-3.3.4.4.5 COMM_COMMAND Is CMD_JOINED
+###### 3.3.4.4.5 COMM_COMMAND Is CMD_JOINED
 
 The server MUST be the downstream partner to receive this call. On receiving this packet, the
 upstream partner MUST send out any change orders that are unknown to the downstream partner
@@ -9178,13 +8972,14 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-through the CMD_REMOTE_CO packet. The server (or downstream partner) MUST NOT reply to this
+
+through the CMD_REMOTE_CO packet. The server (or downstream partner) MUST NOT reply to this
 CMD_JOINED packet. The server MUST wait for further packets from the upstream partner for either
 initial sync or normal sync.
 
 See sections 4.1 and 4.4.4 for examples of the use of this command.
 
-3.3.4.4.6 COMM_COMMAND Is CMD_REMOTE_CO
+###### 3.3.4.4.6 COMM_COMMAND Is CMD_REMOTE_CO
 
 The server MUST be the downstream partner to receive this call. The upstream partner has sent a
 remote change order to the downstream partner.
@@ -9255,7 +9050,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -9348,7 +9144,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 If no value is set in CO_IN.ContentCmd, a staging file is not needed.
 
@@ -9372,7 +9169,7 @@ change order to all other downstream partners by CMD_REMOTE_CO packet.
 
 Both CMD_REMOTE_CO_DONE and CMD_SEND_STAGE MUST include a change order in their packets.
 Following are common details for those change orders (these details are not listed in sections
-3.3.4.4.6.1 and 3.3.4.4.6.2).
+###### 3.3.4.4.6.1 and 3.3.4.4.6.2).
 
 SequenceNumber: MUST be a number that is larger than any change order sequence number in the
 current member outbound log. The sequence number MUST start at one and MUST be incremented
@@ -9416,7 +9213,8 @@ Release: September 16, 2024
 
 107 / 250
 
-NewReplicaNumber: A 32-bit, unsigned integer that MUST indicate the internal implementation-
+
+NewReplicaNumber: A 32-bit, unsigned integer that MUST indicate the internal implementation-
 specific data on the current replica member. This value is only meaningful on the current replica
 member and has no meaning on any other replica member. Once the change order is sent to another
 replica member, the receiving partner MUST ignore this field.
@@ -9488,7 +9286,8 @@ Release: September 16, 2024
 
 108 / 250
 
-COMM_CO_EXTENSION_2: If the CMD_REMOTE_CO packet is for an existing file, the Data field in
+
+COMM_CO_EXTENSION_2: If the CMD_REMOTE_CO packet is for an existing file, the Data field in
 DATA_EXTENSION_CHECKSUM SHOULD be set as specified in section 2.2.3.7. Otherwise, the Data
 field SHOULD be set to NULL.
 
@@ -9563,7 +9362,8 @@ Release: September 16, 2024
 
 109 / 250
 
-  CO_FLAG_CONTENT_CMD
+
+  CO_FLAG_CONTENT_CMD
 
 When copying folder.
 
@@ -9629,7 +9429,7 @@ LocationCmd: MUST be CO_IN.LocationCmd.
 
 CO_OUT.FIleOffset: MUST be 0.
 
-3.3.4.4.6.2  Acknowledging the Change Is Done
+###### 3.3.4.4.6.2 Acknowledging the Change Is Done
 
 [MS-FRS1] - v20240916
 File Replication Service Protocol
@@ -9638,7 +9438,8 @@ Release: September 16, 2024
 
 110 / 250
 
-Once the change order is processed by the local replica member, the server MUST send
+
+Once the change order is processed by the local replica member, the server MUST send
 CMD_REMOTE_CO_DONE to the upstream partner to indicate that the change order is processed.
 
 The server MUST construct the CMD_REMOTE_CO_DONE packet as follows.
@@ -9708,7 +9509,8 @@ Release: September 16, 2024
 
 111 / 250
 
-  CO_FLAG_CONTENT_CMD
+
+  CO_FLAG_CONTENT_CMD
 
   CO_FLAG_VV_ACTIVATED
 
@@ -9781,7 +9583,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  CO_FLAG_NEW_FILE (if a new file)
+
+  CO_FLAG_NEW_FILE (if a new file)
 
   CO_FLAG_LOCATION_CMD
 
@@ -9854,7 +9657,8 @@ Release: September 16, 2024
 
 113 / 250
 
-Uncompressed staging file: MUST be a bitwise OR of the following flags:
+
+Uncompressed staging file: MUST be a bitwise OR of the following flags:
 
   CO_FLAG_NEW_FILE (if a new folder)
 
@@ -9923,7 +9727,7 @@ CO_OUT.FileOffset: MUST be 0.
 
 See sections 4.2, 4.4.5, 4.5.1.1, 4.5.2.1, 4.5.3.1, 4.5.4.1, 4.5.5.1, and 4.5.6.1.
 
-3.3.4.4.7 COMM_COMMAND Is CMD_SEND_STAGE
+###### 3.3.4.4.7 COMM_COMMAND Is CMD_SEND_STAGE
 
 The downstream partner is requesting the local staging file. The upstream partner MUST send
 the local staging file to the requesting downstream partner.
@@ -9943,7 +9747,8 @@ Release: September 16, 2024
 
 114 / 250
 
-
+
+
 
 P_IN.COMM_CXTION MUST be an outbound connection that has joined with the downstream
 partner.
@@ -10025,7 +9830,8 @@ Release: September 16, 2024
 
 115 / 250
 
-  CocExt MUST be set to 0 if the downstream partner's FRS Minor version is
+
+  CocExt MUST be set to 0 if the downstream partner's FRS Minor version is
 
 NTFRS_COMM_MINOR_4 or above. If the downstream partner has a FRS Minor version below
 NTFRS_COMM_MINOR_4, the structure MUST hold data as specified in section 2.2.3.6.21. <86>
@@ -10077,7 +9883,7 @@ If the upstream partner is unable to read the file due to file corruption then t
 MUST delete the corrupted file and send CMD_RETRY_FETCH to the downstream partner, which will
 cause the file to be recreated on the next CMD_SEND_STAGE request from the downstream partner.
 
-3.3.4.4.8 COMM_COMMAND Is CMD_RECEIVING_STAGE
+###### 3.3.4.4.8 COMM_COMMAND Is CMD_RECEIVING_STAGE
 
 The upstream partner is sending the staging file to the downstream partner.
 
@@ -10101,7 +9907,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  Validate the RPC call MUST use either RPC_C_AUTHN_GSS_KERBEROS or
+
+  Validate the RPC call MUST use either RPC_C_AUTHN_GSS_KERBEROS or
 
 RPC_C_AUTH_GSS_NEGOTIATE.
 
@@ -10130,7 +9937,7 @@ processed unless the previous block has been downloaded successfully.)
 See sections 4.2, 4.4.7, 4.5.1.3, 4.5.1.5, 4.5.2.3, 4.5.4.3, and 4.5.6.3 for examples of the use of this
 command.
 
-3.3.4.4.9 COMM_COMMAND Is CMD_REMOTE_CO_DONE
+###### 3.3.4.4.9 COMM_COMMAND Is CMD_REMOTE_CO_DONE
 
 The receiving partner MUST be the upstream partner. This indicates the downstream partner has
 processed this change order. FRS MUST remove the change order from the Outbound Connection
@@ -10140,18 +9947,18 @@ reply to this CMD_REMOTE_CO_DONE packet.
 See sections 4.2, 4.4.8, 4.5.1.6, 4.5.2.4, 4.5.3.2, 4.5.4.4, 4.5.5.2, and 4.5.6.4 for examples of the
 use of this command.
 
-3.3.4.4.10
+###### 3.3.4.4.10 COMM_COMMAND Is CMD_ABORT_FETCH
 
-COMM_COMMAND Is CMD_ABORT_FETCH
+
 
 The receiving partner MUST be the downstream partner. On receiving this packet, it indicates that
 the upstream partner cannot handle the CMD_SEND_STAGE packet now or ever. The server MUST
 discard the Remote Change Order from the inbound connection Inbound Log for the change
 order inside CMD_SEND_STAGE packet. FRS MUST NOT reply to this CMD_ABORT_FETCH packet.
 
-3.3.4.4.11
+###### 3.3.4.4.11 COMM_COMMAND Is CMD_RETRY_FETCH
 
-COMM_COMMAND Is CMD_RETRY_FETCH
+
 
 The server MUST be the downstream partner. On receiving this packet, it indicates the upstream
 partner cannot handle the CMD_SEND_STAGE packet now. The server MUST resend the same
@@ -10160,9 +9967,9 @@ CMD_SEND_STAGE packet after five seconds (see section 3.3.4.4.6.1).
 In the new CMD_SEND_STAGE packet, CO_FLAG_RETRY MUST be set in the change order Flags
 field.
 
-3.3.4.4.12
+###### 3.3.4.4.12 COMM_COMMAND Is CMD_VVJOIN_DONE
 
-COMM_COMMAND Is CMD_VVJOIN_DONE
+
 
 This packet indicates that the initial sync is complete (that is, all change orders for this initial sync
 have been sent out to the downstream partner and are processed) between the two machines. FRS
@@ -10170,9 +9977,9 @@ MUST NOT reply to this packet.
 
 See section 4.4.9 for an example of the use of this command.
 
-3.3.4.4.13
+###### 3.3.4.4.13 COMM_COMMAND Is CMD_UNJOIN_REMOTE
 
-COMM_COMMAND Is CMD_UNJOIN_REMOTE
+
 
 117 / 250
 
@@ -10181,7 +9988,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-On receiving this packet:
+
+On receiving this packet:
 
 
 
@@ -10199,7 +10007,7 @@ FRS MUST NOT reply to this packet.
 
 See section 4.4.10 for an example of the use of this command.
 
-3.3.4.5  FrsRpcVerifyPromotionParent (Opnum 1)
+##### 3.3.4.5 FrsRpcVerifyPromotionParent (Opnum 1)
 
 The FrsRpcVerifyPromotionParent method does not perform any actions. It MUST return
 ERROR_CALL_NOT_IMPLEMENTED.
@@ -10238,7 +10046,7 @@ This function is not supported on this system.
 
 ERROR_CALL_NOT_IMPLEMENTED
 
-3.3.4.6  Establishing a Connection Session
+##### 3.3.4.6 Establishing a Connection Session
 
 Connections are established through the FrsRpcSendCommPkt calls:
 
@@ -10254,7 +10062,8 @@ Release: September 16, 2024
 
 118 / 250
 
-  Upon receiving CMD_NEED_JOIN, the upstream partner MUST reply by sending out
+
+  Upon receiving CMD_NEED_JOIN, the upstream partner MUST reply by sending out
 
 CMD_START_JOIN to the downstream partner. The upstream partner can also start the process by
 sending out CMD_START_JOIN directly.
@@ -10328,7 +10137,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  COMM_FROM:
+
+  COMM_FROM:
 
   GUID: MUST be the objectGuid of the local member NTFRS member object.
 
@@ -10352,7 +10162,7 @@ Release: September 16, 2024
 
   COMM_EOP: ff ff ff ff.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 Connection schedules define a set of timers that trigger connection session establishments and
 tear-downs.
@@ -10383,11 +10193,11 @@ FRS is started while the schedule is open.
 
 while the schedule is open.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 No other local events require special processing on the client.
 
-3.4  PERFFRS Interface
+### 3.4 PERFFRS Interface
 
 The PERFFRS interface enables Perfmon (or other performance monitoring tools) to check the FRS
 performance counters. It defines the RPC interface between the Performance DLL and the ntfrs
@@ -10403,7 +10213,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 FRS uses FrsRpcSendCommPkt (see section 3.3.4.4) to send COMM_PACKET (see section 2.2.3.5)
 between replica members to replicate files and folders inside a replica set.
@@ -10472,11 +10283,12 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 122 -->
+
+<!-- Extracted images from page 122 -->
 ![Extracted image 1 from page 122]([MS-FRS1].images/page122-img01.png)
 <!-- /Extracted images from page 122 -->
 
-4.1  Connection Establishment Sequence
+### 4.1 Connection Establishment Sequence
 
 This example shows how a connection is established using two machines:
 
@@ -10521,7 +10333,8 @@ Release: September 16, 2024
 
 122 / 250
 
-4.2  Change Order Handling Sequence
+
+### 4.2 Change Order Handling Sequence
 
 This example shows a change order handling sequence using three machines:
 
@@ -10584,7 +10397,8 @@ Release: September 16, 2024
 
 123 / 250
 
-<!-- Extracted images from page 124 -->
+
+<!-- Extracted images from page 124 -->
 ![Extracted image 1 from page 124]([MS-FRS1].images/page124-img01.png)
 <!-- /Extracted images from page 124 -->
 
@@ -10628,7 +10442,8 @@ Release: September 16, 2024
 
 124 / 250
 
-  When MB receives the change order for F1 from MA on CAB, MB checks its version vector and
+
+  When MB receives the change order for F1 from MA on CAB, MB checks its version vector and
 
 decides to accept this change order. However, MB finds a name conflict with F2 on MB, and F2 is the
 winner. MB rejects the change order for F1 by sending out CMD_REMOTE_CO with flag
@@ -10705,7 +10520,8 @@ Release: September 16, 2024
 
 125 / 250
 
-When MA receives the change order for F2 from MC, MA checks its version vector and decides to
+
+When MA receives the change order for F2 from MC, MA checks its version vector and decides to
 dampen this change order because this change order for F2 is readily known. At time 9, MA sends out
 CMD_REMOTE_CO_DONE with flag CO_FLAG_ABORT_CO to MC through CCA.
 
@@ -10715,7 +10531,7 @@ When MC receives the change order for F2 from MA, MC checks its version vector a
 dampen this change order because this change order for F2 is readily known. At time 10, MC sends out
 CMD_REMOTE_CO_DONE with flag CO_FLAG_ABORT_CO to MA through CAC.
 
-4.3  COMM_PACKET
+### 4.3 COMM_PACKET
 
 This is an example to show COMM_PACKET structure:
 
@@ -10773,7 +10589,8 @@ Release: September 16, 2024
 
 126 / 250
 
-This indicates a CMD_START_JOIN (0x0122) packet.
+
+This indicates a CMD_START_JOIN (0x0122) packet.
 
 CMD_START_JOIN command is composed of the following sequence:
 
@@ -10834,7 +10651,8 @@ Release: September 16, 2024
 
 127 / 250
 
-COMM_REPLICA:
+
+COMM_REPLICA:
 
  05 00 60 00 00 00 10 00 00 00 0c 3e 3b 8c 27 64 f6 40
  8f fd a4 5a 89 cf 5d 12 48 00 00 00 44 00 4f 00 4d 00
@@ -10875,7 +10693,7 @@ COMM_EOP:
 
 Every packet ends with this.
 
-4.4  SYSVOL Initial Sync
+### 4.4 SYSVOL Initial Sync
 
 This is an example for initial sync for the SYSVOL folder:
 
@@ -10893,7 +10711,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 129 -->
+
+<!-- Extracted images from page 129 -->
 ![Extracted image 1 from page 129]([MS-FRS1].images/page129-img01.png)
 <!-- /Extracted images from page 129 -->
 
@@ -10916,7 +10735,8 @@ Release: September 16, 2024
 
 129 / 250
 
-Steps 1 through 4 show how a connection is joined.
+
+Steps 1 through 4 show how a connection is joined.
 
 5.  PDC sends out CMD_REMOTE_CO.
 
@@ -10938,7 +10758,7 @@ CMD_RECEIVING_STAGE to replica DC. But there is no more CMD_REMOTE_CO.
 
 Note  All symbols, such as CMD_NEED_JOIN, are specified in section 3.
 
-4.4.1  Replica DC Sends Out CMD_NEED_JOIN to PDC
+#### 4.4.1 Replica DC Sends Out CMD_NEED_JOIN to PDC
 
 COMM_BOP (4 bytes):
 
@@ -10981,7 +10801,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-COMM_FROM (50 bytes):
+
+COMM_FROM (50 bytes):
 
  10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
  80 4c 1a 00 00 00 53 00 48 00 49 00 43 00 4f 00 2d 00
@@ -11049,7 +10870,8 @@ Release: September 16, 2024
 
 131 / 250
 
-Notes: In this case:
+
+Notes: In this case:
 
   2d89345f-b2ac-4e89-8bdd0efa166b92e6 is the connection GUID of the SYSVOL volatile
 
@@ -11084,7 +10906,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.2  PDC Sends Out CMD_START_JOIN to Replica DC
+#### 4.4.2 PDC Sends Out CMD_START_JOIN to Replica DC
 
 COMM_BOP (4 bytes):
 
@@ -11112,7 +10934,8 @@ Release: September 16, 2024
 
 132 / 250
 
- 2e 00 63 00 6f 00 6d 00 00 0
+
+ 2e 00 63 00 6f 00 6d 00 00 0
 
 GUID: e5d187e6-12aa-48df-abc1d7940ae0804c
 
@@ -11171,13 +10994,14 @@ Release: September 16, 2024
 
 133 / 250
 
- 01 00 00 00 00 00 00 0
+
+ 01 00 00 00 00 00 00 0
 
 COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.3  Replica DC Sends Out CMD_JOINING
+#### 4.4.3 Replica DC Sends Out CMD_JOINING
 
 COMM_BOP (4 bytes):
 
@@ -11228,7 +11052,8 @@ Release: September 16, 2024
 
 134 / 250
 
- 45 00 29 00 00 00
+
+ 45 00 29 00 00 00
 
 GUID: 54f4b21a-03fd-4374-8e3b2875e740d958
 
@@ -11291,7 +11116,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-COMM_JOIN_TIME (12 bytes):
+
+COMM_JOIN_TIME (12 bytes):
 
  08 00 00 00 f4 e9 4 1b b5 89 c6 01
 
@@ -11320,7 +11146,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.4  PDC Sends Out CMD_JOINED
+#### 4.4.4 PDC Sends Out CMD_JOINED
 
 COMM_BOP (4 bytes):
 
@@ -11347,7 +11173,8 @@ Release: September 16, 2024
 
 136 / 250
 
- 6d 00 69 00 63 00 72 00 6f 00 73 00 6f 00 66 00 74 00
+
+ 6d 00 69 00 63 00 72 00 6f 00 73 00 6f 00 66 00 74 00
  2e 00 63 00 6f 00 6d 00 00 00
 
 GUID: e5d187e6-12aa-48df-abc1d7940ae0804c
@@ -11407,7 +11234,8 @@ Release: September 16, 2024
 
 137 / 250
 
- 4e 60 39 1b b5 89 c6 01
+
+ 4e 60 39 1b b5 89 c6 01
 
 FILETIME: 0x01c689b5 1b39604e
 
@@ -11415,7 +11243,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.5  PDC Sends Out CMD_REMOTE_CO
+#### 4.4.5 PDC Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes):
 
@@ -11464,7 +11292,8 @@ Release: September 16, 2024
 
 138 / 250
 
- 4f 00 4c 00 55 00 4d 00 45 00 20 00 28 00 53 00 59 00
+
+ 4f 00 4c 00 55 00 4d 00 45 00 20 00 28 00 53 00 59 00
  53 00 56 00 4f 00 4c 00 20 00 53 00 48 00 41 00 52 00
  45 00 29 00 00 00
 
@@ -11527,7 +11356,8 @@ Release: September 16, 2024
 
 139 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -11601,7 +11431,8 @@ Release: September 16, 2024
 
 140 / 250
 
-    +0x0a0 NewParentGuid    : e6 87 d1 e5 aa 12 df 48
+
+    +0x0a0 NewParentGuid    : e6 87 d1 e5 aa 12 df 48
                               ab c1 d7 94 a e0 80 4c
  (e5d187e6-12aa-48df-abc1d7940ae0804c)
     +0x0b0 CxtionGuid       : 5f 34 89 2d ac b2 89 4e
@@ -11670,13 +11501,14 @@ Release: September 16, 2024
 
 141 / 250
 
-COMM_EOP (4 bytes):
+
+COMM_EOP (4 bytes):
 
  ff ff ff ff
 
 Step 5 is repeated until all of the change orders are sent from the PDC to the replica DC.
 
-4.4.6  Replica DC Sends Out CMD_SEND_STAGE
+#### 4.4.6 Replica DC Sends Out CMD_SEND_STAGE
 
 COMM_BOP (4 bytes):
 
@@ -11728,7 +11560,8 @@ Release: September 16, 2024
 
 142 / 250
 
-GUID: 54f4b21a-03fd-4374-8e3b2875e740d958
+
+GUID: 54f4b21a-03fd-4374-8e3b2875e740d958
 
 Name: DOMAIN SYSTEM VOLUME (SYSVOL SHARE)
 
@@ -11783,7 +11616,8 @@ Release: September 16, 2024
 
 143 / 250
 
-COMM_CO_SEQUENCE_NUMBER (4 bytes):
+
+COMM_CO_SEQUENCE_NUMBER (4 bytes):
 
  00 00 00 00
 
@@ -11852,7 +11686,8 @@ Release: September 16, 2024
 
 144 / 250
 
-    +0x010 ContentCmd       : 0 0 0 0
+
+    +0x010 ContentCmd       : 0 0 0 0
     +0x014 LocationCmd      : 1 0 0 0 (1 - Folder)
     +0x018 FileAttributes   : 10 0 0 0
  (0x10 - FILE_ATTRIBUTE_DIRECTORY)
@@ -11923,7 +11758,8 @@ Release: September 16, 2024
 
 145 / 250
 
-       +0x000 Prefix           : _DATA_EXTENSION_PREFIX_
+
+       +0x000 Prefix           : _DATA_EXTENSION_PREFIX_
           +0x000 Size             : 18 0 0 0
           +0x004 Type             : 1 0 0 0
        +0x008 Data             : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -11938,7 +11774,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.7  PDC Sends Out CMD_RECEIVING_STAGE
+#### 4.4.7 PDC Sends Out CMD_RECEIVING_STAGE
 
 COMM_BOP (4 bytes):
 
@@ -11981,7 +11817,8 @@ Release: September 16, 2024
 
 146 / 250
 
-COMM_REPLICA (96 bytes):
+
+COMM_REPLICA (96 bytes):
 
  10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
  80 4c 48 00 00 00 44 00 4f 00 4d 00 41 00 49 00 4e 00
@@ -12043,7 +11880,8 @@ Release: September 16, 2024
 
 147 / 250
 
- 7a 35 0f 4e 99 a4 f2 ea 94 ff ab 08 bb 31 34 1e 35 5b
+
+ 7a 35 0f 4e 99 a4 f2 ea 94 ff ab 08 bb 31 34 1e 35 5b
  a5 47 ae e5 55 ba 62 c2 16 d7 bb 31 34 1e 35 5b a5 47
  ae e5 55 ba 62 c2 16 d7 5f 34 89 2d ac b2 89 4e 8b dd
  0e fa 16 6b 92 e6 9a 9b 34 1b b5 89 c6 01 00 00 00 00
@@ -12117,7 +11955,8 @@ Release: September 16, 2024
 
 148 / 250
 
-    +0x00c DataLow          : 0 4 0 0 (0x400)
+
+    +0x00c DataLow          : 0 4 0 0 (0x400)
     +0x010 Compression      : 0 0 0 0 0 0 0 0
     +0x018 Attributes       : _FILE_NETWORK_OPEN_INFORMATION
        +0x000 CreationTime     : f2 7a c2 29 af 89 c6 1
@@ -12194,7 +12033,8 @@ Release: September 16, 2024
 
 149 / 250
 
-                                 0 69 0 65 0 73 0 0 0 0
+
+                                 0 69 0 65 0 73 0 0 0 0
  (Policies)
     +0x368 FileObjId        : _FILE_OBJECTID_BUFFER
        +0x000 ObjectId         : 4e c8 ec 1a 7a 35 f 4e
@@ -12260,7 +12100,8 @@ Release: September 16, 2024
 
 150 / 250
 
-Size: 0x4ee
+
+Size: 0x4ee
 
 COMM_FILE_OFFSET (8 bytes):
 
@@ -12285,7 +12126,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.8  Replica DC Sends Out CMD_REMOTE_CO_DONE
+#### 4.4.8 Replica DC Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes):
 
@@ -12316,7 +12157,8 @@ Release: September 16, 2024
 
 151 / 250
 
-Name: shico-temp-1.shico-office.nttest.microsoft.com
+
+Name: shico-temp-1.shico-office.nttest.microsoft.com
 
 COMM_FROM (50 bytes):
 
@@ -12375,7 +12217,8 @@ Release: September 16, 2024
 
 152 / 250
 
-COMM_BLOCK_SIZE (8 bytes):
+
+COMM_BLOCK_SIZE (8 bytes):
 
  00 00 00 00 00 00 00 00
 
@@ -12431,7 +12274,8 @@ Release: September 16, 2024
 
 153 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  d8 49 a1 01 00 00 00 00 2e b6 2e dc af 89 c6 01 10 00
  50 00 6f 00 6c 00 69 00 63 00 69 00 65 00 73 00 00 00
@@ -12505,7 +12349,8 @@ Release: September 16, 2024
 
 154 / 250
 
- (1aecc84e-357a-4e0f-99a4f2ea94ffab08)
+
+ (1aecc84e-357a-4e0f-99a4f2ea94ffab08)
     +0x090 OldParentGuid    : bb 31 34 1e 35 5b a5 47
                               ae e5 55 ba 62 c2 16 d7
  (1e3431bb-5b35-47a5-aee555ba62c216d7)
@@ -12571,9 +12416,10 @@ Release: September 16, 2024
 
 155 / 250
 
-Steps 7 through 9 are repeated until all the files are replicated from PDC to replica DC.
 
-4.4.9  Once All Change Orders are Sent Out, PDC Sends Out CMD_VVJOIN_DONE
+Steps 7 through 9 are repeated until all the files are replicated from PDC to replica DC.
+
+#### 4.4.9 Once All Change Orders are Sent Out, PDC Sends Out CMD_VVJOIN_DONE
 
 COMM_BOP (4 bytes):
 
@@ -12634,7 +12480,8 @@ Release: September 16, 2024
 
 156 / 250
 
- 74 00 65 00 6d 00 70 00 2d 00 31 00 2e 00 73 00 68 00
+
+ 74 00 65 00 6d 00 70 00 2d 00 31 00 2e 00 73 00 68 00
  69 00 63 00 6f 00 2d 00 6f 00 66 00 66 00 69 00 63 00
  65 00 2e 00 6e 00 74 00 74 00 65 00 73 00 74 00 2e 00
  6d 00 69 00 63 00 72 00 6f 00 73 00 6f 00 66 00 74 00
@@ -12661,7 +12508,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.4.10 Replica DC Sends Out CMD_UNJOIN_REMOTE
+#### 4.4.10 Replica DC Sends Out CMD_UNJOIN_REMOTE
 
 COMM_BOP (4 bytes):
 
@@ -12692,7 +12539,8 @@ Release: September 16, 2024
 
 157 / 250
 
-Name: shico-temp-1.shico-office.nttest.microsoft.com
+
+Name: shico-temp-1.shico-office.nttest.microsoft.com
 
 COMM_FROM (50 bytes):
 
@@ -12751,11 +12599,12 @@ Release: September 16, 2024
 
 158 / 250
 
-COMM_EOP (4 bytes):
+
+COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5  Normal Sync
+### 4.5 Normal Sync
 
 SHICO-TEMP-1 and SHICO-TEMP-2 are already in sync through initial sync. The following examples
 show how changes from SHICO-TEMP-1 are replicated down to SHICO-TEMP-2.
@@ -12763,12 +12612,12 @@ show how changes from SHICO-TEMP-1 are replicated down to SHICO-TEMP-2.
 The upstream partner is always SHICO-TEMP1. The downstream partner is always SHICO-TEMP-
 2. All changes happen on connection 08f7a3f0-e05c-4994-9a60e7cd4057ec6f.
 
-4.5.1  Copy a File
+#### 4.5.1 Copy a File
 
 Copy Regedit.exe to SYSVOL and replicate from SHICO-TEMP-1 to SHICO-TEMP-2. Because this file
 cannot be sent in one packet, two packets are used. This is to show how files are segmented.
 
-4.5.1.1  Upstream Partner Sends Out CMD_REMOTE_CO
+##### 4.5.1.1 Upstream Partner Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes):
 
@@ -12809,7 +12658,8 @@ Release: September 16, 2024
 
 159 / 250
 
- 33 00 38 00 2d 00 30 00 37 00 44 00 31 00 2d 00 34 00
+
+ 33 00 38 00 2d 00 30 00 37 00 44 00 31 00 2d 00 34 00
  30 00 44 00 46 00 2d 00 38 00 37 00 37 00 42 00 2d 00
  38 00 43 00 34 00 38 00 42 00 46 00 32 00 31 00 32 00
  30 00 30 00 44 00 00 00
@@ -12877,7 +12727,8 @@ Release: September 16, 2024
 
 160 / 250
 
- 00 00 00 00
+
+ 00 00 00 00
 
 Type _CHANGE_ORDER_RECORD_*
 
@@ -12946,9 +12797,10 @@ Release: September 16, 2024
 
 161 / 250
 
- ff ff ff ff
 
-4.5.1.2  Downstream Partner Sends Out CMD_SEND_STAGE 1
+ ff ff ff ff
+
+##### 4.5.1.2 Downstream Partner Sends Out CMD_SEND_STAGE 1
 
 COMM_BOP (4 bytes):
 
@@ -13000,7 +12852,8 @@ Release: September 16, 2024
 
 162 / 250
 
-COMM_LAST_JOIN_TIME (8 bytes):
+
+COMM_LAST_JOIN_TIME (8 bytes):
 
  14 71 d5 42 f1 8f c6 01
 
@@ -13057,7 +12910,8 @@ Release: September 16, 2024
 
 163 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -13129,7 +12983,8 @@ Release: September 16, 2024
 
 164 / 250
 
- 48 00 00 00 01 00 02 00 18 00 00 00 30 00 00 00 00 00
+
+ 48 00 00 00 01 00 02 00 18 00 00 00 30 00 00 00 00 00
  00 00 00 00 00 00 18 00 00 00 01 00 00 00 57 68 ac c0
  53 63 0b ac fb b1 81 81 1e bf 80 32 18 00 00 00 02 00
  00 00 00 00 00 00 00 00 00 00 5f a4 b4 66 f1 8f c6 01
@@ -13138,7 +12993,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.1.3  Upstream Partner Sends Out CMD_RECEIVING_STAGE 1
+##### 4.5.1.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE 1
 
 COMM_BOP (4 bytes):
 
@@ -13184,7 +13039,8 @@ Release: September 16, 2024
 
 165 / 250
 
- 30 00 30 00 44 00 00 00
+
+ 30 00 30 00 44 00 00 00
 
 COMM_JOIN_GUID (20 bytes):
 
@@ -13252,7 +13108,8 @@ Release: September 16, 2024
 
 166 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 de fb 44 7f b7
  58 d3 4a 8d 05 2a 3a 0b ec 17 d0 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -13326,7 +13183,8 @@ Release: September 16, 2024
 
 167 / 250
 
-       +0x090 OldParentGuid    : e1 99 a7 ae 27 b4 22 45
+
+       +0x090 OldParentGuid    : e1 99 a7 ae 27 b4 22 45
                                  81 59 5e 55 e0 93 ba 24
        +0x0a0 NewParentGuid    : e1 99 a7 ae 27 b4 22 45
                                  81 59 5e 55 e0 93 ba 24
@@ -13397,7 +13255,8 @@ Release: September 16, 2024
 
 168 / 250
 
- 00 00 1 00 00 00 00 00
+
+ 00 00 1 00 00 00 00 00
 
 COMM_FILE_SIZE (8 bytes):
 
@@ -13420,7 +13279,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.1.4  Downstream Partner Sends Out CMD_SEND_STAGE 2
+##### 4.5.1.4 Downstream Partner Sends Out CMD_SEND_STAGE 2
 
 COMM_BOP (4 bytes):
 
@@ -13445,7 +13304,8 @@ Release: September 16, 2024
 
 169 / 250
 
- 10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
+
+ 10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
  80 4c 1a 00 00 00 53 00 48 00 49 00 43 00 4f 00 2d 00
  54 00 45 00 4d 00 50 00 2d 00 32 00 00 00
 
@@ -13497,7 +13357,8 @@ Release: September 16, 2024
 
 170 / 250
 
- 10 00 00 00 4d 0c d2 35 0d b9 09 4d bd 87 e2 c6 b0 8d
+
+ 10 00 00 00 4d 0c d2 35 0d b9 09 4d bd 87 e2 c6 b0 8d
  59 21
 
 COMM_CO_SEQUENCE_NUMBER (4 bytes):
@@ -13564,7 +13425,8 @@ Release: September 16, 2024
 
 171 / 250
 
- (0x100040c - CO_FLAG_COMPRESSED_STAGE | CO_FLAG_NEW_FILE |
+
+ (0x100040c - CO_FLAG_COMPRESSED_STAGE | CO_FLAG_NEW_FILE |
  CO_FLAG_LOCATION_CMD | CO_FLAG_CONTENT_CMD)
     +0x008 IFlags           : 0 0 0 0 (0x0)
     +0x00c State            : 6 0 0 0
@@ -13621,7 +13483,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.1.5  Upstream Partner Sends Out CMD_RECEIVING_STAGE 2
+##### 4.5.1.5 Upstream Partner Sends Out CMD_RECEIVING_STAGE 2
 
 COMM_BOP (4 bytes):
 
@@ -13632,7 +13494,8 @@ Release: September 16, 2024
 
 172 / 250
 
- 00 00 00 00
+
+ 00 00 00 00
 
 COMM_COMMAND (4 bytes):
 
@@ -13684,7 +13547,8 @@ Release: September 16, 2024
 
 173 / 250
 
-COMM_BLOCK (23,654 bytes):
+
+COMM_BLOCK (23,654 bytes):
 
  62 5c 00 00 85 15 f4 82 15 1d 22 ff 81 15 f4 e8 6c 80
  10 5f 5e 88 c9 c2 c 8 67 5d e9 26 80 e 1 7 6f b8 8 18
@@ -13749,7 +13613,8 @@ Release: September 16, 2024
 
 174 / 250
 
- 62 5c 01 00 00 00 00 00
+
+ 62 5c 01 00 00 00 00 00
 
 COMM_FILE_OFFSET (8 bytes):
 
@@ -13768,7 +13633,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.1.6  Downstream Partner Sends Out CMD_REMOTE_CO_DONE
+##### 4.5.1.6 Downstream Partner Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes):
 
@@ -13799,7 +13664,8 @@ Release: September 16, 2024
 
 175 / 250
 
- 10 00 00 00 1a b2 f4 54 fd 03 74 43 8e 3b 28 75 e7 40
+
+ 10 00 00 00 1a b2 f4 54 fd 03 74 43 8e 3b 28 75 e7 40
  d9 58 48 00 00 00 44 00 4f 00 4d 00 41 00 49 00 4e 00
  20 00 53 00 59 00 53 00 54 00 45 00 4d 00 20 00 56 00
  4f 00 4c 00 55 00 4d 00 45 00 20 00 28 00 53 00 59 00
@@ -13850,7 +13716,8 @@ Release: September 16, 2024
 
 176 / 250
 
- 10 00 00 00 4d 0c d2 35 0d b9 09 4d bd 87 e2 c6 b0 8d
+
+ 10 00 00 00 4d 0c d2 35 0d b9 09 4d bd 87 e2 c6 b0 8d
  59 21
 
 COMM_CO_SEQUENCE_NUMBER (4 bytes):
@@ -13917,7 +13784,8 @@ Release: September 16, 2024
 
 177 / 250
 
- (0x100040e - CO_FLAG_COMPRESSED_STAGE | CO_FLAG_NEW_FILE |
+
+ (0x100040e - CO_FLAG_COMPRESSED_STAGE | CO_FLAG_NEW_FILE |
  CO_FLAG_LOCATION_CMD | CO_FLAG_CONTENT_CMD |
  CO_FLAG_VV_ACTIVATED)
     +0x008 IFlags           : 1 0 0 0
@@ -13983,11 +13851,12 @@ Release: September 16, 2024
 
 178 / 250
 
-4.5.2  Rename a File
+
+#### 4.5.2 Rename a File
 
 On SHICO-TEMP-1, rename file file.txt to newfile.txt.
 
-4.5.2.1  Upstream Partner Sends Out CMD_REMOTE_CO
+##### 4.5.2.1 Upstream Partner Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes):
 
@@ -14038,7 +13907,8 @@ Release: September 16, 2024
 
 179 / 250
 
- 06 e4
+
+ 06 e4
 
 COMM_LAST_JOIN_TIME (8 bytes):
 
@@ -14106,7 +13976,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-    +0x00c State            : 14 0 0 0
+
+    +0x00c State            : 14 0 0 0
  (Request outbound propagation)
     +0x010 ContentCmd       : 0 20 0 0
  (0x2000 - REASON_RENAME_NEW_NAME)
@@ -14161,7 +14032,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.2.2  Downstream Partner Sends Out CMD_SEND_STAGE
+##### 4.5.2.2 Downstream Partner Sends Out CMD_SEND_STAGE
 
 COMM_BOP (4 bytes):
 
@@ -14174,7 +14045,8 @@ Release: September 16, 2024
 
 181 / 250
 
-COMM_COMMAND (4 bytes):
+
+COMM_COMMAND (4 bytes):
 
  28 2 00 0
 
@@ -14226,7 +14098,8 @@ Release: September 16, 2024
 
 182 / 250
 
- 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00
 
 COMM_FILE_SIZE (8 bytes):
 
@@ -14287,7 +14160,8 @@ Release: September 16, 2024
 
 183 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -14358,7 +14232,8 @@ Release: September 16, 2024
 
 184 / 250
 
- 48 00 00 00 01 00 02 00 18 00 00 00 30 00 00 00 00 00
+
+ 48 00 00 00 01 00 02 00 18 00 00 00 30 00 00 00 00 00
  00 00 00 00 00 00 18 00 00 00 01 00 00 00 d8 da 50 bb
  7f 57 64 47 51 af 71 68 6c 89 79 b2 18 00 00 00 02 00
  00 00 00 00 00 00 00 00 00 00 eb 85 02 3b fe 8f c6 01
@@ -14367,7 +14242,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.2.3  Upstream Partner Sends Out CMD_RECEIVING_STAGE
+##### 4.5.2.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE
 
 COMM_BOP (4 bytes):
 
@@ -14413,7 +14288,8 @@ Release: September 16, 2024
 
 185 / 250
 
- 30 00 30 00 44 00 00 00
+
+ 30 00 30 00 44 00 00 00
 
 COMM_JOIN_GUID (20 bytes):
 
@@ -14481,7 +14357,8 @@ Release: September 16, 2024
 
 186 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 16 79 07 75 5b c1
  cf 43 9e 3b f8 1d 69 1e 0e 5f 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -14555,7 +14432,8 @@ Release: September 16, 2024
 
 187 / 250
 
-                                 81 59 5e 55 e0 93 ba 24
+
+                                 81 59 5e 55 e0 93 ba 24
        +0x0a0 NewParentGuid    : e1 99 a7 ae 27 b4 22 45
                                  81 59 5e 55 e0 93 ba 24
        +0x0b0 CxtionGuid       : 3 65 f8 d9 3c da 6 4f
@@ -14626,7 +14504,8 @@ Release: September 16, 2024
 
 188 / 250
 
- b2 04 00 00 00 00 00 00
+
+ b2 04 00 00 00 00 00 00
 
 COMM_FILE_SIZE (8 bytes):
 
@@ -14649,7 +14528,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.2.4  Downstream Partner Sends Out CMD_REMOTE_CO_DONE
+##### 4.5.2.4 Downstream Partner Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes):
 
@@ -14674,7 +14553,8 @@ Release: September 16, 2024
 
 189 / 250
 
- 10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
+
+ 10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
  80 4c 1a 00 00 00 53 00 48 00 49 00 43 00 4f 00 2d 00
  54 00 45 00 4d 00 50 00 2d 00 32 00 00 00
 
@@ -14726,7 +14606,8 @@ Release: September 16, 2024
 
 190 / 250
 
- 18 00 00 00 26 00 e0 ce 33 90 c6 01 76 65 78 79 63 b8
+
+ 18 00 00 00 26 00 e0 ce 33 90 c6 01 76 65 78 79 63 b8
  da 41 b1 1a 41 63 46 eb be b3
 
 COMM_CO_GUID (20 bytes):
@@ -14792,7 +14673,8 @@ Release: September 16, 2024
 
 191 / 250
 
- 00 00 00 00
+
+ 00 00 00 00
 
 Type _CHANGE_ORDER_RECORD_*
 
@@ -14860,11 +14742,12 @@ Release: September 16, 2024
 
 192 / 250
 
- ff ff ff ff
 
-4.5.3  Remove a File
+ ff ff ff ff
 
-4.5.3.1  Upstream Partner Sends Out CMD_REMOTE_CO
+#### 4.5.3 Remove a File
+
+##### 4.5.3.1 Upstream Partner Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes):
 
@@ -14913,7 +14796,8 @@ Release: September 16, 2024
 
 193 / 250
 
- 10 00 00 00 3d 83 01 59 fa fb 15 5d 1c df b4 23 53 29
+
+ 10 00 00 00 3d 83 01 59 fa fb 15 5d 1c df b4 23 53 29
  6b 85
 
 COMM_LAST_JOIN_TIME (8 bytes):
@@ -14981,7 +14865,8 @@ Release: September 16, 2024
 
 194 / 250
 
-    +0x008 IFlags           : 0 0 0 0 (0x0)
+
+    +0x008 IFlags           : 0 0 0 0 (0x0)
     +0x00c State            : 14 0 0 0
  (Request outbound propagation)
     +0x010 ContentCmd       : 0 0 0 0 (0x0)
@@ -15035,7 +14920,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.3.2  Downstream Partner Sends Out CMD_REMOTE_CO_DONE
+##### 4.5.3.2 Downstream Partner Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes):
 
@@ -15048,7 +14933,8 @@ Release: September 16, 2024
 
 195 / 250
 
-COMM_COMMAND (4 bytes):
+
+COMM_COMMAND (4 bytes):
 
  50 2 00 00
 
@@ -15100,7 +14986,8 @@ Release: September 16, 2024
 
 196 / 250
 
- 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00
 
 COMM_FILE_SIZE (8 bytes):
 
@@ -15158,7 +15045,8 @@ Release: September 16, 2024
 
 197 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -15232,7 +15120,8 @@ Release: September 16, 2024
 
 198 / 250
 
-                              6c 0 66 0 69 0 6c 0
+
+                              6c 0 66 0 69 0 6c 0
                               65 0 2e 0 74 0 78 0
                               74 0
 
@@ -15247,9 +15136,9 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.4  Copy an Empty Folder
+#### 4.5.4 Copy an Empty Folder
 
-4.5.4.1  Upstream Partner Sends Out CMD_REMOTE_CO
+##### 4.5.4.1 Upstream Partner Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes):
 
@@ -15287,7 +15176,8 @@ Release: September 16, 2024
 
 199 / 250
 
- 30 00 44 00 46 00 2d 00 38 00 37 00 37 00 42 00 2d 00
+
+ 30 00 44 00 46 00 2d 00 38 00 37 00 37 00 42 00 2d 00
  38 00 43 00 34 00 38 00 42 00 46 00 32 00 31 00 32 00
  30 00 30 00 44 00 00 00
 
@@ -15354,7 +15244,8 @@ Release: September 16, 2024
 
 200 / 250
 
- 00 00 00 00
+
+ 00 00 00 00
 
 Type _CHANGE_ORDER_RECORD_*
 
@@ -15422,7 +15313,8 @@ Release: September 16, 2024
 
 201 / 250
 
-4.5.4.2  Downstream Partner Sends Out CMD_SEND_STAGE
+
+##### 4.5.4.2 Downstream Partner Sends Out CMD_SEND_STAGE
 
 COMM_BOP (4 bytes):
 
@@ -15476,7 +15368,8 @@ Release: September 16, 2024
 
 202 / 250
 
- 06 74 70 89 f2 8f c6 01
+
+ 06 74 70 89 f2 8f c6 01
 
 COMM_BLOCK_SIZE (8 bytes):
 
@@ -15533,7 +15426,8 @@ Release: September 16, 2024
 
 203 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -15607,7 +15501,8 @@ Release: September 16, 2024
 
 204 / 250
 
-    +0x10a FileName         : 53 0 74 0 6f 0 6e 0
+
+    +0x10a FileName         : 53 0 74 0 6f 0 6e 0
                               65 0 0 0 74 0 2e 0
                               74 0 78 0 74 0
 
@@ -15622,7 +15517,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.4.3  Upstream Partner Sends Out CMD_RECEIVING_STAGE
+##### 4.5.4.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE
 
 COMM_BOP (4 bytes):
 
@@ -15662,7 +15557,8 @@ Release: September 16, 2024
 
 205 / 250
 
- 10 00 00 00 f0 a3 f7 08 5c e0 94 49 9a 60 e7 cd 40 57
+
+ 10 00 00 00 f0 a3 f7 08 5c e0 94 49 9a 60 e7 cd 40 57
  ec 6f 4a 00 00 00 31 00 43 00 33 00 30 00 46 00 43 00
  33 00 38 00 2d 00 30 00 37 00 44 00 31 00 2d 00 34 00
  30 00 44 00 46 00 2d 00 38 00 37 00 37 00 42 00 2d 00
@@ -15729,7 +15625,8 @@ Release: September 16, 2024
 
 206 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -15803,7 +15700,8 @@ Release: September 16, 2024
 
 207 / 250
 
-                                 bf 40 17 82 9d 17 4e 55
+
+                                 bf 40 17 82 9d 17 4e 55
        +0x070 OriginatorGuid   : 76 65 78 79 63 b8 da 41
                                   b1 1a 41 63 46 eb be b3
        +0x080 FileGuid         : d8 70 3b df 92 9e 42 4e
@@ -15877,7 +15775,8 @@ Release: September 16, 2024
 
 208 / 250
 
- 03
+
+ 03
 
 COMM_BLOCK_SIZE (8 bytes):
 
@@ -15904,7 +15803,7 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.4.4  Downstream Partner Sends Out CMD_REMOTE_CO_DONE
+##### 4.5.4.4 Downstream Partner Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes):
 
@@ -15926,7 +15825,8 @@ Release: September 16, 2024
 
 209 / 250
 
- 54 00 45 00 4d 00 50 00 2d 00 31 00 00 00
+
+ 54 00 45 00 4d 00 50 00 2d 00 31 00 00 00
 
 COMM_FROM (50 bytes):
 
@@ -15978,7 +15878,8 @@ Release: September 16, 2024
 
 210 / 250
 
- 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00
 
 COMM_GVSN (28 bytes):
 
@@ -16041,7 +15942,8 @@ Release: September 16, 2024
 
 211 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -16112,16 +16014,17 @@ Release: September 16, 2024
 
 212 / 250
 
- f0 06 23 4a 34 42 0f 6e d4 5d 42 01 18 00 00 00 02 00
+
+ f0 06 23 4a 34 42 0f 6e d4 5d 42 01 18 00 00 00 02 00
  00 00 00 00 00 00 00 00 00 00 7b a0 0a 91 f2 8f c6 01
 
 COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.5  Remove a Folder
+#### 4.5.5 Remove a Folder
 
-4.5.5.1  Upstream Partner Sends Out CMD_REMOTE_CO
+##### 4.5.5.1 Upstream Partner Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes):
 
@@ -16167,7 +16070,8 @@ Release: September 16, 2024
 
 213 / 250
 
- 30 00 30 00 44 00 00 00
+
+ 30 00 30 00 44 00 00 00
 
 COMM_JOIN_GUID (20 bytes):
 
@@ -16233,7 +16137,8 @@ Release: September 16, 2024
 
 214 / 250
 
-Type _CHANGE_ORDER_RECORD_*
+
+Type _CHANGE_ORDER_RECORD_*
 
     +0x000 SequenceNumber   : 1e 0 0 0
     +0x004 Flags            : 28 0 0 0
@@ -16300,7 +16205,8 @@ Release: September 16, 2024
 
 215 / 250
 
-4.5.5.2  Downstream Partner Sends Out CMD_REMOTE_CO_DONE
+
+##### 4.5.5.2 Downstream Partner Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes):
 
@@ -16354,7 +16260,8 @@ Release: September 16, 2024
 
 216 / 250
 
- 06 74 70 89 f2 8f c6 01
+
+ 06 74 70 89 f2 8f c6 01
 
 COMM_BLOCK_SIZE (8 bytes):
 
@@ -16408,7 +16315,8 @@ Release: September 16, 2024
 
 217 / 250
 
- 78 00 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 78 00 74 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -16482,7 +16390,8 @@ Release: September 16, 2024
 
 218 / 250
 
-    +0x0d0 Spare1Guid       : 0 0 0 0 0 0 0 0
+
+    +0x0d0 Spare1Guid       : 0 0 0 0 0 0 0 0
                               0 0 0 0 0 0 0 0
     +0x0e0 Spare2Guid       : 0 0 0 0 0 0 0 0
                               0 0 0 0 0 0 0 0
@@ -16507,11 +16416,11 @@ COMM_EOP (4 bytes):
 
  ff ff ff ff
 
-4.5.6  Rename an Empty Folder
+#### 4.5.6 Rename an Empty Folder
 
 Rename stone to newstone.
 
-4.5.6.1  Upstream Partner Sends Out CMD_REMOTE_CO
+##### 4.5.6.1 Upstream Partner Sends Out CMD_REMOTE_CO
 
 COMM_BOP (4 bytes).
 
@@ -16539,7 +16448,8 @@ Release: September 16, 2024
 
 219 / 250
 
- 54 00 45 00 4d 00 50 00 2d 00 31 00 00 00
+
+ 54 00 45 00 4d 00 50 00 2d 00 31 00 00 00
 
 COMM_REPLICA (96 bytes).
 
@@ -16600,7 +16510,8 @@ Release: September 16, 2024
 
 220 / 250
 
- 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -16674,7 +16585,8 @@ Release: September 16, 2024
 
 221 / 250
 
-                              0 0 0 0 0 0 0 0
+
+                              0 0 0 0 0 0 0 0
     +0x0f0 Spare1Wcs        : 0 0 0 0
     +0x0f4 Spare2Wcs        : 0 0 0 0
     +0x0f8 Extension        : f8 1d e8 0
@@ -16693,7 +16605,7 @@ COMM_CO_EXTENSION_2 (72 bytes).
 
 COMM_EOP (4 bytes): ff ff ff ff
 
-4.5.6.2  Downstream Partner Sends Out CMD_SEND_STAGE
+##### 4.5.6.2 Downstream Partner Sends Out CMD_SEND_STAGE
 
 COMM_BOP (4 bytes).
 
@@ -16731,7 +16643,8 @@ Release: September 16, 2024
 
 222 / 250
 
-COMM_CXTION (98 bytes).
+
+COMM_CXTION (98 bytes).
 
  10 00 00 00 f0 a3 f7 08 5c e0 94 49 9a 60 e7 cd 40 57
  ec 6f 4a 00 00 00 31 00 43 00 33 00 30 00 46 00 43 00
@@ -16781,7 +16694,8 @@ Release: September 16, 2024
 
 223 / 250
 
- 00 00 00 20 00 00 0f 00 00 00 10 00 00 00 01 00 00 00
+
+ 00 00 00 20 00 00 0f 00 00 00 10 00 00 00 01 00 00 00
  20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
  00 00 00 00 00 00 23 30 57 0b 23 90 c6 01 a0 04 d5 00
  00 00 00 00 e8 0c ca 00 00 00 00 00 e8 0c ca 00 00 00
@@ -16855,7 +16769,8 @@ Release: September 16, 2024
 
 224 / 250
 
-    +0x048 JrnlUsn          : e8 c ca 0 0 0 0 0
+
+    +0x048 JrnlUsn          : e8 c ca 0 0 0 0 0
     +0x050 JrnlFirstUsn     : e8 c ca 0 0 0 0 0
     +0x058 OriginalReplicaNum : 1 0 0 0
     +0x05c NewReplicaNum    : 1 0 0 0
@@ -16897,7 +16812,7 @@ COMM_EOP (4 bytes).
 
  ff ff ff ff
 
-4.5.6.3  Upstream Partner Sends Out CMD_RECEIVING_STAGE
+##### 4.5.6.3 Upstream Partner Sends Out CMD_RECEIVING_STAGE
 
 COMM_BOP (4 bytes).
 
@@ -16916,7 +16831,8 @@ Release: September 16, 2024
 
 225 / 250
 
- 10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
+
+ 10 00 00 00 e6 87 d1 e5 aa 12 df 48 ab c1 d7 94 0a e0
  80 4c 1a 00 00 00 53 00 48 00 49 00 43 00 4f 00 2d 00
  54 00 45 00 4d 00 50 00 2d 00 32 00 00 00
 
@@ -16974,7 +16890,8 @@ Release: September 16, 2024
 
 226 / 250
 
- 78 79 63 b8 da 41 b1 1a 41 63 46 eb be b3 07 fb b3 2d
+
+ 78 79 63 b8 da 41 b1 1a 41 63 46 eb be b3 07 fb b3 2d
  6c ed 10 49 9f f0 79 d4 cb 2f 8f cb e1 99 a7 ae 27 b4
  22 45 81 59 5e 55 e0 93 ba 24 e1 99 a7 ae 27 b4 22 45
  81 59 5e 55 e0 93 ba 24 1a 0b 58 16 10 2c ae 4f 85 75
@@ -17048,7 +16965,8 @@ Release: September 16, 2024
 
 227 / 250
 
-    +0x018 Attributes       : _FILE_NETWORK_OPEN_INFORMATION
+
+    +0x018 Attributes       : _FILE_NETWORK_OPEN_INFORMATION
        +0x000 CreationTime     : 26 2f aa f6 f2 8f c6 1
        +0x008 LastAccessTime   : 26 2f aa f6 f2 8f c6 1
        +0x010 LastWriteTime    : 26 2f aa f6 f2 8f c6 1
@@ -17125,7 +17043,8 @@ Release: September 16, 2024
 
 228 / 250
 
-       +0x004 Major            : 0 0 ()
+
+       +0x004 Major            : 0 0 ()
        +0x006 OffsetCount      : 0 0 ()
        +0x008 Offset           : 0 0 0 0 ()
        +0x00c OffsetLast       : 0 0 0 0 ()
@@ -17184,13 +17103,14 @@ Release: September 16, 2024
 
 229 / 250
 
- 00 00 00 00
+
+ 00 00 00 00
 
 COMM_EOP (4 bytes).
 
  ff ff ff ff
 
-4.5.6.4  Downstream Partner Sends Out CMD_REMOTE_CO_DONE
+##### 4.5.6.4 Downstream Partner Sends Out CMD_REMOTE_CO_DONE
 
 COMM_BOP (4 bytes).
 
@@ -17237,7 +17157,8 @@ Release: September 16, 2024
 
 230 / 250
 
-COMM_JOIN_GUID (20 bytes).
+
+COMM_JOIN_GUID (20 bytes).
 
  10 00 00 00 e9 8e c0 d0 ba 9c 1d 36 0a 86 6b d8 bc 9a
  87 12
@@ -17287,7 +17208,8 @@ Release: September 16, 2024
 
 231 / 250
 
- 00 00 01 00 00 00 01 00 00 00 b7 45 6b 03 8d 37 f1 49
+
+ 00 00 01 00 00 00 01 00 00 00 b7 45 6b 03 8d 37 f1 49
  89 6e 18 99 17 d6 89 f1 76 65 78 79 63 b8 da 41 b1 1a
  41 63 46 eb be b3 07 fb b3 2d 6c ed 10 49 9f f0 79 d4
  cb 2f 8f cb bb 31 34 1e 35 5b a5 47 ae e5 55 ba 62 c2
@@ -17361,7 +17283,8 @@ Release: September 16, 2024
 
 232 / 250
 
-    +0x05c NewReplicaNum    : 1 0 0 0
+
+    +0x05c NewReplicaNum    : 1 0 0 0
     +0x060 ChangeOrderGuid  : b7 45 6b 3 8d 37 f1 49
                               89 6e 18 99 17 d6 89 f1
     +0x070 OriginatorGuid   : 76 65 78 79 63 b8 da 41
@@ -17407,12 +17330,13 @@ Release: September 16, 2024
 
 233 / 250
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the File Replication Service
 Protocol Specification.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 FRS uses MD5 hashes of file contents to determine whether files are identical across replicas. MD5 is
 no longer considered a cryptographically secure hash function; thus, it might be computationally
@@ -17420,7 +17344,7 @@ feasible to produce two files with different content that have the same hash val
 deploying FRS in an environment where files in the replicated folders can be created by untrustworthy
 sources.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -17439,12 +17363,13 @@ Release: September 16, 2024
 
 234 / 250
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 The FRS protocol contains two interfaces, whose IDL definitions are listed in this section. The IDL
 definitions for these interfaces import the "ms-dtyp.idl" file, as specified in [MS-DTYP] section 5.
 
-6.1  Appendix A.1: frsapi.idl
+### 6.1 Appendix A.1: frsapi.idl
 
 The IDL definition for this interface imports the "ms-dtyp.idl" file, as specified in [MS-DTYP] section 5.
 
@@ -17513,7 +17438,8 @@ Release: September 16, 2024
 
 235 / 250
 
-        [out] unsigned long *Replicated,
+
+        [out] unsigned long *Replicated,
         [out] unsigned long *Primary,
         [out] unsigned long *Root,
         [out] GUID  *ReplicaSetGuid
@@ -17533,7 +17459,7 @@ Release: September 16, 2024
         );
   }
 
-6.2  Appendix A.2: frsrpc.idl
+### 6.2 Appendix A.2: frsrpc.idl
 
 The IDL definition for this interface imports the "ms-dtyp.idl" file, as specified in [MS-DTYP] section 5.
 
@@ -17586,7 +17512,8 @@ Release: September 16, 2024
 
 236 / 250
 
-         [in, string, unique] PWCHAR ReplicaSetName,
+
+         [in, string, unique] PWCHAR ReplicaSetName,
          [in, string, unique] PWCHAR ReplicaSetType,
          [in, string, unique] PWCHAR CxtionName,
          [in, string, unique] PWCHAR PartnerName,
@@ -17643,7 +17570,8 @@ Release: September 16, 2024
 
 237 / 250
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -17717,7 +17645,8 @@ Release: September 16, 2024
 
 238 / 250
 
-Windows Server releases
+
+Windows Server releases
 
 FRS version
 
@@ -17797,7 +17726,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-return the same check sum before using the DS data. This avoids using a set of Active Directory
+
+return the same check sum before using the DS data. This avoids using a set of Active Directory
 objects that is still changing, as specified in [MS-ADSC] section 2.266.
 
 <19> Section 2.3.1.2: If no value is set for this attribute, the Windows implementation of FRS uses a
@@ -17870,7 +17800,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<32> Section 3.1.1.7: Change orders remain in the outbound log for seven days. This value is saved
+
+<32> Section 3.1.1.7: Change orders remain in the outbound log for seven days. This value is saved
 as minutes inside the registry using 4 bytes.
 
 <33> Section 3.1.1.8: In Windows Server 2008 operating system and later read-only domain
@@ -17944,7 +17875,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<42> Section 3.1.5.1: Encrypting File System (EFS)–encrypted files and folders are not replicated by
+
+<42> Section 3.1.5.1: Encrypting File System (EFS)–encrypted files and folders are not replicated by
 the Windows implementation of FRS.
 
 <43> Section 3.1.5.1: Windows Server 2008 and Windows Server 2008 R2, with domain functional
@@ -18011,7 +17943,8 @@ File Replication Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[HKLM\SYSTEM\CurrentControlSet\Services\NtFrs\Parameters\Access Checks\Get Internal
+
+[HKLM\SYSTEM\CurrentControlSet\Services\NtFrs\Parameters\Access Checks\Get Internal
 Information\Access, checks require [Full Control or Read]].
 
 If the registry subkey is not present, Windows considers GetInfoWAccessRequired to have a value
@@ -18077,7 +18010,8 @@ Release: September 16, 2024
 
 243 / 250
 
-If the access check is enabled for an FRS message, Windows restricts user access to this FRS message
+
+If the access check is enabled for an FRS message, Windows restricts user access to this FRS message
 by impersonating the caller with an RPC impersonation level of RPC_C_IMPL_LEVEL_IMPERSONATE, as
 specified in [MS-RPCE] section 2.2.1.1.9, and opening the key
 [HKLM\SYSTEM\CurrentControlSet\Services\NtFrs\Parameters\Access Checks\FunctionName\Access
@@ -18165,7 +18099,8 @@ Release: September 16, 2024
 
 244 / 250
 
-  Outbound log table
+
+  Outbound log table
 
 
 
@@ -18243,7 +18178,8 @@ Release: September 16, 2024
 
 245 / 250
 
-<80> Section 3.3.4.4.1: Windows-based servers send the NetBIOS name whenever the upstream
+
+<80> Section 3.3.4.4.1: Windows-based servers send the NetBIOS name whenever the upstream
 partner fails to find the FQDN.
 
 <81> Section 3.3.4.4.4: Default Maximum Partner Clock Skew is 30 minutes and is configurable
@@ -18274,7 +18210,8 @@ Release: September 16, 2024
 
 246 / 250
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -18286,7 +18223,8 @@ Release: September 16, 2024
 
 247 / 250
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -18437,7 +18375,8 @@ L
 
 248 / 250
 
-Local events
+
+Local events
    FRSAPI interface (section 3.1.6 78, section 3.2.6
 
 89)
@@ -18592,7 +18531,8 @@ V
 
 249 / 250
 
-Vendor-extensible fields 19
+
+Vendor-extensible fields 19
 Versioning 18
 
 [MS-FRS1] - v20240916

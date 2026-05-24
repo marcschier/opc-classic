@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 85
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -230,280 +231,86 @@ Release: October 26, 2021
 
 2 / 85
 
-Table of Contents
 
-1.1
+## Table of Contents
 
-1.1.1
-1.1.2
-1.1.3
-1.1.4
-1.1.5
-1.1.6
-1.1.7
+- [1 Introduction](#1-introduction)
+  - [1.1 Conceptual Overview](#11-conceptual-overview)
+    - [1.1.1 Group Policy Core Protocol](#111-group-policy-core-protocol)
+    - [1.1.2 Group Policy Settings](#112-group-policy-settings)
+    - [1.1.3 Group Policy Objects](#113-group-policy-objects)
+    - [1.1.4 Group Policy Extensions](#114-group-policy-extensions)
+    - [1.1.5 Group Policy Data Storage](#115-group-policy-data-storage)
+    - [1.1.6 Group Policy Administration](#116-group-policy-administration)
+    - [1.1.7 Group Policy Application](#117-group-policy-application)
+      - [1.1.7.1 Triggering Group Policy Application](#1171-triggering-group-policy-application)
+      - [1.1.7.2 Discovering the Server and Applicable GPOs](#1172-discovering-the-server-and-applicable-gpos)
+      - [1.1.7.3 Retrieving GPO Attributes](#1173-retrieving-gpo-attributes)
+      - [1.1.7.4 Retrieving and Applying Extension Settings](#1174-retrieving-and-applying-extension-settings)
+    - [1.1.8 Group Policy SOM](#118-group-policy-som)
+    - [1.1.9 Group Policy Management](#119-group-policy-management)
+    - [1.1.10 Group Policy Structure](#1110-group-policy-structure)
+    - [1.1.11 GPO Configuration Model](#1111-gpo-configuration-model)
+  - [1.2 Glossary](#12-glossary)
+  - [1.3 References](#13-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purpose](#211-system-purpose)
+      - [2.1.1.1 Core Protocol](#2111-core-protocol)
+      - [2.1.1.2 Extensible Architecture](#2112-extensible-architecture)
+      - [2.1.1.3 Scriptable Policy Settings](#2113-scriptable-policy-settings)
+    - [2.1.2 Group Policy Components](#212-group-policy-components)
+      - [2.1.2.1 Component Protocol Communications](#2121-component-protocol-communications)
+      - [2.1.2.2 Component Functionality](#2122-component-functionality)
+      - [2.1.2.3 Component Tasks](#2123-component-tasks)
+        - [2.1.2.3.1 Group Policy Server](#21231-group-policy-server)
+        - [2.1.2.3.2 Group Policy Client](#21232-group-policy-client)
+        - [2.1.2.3.3 Group Policy Administrative Tool](#21233-group-policy-administrative-tool)
+    - [2.1.3 Group Policy Communication Process Details](#213-group-policy-communication-process-details)
+      - [2.1.3.1 Protocol Communication Between a Group Policy Client and Group Policy](#2131-protocol-communication-between-a-group-policy-client-and-group-policy)
+        - [2.1.3.1.1 Locating a Group Policy Server](#21311-locating-a-group-policy-server)
+  - [2.5 and 3.1.1.](#25-and-311)
+    - [2.5.1 Use Case Diagram](#251-use-case-diagram)
+    - [2.5.2 Applying Group Policy — Group Policy Client](#252-applying-group-policy-group-policy-client)
+    - [2.5.3 Administering Group Policy — Administrative Tool](#253-administering-group-policy-administrative-tool)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+    - [2.6.1 System Versioning and Capability Negotiation](#261-system-versioning-and-capability-negotiation)
+    - [2.6.2 Vendor-Extensible Fields](#262-vendor-extensible-fields)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Failure Scenarios](#271-failure-scenarios)
+      - [2.7.1.1 Connection Failure](#2711-connection-failure)
+      - [2.7.1.2 Internal Failures](#2712-internal-failures)
+        - [2.7.1.2.1 Operating System-Related Failures](#27121-operating-system-related-failures)
+        - [2.7.1.2.2 Failure in Client-Side Extensions](#27122-failure-in-client-side-extensions)
+        - [2.7.1.2.3 Link Speed Determination Failure](#27123-link-speed-determination-failure)
+      - [2.7.1.3 History Repository Errors](#2713-history-repository-errors)
+      - [2.7.1.4 Group Policy File Share Access Failure](#2714-group-policy-file-share-access-failure)
+      - [2.7.1.5 Group Policy Failures Related to Active Directory Replication](#2715-group-policy-failures-related-to-active-directory-replication)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+    - [2.8.1 Timers](#281-timers)
+    - [2.8.2 Nontimer Events](#282-nontimer-events)
+    - [2.8.3 Initialization and Re-Initialization Procedures](#283-initialization-and-re-initialization-procedures)
+  - [2.9 Security](#29-security)
+    - [2.9.1 Internal Security](#291-internal-security)
+      - [2.9.1.1 Data Store Permissions](#2911-data-store-permissions)
+      - [2.9.1.2 Timer and Network Events](#2912-timer-and-network-events)
+      - [2.9.1.3 Computer Startup and Logon Events](#2913-computer-startup-and-logon-events)
+    - [2.9.2 External Security](#292-external-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Processing Group Policy Events](#31-example-1-processing-group-policy-events)
+  - [3.2 Example 2: Applying Policy on the Group Policy Client](#32-example-2-applying-policy-on-the-group-policy-client)
+  - [3.3 Example 3: Populating the Administrative Tool with Configuration Data](#33-example-3-populating-the-administrative-tool-with-configuration-data)
+  - [3.4 Example 4: Authoring a New GPO](#34-example-4-authoring-a-new-gpo)
+  - [3.5 Example 5: Administrative Tool Cannot Connect to a Group Policy Server](#35-example-5-administrative-tool-cannot-connect-to-a-group-policy-server)
+  - [3.6 Example 6: Querying Active Directory for Scope of Management and Version](#36-example-6-querying-active-directory-for-scope-of-management-and-version)
+  - [3.7 Example 7: Group Policy Client Cannot Connect to the Group Policy Server When](#37-example-7-group-policy-client-cannot-connect-to-the-group-policy-server-when)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-1  Introduction ............................................................................................................ 5
-Conceptual Overview .......................................................................................... 5
-Group Policy Core Protocol ............................................................................. 6
-Group Policy Settings .................................................................................... 7
-Group Policy Objects ..................................................................................... 7
-Group Policy Extensions................................................................................. 8
-Group Policy Data Storage ............................................................................. 9
-Group Policy Administration ........................................................................... 9
-Group Policy Application .............................................................................. 10
-Triggering Group Policy Application ......................................................... 11
-Discovering the Server and Applicable GPOs ............................................. 12
-Retrieving GPO Attributes ...................................................................... 12
-Retrieving and Applying Extension Settings .............................................. 13
-Group Policy SOM ....................................................................................... 14
-1.1.8
-1.1.9
-Group Policy Management ........................................................................... 14
-1.1.10  Group Policy Structure ................................................................................ 16
-1.1.11  GPO Configuration Model ............................................................................. 17
-Glossary ......................................................................................................... 17
-References ...................................................................................................... 22
-
-1.1.7.1
-1.1.7.2
-1.1.7.3
-1.1.7.4
-
-1.2
-1.3
-
-2.1
-
-2.1.2
-
-2.1.1
-
-2.1.1.1
-2.1.1.2
-2.1.1.3
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-
-2  Functional Architecture ......................................................................................... 24
-Overview ........................................................................................................ 24
-System Purpose ......................................................................................... 25
-Core Protocol ........................................................................................ 25
-Extensible Architecture .......................................................................... 25
-Scriptable Policy Settings ....................................................................... 26
-Group Policy Components ............................................................................ 26
-Component Protocol Communications ...................................................... 27
-Component Functionality........................................................................ 30
-Component Tasks ................................................................................. 32
-Group Policy Server ......................................................................... 33
-Group Policy Client .......................................................................... 33
-Group Policy Administrative Tool ....................................................... 34
-Group Policy Communication Process Details .................................................. 35
-Protocol Communication Between a Group Policy Client and Group Policy Server
- .......................................................................................................... 35
-Locating a Group Policy Server .......................................................... 36
-Domain SOM Search and Response .................................................... 36
-Site SOM Search and Response ......................................................... 37
-GPO Search and Reply ..................................................................... 37
-WMI Filter Processing ....................................................................... 38
-Link Speed Determination ................................................................ 38
-Policy File Read Operation ................................................................ 38
-
-2.1.3.1.1
-2.1.3.1.2
-2.1.3.1.3
-2.1.3.1.4
-2.1.3.1.5
-2.1.3.1.6
-2.1.3.1.7
-
-2.1.2.3.1
-2.1.2.3.2
-2.1.2.3.3
-
-2.1.3.1
-
-2.1.3
-
-2.1.3.2
-
-2.1.3.2.1
-
-2.1.3.2.1.1
-2.1.3.2.1.2
-2.1.3.2.1.3
-
-2.1.3.2.2
-
-2.1.3.2.2.1
-2.1.3.2.2.2
-2.1.3.2.2.3
-
-Protocol Communication Between the Administrative Tool and Group Policy
-Server ................................................................................................. 39
-Creating Group Policy Objects ........................................................... 39
-Creating the Active Directory Containers ....................................... 39
-Creating the GPO File System Components ................................... 39
-Completing the GPO Configuration ............................................... 40
-Editing Existing Policies .................................................................... 41
-Modifying Extension Settings ....................................................... 42
-Updating GPO Properties ............................................................. 43
-Updating SOM ........................................................................... 43
-Deleting Group Policy Objects ........................................................... 43
-Transport Requirements......................................................................... 44
-
-2.1.3.2.3
-
-2.1.3.3
-
-[MS-GPOD] - v20211026
-Group Policy Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 85
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-
-2.1.4
-2.1.5
-
-2.2
-
-2.3
-
-2.2.1
-2.2.2
-
-2.3.1
-2.3.2
-
-2.4
-2.5
-
-2.5.1
-2.5.2
-2.5.3
-
-2.6
-
-2.6.1
-2.6.2
-
-2.7.1
-
-2.7
-
-Applicability ............................................................................................... 44
-Relevant Standards ..................................................................................... 44
-Protocol Summary ............................................................................................ 44
-Core Protocol Group .................................................................................... 48
-Group Policy Extension Protocol Group .......................................................... 49
-Environment .................................................................................................... 49
-Dependencies on Group Policy Protocols ........................................................ 50
-Dependencies on Other Services ................................................................... 51
-Network Connectivity ............................................................................ 52
-Underlying Protocols .............................................................................. 52
-Persistent Data Storage Facilities ............................................................ 52
-Assumptions and Preconditions .......................................................................... 53
-Use Cases ....................................................................................................... 53
-Use Case Diagram ...................................................................................... 54
-Applying Group Policy — Group Policy Client .................................................. 55
-Administering Group Policy — Administrative Tool ........................................... 57
-Versioning, Capability Negotiation, and Extensibility ............................................. 58
-System Versioning and Capability Negotiation ................................................ 58
-Vendor-Extensible Fields .............................................................................. 58
-Error Handling ................................................................................................. 58
-Failure Scenarios ........................................................................................ 59
-Connection Failure ................................................................................ 59
-Internal Failures ................................................................................... 59
-Operating System-Related Failures .................................................... 59
-Failure in Client-Side Extensions ........................................................ 59
-Link Speed Determination Failure ...................................................... 59
-History Repository Errors ....................................................................... 60
-Group Policy File Share Access Failure ..................................................... 60
-Group Policy Failures Related to Active Directory Replication ...................... 60
-Coherency Requirements .................................................................................. 60
-Timers ...................................................................................................... 60
-Nontimer Events ......................................................................................... 60
-Initialization and Re-Initialization Procedures ................................................. 61
-Security .......................................................................................................... 61
-Internal Security ........................................................................................ 61
-Data Store Permissions .......................................................................... 62
-Timer and Network Events ..................................................................... 62
-Computer Startup and Logon Events ....................................................... 62
-External Security ........................................................................................ 63
-Additional Considerations .................................................................................. 63
-
-2.7.1.1
-2.7.1.2
-
-2.7.1.2.1
-2.7.1.2.2
-2.7.1.2.3
-
-2.7.1.3
-2.7.1.4
-2.7.1.5
-
-2.8
-
-2.8.1
-2.8.2
-2.8.3
-
-2.9.1
-
-2.9
-
-2.9.1.1
-2.9.1.2
-2.9.1.3
-
-2.9.2
-
-2.10
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-
-3  Examples ............................................................................................................... 64
-Example 1: Processing Group Policy Events ......................................................... 64
-Example 2: Applying Policy on the Group Policy Client .......................................... 67
-Example 3: Populating the Administrative Tool with Configuration Data .................. 70
-Example 4: Authoring a New GPO ...................................................................... 72
-Example 5: Administrative Tool Cannot Connect to a Group Policy Server ............... 74
-Example 6: Querying Active Directory for Scope of Management and Version
-Information ..................................................................................................... 76
-Example 7: Group Policy Client Cannot Connect to the Group Policy Server When
-Applying Policy ................................................................................................ 79
-
-3.7
-
-4  Microsoft Implementations ................................................................................... 82
-Product Behavior .............................................................................................. 82
-
-4.1
-
-5  Change Tracking .................................................................................................... 83
-
-6  Index ..................................................................................................................... 84
-
-[MS-GPOD] - v20211026
-Group Policy Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 85
-
-1  Introduction
+## 1 Introduction
 
 Organizations face increasingly complex challenges in managing their IT infrastructures. They are
 responsible for delivering and maintaining customized desktop configurations for many types of
@@ -540,7 +347,7 @@ providing the necessary framework to deliver computer configuration and policy s
 target specific computers and users. These policy settings are specified by a Group Policy
 administrator.
 
-1.1  Conceptual Overview
+### 1.1 Conceptual Overview
 
 Group Policy provides the infrastructure to deliver and apply one or more desired configurations or
 policy settings to a set of targeted users and computers within a directory service environment.
@@ -574,13 +381,14 @@ Release: October 26, 2021
 
 5 / 85
 
-  Group Policy management, section 1.1.9
+
+  Group Policy management, section 1.1.9
 
   Group Policy structure, section 1.1.10
 
   GPO configuration mode, section 1.1.11
 
-1.1.1  Group Policy Core Protocol
+#### 1.1.1 Group Policy Core Protocol
 
 The Group Policy: Core Protocol [MS-GPOL] is a client/server protocol that enables a Group Policy
 client to discover and retrieve policy settings that are created by a Group Policy administrator (a
@@ -643,7 +451,8 @@ Release: October 26, 2021
 
 6 / 85
 
-Calling CSEs: On determining that a CSE should be executed, the core Group Policy engine loads
+
+Calling CSEs: On determining that a CSE should be executed, the core Group Policy engine loads
 
 the CSE's dynamic link library (DLL) and accesses its execution entry point for execution.
 
@@ -653,7 +462,7 @@ subscribe to this event and receive notification of policy application.
 
 Note  The core Group Policy engine is installed on all Group Policy clients.
 
-1.1.2  Group Policy Settings
+#### 1.1.2 Group Policy Settings
 
 There are two types of policy settings, as follows:
 
@@ -681,7 +490,7 @@ permitted or denied applicability on the Group Policy client, as specified in [M
 The application of Group Policy settings to the Group Policy client is discussed further in section 1.1.7
 and an example with message sequences is provided in section 3.2.
 
-1.1.3  Group Policy Objects
+#### 1.1.3 Group Policy Objects
 
 Group Policy uses several protocols to create, read, update, and remove GPOs. Group Policy uses a
 document-centric approach to create, store, and associate policy settings. Group Policy settings are
@@ -711,12 +520,13 @@ Release: October 26, 2021
 
 7 / 85
 
-A GPO is uniquely identified by a globally unique identifier (GUID). GPO settings are evaluated by
+
+A GPO is uniquely identified by a globally unique identifier (GUID). GPO settings are evaluated by
 the Group Policy client through the hierarchical nature of Active Directory and by interpreting the
 extension policy file data on the Group Policy file share. The processes for creating a GPO are
 described in section 2.1.3.2.1.
 
-1.1.4  Group Policy Extensions
+#### 1.1.4 Group Policy Extensions
 
 Group Policy functionality can be enhanced through the implementation of Group Policy
 extensions. Group Policy extensions consist of client-side extensions (CSEs) and Administrative
@@ -784,7 +594,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Administrative tool to locate the extension for administering the GPO settings that are related to that
+
+Administrative tool to locate the extension for administering the GPO settings that are related to that
 particular extension. Settings for such extensions, for example, those specified in [MS-GPSB], are
 typically stored in Active Directory via the Lightweight Directory Access Protocol (LDAP) [RFC2251]]
 and in the Group Policy file share via a file access protocol.
@@ -815,7 +626,7 @@ The extension protocols that are native to Group Policy are specified in section
 can extend the functionality of Group Policy by implementing custom Group Policy extensions, as
 described in [MS-GPOL] section 1.8.
 
-1.1.5  Group Policy Data Storage
+#### 1.1.5 Group Policy Data Storage
 
 The Group Policy protocols read and write policy information to and from the Group Policy data store,
 which contains the following components:
@@ -856,10 +667,11 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-on the Group Policy client. For more information about how extension settings are applied to a Group
+
+on the Group Policy client. For more information about how extension settings are applied to a Group
 Policy client, refer to section 1.1.7.4.
 
-1.1.6  Group Policy Administration
+#### 1.1.6 Group Policy Administration
 
 Group Policy administration consists of creating new GPOs, deleting GPOs, and editing existing
 policy settings, as described in section 2.1.3.2. In policy administration mode, the Group Policy
@@ -900,7 +712,7 @@ stored in the file registry.pol, which is located on the Group Policy file share
 application, this file is read by the Group Policy: Registry Extension Encoding protocol [MS-
 GPREG], and its settings are applied to the Group Policy client registry.
 
-1.1.7  Group Policy Application
+#### 1.1.7 Group Policy Application
 
 The policy application process utilizes a pull model when it retrieves Group Policy data to apply to
 the Group Policy client. For example, when retrieving policy settings, the Group Policy client polls
@@ -922,7 +734,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The application of Group Policy is triggered by specific events, such as a user logon or computer
+
+The application of Group Policy is triggered by specific events, such as a user logon or computer
 startup, as described in section 1.1.7.1. The following is a conceptual summary of the processes that
 occur whenever Group Policy is applied. The specified actions of the Group Policy client are carried out
 by the core Group Policy engine running on the Group Policy client:
@@ -974,7 +787,7 @@ application to indicate that a policy has changed, as described in section 2.8.2
 The programmatic details for these processes are specified in [MS-GPOL] section 3.2.5.1. Formats for
 the messages that are associated with these processes are specified in [MS-GPOL] section 2.2.
 
-1.1.7.1  Triggering Group Policy Application
+##### 1.1.7.1 Triggering Group Policy Application
 
 Certain events that occur trigger the application of Group Policy, at which time the core Group
 Policy engine is invoked to initiate the application process. The following events trigger the
@@ -991,7 +804,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Computer startup
+
+  Computer startup
 
   Computer shutdown
 
@@ -1019,7 +833,7 @@ application of both Administrative template settings and extension settings. How
 can occur, it is necessary to discover the domain controller that contains the GPOs that apply to the
 policy targets, as described in the following sections.
 
-1.1.7.2  Discovering the Server and Applicable GPOs
+##### 1.1.7.2 Discovering the Server and Applicable GPOs
 
 Policy application starts with an initial discovery step by the Group Policy client to locate a
 domain controller, as described in [MS-ADOD] (section 3.1.1). This step is necessary to identify the
@@ -1044,7 +858,7 @@ GPOs contained within it, along with the SOM container objects (domain, sites, a
 the GPOs are linked, so that a Resultant Set of Policy (RSoP) can be achieved on the Group Policy
 client.
 
-1.1.7.3  Retrieving GPO Attributes
+##### 1.1.7.3 Retrieving GPO Attributes
 
 By using information obtained from the initial queries, the Group Policy client uses another set of
 queries to assemble the logical GPO from its component parts that exist in Active Directory and on
@@ -1064,7 +878,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-GPO path directories: Provides the location of extension policy files and the GPO version
+
+GPO path directories: Provides the location of extension policy files and the GPO version
 
 information file (gpt.ini) stored on the Group Policy file share.
 
@@ -1087,7 +902,7 @@ The Group Policy client uses all of the previous information to compute a list o
 it, along with the GUIDs that identify the extensions whose settings are to be applied in the next and
 final steps of policy application.
 
-1.1.7.4  Retrieving and Applying Extension Settings
+##### 1.1.7.4 Retrieving and Applying Extension Settings
 
 The last steps of policy application involve the retrieval and application of extension settings. The
 Group Policy client uses its computed list of GPOs with different classes of settings to begin the
@@ -1140,7 +955,8 @@ Release: October 26, 2021
 
 13 / 85
 
-1.1.8  Group Policy SOM
+
+#### 1.1.8 Group Policy SOM
 
 The collection of GPOs that apply to a set of policy targets is considered the scope of
 management (SOM). SOM tells the core Group Policy engine which site-, domain-, or OU-level
@@ -1183,7 +999,7 @@ GPLinkSite: The SOM container object represents a site.
 An Active Directory container comes into scope of management when one or more GPOs are linked to
 it.
 
-1.1.9  Group Policy Management
+#### 1.1.9 Group Policy Management
 
 Group Policy can be managed from an interface such as the GPMC, a custom application, or a
 command-line tool. GPOs exist within a Group Policy Objects container in Active Directory, as
@@ -1196,7 +1012,8 @@ Release: October 26, 2021
 
 14 / 85
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-GPOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1232,7 +1049,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Default Domain Controllers Policy: A default GPO that is automatically created and linked to the
+
+Default Domain Controllers Policy: A default GPO that is automatically created and linked to the
 domain whenever a server is promoted to a domain controller. This GPO represents the default
 policy that is applied to all domain controllers in the Domain Controllers container.
 
@@ -1249,7 +1067,7 @@ Administrator-configured: A GPO that is created by the Group Policy administrato
 
 custom Group Policy settings for policy targets such as a Group Policy client computer.
 
-1.1.10 Group Policy Structure
+#### 1.1.10 Group Policy Structure
 
 Group Policy structure is modeled after the Active Directory structure, in that it has both physical
 and logical components. At the core of Active Directory's physical architecture is an extensible storage
@@ -1301,7 +1119,8 @@ Release: October 26, 2021
 
 16 / 85
 
-Whenever the Group Policy administrator creates a new GPO, the <guid> folder in this path is
+
+Whenever the Group Policy administrator creates a new GPO, the <guid> folder in this path is
 automatically created and named with the GUID of the GPO. Within the <guid> folder are Machine
 and User subdirectories that contain extension policy settings and Administrative template
 configuration items. During policy administration, when the Group Policy administrator creates or
@@ -1309,7 +1128,7 @@ modifies Group Policy extension or Administrative template settings, the Adminis
 locates the policy files according to the <guid> in the GPO path. During policy application, the
 Group Policy client locates the policy files in the same manner.
 
-1.1.11 GPO Configuration Model
+#### 1.1.11 GPO Configuration Model
 
 The GPO configuration model accommodates settings for users and computers, and includes Software,
 Windows, and Administrative Templates settings for both user and computer configurations. Software
@@ -1349,7 +1168,7 @@ communicated to Active Directory on the Group Policy server via LDAP [RFC2251], 
 extension policy settings are communicated to the Group Policy file share via a file access protocol,
 both of which protocols are invoked by the Administrative tool.
 
-1.2  Glossary
+### 1.2 Glossary
 
 This document uses the following terms:
 
@@ -1367,7 +1186,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Active Directory: The Windows implementation of a general-purpose directory service, which
+
+Active Directory: The Windows implementation of a general-purpose directory service, which
 
 uses LDAP as its primary access protocol. Active Directory stores information about a variety of
 objects in the network such as user accounts, computer accounts, groups, and all related
@@ -1441,7 +1261,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-policy file access, GPO filtering and ordering, and invoking transport protocols for retrieving and
+
+policy file access, GPO filtering and ordering, and invoking transport protocols for retrieving and
 storing policy settings.
 
 directory: The database that stores information about objects such as users, groups, computers,
@@ -1512,7 +1333,8 @@ Release: October 26, 2021
 
 19 / 85
 
-globally unique identifier (GUID): A term used interchangeably with universally unique
+
+globally unique identifier (GUID): A term used interchangeably with universally unique
 
 identifier (UUID) in Microsoft protocol technical documents (TDs). Interchanging the usage of
 these terms does not imply or require a specific algorithm or mechanism to generate the value.
@@ -1586,7 +1408,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-update information in a directory service (DS), as described in [MS-ADTS]. The Lightweight
+
+update information in a directory service (DS), as described in [MS-ADTS]. The Lightweight
 Directory Access Protocol can be either version 2 [RFC1777] or version 3 [RFC3377].
 
 NT LAN Manager (NTLM) Authentication Protocol: A protocol using a challenge-response
@@ -1657,7 +1480,8 @@ Release: October 26, 2021
 
 21 / 85
 
-site: A collection of one or more well-connected (reliable and fast) TCP/IP subnets. By defining
+
+site: A collection of one or more well-connected (reliable and fast) TCP/IP subnets. By defining
 
 sites (represented by site objects) an administrator can optimize both Active Directory access
 and Active Directory replication with respect to the physical network. When users log in, Active
@@ -1682,7 +1506,7 @@ Windows Server Update Services (WSUS): An optional component that enables a mach
 
 operate as an update server.
 
-1.3  References
+### 1.3 References
 
 [MS-ADOD] Microsoft Corporation, "Active Directory Protocols Overview".
 
@@ -1728,7 +1552,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-GPREG] Microsoft Corporation, "Group Policy: Registry Extension Encoding".
+
+[MS-GPREG] Microsoft Corporation, "Group Policy: Registry Extension Encoding".
 
 [MS-GPSB] Microsoft Corporation, "Group Policy: Security Protocol Extension".
 
@@ -1785,13 +1610,14 @@ Release: October 26, 2021
 
 23 / 85
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-GPOD].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-2  Functional Architecture
+## 2 Functional Architecture
 
-2.1  Overview
+### 2.1 Overview
 
 The Group Policy protocols enable a Group Policy administrator to maintain standard operating
 environments for specific groups of users. As policies, software, and environments change over time,
@@ -1828,13 +1654,14 @@ Release: October 26, 2021
 
 24 / 85
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-GPOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 3: Group Policy distributed environment
 
-2.1.1  System Purpose
+#### 2.1.1 System Purpose
 
 System administrators are required to provide consistency among groups of computers and/or users,
 with respect to such things as operating system versions, applications, and the general user
@@ -1856,14 +1683,14 @@ retrieve, update, and delete policy settings. The Group Policy: Core Protocol [M
 core functionality of Group Policy, as described in section 1.1.1. Group Policy functionality is extensible
 on both the client side (policy application) and the administrative side (policy administration).
 
-2.1.1.1  Core Protocol
+##### 2.1.1.1 Core Protocol
 
 The Group Policy: Core Protocol [MS-GPOL] is the main Group Policy protocol. It is a client/server
 protocol that allows clients to discover and retrieve policy settings created by Group Policy
 administrators. Policy settings are the directives that Group Policy administrators employ to control
 client behavior. Section 1.1.1 describes the Group Policy: Core Protocol in more detail.
 
-2.1.1.2  Extensible Architecture
+##### 2.1.1.2 Extensible Architecture
 
 Group Policy has an extensible architecture that consists of the Group Policy: Core Protocol and the
 extension protocols that are described in section 2.2. The Group Policy: Core Protocol is fully
@@ -1879,14 +1706,15 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Group Policy client; rather, it makes the LDAP or file access calls and extension invocations through
+
+Group Policy client; rather, it makes the LDAP or file access calls and extension invocations through
 which extension and Administrative template settings are applied.
 
 Note that failure of a particular protocol extension sequence does not cause policy application to fail.
 Failure simply means that Group Policy clients are not able to enforce settings that are associated with
 a specific extension or Administrative template configuration item.
 
-2.1.1.3  Scriptable Policy Settings
+##### 2.1.1.3 Scriptable Policy Settings
 
 The Group Policy protocols apply policy settings to Group Policy clients when specific events
 occur, such as computer startup, computer shutdown, user logon, and user logoff, as described in
@@ -1898,7 +1726,7 @@ server. Users and computers must be able to access this share.
 For more information about applying policy settings during the events mentioned in this section, see
 the documentation for the Group Policy: Scripts Extension Encoding protocol [MS-GPSCR].
 
-2.1.2  Group Policy Components
+#### 2.1.2 Group Policy Components
 
 The main components of the Group Policy protocols are described as follows:
 
@@ -1947,7 +1775,8 @@ Release: October 26, 2021
 
 26 / 85
 
-The Group Policy administrative templates can be used to configure registry-based settings for
+
+The Group Policy administrative templates can be used to configure registry-based settings for
 a GPO, which can include security settings, script files for custom policy configurations, and
 software installation information. Administrative template settings are stored on the Group
 Policy file share; however, note that administrative templates are not a requirement for a GPO.
@@ -1985,7 +1814,7 @@ Policy application and administration processes
 
   Applicability and interoperability standards
 
-2.1.2.1  Component Protocol Communications
+##### 2.1.2.1 Component Protocol Communications
 
 The following diagram shows the Group Policy protocols along with the protocols that facilitate
 communication between components.
@@ -1997,7 +1826,8 @@ Release: October 26, 2021
 
 27 / 85
 
-<!-- Extracted images from page 28 -->
+
+<!-- Extracted images from page 28 -->
 ![Extracted image 1 from page 28]([MS-GPOD].images/page028-img01.png)
 <!-- /Extracted images from page 28 -->
 
@@ -2034,7 +1864,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The Group Policy client uses the following communication protocols:
+
+The Group Policy client uses the following communication protocols:
 
 
 
@@ -2117,7 +1948,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-DNS Server: DNS, as specified in [RFC1034] and [RFC1035], is used by both the Group Policy
+
+DNS Server: DNS, as specified in [RFC1034] and [RFC1035], is used by both the Group Policy
 
 client and the Administrative tool to discover the location of the Group Policy server.
 
@@ -2134,7 +1966,7 @@ File access protocol: A file access protocol is invoked to read and update polic
 Policy file share and to transmit policy settings and other data between the Group Policy server
 and Group Policy client.
 
-2.1.2.2  Component Functionality
+##### 2.1.2.2 Component Functionality
 
 The following diagram shows the internal components and protocol connections for the Group Policy
 protocols.
@@ -2146,7 +1978,8 @@ Release: October 26, 2021
 
 30 / 85
 
-<!-- Extracted images from page 31 -->
+
+<!-- Extracted images from page 31 -->
 ![Extracted image 1 from page 31]([MS-GPOD].images/page031-img01.png)
 <!-- /Extracted images from page 31 -->
 
@@ -2169,7 +2002,8 @@ Release: October 26, 2021
 
 31 / 85
 
-  Accessing policy settings on the Group Policy file share.
+
+  Accessing policy settings on the Group Policy file share.
 
 
 
@@ -2203,7 +2037,7 @@ Directory service: An implementation-specific version of an LDAP-accessible dire
 
 such as Active Directory, for the storage of GPOs.
 
-2.1.2.3  Component Tasks
+##### 2.1.2.3 Component Tasks
 
 The following diagram provides a high-level depiction of the major tasks performed by Group Policy
 components. The sections following the diagram provide details about the messaging and Group Policy
@@ -2216,13 +2050,14 @@ Release: October 26, 2021
 
 32 / 85
 
-<!-- Extracted images from page 33 -->
+
+<!-- Extracted images from page 33 -->
 ![Extracted image 1 from page 33]([MS-GPOD].images/page033-img01.png)
 <!-- /Extracted images from page 33 -->
 
 Figure 6: Group Policy communications architecture
 
-2.1.2.3.1 Group Policy Server
+###### 2.1.2.3.1 Group Policy Server
 
 The Group Policy server is a domain controller that implements Active Directory Domain
 Services (AD DS). The Group Policy server of itself has no knowledge of Group Policy. It is simply a
@@ -2249,7 +2084,7 @@ read-only stores during the policy application process.
 For more information about the Group Policy server, including how GPOs are structured, see [MS-
 GPOL] section 3.1.
 
-2.1.2.3.2 Group Policy Client
+###### 2.1.2.3.2 Group Policy Client
 
 The Group Policy client contains the core Group Policy engine and the CSEs that extend Group
 Policy. The CSEs that extend Group Policy are described in section 2.2.
@@ -2261,7 +2096,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The core Group Policy engine has the task of managing various functionalities on Group Policy clients
+
+The core Group Policy engine has the task of managing various functionalities on Group Policy clients
 and across CSEs, which includes the following:
 
   Applying Group Policy at regular intervals, as described in sections 2.8.1 and 2.8.2.
@@ -2316,7 +2152,7 @@ Policy client invokes the appropriate CSEs ([MS-GPOL] section 3.2.5.1.10).
 Policy file share, respectively, for the retrieval of GPO attributes and policy settings, as described
 in [MS-GPOL] section 1.3.3.3.
 
-2.1.2.3.3 Group Policy Administrative Tool
+###### 2.1.2.3.3 Group Policy Administrative Tool
 
 The Administrative tool facilitates the creation, deletion, and modification of Group Policy settings.
 It also enables the Group Policy administrator to define the manner in which policy settings are
@@ -2344,7 +2180,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  The core Group Policy engine on the computer that hosts the Administrative tool invokes an
+
+3.  The core Group Policy engine on the computer that hosts the Administrative tool invokes an
 
 Administrative tool extension, via a GUID that is specified in the GPO Extension list.
 
@@ -2366,7 +2203,7 @@ Policy file share, respectively.
 and uses a file access protocol to update version information in the gpt.ini file on the Group Policy
 file share. This is described in detail in [MS-GPOL] section 3.3.4.1.
 
-2.1.3  Group Policy Communication Process Details
+#### 2.1.3 Group Policy Communication Process Details
 
 This section describes the protocol communications, interactions, and transports on which the Group
 Policy protocols rely. Although the related protocols have been noted earlier, the details of the actual
@@ -2380,7 +2217,7 @@ between the following:
 The communication discussions that follow assume that AD DS is implemented on the Group Policy
 server.
 
-2.1.3.1  Protocol Communication Between a Group Policy Client and Group Policy
+##### 2.1.3.1 Protocol Communication Between a Group Policy Client and Group Policy
 
 Server
 
@@ -2400,13 +2237,14 @@ Release: October 26, 2021
 
 35 / 85
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-GPOD].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
 Figure 7: Policy application process
 
-2.1.3.1.1 Locating a Group Policy Server
+###### 2.1.3.1.1 Locating a Group Policy Server
 
 The Group Policy client locates the Group Policy server by discovering the location where the
 Active Directory data store resides, and through an associated LDAP lookup, locates the file system
@@ -2415,7 +2253,7 @@ Directory data store and file system share (SYSVOL) are located on the Group Pol
 the domain controller.
 
 The process of locating a domain controller (Group Policy server) is specified in [MS-ADOD] sections
-2.5 and 3.1.1.
+### 2.5 and 3.1.1.
 
 2.1.3.1.2 Domain SOM Search and Response
 
@@ -2426,7 +2264,8 @@ Release: October 26, 2021
 
 36 / 85
 
-SOM is associated with an Active Directory container, such as a domain, site, or OU, that holds
+
+SOM is associated with an Active Directory container, such as a domain, site, or OU, that holds
 user and computer accounts that are managed through Group Policy. The Group Policy client
 accesses the SOM container to obtain attribute information. To initiate this process, the Group Policy
 client sends an LDAP BindRequest, and the Group Policy server sends an LDAP BindResponse in
@@ -2493,7 +2332,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-information about each queried GPO, as described in [MS-GPOL] section 2.2.4. These attributes
+
+information about each queried GPO, as described in [MS-GPOL] section 2.2.4. These attributes
 describe the GPO display name, the location of the policy file on the Group Policy file share,
 extensions used in that policy file, a security descriptor, an enabled flag, denial status, and any WMI
 filters that might apply to the GPO.
@@ -2561,7 +2401,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-LDAP queries specified in section 2.1.3.1.4. It then reads the specific extension settings from the
+
+LDAP queries specified in section 2.1.3.1.4. It then reads the specific extension settings from the
 policy files.
 
 2.1.3.2  Protocol Communication Between the Administrative Tool and Group Policy
@@ -2631,7 +2472,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-To create the file system components of the GPO, it is necessary to create an associated set of
+
+To create the file system components of the GPO, it is necessary to create an associated set of
 directories on the Group Policy file share, to which the GPO will point, for storing and locating user
 and computer policy files, in addition to GPO version and GPT information.
 
@@ -2705,7 +2547,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-configured by the Group Policy administrator, such as the Extension lists. After the Group Policy
+
+configured by the Group Policy administrator, such as the Extension lists. After the Group Policy
 administrator creates and configures the GPO, it will contain the following key attributes:
 
 createTimeStamp: Stores the date and time that the groupPolicyContainer object was created.
@@ -2777,7 +2620,8 @@ Release: October 26, 2021
 
 41 / 85
 
-<!-- Extracted images from page 42 -->
+
+<!-- Extracted images from page 42 -->
 ![Extracted image 1 from page 42]([MS-GPOD].images/page042-img01.png)
 <!-- /Extracted images from page 42 -->
 
@@ -2804,7 +2648,8 @@ Release: October 26, 2021
 
 42 / 85
 
-The extension receives a modifyResponse message in reply. This message provides a return value
+
+The extension receives a modifyResponse message in reply. This message provides a return value
 that indicates success or failure of the modifyRequest message. A value equal to the integer zero
 indicates success, whereas any other value indicates failure.
 
@@ -2871,7 +2716,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.1.3.3  Transport Requirements
+
+2.1.3.3  Transport Requirements
 
 The Group Policy client and the Administrative tool use the following protocols for data transport:
 
@@ -2943,7 +2789,8 @@ Release: October 26, 2021
 
 44 / 85
 
-Short
+
+Short
 Name
 
 [MS-
@@ -3056,7 +2903,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol Name
+
+Protocol Name
 
 Functional Description
 
@@ -3175,7 +3023,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol Name
+
+Protocol Name
 
 Functional Description
 
@@ -3281,7 +3130,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol Name
+
+Protocol Name
 
 Functional Description
 
@@ -3364,7 +3214,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-CSEs are used for implementing application-specific policy settings on Group Policy client
+
+CSEs are used for implementing application-specific policy settings on Group Policy client
 computers. CSE protocols depend on the core Group Policy engine to execute on the Group Policy
 client to identify GPOs to query for policy application.
 
@@ -3429,7 +3280,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-security services that utilize public key technologies, to bind the identity of a person, device, or
+
+security services that utilize public key technologies, to bind the identity of a person, device, or
 service to an associated private key. See [MS-CERSOD] for an overview of certificate services.
 
 Certificate services depend on the Group Policy protocols for the following:
@@ -3505,7 +3357,8 @@ Release: October 26, 2021
 
 50 / 85
 
-Group Policy Extensions: Group Policy is designed to be extended. Microsoft has implemented
+
+Group Policy Extensions: Group Policy is designed to be extended. Microsoft has implemented
 
 many extensions that depend on the Group Policy protocols to implement the specific
 configurations that the Group Policy extensions support.
@@ -3583,7 +3436,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Kerberos Protocol Extensions, as described in [MS-KILE] and [MS-AUTHSOD].
+
+  Kerberos Protocol Extensions, as described in [MS-KILE] and [MS-AUTHSOD].
 
   NT LAN Manager Authentication Protocol, as described in [MS-NLMP] and [MS-AUTHSOD].
 
@@ -3654,7 +3508,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-For additional information about the Group Policy server ADM, see [MS-GPOL] section 3.1.1.
+
+For additional information about the Group Policy server ADM, see [MS-GPOL] section 3.1.1.
 
 Client Abstract Data Model: The Group Policy client ADM is described in [MS-GPOL] section
 
@@ -3741,7 +3596,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Group Policy Server: A domain controller that holds a database of GPOs that Group Policy
+
+Group Policy Server: A domain controller that holds a database of GPOs that Group Policy
 
 clients can retrieve. The primary interests of the Group Policy server are as follows:
 
@@ -3782,7 +3638,7 @@ identity, authentication, and authorization services through NTLM [MS-NLMP] or K
 [RFC4120] to secure communications in Group Policy. This includes authentication services that
 support client-to-server communication within Group Policy.
 
-2.5.1  Use Case Diagram
+#### 2.5.1 Use Case Diagram
 
 The following diagram shows two Group Policy use cases:
 
@@ -3797,13 +3653,14 @@ Release: October 26, 2021
 
 54 / 85
 
-<!-- Extracted images from page 55 -->
+
+<!-- Extracted images from page 55 -->
 ![Extracted image 1 from page 55]([MS-GPOD].images/page055-img01.png)
 <!-- /Extracted images from page 55 -->
 
 Figure 9: Group Policy use case diagram
 
-2.5.2  Applying Group Policy — Group Policy Client
+#### 2.5.2 Applying Group Policy — Group Policy Client
 
 Goal
 
@@ -3831,7 +3688,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-
+
+
 
 Ensure that policy settings defined by the Group Policy administrator are enforced on the
 Group Policy client computer.
@@ -3916,11 +3774,12 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-  Based on the policy source mode, as described in [MS-GPOL] sections 3.2.1.2 and 3.2.1.3, the
+
+  Based on the policy source mode, as described in [MS-GPOL] sections 3.2.1.2 and 3.2.1.3, the
 
 Group Policy client obtains a set of GPOs that apply to itself.
 
-2.5.3  Administering Group Policy — Administrative Tool
+#### 2.5.3 Administering Group Policy — Administrative Tool
 
 Context of use
 
@@ -3998,7 +3857,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The Group Policy administrator updates, creates, or deletes policy information with the
+
+4.  The Group Policy administrator updates, creates, or deletes policy information with the
 
 Administrative tool.
 
@@ -4008,12 +3868,12 @@ Extensions
 
   None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
 This section describes the features of versioning, capability negotiation, and vendor-extensible fields
 for the Group Policy protocols.
 
-2.6.1  System Versioning and Capability Negotiation
+#### 2.6.1 System Versioning and Capability Negotiation
 
 Group Policy protocols each have their own system versioning and capability negotiation.
 
@@ -4029,7 +3889,7 @@ The System Versioning and Capability Negotiation implementation of extension pro
 documented in the respective extension protocol specifications. They are described in the Versioning
 and Capability Negotiation section of the respective protocol technical documents.
 
-2.6.2  Vendor-Extensible Fields
+#### 2.6.2 Vendor-Extensible Fields
 
 Group Policy protocols can incorporate new functionality by adding new extensions to the Group
 Policy client or the Administrative tool. Each new extension can also potentially be extended. For
@@ -4041,7 +3901,7 @@ The system vendor-extensible fields of each extension protocol are documented in
 extension protocol specification. These are specified in section 1.8 Vendor-Extensible Fields of the
 respective technical documents.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
 The Group Policy protocols do not define any error handling requirements beyond those described in
 the specifications of the protocols that the system supports, as listed in section 2.2.
@@ -4066,17 +3926,18 @@ Release: October 26, 2021
 
 58 / 85
 
-  Group Policy file share access failure: ERROR_FILE_NOT_FOUND and ERROR_ACCESS_DENIED.
+
+  Group Policy file share access failure: ERROR_FILE_NOT_FOUND and ERROR_ACCESS_DENIED.
 
   Active Directory or Group Policy file share time-out failures: ERROR_TIMEOUT.
 
   CSEs indicate errors by returning an error code other than ERROR_SUCCESS or E_PENDING.
 
-2.7.1  Failure Scenarios
+#### 2.7.1 Failure Scenarios
 
 This section describes common failure scenarios and specifies the behavior under such conditions.
 
-2.7.1.1  Connection Failure
+##### 2.7.1.1 Connection Failure
 
 A common failure scenario is an unexpected connection breakdown between the Group Policy server
 and the Group Policy client or between the Group Policy server and the computer that hosts the
@@ -4095,9 +3956,9 @@ network or Group Policy server unavailability, an error message is displayed to 
 administrator. It is up to the Group Policy administrator to retry the task when the issue has
 been resolved.
 
-2.7.1.2  Internal Failures
+##### 2.7.1.2 Internal Failures
 
-2.7.1.2.1 Operating System-Related Failures
+###### 2.7.1.2.1 Operating System-Related Failures
 
 It is possible that the Group Policy client or the Administrative tool might detect an unrecoverable
 internal state at some point during its operation. For example, this might occur due to the
@@ -4107,7 +3968,7 @@ is detected when the operating system indicates that it could not allocate virtu
 unable to access critical system resources. Recovery from this failure allows successful policy
 application.
 
-2.7.1.2.2 Failure in Client-Side Extensions
+###### 2.7.1.2.2 Failure in Client-Side Extensions
 
 An internal failure in any CSE does not cause the entire policy application to fail. The consequence
 of this failure is that the settings corresponding to that protocol extension are not applied to the
@@ -4118,7 +3979,7 @@ CSE for which a policy is configured is missing from the client, the Group Polic
 policy for that extension and continues with application of policies for other applicable extensions. It is
 not an error condition for a CSE to be absent from the Group Policy client.
 
-2.7.1.2.3 Link Speed Determination Failure
+###### 2.7.1.2.3 Link Speed Determination Failure
 
 If a failure in link speed determination occurs ([MS-GPOL] section 2.2.6), the Group Policy client
 assumes link speed to be above the threshold and processes policy settings that belong to all CSEs.
@@ -4133,16 +3994,17 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-If the link speed cannot be determined, all policies are applied to ensure that critical functionalities are
+
+If the link speed cannot be determined, all policies are applied to ensure that critical functionalities are
 in place.
 
-2.7.1.3  History Repository Errors
+##### 2.7.1.3 History Repository Errors
 
 The Group Policy client maintains a history of policy application to optimize client performance
 and certain cleanup tasks. If the history repository is corrupted or lost, the Group Policy client
 proceeds as though the policy is being applied for the first time and re-creates the history repository.
 
-2.7.1.4  Group Policy File Share Access Failure
+##### 2.7.1.4 Group Policy File Share Access Failure
 
 The Group Policy client might not be able to access a file on the Group Policy file share via a file
 access protocol for one of the following reasons:
@@ -4159,7 +4021,7 @@ As a consequence of this failure, the Group Policy client is unable to apply any
 scheduled policy application, the Group Policy client will attempt to apply policy again. Recovery
 from this failure ensures that the client has the latest set of policies.
 
-2.7.1.5  Group Policy Failures Related to Active Directory Replication
+##### 2.7.1.5 Group Policy Failures Related to Active Directory Replication
 
 In a single DC domain, there is no impact on Group Policy that is associated with Active Directory
 replication. However, in multiple-DC domain scenarios, directory replication introduces a time delay
@@ -4172,9 +4034,9 @@ However, if Active Directory replication actually fails, Group Policy continues 
 pre-existing state, but any updates to Group Policy configurations are not applied until a successful
 replication occurs and the delay period has expired.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
-2.8.1  Timers
+#### 2.8.1 Timers
 
 The Group Policy client should have the following timer:
 
@@ -4184,7 +4046,7 @@ timer is implementation-specific.<2>
 
 For more information about Group Policy client periodic refresh timers, see [MS-GPOL] section 3.2.2.
 
-2.8.2  Nontimer Events
+#### 2.8.2 Nontimer Events
 
 Events associated with policy application include the following:
 
@@ -4203,7 +4065,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-GPUpdate.exe: An update event can be set via GPUpdate.exe to supersede the periodic refresh
+
+GPUpdate.exe: An update event can be set via GPUpdate.exe to supersede the periodic refresh
 
 timer functionality and to allow policy to be applied at any time.
 
@@ -4239,14 +4102,14 @@ Update message, as described in [MS-GPOL] section 2.2.8.2. In this message, the 
 container and GPO file system version numbers are computed as described in [MS-GPOL]
 section 3.3.4.5.
 
-2.8.3  Initialization and Re-Initialization Procedures
+#### 2.8.3 Initialization and Re-Initialization Procedures
 
 The Group Policy client registers for computer startup and user logon event notifications in the
 domain to ensure that during initialization, policy application occurs as a result of these events. If the
 Group Policy client computer restarts while it is already up and running, the Group Policy client should
 recreate the operational state of the computer and all logged-on users.
 
-2.9  Security
+### 2.9 Security
 
 This section documents system-wide security issues that are not otherwise described in the Technical
 Documents (TDs) of the member protocols that are listed in section 2.2. This section does not
@@ -4257,7 +4120,7 @@ In a distributed environment where information is stored and retrieved from clie
 essential to protect information exchange from tampering. Group Policy protocols are not intended to
 transmit sensitive information.
 
-2.9.1  Internal Security
+#### 2.9.1 Internal Security
 
 This section describes the internal security of the Group Policy client. The general guideline for
 Group Policy implementers is to ensure that the resources used by the core Group Policy engine
@@ -4271,7 +4134,8 @@ Release: October 26, 2021
 
 61 / 85
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-GPOD].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -4281,7 +4145,7 @@ protocols are described in [MS-GPOL].
 
 Figure 10: Group Policy security boundary components
 
-2.9.1.1  Data Store Permissions
+##### 2.9.1.1 Data Store Permissions
 
 Group Policy writes policy information to various data stores, such as the Group Policy file share,
 Active Directory, and the registry, where policy settings are persisted. The Group Policy protocols
@@ -4290,14 +4154,14 @@ data unless that user has permissions to the resource. Group Policy protocols se
 resources to read only, so they cannot change the data. Group Policy cannot protect against a user
 with administrative credentials, because that user can take ownership of a resource and change it.
 
-2.9.1.2  Timer and Network Events
+##### 2.9.1.2 Timer and Network Events
 
 The process that applies Group Policy to Group Policy client computers runs periodically in the
 background and is triggered by the firing of a timer or a network event, such as a change to the user’s
 network state. Any implementation of Group Policy protocols should ensure that these event sources
 are trusted and cannot be spoofed.
 
-2.9.1.3  Computer Startup and Logon Events
+##### 2.9.1.3 Computer Startup and Logon Events
 
 The computer startup, computer shutdown, user logon, and user logoff events are used to apply
 policies to a user or a computer when these events occur. Any implementation of Group Policy
@@ -4311,7 +4175,8 @@ Release: October 26, 2021
 
 62 / 85
 
-2.9.2  External Security
+
+#### 2.9.2 External Security
 
 Group Policy protocols use the encryption mechanisms provided by the LDAP and file access
 transports to ensure that the data is protected against tampering. Group Policy relies on the
@@ -4331,7 +4196,7 @@ AUTHSOD] section 3.3.
 The Group Policy protocols do not define any additional external security beyond what is described in
 the specifications of the protocols listed in section 2.2.
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 There are no additional security considerations.
 
@@ -4342,7 +4207,8 @@ Release: October 26, 2021
 
 63 / 85
 
-3  Examples
+
+## 3 Examples
 
 The Group Policy server allows clients to discover and retrieve policy settings created by domain
 administrators. Policy settings are directives that administrators issue to control client behaviors.
@@ -4375,7 +4241,7 @@ Populating the Administrative tool with configuration data.
 
   Applying policy via the Group Policy client resulting in failure to connect to the Group Policy server.
 
-3.1  Example 1: Processing Group Policy Events
+### 3.1 Example 1: Processing Group Policy Events
 
 This section describes various events that trigger the Group Policy processing architecture and the
 resulting sequence of messages that apply Group Policy. This example provides a very high-level view
@@ -4421,7 +4287,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Initial System State
+
+Initial System State
 
 Prior to the application of Group Policy, the Group Policy protocols are actively listening for the specific
 events that will trigger policy application on computers in a domain.
@@ -4449,7 +4316,8 @@ Release: October 26, 2021
 
 65 / 85
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-GPOD].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
@@ -4497,7 +4365,8 @@ Release: October 26, 2021
 
 66 / 85
 
-Protocol message
+
+Protocol message
 
 Document name
 
@@ -4576,7 +4445,7 @@ Extension: Protocol Specification
 3.2.5, Message Processing Events
 and Sequencing Rules
 
-3.2  Example 2: Applying Policy on the Group Policy Client
+### 3.2 Example 2: Applying Policy on the Group Policy Client
 
 The Group Policy client's interaction with the Group Policy server in policy application uses a
 pull model, in which the Group Policy client polls a Group Policy server to check for new user GPOs.
@@ -4621,7 +4490,8 @@ Release: October 26, 2021
 
 67 / 85
 
-
+
+
 
 
 
@@ -4667,7 +4537,8 @@ Release: October 26, 2021
 
 68 / 85
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-GPOD].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -4692,7 +4563,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-3.  The Group Policy client receives the list of policies and then sends an LDAP query to the Group
+
+3.  The Group Policy client receives the list of policies and then sends an LDAP query to the Group
 Policy server to request specific attributes that define further filtering, the location of the policy
 file, and the precedence order for sequential application of policies and classes of settings. For
 more information, see [MS-GPOL] sections 2.2.4 and 3.2.5.1.5.
@@ -4734,7 +4606,7 @@ specific policy settings. For more information, see [MS-GPOL] section 3.2.5.1.
 
 information, see [MS-GPOL] section 3.2.5.1.
 
-3.3  Example 3: Populating the Administrative Tool with Configuration Data
+### 3.3 Example 3: Populating the Administrative Tool with Configuration Data
 
 This example demonstrates the processes that occur when the Administrative tool loads and
 retrieves the appropriate information from the data stores that contain Group Policy data. The
@@ -4772,7 +4644,8 @@ Release: October 26, 2021
 
 70 / 85
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-GPOD].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
@@ -4828,9 +4701,10 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The returned policy settings information is used to populate the tool.
 
-3.4  Example 4: Authoring a New GPO
+4.  The returned policy settings information is used to populate the tool.
+
+### 3.4 Example 4: Authoring a New GPO
 
 This example describes the message flow during new policy authoring. When the Group Policy
 administrator creates a new GPO, the Group Policy server handles the request by provisioning
@@ -4896,7 +4770,8 @@ Release: October 26, 2021
 
 72 / 85
 
-<!-- Extracted images from page 73 -->
+
+<!-- Extracted images from page 73 -->
 ![Extracted image 1 from page 73]([MS-GPOD].images/page073-img01.png)
 <!-- /Extracted images from page 73 -->
 
@@ -4917,7 +4792,8 @@ Release: October 26, 2021
 
 73 / 85
 
-3.5  Example 5: Administrative Tool Cannot Connect to a Group Policy Server
+
+### 3.5 Example 5: Administrative Tool Cannot Connect to a Group Policy Server
 
 The examples in this section describe message sequences that occur during the policy administration
 process that end in failure as a result of a lost connection with the Group Policy server or a
@@ -4989,7 +4865,8 @@ Release: October 26, 2021
 
 74 / 85
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-GPOD].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
@@ -5023,7 +4900,8 @@ Release: October 26, 2021
 
 75 / 85
 
-<!-- Extracted images from page 76 -->
+
+<!-- Extracted images from page 76 -->
 ![Extracted image 1 from page 76]([MS-GPOD].images/page076-img01.png)
 <!-- /Extracted images from page 76 -->
 
@@ -5053,7 +4931,7 @@ server, in a manner that is similar to the process described in section 2.1.3.1.
 
 specified time-out interval.
 
-3.6  Example 6: Querying Active Directory for Scope of Management and Version
+### 3.6 Example 6: Querying Active Directory for Scope of Management and Version
 
 Information
 
@@ -5068,7 +4946,8 @@ Group Policy Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-target, such as a user or computer account. Messages exchanged between the Group Policy client and
+
+target, such as a user or computer account. Messages exchanged between the Group Policy client and
 the Group Policy server use LDAP as a transport.
 
 This example loosely maps to the use case specified in Applying Group Policy — Group Policy
@@ -5123,7 +5002,8 @@ Release: October 26, 2021
 
 77 / 85
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-GPOD].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
@@ -5150,7 +5030,8 @@ Release: October 26, 2021
 
 78 / 85
 
-4.  The Group Policy server returns the domain SOM list via an LDAP SearchResponse, as described
+
+4.  The Group Policy server returns the domain SOM list via an LDAP SearchResponse, as described
 
 in [MS-GPOL] section 3.2.5.1.3.
 
@@ -5191,7 +5072,7 @@ in [MS-GPOL] section 3.2.5.1.5.
 
 the Group Policy server.
 
-3.7  Example 7: Group Policy Client Cannot Connect to the Group Policy Server When
+### 3.7 Example 7: Group Policy Client Cannot Connect to the Group Policy Server When
 
 Applying Policy
 
@@ -5229,7 +5110,8 @@ Release: October 26, 2021
 
 79 / 85
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-GPOD].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
@@ -5296,7 +5178,8 @@ Release: October 26, 2021
 
 80 / 85
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-GPOD].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
@@ -5326,7 +5209,8 @@ Release: October 26, 2021
 
 81 / 85
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 The information in this specification is applicable to the following versions of Microsoft products:
 
@@ -5366,7 +5250,7 @@ The information in this specification is applicable to the following versions of
 
   Windows 11 operating system
 
-4.1  Product Behavior
+### 4.1 Product Behavior
 
 <1> Section 2.7.1.1: Except in Windows 2000, Windows XP, and Windows Server 2003, when the
 network is unavailable, the Group Policy client also listens to network change notifications so that
@@ -5388,7 +5272,8 @@ Release: October 26, 2021
 
 82 / 85
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -5432,7 +5317,8 @@ Release: October 26, 2021
 
 83 / 85
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 63
@@ -5571,7 +5457,8 @@ System errors 58
 
 84 / 85
 
-System protocols 44
+
+System protocols 44
 System requirements - overview 24
 System use cases
    administering group policy — administrative tool

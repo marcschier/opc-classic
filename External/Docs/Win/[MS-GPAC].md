@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 36
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -288,7 +289,8 @@ Release: April 23, 2024
 
 2 / 36
 
-Date
+
+Date
 
 Revision
 History
@@ -396,186 +398,77 @@ Release: April 23, 2024
 
 3 / 36
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Audit Configuration Extension Overview](#132-audit-configuration-extension-overview)
+      - [1.3.2.1 Audit Subcategory Settings](#1321-audit-subcategory-settings)
+      - [1.3.2.2 Audit Options](#1322-audit-options)
+      - [1.3.2.3 Global Object Access Policy](#1323-global-object-access-policy)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Subcategory Settings](#221-subcategory-settings)
+      - [2.2.1.1 Policy Target](#2211-policy-target)
+      - [2.2.1.2 Subcategory and SubcategoryGUID](#2212-subcategory-and-subcategoryguid)
+      - [2.2.1.3 Inclusion Setting, Exclusion Setting, and Setting Value](#2213-inclusion-setting-exclusion-setting-and-setting-value)
+        - [2.2.1.3.1 Inclusion Setting, Exclusion Setting, and SettingValue for System Audit](#22131-inclusion-setting-exclusion-setting-and-settingvalue-for-system-audit)
+        - [2.2.1.3.2 Inclusion Setting, Exclusion Setting, and SettingValue for Per-User Audit](#22132-inclusion-setting-exclusion-setting-and-settingvalue-for-per-user-audit)
+    - [2.2.2 Audit Options](#222-audit-options)
+      - [2.2.2.1 Audit Option Type](#2221-audit-option-type)
+      - [2.2.2.2 Audit Option Value](#2222-audit-option-value)
+    - [2.2.3 Global Object Access Audit Settings](#223-global-object-access-audit-settings)
+      - [2.2.3.1 Resource Global SACL Type](#2231-resource-global-sacl-type)
+      - [2.2.3.2 Global System Access Control List (SACL)](#2232-global-system-access-control-list-sacl)
+    - [2.2.4 Machine Name](#224-machine-name)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Audit Configuration Protocol Administrative-Side Plug-in Details](#31-audit-configuration-protocol-administrative-side-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Advanced Audit Policy Configuration Client-Side Plug-in Details](#32-advanced-audit-policy-configuration-client-side-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Policy Setting State](#3211-policy-setting-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example Involving System Audit Subcategory Settings](#41-example-involving-system-audit-subcategory-settings)
+  - [4.2 Example Involving Per-User Audit Subcategory Settings](#42-example-involving-per-user-audit-subcategory-settings)
+  - [4.3 Example Involving Audit Options](#43-example-involving-audit-options)
+  - [4.4 Example Involving Global Object Access Auditing](#44-example-involving-global-object-access-auditing)
+  - [4.5 Example of Configuring Multiple Types of Settings](#45-example-of-configuring-multiple-types-of-settings)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+    - [5.2.1 Security Parameters Affecting Behavior of the Protocol](#521-security-parameters-affecting-behavior-of-the-protocol)
+    - [5.2.2 System Security Parameters Carried by the Protocol](#522-system-security-parameters-carried-by-the-protocol)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Background ................................................................................................. 9
-Audit Configuration Extension Overview .......................................................... 9
-Audit Subcategory Settings .................................................................... 10
-Audit Options ....................................................................................... 12
-Global Object Access Policy .................................................................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3.1
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Subcategory Settings .................................................................................. 15
-Policy Target ........................................................................................ 15
-Subcategory and SubcategoryGUID ......................................................... 15
-Inclusion Setting, Exclusion Setting, and Setting Value .............................. 20
-Inclusion Setting, Exclusion Setting, and SettingValue for System Audit
-Subcategories ................................................................................. 20
-Inclusion Setting, Exclusion Setting, and SettingValue for Per-User Audit
-Subcategories ................................................................................. 20
-Audit Options ............................................................................................. 21
-Audit Option Type ................................................................................. 21
-Audit Option Value ................................................................................ 22
-Global Object Access Audit Settings .............................................................. 23
-Resource Global SACL Type .................................................................... 23
-Global System Access Control List (SACL) ................................................ 23
-Machine Name ........................................................................................... 24
-
-2.2.3.1
-2.2.3.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.1.3.2
-
-2.2.2
-
-2.2.3
-
-2.2.4
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 25
-Audit Configuration Protocol Administrative-Side Plug-in Details ............................. 25
-Abstract Data Model .................................................................................... 25
-Timers ...................................................................................................... 25
-Initialization ............................................................................................... 25
-Higher-Layer Triggered Events ..................................................................... 25
-Message Processing Events and Sequencing Rules .......................................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Advanced Audit Policy Configuration Client-Side Plug-in Details ............................. 26
-Abstract Data Model .................................................................................... 26
-Policy Setting State ............................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 27
-Higher-Layer Triggered Events ..................................................................... 27
-Process Group Policy ............................................................................. 27
-Message Processing Events and Sequencing Rules .......................................... 27
-Timer Events .............................................................................................. 28
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-
-3.2.4.1
-
-3.2.1.1
-
-3.2.1
-
-3.2
-
-[MS-GPAC] - v20240423
-Group Policy: Audit Configuration Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 36
-
-3.2.7
-
-Other Local Events ...................................................................................... 28
-
-4  Protocol Examples ................................................................................................. 29
-Example Involving System Audit Subcategory Settings ......................................... 29
-Example Involving Per-User Audit Subcategory Settings ....................................... 29
-Example Involving Audit Options ........................................................................ 29
-Example Involving Global Object Access Auditing ................................................. 30
-Example of Configuring Multiple Types of Settings ................................................ 30
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5.1
-5.2
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-Security Parameters Affecting Behavior of the Protocol .................................... 31
-System Security Parameters Carried by the Protocol ....................................... 31
-
-5.2.1
-5.2.2
-
-6  Appendix A: Product Behavior ............................................................................... 32
-
-7  Change Tracking .................................................................................................... 34
-
-8  Index ..................................................................................................................... 35
-
-[MS-GPAC] - v20240423
-Group Policy: Audit Configuration Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 36
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Group Policy: Audit Policy Configuration Protocol, which provides a
 mechanism for an administrator to control advanced audit policies on clients.
@@ -583,7 +476,7 @@ mechanism for an administrator to control advanced audit policies on clients.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -649,7 +542,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(DC) and host a member list that identifies all members of the domain, as well as optionally
+
+(DC) and host a member list that identifies all members of the domain, as well as optionally
 hosting the Active Directory service. The domain controller provides authentication of
 members, creating a unit of trust for its members. Each domain has an identifier that is shared
 among its members. For more information, see [MS-AUTHSOD] section 1.1.1.5 and [MS-ADTS].
@@ -720,7 +614,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-reloaded when a file server is restarted, then the share is referred to as a "sticky share". Some
+
+reloaded when a file server is restarted, then the share is referred to as a "sticky share". Some
 share names are reserved for specific functions and are referred to as special shares: IPC$,
 reserved for interprocess communication, ADMIN$, reserved for remote administration, and A$,
 B$, C$ (and other local disk names followed by a dollar sign), assigned to local disk devices.
@@ -753,14 +648,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -786,7 +681,8 @@ Release: April 23, 2024
 
 8 / 36
 
-1.2.2  Informative References
+
+#### 1.2.2 Informative References
 
 [MS-FASOD] Microsoft Corporation, "File Access Services Protocols Overview".
 
@@ -795,13 +691,13 @@ Release: April 23, 2024
 [MSDN-SDDL] Microsoft Corporation, "Security Descriptor String Format",
 http://msdn.microsoft.com/en-us/library/aa379570.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Audit Configuration Extension to the Group Policy: Core Protocol [MS-GPOL] enables
 advanced audit policies to be distributed to multiple clients so that these clients can enforce the
 policies in accordance with the intentions of the administrator.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol, as specified in [MS-GPOL], allows clients to discover and retrieve
 policy settings created by administrators of a domain. These settings are persisted within Group
@@ -825,7 +721,7 @@ A client plug-in uses the contents of the GPO to retrieve settings specific to t
 manner specific to the client plug-in. After the client plug-in-specific settings are retrieved, the client
 plug-in uses those settings to perform the client plug-in-specific processing.
 
-1.3.2  Audit Configuration Extension Overview
+#### 1.3.2 Audit Configuration Extension Overview
 
 Advanced audit policies contain settings that enable the underlying audit subsystem to determine
 which activities to monitor and log in the security event log. Advanced audit policies contain three
@@ -852,7 +748,8 @@ Release: April 23, 2024
 
 9 / 36
 
-Advanced audit policy authoring is enabled through an administrative tool for the Group Policy: Core
+
+Advanced audit policy authoring is enabled through an administrative tool for the Group Policy: Core
 Protocol specified in [MS-GPOL] with an administrative-side plug-in for behavior specific to this
 protocol. The plug-in allows an administrator to author advanced audit policies within an
 implementation-specific tool providing a graphical user interface. The plug-in then saves the advanced
@@ -872,7 +769,7 @@ section 3.1.4, transfers the advanced audit policy files by using file access pr
 then uses the advanced audit policy files to configure the client's advanced audit policy, audit options,
 and global object access auditing settings.
 
-1.3.2.1  Audit Subcategory Settings
+##### 1.3.2.1 Audit Subcategory Settings
 
 The advanced audit policy allows administrators to select only the behaviors to monitor and to exclude
 audit results for behaviors that are of no concern to them or behaviors that create an excessive
@@ -920,7 +817,8 @@ Release: April 23, 2024
 
 10 / 36
 
-Group Membership
+
+Group Membership
 
 Object access audit:
 
@@ -991,7 +889,8 @@ Release: April 23, 2024
 
 11 / 36
 
-Other Policy Change Events
+
+Other Policy Change Events
 
 Account management audit:
 
@@ -1029,7 +928,7 @@ Kerberos Authentication Service
 
 For more information about audit subcategories, see section 2.2.1.
 
-1.3.2.2  Audit Options
+##### 1.3.2.2 Audit Options
 
 Audit options are settings that enable or disable functionality of the audit subsystem. These settings
 include crashing the system on audit failures, full privilege auditing, auditing of base objects, and
@@ -1037,14 +936,14 @@ auditing of base directories.
 
 For more information about audit options, see section 2.2.2.
 
-1.3.2.3  Global Object Access Policy
+##### 1.3.2.3 Global Object Access Policy
 
 The global object access policy contains a set of system access control lists that are applied to whole
 resource managers like the File System and Registry.
 
 For more information about global object access policy, see section 2.2.3.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on Group Policy: Core Protocol specified in [MS-GPOL] to provide a list of
 applicable GPOs. It also transmits Group Policy settings and instructions between the client and the
@@ -1058,30 +957,31 @@ Release: April 23, 2024
 
 12 / 36
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-GPAC].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
 Figure 1: Group Policy: Audit Configuration Extension protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for Group Policy: Audit Configuration Extension are the same as those for the Group
 Policy: Core Protocol [MS-GPOL].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Group Policy: Audit Configuration Extension is only applicable within the Group Policy framework.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Group Policy: Audit Configuration Extension defines CSE GUID and tool extension GUID, as specified in
 [MS-GPOL] (section 1.8). The following table shows the assignments.
@@ -1103,9 +1003,10 @@ Release: April 23, 2024
 
 13 / 36
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Audit Configuration Extension requires file access as specified for use in the Group
 Policy: Core Protocol [MS-GPOL]. All messages MUST be exchanged over file access protocols between
@@ -1114,7 +1015,7 @@ the client and server, as specified in section 2.2.
 The Group Policy: Core Protocol uses this protocol's CSE GUID and tool extension GUID values to
 invoke this protocol only to access GPOs that require processing by this protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages exchanged in the Group Policy: Audit Configuration Extension correspond to advanced audit
 policy files transferred by using file access protocol sequences as described in [MS-FASOD]. The
@@ -1166,7 +1067,8 @@ Release: April 23, 2024
 
 14 / 36
 
-2.2.1  Subcategory Settings
+
+#### 2.2.1 Subcategory Settings
 
 This section defines settings that enable an administrator to set the subcategory settings for an
 advanced audit policy. The syntax for the entries in this category MUST be as follows.
@@ -1175,7 +1077,7 @@ advanced audit policy. The syntax for the entries in this category MUST be as fo
  SubcategorySetting = MachineName "," PolicyTarget "," Subcategory "," SubcategoryGUID ","
 InclusionSetting "," ExclusionSetting "," SettingValue LineBreak
 
-2.2.1.1  Policy Target
+##### 2.2.1.1 Policy Target
 
 This section defines the possible values for the PolicyTarget attribute, which enables an administrator
 to specify whether to set the audit subcategory for a system advanced audit policy or a specific user.
@@ -1197,7 +1099,7 @@ for the entries in this category MUST be as follows.
 The UserSID string MUST use the standard S-R-I-S-S... format for SID strings, as specified in [MS-
 DTYP] (section 2.4.2).<1>
 
-2.2.1.2  Subcategory and SubcategoryGUID
+##### 2.2.1.2 Subcategory and SubcategoryGUID
 
 This section defines how the Subcategory and SubcategoryGUID values are used by the audit
 configuration client-side plug-in.
@@ -1231,7 +1133,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SubcategoryGUID
+
+SubcategoryGUID
 
 Purpose
 
@@ -1359,7 +1262,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SubcategoryGUID
+
+SubcategoryGUID
 
 Purpose
 
@@ -1478,7 +1382,8 @@ Release: April 23, 2024
 
 17 / 36
 
-SubcategoryGUID
+
+SubcategoryGUID
 
 Purpose
 
@@ -1612,7 +1517,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SubcategoryGUID
+
+SubcategoryGUID
 
 Purpose
 
@@ -1741,7 +1647,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.3  Inclusion Setting, Exclusion Setting, and Setting Value
+
+##### 2.2.1.3 Inclusion Setting, Exclusion Setting, and Setting Value
 
 This section defines settings that enable an administrator to define whether to add or remove a
 subcategory from the client advanced audit policy.
@@ -1749,7 +1656,7 @@ subcategory from the client advanced audit policy.
 The possible value of these attributes depends whether the subcategory audit setting policy target is
 "System" or a specific user or group.
 
-2.2.1.3.1 Inclusion Setting, Exclusion Setting, and SettingValue for System Audit
+###### 2.2.1.3.1 Inclusion Setting, Exclusion Setting, and SettingValue for System Audit
 
 Subcategories
 
@@ -1781,7 +1688,7 @@ The value of SettingValue MUST be one of the following:
 Note  The value of InclusionSetting is for user readability only and is ignored when the advanced
 audit policy is applied by the audit configuration client-side plug-in.
 
-2.2.1.3.2 Inclusion Setting, Exclusion Setting, and SettingValue for Per-User Audit
+###### 2.2.1.3.2 Inclusion Setting, Exclusion Setting, and SettingValue for Per-User Audit
 
 Subcategories
 
@@ -1804,7 +1711,8 @@ Release: April 23, 2024
 
 20 / 36
 
-Note that the element names above have a postfix of "-UA" to differentiate them from System
+
+Note that the element names above have a postfix of "-UA" to differentiate them from System
 advanced audit policy settings, which have a postfix of "-SA".
 
 The attribute SettingValueText is for user readability only and is ignored when the advanced audit
@@ -1868,7 +1776,7 @@ Success is ignored.
 If Include Failure and Exclude Failure bits are set, Include Failure is used and Exclude Failure
 is ignored.<6>
 
-2.2.2  Audit Options
+#### 2.2.2 Audit Options
 
 This section defines settings that enable an administrator to set the audit options for an advanced
 audit policy. The syntax for the entries in this category MUST be as follows.
@@ -1876,7 +1784,7 @@ audit policy. The syntax for the entries in this category MUST be as follows.
  AuditOptions = MachineName ",,Option:" AuditOptionType ",," AuditOptionValueText ",,"
 AuditOptionValue
 
-2.2.2.1  Audit Option Type
+##### 2.2.2.1 Audit Option Type
 
 This section defines the advanced audit options that are part of the audit policy. The syntax for the
 entries in this category MUST be as follows.
@@ -1892,7 +1800,8 @@ Release: April 23, 2024
 
 21 / 36
 
-AuditOptionType
+
+AuditOptionType
 
 Purpose
 
@@ -1949,7 +1858,7 @@ AuditBaseDirectories  The AuditBaseDirectories option specifies that named kerne
 semaphores) are to be given SACLs when they are created. AuditBaseDirectories affects
 container objects while AuditBaseObjects affects objects that cannot contain other objects.
 
-2.2.2.2  Audit Option Value
+##### 2.2.2.2 Audit Option Value
 
 This section defines the possible values corresponding to the audit options. The syntax for the entries
 in this category MUST be as follows.
@@ -1967,7 +1876,8 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The value of AuditOptionValue MUST be one of the following:
+
+The value of AuditOptionValue MUST be one of the following:
 
 AuditOptionValue  Purpose
 
@@ -1979,7 +1889,7 @@ The audit option is disabled.
 
 The audit option is enabled.
 
-2.2.3  Global Object Access Audit Settings
+#### 2.2.3 Global Object Access Audit Settings
 
 This section defines settings that enable an administrator to set the global object access auditing
 settings for an advanced audit policy.
@@ -1995,7 +1905,7 @@ The syntax for the entries in this category MUST be as follows.
 
  GlobalObjectAccessAuditSettings = MachineName ",," ResourceGlobalSaclType ",,,," GlobalSACL
 
-2.2.3.1  Resource Global SACL Type
+##### 2.2.3.1 Resource Global SACL Type
 
 This section defines the use of the ResourceGlobalSaclType attribute. The syntax for the entries in this
 category MUST be as follows.
@@ -2014,7 +1924,7 @@ Defines a global SACL for the File System resource manager.
 
 Defines a global SACL for the Registry resource manager.
 
-2.2.3.2  Global System Access Control List (SACL)
+##### 2.2.3.2 Global System Access Control List (SACL)
 
 This section defines the use of the GlobalSACL attribute. The syntax for the entries in this category
 MUST be as follows.
@@ -2029,10 +1939,11 @@ Release: April 23, 2024
 
 23 / 36
 
-The GlobalSACL attribute MUST be in the form of an SDDL encoding of a SACL of a security descriptor.
+
+The GlobalSACL attribute MUST be in the form of an SDDL encoding of a SACL of a security descriptor.
 For more information, see [MSDN-SDDL].
 
-2.2.4  Machine Name
+#### 2.2.4 Machine Name
 
 This section defines the use of the machine name, used on different sections of the advanced audit
 policy. The syntax for the entries in this category MUST be as follows.
@@ -2049,16 +1960,17 @@ Release: April 23, 2024
 
 24 / 36
 
-3  Protocol Details
 
-3.1  Audit Configuration Protocol Administrative-Side Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Audit Configuration Protocol Administrative-Side Plug-in Details
 
 The audit configuration protocol administrative-side plug-in participates in the advanced audit policy
 authoring and assignment steps, as specified in section 2. The advanced audit policy MUST be stored
 as a text file by using a .csv format, as specified in section 2.2. The advanced audit policies MUST be
 stored in a location accessible by using file access protocol sequences.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The audit configuration protocol administrative-side plug-in maintains no state. It loads all the
 settings, as specified in section 2.2, in memory.
@@ -2069,16 +1981,16 @@ determines the physical location of a desired policy, creates a new policy, or o
 as appropriate, and displays it to the administrator. After the administrator modifies the policy, the
 changes MUST be propagated back into the policy at the specified location.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The process for reading the settings from the GPO for administrative purposes MUST be the same as
 those as specified in section 3.2.5, steps 1-3.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The administrative-side plug-in is triggered when an administrator starts an administrative tool. The
 plug-in displays the current settings to the administrator, and when the administrator requests a
@@ -2095,7 +2007,7 @@ File reads and writes MUST be performed, as specified in [MS-GPOL] section 3.3. 
 SHOULD be regarded as case-insensitive. If the copy fails, the administrative-side plug-in MUST
 display to the user that the operation failed.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The administrative-side plug-in reads extension-specific data from the remote storage location and
 passes that information to an implementation-specific tool that provides a graphical user interface to
@@ -2111,36 +2023,37 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-configuration data to the remote storage location if the administrator makes any changes to the
+
+configuration data to the remote storage location if the administrator makes any changes to the
 existing configuration.
 
 After every creation, modification, or deletion that affects an audit policy file on SYSVOL, the
 administrative-side plug-in MUST invoke the Group Policy Extension Update task, as specified in [MS-
 GPOL] section 3.3.4.4.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Advanced Audit Policy Configuration Client-Side Plug-in Details
+### 3.2 Advanced Audit Policy Configuration Client-Side Plug-in Details
 
 The advanced audit policy configuration client-side plug-in interacts with the Group Policy framework,
 as specified in [MS-GPOL] section 3.2. This plug-in MUST receive the advanced audit policy and modify
 the appropriate part of the Abstract Data Model (ADM) for each element in the policy as specified in
 this section.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section defines a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
 protocol behaves. This document does not mandate that implementations adhere to this model as long
 as their external behavior is consistent with what is described in this document.
 
-3.2.1.1  Policy Setting State
+##### 3.2.1.1 Policy Setting State
 
 The client-side plug-in persistent state consists of the 4 sections below. The location where this state
 is stored is specific to each implementation.
@@ -2177,11 +2090,12 @@ Release: April 23, 2024
 
 26 / 36
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When invoked by the Group Policy framework with a list of one or more applicable GPOs, the audit
 configuration protocol client-side plug-in MUST do the following: locate all the advanced audit policy
@@ -2192,18 +2106,18 @@ Locating advanced audit policy files MUST be done by using the Group Policy: Cor
 specified in [MS-GPOL] section 3.2.5.1, and the LDAP search protocol, as specified in [RFC2251]
 section 4.5. The policy files MUST be copied and read by using file access protocol sequences.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 This plug-in implements one higher-layer triggered event: Process Group Policy.
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 The plug-in implements the Process Group Policy abstract event interface, as specified in [MS-GPOL]
 section 3.2.4.1. The plug-in does not make use of the Deleted GPOs, the flags, or the security tokens
 arguments. When the event is triggered, the audit configuration protocol client-side plug-in MUST take
 the actions described in the section 3.2.5.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The audit configuration protocol client-side extension MUST be invoked by the Group Policy framework
 whenever applicable GPOs need to be processed, as specified in [MS-GPOL] section 3.2.5.1. On such
@@ -2249,7 +2163,8 @@ Release: April 23, 2024
 
 27 / 36
 
-After all the advanced audit policies are retrieved, each policy MUST be opened and the contained
+
+After all the advanced audit policies are retrieved, each policy MUST be opened and the contained
 advanced audit policy settings MUST be extracted and applied for each ADM element corresponding to
 section 2.2.
 
@@ -2298,11 +2213,11 @@ column value, store the "Setting Value" column value in the audit setting value 
 corresponding subcategory GUID in the Per-User Advanced Audit Policy ADM variable as specified
 in section 3.2.1.1.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2313,9 +2228,10 @@ Release: April 23, 2024
 
 28 / 36
 
-4  Protocol Examples
 
-4.1  Example Involving System Audit Subcategory Settings
+## 4 Protocol Examples
+
+### 4.1 Example Involving System Audit Subcategory Settings
 
 In the following example, an administrator specifies that the designated audit settings be applied for
 computers to which a certain GPO applies:
@@ -2340,7 +2256,7 @@ Setting,Setting Value
 Failure,,3
  TEST-MACHINE,System,File System,{0CCE921D-69AE-11D9-BED3-505054503030},Not specified,,0
 
-4.2  Example Involving Per-User Audit Subcategory Settings
+### 4.2 Example Involving Per-User Audit Subcategory Settings
 
 In the following example, an administrator specifies that the designated audit settings be applied for
 computers to which a certain GPO applies:
@@ -2360,7 +2276,7 @@ Setting,Setting Value
  TEST-MACHINE,S-1-5-21-2127521184-1604012920-1887927527-123456,File System,{0CCE921D-69AE-
 11D9-BED3-505054503030},Success,Failure,9
 
-4.3  Example Involving Audit Options
+### 4.3 Example Involving Audit Options
 
 In the following example, an administrator specifies that the designated audit settings be applied for
 computers to which a certain GPO applies:
@@ -2385,12 +2301,13 @@ Group Policy: Audit Configuration Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- TEST-MACHINE,,Option:CrashOnAuditFail,,Enabled,,1
+
+ TEST-MACHINE,,Option:CrashOnAuditFail,,Enabled,,1
  TEST-MACHINE,,Option:FullPrivilegeAuditing,,Disabled,,0
  TEST-MACHINE,,Option:AuditBaseObjects,,Disabled,,0
  TEST-MACHINE,,Option:AuditBaseDirectories,,Disabled,,0
 
-4.4  Example Involving Global Object Access Auditing
+### 4.4 Example Involving Global Object Access Auditing
 
 In the following example, an administrator specifies that the designated audit settings be applied for
 computers to which a certain GPO applies:
@@ -2401,7 +2318,7 @@ computers to which a certain GPO applies:
 Setting,Setting Value
  TEST-MACHINE,,RegistryGlobalSacl,,,,S:(AU;SA;FA;;;WD)
 
-4.5  Example of Configuring Multiple Types of Settings
+### 4.5 Example of Configuring Multiple Types of Settings
 
 In the following example, an administrator specifies that for computers to which a certain GPO applies,
 all the settings specified in the previous sections are configured as designated.
@@ -2428,9 +2345,10 @@ Release: April 23, 2024
 
 30 / 36
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Setting both the advanced audit policies (as described in this document) and the event audit policies
 (as described in [MS-GPSB] section 2.2.4) on the same client can lead to inconsistent behavior.
@@ -2439,9 +2357,9 @@ value MACHINE\System\CurrentControlSet\Control\LSA\SCENoApplyLegacyAuditPolicy b
 using the mechanism described in [MS-GPSB] section 2.2.5. This avoids the conflict by preventing the
 event audit policies from being applied on the client.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
-5.2.1  Security Parameters Affecting Behavior of the Protocol
+#### 5.2.1 Security Parameters Affecting Behavior of the Protocol
 
 Security Parameter
 
@@ -2463,7 +2381,7 @@ MaxNoGPOListChangesInterval minutes. This limits the amount of time that the
 local and central advanced audit policy settings could be out of sync because of
 local modifications to the policy.<8>
 
-5.2.2  System Security Parameters Carried by the Protocol
+#### 5.2.2 System Security Parameters Carried by the Protocol
 
 Settings category
 
@@ -2486,7 +2404,8 @@ Release: April 23, 2024
 
 31 / 36
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2553,7 +2472,8 @@ Release: April 23, 2024
 
 32 / 36
 
-<6> Section 2.2.1.3.2: If any subcategory in the Per-User Advanced Audit Policy section is defined for
+
+<6> Section 2.2.1.3.2: If any subcategory in the Per-User Advanced Audit Policy section is defined for
 a given user or group in Windows, the value Include Failure (0x4) is used as default for all the rest
 of the audit subcategories that are not defined for that user after all the applicable policies are
 processed. The Include Failure setting will cause a Failure Audit to be generated even if not
@@ -2574,7 +2494,8 @@ Release: April 23, 2024
 
 33 / 36
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2618,7 +2539,8 @@ Release: April 23, 2024
 
 34 / 36
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2750,7 +2672,8 @@ Product behavior 32
 
 35 / 36
 
-R
+
+R
 
 References 8
    informative 9

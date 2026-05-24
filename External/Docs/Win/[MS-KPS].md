@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 40
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -148,240 +149,92 @@ Release: April 23, 2024
 
 2 / 40
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 HTTP Methods](#221-http-methods)
+      - [2.2.1.1 Description](#2211-description)
+      - [2.2.1.2 GetMetaData](#2212-getmetadata)
+    - [2.2.2 Complex Types](#222-complex-types)
+      - [2.2.2.1 RollTransportKeyResponse](#2221-rolltransportkeyresponse)
+      - [2.2.2.2 Protector](#2222-protector)
+      - [2.2.2.5 WrappingCollection](#2225-wrappingcollection)
+      - [2.2.2.6 TransportKeySignature](#2226-transportkeysignature)
+      - [2.2.2.7 GuardianSignature](#2227-guardiansignature)
+      - [2.2.2.8 KeyDerivationMethod](#2228-keyderivationmethod)
+      - [2.2.2.9 Signature](#2229-signature)
+      - [2.2.2.10 EncryptedData](#22210-encrypteddata)
+      - [2.2.2.11 SigningCertificateSignature](#22211-signingcertificatesignature)
+      - [2.2.2.12 Key Protection Service Protocol](#22212-key-protection-service-protocol)
+      - [2.2.2.13 EncryptionCertificateSignature](#22213-encryptioncertificatesignature)
+      - [2.2.2.14 TransportKey](#22214-transportkey)
+      - [2.2.2.15 Parameters](#22215-parameters)
+    - [2.2.3 Simple Types](#223-simple-types)
+      - [2.2.3.1 Key Protection Service Protocol](#2231-key-protection-service-protocol)
+      - [2.2.3.7 EncryptedWrappingKey](#2237-encryptedwrappingkey)
+      - [2.2.3.8 EncryptedTransportKeys](#2238-encryptedtransportkeys)
+      - [2.2.3.9 Version](#2239-version)
+      - [2.2.3.10 Version](#22310-version)
+        - [2.2.3.10.2 Payload_V2 structure](#223102-payloadv2-structure)
+          - [2.2.3.10.2.1 Policy Data structure](#2231021-policy-data-structure)
+      - [2.2.3.11 Certificate](#22311-certificate)
+      - [2.2.3.12 Algorithm](#22312-algorithm)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Service APIs](#3151-service-apis)
+        - [3.1.5.1.2 Description](#31512-description)
+          - [3.1.5.1.2.1 Request Body](#315121-request-body)
+          - [3.1.5.1.2.2 Response Body](#315122-response-body)
+          - [3.1.5.1.2.3 Processing Details](#315123-processing-details)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Application Requests RollTransportKey](#3241-application-requests-rolltransportkey)
+      - [3.2.4.2 Application Requests GetMetaData](#3242-application-requests-getmetadata)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 RollTransportKey](#3251-rolltransportkey)
+      - [3.2.5.2 GetMetaData](#3252-getmetadata)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full XML Schema](#6-appendix-a-full-xml-schema)
+  - [6.1 Protector Schema](#61-protector-schema)
+  - [6.2 RollTransportKey Request Schema](#62-rolltransportkey-request-schema)
+  - [6.3 RollTransportKey Response Schema](#63-rolltransportkey-response-schema)
+  - [6.4 MetaData Resposne Schema](#64-metadata-resposne-schema)
+  - [6.5 Crypto Schema](#65-crypto-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 6
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-
-2  Messages ................................................................................................................. 7
-Transport .......................................................................................................... 7
-Common Data Types .......................................................................................... 7
-HTTP Methods .............................................................................................. 7
-RollTransportKey .................................................................................... 7
-GetMetaData .......................................................................................... 7
-Complex Types ............................................................................................. 8
-RollTransportKeyRequest ......................................................................... 9
-RollTransportKeyResponse ..................................................................... 10
-Protector .............................................................................................. 11
-Wrapping ............................................................................................. 12
-Error ................................................................................................... 12
-WrappingCollection ............................................................................... 13
-TransportKeySignature .......................................................................... 13
-GuardianSignature ................................................................................ 14
-KeyDerivationMethod ............................................................................ 14
-Signature ............................................................................................. 14
-EncryptedData ...................................................................................... 15
-SigningCertificateSignature .................................................................... 15
-EncryptionCertificateSignature ................................................................ 16
-TransportKey ........................................................................................ 16
-Parameters .......................................................................................... 16
-Simple Types ............................................................................................. 16
-IngressProtector ................................................................................... 17
-HealthCertificate ................................................................................... 18
-TransferKeyEncryptionAlgorithm ............................................................. 18
-WrappingKeyEncryptionAlgorithm ........................................................... 18
-TransportKeyEncryptionAlgorithm ........................................................... 18
-EgressProtector .................................................................................... 19
-EncryptedTransferKey ........................................................................... 19
-EncryptedWrappingKey .......................................................................... 19
-EncryptedTransportKeys ........................................................................ 20
-Version ................................................................................................ 20
-Payload_V1 structure ....................................................................... 20
-Payload_V2 structure ....................................................................... 21
-Policy Data structure .................................................................. 22
-Certificate ............................................................................................ 22
-Algorithm ............................................................................................. 22
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-
-2.2.3.10.1
-2.2.3.10.2
-
-2.2.3.11
-2.2.3.12
-
-2.2.3.10.2.1
-
-2.2.3
-
-3  Protocol Details ..................................................................................................... 24
-Server Details .................................................................................................. 24
-Abstract Data Model .................................................................................... 24
-
-3.1.1
-
-3.1
-
-[MS-KPS] - v20240423
-Key Protection Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 40
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-
-3.1.5.1.1
-
-3.1.5.1.2
-
-3.1.5.1.1.1
-3.1.5.1.1.2
-3.1.5.1.1.3
-
-3.1.5.1.2.1
-3.1.5.1.2.2
-3.1.5.1.2.3
-
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 25
-Message Processing Events and Sequencing Rules .......................................... 25
-Service APIs ......................................................................................... 25
-RollTransportKey ............................................................................. 25
-Request Body ............................................................................ 25
-Response Body .......................................................................... 26
-Processing Details ...................................................................... 26
-GetMetaData................................................................................... 27
-Request Body ............................................................................ 28
-Response Body .......................................................................... 28
-Processing Details ...................................................................... 28
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Client Details ................................................................................................... 29
-Abstract Data Model .................................................................................... 29
-Timers ...................................................................................................... 29
-Initialization ............................................................................................... 29
-Higher-Layer Triggered Events ..................................................................... 29
-Application Requests RollTransportKey..................................................... 29
-Application Requests GetMetaData .......................................................... 29
-Message Processing Events and Sequencing Rules .......................................... 30
-RollTransportKey .................................................................................. 30
-GetMetaData ........................................................................................ 30
-Timer Events .............................................................................................. 30
-Other Local Events ...................................................................................... 30
-
-3.2
-
-3.1.6
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 31
-
-5  Security ................................................................................................................. 32
-Security Considerations for Implementers ........................................................... 32
-Index of Security Parameters ............................................................................ 32
-
-5.1
-5.2
-
-6  Appendix A: Full XML Schema ................................................................................ 33
-Protector Schema ............................................................................................. 33
-RollTransportKey Request Schema ..................................................................... 34
-RollTransportKey Response Schema ................................................................... 34
-MetaData Resposne Schema .............................................................................. 34
-Crypto Schema ................................................................................................ 35
-
-6.1
-6.2
-6.3
-6.4
-6.5
-
-7  Appendix B: Product Behavior ............................................................................... 37
-
-8  Change Tracking .................................................................................................... 38
-
-9  Index ..................................................................................................................... 39
-
-[MS-KPS] - v20240423
-Key Protection Service Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 40
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Key Protection Service (KPS) Protocol, a component of the Host Guardian
 service, which provides security assurance for shielded virtual machines.
@@ -389,7 +242,7 @@ service, which provides security assurance for shielded virtual machines.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -438,7 +291,7 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -452,7 +305,8 @@ Release: April 23, 2024
 
 5 / 40
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -469,11 +323,11 @@ assist you in finding the relevant information.
 [RFC2818] Rescorla, E., "HTTP Over TLS", RFC 2818, May 2000, https://www.rfc-
 editor.org/info/rfc2818
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 Host Guardian Service is a server role that provides the security services Attestation Service and Key
 Protection Service. Together these two services help provide security assurance for Shielded VMs by
@@ -481,29 +335,29 @@ ensuring that Shielded VMs can be run only on known and trusted fabric hosts tha
 configuration. This specification defines Key Protection Service. The Attestation Service is defined in
 the [MS-HGSA] specification.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 For its attestation service, Key Protection Service uses the Host Guardian Service: Attestation Protocol
 as specified in [MS-HGSA].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Host Guardian Service includes Attestation Service and Key Protection Service as critical
 components that secure virtual machines in a cloud-based environment.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields for the Key Protection Service Protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -514,16 +368,17 @@ Release: April 23, 2024
 
 6 / 40
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Key Protection Service Protocol uses HTTP or secure HTTP 1.1 as transport, as specified in
 [RFC2616] and [RFC2818].
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
-2.2.1  HTTP Methods
+#### 2.2.1 HTTP Methods
 
 This protocol defines the following common HTTP methods in addition to the existing set of standard
 HTTP methods.
@@ -534,9 +389,9 @@ RollTransportKey
 
 Section
 
-2.2.1.1
+##### 2.2.1.1 Description
 
-Description
+
 
 Extracts the TransportKey from
 the IngressProtector, generates a
@@ -562,7 +417,7 @@ This method is invoked from the following URI:
 
  http://<server>/keyprotection/service/{version}/rolltransportkey
 
-2.2.1.2  GetMetaData
+##### 2.2.1.2 GetMetaData
 
 The GetMetaData method provides the list of KPS-supported certificates, which are used in validating
 that the KeyProtector was properly signed by KPS or to create a new protector and encrypt the
@@ -577,9 +432,10 @@ Release: April 23, 2024
 
 7 / 40
 
- http://<server>/keyprotection/service/metadata/2014-07/metadata.xml
 
-2.2.2  Complex Types
+ http://<server>/keyprotection/service/metadata/2014-07/metadata.xml
+
+#### 2.2.2 Complex Types
 
 The following table summarizes the set of common complex type definitions that are included in this
 specification and use the XML format.
@@ -590,13 +446,13 @@ RollTransportKeyRequest
 
 Section
 
-2.2.2.1
+##### 2.2.2.1 RollTransportKeyResponse
 
-RollTransportKeyResponse
 
-2.2.2.2
 
-Protector
+##### 2.2.2.2 Protector
+
+
 
 Wrapping
 
@@ -606,38 +462,38 @@ Error
 
 2.2.2.4
 
-2.2.2.5
+##### 2.2.2.5 WrappingCollection
 
-WrappingCollection
 
-2.2.2.6
 
-TransportKeySignature
+##### 2.2.2.6 TransportKeySignature
 
-2.2.2.7
 
-GuardianSignature
 
-2.2.2.8
+##### 2.2.2.7 GuardianSignature
 
-KeyDerivationMethod
 
-2.2.2.9
 
-Signature
+##### 2.2.2.8 KeyDerivationMethod
 
-2.2.2.10
 
-EncryptedData
 
-2.2.2.11
+##### 2.2.2.9 Signature
 
-SigningCertificateSignature
 
-2.2.2.12
+
+##### 2.2.2.10 EncryptedData
+
+
+
+##### 2.2.2.11 SigningCertificateSignature
+
+
+
+##### 2.2.2.12 Key Protection Service Protocol
 
 [MS-KPS] - v20240423
-Key Protection Service Protocol
+
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
@@ -699,7 +555,8 @@ signing certificate.
 
 8 / 40
 
-Complex type
+
+Complex type
 
 Section
 
@@ -786,7 +643,8 @@ Release: April 23, 2024
 
 9 / 40
 
-             </xs:simpleType>
+
+             </xs:simpleType>
           </xs:element>
           <xs:element name="WrappingKeyEncryptionAlgorithm">
              <xs:annotation>
@@ -858,7 +716,8 @@ Release: April 23, 2024
 
 10 / 40
 
-             <xs:simpleType>
+
+             <xs:simpleType>
                 <xs:restriction base="xs:base64Binary">
                    <xs:minLength value="1"/>
                 </xs:restriction>
@@ -930,7 +789,8 @@ Release: April 23, 2024
 
 11 / 40
 
-         <xs:documentation>A protector contains a list of wrappings of the transport
+
+         <xs:documentation>A protector contains a list of wrappings of the transport
 key.</xs:documentation>
       </xs:annotation>
       <xs:sequence>
@@ -997,7 +857,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <xs:element name="Error" type="Error_T" />
+
+ <xs:element name="Error" type="Error_T" />
    <xs:complexType name="Error_T">
       <xs:annotation>
          <xs:documentation>Error response.</xs:documentation>
@@ -1065,7 +926,8 @@ Release: April 23, 2024
 
 13 / 40
 
-Signature: Provides details about the entity that is used for providing Key Protection Services as
+
+Signature: Provides details about the entity that is used for providing Key Protection Services as
 defined in section 2.2.2.10. This is computed using the key derived from the TransportKey over the
 entire Wrappings element.
 
@@ -1134,7 +996,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-            </xs:simpleType>
+
+            </xs:simpleType>
          </xs:element>
       </xs:sequence>
       <xs:attribute name="Algorithm" type="CryptoAlgorithm_T" use="required" />
@@ -1204,11 +1067,12 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ParentWrappingId: A 32-bit unsigned integer that contains the wrapping ID of the parent.
 
-2.2.2.13
+ParentWrappingId: A 32-bit unsigned integer that contains the wrapping ID of the parent.
 
-EncryptionCertificateSignature
+##### 2.2.2.13 EncryptionCertificateSignature
+
+
 
 The EncryptionCertificateSignature structure denotes the signature that is computed using this
 wrapping’s signing certificate over this wrapping’s encryption certificate.
@@ -1228,9 +1092,9 @@ certificate.</xs:documentation>
 
 Signature: A digital signature as defined in section 2.2.2.10
 
-2.2.2.14
+##### 2.2.2.14 TransportKey
 
-TransportKey
+
 
 The TransportKey element is used to help protect data secured by the key protectors. This contains
 the transport key encrypted by the encryption certificate.
@@ -1242,9 +1106,9 @@ the transport key encrypted by the encryption certificate.
       </xs:sequence>
   </xs:complexType>
 
-2.2.2.15
+##### 2.2.2.15 Parameters
 
-Parameters
+
 
 The Parameters element denotes the cryptographic parameters used to perform Key Protection
 Services.
@@ -1259,7 +1123,7 @@ maxOccurs="unbounded"/>
       </xs:sequence>
   </xs:complexType>
 
-2.2.3  Simple Types
+#### 2.2.3 Simple Types
 
 The following table summarizes the set of common simple type definitions that are included in this
 specification.
@@ -1270,10 +1134,10 @@ IngressProtector
 
 Section
 
-2.2.3.1
+##### 2.2.3.1 Key Protection Service Protocol
 
 [MS-KPS] - v20240423
-Key Protection Service Protocol
+
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
@@ -1285,7 +1149,8 @@ serialized to a file and converted to
 
 16 / 40
 
-Simple type
+
+Simple type
 
 Section
 
@@ -1313,17 +1178,17 @@ EgressProtector
 
 EncryptedTransferKey
 
-2.2.3.7
+##### 2.2.3.7 EncryptedWrappingKey
 
-EncryptedWrappingKey
 
-2.2.3.8
 
-EncryptedTransportKeys
+##### 2.2.3.8 EncryptedTransportKeys
 
-2.2.3.9
 
-Version
+
+##### 2.2.3.9 Version
+
+
 
 Certificate
 
@@ -1403,7 +1268,8 @@ Release: April 23, 2024
 
 17 / 40
 
-    </xs:simpleType>
+
+    </xs:simpleType>
  </xs:element>
 
 2.2.3.2  HealthCertificate
@@ -1468,7 +1334,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- <xs:element name="TransportKeysEncryptionAlgorithm">
+
+ <xs:element name="TransportKeysEncryptionAlgorithm">
     <xs:annotation>
        <xs:documentation>The algorithm to be used to encrypt the transport
 keys.</xs:documentation>
@@ -1536,7 +1403,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-    </xs:simpleType>
+
+    </xs:simpleType>
 </xs:element>
 
 2.2.3.9  EncryptedTransportKeys
@@ -1556,9 +1424,9 @@ keys' wrapping key.</xs:documentation>
     </xs:simpleType>
 </xs:element>
 
-2.2.3.10
+##### 2.2.3.10 Version
 
-Version
+
 
 The following table summarizes the list of supported API versions.
 
@@ -1619,7 +1487,8 @@ Release: April 23, 2024
 
 20 / 40
 
-...
+
+...
 
 DataSize (4 bytes): Total size of the TransportKey BLOB.
 
@@ -1631,9 +1500,9 @@ KeyLength (4 bytes): The size of the key in bytes.
 
 KeyValue (variable): A variable-length field containing the key data.
 
-2.2.3.10.2
+###### 2.2.3.10.2 Payload_V2 structure
 
-Payload_V2 structure
+
 
 Payload_V2 structure represents the payload in API version V2.0.<3>
 
@@ -1691,7 +1560,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-NumberOfPolicies (4 bytes): Total number of key policies contained in the TransportKey BLOB. If
+
+NumberOfPolicies (4 bytes): Total number of key policies contained in the TransportKey BLOB. If
 
 this is a non-zero value, Policies field contains the number of key policies indicated by this field.
 
@@ -1700,7 +1570,7 @@ Policies (variable): A variable-length field containing an array of key policy d
 NumberOfPolicies field indicates the size of this array. Each policy data element of this array
 takes the form of the structure specified in section 2.2.3.10.2.1.
 
-2.2.3.10.2.1  Policy Data structure
+###### 2.2.3.10.2.1 Policy Data structure
 
 This structure contains the key policy data sent by the KPS in the TransportKey BLOB.<4>
 
@@ -1737,9 +1607,9 @@ PolicyDataSize (4 bytes): The size of the policy data in bytes.
 
 PolicyData (variable): A variable-length field containing the policy data.
 
-2.2.3.11
+##### 2.2.3.11 Certificate
 
-Certificate
+
 
 The Certificate element is used to generate the key protectors.
 
@@ -1752,9 +1622,9 @@ format.</xs:documentation>
      <xs:restriction base="xs:base64Binary" />
   </xs:simpleType>
 
-2.2.3.12
+##### 2.2.3.12 Algorithm
 
-Algorithm
+
 
 The Algorithm element denotes the cryptographic algorithm identifier used to perform Key Protection
 Services.
@@ -1769,7 +1639,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-      <xs:restriction base="xs:anyURI" />
+
+      <xs:restriction base="xs:anyURI" />
    </xs:simpleType>
 
 [MS-KPS] - v20240423
@@ -1779,11 +1650,12 @@ Release: April 23, 2024
 
 23 / 40
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Server Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1823,11 +1695,11 @@ defined in section 2.2.3.11.
 
 Validation.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 IngressProtector: MUST be set to empty.
 
@@ -1850,17 +1722,18 @@ Release: April 23, 2024
 
 24 / 40
 
-IngressTransportKey: MUST be set to empty.
+
+IngressTransportKey: MUST be set to empty.
 
 EgressTransportKey: MUST be set to empty.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Service APIs
+##### 3.1.5.1 Service APIs
 
 The following HTTP methods are allowed to be performed on this resource.
 
@@ -1874,9 +1747,9 @@ Section
 
 3.1.5.1.1
 
-3.1.5.1.2
+###### 3.1.5.1.2 Description
 
-Description
+
 
 Used to protect the keys by KPS.
 
@@ -1934,7 +1807,8 @@ format, for example) and converted into a base64-
 
 25 / 40
 
-Entry
+
+Entry
 
 TransferKeyEncryptionAlgorithm
 
@@ -2023,7 +1897,8 @@ Key Protection Service Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  WrappingId in GuardianSignature points to a valid wrapping.
+
+  WrappingId in GuardianSignature points to a valid wrapping.
 
   Signature fields in GuardianSignature and TransportKeySignature have valid values.
 
@@ -2104,13 +1979,14 @@ Release: April 23, 2024
 
 27 / 40
 
-
+
+
 
 
 The KPS PrimaryEncryptionCertificate.
 The signature over the KPS encryption certificate by the KPS signing private key.
 
-3.1.5.1.2.1  Request Body
+###### 3.1.5.1.2.1 Request Body
 
 The following operations are allowed to be performed on this resource.
 
@@ -2143,7 +2019,7 @@ The KPS PrimaryEncryptionCertificate.
 
 The signature over the KPS encryption certificate by the KPS signing private key.
 
-3.1.5.1.2.2  Response Body
+###### 3.1.5.1.2.2 Response Body
 
 The response body of this method contains the following.
 
@@ -2165,7 +2041,7 @@ OK
 A string representing the error response as defined in
 section 2.2.2.5.
 
-3.1.5.1.2.3  Processing Details
+###### 3.1.5.1.2.3 Processing Details
 
 The server MUST perform the following steps after receiving GetMetaData request:
 
@@ -2183,7 +2059,8 @@ Release: April 23, 2024
 
 28 / 40
 
-
+
+
 
 If the request includes adding OtherSigningCertificates to the metadata, get the non-primary
 signing certificates from the registry,
@@ -2194,17 +2071,17 @@ retrieved above in an implementation-specific manner,
 
   Generate the metadata document and return to the calling application.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2214,21 +2091,21 @@ document.
 
 Retries: An integer that indicates the number of retries to send the RollTransportKey request.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Retries: A default value that is equivalent to the number of distinct host addresses available for the
 server URI.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The following sections describe the operations performed by the client in response to events triggered
 by higher-layer applications.
 
-3.2.4.1  Application Requests RollTransportKey
+##### 3.2.4.1 Application Requests RollTransportKey
 
 The application provides the following:
 
@@ -2250,7 +2127,8 @@ Release: April 23, 2024
 
 29 / 40
 
-3.2.4.2  Application Requests GetMetaData
+
+##### 3.2.4.2 Application Requests GetMetaData
 
 The application provides the following:
 
@@ -2264,12 +2142,12 @@ The client MUST perform the following:
 
 Perform the steps as specified in section 3.2.5.2.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 The following sections describe the sequence of operations performed by the client in
 RollTransportKey and GetMetaData scenarios.
 
-3.2.5.1  RollTransportKey
+##### 3.2.5.1 RollTransportKey
 
 The client MUST send a POST request on the RollTransportKey resource as specified in section
 3.1.5.1.1 by using the URI specified.
@@ -2281,18 +2159,18 @@ securely on a VM.
 If the client receives an error, the client MAY retry sending the RollTransportKey request based on
 Retries.
 
-3.2.5.2  GetMetaData
+##### 3.2.5.2 GetMetaData
 
 The client MUST send a POST request on the GetMetaData resource as specified in section 3.1.5.1.2
 by using the URI specified.
 
 If the operation is successful, the client receives the metadata content with status code 200(OK).
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2303,7 +2181,8 @@ Release: April 23, 2024
 
 30 / 40
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -2314,13 +2193,14 @@ Release: April 23, 2024
 
 31 / 40
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2331,7 +2211,8 @@ Release: April 23, 2024
 
 32 / 40
 
-6  Appendix A: Full XML Schema
+
+## 6 Appendix A: Full XML Schema
 
 For ease of implementation, the following is the full XML schema for this protocol.
 
@@ -2371,7 +2252,7 @@ Not applicable
 
 6.5
 
-6.1  Protector Schema
+### 6.1 Protector Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema targetNamespace="http://schemas.microsoft.com/kps/2014/07"
@@ -2425,7 +2306,8 @@ Release: April 23, 2024
 
 33 / 40
 
-          <xs:element name="EncryptionCertificateSignature"
+
+          <xs:element name="EncryptionCertificateSignature"
 type="EncryptionCertificateSignature_T" />
           <xs:element name="TransportKey" type="TransportKey_T" />
        </xs:sequence>
@@ -2480,11 +2362,11 @@ key.</xs:documentation>
     </xs:complexType>
 </xs:schema>
 
-6.2  RollTransportKey Request Schema
+### 6.2 RollTransportKey Request Schema
 
 RollTransportKey request schema is defined in section 2.2.2.1
 
-6.3  RollTransportKey Response Schema
+### 6.3 RollTransportKey Response Schema
 
 RollTransportKey response schema is defined in section 2.2.2.2.
 
@@ -2495,7 +2377,8 @@ Release: April 23, 2024
 
 34 / 40
 
-6.4  MetaData Resposne Schema
+
+### 6.4 MetaData Resposne Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema targetNamespace="http://schemas.microsoft.com/kps/2014/07"
@@ -2541,7 +2424,7 @@ maxOccurs="unbounded" />
     </xs:complexType>
 </xs:schema>
 
-6.5  Crypto Schema
+### 6.5 Crypto Schema
 
  <?xml version="1.0" encoding="utf-8"?>
  <xs:schema targetNamespace="http://schemas.microsoft.com/kps/2014/07"
@@ -2570,7 +2453,8 @@ Release: April 23, 2024
 
 35 / 40
 
-          <xs:element name="Parameters" type="CryptoParameters_T" minOccurs="0" />
+
+          <xs:element name="Parameters" type="CryptoParameters_T" minOccurs="0" />
           <xs:element name="SignatureValue">
              <xs:simpleType>
                 <xs:restriction base="xs:base64Binary" />
@@ -2624,7 +2508,8 @@ Release: April 23, 2024
 
 36 / 40
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2680,7 +2565,8 @@ Release: April 23, 2024
 
 37 / 40
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2724,7 +2610,8 @@ Release: April 23, 2024
 
 38 / 40
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2855,7 +2742,8 @@ Standards assignments 6
 
 39 / 40
 
-T
+
+T
 
 Timer events
    client 30

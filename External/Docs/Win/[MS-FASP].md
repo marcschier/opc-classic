@@ -63,7 +63,8 @@ Release: May 11, 2026
 
 1 / 330
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: May 11, 2026
 
 2 / 330
 
-Date
+
+Date
 
 Revision
 History
@@ -552,7 +554,8 @@ Release: May 11, 2026
 
 3 / 330
 
-Date
+
+Date
 
 Revision
 History
@@ -622,562 +625,264 @@ Release: May 11, 2026
 
 4 / 330
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 FW_STORE_TYPE](#221-fwstoretype)
+    - [2.2.2 FW_PROFILE_TYPE](#222-fwprofiletype)
+    - [2.2.3 FW_POLICY_ACCESS_RIGHT](#223-fwpolicyaccessright)
+    - [2.2.4 FW_IPV4_SUBNET](#224-fwipv4subnet)
+    - [2.2.5 FW_IPV4_SUBNET_LIST](#225-fwipv4subnetlist)
+    - [2.2.6 FW_IPV6_SUBNET](#226-fwipv6subnet)
+    - [2.2.7 FW_IPV6_SUBNET_LIST](#227-fwipv6subnetlist)
+    - [2.2.8 FW_IPV4_ADDRESS_RANGE](#228-fwipv4addressrange)
+    - [2.2.9 FW_IPV4_RANGE_LIST](#229-fwipv4rangelist)
+    - [2.2.10 FW_IPV6_ADDRESS_RANGE](#2210-fwipv6addressrange)
+    - [2.2.11 FW_IPV6_RANGE_LIST](#2211-fwipv6rangelist)
+    - [2.2.12 FW_PORT_RANGE](#2212-fwportrange)
+    - [2.2.13 FW_PORT_RANGE_LIST](#2213-fwportrangelist)
+    - [2.2.14 FW_PORT_KEYWORD](#2214-fwportkeyword)
+    - [2.2.15 FW_PORTS](#2215-fwports)
+    - [2.2.16 FW_ICMP_TYPE_CODE](#2216-fwicmptypecode)
+    - [2.2.17 FW_ICMP_TYPE_CODE_LIST](#2217-fwicmptypecodelist)
+    - [2.2.18 FW_INTERFACE_LUIDS](#2218-fwinterfaceluids)
+    - [2.2.19 FW_DIRECTION](#2219-fwdirection)
+    - [2.2.20 FW_INTERFACE_TYPE](#2220-fwinterfacetype)
+    - [2.2.21 FW_ADDRESS_KEYWORD](#2221-fwaddresskeyword)
+    - [2.2.22 FW_ADDRESSES](#2222-fwaddresses)
+    - [2.2.23 FW_DYNAMIC_KEYWORD_ADDRESS_ID_LIST](#2223-fwdynamickeywordaddressidlist)
+    - [2.2.24 FW_RULE_STATUS](#2224-fwrulestatus)
+    - [2.2.25 FW_RULE_STATUS_CLASS](#2225-fwrulestatusclass)
+    - [2.2.26 FW_OBJECT_CTRL_FLAG](#2226-fwobjectctrlflag)
+    - [2.2.27 FW_ENFORCEMENT_STATE](#2227-fwenforcementstate)
+    - [2.2.28 FW_OBJECT_METADATA](#2228-fwobjectmetadata)
+    - [2.2.29 FW_OS_PLATFORM_OP](#2229-fwosplatformop)
+    - [2.2.30 FW_OS_PLATFORM](#2230-fwosplatform)
+    - [2.2.31 FW_OS_PLATFORM_LIST](#2231-fwosplatformlist)
+    - [2.2.32 FW_RULE_ORIGIN_TYPE](#2232-fwruleorigintype)
+    - [2.2.33 FW_ENUM_RULES_FLAGS](#2233-fwenumrulesflags)
+    - [2.2.34 FW_RULE_ACTION](#2234-fwruleaction)
+    - [2.2.35 FW_RULE_FLAGS](#2235-fwruleflags)
+    - [2.2.36 FW_RULE2_0](#2236-fwrule20)
+    - [2.2.37 FW_RULE](#2237-fwrule)
+    - [2.2.38 FW_PROFILE_CONFIG](#2238-fwprofileconfig)
+    - [2.2.39 FW_GLOBAL_CONFIG_IPSEC_EXEMPT_VALUES](#2239-fwglobalconfigipsecexemptvalues)
+    - [2.2.40 FW_GLOBAL_CONFIG_PRESHARED_KEY_ENCODING_VALUES](#2240-fwglobalconfigpresharedkeyencodingvalues)
+    - [2.2.41 FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_VALUES](#2241-fwglobalconfigipsecthroughnatvalues)
+    - [2.2.42 FW_GLOBAL_CONFIG](#2242-fwglobalconfig)
+    - [2.2.43 FW_CONFIG_FLAGS](#2243-fwconfigflags)
+    - [2.2.44 FW_NETWORK](#2244-fwnetwork)
+    - [2.2.45 FW_ADAPTER](#2245-fwadapter)
+    - [2.2.46 FW_DIAG_APP](#2246-fwdiagapp)
+    - [2.2.47 FW_RULE_CATEGORY](#2247-fwrulecategory)
+    - [2.2.48 FW_PRODUCT](#2248-fwproduct)
+    - [2.2.49 FW_IP_VERSION](#2249-fwipversion)
+    - [2.2.50 FW_IPSEC_PHASE](#2250-fwipsecphase)
+    - [2.2.51 FW_CS_RULE_FLAGS](#2251-fwcsruleflags)
+    - [2.2.52 FW_CS_RULE_ACTION](#2252-fwcsruleaction)
+    - [2.2.53 FW_CS_RULE2_10](#2253-fwcsrule210)
+    - [2.2.54 FW_CS_RULE2_0](#2254-fwcsrule20)
+    - [2.2.55 FW_CS_RULE](#2255-fwcsrule)
+    - [2.2.56 FW_CERT_CRITERIA_TYPE](#2256-fwcertcriteriatype)
+    - [2.2.57 FW_CERT_CRITERIA_NAME_TYPE](#2257-fwcertcriterianametype)
+    - [2.2.58 FW_CERT_CRITERIA_FLAGS](#2258-fwcertcriteriaflags)
+    - [2.2.59 FW_CERT_CRITERIA](#2259-fwcertcriteria)
+    - [2.2.60 FW_AUTH_METHOD](#2260-fwauthmethod)
+    - [2.2.61 FW_AUTH_SUITE_FLAGS](#2261-fwauthsuiteflags)
+    - [2.2.62 FW_AUTH_SUITE2_10](#2262-fwauthsuite210)
+    - [2.2.63 FW_AUTH_SUITE](#2263-fwauthsuite)
+    - [2.2.64 FW_AUTH_SET2_10](#2264-fwauthset210)
+    - [2.2.65 FW_AUTH_SET](#2265-fwauthset)
+    - [2.2.66 FW_CRYPTO_KEY_EXCHANGE_TYPE](#2266-fwcryptokeyexchangetype)
+    - [2.2.67 FW_CRYPTO_ENCRYPTION_TYPE](#2267-fwcryptoencryptiontype)
+    - [2.2.68 FW_CRYPTO_HASH_TYPE](#2268-fwcryptohashtype)
+    - [2.2.69 FW_CRYPTO_PROTOCOL_TYPE](#2269-fwcryptoprotocoltype)
+    - [2.2.70 FW_PHASE1_CRYPTO_SUITE](#2270-fwphase1cryptosuite)
+    - [2.2.71 FW_PHASE2_CRYPTO_SUITE](#2271-fwphase2cryptosuite)
+    - [2.2.72 FW_PHASE1_CRYPTO_FLAGS](#2272-fwphase1cryptoflags)
+    - [2.2.73 FW_PHASE2_CRYPTO_PFS](#2273-fwphase2cryptopfs)
+    - [2.2.74 FW_CRYPTO_SET](#2274-fwcryptoset)
+    - [2.2.75 FW_BYTE_BLOB](#2275-fwbyteblob)
+    - [2.2.76 FW_COOKIE_PAIR](#2276-fwcookiepair)
+    - [2.2.77 FW_PHASE1_KEY_MODULE_TYPE](#2277-fwphase1keymoduletype)
+    - [2.2.78 FW_CERT_INFO](#2278-fwcertinfo)
+    - [2.2.79 FW_AUTH_INFO](#2279-fwauthinfo)
+    - [2.2.80 FW_ENDPOINTS](#2280-fwendpoints)
+    - [2.2.81 FW_PHASE1_SA_DETAILS](#2281-fwphase1sadetails)
+    - [2.2.82 FW_PHASE2_TRAFFIC_TYPE](#2282-fwphase2traffictype)
+    - [2.2.83 FW_PHASE2_SA_DETAILS](#2283-fwphase2sadetails)
+    - [2.2.84 FW_PROFILE_CONFIG_VALUE](#2284-fwprofileconfigvalue)
+    - [2.2.85 FW_MM_RULE](#2285-fwmmrule)
+    - [2.2.86 FW_CONN_HANDLE](#2286-fwconnhandle)
+    - [2.2.87 FW_MATCH_KEY](#2287-fwmatchkey)
+    - [2.2.88 FW_DATA_TYPE](#2288-fwdatatype)
+    - [2.2.89 FW_MATCH_VALUE](#2289-fwmatchvalue)
+    - [2.2.90 FW_MATCH_TYPE](#2290-fwmatchtype)
+    - [2.2.91 FW_QUERY_CONDITION](#2291-fwquerycondition)
+    - [2.2.92 FW_QUERY_CONDITIONS](#2292-fwqueryconditions)
+    - [2.2.93 FW_QUERY](#2293-fwquery)
+    - [2.2.94 FW_POLICY_STORE_HANDLE](#2294-fwpolicystorehandle)
+    - [2.2.95 FW_PRODUCT_HANDLE](#2295-fwproducthandle)
+    - [2.2.96 FW_KEY_MODULE](#2296-fwkeymodule)
+    - [2.2.97 FW_TRUST_TUPLE_KEYWORD](#2297-fwtrusttuplekeyword)
+    - [2.2.98 FW_RULE2_10](#2298-fwrule210)
+    - [2.2.99 FW_AUTH_SET_FLAGS](#2299-fwauthsetflags)
+    - [2.2.100 FW_CRYPTO_SET_FLAGS](#22100-fwcryptosetflags)
+    - [2.2.101 FW_NETWORK_NAMES](#22101-fwnetworknames)
+    - [2.2.102 FW_RULE2_20](#22102-fwrule220)
+    - [2.2.103 FW_RULE_FLAGS2](#22103-fwruleflags2)
+    - [2.2.104 FW_RULE2_24](#22104-fwrule224)
+    - [2.2.105 FW_RULE2_25](#22105-fwrule225)
+    - [2.2.106 FW_RULE2_26](#22106-fwrule226)
+    - [2.2.107 FW_RULE2_27](#22107-fwrule227)
+    - [2.2.108 FW_RULE2_31](#22108-fwrule231)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 RRPC_FWOpenPolicyStore (Opnum 0)](#3141-rrpcfwopenpolicystore-opnum-0)
+      - [3.1.4.2 RRPC_FWClosePolicyStore (Opnum 1)](#3142-rrpcfwclosepolicystore-opnum-1)
+      - [3.1.4.3 RRPC_FWRestoreDefaults (Opnum 2)](#3143-rrpcfwrestoredefaults-opnum-2)
+      - [3.1.4.4 RRPC_FWGetGlobalConfig (Opnum 3)](#3144-rrpcfwgetglobalconfig-opnum-3)
+      - [3.1.4.5 RRPC_FWSetGlobalConfig (Opnum 4)](#3145-rrpcfwsetglobalconfig-opnum-4)
+      - [3.1.4.6 RRPC_FWAddFirewallRule (Opnum 5)](#3146-rrpcfwaddfirewallrule-opnum-5)
+      - [3.1.4.7 RRPC_FWSetFirewallRule (Opnum 6)](#3147-rrpcfwsetfirewallrule-opnum-6)
+      - [3.1.4.8 RRPC_FWDeleteFirewallRule (Opnum 7)](#3148-rrpcfwdeletefirewallrule-opnum-7)
+      - [3.1.4.9 RRPC_FWDeleteAllFirewallRules (Opnum 8)](#3149-rrpcfwdeleteallfirewallrules-opnum-8)
+      - [3.1.4.10 RRPC_FWEnumFirewallRules (Opnum 9)](#31410-rrpcfwenumfirewallrules-opnum-9)
+      - [3.1.4.11 RRPC_FWGetConfig (Opnum 10)](#31411-rrpcfwgetconfig-opnum-10)
+      - [3.1.4.12 RRPC_FWSetConfig (Opnum 11)](#31412-rrpcfwsetconfig-opnum-11)
+      - [3.1.4.13 RRPC_FWAddConnectionSecurityRule (Opnum 12)](#31413-rrpcfwaddconnectionsecurityrule-opnum-12)
+      - [3.1.4.14 RRPC_FWSetConnectionSecurityRule (Opnum 13)](#31414-rrpcfwsetconnectionsecurityrule-opnum-13)
+      - [3.1.4.15 RRPC_FWDeleteConnectionSecurityRule (Opnum 14)](#31415-rrpcfwdeleteconnectionsecurityrule-opnum-14)
+      - [3.1.4.16 RRPC_FWDeleteAllConnectionSecurityRules (Opnum 15)](#31416-rrpcfwdeleteallconnectionsecurityrules-opnum-15)
+      - [3.1.4.17 RRPC_FWEnumConnectionSecurityRules (Opnum 16)](#31417-rrpcfwenumconnectionsecurityrules-opnum-16)
+      - [3.1.4.18 RRPC_FWAddAuthenticationSet (Opnum 17)](#31418-rrpcfwaddauthenticationset-opnum-17)
+      - [3.1.4.19 RRPC_FWSetAuthenticationSet (Opnum 18)](#31419-rrpcfwsetauthenticationset-opnum-18)
+      - [3.1.4.20 RRPC_FWDeleteAuthenticationSet (Opnum 19)](#31420-rrpcfwdeleteauthenticationset-opnum-19)
+      - [3.1.4.21 RRPC_FWDeleteAllAuthenticationSets (Opnum 20)](#31421-rrpcfwdeleteallauthenticationsets-opnum-20)
+      - [3.1.4.22 RRPC_FWEnumAuthenticationSets (Opnum 21)](#31422-rrpcfwenumauthenticationsets-opnum-21)
+      - [3.1.4.23 RRPC_FWAddCryptoSet (Opnum 22)](#31423-rrpcfwaddcryptoset-opnum-22)
+      - [3.1.4.24 RRPC_FWSetCryptoSet (Opnum 23)](#31424-rrpcfwsetcryptoset-opnum-23)
+      - [3.1.4.25 RRPC_FWDeleteCryptoSet (Opnum 24)](#31425-rrpcfwdeletecryptoset-opnum-24)
+      - [3.1.4.26 RRPC_FWDeleteAllCryptoSets (Opnum 25)](#31426-rrpcfwdeleteallcryptosets-opnum-25)
+      - [3.1.4.27 RRPC_FWEnumCryptoSets (Opnum 26)](#31427-rrpcfwenumcryptosets-opnum-26)
+      - [3.1.4.28 RRPC_FWEnumPhase1SAs (Opnum 27)](#31428-rrpcfwenumphase1sas-opnum-27)
+      - [3.1.4.29 RRPC_FWEnumPhase2SAs (Opnum 28)](#31429-rrpcfwenumphase2sas-opnum-28)
+      - [3.1.4.30 RRPC_FWDeletePhase1SAs (Opnum 29)](#31430-rrpcfwdeletephase1sas-opnum-29)
+      - [3.1.4.31 RRPC_FWDeletePhase2SAs (Opnum 30)](#31431-rrpcfwdeletephase2sas-opnum-30)
+      - [3.1.4.32 RRPC_FWEnumProducts (Opnum 31)](#31432-rrpcfwenumproducts-opnum-31)
+      - [3.1.4.33 RRPC_FWAddMainModeRule (Opnum 32)](#31433-rrpcfwaddmainmoderule-opnum-32)
+      - [3.1.4.34 RRPC_FWSetMainModeRule (Opnum 33)](#31434-rrpcfwsetmainmoderule-opnum-33)
+      - [3.1.4.35 RRPC_FWDeleteMainModeRule (Opnum 34)](#31435-rrpcfwdeletemainmoderule-opnum-34)
+      - [3.1.4.36 RRPC_FWDeleteAllMainModeRules (Opnum 35)](#31436-rrpcfwdeleteallmainmoderules-opnum-35)
+      - [3.1.4.37 RRPC_FWEnumMainModeRules (Opnum 36)](#31437-rrpcfwenummainmoderules-opnum-36)
+      - [3.1.4.38 RRPC_FWQueryFirewallRules (Opnum 37)](#31438-rrpcfwqueryfirewallrules-opnum-37)
+      - [3.1.4.39 RRPC_FWQueryMainModeRules (Opnum 39)](#31439-rrpcfwquerymainmoderules-opnum-39)
+      - [3.1.4.40 RRPC_FWQueryAuthenticationSets (Opnum 40)](#31440-rrpcfwqueryauthenticationsets-opnum-40)
+      - [3.1.4.41 RRPC_FWQueryCryptoSets (Opnum 41)](#31441-rrpcfwquerycryptosets-opnum-41)
+      - [3.1.4.42 RRPC_FWEnumNetworks (Opnum 42)](#31442-rrpcfwenumnetworks-opnum-42)
+      - [3.1.4.43 RRPC_FWEnumAdapters (Opnum 43)](#31443-rrpcfwenumadapters-opnum-43)
+      - [3.1.4.44 RRPC_FWGetGlobalConfig2_10 (Opnum 44)](#31444-rrpcfwgetglobalconfig210-opnum-44)
+      - [3.1.4.45 RRPC_FWGetConfig2_10 (Opnum 45)](#31445-rrpcfwgetconfig210-opnum-45)
+      - [3.1.4.46 RRPC_FWAddFirewallRule2_10 (Opnum 46)](#31446-rrpcfwaddfirewallrule210-opnum-46)
+      - [3.1.4.47 RRPC_FWSetFirewallRule2_10 (Opnum 47)](#31447-rrpcfwsetfirewallrule210-opnum-47)
+      - [3.1.4.48 RRPC_FWEnumFirewallRules2_10 (Opnum 48)](#31448-rrpcfwenumfirewallrules210-opnum-48)
+      - [3.1.4.49 RRPC_FWAddConnectionSecurityRule2_10 (Opnum 49)](#31449-rrpcfwaddconnectionsecurityrule210-opnum-49)
+      - [3.1.4.50 RRPC_FWSetConnectionSecurityRule2_10 (Opnum 50)](#31450-rrpcfwsetconnectionsecurityrule210-opnum-50)
+      - [3.1.4.51 RRPC_FWEnumConnectionSecurityRules2_10 (Opnum 51)](#31451-rrpcfwenumconnectionsecurityrules210-opnum-51)
+      - [3.1.4.52 RRPC_FWQueryConnectionSecurityRules2_10 (Opnum 38)](#31452-rrpcfwqueryconnectionsecurityrules210-opnum-38)
+      - [3.1.4.53 RRPC_FWAddAuthenticationSet2_10 (Opnum 52)](#31453-rrpcfwaddauthenticationset210-opnum-52)
+      - [3.1.4.54 RRPC_FWSetAuthenticationSet2_10 (Opnum 53)](#31454-rrpcfwsetauthenticationset210-opnum-53)
+      - [3.1.4.55 RRPC_FWEnumAuthenticationSets2_10 (Opnum 54)](#31455-rrpcfwenumauthenticationsets210-opnum-54)
+      - [3.1.4.56 RRPC_FWAddCryptoSet2_10 (Opnum 55)](#31456-rrpcfwaddcryptoset210-opnum-55)
+      - [3.1.4.57 RRPC_FWSetCryptoSet2_10 (Opnum 56)](#31457-rrpcfwsetcryptoset210-opnum-56)
+      - [3.1.4.58 RRPC_FWEnumCryptoSets2_10 (Opnum 57)](#31458-rrpcfwenumcryptosets210-opnum-57)
+      - [3.1.4.59 RRPC_FWAddConnectionSecurityRule2_20 (Opnum 58)](#31459-rrpcfwaddconnectionsecurityrule220-opnum-58)
+      - [3.1.4.60 RRPC_FWSetConnectionSecurityRule2_20 (Opnum 59)](#31460-rrpcfwsetconnectionsecurityrule220-opnum-59)
+      - [3.1.4.61 RRPC_FWEnumConnectionSecurityRules2_20 (Opnum 60)](#31461-rrpcfwenumconnectionsecurityrules220-opnum-60)
+      - [3.1.4.62 RRPC_FWQueryConnectionSecurityRules2_20 (Opnum 61)](#31462-rrpcfwqueryconnectionsecurityrules220-opnum-61)
+      - [3.1.4.63 RRPC_FWAddAuthenticationSet2_20 (Opnum 62)](#31463-rrpcfwaddauthenticationset220-opnum-62)
+      - [3.1.4.64 RRPC_FWSetAuthenticationSet2_20 (Opnum 63)](#31464-rrpcfwsetauthenticationset220-opnum-63)
+      - [3.1.4.65 RRPC_FWEnumAuthenticationSets2_20 (Opnum 64)](#31465-rrpcfwenumauthenticationsets220-opnum-64)
+      - [3.1.4.66 RRPC_FWQueryAuthenticationSets2_20 (Opnum 65)](#31466-rrpcfwqueryauthenticationsets220-opnum-65)
+      - [3.1.4.67 RRPC_FWAddFirewallRule2_20 (Opnum 66)](#31467-rrpcfwaddfirewallrule220-opnum-66)
+      - [3.1.4.68 RRPC_FWSetFirewallRule2_20 (Opnum 67)](#31468-rrpcfwsetfirewallrule220-opnum-67)
+      - [3.1.4.69 RRPC_FWEnumFirewallRules2_20 (Opnum 68)](#31469-rrpcfwenumfirewallrules220-opnum-68)
+      - [3.1.4.70 RRPC_FWQueryFirewallRules2_20 (Opnum 69)](#31470-rrpcfwqueryfirewallrules220-opnum-69)
+      - [3.1.4.71 RRPC_FWAddFirewallRule2_24 (Opnum 70)](#31471-rrpcfwaddfirewallrule224-opnum-70)
+      - [3.1.4.72 RRPC_FWSetFirewallRule2_24 (Opnum 71)](#31472-rrpcfwsetfirewallrule224-opnum-71)
+      - [3.1.4.73 RRPC_FWEnumFirewallRules2_24 (Opnum 72)](#31473-rrpcfwenumfirewallrules224-opnum-72)
+      - [3.1.4.74 RRPC_FWQueryFirewallRules2_24 (Opnum 73)](#31474-rrpcfwqueryfirewallrules224-opnum-73)
+      - [3.1.4.75 RRPC_FWAddFirewallRule2_25 (Opnum 74)](#31475-rrpcfwaddfirewallrule225-opnum-74)
+      - [3.1.4.76 RRPC_FWSetFirewallRule2_25 (Opnum 75)](#31476-rrpcfwsetfirewallrule225-opnum-75)
+      - [3.1.4.77 RRPC_FWEnumFirewallRules2_25 (Opnum 76)](#31477-rrpcfwenumfirewallrules225-opnum-76)
+      - [3.1.4.78 RRPC_FWQueryFirewallRules2_25 (Opnum 77)](#31478-rrpcfwqueryfirewallrules225-opnum-77)
+      - [3.1.4.79 RRPC_FWAddFirewallRule2_26 (Opnum 78)](#31479-rrpcfwaddfirewallrule226-opnum-78)
+      - [3.1.4.80 RRPC_FWSetFirewallRule2_26 (Opnum 79)](#31480-rrpcfwsetfirewallrule226-opnum-79)
+      - [3.1.4.81 RRPC_FWEnumFirewallRules2_26 (Opnum 80)](#31481-rrpcfwenumfirewallrules226-opnum-80)
+      - [3.1.4.82 RRPC_FWQueryFirewallRules2_26 (Opnum 81)](#31482-rrpcfwqueryfirewallrules226-opnum-81)
+      - [3.1.4.83 RRPC_FWAddFirewallRule2_27 (Opnum 82)](#31483-rrpcfwaddfirewallrule227-opnum-82)
+      - [3.1.4.84 RRPC_FWSetFirewallRule2_27 (Opnum 83)](#31484-rrpcfwsetfirewallrule227-opnum-83)
+      - [3.1.4.85 RRPC_FWEnumFirewallRules2_27 (Opnum 84)](#31485-rrpcfwenumfirewallrules227-opnum-84)
+      - [3.1.4.86 RRPC_FWQueryFirewallRules2_27 (Opnum 85)](#31486-rrpcfwqueryfirewallrules227-opnum-85)
+      - [3.1.4.87 RRPC_FWAddFirewallRule2_31 (Opnum 86)](#31487-rrpcfwaddfirewallrule231-opnum-86)
+      - [3.1.4.88 RRPC_FWSetFirewallRule2_31 (Opnum 87)](#31488-rrpcfwsetfirewallrule231-opnum-87)
+      - [3.1.4.89 RRPC_FWEnumFirewallRules2_31 (Opnum 88)](#31489-rrpcfwenumfirewallrules231-opnum-88)
+      - [3.1.4.90 RRPC_FWQueryFirewallRules2_31 (Opnum 89)](#31490-rrpcfwqueryfirewallrules231-opnum-89)
+      - [3.1.4.91 RRPC_FWAddFirewallRule2_33 (Opnum 91)](#31491-rrpcfwaddfirewallrule233-opnum-91)
+      - [3.1.4.92 RRPC_FWSetFirewallRule2_33 (Opnum 92)](#31492-rrpcfwsetfirewallrule233-opnum-92)
+      - [3.1.4.93 RRPC_FWEnumFirewallRules2_33 (Opnum 93)](#31493-rrpcfwenumfirewallrules233-opnum-93)
+      - [3.1.4.94 RRPC_FWQueryFirewallRules2_33 (Opnum 94)](#31494-rrpcfwqueryfirewallrules233-opnum-94)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+      - [3.1.6.1 AddPortInUse](#3161-addportinuse)
+      - [3.1.6.2 DeletePortInUse](#3162-deleteportinuse)
+      - [3.1.6.3 AddDefaultFirewallRule](#3163-adddefaultfirewallrule)
+      - [3.1.6.4 SetGroupPolicyRSoPStore](#3164-setgrouppolicyrsopstore)
+      - [3.1.6.5 IsComputerInCommonCriteriaMode](#3165-iscomputerincommoncriteriamode)
+      - [3.1.6.6 SetEffectiveFirewallPolicy](#3166-seteffectivefirewallpolicy)
+      - [3.1.6.7 AddTrustTuple](#3167-addtrusttuple)
+      - [3.1.6.8 DeleteTrustTuple](#3168-deletetrusttuple)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Opening a Policy Store](#41-opening-a-policy-store)
+  - [4.2 Adding a Firewall Rule](#42-adding-a-firewall-rule)
+  - [4.3 Enumerating the Firewall Rules](#43-enumerating-the-firewall-rules)
+  - [4.4 Closing a Policy Store Handle](#44-closing-a-policy-store-handle)
+  - [4.5 Creating an MSFT_NetFirewallDynamicKeywordAddress Object](#45-creating-an-msftnetfirewalldynamickeywordaddress-object)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 14
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 17
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 18
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 19
-Transport ........................................................................................................ 19
-Common Data Types ........................................................................................ 19
-FW_STORE_TYPE ........................................................................................ 19
-FW_PROFILE_TYPE ..................................................................................... 20
-FW_POLICY_ACCESS_RIGHT ........................................................................ 21
-FW_IPV4_SUBNET ...................................................................................... 22
-FW_IPV4_SUBNET_LIST .............................................................................. 22
-FW_IPV6_SUBNET ...................................................................................... 22
-FW_IPV6_SUBNET_LIST .............................................................................. 22
-FW_IPV4_ADDRESS_RANGE ........................................................................ 23
-FW_IPV4_RANGE_LIST ................................................................................ 23
-FW_IPV6_ADDRESS_RANGE ........................................................................ 23
-FW_IPV6_RANGE_LIST ................................................................................ 24
-FW_PORT_RANGE ....................................................................................... 24
-FW_PORT_RANGE_LIST ............................................................................... 24
-FW_PORT_KEYWORD .................................................................................. 25
-FW_PORTS ................................................................................................ 26
-FW_ICMP_TYPE_CODE ................................................................................ 27
-FW_ICMP_TYPE_CODE_LIST ........................................................................ 27
-FW_INTERFACE_LUIDS ............................................................................... 27
-FW_DIRECTION .......................................................................................... 28
-FW_INTERFACE_TYPE ................................................................................. 28
-FW_ADDRESS_KEYWORD ............................................................................ 29
-FW_ADDRESSES......................................................................................... 30
-FW_DYNAMIC_KEYWORD_ADDRESS_ID_LIST ................................................ 31
-FW_RULE_STATUS ...................................................................................... 31
-FW_RULE_STATUS_CLASS ........................................................................... 45
-FW_OBJECT_CTRL_FLAG ............................................................................. 45
-FW_ENFORCEMENT_STATE .......................................................................... 46
-FW_OBJECT_METADATA .............................................................................. 48
-FW_OS_PLATFORM_OP ............................................................................... 48
-FW_OS_PLATFORM ..................................................................................... 49
-FW_OS_PLATFORM_LIST ............................................................................. 50
-FW_RULE_ORIGIN_TYPE.............................................................................. 50
-FW_ENUM_RULES_FLAGS ............................................................................ 51
-FW_RULE_ACTION ...................................................................................... 52
-FW_RULE_FLAGS ........................................................................................ 53
-FW_RULE2_0 ............................................................................................. 55
-FW_RULE ................................................................................................... 55
-FW_PROFILE_CONFIG ................................................................................. 60
-FW_GLOBAL_CONFIG_IPSEC_EXEMPT_VALUES .............................................. 63
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-2.2.13
-2.2.14
-2.2.15
-2.2.16
-2.2.17
-2.2.18
-2.2.19
-2.2.20
-2.2.21
-2.2.22
-2.2.23
-2.2.24
-2.2.25
-2.2.26
-2.2.27
-2.2.28
-2.2.29
-2.2.30
-2.2.31
-2.2.32
-2.2.33
-2.2.34
-2.2.35
-2.2.36
-2.2.37
-2.2.38
-2.2.39
-
-[MS-FASP] - v20260511
-Firewall and Advanced Security Protocol
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-5 / 330
-
-2.2.40
-2.2.41
-2.2.42
-2.2.43
-2.2.44
-2.2.45
-2.2.46
-2.2.47
-2.2.48
-2.2.49
-2.2.50
-2.2.51
-2.2.52
-2.2.53
-2.2.54
-2.2.55
-2.2.56
-2.2.57
-2.2.58
-2.2.59
-2.2.60
-2.2.61
-2.2.62
-2.2.63
-2.2.64
-2.2.65
-2.2.66
-2.2.67
-2.2.68
-2.2.69
-2.2.70
-2.2.71
-2.2.72
-2.2.73
-2.2.74
-2.2.75
-2.2.76
-2.2.77
-2.2.78
-2.2.79
-2.2.80
-2.2.81
-2.2.82
-2.2.83
-2.2.84
-2.2.85
-2.2.86
-2.2.87
-2.2.88
-2.2.89
-2.2.90
-2.2.91
-2.2.92
-2.2.93
-2.2.94
-2.2.95
-2.2.96
-2.2.97
-
-FW_GLOBAL_CONFIG_PRESHARED_KEY_ENCODING_VALUES .......................... 64
-FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_VALUES ................................... 64
-FW_GLOBAL_CONFIG .................................................................................. 65
-FW_CONFIG_FLAGS .................................................................................... 68
-FW_NETWORK............................................................................................ 68
-FW_ADAPTER ............................................................................................. 68
-FW_DIAG_APP ........................................................................................... 69
-FW_RULE_CATEGORY.................................................................................. 69
-FW_PRODUCT ............................................................................................ 69
-FW_IP_VERSION ........................................................................................ 70
-FW_IPSEC_PHASE ...................................................................................... 70
-FW_CS_RULE_FLAGS .................................................................................. 71
-FW_CS_RULE_ACTION ................................................................................ 72
-FW_CS_RULE2_10 ...................................................................................... 73
-FW_CS_RULE2_0 ........................................................................................ 73
-FW_CS_RULE ............................................................................................. 74
-FW_CERT_CRITERIA_TYPE ........................................................................... 78
-FW_CERT_CRITERIA_NAME_TYPE ................................................................. 78
-FW_CERT_CRITERIA_FLAGS ........................................................................ 79
-FW_CERT_CRITERIA ................................................................................... 79
-FW_AUTH_METHOD .................................................................................... 80
-FW_AUTH_SUITE_FLAGS ............................................................................. 81
-FW_AUTH_SUITE2_10 ................................................................................. 82
-FW_AUTH_SUITE ........................................................................................ 83
-FW_AUTH_SET2_10 .................................................................................... 84
-FW_AUTH_SET ........................................................................................... 87
-FW_CRYPTO_KEY_EXCHANGE_TYPE .............................................................. 90
-FW_CRYPTO_ENCRYPTION_TYPE .................................................................. 91
-FW_CRYPTO_HASH_TYPE ............................................................................ 92
-FW_CRYPTO_PROTOCOL_TYPE ..................................................................... 93
-FW_PHASE1_CRYPTO_SUITE........................................................................ 93
-FW_PHASE2_CRYPTO_SUITE........................................................................ 94
-FW_PHASE1_CRYPTO_FLAGS ....................................................................... 95
-FW_PHASE2_CRYPTO_PFS ........................................................................... 95
-FW_CRYPTO_SET ........................................................................................ 96
-FW_BYTE_BLOB ........................................................................................ 100
-FW_COOKIE_PAIR ..................................................................................... 100
-FW_PHASE1_KEY_MODULE_TYPE ................................................................ 100
-FW_CERT_INFO ......................................................................................... 101
-FW_AUTH_INFO ........................................................................................ 101
-FW_ENDPOINTS ........................................................................................ 102
-FW_PHASE1_SA_DETAILS .......................................................................... 102
-FW_PHASE2_TRAFFIC_TYPE ........................................................................ 103
-FW_PHASE2_SA_DETAILS .......................................................................... 103
-FW_PROFILE_CONFIG_VALUE ..................................................................... 104
-FW_MM_RULE ........................................................................................... 106
-FW_CONN_HANDLE ................................................................................... 107
-FW_MATCH_KEY ........................................................................................ 107
-FW_DATA_TYPE ......................................................................................... 108
-FW_MATCH_VALUE .................................................................................... 109
-FW_MATCH_TYPE ...................................................................................... 110
-FW_QUERY_CONDITION ............................................................................. 110
-FW_QUERY_CONDITIONS ........................................................................... 111
-FW_QUERY ............................................................................................... 111
-FW_POLICY_STORE_HANDLE ...................................................................... 112
-FW_PRODUCT_HANDLE .............................................................................. 112
-FW_KEY_MODULE ...................................................................................... 112
-FW_TRUST_TUPLE_KEYWORD ..................................................................... 113
-
-[MS-FASP] - v20260511
-Firewall and Advanced Security Protocol
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-6 / 330
-
-FW_RULE2_10........................................................................................... 114
-2.2.98
-2.2.99
-FW_AUTH_SET_FLAGS ............................................................................... 115
-2.2.100  FW_CRYPTO_SET_FLAGS ............................................................................ 115
-2.2.101  FW_NETWORK_NAMES ............................................................................... 115
-2.2.102  FW_RULE2_20........................................................................................... 116
-2.2.103  FW_RULE_FLAGS2 ..................................................................................... 117
-2.2.104  FW_RULE2_24........................................................................................... 118
-2.2.105  FW_RULE2_25........................................................................................... 119
-2.2.106  FW_RULE2_26........................................................................................... 120
-2.2.107  FW_RULE2_27........................................................................................... 121
-2.2.108  FW_RULE2_31........................................................................................... 122
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ................................................................................................... 123
-Server Details ................................................................................................. 123
-Abstract Data Model ................................................................................... 123
-Timers ..................................................................................................... 127
-Initialization .............................................................................................. 127
-Message Processing Events and Sequencing Rules ......................................... 128
-RRPC_FWOpenPolicyStore (Opnum 0) .................................................... 136
-RRPC_FWClosePolicyStore (Opnum 1) .................................................... 137
-RRPC_FWRestoreDefaults (Opnum 2) ..................................................... 138
-RRPC_FWGetGlobalConfig (Opnum 3) ..................................................... 138
-RRPC_FWSetGlobalConfig (Opnum 4) ..................................................... 140
-RRPC_FWAddFirewallRule (Opnum 5) ..................................................... 141
-RRPC_FWSetFirewallRule (Opnum 6) ...................................................... 142
-RRPC_FWDeleteFirewallRule (Opnum 7) .................................................. 143
-RRPC_FWDeleteAllFirewallRules (Opnum 8) ............................................. 144
-RRPC_FWEnumFirewallRules (Opnum 9) ................................................. 144
-RRPC_FWGetConfig (Opnum 10) ............................................................ 145
-RRPC_FWSetConfig (Opnum 11) ............................................................ 147
-RRPC_FWAddConnectionSecurityRule (Opnum 12) ................................... 148
-RRPC_FWSetConnectionSecurityRule (Opnum 13) .................................... 149
-RRPC_FWDeleteConnectionSecurityRule (Opnum 14)................................ 150
-RRPC_FWDeleteAllConnectionSecurityRules (Opnum 15) ........................... 151
-RRPC_FWEnumConnectionSecurityRules (Opnum 16) ............................... 152
-RRPC_FWAddAuthenticationSet (Opnum 17) ........................................... 153
-RRPC_FWSetAuthenticationSet (Opnum 18) ............................................ 154
-RRPC_FWDeleteAuthenticationSet (Opnum 19) ........................................ 155
-RRPC_FWDeleteAllAuthenticationSets (Opnum 20) ................................... 156
-RRPC_FWEnumAuthenticationSets (Opnum 21) ....................................... 157
-RRPC_FWAddCryptoSet (Opnum 22) ...................................................... 158
-RRPC_FWSetCryptoSet (Opnum 23) ....................................................... 159
-RRPC_FWDeleteCryptoSet (Opnum 24) ................................................... 160
-RRPC_FWDeleteAllCryptoSets (Opnum 25) .............................................. 161
-RRPC_FWEnumCryptoSets (Opnum 26) .................................................. 162
-RRPC_FWEnumPhase1SAs (Opnum 27) .................................................. 164
-RRPC_FWEnumPhase2SAs (Opnum 28) .................................................. 165
-RRPC_FWDeletePhase1SAs (Opnum 29) ................................................. 166
-RRPC_FWDeletePhase2SAs (Opnum 30) ................................................. 166
-RRPC_FWEnumProducts (Opnum 31) ...................................................... 167
-RRPC_FWAddMainModeRule (Opnum 32) ................................................ 168
-RRPC_FWSetMainModeRule (Opnum 33) ................................................. 169
-RRPC_FWDeleteMainModeRule (Opnum 34) ............................................. 170
-RRPC_FWDeleteAllMainModeRules (Opnum 35) ........................................ 171
-RRPC_FWEnumMainModeRules (Opnum 36) ............................................ 171
-RRPC_FWQueryFirewallRules (Opnum 37) ............................................... 172
-RRPC_FWQueryMainModeRules (Opnum 39) ............................................ 173
-RRPC_FWQueryAuthenticationSets (Opnum 40) ....................................... 174
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-3.1.4.24
-3.1.4.25
-3.1.4.26
-3.1.4.27
-3.1.4.28
-3.1.4.29
-3.1.4.30
-3.1.4.31
-3.1.4.32
-3.1.4.33
-3.1.4.34
-3.1.4.35
-3.1.4.36
-3.1.4.37
-3.1.4.38
-3.1.4.39
-3.1.4.40
-
-[MS-FASP] - v20260511
-Firewall and Advanced Security Protocol
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-7 / 330
-
-3.1.4.41
-3.1.4.42
-3.1.4.43
-3.1.4.44
-3.1.4.45
-3.1.4.46
-3.1.4.47
-3.1.4.48
-3.1.4.49
-3.1.4.50
-3.1.4.51
-3.1.4.52
-3.1.4.53
-3.1.4.54
-3.1.4.55
-3.1.4.56
-3.1.4.57
-3.1.4.58
-3.1.4.59
-3.1.4.60
-3.1.4.61
-3.1.4.62
-3.1.4.63
-3.1.4.64
-3.1.4.65
-3.1.4.66
-3.1.4.67
-3.1.4.68
-3.1.4.69
-3.1.4.70
-3.1.4.71
-3.1.4.72
-3.1.4.73
-3.1.4.74
-3.1.4.75
-3.1.4.76
-3.1.4.77
-3.1.4.78
-3.1.4.79
-3.1.4.80
-3.1.4.81
-3.1.4.82
-3.1.4.83
-3.1.4.84
-3.1.4.85
-3.1.4.86
-3.1.4.87
-3.1.4.88
-3.1.4.89
-3.1.4.90
-3.1.4.91
-3.1.4.92
-3.1.4.93
-3.1.4.94
-
-RRPC_FWQueryCryptoSets (Opnum 41) .................................................. 175
-RRPC_FWEnumNetworks (Opnum 42) ..................................................... 176
-RRPC_FWEnumAdapters (Opnum 43) ..................................................... 177
-RRPC_FWGetGlobalConfig2_10 (Opnum 44) ............................................ 178
-RRPC_FWGetConfig2_10 (Opnum 45) ..................................................... 179
-RRPC_FWAddFirewallRule2_10 (Opnum 46) ............................................ 181
-RRPC_FWSetFirewallRule2_10 (Opnum 47) ............................................. 182
-RRPC_FWEnumFirewallRules2_10 (Opnum 48) ........................................ 183
-RRPC_FWAddConnectionSecurityRule2_10 (Opnum 49) ............................ 184
-RRPC_FWSetConnectionSecurityRule2_10 (Opnum 50) ............................. 185
-RRPC_FWEnumConnectionSecurityRules2_10 (Opnum 51) ........................ 186
-RRPC_FWQueryConnectionSecurityRules2_10 (Opnum 38)........................ 187
-RRPC_FWAddAuthenticationSet2_10 (Opnum 52) .................................... 188
-RRPC_FWSetAuthenticationSet2_10 (Opnum 53) ..................................... 189
-RRPC_FWEnumAuthenticationSets2_10 (Opnum 54) ................................ 190
-RRPC_FWAddCryptoSet2_10 (Opnum 55) ............................................... 191
-RRPC_FWSetCryptoSet2_10 (Opnum 56) ................................................ 192
-RRPC_FWEnumCryptoSets2_10 (Opnum 57) ........................................... 193
-RRPC_FWAddConnectionSecurityRule2_20 (Opnum 58) ............................ 195
-RRPC_FWSetConnectionSecurityRule2_20 (Opnum 59) ............................. 196
-RRPC_FWEnumConnectionSecurityRules2_20 (Opnum 60) ........................ 197
-RRPC_FWQueryConnectionSecurityRules2_20 (Opnum 61)........................ 198
-RRPC_FWAddAuthenticationSet2_20 (Opnum 62) .................................... 199
-RRPC_FWSetAuthenticationSet2_20 (Opnum 63) ..................................... 200
-RRPC_FWEnumAuthenticationSets2_20 (Opnum 64) ................................ 201
-RRPC_FWQueryAuthenticationSets2_20 (Opnum 65) ................................ 202
-RRPC_FWAddFirewallRule2_20 (Opnum 66) ............................................ 203
-RRPC_FWSetFirewallRule2_20 (Opnum 67) ............................................. 204
-RRPC_FWEnumFirewallRules2_20 (Opnum 68) ........................................ 205
-RRPC_FWQueryFirewallRules2_20 (Opnum 69) ........................................ 206
-RRPC_FWAddFirewallRule2_24 (Opnum 70) ............................................ 207
-RRPC_FWSetFirewallRule2_24 (Opnum 71) ............................................. 208
-RRPC_FWEnumFirewallRules2_24 (Opnum 72) ........................................ 209
-RRPC_FWQueryFirewallRules2_24 (Opnum 73) ........................................ 210
-RRPC_FWAddFirewallRule2_25 (Opnum 74) ............................................ 211
-RRPC_FWSetFirewallRule2_25 (Opnum 75) ............................................. 212
-RRPC_FWEnumFirewallRules2_25 (Opnum 76) ........................................ 213
-RRPC_FWQueryFirewallRules2_25 (Opnum 77) ........................................ 214
-RRPC_FWAddFirewallRule2_26 (Opnum 78) ............................................ 215
-RRPC_FWSetFirewallRule2_26 (Opnum 79) ............................................. 216
-RRPC_FWEnumFirewallRules2_26 (Opnum 80) ........................................ 217
-RRPC_FWQueryFirewallRules2_26 (Opnum 81) ........................................ 218
-RRPC_FWAddFirewallRule2_27 (Opnum 82) ............................................ 219
-RRPC_FWSetFirewallRule2_27 (Opnum 83) ............................................. 221
-RRPC_FWEnumFirewallRules2_27 (Opnum 84) ........................................ 222
-RRPC_FWQueryFirewallRules2_27 (Opnum 85) ........................................ 223
-RRPC_FWAddFirewallRule2_31 (Opnum 86) ............................................ 224
-RRPC_FWSetFirewallRule2_31 (Opnum 87) ............................................. 225
-RRPC_FWEnumFirewallRules2_31 (Opnum 88) ........................................ 226
-RRPC_FWQueryFirewallRules2_31 (Opnum 89) ........................................ 227
-RRPC_FWAddFirewallRule2_33 (Opnum 91) ............................................ 228
-RRPC_FWSetFirewallRule2_33 (Opnum 92) ............................................. 229
-RRPC_FWEnumFirewallRules2_33 (Opnum 93) ........................................ 230
-RRPC_FWQueryFirewallRules2_33 (Opnum 94) ........................................ 231
-Timer Events ............................................................................................. 232
-Other Local Events ..................................................................................... 232
-AddPortInUse ...................................................................................... 232
-DeletePortInUse ................................................................................... 233
-
-3.1.6.1
-3.1.6.2
-
-3.1.5
-3.1.6
-
-[MS-FASP] - v20260511
-Firewall and Advanced Security Protocol
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-8 / 330
-
-3.2
-
-3.1.6.3
-3.1.6.4
-3.1.6.5
-3.1.6.6
-3.1.6.7
-3.1.6.8
-
-AddDefaultFirewallRule ......................................................................... 233
-SetGroupPolicyRSoPStore ..................................................................... 233
-IsComputerInCommonCriteriaMode ........................................................ 234
-SetEffectiveFirewallPolicy ...................................................................... 234
-AddTrustTuple ..................................................................................... 234
-DeleteTrustTuple.................................................................................. 234
-Client Details .................................................................................................. 235
-Abstract Data Model ................................................................................... 235
-Timers ..................................................................................................... 235
-Initialization .............................................................................................. 235
-Message Processing Events and Sequencing Rules ......................................... 235
-Timer Events ............................................................................................. 235
-Other Local Events ..................................................................................... 235
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-4  Protocol Examples ............................................................................................... 236
-Opening a Policy Store ..................................................................................... 236
-Adding a Firewall Rule ..................................................................................... 236
-Enumerating the Firewall Rules ......................................................................... 238
-Closing a Policy Store Handle ............................................................................ 238
-Creating an MSFT_NetFirewallDynamicKeywordAddress Object ............................. 239
-
-4.1
-4.2
-4.3
-4.4
-4.5
-
-5  Security ............................................................................................................... 242
-Security Considerations for Implementers .......................................................... 242
-Index of Security Parameters ........................................................................... 242
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 243
-
-7  Appendix B: Product Behavior ............................................................................. 312
-
-8  Change Tracking .................................................................................................. 323
-
-9  Index ................................................................................................................... 324
-
-[MS-FASP] - v20260511
-Firewall and Advanced Security Protocol
-Copyright © 2026 Microsoft Corporation
-Release: May 11, 2026
-
-9 / 330
-
-1  Introduction
+## 1 Introduction
 
 The Firewall and Advanced Security Protocol describes managing security policies on remote
 computers. The specific policies that this protocol manages are those of the firewall and advanced
@@ -1188,7 +893,7 @@ generated between hosts after this policy is enforced.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1251,7 +956,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
+
+ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
 Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
 
@@ -1326,7 +1032,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-locally unique identifier (LUID): A 64-bit value guaranteed to be unique within the scope of a
+
+locally unique identifier (LUID): A 64-bit value guaranteed to be unique within the scope of a
 
 single machine.
 
@@ -1404,7 +1111,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-known as globally unique identifiers (GUIDs) and these terms are used interchangeably in
+
+known as globally unique identifiers (GUIDs) and these terms are used interchangeably in
 the Microsoft protocol technical documents (TDs). Interchanging the usage of these terms does
 not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
 use of this term does not imply or require that the algorithms described in [RFC4122] or [C706]
@@ -1413,14 +1121,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1469,10 +1177,11 @@ Release: May 11, 2026
 
 13 / 330
 
-[X501] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: The Models",
+
+[X501] ITU-T, "Information Technology - Open Systems Interconnection - The Directory: The Models",
 Recommendation X.501, August 2005, http://www.itu.int/rec/T-REC-X.501-200508-S/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IANA-PROTO-NUM] IANA, "Protocol Numbers", February 2007,
 http://www.iana.org/assignments/protocol-numbers
@@ -1515,7 +1224,7 @@ https://www.rfc-editor.org/info/rfc2409
 [RFC4301] Kent, S. and Seo, K., "Security Architecture for the Internet Protocol", RFC 4301,
 December 2005, https://www.rfc-editor.org/info/rfc4301
 
-1.3  Overview
+### 1.3 Overview
 
 A host firewall is a software component that runs on host computers. It provides a layer of defense
 that can add depth to the collection of security measures when combined with other security
@@ -1535,7 +1244,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Because both IPsec and firewalls are host-based policy security technologies that operate in the
+
+Because both IPsec and firewalls are host-based policy security technologies that operate in the
 network stack, they are managed together to avoid conflicts. Furthermore, firewall and connection
 security (IPsec) can interact, providing deeper and more effective filtering capabilities based on
 identities that are negotiated by IPsec as well as other IPsec state information. This document refers
@@ -1577,7 +1287,8 @@ Release: May 11, 2026
 
 15 / 330
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-FASP].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1587,7 +1298,7 @@ The server role is represented by the host firewall, which contains the policy a
 role is represented by the management console (or other user management tool), which sends,
 retrieves, and modifies the policies on the remote host firewall.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is implemented on RPC, as specified in [MS-RPCE], which uses the Transmission
 Control Protocol (TCP) as a transport. Aside from managing the policy for the firewall itself, this
@@ -1605,7 +1316,8 @@ Release: May 11, 2026
 
 16 / 330
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 This protocol assumes that the firewall and advanced security components have been initialized, are
 running, and have registered the corresponding RPC interface that is defined in section 2.1. This
@@ -1618,11 +1330,11 @@ privacy protection level (RPC_C_PROTECT_LEVEL_PKT_PRIVACY) and GSS negotiate aut
 (RPC_C_AUTHN_GSS_NEGOTIATE), which negotiates between Kerberos Protocol Extensions [MS-
 KILE] and NT LAN Manager (NTLM) Authentication Protocol [MS-NLMP] authentication.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is used to address the needs defined in section 1.3.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning and capability negotiation issues in the following areas:
 
@@ -1661,7 +1373,7 @@ big-endian or little-endian byte order. For instance, protocol version 0x0200 = 
 will be value 512 (0x0200) on both little-endian and big-endian platforms. Marshaling any values
 defined within this specification is handled by RPC (see [MS-RPCE]).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses Win32 error codes. These values are taken from the Windows error number space
 that is specified in [MS-ERREF]. Vendors SHOULD reuse those values with their indicated meaning.
@@ -1674,13 +1386,14 @@ Release: May 11, 2026
 
 17 / 330
 
-This protocol uses NTSTATUS values, as specified in [MS-ERREF]. Vendors can choose their own
+
+This protocol uses NTSTATUS values, as specified in [MS-ERREF]. Vendors can choose their own
 values for this field provided that the C bit (0x20000000) is set, indicating that it is a customer code.
 
 Currently, vendors are not expected to extend this protocol. Therefore, the protocol does not consider
 provisions for extensions by parties other than Microsoft.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Parameter
 
@@ -1704,9 +1417,10 @@ Release: May 11, 2026
 
 18 / 330
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the Remote Procedure Call (RPC) over TCP. It also uses RPC dynamic
 endpoints, as specified in [C706] chapters 6, 7, 8, 9, 10, 11, 12, 13, and 14.
@@ -1731,12 +1445,12 @@ The server MUST register this interface identifier with the RPC run-time during 
 specified in section 3.1.3. The client MUST use this interface identifier when binding to the RPC server
 as specified in section 3.2.3.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data
 types are defined in the sections that follow.
 
-2.2.1  FW_STORE_TYPE
+#### 2.2.1 FW_STORE_TYPE
 
 This data type defines enumerations used to identify store types.
 
@@ -1771,7 +1485,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-see [MS-GPREG]) and read by the firewall and advanced security components; therefore, it is a
+
+see [MS-GPREG]) and read by the firewall and advanced security components; therefore, it is a
 read-only store. This symbolic constant has a value of 1.
 
 FW_STORE_TYPE_LOCAL:  This value identifies the store that contains the local host policy. This
@@ -1822,7 +1537,7 @@ FW_STORE_TYPE_MAX:  This value and values that exceed this value are not valid a
 be used. This symbolic constant is defined for simplicity in writing IDL definitions and code. It has
 a value of 8.
 
-2.2.2  FW_PROFILE_TYPE
+#### 2.2.2 FW_PROFILE_TYPE
 
 This data type defines the enumerations that are used to identify profile types. The enumeration
 values are bitmasks. Implementations MUST support using a single bitmask value and MUST support a
@@ -1848,7 +1563,8 @@ Release: May 11, 2026
 
 20 / 330
 
- } FW_PROFILE_TYPE;
+
+ } FW_PROFILE_TYPE;
 
 FW_PROFILE_TYPE_INVALID:  This value is invalid and MUST NOT be used. It is defined for
 
@@ -1883,7 +1599,7 @@ value can be specified only in method calls, and it cannot be combined with othe
 FW_PROFILE_TYPE_NONE:  This value represents no profile and is invalid. It is defined for
 simplicity in writing IDL definitions and code. This and greater values MUST NOT be used.
 
-2.2.3  FW_POLICY_ACCESS_RIGHT
+#### 2.2.3 FW_POLICY_ACCESS_RIGHT
 
 This enumeration defines access rights for the policy elements that can be accessed using the Firewall
 and Advanced Security Protocol. The values are not bitmasks and SHOULD NOT be used in bitwise OR
@@ -1920,7 +1636,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-2.2.4  FW_IPV4_SUBNET
+
+#### 2.2.4 FW_IPV4_SUBNET
 
 This structure defines IPv4 subnets. It is used in policy rules.
 
@@ -1939,7 +1656,7 @@ MUST be contiguous and shifted to the most significant bits.
 A dwSubNetMask of 0x00000000 is invalid. A subnet mask of 0xFFFFFFFF means that the subnet
 mask represents a single address.
 
-2.2.5  FW_IPV4_SUBNET_LIST
+#### 2.2.5 FW_IPV4_SUBNET_LIST
 
 This structure is used to contain a number of FW_IPV4_SUBNET elements.
 
@@ -1955,7 +1672,7 @@ pSubNets:   A pointer to an array of FW_IPV4_SUBNET elements. The number of elem
 
 by dwNumEntries.
 
-2.2.6  FW_IPV6_SUBNET
+#### 2.2.6 FW_IPV6_SUBNET
 
 This structure represents an IPv6 subnet.
 
@@ -1975,7 +1692,7 @@ The dwNumPrefixBits MUST NOT be greater than 128 and not less than 1. The addres
 NOT be an unspecified address (an address composed of all zeros),<1> and it MUST not be a
 loopback address.
 
-2.2.7  FW_IPV6_SUBNET_LIST
+#### 2.2.7 FW_IPV6_SUBNET_LIST
 
 This structure is used to contain a number of FW_IPV6_SUBNET elements.
 
@@ -1986,7 +1703,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- typedef struct _tag_FW_IPV6_SUBNET_LIST {
+
+ typedef struct _tag_FW_IPV6_SUBNET_LIST {
    [range(0, 1000)] unsigned long dwNumEntries;
    [size_is(dwNumEntries)] PFW_IPV6_SUBNET pSubNets;
  } FW_IPV6_SUBNET_LIST,
@@ -1998,7 +1716,7 @@ pSubNets:  A pointer to an array of FW_IPV6_SUBNET elements. The number of eleme
 
 dwNumEntries.
 
-2.2.8  FW_IPV4_ADDRESS_RANGE
+#### 2.2.8 FW_IPV4_ADDRESS_RANGE
 
 This structure represents a range of IPv4 addresses within the IPv4 address space.
 
@@ -2019,7 +1737,7 @@ address is included in the range.
 Valid FW_IPV4_ADDRESS_RANGE structures MUST have a dwBegin value less than or equal to the
 dwEnd value. Structures with dwBegin equal to dwEnd represent a single IPv4 address.
 
-2.2.9  FW_IPV4_RANGE_LIST
+#### 2.2.9 FW_IPV4_RANGE_LIST
 
 This structure is used to contain a number of FW_IPV4_ADDRESS_RANGE elements.
 
@@ -2035,7 +1753,7 @@ pRanges:  A pointer to an array of FW_IPV4_ADDRESS_RANGE elements. The number of
 
 given by dwNumEntries.
 
-2.2.10 FW_IPV6_ADDRESS_RANGE
+#### 2.2.10 FW_IPV6_ADDRESS_RANGE
 
 This structure represents a range of IPv6 addresses within the IPv6 address space.
 
@@ -2052,7 +1770,8 @@ Release: May 11, 2026
 
 23 / 330
 
-Begin:  A 16-octet array containing the first IPv6 address of the range in the IPv6 address range
+
+Begin:  A 16-octet array containing the first IPv6 address of the range in the IPv6 address range
 
 defined by this structure.
 
@@ -2066,7 +1785,7 @@ NOT contain either an unspecified or a loopback address.
 
 Begin and End are in network order.
 
-2.2.11 FW_IPV6_RANGE_LIST
+#### 2.2.11 FW_IPV6_RANGE_LIST
 
 This structure is used to contain a number of FW_IPV6_ADDRESS_RANGE elements.
 
@@ -2082,7 +1801,7 @@ pRanges:  A pointer to an array of FW_IPV6_ADDRESS_RANGE elements. The number of
 
 given by dwNumEntries.
 
-2.2.12 FW_PORT_RANGE
+#### 2.2.12 FW_PORT_RANGE
 
 This structure represents a range of ports. Ports are 16-bit unsigned values used in TCP and UDP
 protocols.
@@ -2100,7 +1819,7 @@ wEnd:  This field specifies the last port included in the range defined.
 Valid FW_PORT_RANGE structures MUST have a wBegin value less than or equal to the wEnd value.
 In this protocol, wBegin is equal to wEnd.
 
-2.2.13 FW_PORT_RANGE_LIST
+#### 2.2.13 FW_PORT_RANGE_LIST
 
 This structure is used to contain a number of FW_PORT_RANGE elements.
 
@@ -2119,11 +1838,12 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-pPorts:  A pointer to an array of FW_PORT_RANGE elements. The number of elements is given as
+
+pPorts:  A pointer to an array of FW_PORT_RANGE elements. The number of elements is given as
 
 dwNumEntries.
 
-2.2.14 FW_PORT_KEYWORD
+#### 2.2.14 FW_PORT_KEYWORD
 
 This enumeration identifies (with bitmask flags) the ports used by specific well-known protocols.<2>
 The ports corresponding to these keywords change dynamically and are tracked by the PortsInUse
@@ -2194,7 +1914,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_PORT_KEYWORD_MDNS:  Represents all ports in the PortsInUse collection where IsMDNS is
+
+FW_PORT_KEYWORD_MDNS:  Represents all ports in the PortsInUse collection where IsMDNS is
 
 true. For schema versions 0x0200, 0x0201, 0x020A, and 0x0214, this value is invalid and MUST
 NOT be used. This symbolic constant has a value of 0x80.
@@ -2243,7 +1964,7 @@ FW_PORT_KEYWORD_MAX_V2_25:  This value and values that exceed this value are not
 MUST NOT be used by servers and clients with schema version 0x021B and earlier. It is defined
 for simplicity in writing IDL definitions and code. This symbolic constant has a value of 0x200.
 
-2.2.15 FW_PORTS
+#### 2.2.15 FW_PORTS
 
 This structure contains the ports represented statically through FW_PORT_RANGE structures or
 symbolically through FW_PORT_KEYWORD enumeration values.
@@ -2265,7 +1986,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-2.2.16 FW_ICMP_TYPE_CODE
+
+#### 2.2.16 FW_ICMP_TYPE_CODE
 
 This data type defines ICMP (internet control message protocol with protocol numbers assigned in
 [IANA-PROTO-NUM]) message types and codes. It specifies an ICMP type and either its specific code
@@ -2288,7 +2010,7 @@ the range 0 to 0x00FF, it expresses a specific ICMP code.
 All valid ICMP type and code combinations are valid, even those not currently assigned for a specific
 use.
 
-2.2.17 FW_ICMP_TYPE_CODE_LIST
+#### 2.2.17 FW_ICMP_TYPE_CODE_LIST
 
 This structure is used to contain a number of FW_ICMP_TYPE_CODE elements.
 
@@ -2306,7 +2028,7 @@ pEntries:  A pointer to an array of FW_ICMP_TYPE_CODE elements. The number of el
 
 by dwNumEntries.
 
-2.2.18 FW_INTERFACE_LUIDS
+#### 2.2.18 FW_INTERFACE_LUIDS
 
 This structure is used to contain locally unique identifier (LUID) values that uniquely represent
 single network adapters (NICs) within a specific computer.
@@ -2330,7 +2052,8 @@ Release: May 11, 2026
 
 27 / 330
 
-2.2.19 FW_DIRECTION
+
+#### 2.2.19 FW_DIRECTION
 
 This enumeration represents the direction of network traffic flow.
 
@@ -2359,7 +2082,7 @@ FW_DIR_MAX:  This value and values that exceed this value are not valid and MUST
 This symbolic constant is defined for simplicity in writing IDL definitions and code. It has a value of
 3.
 
-2.2.20 FW_INTERFACE_TYPE
+#### 2.2.20 FW_INTERFACE_TYPE
 
 This enumeration is used to represent types of network adapters (NICs) in a specific machine. Each
 type might have one or more network adapters.
@@ -2407,12 +2130,13 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_INTERFACE_TYPE_MAX_V2_23: This value and values that exceed this value are not valid and
+
+FW_INTERFACE_TYPE_MAX_V2_23: This value and values that exceed this value are not valid and
 
 MUST NOT be used in client and server schema version newer than 0x217. It is defined for
 simplicity in writing IDL definitions and code. This symbolic constant has a value of 0x0008.
 
-2.2.21 FW_ADDRESS_KEYWORD
+#### 2.2.21 FW_ADDRESS_KEYWORD
 
 This enumeration is used to represent specific address types. As specified in the following descriptions,
 these address types can change dynamically.
@@ -2483,7 +2207,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_ADDRESS_KEYWORD_CAPTIVE_PORTAL:  Represents the collection of addresses of the
+
+FW_ADDRESS_KEYWORD_CAPTIVE_PORTAL:  Represents the collection of addresses of the
 
 current captive portal. For schema versions 0x021D and earlier, this value is invalid and MUST
 NOT be used.
@@ -2509,7 +2234,7 @@ FW_ADDRESS_KEYWORD_MAX:  This value and values that exceed this value are not va
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 0x0800.
 
-2.2.22 FW_ADDRESSES
+#### 2.2.22 FW_ADDRESSES
 
 This structure contains a list of address structures. Static and symbolic representations are supported,
 but a structure can contain only one representation type. The address structure representations
@@ -2566,7 +2291,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-V4SubNets:  A list of specifically defined IPv4 address subnets.
+
+V4SubNets:  A list of specifically defined IPv4 address subnets.
 
 V4Ranges:  A list of specifically defined IPv4 address ranges.
 
@@ -2574,7 +2300,7 @@ V6SubNets:  A list of specifically defined IPv6 address subnets.
 
 V6Ranges:  A list of specifically defined IPv6 address ranges.
 
-2.2.23 FW_DYNAMIC_KEYWORD_ADDRESS_ID_LIST
+#### 2.2.23 FW_DYNAMIC_KEYWORD_ADDRESS_ID_LIST
 
 This structure represents a list of dynamic keyword address IDs to be used in an FW_RULE struct
 (section 2.2.37).
@@ -2601,7 +2327,7 @@ the New-NetFirewallDynamicKeywordAddress command. Thereafter, the
 MSFT_NetFirewallDynamicKeywordAddress object is referenced in an FW_RULE struct instance which
 is invoked with the RRPC_FWAddFirewallRule2_31 method, as described in the example of section 4.5.
 
-2.2.24 FW_RULE_STATUS
+#### 2.2.24 FW_RULE_STATUS
 
 This enumeration represents status codes that identify the error states of a policy object, including
 successful states. If an object is in an erroneous state, the enumeration value represents a reason for
@@ -2635,7 +2361,8 @@ Release: May 11, 2026
 
 31 / 330
 
-   FW_RULE_STATUS_PARSING_ERROR_REMOTE_ENDPOINTS = 0x0008000F,
+
+   FW_RULE_STATUS_PARSING_ERROR_REMOTE_ENDPOINTS = 0x0008000F,
    FW_RULE_STATUS_PARSING_ERROR_REMOTE_ENDPOINT_FQDN = 0x00080010,
    FW_RULE_STATUS_PARSING_ERROR_KEY_MODULE = 0x00080011,
    FW_RULE_STATUS_PARSING_ERROR_LUA = 0x00080012,
@@ -2712,7 +2439,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-   FW_RULE_STATUS_SEMANTIC_ERROR_LOCAL_USER_OWNER_VER = 0x001000C5,
+
+   FW_RULE_STATUS_SEMANTIC_ERROR_LOCAL_USER_OWNER_VER = 0x001000C5,
    FW_RULE_STATUS_SEMANTIC_ERROR_LUA_CONDITIONAL_VER = 0x001000C6,
    FW_RULE_STATUS_SEMANTIC_ERROR_FLAGS_SYSTEMOS_GAMEOS = 0x001000C7,
    FW_RULE_STATUS_SEMANTIC_ERROR_FLAGS_CORTANA_VER = 0x001000C8,
@@ -2789,7 +2517,8 @@ Release: May 11, 2026
 
 33 / 330
 
-   FW_RULE_STATUS_SEMANTIC_ERROR_AUTH_PROXY_SERVER_VER = 0x00101081,
+
+   FW_RULE_STATUS_SEMANTIC_ERROR_AUTH_PROXY_SERVER_VER = 0x00101081,
    FW_RULE_STATUS_SEMANTIC_ERROR_PHASE1_CRYPTO_NON_DEFAULT_ID = 0x00105000,
    FW_RULE_STATUS_SEMANTIC_ERROR_PHASE1_CRYPTO_FLAGS = 0x00105001,
    FW_RULE_STATUS_SEMANTIC_ERROR_PHASE1_CRYPTO_TIMEOUT_MINUTES = 0x00105002,
@@ -2865,7 +2594,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-component does not understand these new fields, it cannot meaningfully specify what was ignored
+
+component does not understand these new fields, it cannot meaningfully specify what was ignored
 in the rule.
 
 FW_RULE_STATUS_IGNORED:  The rule has a higher major version that the service MUST ignore.
@@ -2951,7 +2681,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_RULE_STATUS_PARSING_ERROR_FWD_LIFETIME:  The forward path security association
+
+FW_RULE_STATUS_PARSING_ERROR_FWD_LIFETIME:  The forward path security association
 
 (SA) lifetime contains characters that are not valid or the length is not valid.
 
@@ -3033,7 +2764,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_RULE_STATUS_SEMANTIC_ERROR_RADDR_PROP:  Semantic error: A property on remote
+
+FW_RULE_STATUS_SEMANTIC_ERROR_RADDR_PROP:  Semantic error: A property on remote
 
 addresses does not belong to the RemoteAddress.
 
@@ -3116,7 +2848,8 @@ Release: May 11, 2026
 
 37 / 330
 
-FW_RULE_STATUS_SEMANTIC_ERROR_ALLOW_BYPASS_OUTBOUND:  Semantic error: An
+
+FW_RULE_STATUS_SEMANTIC_ERROR_ALLOW_BYPASS_OUTBOUND:  Semantic error: An
 outbound allow-bypass action is specified, but the rule does not meet allow-bypass criteria
 (authenticate/encrypt flags set).
 
@@ -3197,7 +2930,8 @@ Release: May 11, 2026
 
 38 / 330
 
-FW_RULE_STATUS_SEMANTIC_ERROR_REMOTE_USER_LIST:  Semantic error: An authorized
+
+FW_RULE_STATUS_SEMANTIC_ERROR_REMOTE_USER_LIST:  Semantic error: An authorized
 
 remote user list is specified on an outbound direction.
 
@@ -3284,7 +3018,8 @@ Release: May 11, 2026
 
 39 / 330
 
-FW_RULE_STATUS_SEMANTIC_ERROR_REMOTE_DYNAMIC_KEYWORD_ADDRESSES: The
+
+FW_RULE_STATUS_SEMANTIC_ERROR_REMOTE_DYNAMIC_KEYWORD_ADDRESSES: The
 
 target schema version does not support remote dynamic keyword addresses.
 
@@ -3371,7 +3106,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_RULE_STATUS_SEMANTIC_ERROR_AUTH_METHOD_VER:  Semantic error: Suite specifies
+
+FW_RULE_STATUS_SEMANTIC_ERROR_AUTH_METHOD_VER:  Semantic error: Suite specifies
 
 authentication method that is not compliant with its schema version.
 
@@ -3452,7 +3188,8 @@ Release: May 11, 2026
 
 41 / 330
 
-FW_RULE_STATUS_SEMANTIC_ERROR_AUTH_CERT_CRITERIA_INVALID_CRITERIA_TYPE:
+
+FW_RULE_STATUS_SEMANTIC_ERROR_AUTH_CERT_CRITERIA_INVALID_CRITERIA_TYPE:
 
 The criteria type specified is greater than FW_CERT_CRITERIA_TYPE_MAX.
 
@@ -3539,7 +3276,8 @@ Release: May 11, 2026
 
 42 / 330
 
-FW_RULE_STATUS_SEMANTIC_ERROR_PHASE2_CRYPTO_ENCRYPTION_VER:  Semantic
+
+FW_RULE_STATUS_SEMANTIC_ERROR_PHASE2_CRYPTO_ENCRYPTION_VER:  Semantic
 
 error: The Phase2 cryptographic set encryption is not schema-version compliant.
 
@@ -3626,7 +3364,8 @@ Release: May 11, 2026
 
 43 / 330
 
-FW_RULE_STATUS_SEMANTIC_ERROR_QUERY_KEY_SVC_NAME:  Semantic error: The service
+
+FW_RULE_STATUS_SEMANTIC_ERROR_QUERY_KEY_SVC_NAME:  Semantic error: The service
 
 name key is unavailable for the queried object type.
 
@@ -3709,7 +3448,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_RULE_STATUS_ERROR:  An error of any kind occurred. This symbolic constant has a value of
+
+FW_RULE_STATUS_ERROR:  An error of any kind occurred. This symbolic constant has a value of
 
 0x00380000.
 
@@ -3717,7 +3457,7 @@ FW_RULE_STATUS_ALL:  The status of all (it is used to enumerate all the rules, r
 
 status).
 
-2.2.25 FW_RULE_STATUS_CLASS
+#### 2.2.25 FW_RULE_STATUS_CLASS
 
 This enumeration defines classes of status codes.
 
@@ -3765,7 +3505,7 @@ FW_RULE_STATUS_CLASS_ALL:  The status of all (used to enumerate ALL the rules, r
 
 the status). This symbolic constant has a value of 0xFFFF0000.
 
-2.2.26 FW_OBJECT_CTRL_FLAG
+#### 2.2.26 FW_OBJECT_CTRL_FLAG
 
 This enumeration is used to indicate the RPC protocol when elements in structures are included.
 
@@ -3785,7 +3525,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-2.2.27 FW_ENFORCEMENT_STATE
+
+#### 2.2.27 FW_ENFORCEMENT_STATE
 
 This enumeration is part of the metadata information. It provides information about whether or not
 the policy expressed by an object is currently being enforced by the server.
@@ -3855,7 +3596,8 @@ Release: May 11, 2026
 
 46 / 330
 
-FW_ENFORCEMENT_STATE_REMOTE_ADDRESS_RESOLUTION_EMPTY:  The object is not being
+
+FW_ENFORCEMENT_STATE_REMOTE_ADDRESS_RESOLUTION_EMPTY:  The object is not being
 
 enforced because the remote address condition of the object contains a keyword that resolves to
 an empty set. This symbolic constant has a value of 7.
@@ -3932,7 +3674,8 @@ Release: May 11, 2026
 
 47 / 330
 
-FW_ENFORCEMENT_STATE_LOCAL_USER_EMPTY:  The object is not being enforced, because the
+
+FW_ENFORCEMENT_STATE_LOCAL_USER_EMPTY:  The object is not being enforced, because the
 local user condition of the object contains an SDDL with a SID that is not currently available on
 the host. For schema versions 0x0200, 0x0201, and 0x020A, this value is invalid and MUST NOT
 be used. This symbolic constant has a value of 20.
@@ -3965,7 +3708,7 @@ FW_ENFORCEMENT_STATE_MAX:  This value and values that exceed this value are not 
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 25.
 
-2.2.28 FW_OBJECT_METADATA
+#### 2.2.28 FW_OBJECT_METADATA
 
 This structure contains the metadata that is associated with a specific policy object.
 
@@ -3986,7 +3729,7 @@ pEnforcementStates:  A pointer to an array of FW_ENFORCEMENT_STATE elements. The
 
 elements is given by dwNumEntries.
 
-2.2.29 FW_OS_PLATFORM_OP
+#### 2.2.29 FW_OS_PLATFORM_OP
 
 This enumeration describes the operations used in the FW_OS_PLATFORM structure to determine if an
 object should be applied to a specified operating system platform.
@@ -4003,7 +3746,8 @@ Release: May 11, 2026
 
 48 / 330
 
-   FW_OS_PLATFORM_OP_MAX = 2,
+
+   FW_OS_PLATFORM_OP_MAX = 2,
    FW_OS_PLATFORM_OP_FIELD_SIZE = 5,
    FW_OS_PLATOFRM_OP_FIELD_MASK = 0xF8
  } FW_OS_PLATFORM_OP;
@@ -4040,7 +3784,7 @@ FW_OS_PLATFORM_OP_FIELD_SIZE: A constant value of 5.
 
 FW_OS_PLATOFRM_OP_FIELD_MASK: A constant value of 0xF8.
 
-2.2.30 FW_OS_PLATFORM
+#### 2.2.30 FW_OS_PLATFORM
 
 This structure describes a set of operating system platforms. The fields in this data type correspond to
 the fields of the OSVERSIONINFOEX data type (for more information, see [MSDN-
@@ -4072,13 +3816,14 @@ Release: May 11, 2026
 
 49 / 330
 
-bMinorVersion:  Specifies the minor version number for the OS. This corresponds to the
+
+bMinorVersion:  Specifies the minor version number for the OS. This corresponds to the
 
 dwMinorVersion field in MSDN.
 
 Reserved:  Not used. Reserved for future use.
 
-2.2.31 FW_OS_PLATFORM_LIST
+#### 2.2.31 FW_OS_PLATFORM_LIST
 
 This structure contains an array of FW_OS_PLATFORM elements. The structure describes a set of
 operating system platforms. This set is the union of the sets identified by each FW_OS_PLATFORM
@@ -4094,7 +3839,7 @@ dwNumEntries:  This field specifies the number of OS platforms that the structur
 
 pPlatforms:  A pointer to an array of dwNumEntries contiguous FW_OS_PLATFORM elements.
 
-2.2.32 FW_RULE_ORIGIN_TYPE
+#### 2.2.32 FW_RULE_ORIGIN_TYPE
 
 This enumeration represents where the policy object is stored and from where it originates.
 
@@ -4141,7 +3886,8 @@ Release: May 11, 2026
 
 50 / 330
 
-FW_RULE_ORIGIN_HARDCODED:  Specifies that the policy object originates from the firewall and
+
+FW_RULE_ORIGIN_HARDCODED:  Specifies that the policy object originates from the firewall and
 
 advanced security component hard-coded values and is used due to lack of user settings. These
 values are not configurable and are not addressed in this protocol specification. Specific
@@ -4178,7 +3924,7 @@ FW_RULE_ORIGIN_HOST_MAX: This value and values that exceed this value are not va
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 12.
 
-2.2.33 FW_ENUM_RULES_FLAGS
+#### 2.2.33 FW_ENUM_RULES_FLAGS
 
 This enumeration defines flag values that can be used in the enumeration methods that are defined in
 RRPC_FWEnumFirewallRules, RRPC_FWEnumConnectionSecurityRules,
@@ -4214,7 +3960,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_ENUM_RULES_FLAG_RESOLVE_DESCRIPTION:  Resolves rule description strings to user-
+
+FW_ENUM_RULES_FLAG_RESOLVE_DESCRIPTION:  Resolves rule description strings to user-
 
 friendly, localizable strings if they are in the following format: @file.dll,-<resID>. resID refers to
 the resource ID in the indirect string. Please see [MSDN-SHLoadIndirectString] for further
@@ -4248,7 +3995,7 @@ FW_ENUM_RULES_FLAG_MAX:  This value and values that exceed this value are not va
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value 0x0080.
 
-2.2.34 FW_RULE_ACTION
+#### 2.2.34 FW_RULE_ACTION
 
 This enumeration describes the possible actions on firewall rules.
 
@@ -4287,10 +4034,11 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-If conflicting rules match the same network traffic, the actions determine the order of precedence.
+
+If conflicting rules match the same network traffic, the actions determine the order of precedence.
 Allow-bypass rules take precedence over block rules, and block rules take precedence over allow rules.
 
-2.2.35 FW_RULE_FLAGS
+#### 2.2.35 FW_RULE_FLAGS
 
 This enumeration represents flags that can be specified in firewall rules of section 2.2.37.
 
@@ -4360,7 +4108,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-and AuthIP negotiation. If the negotiation fails, the connection is dropped. For schema versions
+
+and AuthIP negotiation. If the negotiation fails, the connection is dropped. For schema versions
 0x0200 and 0x0201, this value is invalid and MUST NOT be used.
 
 FW_RULE_FLAGS_ROUTEABLE_ADDRS_TRAVERSE_DEFER_APP:  This flag MUST be set only on
@@ -4432,7 +4181,8 @@ Release: May 11, 2026
 
 54 / 330
 
-2.2.36 FW_RULE2_0
+
+#### 2.2.36 FW_RULE2_0
 
 This structure represents a firewall rule that is used by the 2.0 binary version servers and clients (see
 section 2.2.42). The fields of this structure are identical to the FW_RULE structure and its meanings
@@ -4482,7 +4232,7 @@ are covered in section 2.2.37.
  } FW_RULE2_0,
   *PFW_RULE2_0;
 
-2.2.37 FW_RULE
+#### 2.2.37 FW_RULE
 
 This structure is used to represent a firewall rule.
 
@@ -4505,7 +4255,8 @@ Release: May 11, 2026
 
 55 / 330
 
-     union {
+
+     union {
      [case(6,17)]
        struct {
        FW_PORTS LocalPorts;
@@ -4580,7 +4331,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-LocalPorts:  A condition that specifies the local host ports of the TCP or UDP traffic that the rule
+
+LocalPorts:  A condition that specifies the local host ports of the TCP or UDP traffic that the rule
 
 matches.
 
@@ -4657,7 +4409,8 @@ Release: May 11, 2026
 
 57 / 330
 
-Origin:  The rule origin, as specified in the FW_RULE_ORIGIN_TYPE enumeration. It MUST be filled on
+
+Origin:  The rule origin, as specified in the FW_RULE_ORIGIN_TYPE enumeration. It MUST be filled on
 
 enumerated rules and ignored on input.
 
@@ -4739,7 +4492,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-
+
+
 
 The wszName field string MUST meet the following criteria:
 
@@ -4840,7 +4594,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-
+
+
 
 
 
@@ -4900,7 +4655,7 @@ wszPackageFamilyName: A pointer to a unicode string containing the Package Famil
 
 packaged application (UWP).
 
-2.2.38 FW_PROFILE_CONFIG
+#### 2.2.38 FW_PROFILE_CONFIG
 
 This enumeration identifies each of the per-profile configuration options supported by this protocol.
 Each configuration option has a merge law that is used to determine how to merge the values of these
@@ -4925,7 +4680,8 @@ Release: May 11, 2026
 
 60 / 330
 
-   FW_PROFILE_CONFIG_LOG_FILE_PATH = 9,
+
+   FW_PROFILE_CONFIG_LOG_FILE_PATH = 9,
    FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS = 10,
    FW_PROFILE_CONFIG_AUTH_APPS_ALLOW_USER_PREF_MERGE = 11,
    FW_PROFILE_CONFIG_GLOBAL_PORTS_ALLOW_USER_PREF_MERGE = 12,
@@ -4999,7 +4755,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-law for this option is to let the value of the GroupPolicyRSoPStore win if it is configured;
+
+law for this option is to let the value of the GroupPolicyRSoPStore win if it is configured;
 otherwise, the local store value is used. This symbolic constant has a value of 9.
 
 FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS:  This value is a DWORD used as
@@ -5070,7 +4827,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-not enforced, regardless of the schema version and connection security rule version. The merge
+
+not enforced, regardless of the schema version and connection security rule version. The merge
 law for this option is to always use the value of the GroupPolicyRSoPStore. This symbolic
 constant has a value of 14.
 
@@ -5107,7 +4865,7 @@ FW_PROFILE_CONFIG_MAX:  This value and values that exceed this value are not val
 NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant
 has a value of 19.
 
-2.2.39 FW_GLOBAL_CONFIG_IPSEC_EXEMPT_VALUES
+#### 2.2.39 FW_GLOBAL_CONFIG_IPSEC_EXEMPT_VALUES
 
 This enumeration identifies specific traffic to be exempted from performing IPsec.
 
@@ -5141,7 +4899,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_GLOBAL_CONFIG_IPSEC_EXEMPT_DHCP:  Exempt both IPv4 and IPv6 DHCP traffic from
+
+FW_GLOBAL_CONFIG_IPSEC_EXEMPT_DHCP:  Exempt both IPv4 and IPv6 DHCP traffic from
 
 IPsec.
 
@@ -5154,7 +4913,7 @@ are not valid and MUST NOT be used by servers and clients with schema version 0x
 earlier. It is defined for simplicity in writing IDL definitions and code. This symbolic constant has a
 value of 0x0004.
 
-2.2.40 FW_GLOBAL_CONFIG_PRESHARED_KEY_ENCODING_VALUES
+#### 2.2.40 FW_GLOBAL_CONFIG_PRESHARED_KEY_ENCODING_VALUES
 
 This enumeration is used to describe how preshared keys are encoded before being used.
 
@@ -5178,7 +4937,7 @@ FW_GLOBAL_CONFIG_PRESHARED_KEY_ENCODING_MAX:  This value and values that exceed
 this value are not valid and MUST NOT be used. It is defined for simplicity in writing IDL
 definitions and code. This symbolic constant has a value of 2.
 
-2.2.41 FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_VALUES
+#### 2.2.41 FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_VALUES
 
 This enumeration is used to describe when IPsec security associations can be established across
 NAT devices.
@@ -5212,12 +4971,13 @@ Release: May 11, 2026
 
 64 / 330
 
-FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_MAX:  This value and values that exceed this
+
+FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_MAX:  This value and values that exceed this
 
 value are not valid and MUST NOT be used. It is defined for simplicity in writing IDL definitions
 and code. This symbolic constant has a value of 3.
 
-2.2.42 FW_GLOBAL_CONFIG
+#### 2.2.42 FW_GLOBAL_CONFIG
 
 This enumeration identifies the global policy configuration options. Each configuration option has a
 merge law that is used to determine how to merge the values of these options across stores.
@@ -5283,7 +5043,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_GLOBAL_CONFIG_CURRENT_PROFILE:  This value is a DWORD and contains a bitmask of the
+
+FW_GLOBAL_CONFIG_CURRENT_PROFILE:  This value is a DWORD and contains a bitmask of the
 
 current enforced profiles that are maintained by the server firewall host. See
 FW_PROFILE_TYPE (section 2.2.2) for the bitmasks that are used to identify profile types. This
@@ -5356,7 +5117,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_GLOBAL_CONFIG_BINARY_VERSION_SUPPORTED:  This value contains the binary version
+
+FW_GLOBAL_CONFIG_BINARY_VERSION_SUPPORTED:  This value contains the binary version
 
 of the structures and data types that are supported by the server. This value is not merged. In
 addition, this value is always a fixed value for a specific firewall and advanced security
@@ -5428,11 +5190,12 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Note  The value of FW_GLOBAL_CONFIG_MAX depends of the number of members in this
+
+Note  The value of FW_GLOBAL_CONFIG_MAX depends of the number of members in this
 enumeration, which, in turn, depends on the schema version. See the descriptions of the previous
 enumeration members to determine what this value is for each schema version.
 
-2.2.43 FW_CONFIG_FLAGS
+#### 2.2.43 FW_CONFIG_FLAGS
 
 This enumeration identifies flags that can be set on the RRPC_FWGetConfig (Opnum 10) and
 RRPC_FWGetGlobalConfig (Opnum 3) methods.
@@ -5451,7 +5214,7 @@ ERROR_FILE_NOT_FOUND. The default set of values returned by these two calls is a
 advanced security component implementation-specific<13> decision, and is outside the scope of
 this protocol specification.
 
-2.2.44 FW_NETWORK
+#### 2.2.44 FW_NETWORK
 
 This structure represents a network that is associated with a firewall profile. It is used for display
 purposes in user interfaces.
@@ -5468,7 +5231,7 @@ ProfileType:  The profile type that is associated with the network. The type MUS
 
 FW_PROFILE_TYPE flags, except FW_PROFILE_TYPE_ALL.
 
-2.2.45 FW_ADAPTER
+#### 2.2.45 FW_ADAPTER
 
 This structure represents a network interface in the host. It is used for display purposes in the user
 interface when configuring the FW_PROFILE_CONFIG_DISABLED_INTERFACES (section 2.2.38)
@@ -5493,11 +5256,12 @@ Release: May 11, 2026
 
 68 / 330
 
-2.2.46 FW_DIAG_APP
+
+#### 2.2.46 FW_DIAG_APP
 
 This structure is not used on the wire.
 
-2.2.47 FW_RULE_CATEGORY
+#### 2.2.47 FW_RULE_CATEGORY
 
 This enumeration represents the classes of functionality that a third-party software component can
 register for, take ownership of, and commit to implement. The implementation of such functionality by
@@ -5539,7 +5303,7 @@ FW_RULE_CATEGORY_MAX:  This value and values that exceed this value are not vali
 NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant
 has a value of 4.
 
-2.2.48 FW_PRODUCT
+#### 2.2.48 FW_PRODUCT
 
 This structure represents a third-party software component that registers with the firewall and
 advanced security component to implement some of the categories.
@@ -5561,7 +5325,8 @@ Release: May 11, 2026
 
 69 / 330
 
-dwFlags:  This field is not used.
+
+dwFlags:  This field is not used.
 
 dwNumRuleCategories:  The number of rule categories with which the third-party software
 
@@ -5579,7 +5344,7 @@ pszPathToSignedProductExe:  A pointer to a Unicode string. The string represents
 
 the binary executable of the third-party software component.
 
-2.2.49 FW_IP_VERSION
+#### 2.2.49 FW_IP_VERSION
 
 This enumeration is used to represent the two current IP protocol versions in use: IP version 4 and IP
 version 6.
@@ -5604,7 +5369,7 @@ FW_IP_VERSION_MAX:  This value and values that exceed this value are not valid a
 be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant has
 a value of 3.
 
-2.2.50 FW_IPSEC_PHASE
+#### 2.2.50 FW_IPSEC_PHASE
 
 This enumeration is used to identify the IPsec phase of negotiations.
 
@@ -5635,7 +5400,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-sets, phase 2 authentication refers to extended mode (specified in [MS-AIPS] sections 3.6 and
+
+sets, phase 2 authentication refers to extended mode (specified in [MS-AIPS] sections 3.6 and
 3.7); and on crypto sets, phase 2 refers to quick mode (specified in [MS-AIPS] sections 3.4 and
 3.5). This symbolic constant has a value of 2.
 
@@ -5643,7 +5409,7 @@ FW_IPSEC_PHASE_MAX:  This value and values that exceed this value are not valid 
 be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant has
 a value of 3.
 
-2.2.51 FW_CS_RULE_FLAGS
+#### 2.2.51 FW_CS_RULE_FLAGS
 
 This enumeration describes flag values for connection security rules.
 
@@ -5706,7 +5472,8 @@ Release: May 11, 2026
 
 71 / 330
 
-FW_CS_RULE_FLAGS_SECURITY_REALM: If this flag is set, the connection security rule is
+
+FW_CS_RULE_FLAGS_SECURITY_REALM: If this flag is set, the connection security rule is
 
 associated with a security realm. The wszRuleId of the connection security rule is the same as
 the IPsec Security Realm ID that it is associated with. For schema versions 0x0200, 0x0201,
@@ -5740,7 +5507,7 @@ FW_CS_RULE_FLAGS_MAX_V2_20:  This value and values that exceed this value are no
 MUST NOT be used by servers and clients with schema version 0x0214 and earlier. It is defined
 for simplicity in writing IDL definitions and code. This symbolic constant has a value of 0x100.
 
-2.2.52 FW_CS_RULE_ACTION
+#### 2.2.52 FW_CS_RULE_ACTION
 
 This enumeration identifies the possible actions a connection security rule (section 2.2.55) can have.
 
@@ -5780,11 +5547,12 @@ Release: May 11, 2026
 
 72 / 330
 
-FW_CS_RULE_ACTION_MAX:  This value and values that exceed this value are not valid and MUST
+
+FW_CS_RULE_ACTION_MAX:  This value and values that exceed this value are not valid and MUST
 NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant
 has a value of 5.
 
-2.2.53 FW_CS_RULE2_10
+#### 2.2.53 FW_CS_RULE2_10
 
  This structure describes a connection security rule that is used by the 2.10 binary version
 for servers and clients (see sections 2.2.42 and 2.2.38). The fields of this structure are
@@ -5827,7 +5595,7 @@ identical to the FW_CS_RULE structure, and their meanings are covered in section
  } FW_CS_RULE2_10,
   *PFW_CS_RULE2_10;
 
-2.2.54 FW_CS_RULE2_0
+#### 2.2.54 FW_CS_RULE2_0
 
 This structure describes a connection security rule that is used by the 2.0 binary version for servers
 and clients (see sections 2.2.42 and 2.2.38). The fields of this structure are identical to the
@@ -5853,7 +5621,8 @@ Release: May 11, 2026
 
 73 / 330
 
-   unsigned char LocalTunnelEndpointV6[16];
+
+   unsigned char LocalTunnelEndpointV6[16];
    unsigned long dwRemoteTunnelEndpointV4;
    unsigned char RemoteTunnelEndpointV6[16];
    FW_PORTS Endpoint1Ports;
@@ -5874,7 +5643,7 @@ Release: May 11, 2026
  } FW_CS_RULE2_0,
   *PFW_CS_RULE2_0;
 
-2.2.55 FW_CS_RULE
+#### 2.2.55 FW_CS_RULE
 
 This structure describes a connection security rule.
 
@@ -5927,7 +5696,8 @@ Release: May 11, 2026
 
 74 / 330
 
-  *PFW_CS_RULE;
+
+  *PFW_CS_RULE;
 
 pNext:  A pointer to the next FW_CS_RULE in the list.
 
@@ -6006,7 +5776,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Action:  The connection security action that the rule takes for the traffic matches. This field MUST
+
+Action:  The connection security action that the rule takes for the traffic matches. This field MUST
 
 contain a valid value from the FW_CS_RULE_ACTION enumeration.
 
@@ -6082,7 +5853,8 @@ Release: May 11, 2026
 
 76 / 330
 
-wszTransportUserAuthzSDDL:  A pointer to a Unicode string in Security Descriptor Definition
+
+wszTransportUserAuthzSDDL:  A pointer to a Unicode string in Security Descriptor Definition
 
 Language (SDDL) format ([MS-DTYP] section 2.2.36). The security descriptor describes which
 remote users are allowed to send and receive traffic. Users granted access by the security
@@ -6187,7 +5959,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-However, the wszPhase2AuthSet member can always be NULL. When wszPhase2AuthSet is
+
+However, the wszPhase2AuthSet member can always be NULL. When wszPhase2AuthSet is
 not NULL, it SHOULD pass all of the string checks performed by the wszPhase1AuthSet member
 and the wszPhase2CryptoSet member.
 
@@ -6218,7 +5991,7 @@ If the wFlags field has the FW_CS_RULE_FLAGS_OUTBOUND_CLEAR flag set or the
 FW_CS_RULE_FLAGS_TUNNEL_BYPASS_IF_ENCRYPTED flag set, the rule MUST be a tunnel mode
 rule.
 
-2.2.56 FW_CERT_CRITERIA_TYPE
+#### 2.2.56 FW_CERT_CRITERIA_TYPE
 
 The FW_CERT_CRITERIA_TYPE enumeration defines whether the criteria are to be used for selection,
 validation, or both.
@@ -6247,7 +6020,7 @@ FW_CERT_CRITERIA_TYPE_MAX:  To be valid, a value of this type MUST be less than 
 
 constant.
 
-2.2.57 FW_CERT_CRITERIA_NAME_TYPE
+#### 2.2.57 FW_CERT_CRITERIA_NAME_TYPE
 
 This enumeration defines the type of name to match in the certificate for a given criterion.
 
@@ -6265,7 +6038,8 @@ Release: May 11, 2026
 
 78 / 330
 
-   FW_CERT_CRITERIA_NAME_CN,
+
+   FW_CERT_CRITERIA_NAME_CN,
    FW_CERT_CRITERIA_NAME_OU,
    FW_CERT_CRITERIA_NAME_O,
    FW_CERT_CRITERIA_NAME_DC,
@@ -6300,7 +6074,7 @@ FW_CERT_CRITERIA_NAME_MAX:  To be valid, a value of this type MUST be less than 
 
 constant.
 
-2.2.58 FW_CERT_CRITERIA_FLAGS
+#### 2.2.58 FW_CERT_CRITERIA_FLAGS
 
 This enumeration describes bitmask flags that can be set on a criteria structure.
 
@@ -6321,7 +6095,7 @@ FW_AUTH_CERT_CRITERIA_FLAGS_MAX:  To be valid, a flag value of this type MUST be
 
 this constant.
 
-2.2.59 FW_CERT_CRITERIA
+#### 2.2.59 FW_CERT_CRITERIA
 
 This structure contains fields that are used when selecting a local certificate and validating a remote
 peer's certificate during certificate authentication.
@@ -6338,7 +6112,8 @@ Release: May 11, 2026
 
 79 / 330
 
-   FW_CERT_CRITERIA_NAME_TYPE NameType;
+
+   FW_CERT_CRITERIA_NAME_TYPE NameType;
    LPWSTR wszName;
    DWORD dwNumEku;
    LPSTR ppEku;
@@ -6381,7 +6156,7 @@ wszHash:  A Unicode string that specifies the hash of the certificate. The numbe
 string MUST be equal to 40. Each character in the string MUST be in one of the following ranges:
 "0" to "9", "a" to "f", or "A" to "F".
 
-2.2.60 FW_AUTH_METHOD
+#### 2.2.60 FW_AUTH_METHOD
 
 This enumeration defines the different authentication methods that are used for authentication. The
 IpSecPhase field of the FW_AUTH_SET containing the FW_AUTH_SUITE determines which
@@ -6411,7 +6186,8 @@ Release: May 11, 2026
 
 80 / 330
 
-FW_AUTH_METHOD_INVALID:  This value MUST NOT be used. It is defined for simplicity in writing
+
+FW_AUTH_METHOD_INVALID:  This value MUST NOT be used. It is defined for simplicity in writing
 
 IDL definitions and code. This symbolic constant has a value of 0.
 
@@ -6470,7 +6246,7 @@ FW_AUTH_METHOD_MAX:  This value and values that exceed this value are not valid 
 NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant
 has a value of 11.
 
-2.2.61 FW_AUTH_SUITE_FLAGS
+#### 2.2.61 FW_AUTH_SUITE_FLAGS
 
 This enumeration describes bitmask flags that can be set on authentication proposals.
 
@@ -6489,7 +6265,8 @@ Release: May 11, 2026
 
 81 / 330
 
-   FW_AUTH_SUITE_FLAGS_CERT_SIGNING_ECDSA384 = 0x0010,
+
+   FW_AUTH_SUITE_FLAGS_CERT_SIGNING_ECDSA384 = 0x0010,
    FW_AUTH_SUITE_FLAGS_INTERMEDIATE_CA = 0x0020,
    FW_AUTH_SUITE_FLAGS_ALLOW_PROXY = 0x0040,
    FW_AUTH_SUITE_FLAGS_MAX = 0x0080,
@@ -6547,7 +6324,7 @@ and MUST NOT be used by servers and clients with schema version 0x020A and earli
 defined for simplicity in writing IDL definitions and code. This symbolic constant has a value of
 0x0040.
 
-2.2.62 FW_AUTH_SUITE2_10
+#### 2.2.62 FW_AUTH_SUITE2_10
 
 This structure describes an IPsec authentication suite. An authentication suite is a proposal of a set of
 algorithms and parameters that specify the authentication method to be used. It also includes some
@@ -6562,7 +6339,8 @@ Release: May 11, 2026
 
 82 / 330
 
-   [range(FW_AUTH_METHOD_INVALID+1, FW_AUTH_METHOD_MAX)]
+
+   [range(FW_AUTH_METHOD_INVALID+1, FW_AUTH_METHOD_MAX)]
      FW_AUTH_METHOD Method;
    unsigned short wFlags;
    [switch_type(FW_AUTH_METHOD), switch_is(Method)]
@@ -6601,7 +6379,7 @@ with X509_ASN_ENCODING. If the method is SHKEY, the wszSHKey string MUST NOT be 
 MUST be at least 1 character long, MUST NOT be greater than or equal to 10,000 characters, and
 MUST NOT contain the pipe (|) character.
 
-2.2.63 FW_AUTH_SUITE
+#### 2.2.63 FW_AUTH_SUITE
 
 This structure specifies an IPsec authentication suite and includes certification selection criteria. An
 authentication suite is a proposal of a set of algorithms and parameters that specify the authentication
@@ -6636,7 +6414,8 @@ Release: May 11, 2026
 
 83 / 330
 
- } FW_AUTH_SUITE,
+
+ } FW_AUTH_SUITE,
   *PFW_AUTH_SUITE;
 
 Method:  This field is of type FW_AUTH_METHOD. It specifies the authentication method that is
@@ -6676,7 +6455,7 @@ character.
 If the Method is not FW_AUTH_METHOD_MACHINE_CERT or FW_AUTH_METHOD_USER_CERT then
 the pCertCriteria field MUST be NULL.
 
-2.2.64 FW_AUTH_SET2_10
+#### 2.2.64 FW_AUTH_SET2_10
 
 This structure contains a list of FW_AUTH_SUITE2_10 elements that are ordered from highest to
 lowest preference and are negotiated with remote peers to establish authentication algorithms.
@@ -6707,7 +6486,8 @@ Release: May 11, 2026
 
 84 / 330
 
-pNext:  A pointer to the next FW_AUTH_SET2_10 in the list.
+
+pNext:  A pointer to the next FW_AUTH_SET2_10 in the list.
 
 wSchemaVersion:  Specifies the version of the set.
 
@@ -6803,7 +6583,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-
+
+
 
 The authentication suites methods MUST only be FW_AUTH_METHOD_ANONYMOUS,
 FW_AUTH_METHOD_MACHINE_KERB, FW_AUTH_METHOD_MACHINE_NTLM,
@@ -6901,7 +6682,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-
+
+
 
 
 
@@ -6939,7 +6721,7 @@ suites that have machine certificate or anonymous methods.
 If the set schema policy version is less than 0x214, the set MUST NOT have suites that contain
 the FW_AUTH_METHOD_USER_NEGOEX authentication method.
 
-2.2.65 FW_AUTH_SET
+#### 2.2.65 FW_AUTH_SET
 
 This structure contains a list of FW_AUTH_SUITE elements that are ordered from highest to lowest
 preference and are negotiated with remote peers to establish authentication algorithms.
@@ -6978,7 +6760,8 @@ Release: May 11, 2026
 
 87 / 330
 
-wszSetId:  A pointer to a Unicode string that uniquely identifies the set. The primary set for this
+
+wszSetId:  A pointer to a Unicode string that uniquely identifies the set. The primary set for this
 
 policy object is identified with the "{E5A5D32A-4BCE-4e4d-B07F-4AB1BA7E5FE3}" string for
 Phase1 and the "{E5A5D32A-4BCE-4e4d-B07F-4AB1BA7E5FE4}" string for Phase2.
@@ -7066,7 +6849,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-
+
+
 
 
 
@@ -7167,7 +6951,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-  Authentication suites that have a method other than machine certificate or user certificate
+
+  Authentication suites that have a method other than machine certificate or user certificate
 
 MUST have the wFlags field of the same suite set to 0.
 
@@ -7204,7 +6989,7 @@ that have the user certificate method.
 
 that have machine certificate or anonymous methods.
 
-2.2.66 FW_CRYPTO_KEY_EXCHANGE_TYPE
+#### 2.2.66 FW_CRYPTO_KEY_EXCHANGE_TYPE
 
 This enumeration is used to identify supported key exchange algorithms.
 
@@ -7246,7 +7031,8 @@ Release: May 11, 2026
 
 90 / 330
 
-FW_CRYPTO_KEY_EXCHANGE_ECDH384:  Do key exchange with elliptic curve Diffie-Hellman 384.
+
+FW_CRYPTO_KEY_EXCHANGE_ECDH384:  Do key exchange with elliptic curve Diffie-Hellman 384.
 
 This symbolic constant has a value of 4.
 
@@ -7274,7 +7060,7 @@ FW_CRYPTO_KEY_EXCHANGE_MAX:  This value and values that exceed this value are no
 and MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This
 symbolic constant has a value of 7.
 
-2.2.67 FW_CRYPTO_ENCRYPTION_TYPE
+#### 2.2.67 FW_CRYPTO_ENCRYPTION_TYPE
 
 This enumeration is used to identify supported encryption algorithms.
 
@@ -7324,7 +7110,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_CRYPTO_ENCRYPTION_AES_GCM128:  Uses the AESGCM algorithm with a 128-bit key size
+
+FW_CRYPTO_ENCRYPTION_AES_GCM128:  Uses the AESGCM algorithm with a 128-bit key size
 
 for encryption. This symbolic constant has a value of 6.
 
@@ -7346,7 +7133,7 @@ exceed this value are not valid and MUST NOT be used by servers and clients with
 0x0200 and earlier. It is defined for simplicity in writing IDL definitions and describing semantic
 checks against policy schema versions of 0x0200. This symbolic constant has a value of 6.
 
-2.2.68 FW_CRYPTO_HASH_TYPE
+#### 2.2.68 FW_CRYPTO_HASH_TYPE
 
 This enumeration is used to identify the different hashing (integrity protection) algorithms supported.
 
@@ -7403,7 +7190,8 @@ Release: May 11, 2026
 
 92 / 330
 
-FW_CRYPTO_HASH_MAX:  This value and values that exceed this value are not valid and MUST
+
+FW_CRYPTO_HASH_MAX:  This value and values that exceed this value are not valid and MUST
 
 NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant
 has a value of 8.
@@ -7413,7 +7201,7 @@ MUST NOT be used by servers and clients with schema version 0x0200 and earlier. 
 for simplicity in writing IDL definitions and describing semantic checks against policy schema
 versions of 0x0200. This symbolic constant has a value of 3.
 
-2.2.69 FW_CRYPTO_PROTOCOL_TYPE
+#### 2.2.69 FW_CRYPTO_PROTOCOL_TYPE
 
 This enumeration is used to identify the different combinations of supported IPsec enforcement
 protocols.
@@ -7458,7 +7246,7 @@ FW_CRYPTO_PROTOCOL_MAX_2_1:  This value and values that exceed this value are no
 and MUST NOT be used by servers and clients with schema version 0x0201 and earlier. It is
 defined for simplicity in writing IDL definitions and code. This symbolic constant has a value of 4.
 
-2.2.70 FW_PHASE1_CRYPTO_SUITE
+#### 2.2.70 FW_PHASE1_CRYPTO_SUITE
 
 This structure describes an IPsec Phase 1 (or main mode) cryptographic suite. A cryptographic suite
 is a proposal of a set of algorithms and parameters that specify how different types of enforcement
@@ -7476,7 +7264,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     FW_CRYPTO_ENCRYPTION_TYPE Encryption;
+
+     FW_CRYPTO_ENCRYPTION_TYPE Encryption;
    [range(FW_CRYPTO_HASH_NONE+1, FW_CRYPTO_HASH_MAX-1)]
      FW_CRYPTO_HASH_TYPE Hash;
    unsigned long dwP1CryptoSuiteFlags;
@@ -7497,7 +7286,7 @@ algorithm for this suite proposal.
 
 dwP1CryptoSuiteFlags:  This is a reserved value and is not used. It MUST be set to 0x00000000.
 
-2.2.71 FW_PHASE2_CRYPTO_SUITE
+#### 2.2.71 FW_PHASE2_CRYPTO_SUITE
 
 This structure describes an IPsec Phase 2 (or quick mode) cryptographic suite. A cryptographic suite
 is a proposal of a set of algorithms and parameters that specify how different types of enforcement
@@ -7551,7 +7340,8 @@ Release: May 11, 2026
 
 94 / 330
 
-
+
+
 
 
 
@@ -7577,7 +7367,7 @@ If the Protocol field is FW_CRYPTO_PROTOCOL_BOTH or FW_CRYPTO_PROTOCOL_ESP, EspH
 MUST NOT be set to FW_CRYPTO_HASH_NONE or Encryption MUST NOT be set to
 FW_CRYPTO_ENCRYPTION_NONE, but not both.
 
-2.2.72 FW_PHASE1_CRYPTO_FLAGS
+#### 2.2.72 FW_PHASE1_CRYPTO_FLAGS
 
 This enumeration is used to identify the different cryptographic flags that are supported.
 
@@ -7604,7 +7394,7 @@ FW_PHASE1_CRYPTO_FLAGS_MAX:  This value and values that exceed this value are no
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 0x02.
 
-2.2.73 FW_PHASE2_CRYPTO_PFS
+#### 2.2.73 FW_PHASE2_CRYPTO_PFS
 
 This enumeration is used to identify the different perfect forward secrecy (PFS) options supported.
 
@@ -7630,7 +7420,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_PHASE2_CRYPTO_PFS_INVALID:  This value MUST NOT be used. It is defined for simplicity in
+
+FW_PHASE2_CRYPTO_PFS_INVALID:  This value MUST NOT be used. It is defined for simplicity in
 
 writing IDL definitions and code. This symbolic constant has a value of 0.
 
@@ -7675,7 +7466,7 @@ FW_PHASE2_CRYPTO_PFS_MAX:  This value and values that exceed this value are not 
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 9.
 
-2.2.74 FW_CRYPTO_SET
+#### 2.2.74 FW_CRYPTO_SET
 
 This structure contains a list of cryptographic suite elements that are ordered from highest to lowest
 preference and are negotiated with remote peers to establish cryptographic protection algorithms.
@@ -7708,7 +7499,8 @@ Release: May 11, 2026
 
 96 / 330
 
-       struct {
+
+       struct {
        FW_PHASE2_CRYPTO_PFS Pfs;
        [range(0,1000)] unsigned long dwNumPhase2Suites;
        [size_is(dwNumPhase2Suites)] PFW_PHASE2_CRYPTO_SUITE pPhase2Suites;
@@ -7785,7 +7577,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-NULL. Otherwise, the server MUST set the value to the displayName of the GPO containing the
+
+NULL. Otherwise, the server MUST set the value to the displayName of the GPO containing the
 object or NULL if the object is not contained within a GPO. For details about how the server
 initializes an object from a GPO, see section 3.1.3. For details about how the displayName of a
 GPO is stored, see [MS-GPOL] section 2.3.
@@ -7888,7 +7681,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-  All Phase1 suites MUST NOT have a Hash field that has the FW_CRYPTO_HASH_NONE value
+
+  All Phase1 suites MUST NOT have a Hash field that has the FW_CRYPTO_HASH_NONE value
 
 and MUST have either MD5 (FW_CRYPTO_HASH_MD5) or SHA (FW_CRYPTO_HASH_SHA1,
 FW_CRYPTO_HASH_SHA256, FW_CRYPTO_HASH_SHA384) valid values.
@@ -7983,7 +7777,8 @@ Release: May 11, 2026
 
 99 / 330
 
-2.2.75 FW_BYTE_BLOB
+
+#### 2.2.75 FW_BYTE_BLOB
 
 This structure contains a memory section. The format of the memory is defined by the context where
 it is used; for example, see the SubjectName field of the FW_CERT_INFO structure.
@@ -7998,7 +7793,7 @@ dwSize:  This field specifies the size in octets of the Blob field.
 
 Blob:  A pointer to an array of dwSize octets.
 
-2.2.76 FW_COOKIE_PAIR
+#### 2.2.76 FW_COOKIE_PAIR
 
 This structure holds random numbers generated out of IPsec negotiations.
 
@@ -8015,7 +7810,7 @@ see [RFC2409]) as specified in [MS-IKEE] and [MS-AIPS] traffic.
 Responder:  A random number that maps to the negotiated state that is a security association of the
 machine that responded to the communication and, hence, responded to the IKE/AuthIP traffic.
 
-2.2.77 FW_PHASE1_KEY_MODULE_TYPE
+#### 2.2.77 FW_PHASE1_KEY_MODULE_TYPE
 
 This enumeration identifies the different IPsec Key Exchange negotiation protocols that can be used.
 
@@ -8052,7 +7847,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-2.2.78 FW_CERT_INFO
+
+#### 2.2.78 FW_CERT_INFO
 
 This structure represents information on the certificate used in the certificate-based authentication
 mechanisms.
@@ -8073,7 +7869,7 @@ dwCertFlags:  This field can be a combination of bit flags from FW_AUTH_SUITE_FL
 MUST use only health certificate or certificate to account mapping flags, which represent certificate
 characteristics.
 
-2.2.79 FW_AUTH_INFO
+#### 2.2.79 FW_AUTH_INFO
 
 This structure contains information on the local and remote hosts that resulted from the authentication
 methods performed between them.
@@ -8125,13 +7921,14 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-wszPeerId:  A pointer to a Unicode string representing the identity of the remote host when a
+
+wszPeerId:  A pointer to a Unicode string representing the identity of the remote host when a
 
 Kerberos-based authentication method, as specified in [MS-KILE], is used.
 
 dwAuthInfoFlags:  Reserved value and not currently used. It MUST be set to 0.
 
-2.2.80 FW_ENDPOINTS
+#### 2.2.80 FW_ENDPOINTS
 
 This structure represents the two endpoints, source and destination, that participate in IP
 communication.
@@ -8164,7 +7961,7 @@ destination endpoint.
 
 The v4 versions or the v6 versions of the fields are used depending on the IpVersion field value.
 
-2.2.81 FW_PHASE1_SA_DETAILS
+#### 2.2.81 FW_PHASE1_SA_DETAILS
 
 This structure represents a security association that is established after the main mode negotiations
 take place; it contains the selected algorithms to enforce IPsec and the methods and results of the
@@ -8195,7 +7992,8 @@ Release: May 11, 2026
 
 102 / 330
 
-KeyModuleType:  The keying protocol used, IKE or AuthIP. The field MUST contain only a value
+
+KeyModuleType:  The keying protocol used, IKE or AuthIP. The field MUST contain only a value
 
 from the FW_PHASE1_KEY_MODULE_TYPE enumeration.
 
@@ -8229,7 +8027,7 @@ authentication was not performed.
 
 dwP1SaFlags:  Reserved value and not currently used. It MUST be set to 0.
 
-2.2.82 FW_PHASE2_TRAFFIC_TYPE
+#### 2.2.82 FW_PHASE2_TRAFFIC_TYPE
 
 This enumeration identifies the two types of traffic enforcement modes that IPsec supports. It is
 defined in the IDL for future use.
@@ -8258,7 +8056,7 @@ FW_PHASE2_TRAFFIC_TYPE_MAX:  This value and values that exceed this value are no
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 3.
 
-2.2.83 FW_PHASE2_SA_DETAILS
+#### 2.2.83 FW_PHASE2_SA_DETAILS
 
 This structure represents a security association that is established after the quick mode negotiations
 take place; it contains the selected algorithms to enforce IPsec.
@@ -8270,7 +8068,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- typedef struct _tag_FW_PHASE2_SA_DETAILS {
+
+ typedef struct _tag_FW_PHASE2_SA_DETAILS {
    unsigned __int64 SaId;
    [range(FW_DIR_INVALID+1,FW_DIR_MAX-1)]
      FW_DIRECTION Direction;
@@ -8317,7 +8116,7 @@ about the security association. The client MUST ignore this value.
 
 dwP2SaFlags:  Reserved value and not currently used. It MUST be set to 0.
 
-2.2.84 FW_PROFILE_CONFIG_VALUE
+#### 2.2.84 FW_PROFILE_CONFIG_VALUE
 
 This union defines the value stored by each of the different policy configuration values identified by
 the enumeration FW_PROFILE_CONFIG. This data type is used to pass different types of values across
@@ -8345,7 +8144,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS,
+
+FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS,
 FW_PROFILE_CONFIG_AUTH_APPS_ALLOW_USER_PREF_MERGE,
 FW_PROFILE_CONFIG_GLOBAL_PORTS_ALLOW_USER_PREF_MERGE,
 FW_PROFILE_CONFIG_ALLOW_LOCAL_POLICY_MERGE,
@@ -8426,7 +8226,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-2.2.85 FW_MM_RULE
+
+#### 2.2.85 FW_MM_RULE
 
 This structure is used to represent a main mode rule.
 
@@ -8503,7 +8304,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-wszGPOName:  A pointer to a Unicode string containing the displayName of the GPO containing this
+
+wszGPOName:  A pointer to a Unicode string containing the displayName of the GPO containing this
 object. When adding a new object, this field is not used. The client SHOULD set the value to NULL,
 and the server MUST ignore the value. When enumerating an existing object, if the client does not
 set the FW_ENUM_RULES_FLAG_RESOLVE_GPO_NAME flag, the server MUST set the value to
@@ -8526,7 +8328,7 @@ pMetaData:  A pointer to an FW_OBJECT_METADATA structure that contains specific 
 
 the current state of the connection security rule.
 
-2.2.86 FW_CONN_HANDLE
+#### 2.2.86 FW_CONN_HANDLE
 
 This type contains an RPC binding handle, as specified in [C706] section 2, to an RPC interface that
 implements the Firewall and Advanced Security Protocol. For information on handle_t, see [MS-DTYP]
@@ -8536,7 +8338,7 @@ This type is declared as follows:
 
  typedef handle_t FW_CONN_HANDLE;
 
-2.2.87 FW_MATCH_KEY
+#### 2.2.87 FW_MATCH_KEY
 
 This enumeration describes the keys that a query is allowed to match.
 
@@ -8572,7 +8374,8 @@ Release: May 11, 2026
 
 107 / 330
 
-FW_MATCH_KEY_STATUS:  This key matches the status conditions of the queried object. This
+
+FW_MATCH_KEY_STATUS:  This key matches the status conditions of the queried object. This
 
 symbolic constant has a value of 1.
 
@@ -8641,7 +8444,7 @@ FW_MATCH_KEY_MAX:  This value and values that exceed this value are not valid an
 be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant has
 a value of 16.
 
-2.2.88 FW_DATA_TYPE
+#### 2.2.88 FW_DATA_TYPE
 
 This enumeration describes the data types that this protocol uses in generic structures. It is currently
 used only in section 2.2.89.
@@ -8655,7 +8458,8 @@ Release: May 11, 2026
 
 108 / 330
 
- {
+
+ {
    FW_DATA_TYPE_EMPTY,
    FW_DATA_TYPE_UINT8,
    FW_DATA_TYPE_UINT16,
@@ -8688,7 +8492,7 @@ FW_DATA_TYPE_UNICODE_STRING:  This data type is a Unicode string. This symbolic 
 
 has a value of 5.
 
-2.2.89 FW_MATCH_VALUE
+#### 2.2.89 FW_MATCH_VALUE
 
 This structure is used to generically store different data types.
 
@@ -8730,9 +8534,10 @@ Release: May 11, 2026
 
 109 / 330
 
-wszString:  This field contains a pointer to a Unicode string.
 
-2.2.90 FW_MATCH_TYPE
+wszString:  This field contains a pointer to a Unicode string.
+
+#### 2.2.90 FW_MATCH_TYPE
 
 This enumeration specifies how a match key is matched against an object.
 
@@ -8756,7 +8561,7 @@ FW_MATCH_TYPE_MAX:  This value and values that exceed this value are not valid a
 be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant has
 a value of 2.
 
-2.2.91 FW_QUERY_CONDITION
+#### 2.2.91 FW_QUERY_CONDITION
 
 This structure specifies a condition of a query. A condition can evaluate to TRUE or FALSE. It contains
 a match key that identifies what to match, a match value that identifies what to match with, and a
@@ -8805,7 +8610,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-
+
+
 
 
 
@@ -8822,7 +8628,7 @@ If the matchKey field is equal to FW_MATCH_KEY_OBJECTID, FW_MATCH_KEY_APP_PATH,
 FW_MATCH_KEY_GROUP, or FW_MATCH_KEY_SVC_NAME; then the matchValue MUST have its
 type field equal to FW_DATA_TYPE_UNICODE_STRING.
 
-2.2.92 FW_QUERY_CONDITIONS
+#### 2.2.92 FW_QUERY_CONDITIONS
 
 This structure is used to contain a number of FW_QUERY_CONDITION elements. This structure can
 evaluate to either TRUE or FALSE. It evaluates to TRUE if all query condition elements evaluate to
@@ -8860,7 +8666,7 @@ FW_MATCH_KEY_PROTOCOL at position M, where M < N.
 
   All elements of the AndedConditions array MUST have valid FW_QUERY_CONDITION structures.
 
-2.2.93 FW_QUERY
+#### 2.2.93 FW_QUERY
 
 This structure is used to query objects from the store. The structure contains a number of
 FW_QUERY_CONDITIONS elements. This structure can evaluate to either TRUE or FALSE. It evaluates
@@ -8884,7 +8690,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-dwNumEntries:  This field specifies the number of query conditions containers that the structure
+
+dwNumEntries:  This field specifies the number of query conditions containers that the structure
 
 contains.
 
@@ -8930,7 +8737,7 @@ If the query object is being used for querying authentication or cryptographic s
 have any conditions with matchKey equal to FW_MATCH_KEY_PROFILE or
 FW_MATCH_KEY_FILTERID, or any of the match keys disallowed by main mode rules.
 
-2.2.94 FW_POLICY_STORE_HANDLE
+#### 2.2.94 FW_POLICY_STORE_HANDLE
 
  typedef [context_handle]  void* FW_POLICY_STORE_HANDLE;
  typedef [ref] FW_POLICY_STORE_HANDLE* PFW_POLICY_STORE_HANDLE;
@@ -8939,7 +8746,7 @@ This type is an RPC context handle. It is a handle to a policy store exposed by 
 handle is used to manage the policy contained in each store. Policy stores are identified by the
 FW_STORE_TYPE enumeration.
 
-2.2.95 FW_PRODUCT_HANDLE
+#### 2.2.95 FW_PRODUCT_HANDLE
 
 This type is declared as follows:
 
@@ -8949,7 +8756,7 @@ This type is an RPC context handle. It is a handle to the third-party software c
 registered with the firewall and advanced security component which are exposed through this
 protocol.
 
-2.2.96 FW_KEY_MODULE
+#### 2.2.96 FW_KEY_MODULE
 
 This enumeration defines the possible keying modules that the policy rule applies to.
 
@@ -8964,7 +8771,8 @@ Release: May 11, 2026
 
 112 / 330
 
-   FW_KEY_MODULE_IKEv1 = 1,
+
+   FW_KEY_MODULE_IKEv1 = 1,
    FW_KEY_MODULE_AUTHIP = 2,
    FW_KEY_MODULE_IKEv2 = 3,
    FW_KEY_MODULE_MAX = 4
@@ -8991,7 +8799,7 @@ FW_KEY_MODULE_MAX:  This value and values that exceed this value are not valid a
 be used. It is defined to provide for simplicity when writing IDL definitions and code. This
 symbolic constant has a value of 4.
 
-2.2.97 FW_TRUST_TUPLE_KEYWORD
+#### 2.2.97 FW_TRUST_TUPLE_KEYWORD
 
 This enumeration represents flags that are used to identify trust tuples.<25> The traffic corresponding
 to these keywords changes dynamically and is tracked by the TrustTuples object (section 3.1.1). All
@@ -9041,7 +8849,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_TRUST_TUPLE_KEYWORD_WFD_DEVICES:  Represents all traffic matching a trust tuple in
+
+FW_TRUST_TUPLE_KEYWORD_WFD_DEVICES:  Represents all traffic matching a trust tuple in
 
 the TrustTuples collection where IsWFDDevices is true.
 
@@ -9079,7 +8888,7 @@ valid and MUST NOT be used by servers and clients with schema version 0x021B and
 defined for simplicity in writing IDL definitions and code. This symbolic constant has a value of
 0x0080.
 
-2.2.98 FW_RULE2_10
+#### 2.2.98 FW_RULE2_10
 
 This structure represents a firewall rule that is used by the 2.10 binary version servers and clients
 (see section 2.2.42). The fields of this structure are identical to the FW_RULE structure and its
@@ -9119,7 +8928,8 @@ Release: May 11, 2026
 
 114 / 330
 
-   unsigned long dwLocalInterfaceTypes;
+
+   unsigned long dwLocalInterfaceTypes;
    [string, range(1, 10001)] wchar_t* wszLocalApplication;
    [string, range(1, 10001)] wchar_t* wszLocalService;
    [range(FW_RULE_ACTION_INVALID, FW_RULE_ACTION_MAX)]
@@ -9139,7 +8949,7 @@ Release: May 11, 2026
  } FW_RULE2_10,
   *PFW_RULE2_10;
 
-2.2.99 FW_AUTH_SET_FLAGS
+#### 2.2.99 FW_AUTH_SET_FLAGS
 
 This enumeration represents flags that can be specified in authentication sets of section 2.2.65.
 
@@ -9157,9 +8967,9 @@ FW_AUTH_SET_FLAGS_MAX:  This value and values that exceed this value are not val
 NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant
 has a value of 2.
 
-2.2.100
+#### 2.2.100 FW_CRYPTO_SET_FLAGS
 
-FW_CRYPTO_SET_FLAGS
+
 
 This enumeration represents flags that can be specified in crypto sets of section 2.2.74.
 
@@ -9178,9 +8988,9 @@ FW_CRYPTO_SET_FLAGS_MAX:  This value and values that exceed this value are not v
 MUST NOT be used. It is defined for simplicity in writing IDL definitions and code. This symbolic
 constant has a value of 1.
 
-2.2.101
+#### 2.2.101 FW_NETWORK_NAMES
 
-FW_NETWORK_NAMES
+
 
 The FW_NETWORK_NAMES structure represents a firewall rule that is used by the 2.24 binary version
 servers and clients (see sections 2.2.41 and 2.2.42).
@@ -9192,7 +9002,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- typedef struct _tag_FW_NETWORK_NAMES {
+
+ typedef struct _tag_FW_NETWORK_NAMES {
    DWORD dwNumEntries;
    [string, unique, size_is(dwNumEntries,)]
      LPWSTR* wszNames;
@@ -9207,9 +9018,9 @@ suffix as specified in the network interface DNS suffix. Each pointer string MUS
 the string MUST NOT contain the pipe (|) character, MUST be a string at least 1 character long,
 and MUST NOT be greater than or equal to 255 characters.
 
-2.2.102
+#### 2.2.102 FW_RULE2_20
 
-FW_RULE2_20
+
 
 This structure represents a firewall rule that is used by the 2.20 binary version servers and clients
 (see section 2.2.42). The fields of this structure are identical to the FW_RULE structure and their
@@ -9267,15 +9078,16 @@ Release: May 11, 2026
 
 116 / 330
 
-   [string, range(1, 10001)] WCHAR* wszPackageId;
+
+   [string, range(1, 10001)] WCHAR* wszPackageId;
    [string, range(1, 10001)] WCHAR* wszLocalUserOwner;
    unsigned long dwTrustTupleKeywords;
  } FW_RULE2_20,
  *PFW_RULE2_20;
 
-2.2.103
+#### 2.2.103 FW_RULE_FLAGS2
 
-FW_RULE_FLAGS2
+
 
 This enumeration represents flags that can be specified in firewall rules of section 2.2.37.
 
@@ -9342,7 +9154,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-FW_RULE_FLAGS2_NOT_USED_VALUE_1024: This value is not used.
+
+FW_RULE_FLAGS2_NOT_USED_VALUE_1024: This value is not used.
 
 FW_RULE_FLAGS2_NOT_USED_VALUE_2048: This value is not used.
 
@@ -9368,9 +9181,9 @@ FW_RULE_FLAGS2_MAX: This value and values that exceed this value are not valid a
 be used. It is defined for simplicity in writing IDL definitions and code. This symbolic constant has
 a value of 0x2000.
 
-2.2.104
+#### 2.2.104 FW_RULE2_24
 
-FW_RULE2_24
+
 
 This structure represents a firewall rule that is used by the 2.24 binary version servers and clients
 (see section 2.2.42). Except as noted below, the fields of this structure are identical to the FW_RULE
@@ -9416,7 +9229,8 @@ Release: May 11, 2026
 
 118 / 330
 
-   [string, range(1, 10001)] wchar_t* wszRemoteMachineAuthorizationList;
+
+   [string, range(1, 10001)] wchar_t* wszRemoteMachineAuthorizationList;
    [string, range(1, 10001)] wchar_t* wszRemoteUserAuthorizationList;
    [string, range(1, 10001)] wchar_t* wszEmbeddedContext;
    FW_OS_PLATFORM_LIST PlatformValidityList;
@@ -9436,9 +9250,9 @@ Release: May 11, 2026
  } FW_RULE2_24,
  *PFW_RULE2_24;
 
-2.2.105
+#### 2.2.105 FW_RULE2_25
 
-FW_RULE2_25
+
 
 This structure represents a firewall rule that is used by the 2.25 binary version servers and clients
 (section 2.2.42). The fields of this structure are identical to the FW_RULE structure and their
@@ -9492,7 +9306,8 @@ Release: May 11, 2026
 
 119 / 330
 
-   unsigned long Reserved;
+
+   unsigned long Reserved;
    [size_is((Reserved & FW_OBJECT_CTRL_FLAG_INCLUDE_METADATA) ? 1 : 0)]
      PFW_OBJECT_METADATA pMetaData;
    [string, range(1, 10001)] WCHAR* wszLocalUserAuthorizationList;
@@ -9505,9 +9320,9 @@ Release: May 11, 2026
  } FW_RULE2_25,
  *PFW_RULE2_25;
 
-2.2.106
+#### 2.2.106 FW_RULE2_26
 
-FW_RULE2_26
+
 
 This structure represents a firewall rule that is used by 2.26 binary policy version servers and clients
 (section 2.2.42). Definitions for the FW_RULE2_26 structure fields are described in section 2.2.37.
@@ -9568,16 +9383,17 @@ Release: May 11, 2026
 
 120 / 330
 
-   [string, range(1, 10001)] WCHAR* wszSecurityRealmId;
+
+   [string, range(1, 10001)] WCHAR* wszSecurityRealmId;
    unsigned short wFlags2;
    FW_NETWORK_NAMES RemoteOutServerNames;
  } FW_RULE2_26,
 
 *PFW_RULE2_26;
 
-2.2.107
+#### 2.2.107 FW_RULE2_27
 
-FW_RULE2_27
+
 
 This structure represents a firewall rule that is used by binary policy version 2.27 servers and clients
 (section 2.2.42). Definitions for the following FW_RULE2_27 structure fields are specified in section
@@ -9642,9 +9458,10 @@ Release: May 11, 2026
 
 121 / 330
 
-2.2.108
 
-FW_RULE2_31
+#### 2.2.108 FW_RULE2_31
+
+
 
 This structure represents a firewall rule that is used by binary policy version 2.32 servers and clients
 (section 2.2.42). Definitions for the following FW_RULE2_31 structure fields are specified in section
@@ -9713,16 +9530,17 @@ Release: May 11, 2026
 
 122 / 330
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, there are no additional timers or
 other states required on the client side of this protocol. Calls made by the higher-layer protocol or
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -9785,7 +9603,8 @@ Release: May 11, 2026
 
 123 / 330
 
-Primary authentication sets differ from other authentication sets in that they are guaranteed to
+
+Primary authentication sets differ from other authentication sets in that they are guaranteed to
 exist in the GroupPolicyRSoPStore and the LocalStore. If the administrator does not explicitly
 add the primary sets, the server initializes them to default values. See section 3.1.3 for details.
 
@@ -9859,7 +9678,8 @@ Release: May 11, 2026
 
 124 / 330
 
-  CryptoSets
+
+  CryptoSets
 
   ConnectionSecurityRules
 
@@ -9952,7 +9772,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-  TransportProtocol: The transport protocol used by the traffic. This MUST be TCP or UDP.
+
+  TransportProtocol: The transport protocol used by the traffic. This MUST be TCP or UDP.
 
   LocalAddress: The local IPv4 or IPv6 address of the traffic.
 
@@ -10040,7 +9861,8 @@ Release: May 11, 2026
 
 126 / 330
 
-  PortsInUse: This represents the set of all PortInUse objects managed by the server. Elements
+
+  PortsInUse: This represents the set of all PortInUse objects managed by the server. Elements
 
 are added and deleted from this set through the abstract interfaces AddPortInUse and
 DeletePortInUse.
@@ -10050,12 +9872,12 @@ DeletePortInUse.
 are added and deleted from this set through the abstract interfaces AddTrustTuple and
 DeleteTrustTuple.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timer events are required on the server side other than the timers required by the
 underlying RPC transport, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server initializes when the server host machine starts. The server MUST restore the state of the
 GroupPolicyRSoPStore, the LocalStore, and the DefaultsStore from persistent storage. The order
@@ -10116,7 +9938,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-3.1.4  Message Processing Events and Sequencing Rules
+
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict Network Data
 Representation (NDR) data consistency check at target level 6.0, as specified in [MS-RPCE].
@@ -10209,7 +10032,8 @@ by the specified opened policy store handle.
 
 128 / 330
 
-Method
+
+Method
 
 Description
 
@@ -10313,7 +10137,8 @@ is referenced by the specified opened policy store handle.
 
 129 / 330
 
-Method
+
+Method
 
 Description
 
@@ -10417,7 +10242,8 @@ endpoints.
 
 130 / 330
 
-Method
+
+Method
 
 RRPC_FWDeletePhase2SAs
 
@@ -10521,7 +10347,8 @@ that is referenced by the hPolicyStore handle. The method
 
 131 / 330
 
-Method
+
+Method
 
 Description
 
@@ -10626,7 +10453,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Method
+
+Method
 
 Description
 
@@ -10727,7 +10555,8 @@ contained in the store that is referenced by the hPolicy handle.
 
 133 / 330
 
-Method
+
+Method
 
 Description
 
@@ -10831,7 +10660,8 @@ Opnum: 72
 
 134 / 330
 
-Method
+
+Method
 
 Description
 
@@ -10934,7 +10764,8 @@ Opnum: 83
 
 135 / 330
 
-Method
+
+Method
 
 Description
 
@@ -10995,7 +10826,7 @@ the firewall rules that match the specified query object.
 
 Opnum: 89
 
-3.1.4.1  RRPC_FWOpenPolicyStore (Opnum 0)
+##### 3.1.4.1 RRPC_FWOpenPolicyStore (Opnum 0)
 
 The RRPC_FWOpenPolicyStore method requests the server to open a specified policy store. The store
 can be opened for reading or for editing the firewall policy. The method also returns a handle to the
@@ -11021,7 +10852,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -11059,7 +10891,7 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.2  RRPC_FWClosePolicyStore (Opnum 1)
+##### 3.1.4.2 RRPC_FWClosePolicyStore (Opnum 1)
 
 The RRPC_FWClosePolicyStore method receives an opened store handle, closes it, and deallocates the
 corresponding PolicyStoreConnection object.
@@ -11094,10 +10926,11 @@ Release: May 11, 2026
 
 137 / 330
 
-The server MUST validate that the client is authorized to perform the requested operation (as defined
+
+The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.3  RRPC_FWRestoreDefaults (Opnum 2)
+##### 3.1.4.3 RRPC_FWRestoreDefaults (Opnum 2)
 
 The RRPC_FWRestoreDefaults method replaces the contents of LocalStore with the contents of
 DefaultsStore.
@@ -11125,7 +10958,7 @@ LocalStore with the existing contents of the GroupPolicyRSoPStore (as described 
 and store the result in DynamicStore. Finally, the server MUST invoke the abstract interface
 SetEffectiveFirewallPolicy (section 3.1.6.6) with the contents of DynamicStore.
 
-3.1.4.4  RRPC_FWGetGlobalConfig (Opnum 3)
+##### 3.1.4.4 RRPC_FWGetGlobalConfig (Opnum 3)
 
 The RRPC_FWGetGlobalConfig method retrieves the value of a global policy configuration option. The
 client specifies to the server from what store this value MUST be retrieved and in what specific
@@ -11164,7 +10997,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-configID: This parameter specifies the specific global policy configuration option the client is
+
+configID: This parameter specifies the specific global policy configuration option the client is
 
 interested in retrieving.
 
@@ -11251,7 +11085,7 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.5  RRPC_FWSetGlobalConfig (Opnum 4)
+##### 3.1.4.5 RRPC_FWSetGlobalConfig (Opnum 4)
 
 The RRPC_FWSetGlobalConfig method modifies the value of a global policy configuration option. The
 client specifies to the server in what store this value MUST be written and what specific configuration
@@ -11264,7 +11098,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- unsigned long RRPC_FWSetGlobalConfig(
+
+ unsigned long RRPC_FWSetGlobalConfig(
    [in] FW_CONN_HANDLE rpcConnHandle,
    [in] unsigned short BinaryVersion,
    [in] FW_STORE_TYPE StoreType,
@@ -11359,10 +11194,11 @@ Release: May 11, 2026
 
 140 / 330
 
-The server MUST validate that the client is authorized to perform the requested operation (as defined
+
+The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.6  RRPC_FWAddFirewallRule (Opnum 5)
+##### 3.1.4.6 RRPC_FWAddFirewallRule (Opnum 5)
 
 The RRPC_FWAddFirewallRule method requests the server to add the specified firewall rule in the
 policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -11453,14 +11289,15 @@ Release: May 11, 2026
 
 141 / 330
 
-This method adds a firewall rule to the firewall linked list of the memory representation of the store
+
+This method adds a firewall rule to the firewall linked list of the memory representation of the store
 being modified. It also writes through and saves the rule in disk. If called on an online store, the
 firewall rule is also enforced.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.7  RRPC_FWSetFirewallRule (Opnum 6)
+##### 3.1.4.7 RRPC_FWSetFirewallRule (Opnum 6)
 
 The RRPC_FWSetFirewallRule method requests the server to modify the specified firewall rule in the
 policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -11549,13 +11386,14 @@ Release: May 11, 2026
 
 142 / 330
 
-exception is converted to an error code and reported to higher-layer protocols via the return
+
+exception is converted to an error code and reported to higher-layer protocols via the return
 value.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.8  RRPC_FWDeleteFirewallRule (Opnum 7)
+##### 3.1.4.8 RRPC_FWDeleteFirewallRule (Opnum 7)
 
 The RRPC_FWDeleteFirewallRule method requests the server to delete the specified firewall rule in the
 policy contained in the policy store referenced by the handle specified in the hPolicyStore parameter.
@@ -11630,7 +11468,8 @@ Release: May 11, 2026
 
 143 / 330
 
-3.1.4.9  RRPC_FWDeleteAllFirewallRules (Opnum 8)
+
+##### 3.1.4.9 RRPC_FWDeleteAllFirewallRules (Opnum 8)
 
 The RRPC_FWDeleteAllFirewallRules method deletes all firewall rules in the firewall linked list of the
 memory representation of the store being modified. It also writes through and deletes all rules from
@@ -11679,9 +11518,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.10
+##### 3.1.4.10 RRPC_FWEnumFirewallRules (Opnum 9)
 
-RRPC_FWEnumFirewallRules (Opnum 9)
+
 
 The RRPC_FWEnumFirewallRules method requests the server to return all the firewall rules contained
 in the store that is referenced by the hPolicyStore handle. The method returns a linked list of all the
@@ -11708,7 +11547,8 @@ Release: May 11, 2026
 
 144 / 330
 
-hPolicyStore: This input parameter is an FW_POLICY_STORE_HANDLE data type. The data type
+
+hPolicyStore: This input parameter is an FW_POLICY_STORE_HANDLE data type. The data type
 
 MUST contain an opened policy store handle that is successfully opened by using the
 RRPC_FWOpenPolicyStore (Opnum 0) method. The handle MUST have read or read/write access
@@ -11763,9 +11603,9 @@ value.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.11
+##### 3.1.4.11 RRPC_FWGetConfig (Opnum 10)
 
-RRPC_FWGetConfig (Opnum 10)
+
 
 The RRPC_FWGetConfig method retrieves the value of a profile configuration option. The client
 specifies to the server from what store and profile this value MUST be retrieved and in what specific
@@ -11791,7 +11631,8 @@ Release: May 11, 2026
 
 145 / 330
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -11895,16 +11736,17 @@ Release: May 11, 2026
 
 146 / 330
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.12
+##### 3.1.4.12 RRPC_FWSetConfig (Opnum 11)
 
-RRPC_FWSetConfig (Opnum 11)
+
 
 The RRPC_FWSetConfig method modifies the value of a profile configuration option. The client
 specifies to the server in what store and profile this value MUST be written and what specific
@@ -11989,7 +11831,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12034,9 +11877,9 @@ rule enforcement if firewall is off) to make sure the policy is enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.13
+##### 3.1.4.13 RRPC_FWAddConnectionSecurityRule (Opnum 12)
 
-RRPC_FWAddConnectionSecurityRule (Opnum 12)
+
 
 The RRPC_FWAddConnectionSecurityRule method requests the server to add the connection security
 rule in the policy contained in the policy store that is referenced by the specified opened policy store
@@ -12083,7 +11926,8 @@ Release: May 11, 2026
 
 148 / 330
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12137,9 +11981,9 @@ on an online store, the connection security rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.14
+##### 3.1.4.14 RRPC_FWSetConnectionSecurityRule (Opnum 13)
 
-RRPC_FWSetConnectionSecurityRule (Opnum 13)
+
 
 The RRPC_FWSetConnectionSecurityRule method requests the server to modify the specified
 connection security rule in the policy contained in the policy store that is referenced by the handle
@@ -12177,7 +12021,8 @@ Release: May 11, 2026
 
 149 / 330
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12239,9 +12084,9 @@ security rule modifications are also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.15
+##### 3.1.4.15 RRPC_FWDeleteConnectionSecurityRule (Opnum 14)
 
-RRPC_FWDeleteConnectionSecurityRule (Opnum 14)
+
 
 The RRPC_FWDeleteConnectionSecurityRule method requests the server to delete the specified
 connection security rule in the policy contained in the policy store referenced by the handle specified
@@ -12273,7 +12118,8 @@ Release: May 11, 2026
 
 150 / 330
 
-This ID can be obtained by enumerating connection security rules using
+
+This ID can be obtained by enumerating connection security rules using
 RRPC_FWEnumConnectionSecurityRules (Opnum 16) where the ID is returned in the
 FW_CS_RULE2_0 structure.
 
@@ -12318,9 +12164,9 @@ of the connection security rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.16
+##### 3.1.4.16 RRPC_FWDeleteAllConnectionSecurityRules (Opnum 15)
 
-RRPC_FWDeleteAllConnectionSecurityRules (Opnum 15)
+
 
 The RRPC_FWDeleteAllConnectionSecurityRules method requests the server to delete all the
 connection security rules in the policy contained in the policy store referenced by the handle specified
@@ -12359,7 +12205,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12385,9 +12232,9 @@ returns.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.17
+##### 3.1.4.17 RRPC_FWEnumConnectionSecurityRules (Opnum 16)
 
-RRPC_FWEnumConnectionSecurityRules (Opnum 16)
+
 
 The RRPC_FWEnumConnectionSecurityRules method requests the server to return all the connection
 security rules contained in the store that is referenced by the hPolicy handle. The method returns a
@@ -12438,7 +12285,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-ppRules: This output parameter, if successful, contains a linked list of FW_CS_RULE2_0 data types.
+
+ppRules: This output parameter, if successful, contains a linked list of FW_CS_RULE2_0 data types.
 
 Return Values: The method returns 0 if successful; if it fails, it returns a nonzero error code. The
 
@@ -12469,9 +12317,9 @@ value.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.18
+##### 3.1.4.18 RRPC_FWAddAuthenticationSet (Opnum 17)
 
-RRPC_FWAddAuthenticationSet (Opnum 17)
+
 
 The RRPC_FWAddAuthenticationSet method requests the server to add the authentication set in the
 policy contained in the policy store referenced by the handle specified in the hPolicy parameter.
@@ -12531,7 +12379,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12561,9 +12410,9 @@ reapplies each rule referencing this primary set to complete the enforcement of 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.19
+##### 3.1.4.19 RRPC_FWSetAuthenticationSet (Opnum 18)
 
-RRPC_FWSetAuthenticationSet (Opnum 18)
+
 
 The RRPC_FWSetAuthenticationSet method requests the server to modify the specified authentication
 set in the policy contained in the policy store referenced by the handle specified in the hPolicy
@@ -12625,7 +12474,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12655,9 +12505,9 @@ referencing this primary set to complete the enforcement of the policy.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.20
+##### 3.1.4.20 RRPC_FWDeleteAuthenticationSet (Opnum 19)
 
-RRPC_FWDeleteAuthenticationSet (Opnum 19)
+
 
 The RRPC_FWDeleteAuthenticationSet method requests the server to delete the specified
 authentication set in the policy contained in the policy store referenced by the handle specified in the
@@ -12716,7 +12566,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12753,9 +12604,9 @@ any connection rule references this set.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.21
+##### 3.1.4.21 RRPC_FWDeleteAllAuthenticationSets (Opnum 20)
 
-RRPC_FWDeleteAllAuthenticationSets (Opnum 20)
+
 
 The RRPC_FWDeleteAllAuthenticationSets method requests the server to delete all the authentication
 sets of a specific IPsec phase in the policy contained in the policy store referenced by the handle
@@ -12809,7 +12660,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -12846,9 +12698,9 @@ connection security rule.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.22
+##### 3.1.4.22 RRPC_FWEnumAuthenticationSets (Opnum 21)
 
-RRPC_FWEnumAuthenticationSets (Opnum 21)
+
 
 The RRPC_FWEnumAuthenticationSets method requests the server to return all the authentication sets
 of the specified IPsec phase contained in the store referenced by the hPolicy handle. The method
@@ -12891,7 +12743,8 @@ Release: May 11, 2026
 
 157 / 330
 
-pdwNumAuthSets: This is an output parameter that on success MUST be equal to the number of
+
+pdwNumAuthSets: This is an output parameter that on success MUST be equal to the number of
 
 sets returned.
 
@@ -12944,9 +12797,9 @@ FW_RULE_STATUS_PARTIALLY_IGNORED value on the Status field of the set. Then the 
 authentication sets with values that correspond to the correct schema version, but the client
 recognizes that the information it has about the sets is potentially incomplete.
 
-3.1.4.23
+##### 3.1.4.23 RRPC_FWAddCryptoSet (Opnum 22)
 
-RRPC_FWAddCryptoSet (Opnum 22)
+
 
 The RRPC_FWAddCryptoSet method adds a cryptographic set in the cryptographic linked list of the
 memory representation of the store being modified. It also writes through and saves the set to the
@@ -12974,7 +12827,8 @@ Release: May 11, 2026
 
 158 / 330
 
-rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
+
+rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
 Firewall and Advanced Security Protocol.
 
@@ -13034,9 +12888,9 @@ Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlyin
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
-3.1.4.24
+##### 3.1.4.24 RRPC_FWSetCryptoSet (Opnum 23)
 
-RRPC_FWSetCryptoSet (Opnum 23)
+
 
 The RRPC_FWSetCryptoSet method requests the server to modify the specified cryptographic set in
 the policy contained in the policy store referenced by the handle specified in the hPolicy parameter.
@@ -13067,7 +12921,8 @@ Release: May 11, 2026
 
 159 / 330
 
-Return Values: The method returns 0 if successful; if failed, it returns a nonzero error code. The field
+
+Return Values: The method returns 0 if successful; if failed, it returns a nonzero error code. The field
 can take any specific error code value, as specified in [MS-ERREF]. The following return values are
 common.
 
@@ -13127,9 +12982,9 @@ error of ERROR_ACCESS_DENIED (5). Otherwise, the server MUST validate that the c
 authorized to perform the requested operation (as defined in section 3.1.4) before executing this
 method.
 
-3.1.4.25
+##### 3.1.4.25 RRPC_FWDeleteCryptoSet (Opnum 24)
 
-RRPC_FWDeleteCryptoSet (Opnum 24)
+
 
 The RRPC_FWDeleteCryptoSet method requests the server to delete the specified cryptographic set in
 the policy contained in the policy store that is referenced by the handle specified in the hPolicy
@@ -13159,7 +13014,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-IpSecPhase: This parameter specifies the IPsec negotiation phase type in which this set is used.
+
+IpSecPhase: This parameter specifies the IPsec negotiation phase type in which this set is used.
 
 wszSetId: This parameter is the pointer to a string that is the ID of the cryptographic set that the
 
@@ -13230,9 +13086,9 @@ error of ERROR_ACCESS_DENIED (5). Otherwise, the server MUST validate that the c
 authorized to perform the requested operation (as defined in section 3.1.4) before executing this
 method.
 
-3.1.4.26
+##### 3.1.4.26 RRPC_FWDeleteAllCryptoSets (Opnum 25)
 
-RRPC_FWDeleteAllCryptoSets (Opnum 25)
+
 
 The RRPC_FWDeleteAllCryptoSets method requests the server to delete all the cryptographic sets of a
 specific IPsec phase in the policy contained in the policy store that is referenced by the handle
@@ -13251,7 +13107,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -13320,9 +13177,9 @@ error of ERROR_ACCESS_DENIED (5). Otherwise, the server MUST validate that the c
 authorized to perform the requested operation (as defined in section 3.1.4) before executing this
 method.
 
-3.1.4.27
+##### 3.1.4.27 RRPC_FWEnumCryptoSets (Opnum 26)
 
-RRPC_FWEnumCryptoSets (Opnum 26)
+
 
 The RRPC_FWEnumCryptoSets method requests the server to return all the cryptographic sets of the
 specified IPsec phase contained in the store referenced by the hPolicy handle. The method returns a
@@ -13339,7 +13196,8 @@ Release: May 11, 2026
 
 162 / 330
 
-   [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)]
+
+   [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)]
      FW_IPSEC_PHASE IpSecPhase,
    [in] unsigned long dwFilteredByStatus,
    [in] unsigned short wFlags,
@@ -13423,14 +13281,15 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-whole, leaving the remaining suites intact. For each set that had a value removed, the server sets a
+
+whole, leaving the remaining suites intact. For each set that had a value removed, the server sets a
 FW_RULE_STATUS_PARTIALLY_IGNORED value on the Status field of the set. The client then receives
 cryptographic sets with values that correspond to the correct schema version, but the client
 recognizes that the information it has about the sets is potentially incomplete.
 
-3.1.4.28
+##### 3.1.4.28 RRPC_FWEnumPhase1SAs (Opnum 27)
 
-RRPC_FWEnumPhase1SAs (Opnum 27)
+
 
 The RRPC_FWEnumPhase1SAs method requests the server to return all the security associations of
 the IPsec first negotiation phase contained in the store referenced by the hPolicy handle. The method
@@ -13507,16 +13366,17 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-When this method is called, the server looks for the binary version of the client, which was associated
+
+When this method is called, the server looks for the binary version of the client, which was associated
 with the hPolicy handle when the client sent the RRPC_FWOpenPolicyStore call. The server compares
 this binary version parameter with the schema version that it supports. If the server’s schema version
 is greater than the binary version passed by the client, the server removes all
 FW_PHASE1_SA_DETAILS objects that contain values that are not valid for an FW_AUTH_SET (section
 2.2.65) structure that has the schema version value passed by the client.
 
-3.1.4.29
+##### 3.1.4.29 RRPC_FWEnumPhase2SAs (Opnum 28)
 
-RRPC_FWEnumPhase2SAs (Opnum 28)
+
 
 The RRPC_FWEnumPhase2SAs method requests the server to return all the security associations of
 the IPsec second negotiation phase contained in the store referenced by the hPolicy handle. The
@@ -13591,12 +13451,13 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-The server MUST validate that the client is authorized to perform the requested operation (as defined
+
+The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.30
+##### 3.1.4.30 RRPC_FWDeletePhase1SAs (Opnum 29)
 
-RRPC_FWDeletePhase1SAs (Opnum 29)
+
 
 The RRPC_FWDeletePhase1SAs method requests the server to delete all the IPsec first negotiation
 phase security associations that match the specified endpoints.
@@ -13655,9 +13516,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.31
+##### 3.1.4.31 RRPC_FWDeletePhase2SAs (Opnum 30)
 
-RRPC_FWDeletePhase2SAs (Opnum 30)
+
 
 The RRPC_FWDeletePhase2SAs (Opnum 30) method requests the server to delete all the IPsec
 second-negotiation-phase security associations that match the specified endpoints.
@@ -13674,7 +13535,8 @@ Release: May 11, 2026
 
 166 / 330
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -13724,9 +13586,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.32
+##### 3.1.4.32 RRPC_FWEnumProducts (Opnum 31)
 
-RRPC_FWEnumProducts (Opnum 31)
+
 
 The RRPC_FWEnumProducts (Opnum 31) method requests the server to return all the registered
 third-party software components registered with the firewall and advanced security component. The
@@ -13756,7 +13618,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-pdwNumProducts: This is an output parameter that on success MUST be equal to the number of
+
+pdwNumProducts: This is an output parameter that on success MUST be equal to the number of
 
 products returned.
 
@@ -13799,9 +13662,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.33
+##### 3.1.4.33 RRPC_FWAddMainModeRule (Opnum 32)
 
-RRPC_FWAddMainModeRule (Opnum 32)
+
 
 The RRPC_FWAddMainModeRule (Opnum 32) method requests the server to add the main mode rule
 in the policy contained in the policy store referenced by the specified opened policy store handle. The
@@ -13840,7 +13703,8 @@ Release: May 11, 2026
 
 168 / 330
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -13870,9 +13734,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.34
+##### 3.1.4.34 RRPC_FWSetMainModeRule (Opnum 33)
 
-RRPC_FWSetMainModeRule (Opnum 33)
+
 
 The RRPC_FWSetMainModeRule (Opnum 33) method requests the server to modify the specified main
 mode rule in the policy contained in the policy store referenced by the handle specified in the hPolicy
@@ -13936,16 +13800,17 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.35
+##### 3.1.4.35 RRPC_FWDeleteMainModeRule (Opnum 34)
 
-RRPC_FWDeleteMainModeRule (Opnum 34)
+
 
 The RRPC_FWDeleteMainModeRule (Opnum 34) method requests the server to delete the specified
 main mode rule in the policy contained in the policy store referenced by the handle specified in the
@@ -14017,9 +13882,10 @@ Release: May 11, 2026
 
 170 / 330
 
-3.1.4.36
 
-RRPC_FWDeleteAllMainModeRules (Opnum 35)
+##### 3.1.4.36 RRPC_FWDeleteAllMainModeRules (Opnum 35)
+
+
 
 The RRPC_FWDeleteAllMainModeRules (Opnum 35) method requests the server to delete all the main
 mode rules in the policy contained in the policy store referenced by the handle specified in the hPolicy
@@ -14069,9 +13935,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in 3.1.4) before executing this method.
 
-3.1.4.37
+##### 3.1.4.37 RRPC_FWEnumMainModeRules (Opnum 36)
 
-RRPC_FWEnumMainModeRules (Opnum 36)
+
 
 The RRPC_FWEnumMainModeRules (Opnum 36) method requests the server to return all the main
 mode rules contained in the store referenced by the hPolicy handle. The method returns a linked list of
@@ -14098,7 +13964,8 @@ Release: May 11, 2026
 
 171 / 330
 
-hPolicy: This input parameter is an FW_POLICY_STORE_HANDLE data type. The data type MUST
+
+hPolicy: This input parameter is an FW_POLICY_STORE_HANDLE data type. The data type MUST
 
 contain an opened policy store handle, successfully opened with the RRPC_FWOpenPolicyStore
 (Opnum 0) method. This handle MUST be of the FW_STORE_TYPE_DYNAMIC store.
@@ -14159,9 +14026,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.38
+##### 3.1.4.38 RRPC_FWQueryFirewallRules (Opnum 37)
 
-RRPC_FWQueryFirewallRules (Opnum 37)
+
 
 The RRPC_FWQueryFirewallRules (Opnum 37) method requests the server to return all the firewall
 rules that match the specified query object that are contained in the store referenced by the hPolicy
@@ -14184,7 +14051,8 @@ Release: May 11, 2026
 
 172 / 330
 
-rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
+
+rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
 Firewall and Advanced Security Protocol.
 
@@ -14243,9 +14111,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.39
+##### 3.1.4.39 RRPC_FWQueryMainModeRules (Opnum 39)
 
-RRPC_FWQueryMainModeRules (Opnum 39)
+
 
 The RRPC_FWQueryMainModeRules (Opnum 39) method requests the server to return all the main
 mode rules that match the specified query object that are contained in the store referenced by the
@@ -14268,7 +14136,8 @@ Release: May 11, 2026
 
 173 / 330
 
-rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
+
+rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
 Firewall and Advanced Security Protocol.
 
@@ -14327,9 +14196,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.40
+##### 3.1.4.40 RRPC_FWQueryAuthenticationSets (Opnum 40)
 
-RRPC_FWQueryAuthenticationSets (Opnum 40)
+
 
 The RRPC_FWQueryAuthenticationSets (Opnum 40) method requests the server to return all the
 authentication sets that match the specified query object that are contained in the store referenced by
@@ -14354,7 +14223,8 @@ Release: May 11, 2026
 
 174 / 330
 
-rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
+
+rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
 Firewall and Advanced Security Protocol.
 
@@ -14416,9 +14286,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.41
+##### 3.1.4.41 RRPC_FWQueryCryptoSets (Opnum 41)
 
-RRPC_FWQueryCryptoSets (Opnum 41)
+
 
 The RRPC_FWQueryCryptoSets (Opnum 41) method requests the server to return all the crypto sets
 that match the specified query object that are contained in the store referenced by the hPolicy handle.
@@ -14442,7 +14312,8 @@ Release: May 11, 2026
 
 175 / 330
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -14506,9 +14377,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.42
+##### 3.1.4.42 RRPC_FWEnumNetworks (Opnum 42)
 
-RRPC_FWEnumNetworks (Opnum 42)
+
 
 The RRPC_FWEnumNetworks (Opnum 42) method requests the server to return all the networks to
 which the host with the firewall and advanced security component is connected. The only method
@@ -14528,7 +14399,8 @@ Release: May 11, 2026
 
 176 / 330
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -14574,9 +14446,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.43
+##### 3.1.4.43 RRPC_FWEnumAdapters (Opnum 43)
 
-RRPC_FWEnumAdapters (Opnum 43)
+
 
 The RRPC_FWEnumAdapters (Opnum 43) method requests the server to return all the networks
 interfaces that the host with the firewall and advanced security component has. The only method
@@ -14610,7 +14482,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-ppAdapters: This is an output parameter that, on success, contains an array of FW_ADAPTER data
+
+ppAdapters: This is an output parameter that, on success, contains an array of FW_ADAPTER data
 
 types.
 
@@ -14642,9 +14515,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.44
+##### 3.1.4.44 RRPC_FWGetGlobalConfig2_10 (Opnum 44)
 
-RRPC_FWGetGlobalConfig2_10 (Opnum 44)
+
 
 The RRPC_FWGetGlobalConfig2_10 (Opnum 44) method retrieves the value of a global policy
 configuration option. The client specifies to the server from which store this value MUST be retrieved
@@ -14693,7 +14566,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-pBuffer: This is an input/output parameter. This parameter is a pointer to the buffer that the client
+
+pBuffer: This is an input/output parameter. This parameter is a pointer to the buffer that the client
 
 provides to contain the value of the profile configuration option that is being requested.
 
@@ -14771,9 +14645,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.45
+##### 3.1.4.45 RRPC_FWGetConfig2_10 (Opnum 45)
 
-RRPC_FWGetConfig2_10 (Opnum 45)
+
 
 The RRPC_FWGetConfig2_10 (Opnum 45) method retrieves the value of a profile configuration option.
 The client specifies to the server from which store and profile this value MUST be retrieved and in
@@ -14793,7 +14667,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-   [in] FW_PROFILE_TYPE Profile,
+
+   [in] FW_PROFILE_TYPE Profile,
    [in] unsigned long dwFlags,
    [in, out, unique, size_is(cbData), length_is(*pcbTransmittedLen)]
      BYTE* pBuffer,
@@ -14884,7 +14759,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -14917,9 +14793,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.46
+##### 3.1.4.46 RRPC_FWAddFirewallRule2_10 (Opnum 46)
 
-RRPC_FWAddFirewallRule2_10 (Opnum 46)
+
 
 The RRPC_FWAddFirewallRule2_10 (Opnum 46) method requests the server to add the specified
 firewall rule in the policy contained in the policy store referenced by the handle specified in the
@@ -14985,7 +14861,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15026,9 +14903,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.47
+##### 3.1.4.47 RRPC_FWSetFirewallRule2_10 (Opnum 47)
 
-RRPC_FWSetFirewallRule2_10 (Opnum 47)
+
 
 The RRPC_FWSetFirewallRule2_10 (Opnum 47) method requests the server to modify the specified
 firewall rule in the policy contained in the policy store referenced by the handle specified in the
@@ -15078,7 +14955,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -15127,9 +15005,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.48
+##### 3.1.4.48 RRPC_FWEnumFirewallRules2_10 (Opnum 48)
 
-RRPC_FWEnumFirewallRules2_10 (Opnum 48)
+
 
 The RRPC_FWEnumFirewallRules2_10 (Opnum 48) method requests the server to return all the
 firewall rules contained in the store referenced by the hPolicyStore handle. The method returns a
@@ -15173,7 +15051,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-wFlags: This parameter is a combination of flags from the FW_ENUM_RULES_FLAGS enumeration,
+
+wFlags: This parameter is a combination of flags from the FW_ENUM_RULES_FLAGS enumeration,
 
 which modifies the behavior of the method and performs operations on the rules before returning
 them in the linked list.
@@ -15221,9 +15100,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.49
+##### 3.1.4.49 RRPC_FWAddConnectionSecurityRule2_10 (Opnum 49)
 
-RRPC_FWAddConnectionSecurityRule2_10 (Opnum 49)
+
 
 The RRPC_FWAddConnectionSecurityRule2_10 (Opnum 49) method requests the server to add the
 specified connection security rule in the policy contained in the policy store referenced by the handle
@@ -15261,7 +15140,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return Values: The method returns 0 if successful; if it fails, it returns a nonzero error code. The
+
+Return Values: The method returns 0 if successful; if it fails, it returns a nonzero error code. The
 
 field can take any specific error code value, as specified in [MS-ERREF]. The following return
 values are common.
@@ -15321,9 +15201,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.50
+##### 3.1.4.50 RRPC_FWSetConnectionSecurityRule2_10 (Opnum 50)
 
-RRPC_FWSetConnectionSecurityRule2_10 (Opnum 50)
+
 
 The RRPC_FWSetConnectionSecurityRule2_10 (Opnum 50) method requests the server to modify the
 specified connection security rule in the policy contained in the policy store referenced by the handle
@@ -15353,7 +15233,8 @@ Release: May 11, 2026
 
 185 / 330
 
-pRule: This parameter represents the connection security rule that the client wants to add to the
+
+pRule: This parameter represents the connection security rule that the client wants to add to the
 
 store. The rule MUST be a valid rule, as specified in the definition of the FW_CS_RULE2_10 data
 type.
@@ -15419,9 +15300,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.51
+##### 3.1.4.51 RRPC_FWEnumConnectionSecurityRules2_10 (Opnum 51)
 
-RRPC_FWEnumConnectionSecurityRules2_10 (Opnum 51)
+
 
 The RRPC_FWEnumConnectionSecurityRules2_10 (Opnum 51) method requests the server to return
 all the connection security rules contained in the store referenced by the hPolicyStore handle. The
@@ -15449,7 +15330,8 @@ Release: May 11, 2026
 
 186 / 330
 
-hPolicyStore: This input parameter is an FW_POLICY_STORE_HANDLE data type. The data type
+
+hPolicyStore: This input parameter is an FW_POLICY_STORE_HANDLE data type. The data type
 
 MUST contain an opened policy store handle, successfully opened with the
 RRPC_FWOpenPolicyStore (Opnum 0) method. The handle MUST have read/write access rights.
@@ -15513,9 +15395,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.52
+##### 3.1.4.52 RRPC_FWQueryConnectionSecurityRules2_10 (Opnum 38)
 
-RRPC_FWQueryConnectionSecurityRules2_10 (Opnum 38)
+
 
 The RRPC_FWQueryConnectionSecurityRules (Opnum 38) method requests the server to return all the
 connection security rules that match the specified query object that are contained in the store
@@ -15538,7 +15420,8 @@ Release: May 11, 2026
 
 187 / 330
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -15600,9 +15483,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.53
+##### 3.1.4.53 RRPC_FWAddAuthenticationSet2_10 (Opnum 52)
 
-RRPC_FWAddAuthenticationSet2_10 (Opnum 52)
+
 
 The RRPC_FWAddAuthenticationSet2_10 (Opnum 52) method requests the server to add the
 authentication set in the policy contained in the policy store referenced by the handle specified in the
@@ -15622,7 +15505,8 @@ Release: May 11, 2026
 
 188 / 330
 
-rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
+
+rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
 Firewall and Advanced Security Protocol.
 
@@ -15694,9 +15578,9 @@ store, the firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.54
+##### 3.1.4.54 RRPC_FWSetAuthenticationSet2_10 (Opnum 53)
 
-RRPC_FWSetAuthenticationSet2_10 (Opnum 53)
+
 
 The RRPC_FWSetAuthenticationSet2_10 (Opnum 53) method requests the server to modify the
 specified authentication set in the policy contained in the policy store referenced by the handle
@@ -15717,7 +15601,8 @@ Release: May 11, 2026
 
 189 / 330
 
- );
+
+ );
 
 rpcConnHandle: This parameter is an RPC binding handle that connects to the RPC interface of the
 
@@ -15788,9 +15673,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.55
+##### 3.1.4.55 RRPC_FWEnumAuthenticationSets2_10 (Opnum 54)
 
-RRPC_FWEnumAuthenticationSets2_10 (Opnum 54)
+
 
 The RRPC_FWEnumAuthenticationSets2_10 (Opnum 54) method requests the server to return all the
 authentication sets of the specified IPsec phase contained in the store referenced by the hPolicyStore
@@ -15811,7 +15696,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-   [in] unsigned short wFlags,
+
+   [in] unsigned short wFlags,
    [out, ref] unsigned long* pdwNumAuthSets,
    [out] PFW_AUTH_SET2_10* ppAuth
  );
@@ -15881,9 +15767,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.56
+##### 3.1.4.56 RRPC_FWAddCryptoSet2_10 (Opnum 55)
 
-RRPC_FWAddCryptoSet2_10 (Opnum 55)
+
 
 The RRPC_FWAddCryptoSet2_10 (Opnum 55) method adds a cryptographic set in the cryptographic
 linked list of the memory representation of the store being modified. The method is only supported for
@@ -15898,7 +15784,8 @@ Release: May 11, 2026
 
 191 / 330
 
-   [in] FW_CONN_HANDLE rpcConnHandle,
+
+   [in] FW_CONN_HANDLE rpcConnHandle,
    [in] FW_POLICY_STORE_HANDLE hPolicy,
    [in] PFW_CRYPTO_SET pCrypto,
    [out] FW_RULE_STATUS* pStatus
@@ -15977,9 +15864,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.57
+##### 3.1.4.57 RRPC_FWSetCryptoSet2_10 (Opnum 56)
 
-RRPC_FWSetCryptoSet2_10 (Opnum 56)
+
 
 The RRPC_FWSetCryptoSet2_10 (Opnum 56) method requests the server to modify the specified
 cryptographic set in the policy contained in the policy store referenced by the handle specified in the
@@ -15992,7 +15879,8 @@ Release: May 11, 2026
 
 192 / 330
 
- unsigned long RRPC_FWSetCryptoSet2_10(
+
+ unsigned long RRPC_FWSetCryptoSet2_10(
    [in] FW_CONN_HANDLE rpcConnHandle,
    [in] FW_POLICY_STORE_HANDLE hPolicy,
    [in] PFW_CRYPTO_SET pCrypto,
@@ -16068,9 +15956,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.58
+##### 3.1.4.58 RRPC_FWEnumCryptoSets2_10 (Opnum 57)
 
-RRPC_FWEnumCryptoSets2_10 (Opnum 57)
+
 
 The RRPC_FWEnumCryptoSets2_10 (Opnum 57) method requests the server to return all the
 cryptographic sets of the specified IPsec phase contained in the store referenced by the hPolicyStore
@@ -16087,7 +15975,8 @@ Release: May 11, 2026
 
 193 / 330
 
-   [in] FW_POLICY_STORE_HANDLE hPolicyStore,
+
+   [in] FW_POLICY_STORE_HANDLE hPolicyStore,
    [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)]
      FW_IPSEC_PHASE IpSecPhase,
    [in] unsigned long dwFilteredByStatus,
@@ -16168,9 +16057,10 @@ Release: May 11, 2026
 
 194 / 330
 
-3.1.4.59
 
-RRPC_FWAddConnectionSecurityRule2_20 (Opnum 58)
+##### 3.1.4.59 RRPC_FWAddConnectionSecurityRule2_20 (Opnum 58)
+
+
 
 The RRPC_FWAddConnectionSecurityRule2_20 method requests the server to add the specified
 connection security rule in the policy contained in the policy store referenced by the handle specified
@@ -16264,12 +16154,13 @@ Release: May 11, 2026
 
 195 / 330
 
-The server MUST validate that the client is authorized to perform the requested operation (as defined
+
+The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.60
+##### 3.1.4.60 RRPC_FWSetConnectionSecurityRule2_20 (Opnum 59)
 
-RRPC_FWSetConnectionSecurityRule2_20 (Opnum 59)
+
 
 The RRPC_FWSetConnectionSecurityRule2_20 method requests the server to modify the specified
 connection security rule in the policy contained in the policy store referenced by the handle specified
@@ -16360,12 +16251,13 @@ Release: May 11, 2026
 
 196 / 330
 
-The server MUST validate that the client is authorized to perform the requested operation (as defined
+
+The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.61
+##### 3.1.4.61 RRPC_FWEnumConnectionSecurityRules2_20 (Opnum 60)
 
-RRPC_FWEnumConnectionSecurityRules2_20 (Opnum 60)
+
 
 The RRPC_FWEnumConnectionSecurityRules2_20 (Opnum 60) method requests the server to return
 all the connection security rules contained in the store referenced by the hPolicyStore handle. The
@@ -16445,16 +16337,17 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.62
+##### 3.1.4.62 RRPC_FWQueryConnectionSecurityRules2_20 (Opnum 61)
 
-RRPC_FWQueryConnectionSecurityRules2_20 (Opnum 61)
+
 
 The RRPC_FWQueryConnectionSecurityRules2_20 (Opnum 61) method requests the server to return
 all the connection security rules that match the specified query object that are contained in the store
@@ -16529,16 +16422,17 @@ Release: May 11, 2026
 
 198 / 330
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.63
+##### 3.1.4.63 RRPC_FWAddAuthenticationSet2_20 (Opnum 62)
 
-RRPC_FWAddAuthenticationSet2_20 (Opnum 62)
+
 
 The RRPC_FWAddAuthenticationSet2_20 method requests the server to add the authentication set in
 the policy contained in the policy store referenced by the handle specified in the hPolicy parameter.
@@ -16622,16 +16516,17 @@ Release: May 11, 2026
 
 199 / 330
 
-This method adds a firewall rule in the firewall linked list of the memory representation of the store
+
+This method adds a firewall rule in the firewall linked list of the memory representation of the store
 being modified. It also writes through and saves the rule in disk. If the method is called on an online
 store, the firewall rule is also enforced.
 
 The server MUST validate the client credentials to the administrator or network operator before
 executing this method.
 
-3.1.4.64
+##### 3.1.4.64 RRPC_FWSetAuthenticationSet2_20 (Opnum 63)
 
-RRPC_FWSetAuthenticationSet2_20 (Opnum 63)
+
 
 The RRPC_FWSetAuthenticationSet2_20 method requests the server to modify the specified
 authentication set in the policy contained in the policy store referenced by the handle specified in the
@@ -16716,12 +16611,13 @@ Release: May 11, 2026
 
 200 / 330
 
-The server MUST validate the client credentials to the administrator or network operator before
+
+The server MUST validate the client credentials to the administrator or network operator before
 executing this method.
 
-3.1.4.65
+##### 3.1.4.65 RRPC_FWEnumAuthenticationSets2_20 (Opnum 64)
 
-RRPC_FWEnumAuthenticationSets2_20 (Opnum 64)
+
 
 The RRPC_FWEnumAuthenticationSets2_20 method requests the server to return all the
 authentication sets of the specified IPsec phase contained in the store referenced in the hPolicy
@@ -16799,13 +16695,14 @@ Release: May 11, 2026
 
 201 / 330
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 
 as specified in [MS-RPCE].
 
-3.1.4.66
+##### 3.1.4.66 RRPC_FWQueryAuthenticationSets2_20 (Opnum 65)
 
-RRPC_FWQueryAuthenticationSets2_20 (Opnum 65)
+
 
 The RRPC_FWQueryAuthenticationSets2_20 method requests the server to return all the
 authentication sets that match the specified query object that are contained in the store referenced in
@@ -16885,16 +16782,17 @@ Release: May 11, 2026
 
 202 / 330
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 
 as specified in [MS-RPCE].
 
 The server MUST validate the client credentials to the administrator or network operator before
 executing this method.
 
-3.1.4.67
+##### 3.1.4.67 RRPC_FWAddFirewallRule2_20 (Opnum 66)
 
-RRPC_FWAddFirewallRule2_20 (Opnum 66)
+
 
 The RRPC_FWAddFirewallRule2_20 method requests the server to add the specified firewall rule in the
 policy contained in the policy store referenced by the handle specified in the hPolicyStore parameter.
@@ -16985,7 +16883,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
@@ -16996,9 +16895,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.68
+##### 3.1.4.68 RRPC_FWSetFirewallRule2_20 (Opnum 67)
 
-RRPC_FWSetFirewallRule2_20 (Opnum 67)
+
 
 The RRPC_FWAddConnectionSecurityRule2_20 method requests the server to modify the specified
 connection security rule in the policy contained in the policy store referenced by the handle specified
@@ -17080,7 +16979,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -17096,9 +16996,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.69
+##### 3.1.4.69 RRPC_FWEnumFirewallRules2_20 (Opnum 68)
 
-RRPC_FWEnumFirewallRules2_20 (Opnum 68)
+
 
 The RRPC_FWEnumFirewallRules2_20 (Opnum 68) method requests the server to return all the
 firewall rules contained in the store referenced by the hPolicyStore handle. The method returns a
@@ -17159,7 +17059,8 @@ Release: May 11, 2026
 
 205 / 330
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -17189,9 +17090,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.70
+##### 3.1.4.70 RRPC_FWQueryFirewallRules2_20 (Opnum 69)
 
-RRPC_FWQueryFirewallRules2_20 (Opnum 69)
+
 
 The RRPC_FWQueryFirewallRules2_20 (Opnum 69) method requests the server to return all the
 firewall rules that match the specified query object that are contained in the store referenced by the
@@ -17245,7 +17146,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -17273,9 +17175,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.71
+##### 3.1.4.71 RRPC_FWAddFirewallRule2_24 (Opnum 70)
 
-RRPC_FWAddFirewallRule2_24 (Opnum 70)
+
 
 The RRPC_FWAddFirewallRule2_24 method requests the server to add the specified firewall rule in the
 policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -17340,7 +17242,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -17377,9 +17280,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.72
+##### 3.1.4.72 RRPC_FWSetFirewallRule2_24 (Opnum 71)
 
-RRPC_FWSetFirewallRule2_24 (Opnum 71)
+
 
 The RRPC_FWSetFirewallRule2_24 method requests the server to modify the specified connection
 security rule in the policy contained in the policy store that is referenced by the handle specified in the
@@ -17421,7 +17324,8 @@ Release: May 11, 2026
 
 208 / 330
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -17469,9 +17373,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.73
+##### 3.1.4.73 RRPC_FWEnumFirewallRules2_24 (Opnum 72)
 
-RRPC_FWEnumFirewallRules2_24 (Opnum 72)
+
 
 The RRPC_FWEnumFirewallRules2_24 method requests the server to return all the firewall rules
 contained in the store that is referenced by the hPolicyStore handle. The method returns a linked list
@@ -17512,7 +17416,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-wFlags: A combination of flags from the FW_ENUM_RULES_FLAGS enumeration, which modifies
+
+wFlags: A combination of flags from the FW_ENUM_RULES_FLAGS enumeration, which modifies
 
 the behavior of the method and performs operations on the rules before returning them in the
 linked list.
@@ -17558,9 +17463,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.74
+##### 3.1.4.74 RRPC_FWQueryFirewallRules2_24 (Opnum 73)
 
-RRPC_FWQueryFirewallRules2_24 (Opnum 73)
+
 
 The RRPC_FWQueryFirewallRules2_24 method requests the server to return all the firewall rules that
 match the specified query object that are contained in the store that is referenced by the hPolicyStore
@@ -17597,7 +17502,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-wFlags: A combination of flags from the FW_ENUM_RULES_FLAGS enumeration, which modifies
+
+wFlags: A combination of flags from the FW_ENUM_RULES_FLAGS enumeration, which modifies
 
 the behavior of the method and performs operations on the rules before returning them in the
 linked list.
@@ -17641,9 +17547,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.75
+##### 3.1.4.75 RRPC_FWAddFirewallRule2_25 (Opnum 74)
 
-RRPC_FWAddFirewallRule2_25 (Opnum 74)
+
 
 The RRPC_FWAddFirewallRule2_25 method requests the server to add the specified firewall rule in the
 policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -17681,7 +17587,8 @@ Release: May 11, 2026
 
 211 / 330
 
-Return Values: The method returns 0 if successful; if it fails, it returns a nonzero error code. The
+
+Return Values: The method returns 0 if successful; if it fails, it returns a nonzero error code. The
 field can take any specific error code value, as specified in [MS-ERREF]. The following return
 values are common.
 
@@ -17739,9 +17646,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.76
+##### 3.1.4.76 RRPC_FWSetFirewallRule2_25 (Opnum 75)
 
-RRPC_FWSetFirewallRule2_25 (Opnum 75)
+
 
 The RRPC_FWSetFirewallRule2_25 method requests the server to modify the specified connection
 security rule in the policy contained in the policy store that is referenced by the handle specified in the
@@ -17771,7 +17678,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-pRule: Represents the firewall rule that the client modifies in the store. The rule MUST be a valid rule,
+
+pRule: Represents the firewall rule that the client modifies in the store. The rule MUST be a valid rule,
 
 as specified in the definition of the FW_RULE2_25 data type (section 2.2.105).
 
@@ -17831,9 +17739,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.77
+##### 3.1.4.77 RRPC_FWEnumFirewallRules2_25 (Opnum 76)
 
-RRPC_FWEnumFirewallRules2_25 (Opnum 76)
+
 
 The RRPC_FWEnumFirewallRules2_25 method requests the server to return all the firewall rules
 contained in the store that is referenced by the hPolicyStore handle. The method returns a linked list
@@ -17864,7 +17772,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-RRPC_FWOpenPolicyStore (Opnum 0) method (section 3.1.4.1). The handle MUST have read/write
+
+RRPC_FWOpenPolicyStore (Opnum 0) method (section 3.1.4.1). The handle MUST have read/write
 access rights.
 
 dwFilteredByStatus: A combination of flags from the FW_RULE_STATUS_CLASS enumeration. This
@@ -17922,9 +17831,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.78
+##### 3.1.4.78 RRPC_FWQueryFirewallRules2_25 (Opnum 77)
 
-RRPC_FWQueryFirewallRules2_25 (Opnum 77)
+
 
 The RRPC_FWQueryFirewallRules2_25 method requests the server to return all the firewall rules that
 match the specified query object that are contained in the store that is referenced by the hPolicyStore
@@ -17947,7 +17856,8 @@ Release: May 11, 2026
 
 214 / 330
 
-rpcConnHandle: An RPC binding handle that connects to the RPC interface of the Firewall and
+
+rpcConnHandle: An RPC binding handle that connects to the RPC interface of the Firewall and
 
 Advanced Security Protocol.
 
@@ -18005,9 +17915,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.79
+##### 3.1.4.79 RRPC_FWAddFirewallRule2_26 (Opnum 78)
 
-RRPC_FWAddFirewallRule2_26 (Opnum 78)
+
 
 The RRPC_FWAddFirewallRule2_26 method requests the server to add the specified firewall rule in the
 policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -18031,7 +17941,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-hPolicyStore: An input parameter that is an FW_POLICY_STORE_HANDLE data type. This parameter
+
+hPolicyStore: An input parameter that is an FW_POLICY_STORE_HANDLE data type. This parameter
 
 MUST contain an opened policy store handle, successfully opened with the
 RRPC_FWOpenPolicyStore (Opnum 0) method (section 3.1.4.1). The handle MUST have read/write
@@ -18103,9 +18014,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.80
+##### 3.1.4.80 RRPC_FWSetFirewallRule2_26 (Opnum 79)
 
-RRPC_FWSetFirewallRule2_26 (Opnum 79)
+
 
 The RRPC_FWSetFirewallRule2_26 method requests the server to modify the specified connection
 security rule in the policy contained in the policy store that is referenced by the handle specified in the
@@ -18124,7 +18035,8 @@ Release: May 11, 2026
 
 216 / 330
 
- );
+
+ );
 
 rpcConnHandle: An RPC binding handle that connects to the RPC interface of the Firewall and
 
@@ -18196,9 +18108,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.81
+##### 3.1.4.81 RRPC_FWEnumFirewallRules2_26 (Opnum 80)
 
-RRPC_FWEnumFirewallRules2_26 (Opnum 80)
+
 
 The RRPC_FWEnumFirewallRules2_26 method requests the server to return all the firewall rules
 contained in the store that is referenced by the hPolicyStore handle. The method returns a linked list
@@ -18217,7 +18129,8 @@ Release: May 11, 2026
 
 217 / 330
 
-   [in] WORD wFlags,
+
+   [in] WORD wFlags,
    [out, ref] DWORD* pdwNumRules,
    [out] PFW_RULE2_26* ppRules
  );
@@ -18285,9 +18198,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.82
+##### 3.1.4.82 RRPC_FWQueryFirewallRules2_26 (Opnum 81)
 
-RRPC_FWQueryFirewallRules2_26 (Opnum 81)
+
 
 The RRPC_FWQueryFirewallRules2_26 method requests the server to return all the firewall rules that
 match the specified query object that are contained in the store that is referenced by the hPolicyStore
@@ -18301,7 +18214,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- DWORD RRPC_FWQueryFirewallRules2_26(
+
+ DWORD RRPC_FWQueryFirewallRules2_26(
    [in] FW_CONN_HANDLE rpcConnHandle,
    [in] FW_POLICY_STORE_HANDLE hPolicyStore,
    [in] PFW_QUERY pQuery,
@@ -18366,9 +18280,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.83
+##### 3.1.4.83 RRPC_FWAddFirewallRule2_27 (Opnum 82)
 
-RRPC_FWAddFirewallRule2_27 (Opnum 82)
+
 
 The RRPC_FWAddFirewallRule2_27 method requests the server to add the specified firewall rule to the
 policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -18383,7 +18297,8 @@ Release: May 11, 2026
 
 219 / 330
 
-   [in] FW_CONN_HANDLE rpcConnHandle,
+
+   [in] FW_CONN_HANDLE rpcConnHandle,
    [in] FW_POLICY_STORE_HANDLE hPolicyStore,
    [in] PFW_RULE2_27 pRule,
    [out] FW_RULE_STATUS* pStatus
@@ -18471,9 +18386,10 @@ Release: May 11, 2026
 
 220 / 330
 
-3.1.4.84
 
-RRPC_FWSetFirewallRule2_27 (Opnum 83)
+##### 3.1.4.84 RRPC_FWSetFirewallRule2_27 (Opnum 83)
+
+
 
 The RRPC_FWSetFirewallRule2_27 method requests the server to modify the specified connection
 security rule in the policy contained in the policy store that is referenced by the handle specified in the
@@ -18562,9 +18478,10 @@ Release: May 11, 2026
 
 221 / 330
 
-3.1.4.85
 
-RRPC_FWEnumFirewallRules2_27 (Opnum 84)
+##### 3.1.4.85 RRPC_FWEnumFirewallRules2_27 (Opnum 84)
+
+
 
 The RRPC_FWEnumFirewallRules2_27 method requests the server to return all the firewall rules
 contained in the store that is referenced by the hPolicyStore handle. The method returns a linked list
@@ -18648,16 +18565,17 @@ Release: May 11, 2026
 
 222 / 330
 
-Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
+
+Exceptions Thrown: No exceptions are thrown beyond those thrown by the underlying RPC protocol,
 as specified in [MS-RPCE]. If any lower-layer errors are reported by RPC exception, this exception
 is converted to an error code and reported to higher-layer protocols via the return value.
 
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.86
+##### 3.1.4.86 RRPC_FWQueryFirewallRules2_27 (Opnum 85)
 
-RRPC_FWQueryFirewallRules2_27 (Opnum 85)
+
 
 The RRPC_FWQueryFirewallRules2_27 method requests the server to return all the firewall rules
 that match the specified query object that are contained in the store that is referenced by the
@@ -18732,7 +18650,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18745,9 +18664,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.87
+##### 3.1.4.87 RRPC_FWAddFirewallRule2_31 (Opnum 86)
 
-RRPC_FWAddFirewallRule2_31 (Opnum 86)
+
 
 The RRPC_FWAddFirewallRule2_31 method requests the server to add the specified firewall rule to
 the policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -18824,7 +18743,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18847,9 +18767,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.88
+##### 3.1.4.88 RRPC_FWSetFirewallRule2_31 (Opnum 87)
 
-RRPC_FWSetFirewallRule2_31 (Opnum 87)
+
 
 The RRPC_FWSetFirewallRule2_31 method requests the server to modify the specified connection
 security rule in the policy contained in the policy store that is referenced by the handle specified in the
@@ -18909,7 +18829,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -18942,9 +18863,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.89
+##### 3.1.4.89 RRPC_FWEnumFirewallRules2_31 (Opnum 88)
 
-RRPC_FWEnumFirewallRules2_31 (Opnum 88)
+
 
 The RRPC_FWEnumFirewallRules2_31 method requests the server to return the firewall rules
 matching the input flags contained in the store that is referenced by the hPolicyStore handle. The
@@ -18994,7 +18915,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-pdwNumRules: An output parameter that on success MUST be equal to the number of rules
+
+pdwNumRules: An output parameter that on success MUST be equal to the number of rules
 
 returned.
 
@@ -19036,9 +18958,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.90
+##### 3.1.4.90 RRPC_FWQueryFirewallRules2_31 (Opnum 89)
 
-RRPC_FWQueryFirewallRules2_31 (Opnum 89)
+
 
 The RRPC_FWQueryFirewallRules2_31 method requests the server to return all the firewall rules
 that match the specified query object, as are contained in the store that is referenced by the
@@ -19080,7 +19002,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-pdwNumRules: An output parameter that, on success, MUST be equal to the number of rules
+
+pdwNumRules: An output parameter that, on success, MUST be equal to the number of rules
 
 returned.
 
@@ -19122,9 +19045,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.91
+##### 3.1.4.91 RRPC_FWAddFirewallRule2_33 (Opnum 91)
 
-RRPC_FWAddFirewallRule2_33 (Opnum 91)
+
 
 The RRPC_FWAddFirewallRule2_33 method requests the server to add the specified firewall rule to
 the policy contained in the policy store that is referenced by the handle specified in the hPolicyStore
@@ -19166,7 +19089,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -19220,9 +19144,9 @@ firewall rule is also enforced.
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.92
+##### 3.1.4.92 RRPC_FWSetFirewallRule2_33 (Opnum 92)
 
-RRPC_FWSetFirewallRule2_33 (Opnum 92)
+
 
 The RRPC_FWSetFirewallRule2_33 method requests the server to modify the specified connection
 security rule in the policy contained in the policy store that is referenced by the handle specified in the
@@ -19255,7 +19179,8 @@ Release: May 11, 2026
 
 229 / 330
 
-pStatus: An output parameter that is the status code of the rule, as specified by the
+
+pStatus: An output parameter that is the status code of the rule, as specified by the
 
 FW_RULE_STATUS enumeration (section 2.2.24).
 
@@ -19311,9 +19236,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.93
+##### 3.1.4.93 RRPC_FWEnumFirewallRules2_33 (Opnum 93)
 
-RRPC_FWEnumFirewallRules2_33 (Opnum 93)
+
 
 The RRPC_FWEnumFirewallRules2_31 method requests the server to return the firewall rules
 matching the input flags contained in the store that is referenced by the hPolicyStore handle. The
@@ -19347,7 +19272,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-dwFilteredByStatus: A combination of flags from the FW_RULE_STATUS_CLASS enumeration
+
+dwFilteredByStatus: A combination of flags from the FW_RULE_STATUS_CLASS enumeration
 
 (section 2.2.25). This method uses this bitmask to determine whether rules should be returned.
 Rules that contain a status code of the specified class that match this parameter will be returned
@@ -19405,9 +19331,9 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.4.94
+##### 3.1.4.94 RRPC_FWQueryFirewallRules2_33 (Opnum 94)
 
-RRPC_FWQueryFirewallRules2_33 (Opnum 94)
+
 
 The RRPC_FWQueryFirewallRules2_33 method requests the server to return all the firewall rules
 that match the specified query object, as are contained in the store that is referenced by the
@@ -19434,7 +19360,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-hPolicyStore: An input parameter that is an FW_POLICY_STORE_HANDLE data type (section 2.2.94).
+
+hPolicyStore: An input parameter that is an FW_POLICY_STORE_HANDLE data type (section 2.2.94).
 
 This parameter MUST contain an opened policy store handle, successfully opened with the
 RRPC_FWOpenPolicyStore (Opnum 0) method (section 3.1.4.1). The handle MUST be the
@@ -19491,16 +19418,16 @@ is converted to an error code and reported to higher-layer protocols via the ret
 The server MUST validate that the client is authorized to perform the requested operation (as defined
 in section 3.1.4) before executing this method.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No timer events are required on the server other than the events maintained in the underlying RPC
 transport.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 The following sections describe the abstract interfaces available.
 
-3.1.6.1  AddPortInUse
+##### 3.1.6.1 AddPortInUse
 
 AddPortInUse is an abstract interface called by applications and services on the local computer to add
 a PortInUse object to the server's PortsInUse collection. The interface is defined as follows:
@@ -19514,11 +19441,12 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-Input Parameter: portToAdd: The PortInUse object to be added.
+
+Input Parameter: portToAdd: The PortInUse object to be added.
 
 Output Parameter: None.
 
-3.1.6.2  DeletePortInUse
+##### 3.1.6.2 DeletePortInUse
 
 DeletePortInUse is an abstract interface called by applications and services on the local computer to
 delete a PortInUse object from the server's PortsInUse collection. The interface is defined as
@@ -19531,7 +19459,7 @@ server's PortsInUse collection, the method has no effect.
 
 Output Parameter: None.
 
-3.1.6.3  AddDefaultFirewallRule
+##### 3.1.6.3 AddDefaultFirewallRule
 
 AddDefaultFirewallRule is an abstract interface called by applications and services on the local
 computer to add a new FirewallRule object to the FirewallRules collection in the server's
@@ -19543,7 +19471,7 @@ Input Parameter: ruleToAdd: The FirewallRule object to be added.
 
 Output Parameter: None.
 
-3.1.6.4  SetGroupPolicyRSoPStore
+##### 3.1.6.4 SetGroupPolicyRSoPStore
 
 SetGroupPolicyRSoPStore is an abstract interface used to set the state of the GroupPolicyRSoPStore
 object. This interface is typically invoked by an implementation of [MS-GPFAS] in order to notify the
@@ -19572,7 +19500,8 @@ Release: May 11, 2026
 
 233 / 330
 
-3.1.6.5  IsComputerInCommonCriteriaMode
+
+##### 3.1.6.5 IsComputerInCommonCriteriaMode
 
 IsComputerInCommonCriteriaMode is an abstract interface exposed by the host operating system and
 invoked by the MS-FASP server to determine whether the local computer is conforming to all the
@@ -19585,7 +19514,7 @@ Input Parameter: None.
 
 Output Parameter: None.
 
-3.1.6.6  SetEffectiveFirewallPolicy
+##### 3.1.6.6 SetEffectiveFirewallPolicy
 
 SetEffectiveFirewallPolicy is an abstract interface exposed by the host operating system and invoked
 by the MS-FASP server whenever the effective firewall policy changes. The algorithm for processing
@@ -19600,7 +19529,7 @@ policy for the local computer.
 
 Output Parameter: None.
 
-3.1.6.7  AddTrustTuple
+##### 3.1.6.7 AddTrustTuple
 
 AddTrustTuple is an abstract interface called by applications and services on the local computer to add
 a TrustTuple object to the server's TrustTuples collection. The interface is defined as follows:
@@ -19611,7 +19540,7 @@ Input Parameter: tupleToAdd: The TrustTuple object to be added.
 
 Output Parameter: None.
 
-3.1.6.8  DeleteTrustTuple
+##### 3.1.6.8 DeleteTrustTuple
 
 DeleteTrustTuple is an abstract interface called by applications and services on the local computer to
 delete a TrustTuple object from the server's TrustTuples collection. The interface is defined as
@@ -19631,24 +19560,25 @@ Release: May 11, 2026
 
 234 / 330
 
-3.2  Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required other than those internal ones used in the RPC to implement
 resiliency to network outages, as specified in [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client creates an RPC association (or binding) to the server RPC before an RPC method is called.
 The client can create a separate association for each method invocation, or it can reuse an association
 for multiple invocations.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 This protocol MUST indicate to the RPC runtime that it is to perform a strict NDR data consistency
 check at target level 6.0, as specified in [MS-RPCE] section 3.
@@ -19657,12 +19587,12 @@ The client SHOULD ignore errors returned from the RPC server and notify the appl
 the error received. Otherwise, no special message processing is required on the client beyond the
 processing required in the underlying RPC protocol.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 No protocol timer events are required on the client other than those internal ones maintained in the
 underlying RPC, as specified in [MS-RPCE].
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 No local events are required on the client other than those internal ones maintained in the underlying
 RPC, as specified in [MS-RPCE].
@@ -19674,13 +19604,14 @@ Release: May 11, 2026
 
 235 / 330
 
-<!-- Extracted images from page 236 -->
+
+<!-- Extracted images from page 236 -->
 ![Extracted image 1 from page 236]([MS-FASP].images/page236-img01.png)
 <!-- /Extracted images from page 236 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Opening a Policy Store
+### 4.1 Opening a Policy Store
 
 Before a client application can perform most of the operations, it opens a policy store handle. The
 protocol sequence that opens a policy store is as follows.
@@ -19702,7 +19633,7 @@ store.
          [out] PFW_POLICY_STORE_HANDLE           phPolicyStore = &hStore
          );
 
-4.2  Adding a Firewall Rule
+### 4.2 Adding a Firewall Rule
 
 Once the client has a handle to an open policy store, the client can perform operations on the policy
 store. The protocol sequence that adds a firewall rule to the policy store is as follows.
@@ -19714,7 +19645,8 @@ Release: May 11, 2026
 
 236 / 330
 
-<!-- Extracted images from page 237 -->
+
+<!-- Extracted images from page 237 -->
 ![Extracted image 1 from page 237]([MS-FASP].images/page237-img01.png)
 <!-- /Extracted images from page 237 -->
 
@@ -19770,7 +19702,8 @@ Release: May 11, 2026
 
 237 / 330
 
-<!-- Extracted images from page 238 -->
+
+<!-- Extracted images from page 238 -->
 ![Extracted image 1 from page 238]([MS-FASP].images/page238-img01.png)
 <!-- /Extracted images from page 238 -->
 
@@ -19784,7 +19717,7 @@ Release: May 11, 2026
 If the return code is FW_ERROR_ALREADY_EXISTS, the rule exists in the store. The client can try
 using a different Rule ID or bubble up the error.
 
-4.3  Enumerating the Firewall Rules
+### 4.3 Enumerating the Firewall Rules
 
 To enumerate the firewall rules that the server is enforcing in the store, the client calls the
 RRPC_FWEnumFirewallRules (Opnum 9) method. The protocol sequence that enumerates firewall rules
@@ -19810,7 +19743,7 @@ FW_RULE_STATUS_CLASS_OK and FW_RULE_STATUS_CLASS_PARTIALLY_IGNORED.
          [out] PFW_RULE         *ppRules = &pRules
          );
 
-4.4  Closing a Policy Store Handle
+### 4.4 Closing a Policy Store Handle
 
 Once a client application has finished managing the policy, it closes the policy store handle. The
 protocol sequence that closes a policy store follows.
@@ -19822,7 +19755,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-<!-- Extracted images from page 239 -->
+
+<!-- Extracted images from page 239 -->
 ![Extracted image 1 from page 239]([MS-FASP].images/page239-img01.png)
 <!-- /Extracted images from page 239 -->
 
@@ -19836,7 +19770,7 @@ To close the handle, the client simply passes the handle to the close method.
      [in, out] PFW_POLICY_STORE_HANDLE  phPolicyStore = &hStore
       );
 
-4.5  Creating an MSFT_NetFirewallDynamicKeywordAddress Object
+### 4.5 Creating an MSFT_NetFirewallDynamicKeywordAddress Object
 
 This section describes how to create a MSFT_NetFirewallDynamicKeywordAddress object, with the use
 of a Power Shell Remote Protocol [MS-PSRP] client. The class that is required to create this object is
@@ -19861,7 +19795,8 @@ Release: May 11, 2026
 
 239 / 330
 
-<!-- Extracted images from page 240 -->
+
+<!-- Extracted images from page 240 -->
 ![Extracted image 1 from page 240]([MS-FASP].images/page240-img01.png)
 <!-- /Extracted images from page 240 -->
 
@@ -19915,7 +19850,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-DWORD           dwProfiles = FW_PROFILE_TYPE_ALL;
+
+DWORD           dwProfiles = FW_PROFILE_TYPE_ALL;
 FW_DIRECTION    Direction = FW_DIR_IN;
 WORD            wIpProtocol = 0x0006;
 FW_PORTS        LocalPorts = {0x0000, {1, &Port}};
@@ -19984,9 +19920,10 @@ Release: May 11, 2026
 
 241 / 330
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The enumeration methods require the server to return the correct number of objects linked in the
 returned linked list. For example, the DWORD variable passed in the pdwNumRules parameter of
@@ -19998,7 +19935,7 @@ can allocate a buffer based on the rule count; however, while filling the buffer
 actively validate that the number of objects in the buffer does not exceed the object count. Failure to
 do this validation could result in buffer overruns on the client.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security Parameter
 
@@ -20017,7 +19954,8 @@ Release: May 11, 2026
 
 242 / 330
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below.
 
@@ -20091,7 +20029,8 @@ Release: May 11, 2026
 
 243 / 330
 
- typedef enum _tag_FW_POLICY_STORE_FLAGS
+
+ typedef enum _tag_FW_POLICY_STORE_FLAGS
  {
      FW_POLICY_STORE_FLAGS_NONE          = 0x0000,
      FW_POLICY_STORE_FLAGS_DELETE_DYNAMIC_RULES_AFTER_CLOSE  = 0x0001,
@@ -20166,7 +20105,8 @@ Release: May 11, 2026
 
 244 / 330
 
- typedef struct _tag_FW_IPV6_ADDRESS_RANGE
+
+ typedef struct _tag_FW_IPV6_ADDRESS_RANGE
  {
      BYTE     Begin[16];
      BYTE     End[16];
@@ -20240,7 +20180,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- typedef struct _tag_FW_ICMP_TYPE_CODE
+
+ typedef struct _tag_FW_ICMP_TYPE_CODE
  {
      BYTE                bType;
      [range(0, 256)]
@@ -20314,7 +20255,8 @@ Release: May 11, 2026
 
 246 / 330
 
- typedef struct _tag_FW_ADDRESSES
+
+ typedef struct _tag_FW_ADDRESSES
  {
      DWORD                dwV4AddressKeywords; // Bit flags from FW_ADDRESS_KEYWORD
      DWORD                dwV6AddressKeywords; // Bit flags from FW_ADDRESS_KEYWORD
@@ -20391,7 +20333,8 @@ Release: May 11, 2026
 
 247 / 330
 
- // Internal version of the dynamic keyword address struct.
+
+ // Internal version of the dynamic keyword address struct.
  // Notably, it uses the FW_ADDRESSES struct for the
  // addresses rather than a string
  typedef struct _tag_FW_DYNAMIC_KEYWORD_ADDRESS_INTERNAL
@@ -20466,7 +20409,8 @@ Release: May 11, 2026
 
 248 / 330
 
-     FW_RULE_STATUS_PARSING_ERROR_SVC = 0x00080004,
+
+     FW_RULE_STATUS_PARSING_ERROR_SVC = 0x00080004,
          // The service contains invalid characters, or is an invalid length.
 
      FW_RULE_STATUS_PARSING_ERROR_RMA = 0x00080005,
@@ -20543,7 +20487,8 @@ Release: May 11, 2026
 
 249 / 330
 
-         // A string for the FQBN is invalid.
+
+         // A string for the FQBN is invalid.
 
      FW_RULE_STATUS_SEMANTIC_ERROR = 0x00100000,
          // The rule was parsed successfully, but there was an unknown
@@ -20620,7 +20565,8 @@ Release: May 11, 2026
 
 250 / 330
 
-         // Endpoint 'any' cannot be specified for a tunnel-mode rule.
+
+         // Endpoint 'any' cannot be specified for a tunnel-mode rule.
 
      FW_RULE_STATUS_SEMANTIC_ERROR_DTE_VER  = 0x0010004E,
          // The target schema version does not support dynamic endpoints.
@@ -20697,7 +20643,8 @@ Release: May 11, 2026
 
 251 / 330
 
-     FW_RULE_STATUS_SEMANTIC_ERROR_FLAGS = 0x001000B0,
+
+     FW_RULE_STATUS_SEMANTIC_ERROR_FLAGS = 0x001000B0,
          // Invalid flags specified.
 
      FW_RULE_STATUS_SEMANTIC_ERROR_FLAGS_AUTO_AUTH = 0x001000B1,
@@ -20773,7 +20720,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     FW_RULE_STATUS_SEMANTIC_ERROR_LOCAL_USER_LIST = 0x001000C2,
+
+     FW_RULE_STATUS_SEMANTIC_ERROR_LOCAL_USER_LIST = 0x001000C2,
          // The authorized local user list may not be used in conjunction
          // with a service SID.
 
@@ -20848,7 +20796,8 @@ Release: May 11, 2026
 
 253 / 330
 
-     FW_RULE_STATUS_SEMANTIC_ERROR_APP_CONTAINER_PACKAGE_ID = 0x00100100,
+
+     FW_RULE_STATUS_SEMANTIC_ERROR_APP_CONTAINER_PACKAGE_ID = 0x00100100,
          // The application package SID is invalid.
 
      FW_RULE_STATUS_SEMANTIC_ERROR_APP_CONTAINER_PACKAGE_ID_VER = 0x00100101,
@@ -20925,7 +20874,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         // The target schema version does not support transport rule
+
+         // The target schema version does not support transport rule
          // machine authorization lists.
 
      FW_RULE_STATUS_SEMANTIC_ERROR_TRANSPORT_USER_AUTHZ_VER = 0x00100515,
@@ -21002,7 +20952,8 @@ Release: May 11, 2026
 
 255 / 330
 
-     FW_RULE_STATUS_SEMANTIC_ERROR_MIXED_CERTS = 0x00101061,
+
+     FW_RULE_STATUS_SEMANTIC_ERROR_MIXED_CERTS = 0x00101061,
          // Machine health certificates and regular certificates cannot both
          // be proposed within the same authentication set.
 
@@ -21077,7 +21028,8 @@ Release: May 11, 2026
 
 256 / 330
 
-     FW_RULE_STATUS_SEMANTIC_ERROR_PHASE1_CRYPTO_TIMEOUT_SESSIONS = 0x00105003,
+
+     FW_RULE_STATUS_SEMANTIC_ERROR_PHASE1_CRYPTO_TIMEOUT_SESSIONS = 0x00105003,
          // The main mode lifetime, in sessions, is invalid.
 
      FW_RULE_STATUS_SEMANTIC_ERROR_PHASE1_CRYPTO_KEY_EXCHANGE = 0x00105004,
@@ -21154,7 +21106,8 @@ Release: May 11, 2026
 
 257 / 330
 
-         // conditions array
+
+         // conditions array
 
      FW_RULE_STATUS_SEMANTIC_ERROR_QUERY_CONDITION_KEY = 0x00106002,
          // Malformed query: Invalid confition match key
@@ -21231,7 +21184,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         // The target schema version does not support package family names.
+
+         // The target schema version does not support package family names.
 
      FW_RULE_STATUS_RUNTIME_ERROR = 0x00200000,
          // A runtime error occurred while trying to enforce the rule.
@@ -21304,7 +21258,8 @@ Release: May 11, 2026
 
 259 / 330
 
- typedef enum _tag_FW_OBJECT_CTRL_FLAG
+
+ typedef enum _tag_FW_OBJECT_CTRL_FLAG
  {
      FW_OBJECT_CTRL_FLAG_INCLUDE_METADATA     = 0x0001, // Allow RPC to marshall the metadata
 pointer in the objects
@@ -21376,7 +21331,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- }FW_OS_PLATFORM, *PFW_OS_PLATFORM;
+
+ }FW_OS_PLATFORM, *PFW_OS_PLATFORM;
 
  typedef struct _tag_FW_OS_PLATFORM_LIST
  {
@@ -21451,7 +21407,8 @@ Release: May 11, 2026
 
 261 / 330
 
- {
+
+ {
      FW_RULE_FLAGS_NONE              = 0x0000,
      FW_RULE_FLAGS_ACTIVE            = 0x0001,
      FW_RULE_FLAGS_AUTHENTICATE      = 0x0002,
@@ -21528,7 +21485,8 @@ Release: May 11, 2026
 
 262 / 330
 
-         // Ports specified if wIpProtocol = 6(TCP) or 17(UDP)
+
+         // Ports specified if wIpProtocol = 6(TCP) or 17(UDP)
          [case(6,17)]
          struct
          {
@@ -21603,7 +21561,8 @@ Release: May 11, 2026
 
 263 / 330
 
-         [case(6,17)]
+
+         [case(6,17)]
          struct
          {
              FW_PORTS               LocalPorts;
@@ -21677,7 +21636,8 @@ Release: May 11, 2026
 
 264 / 330
 
-     LPWSTR          wszName;
+
+     LPWSTR          wszName;
      [string, range(1,10001)]
      LPWSTR          wszDescription;
      DWORD           dwProfiles;
@@ -21753,7 +21713,8 @@ Release: May 11, 2026
 
 265 / 330
 
-     [string, range(1,10001)]
+
+     [string, range(1,10001)]
      WCHAR*              wszLocalUserAuthorizationList;     //Authorized local users SDDL
 
      [string, range(1,10001)]
@@ -21828,7 +21789,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     FW_OS_PLATFORM_LIST PlatformValidityList;
+
+     FW_OS_PLATFORM_LIST PlatformValidityList;
 
      FW_RULE_STATUS      Status;     //Parsing error if any, filled on return. On input, set
 this to FW_RULE_STATUS_OK
@@ -21903,7 +21865,8 @@ Release: May 11, 2026
 
 267 / 330
 
-         [case(1)]
+
+         [case(1)]
          FW_ICMP_TYPE_CODE_LIST      V4TypeCodeList;
          [case(58)]
          FW_ICMP_TYPE_CODE_LIST      V6TypeCodeList;
@@ -21979,7 +21942,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- } FW_RULE2_25, *PFW_RULE2_25;
+
+ } FW_RULE2_25, *PFW_RULE2_25;
 
  typedef struct _tag_FW_RULE2_26
  {
@@ -22052,7 +22016,8 @@ Release: May 11, 2026
 
 269 / 330
 
- //    [switch_type(WORD), switch_is(wBinaryVersion)]
+
+ //    [switch_type(WORD), switch_is(wBinaryVersion)]
  //    union
  //    {
  //    [case(wBinaryVersion >= 0x0210)]
@@ -22128,7 +22093,8 @@ Release: May 11, 2026
 
 270 / 330
 
-     FW_ADDRESSES        LocalAddresses;
+
+     FW_ADDRESSES        LocalAddresses;
      FW_ADDRESSES        RemoteAddresses;
      FW_INTERFACE_LUIDS  LocalInterfaceIds;
      DWORD               dwLocalInterfaceTypes;    // Bit flags from FW_INTERFACE_TYPE
@@ -22203,7 +22169,8 @@ Release: May 11, 2026
 
 271 / 330
 
- } FW_RULE2_27, *PFW_RULE2_27;
+
+ } FW_RULE2_27, *PFW_RULE2_27;
 
  typedef struct _tag_FW_RULE2_31
  {
@@ -22279,7 +22246,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
- //    {
+
+ //    {
  //    [case(wBinaryVersion >= 0x0210)]
  //    struct
  //    {
@@ -22356,7 +22324,8 @@ Release: May 11, 2026
 
 273 / 330
 
-         FW_ICMP_TYPE_CODE_LIST      V4TypeCodeList;
+
+         FW_ICMP_TYPE_CODE_LIST      V4TypeCodeList;
          [case(58)]
          FW_ICMP_TYPE_CODE_LIST      V6TypeCodeList;
          [default]
@@ -22431,7 +22400,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     FW_NETWORK_NAMES    RemoteOutServerNames;
+
+     FW_NETWORK_NAMES    RemoteOutServerNames;
 
      [string, range(1,10001)]
      WCHAR*              wszFqbn;
@@ -22508,7 +22478,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     FW_GLOBAL_CONFIG_IPSEC_EXEMPT_ICMP               =  0x0002,
+
+     FW_GLOBAL_CONFIG_IPSEC_EXEMPT_ICMP               =  0x0002,
      FW_GLOBAL_CONFIG_IPSEC_EXEMPT_ROUTER_DISC        =  0x0004,
      FW_GLOBAL_CONFIG_IPSEC_EXEMPT_NEIGHBOR_DISC_RFC  =
          FW_GLOBAL_CONFIG_IPSEC_EXEMPT_NEIGHBOR_DISC |
@@ -22584,7 +22555,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-                                                                      //    2 - checking is
+
+                                                                      //    2 - checking is
 required and that certificate validation fails if any error is encountered
                                                                       //    during CRL
 processing.
@@ -22656,7 +22628,8 @@ Release: May 11, 2026
 
 277 / 330
 
-  *                                                      *
+
+  *                                                      *
   *  Third-party firewall products structures.
   *                                                      *
   ********************************************************/
@@ -22732,7 +22705,8 @@ Release: May 11, 2026
 
 278 / 330
 
-     FW_CS_RULE_FLAGS_KEY_MANAGER_ALLOW_DICTATE_KEY = 0x40,
+
+     FW_CS_RULE_FLAGS_KEY_MANAGER_ALLOW_DICTATE_KEY = 0x40,
      FW_CS_RULE_FLAGS_KEY_MANAGER_ALLOW_NOTIFY_KEY = 0x80,
      FW_CS_RULE_FLAGS_SECURITY_REALM              = 0x100,
      FW_CS_RULE_FLAGS_TUNNEL_TYPE_POINT_TO_SITE   = 0x200,
@@ -22808,7 +22782,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     [range(FW_RULE_ORIGIN_INVALID, FW_RULE_ORIGIN_MAX-1)]
+
+     [range(FW_RULE_ORIGIN_INVALID, FW_RULE_ORIGIN_MAX-1)]
      FW_RULE_ORIGIN_TYPE Origin;      //Rule origin, filled on enumerated rules. Ignored on
 input
      [string, range(1,10001)]
@@ -22884,7 +22859,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     [string, range(1,10001)]
+
+     [string, range(1,10001)]
      WCHAR*              wszGPOName; //Name of originating GPO, if rule origin is GP.
      FW_RULE_STATUS      Status;     //Parsing error if any, filled on return. On input, set
 this to FW_RULE_STATUS_OK
@@ -22960,7 +22936,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     DWORD               Reserved;
+
+     DWORD               Reserved;
 
      [size_is((Reserved & FW_OBJECT_CTRL_FLAG_INCLUDE_METADATA) ? 1 : 0)]
      PFW_OBJECT_METADATA pMetaData;
@@ -23033,7 +23010,8 @@ Release: May 11, 2026
 
 282 / 330
 
- cpp_quote("DEFINE_ENUM_FLAG_OPERATORS(FW_AUTH_SUITE_FLAGS);")
+
+ cpp_quote("DEFINE_ENUM_FLAG_OPERATORS(FW_AUTH_SUITE_FLAGS);")
 
  typedef struct _tag_FW_AUTH_SUITE2_10
  {
@@ -23110,7 +23088,8 @@ Release: May 11, 2026
 
 283 / 330
 
-     [string, unique]
+
+     [string, unique]
      LPWSTR wszName;
      DWORD dwNumEku;
      [size_is(dwNumEku), unique]
@@ -23187,7 +23166,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     [string, range(1,10001)]
+
+     [string, range(1,10001)]
      WCHAR*              wszName;
      [string, range(1,10001)]
      WCHAR*              wszDescription;
@@ -23263,7 +23243,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     FW_CRYPTO_KEY_EXCHANGE_DH24,
+
+     FW_CRYPTO_KEY_EXCHANGE_DH24,
      FW_CRYPTO_KEY_EXCHANGE_MAX,
      FW_CRYPTO_KEY_EXCHANGE_DH14 = FW_CRYPTO_KEY_EXCHANGE_DH2048,
      FW_CRYPTO_KEY_EXCHANGE_MAX_V2_10 = FW_CRYPTO_KEY_EXCHANGE_DH24
@@ -23334,7 +23315,8 @@ Release: May 11, 2026
 
 286 / 330
 
- typedef struct _tag_FW_PHASE2_CRYPTO_SUITE
+
+ typedef struct _tag_FW_PHASE2_CRYPTO_SUITE
  {
      [range(FW_CRYPTO_PROTOCOL_INVALID+1, FW_CRYPTO_PROTOCOL_MAX-1)]
      FW_CRYPTO_PROTOCOL_TYPE    Protocol;
@@ -23409,7 +23391,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         };
+
+         };
          [case(FW_IPSEC_PHASE_2)]
          struct
          {
@@ -23484,7 +23467,8 @@ Release: May 11, 2026
 
 288 / 330
 
-         struct
+
+         struct
          {
              FW_CERT_INFO        MyCert;
              FW_CERT_INFO        PeerCert;
@@ -23559,7 +23543,8 @@ Release: May 11, 2026
 
 289 / 330
 
-     WORD                wLocalPort;  //0 = Any
+
+     WORD                wLocalPort;  //0 = Any
      WORD                wRemotePort; //0 = Any
      WORD                wIpProtocol; //0-255 or FW_IP_PROTOCOL_ANY
 
@@ -23631,7 +23616,8 @@ Release: May 11, 2026
 
 290 / 330
 
-     WCHAR*              wszPhase1AuthSet;   // Set this to FW_DEFAULT_PHASE1_AUTH_SET to use
+
+     WCHAR*              wszPhase1AuthSet;   // Set this to FW_DEFAULT_PHASE1_AUTH_SET to use
 the default
      [string, range(1,255)]
      WCHAR*              wszPhase1CryptoSet; // Set this to FW_DEFAULT_PHASE1_CRYPTO_SET to
@@ -23706,7 +23692,8 @@ Release: May 11, 2026
 
 291 / 330
 
-        [case(FW_DATA_TYPE_UINT8)]
+
+        [case(FW_DATA_TYPE_UINT8)]
         UINT8 uInt8;
         [case(FW_DATA_TYPE_UINT16)]
         UINT16 uInt16;
@@ -23781,7 +23768,8 @@ Release: May 11, 2026
 
 292 / 330
 
- #define FW_HYPERV_VM_CONFIG_VALUE FW_HYPERV_VM_CONFIG_VALUE0
+
+ #define FW_HYPERV_VM_CONFIG_VALUE FW_HYPERV_VM_CONFIG_VALUE0
 
  #define FW_HYPERV_RULE0_SCHEMA_VERSION FW_VERSION(2,32)
  #define FW_HYPERV_RULE1_SCHEMA_VERSION FW_VERSION(2,33)
@@ -23858,7 +23846,8 @@ Release: May 11, 2026
 
 293 / 330
 
-     // Setting                                            // Type
+
+     // Setting                                            // Type
      FW_HYPERV_VM_CONFIG_INVALID,
      FW_HYPERV_VM_CONFIG_LOOPBACK_ENABLED,                 // Boolean (as DWORD)
      FW_HYPERV_VM_CONFIG_ALLOW_HOST_POLICY_MERGE,          // Boolean (as DWORD)
@@ -23934,7 +23923,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-     // This status indicates that the rule is not enforced on a port because it came from
+
+     // This status indicates that the rule is not enforced on a port because it came from
 host firewall and host firewall has a different default action
      FW_HYPERV_RULE_PORT_ENFORCEMENT_STATE_HOST_FIREWALL_DEFAULT_ACTION_CONFLICT,
      // This status indicates that the rule is not enforced on a port because it came form
@@ -24011,7 +24001,8 @@ Release: May 11, 2026
 
 295 / 330
 
-     [string, range(1,10001), ref]
+
+     [string, range(1,10001), ref]
      PWSTR ruleName;
      UINT16 priority; // if weight is 0, will be a known default based on action. Lower
 priority takes precendence over higher priority
@@ -24083,7 +24074,8 @@ Release: May 11, 2026
 
 296 / 330
 
- typedef
+
+ typedef
  handle_t FW_CONN_HANDLE;
 
  typedef
@@ -24154,7 +24146,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-    DWORD
+
+    DWORD
     RRPC_FWAddFirewallRule(
          [in] FW_CONN_HANDLE          rpcConnHandle,
          [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
@@ -24223,7 +24216,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         [in, switch_is(configID)] FW_PROFILE_CONFIG_VALUE  pConfig,
+
+         [in, switch_is(configID)] FW_PROFILE_CONFIG_VALUE  pConfig,
          [in, range(0, 10*1024)] DWORD  dwBufSize
          );
 
@@ -24292,7 +24286,8 @@ Release: May 11, 2026
 
 299 / 330
 
-         [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)] FW_IPSEC_PHASE
+
+         [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)] FW_IPSEC_PHASE
 IpSecPhase,
          [in, string, ref] LPCWSTR      wszSetId
          );
@@ -24362,7 +24357,8 @@ Release: May 11, 2026
 
 300 / 330
 
-         [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)] FW_IPSEC_PHASE
+
+         [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)] FW_IPSEC_PHASE
 IpSecPhase,
          [in] DWORD                      dwFilteredByStatus,// Bit-flags from
 FW_RULE_STATUS_CLASS
@@ -24432,7 +24428,8 @@ Release: May 11, 2026
 
 301 / 330
 
-         [in] FW_CONN_HANDLE          rpcConnHandle,
+
+         [in] FW_CONN_HANDLE          rpcConnHandle,
          [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
          [in] PFW_MM_RULE             pMMRule,
          [out] FW_RULE_STATUS *       pStatus
@@ -24502,7 +24499,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         [in] WORD                       wFlags,            // Bit-flags from
+
+         [in] WORD                       wFlags,            // Bit-flags from
 FW_ENUM_RULES_FLAGS
          [out, ref] DWORD*               pdwNumRules,
          [out] PFW_MM_RULE  *            ppMMRules
@@ -24574,7 +24572,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         [out] FW_RULE_ORIGIN_TYPE * pOrigin
+
+         [out] FW_RULE_ORIGIN_TYPE * pOrigin
          );
 
      DWORD
@@ -24644,7 +24643,8 @@ Release: May 11, 2026
 
 304 / 330
 
-     DWORD
+
+     DWORD
      RRPC_FWEnumConnectionSecurityRules2_10(
          [in] FW_CONN_HANDLE          rpcConnHandle,
          [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
@@ -24714,7 +24714,8 @@ Release: May 11, 2026
 
 305 / 330
 
-         [in] FW_POLICY_STORE_HANDLE     hPolicyStore,
+
+         [in] FW_POLICY_STORE_HANDLE     hPolicyStore,
          [in, range(FW_IPSEC_PHASE_INVALID+1, FW_IPSEC_PHASE_MAX-1)] FW_IPSEC_PHASE
 IpSecPhase,
          [in] DWORD                      dwFilteredByStatus,// Bit-flags from
@@ -24785,7 +24786,8 @@ Release: May 11, 2026
 
 306 / 330
 
-         [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
+
+         [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
          [in] PFW_AUTH_SET            pAuth,
          [out] FW_RULE_STATUS *       pStatus
          );
@@ -24856,7 +24858,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         [in] FW_POLICY_STORE_HANDLE     hPolicyStore,
+
+         [in] FW_POLICY_STORE_HANDLE     hPolicyStore,
          [in] PFW_QUERY                  pQuery,            // Query selecting the rules to
 return
          [in] WORD                       wFlags,            // Bit-flags from
@@ -24927,7 +24930,8 @@ Release: May 11, 2026
 
 308 / 330
 
-     DWORD
+
+     DWORD
      RRPC_FWEnumFirewallRules2_25(
          [in] FW_CONN_HANDLE          rpcConnHandle,
          [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
@@ -24996,7 +25000,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-    DWORD
+
+    DWORD
     RRPC_FWAddFirewallRule2_27(
          [in] FW_CONN_HANDLE          rpcConnHandle,
          [in] FW_POLICY_STORE_HANDLE  hPolicyStore,
@@ -25066,7 +25071,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-         [out, ref] DWORD            *pdwNumRules,
+
+         [out, ref] DWORD            *pdwNumRules,
          [out] PFW_RULE2_31          *ppRules
          );
 
@@ -25130,7 +25136,8 @@ Release: May 11, 2026
 
 311 / 330
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -25261,7 +25268,8 @@ Release: May 11, 2026
 
 312 / 330
 
-<1> Section 2.2.6: For Windows Vista operating system with Service Pack 1 (SP1), Windows Server
+
+<1> Section 2.2.6: For Windows Vista operating system with Service Pack 1 (SP1), Windows Server
 2008, Windows 7, and Windows Server 2008 R2 operating system, unspecified addresses are allowed.
 Unspecified addresses are also allowed on Windows Vista if the Security Update for Windows Vista
 specified in [MSKB-935807] is applied.
@@ -25342,7 +25350,8 @@ Release: May 11, 2026
 
 313 / 330
 
- FW_AUTH_SET g_DefaultPrimaryAuthSetPhase2 =
+
+ FW_AUTH_SET g_DefaultPrimaryAuthSetPhase2 =
  {
      NULL,
      0x0200,
@@ -25412,7 +25421,8 @@ Release: May 11, 2026
 
 314 / 330
 
-      FW_CRYPTO_HASH_NONE,
+
+      FW_CRYPTO_HASH_NONE,
       FW_CRYPTO_HASH_SHA1,
       FW_CRYPTO_ENCRYPTION_NONE,
       FW_DEFAULT_CRYPTO_PHASE2_TIMEOUT_MINUTES,
@@ -25484,7 +25494,8 @@ Release: May 11, 2026
 
 315 / 330
 
-<6> Section 2.2.37: Windows uses the three fields of the FW_OS_PLATFORM data type to identify
+
+<6> Section 2.2.37: Windows uses the three fields of the FW_OS_PLATFORM data type to identify
 Windows platform types. The fields in this data type correspond to the fields of the Windows
 OSVERSIONINFOEX data type (for more information, see [MSDN-OSVERSIONINFOEX]). The
 bPlatform field in this specification corresponds to the dwPlatformId field in MSDN. The
@@ -25584,7 +25595,8 @@ Release: May 11, 2026
 
 316 / 330
 
-Windows Client Release
+
+Windows Client Release
 
 Windows Server Release
 
@@ -25675,7 +25687,8 @@ Release: May 11, 2026
 
 317 / 330
 
-             .- FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_SERVER_BEHIND_NAT.
+
+             .- FW_GLOBAL_CONFIG_IPSEC_THROUGH_NAT_SERVER_BEHIND_NAT.
  FW_GLOBAL_CONFIG_POLICY_VERSION .- 0x0200.
  FW_GLOBAL_CONFIG_BINARY_VERSION_SUPPORTED .- 0x201. This value is
  present only in Windows Vista SP1 and Windows Server 2008.
@@ -25739,7 +25752,8 @@ Release: May 11, 2026
 
 318 / 330
 
-Enum Tuple Keyword Flag Name
+
+Enum Tuple Keyword Flag Name
 
 Enum Value
 
@@ -25816,7 +25830,8 @@ Release: May 11, 2026
 
 319 / 330
 
-     FW_RULE_STATUS_OK,
+
+     FW_RULE_STATUS_OK,
      0
  };
 
@@ -25888,7 +25903,8 @@ Release: May 11, 2026
 
 320 / 330
 
-      FW_DEFAULT_CRYPTO_PHASE2_TIMEOUT_MINUTES,
+
+      FW_DEFAULT_CRYPTO_PHASE2_TIMEOUT_MINUTES,
       FW_DEFAULT_CRYPTO_PHASE2_TIMEOUT_KBYTES},
      {FW_CRYPTO_PROTOCOL_AH,
       FW_CRYPTO_HASH_SHA1,
@@ -25960,7 +25976,8 @@ Release: May 11, 2026
 
 321 / 330
 
- FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS .- FALSE.
+
+ FW_PROFILE_CONFIG_DISABLE_INBOUND_NOTIFICATIONS .- FALSE.
  FW_PROFILE_CONFIG_AUTH_APPS_ALLOW_USER_PREF_MERGE .- TRUE.
  FW_PROFILE_CONFIG_GLOBAL_PORTS_ALLOW_USER_PREF_MERGE .- TRUE.
  FW_PROFILE_CONFIG_ALLOW_LOCAL_POLICY_MERGE .- TRUE.
@@ -26015,7 +26032,8 @@ Release: May 11, 2026
 
 322 / 330
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -26068,7 +26086,8 @@ Release: May 11, 2026
 
 323 / 330
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -26209,7 +26228,8 @@ FW_MATCH_VALUE structure 109
 
 324 / 330
 
-FW_MM_RULE structure 106
+
+FW_MM_RULE structure 106
 FW_NETWORK structure 68
 FW_NETWORK_NAMES structure 115
 FW_OBJECT_CTRL_FLAG enumeration 45
@@ -26376,7 +26396,8 @@ Methods
 
 325 / 330
 
-   RRPC_FWEnumFirewallRules2_33 (Opnum 93) 230
+
+   RRPC_FWEnumFirewallRules2_33 (Opnum 93) 230
    RRPC_FWEnumMainModeRules (Opnum 36) 171
    RRPC_FWEnumNetworks (Opnum 42) 176
    RRPC_FWEnumPhase1SAs (Opnum 27) 164
@@ -26532,7 +26553,8 @@ Relationship to other protocols 16
 
 326 / 330
 
-RRPC_FWAddAuthenticationSet (Opnum 17) method
+
+RRPC_FWAddAuthenticationSet (Opnum 17) method
 
 RRPC_FWDeleteAllMainModeRules (Opnum 35)
 
@@ -26751,7 +26773,8 @@ Firewall and Advanced Security Protocol
 Copyright © 2026 Microsoft Corporation
 Release: May 11, 2026
 
-RRPC_FWEnumFirewallRules2_31 (Opnum 88)
+
+RRPC_FWEnumFirewallRules2_31 (Opnum 88)
 
 method 226
 
@@ -26960,7 +26983,8 @@ Server
 
 328 / 330
 
-   RRPC_FWAddAuthenticationSet (Opnum 17)
+
+   RRPC_FWAddAuthenticationSet (Opnum 17)
 
    RRPC_FWEnumAuthenticationSets2_20 (Opnum
 
@@ -27213,7 +27237,8 @@ Release: May 11, 2026
 
 329 / 330
 
-   RRPC_FWQueryFirewallRules2_27 (Opnum 85)
+
+   RRPC_FWQueryFirewallRules2_27 (Opnum 85)
 
 method 223
 

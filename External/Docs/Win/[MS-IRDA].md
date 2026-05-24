@@ -63,7 +63,8 @@ Release: June 25, 2021
 
 1 / 22
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: June 25, 2021
 
 2 / 22
 
-Date
+
+Date
 
 Revision
 History
@@ -493,145 +495,64 @@ Release: June 25, 2021
 
 3 / 22
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Header Types](#221-header-types)
+      - [2.2.1.1 Win32 Error Message Header](#2211-win32-error-message-header)
+    - [2.2.2 Message Types](#222-message-types)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receiving a CONNECT Message](#3151-receiving-a-connect-message)
+      - [3.1.5.2 Sending a CONNECT Response Message](#3152-sending-a-connect-response-message)
+      - [3.1.5.3 Receiving a PUT Message](#3153-receiving-a-put-message)
+      - [3.1.5.4 Sending a PUT Response Message](#3154-sending-a-put-response-message)
+      - [3.1.5.5 Receiving a GET Message](#3155-receiving-a-get-message)
+      - [3.1.5.6 Receiving a SETPATH Message](#3156-receiving-a-setpath-message)
+      - [3.1.5.7 Sending a SETPATH Response Message](#3157-sending-a-setpath-response-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Sending a CONNECT Message](#3251-sending-a-connect-message)
+      - [3.2.5.2 Sending a PUT Message](#3252-sending-a-put-message)
+      - [3.2.5.3 Receiving a PUT Response Message](#3253-receiving-a-put-response-message)
+      - [3.2.5.4 Receiving a SETPATH Response Message](#3254-receiving-a-setpath-response-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 8
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-Header Types ............................................................................................... 9
-Win32 Error Message Header .................................................................... 9
-Message Types ........................................................................................... 10
-
-2.2.1.1
-
-2.2.1
-
-2.2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-
-3  Protocol Details ..................................................................................................... 11
-Server Details .................................................................................................. 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Processing Events and Sequencing Rules ....................................................... 11
-Receiving a CONNECT Message ............................................................... 11
-Sending a CONNECT Response Message .................................................. 11
-Receiving a PUT Message ....................................................................... 12
-Sending a PUT Response Message ........................................................... 12
-Receiving a GET Message ....................................................................... 12
-Receiving a SETPATH Message ................................................................ 12
-Sending a SETPATH Response Message ................................................... 12
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-Client Details ................................................................................................... 12
-Abstract Data Model .................................................................................... 12
-Timers ...................................................................................................... 13
-Initialization ............................................................................................... 13
-Higher-Layer Triggered Events ..................................................................... 13
-Processing Events and Sequencing Rules ....................................................... 13
-Sending a CONNECT Message ................................................................. 13
-Sending a PUT Message ......................................................................... 13
-Receiving a PUT Response Message ......................................................... 13
-Receiving a SETPATH Response Message ................................................. 14
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 15
-
-5  Security ................................................................................................................. 16
-Security Considerations for Implementers ........................................................... 16
-Index of Security Parameters ............................................................................ 16
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 17
-
-4 / 22
-
-[MS-IRDA] - v20210625
-IrDA Object Exchange (OBEX) Protocol Profile
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-7  Change Tracking .................................................................................................... 20
-
-8  Index ..................................................................................................................... 21
-
-[MS-IRDA] - v20210625
-IrDA Object Exchange (OBEX) Protocol Profile
-Copyright © 2021 Microsoft Corporation
-Release: June 25, 2021
-
-5 / 22
-
-1  Introduction
+## 1 Introduction
 
 The Infrared Data Association (IrDA) Object Exchange (OBEX) Protocol specified in [IROBEX] is a
 binary protocol that enables transfer of opaque data objects via the Infrared link. A major use of
@@ -648,7 +569,7 @@ information is included in the appropriate sections of this specification.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -683,7 +604,7 @@ TinyTP: Infrared Data Association Tiny Transport Protocol, as specified in [IRTT
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -697,7 +618,8 @@ Release: June 25, 2021
 
 6 / 22
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -730,11 +652,11 @@ Note There is a charge to download the specification.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 The Infrared Data Association (IrDA) Object Exchange (OBEX) Protocol is specified by the Infrared
 Data Association in [IROBEX]. The primary use of the protocol is to connect two devices by using an
@@ -764,21 +686,22 @@ IrDA Object Exchange (OBEX) Protocol Profile
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-behaviors (such as pull operations) are not. For implementation-specific behavior with this profile, see
+
+behaviors (such as pull operations) are not. For implementation-specific behavior with this profile, see
 Appendix A.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This profile does not introduce any new dependencies on lower layer or parallel protocols beyond
 those specified in [IROBEX] section 1.3.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Although not explicitly specified in [IROBEX], as part of the initialization an IrOBEX server registers a
 service access point (SAP) with the Information Access Service (IAS), as specified in [IRLMP]
 section 3.1.2, for clients to be able to discover the service provided by the server.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The applicability of this profile is limited in the following ways:
 
@@ -793,12 +716,12 @@ IrOBEX authentication as specified in [IROBEX] section 3.5. The reasons for this
 specified in sections 3.1.5 and 3.2.5. In brief, this profile does not implement the authentication
 sequence as specified in [IROBEX] section 3.5.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This profile does not introduce any new versioning issues. This profile is based on version 1.0 of the
 IrDA OBEX Protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 Portions of this profile use Win32 error codes. These values are taken from the error number space
 specified in [MS-ERREF]. Vendors SHOULD reuse those values with their indicated meaning. Choosing
@@ -813,7 +736,7 @@ previous specific UUID in a WHO header, as specified in section 2.2.1.1, in addi
 error codes as specified in [IROBEX] section 3.2.1. The effect of using this UUID in a WHO header is
 specified in section 3.1.5 and section 3.2.5.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments other than what is specified in [IROBEX] section 6.
 
@@ -824,17 +747,18 @@ Release: June 25, 2021
 
 8 / 22
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All IrOBEX messages are transported over TinyTP, as specified in [IROBEX] section 1.4.1.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message syntax remains unchanged and is as specified in [IROBEX] sections 3.1 and 3.2.
 
-2.2.1  Header Types
+#### 2.2.1 Header Types
 
 Information about how a custom IrOBEX header can be constructed and used is specified in [IROBEX]
 sections 2.1 and 2.2.12. The custom header used in this protocol profile, section 3, is specified in
@@ -843,7 +767,7 @@ section 2.2.1.1.
 Beyond this, the header types and syntax remain unchanged and is as specified in [IROBEX] section
 2.1.
 
-2.2.1.1  Win32 Error Message Header
+##### 2.2.1.1 Win32 Error Message Header
 
 The custom IrOBEX header "Win32 Error Message", referred to in the rest of this document as the
 WIN32ERR header, is defined following the semantics specified in [IROBEX] section 2.2.12. The
@@ -898,11 +822,12 @@ Release: June 25, 2021
 
 9 / 22
 
-Additional headers or request data (variable): This variable length segment contains the rest of
+
+Additional headers or request data (variable): This variable length segment contains the rest of
 
 the IrOBEX message, as specified in [IROBEX] sections 3.1 and 3.2.
 
-2.2.2  Message Types
+#### 2.2.2 Message Types
 
 The message types and syntax remain unchanged and are as specified in [IROBEX] section 3.
 
@@ -913,15 +838,16 @@ Release: June 25, 2021
 
 10 / 22
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The protocol details for both client and server are specified in [IROBEX]. The purpose of this section is
 to provide a context for implementation-specific notes about the client and server sides of the IrDA
 OBEX Protocol profile.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -931,24 +857,24 @@ document.
 
 No state is necessary other than that specified in [IROBEX] section 2.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No new timers are required beyond those in the base protocol, as specified in [IROBEX] section 3.4.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No initialization is necessary other than that specified in [IROBEX].<3>
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are required other than those specified in [IROBEX].
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 Message processing events MUST remain the same as specified in [IROBEX] section 3, except as
 described in this section.<4>
 
-3.1.5.1  Receiving a CONNECT Message
+##### 3.1.5.1 Receiving a CONNECT Message
 
 CONNECT messages MUST be parsed as specified in [IROBEX] section 3.3.1. Optional headers MAY
 be parsed as specified in [IROBEX] section 2.1.<5> As a result of this message, the server MUST
@@ -958,7 +884,7 @@ respond with a CONNECT Response message as specified in section 3.1.5.2.<6>
 header. This profile does not use or rely on the TARGET header and instead relies only on the WHO
 header for identification of the IrOBEX client type.
 
-3.1.5.2  Sending a CONNECT Response Message
+##### 3.1.5.2 Sending a CONNECT Response Message
 
 A CONNECT Response message MUST be sent as specified in [IROBEX] section 3.3.1.8. If the
 CONNECT message contained a WHO header carrying a UUID, section 1.8, the CONNECT
@@ -972,7 +898,8 @@ Release: June 25, 2021
 
 11 / 22
 
-3.1.5.3  Receiving a PUT Message
+
+##### 3.1.5.3 Receiving a PUT Message
 
 A PUT message MUST be handled as specified in [IROBEX] section 3.3.3. Optional headers MAY be
 parsed as specified in [IROBEX] section 2.1.
@@ -982,7 +909,7 @@ operations without first requiring a CONNECT operation by assuming default value
 parameters." This profile does not support acceptance of PUT operations without the required
 CONNECT operation.<7>
 
-3.1.5.4  Sending a PUT Response Message
+##### 3.1.5.4 Sending a PUT Response Message
 
 A PUT Response message MUST be sent as specified in [IROBEX] section 3.3.3.2. When the PUT
 Response returns an IrOBEX error response code, the message is processed as follows: If the PUT
@@ -990,35 +917,35 @@ Response message was preceded by a CONNECT - CONNECT Response exchange containin
 UUID, section 1.8, in a WHO header, then the PUT Response message will contain the WIN32ERR
 header, section 2.2.1.1.
 
-3.1.5.5  Receiving a GET Message
+##### 3.1.5.5 Receiving a GET Message
 
 This profile does not support processing of GET messages. Implementations of this profile discard the
 GET message by responding with a "Not implemented" IrOBEX response code (0xD1), as specified in
 section 3.2.1.
 
-3.1.5.6  Receiving a SETPATH Message
+##### 3.1.5.6 Receiving a SETPATH Message
 
 A SETPATH message MUST be handled as specified in [IROBEX] section 3.3.6.
 
-3.1.5.7  Sending a SETPATH Response Message
+##### 3.1.5.7 Sending a SETPATH Response Message
 
 A SETPATH Response message MUST be sent as specified in [IROBEX] section 3.3.6. If the
 SETPATH message was preceded by a CONNECT - CONNECT Response exchange that contained a
 WHO header carrying the UUID, section 1.8, this profile requires the WIN32ERR header to be
 appended to the SETPATH Response message, as specified in section 2.2.1.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No new timer events are required beyond those in the base protocol, as specified in [IROBEX] section
 3.4.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1035,13 +962,14 @@ IrDA Object Exchange (OBEX) Protocol Profile
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-No other state is necessary other than that specified in [IROBEX] section 2.
 
-3.2.2  Timers
+No other state is necessary other than that specified in [IROBEX] section 2.
+
+#### 3.2.2 Timers
 
 No new timers are required beyond those in the base protocol, as specified in [IROBEX] section 3.4.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 No initialization is necessary other than that specified in [IROBEX].
 
@@ -1051,16 +979,16 @@ name "OBEX" or "OBEX:IrXfer", attribute "IrDA:TinyTP:LsapSel", as specified in [
 The client MUST initiate the TinyTP connection to the Link Service Access Point Selector (LSAP-
 SEL) value returned by the server, as specified in [IRTTP] section 2.2.1.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are required other than those specified in [IROBEX].
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 Message processing events remain the same as specified in [IROBEX] section 3, except as described in
 this section.
 
-3.2.5.1  Sending a CONNECT Message
+##### 3.2.5.1 Sending a CONNECT Message
 
 The CONNECT message MUST be sent as specified in [IROBEX] section 3.3.1. Optional headers MAY
 be sent as specified in [IROBEX] section 2.1.
@@ -1071,7 +999,7 @@ This profile uses the following values and optional headers in a CONNECT message
 
   WHO header carrying the UUID as defined in section 1.8
 
-3.2.5.2  Sending a PUT Message
+##### 3.2.5.2 Sending a PUT Message
 
 The PUT message MUST be sent as specified in [IROBEX] section 3.3.3. Optional headers MAY be sent
 as specified in [IROBEX] section 2.1.
@@ -1084,7 +1012,7 @@ This profile sends the following optional headers in a PUT message:
 
   TIME header: [ISO-8601] time format is used, as specified in [IROBEX] section 2.2.5.
 
-3.2.5.3  Receiving a PUT Response Message
+##### 3.2.5.3 Receiving a PUT Response Message
 
 The PUT Response message MUST be handled as specified in [IROBEX] section 3.3.3.2.
 
@@ -1099,19 +1027,20 @@ IrDA Object Exchange (OBEX) Protocol Profile
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-2.2.1.1. Implementations of this profile MUST ABORT the transfer as defined in [IROBEX] if error
+
+2.2.1.1. Implementations of this profile MUST ABORT the transfer as defined in [IROBEX] if error
 codes that are not equal to zero are present in the WIN32ERR header.
 
-3.2.5.4  Receiving a SETPATH Response Message
+##### 3.2.5.4 Receiving a SETPATH Response Message
 
 A SETPATH Response message MUST be handled as specified in [IROBEX] section 3.3.6.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No new timer events are required beyond those in the base protocol as specified in [IROBEX] section
 3.4.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1122,7 +1051,8 @@ Release: June 25, 2021
 
 14 / 22
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 Protocol examples are specified in [IROBEX] section 7.
 
@@ -1133,9 +1063,10 @@ Release: June 25, 2021
 
 15 / 22
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol profile does not implement any security function specified in [IROBEX]. Specifically, it
 does not support the authentication challenge as specified in [IROBEX] section 2.2.13.
@@ -1147,7 +1078,7 @@ potential security issues.
 Protocol implementers need to consider allowing users to turn off the functionality provided by this
 protocol profile.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1158,7 +1089,8 @@ Release: June 25, 2021
 
 16 / 22
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1236,7 +1168,8 @@ IrDA Object Exchange (OBEX) Protocol Profile
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-4.  A CONNECT request is received and there is an error while creating a base file reception
+
+4.  A CONNECT request is received and there is an error while creating a base file reception
 
 directory that does not already exist.
 
@@ -1315,7 +1248,8 @@ IrDA Object Exchange (OBEX) Protocol Profile
 Copyright © 2021 Microsoft Corporation
 Release: June 25, 2021
 
-  NAME header
+
+  NAME header
 
   LENGTH header
 
@@ -1328,7 +1262,8 @@ Release: June 25, 2021
 
 19 / 22
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1365,7 +1300,8 @@ Release: June 25, 2021
 
 20 / 22
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1495,7 +1431,8 @@ Sending
 
 21 / 22
 
-   CONNECT message 13
+
+   CONNECT message 13
    CONNECT Response message 11
    PUT message 13
    PUT Response message 12

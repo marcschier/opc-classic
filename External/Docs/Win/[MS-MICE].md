@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 48
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -136,221 +137,98 @@ Release: April 23, 2024
 
 2 / 48
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Source Ready Message](#221-source-ready-message)
+    - [2.2.2 Stop Projection Message](#222-stop-projection-message)
+    - [2.2.3 Security Handshake Message](#223-security-handshake-message)
+    - [2.2.4 Session Request Message](#224-session-request-message)
+    - [2.2.5 PIN Challenge Message](#225-pin-challenge-message)
+    - [2.2.6 PIN Response Message](#226-pin-response-message)
+    - [2.2.7 Miracast TLVs](#227-miracast-tlvs)
+      - [2.2.7.1 Friendly Name TLV](#2271-friendly-name-tlv)
+      - [2.2.7.2 RTSP Port TLV](#2272-rtsp-port-tlv)
+      - [2.2.7.3 Source ID TLV](#2273-source-id-tlv)
+      - [2.2.7.4 Security Token TLV](#2274-security-token-tlv)
+      - [2.2.7.5 Security Options TLV](#2275-security-options-tlv)
+      - [2.2.7.6 PIN Challenge TLV](#2276-pin-challenge-tlv)
+      - [2.2.7.7 PIN Response Reason TLV](#2277-pin-response-reason-tlv)
+    - [2.2.8 Vendor Extension Attribute](#228-vendor-extension-attribute)
+      - [2.2.8.1 Capability Attribute](#2281-capability-attribute)
+      - [2.2.8.2 Host Name Attribute](#2282-host-name-attribute)
+      - [2.2.8.3 BSSID Attribute](#2283-bssid-attribute)
+      - [2.2.8.4 Connection Preference Attribute](#2284-connection-preference-attribute)
+      - [2.2.8.5 IP Address Attribute](#2285-ip-address-attribute)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Miracast Sink Details](#31-miracast-sink-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Receive Probe Request](#3151-receive-probe-request)
+      - [3.1.5.2 Receive Connection Request](#3152-receive-connection-request)
+      - [3.1.5.3 Receive Source Ready Message](#3153-receive-source-ready-message)
+      - [3.1.5.4 Receive Session Request Message](#3154-receive-session-request-message)
+      - [3.1.5.5 Receive Security Handshake Message](#3155-receive-security-handshake-message)
+      - [3.1.5.6 Receive PIN Challenge Message](#3156-receive-pin-challenge-message)
+        - [3.1.5.6.1 Computing the PIN](#31561-computing-the-pin)
+      - [3.1.5.7 Receive Stop Projection Message](#3157-receive-stop-projection-message)
+      - [3.1.5.8 Receive Unexpected Message on TCP Port 7250](#3158-receive-unexpected-message-on-tcp-port-7250)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 RTSP Connection is successfully established](#3171-rtsp-connection-is-successfully-established)
+      - [3.1.7.2 RTSP Connection fails](#3172-rtsp-connection-fails)
+  - [3.2 Miracast Source Details](#32-miracast-source-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Discovery](#3241-discovery)
+      - [3.2.4.2 PIN Entry](#3242-pin-entry)
+      - [3.2.4.3 Disconnect Request](#3243-disconnect-request)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receive Beacon with Vendor Extension Attribute](#3251-receive-beacon-with-vendor-extension-attribute)
+      - [3.2.5.2 Receive Probe Response with Vendor Extension Attribute](#3252-receive-probe-response-with-vendor-extension-attribute)
+      - [3.2.5.3 Host Name Resolution Complete](#3253-host-name-resolution-complete)
+      - [3.2.5.4 Miracast Connection Complete](#3254-miracast-connection-complete)
+      - [3.2.5.5 Receive Security Handshake Message](#3255-receive-security-handshake-message)
+      - [3.2.5.6 Receive PIN Response Message](#3256-receive-pin-response-message)
+      - [3.2.5.7 RTSP Connection Accepted](#3257-rtsp-connection-accepted)
+      - [3.2.5.8 Receive Unexpected Message on TCP Port 7250](#3258-receive-unexpected-message-on-tcp-port-7250)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Connection Establishment Failure](#3271-connection-establishment-failure)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Vendor Extension Attribute Example](#41-vendor-extension-attribute-example)
+  - [4.2 Source Ready Message Example](#42-source-ready-message-example)
+  - [4.3 Stop Projection Message Example](#43-stop-projection-message-example)
+  - [4.4 Security Handshake Message Example](#44-security-handshake-message-example)
+  - [4.5 Session Request Message Example](#45-session-request-message-example)
+  - [4.6 PIN Challenge Message Example](#46-pin-challenge-message-example)
+  - [4.7 PIN Response Message Example](#47-pin-response-message-example)
+- [5 Security Considerations](#5-security-considerations)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Source Ready Message ................................................................................ 13
-Stop Projection Message .............................................................................. 13
-Security Handshake Message ....................................................................... 14
-Session Request Message ............................................................................ 14
-PIN Challenge Message ............................................................................... 15
-PIN Response Message ................................................................................ 15
-Miracast TLVs ............................................................................................. 16
-Friendly Name TLV ................................................................................ 17
-RTSP Port TLV ...................................................................................... 17
-Source ID TLV ...................................................................................... 17
-Security Token TLV ............................................................................... 18
-Security Options TLV ............................................................................. 18
-PIN Challenge TLV ................................................................................. 19
-PIN Response Reason TLV ...................................................................... 19
-Vendor Extension Attribute .......................................................................... 20
-Capability Attribute ............................................................................... 20
-Host Name Attribute .............................................................................. 21
-BSSID Attribute .................................................................................... 21
-Connection Preference Attribute .............................................................. 22
-IP Address Attribute .............................................................................. 22
-
-2.2.7.1
-2.2.7.2
-2.2.7.3
-2.2.7.4
-2.2.7.5
-2.2.7.6
-2.2.7.7
-
-2.2.8.1
-2.2.8.2
-2.2.8.3
-2.2.8.4
-2.2.8.5
-
-2.2.8
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 24
-Miracast Sink Details ........................................................................................ 27
-Abstract Data Model .................................................................................... 27
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 30
-Message Processing Events and Sequencing Rules .......................................... 30
-Receive Probe Request .......................................................................... 30
-Receive Connection Request ................................................................... 31
-Receive Source Ready Message .............................................................. 31
-Receive Session Request Message ........................................................... 31
-Receive Security Handshake Message ...................................................... 31
-Receive PIN Challenge Message .............................................................. 32
-Computing the PIN .......................................................................... 32
-Receive Stop Projection Message ............................................................ 33
-Receive Unexpected Message on TCP Port 7250 ........................................ 33
-Timer Events .............................................................................................. 33
-Other Local Events ...................................................................................... 33
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-
-3.1.5.7
-3.1.5.8
-
-3.1.6
-3.1.7
-
-3.1.5.6.1
-
-[MS-MICE] - v20240423
-Miracast over Infrastructure Connection Establishment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 48
-
-3.2
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.1.7.1
-3.1.7.2
-
-RTSP Connection is successfully established ............................................. 33
-RTSP Connection fails ............................................................................ 33
-Miracast Source Details ..................................................................................... 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 36
-Initialization ............................................................................................... 36
-Higher-Layer Triggered Events ..................................................................... 36
-Discovery ............................................................................................. 36
-PIN Entry ............................................................................................. 36
-Disconnect Request ............................................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 36
-Receive Beacon with Vendor Extension Attribute ....................................... 36
-Receive Probe Response with Vendor Extension Attribute ........................... 37
-Host Name Resolution Complete ............................................................. 37
-Miracast Connection Complete ................................................................ 37
-Receive Security Handshake Message ...................................................... 38
-Receive PIN Response Message .............................................................. 38
-RTSP Connection Accepted ..................................................................... 39
-Receive Unexpected Message on TCP Port 7250 ........................................ 39
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-Connection Establishment Failure ............................................................ 39
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-
-3.2.7.1
-
-3.2.6
-3.2.7
-
-4  Protocol Examples ................................................................................................. 40
-Vendor Extension Attribute Example ................................................................... 40
-Source Ready Message Example ........................................................................ 40
-Stop Projection Message Example ...................................................................... 40
-Security Handshake Message Example ................................................................ 41
-Session Request Message Example ..................................................................... 41
-PIN Challenge Message Example ........................................................................ 41
-PIN Response Message Example ........................................................................ 41
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security Considerations ......................................................................................... 43
-
-6  Appendix A: Product Behavior ............................................................................... 44
-
-7  Change Tracking .................................................................................................... 46
-
-8  Index ..................................................................................................................... 47
-
-[MS-MICE] - v20240423
-Miracast over Infrastructure Connection Establishment Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 48
-
-1  Introduction
+## 1 Introduction
 
 The Miracast over Infrastructure Connection Establishment Protocol specifies a connection negotiation
 sequence that is used to connect and disconnect from a Miracast over Infrastructure device.
@@ -361,7 +239,7 @@ attribute to advertise a receiver (Sink) that can support Miracast over infrastr
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -420,7 +298,8 @@ Release: April 23, 2024
 
 5 / 48
 
-Internet Protocol version 6 (IPv6): A revised version of the Internet Protocol (IP) designed to
+
+Internet Protocol version 6 (IPv6): A revised version of the Internet Protocol (IP) designed to
 address growth on the Internet. Improvements include a 128-bit IP address size, expanded
 routing capabilities, and support for authentication and privacy.
 
@@ -497,17 +376,18 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
+
+MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -562,7 +442,8 @@ Release: April 23, 2024
 
 7 / 48
 
-[RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
+
+[RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
 [WF-DTS1.1] Wi-Fi Alliance, "Wi-Fi Display Technical Specification v1.1", April 2014, https://www.wi-
@@ -580,7 +461,7 @@ Note There is a charge to download the specification.
 
 Note There is a charge to download the specification.
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IEEE-OUI] IEEE Standards Association, "IEEE MAC Address Block Large (MA-L) Field Registration
 Authority Public Listing", http://standards-oui.ieee.org/oui/oui.txt
@@ -590,7 +471,7 @@ https://www.wi-fi.org/file/wi-fi-display-technical-specification-v21
 
 Note Registration is required to download the document.
 
-1.3  Overview
+### 1.3 Overview
 
 The Miracast over Infrastructure protocol provides the ability to transmit a multimedia data stream
 over a local wireless network instead of Wi-Fi Direct (WFD). The process of such transmission is
@@ -616,7 +497,8 @@ Release: April 23, 2024
 
 8 / 48
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-MICE].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -629,7 +511,8 @@ Release: April 23, 2024
 
 9 / 48
 
-A Miracast over Infrastructure session consists of three phases: device discovery, host name
+
+A Miracast over Infrastructure session consists of three phases: device discovery, host name
 resolution, and projection.
 
 The device discovery phase starts with a Miracast Source trying to find devices capable of performing
@@ -651,7 +534,7 @@ In the projection phase, the Source attempts a connection to the Sink for sendin
 Infrastructure messages (section 2.2). Finally, the Sink establishes a connection with the Source for
 streaming multimedia data. If that connection cannot be established, the entire process fails.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Miracast over Infrastructure protocol builds upon the following standard technologies.
 
@@ -671,7 +554,7 @@ The Miracast over Infrastructure protocol builds upon the following standard tec
 
   Wi-Fi Simple Configuration (WSC) Protocol [WF-WSC2.0.2]
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Miracast over Infrastructure has the following prerequisites and preconditions.
 
@@ -685,7 +568,7 @@ can establish a local network connection.
 Either the Sink is on the same logical IP subnet as the Source, or the Sink's name is
 registered in a DNS server that the Source can resolve to.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Miracast over Infrastructure is applicable to streaming audio and video content from one device to
 another, such as PC to large-screen TV, PC to PC, phone to PC, and so on.
@@ -700,17 +583,18 @@ Release: April 23, 2024
 
 10 / 48
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 Versioning and capability negotiation are performed by using Vendor Extension attributes (section
 2.2.8). The Sink advertises its capabilities and the highest version it supports, and the Source can
 choose any version and capabilities that are supported by both the Source and the Sink.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The Miracast over Infrastructure protocol uses the following standard port assignments.
 
@@ -733,14 +617,15 @@ Release: April 23, 2024
 
 11 / 48
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Miracast over Infrastructure messages (section 2.2) are sent over TCP port 7250 to manage the
 multimedia stream.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 In the structures defined in this section, multi-byte field values are ordered in big-endian format,
 unless specified otherwise, and string values do not include NUL terminators.
@@ -849,7 +734,8 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1  Source Ready Message
+
+#### 2.2.1 Source Ready Message
 
 The Source Ready message is sent by the Miracast Source to the Miracast Sink when the Source has
 started listening on the RTSP port and is ready to accept an incoming connection on it.
@@ -894,7 +780,7 @@ was sent)
 
   Source ID TLV (section 2.2.7.3)
 
-2.2.2  Stop Projection Message
+#### 2.2.2 Stop Projection Message
 
 The Stop Projection message is sent by the Miracast Source to notify the Miracast Sink that the
 projection is being stopped.
@@ -941,9 +827,10 @@ Release: April 23, 2024
 
 13 / 48
 
-  Source ID TLV (section 2.2.7.3)
 
-2.2.3  Security Handshake Message
+  Source ID TLV (section 2.2.7.3)
+
+#### 2.2.3 Security Handshake Message
 
 The Security Handshake message is sent by Miracast Sources and Miracast Sinks to carry a DTLS
 handshake message payload.
@@ -983,7 +870,7 @@ TLVArray (variable): The following TLVs, included in any order:
 
   Source ID TLV (section 2.2.7.3) (optional)
 
-2.2.4  Session Request Message
+#### 2.2.4 Session Request Message
 
 The Session Request message is sent by a Miracast Source to a Miracast Sink when the Source
 determines that the Sink supports PIN entry and the Source chooses to initiate the connection using
@@ -1028,7 +915,8 @@ Release: April 23, 2024
 
 14 / 48
 
-
+
+
 
 Friendly Name TLV (section 2.2.7.1)
 
@@ -1036,7 +924,7 @@ Friendly Name TLV (section 2.2.7.1)
 
   Security Options TLV (section 2.2.7.5)
 
-2.2.5  PIN Challenge Message
+#### 2.2.5 PIN Challenge Message
 
 The PIN Challenge message is sent by a Miracast Source to a Miracast Sink when using PIN entry to
 initiate the connection. This message is sent after the DTLS handshake has completed and the user
@@ -1079,7 +967,7 @@ TLVArray (variable): The following TLVs, included in any order:
 
 PIN Challenge TLV (section 2.2.7.6)
 
-2.2.6  PIN Response Message
+#### 2.2.6 PIN Response Message
 
 The PIN Response message is sent by a Miracast Sink to a Miracast Source in response to a PIN
 Challenge message. This message indicates to the Source whether the PIN in the challenge message
@@ -1119,7 +1007,8 @@ Release: April 23, 2024
 
 15 / 48
 
-Command (1 byte): The type of message, which is 0x06 for PIN_RESPONSE.
+
+Command (1 byte): The type of message, which is 0x06 for PIN_RESPONSE.
 
 TLVArray (variable): The following TLVs, included in any order:
 
@@ -1133,7 +1022,7 @@ PIN Challenge TLV (section 2.2.7.6)
 
 PIN Response Reason TLV (section 2.2.7.7)
 
-2.2.7  Miracast TLVs
+#### 2.2.7 Miracast TLVs
 
 This section defines common type-length-value (TLV) structures that are used to pass information
 in messages during a Miracast session. This is the general format for the TLVs:
@@ -1241,7 +1130,8 @@ Release: April 23, 2024
 
 16 / 48
 
-2.2.7.1  Friendly Name TLV
+
+##### 2.2.7.1 Friendly Name TLV
 
 The Friendly Name TLV specifies the friendly name of the Miracast Source in messages to the
 Miracast Sink.
@@ -1273,7 +1163,7 @@ Length (2 bytes): The length of the Value field, in bytes. The maximum length is
 
 Value (variable): The friendly name string of the Source, encoded in UTF-16.
 
-2.2.7.2  RTSP Port TLV
+##### 2.2.7.2 RTSP Port TLV
 
 The RTSP Port TLV specifies the port on which the Miracast Source is listening. The port is used in
 messages for connecting sessions over RTSP.
@@ -1303,7 +1193,7 @@ Length (2 bytes): The length of the Value field, in bytes, which is 0x0002.
 
 Value (2 bytes): The RTSP port on which the Source is listening (7236 by default).
 
-2.2.7.3  Source ID TLV
+##### 2.2.7.3 Source ID TLV
 
 The Source ID TLV specifies a unique identifier for the Miracast Source. That identifier is used in all
 messages sent during a session.
@@ -1338,7 +1228,8 @@ Release: April 23, 2024
 
 17 / 48
 
-...
+
+...
 
 Type (1 byte): The type of TLV, which is 0x03 for the Source ID TLV.
 
@@ -1346,7 +1237,7 @@ Length (2 bytes): The length of the Value field, in bytes, which is 0x0010.
 
 Value (16 bytes): An implementation-defined value that identifies the Source.
 
-2.2.7.4  Security Token TLV
+##### 2.2.7.4 Security Token TLV
 
 The Security Token TLV contains DTLS handshake messages as specified in [RFC6347].
 
@@ -1377,7 +1268,7 @@ Length (2 bytes): The length of the Value field, in bytes.
 
 Value (variable): DTLS Handshake message payload.
 
-2.2.7.5  Security Options TLV
+##### 2.2.7.5 Security Options TLV
 
 The Security Options TLV contains flags indicating how the connection will proceed.
 
@@ -1431,9 +1322,10 @@ Release: April 23, 2024
 
 18 / 48
 
-The remaining bits are reserved and MUST be set to 0 by the sender and ignored by the receiver.
 
-2.2.7.6  PIN Challenge TLV
+The remaining bits are reserved and MUST be set to 0 by the sender and ignored by the receiver.
+
+##### 2.2.7.6 PIN Challenge TLV
 
 The PIN Challenge TLV contains a salted and hashed value for the session PIN. The hashing is
 specified in section 3.1.5.6.1.
@@ -1465,7 +1357,7 @@ Length (2 bytes): The length of the Value field, in bytes.
 
 Value (variable): The hash of the salted PIN.
 
-2.2.7.7  PIN Response Reason TLV
+##### 2.2.7.7 PIN Response Reason TLV
 
 The PIN Response Reason TLV indicates the result of the PIN exchange.
 
@@ -1523,7 +1415,8 @@ Release: April 23, 2024
 
 19 / 48
 
-2.2.8  Vendor Extension Attribute
+
+#### 2.2.8 Vendor Extension Attribute
 
 The Vendor Extension attribute is a WSC information element (IE) structure that is used by a
 Miracast Sink to publish peer to peer (P2P) attribute structures defined by the Miracast over
@@ -1566,7 +1459,7 @@ P2PATTB (variable): One or more of the P2P attribute structures defined in the s
 
 Attributes can be included in any order.
 
-2.2.8.1  Capability Attribute
+##### 2.2.8.1 Capability Attribute
 
 The Capability attribute indicates whether a connection over Miracast over Infrastructure is possible.
 This attribute MUST be present in the Vendor Extension attribute.
@@ -1624,14 +1517,15 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-C - Version (3 bits): The version of this protocol, which is 0x1.
+
+C - Version (3 bits): The version of this protocol, which is 0x1.
 
 D - PinSupported (1 bit): 0 = not supported, 1 = supported. Bit B MUST be set to 1 in order to
 set this to 1, otherwise it is implicitly set to 0.
 
 X - Reserved (2 bits): These bits MUST be set to zero and MUST be ignored on receipt.
 
-2.2.8.2  Host Name Attribute
+##### 2.2.8.2 Host Name Attribute
 
 The Host Name attribute specifies the Miracast Sink host name. This attribute MUST be present
 exactly once in the Vendor Extension attribute.
@@ -1665,7 +1559,7 @@ HostName (variable): The Miracast Sink host name string, encoded in ASCII. The h
 fully qualified. A Sink having a host name that contains the period ('.') character MUST NOT be
 used for Miracast over Infrastructure connections.
 
-2.2.8.3  BSSID Attribute
+##### 2.2.8.3 BSSID Attribute
 
 The BSSID attribute specifies the basic service set identifier (BSSID) for the 802.11 Access
 Point (AP) [IEEE802.11-2012] associated with the wireless network. This attribute is optional in the
@@ -1703,7 +1597,8 @@ Release: April 23, 2024
 
 21 / 48
 
-2.2.8.4  Connection Preference Attribute
+
+##### 2.2.8.4 Connection Preference Attribute
 
 The Connection Preference attribute indicates the preference of transports for the connection of the
 Miracast Sink to the Miracast Source. The Sink MAY include a Connection Preference attribute in the
@@ -1776,7 +1671,7 @@ over WFD.
 
 0
 
-2.2.8.5  IP Address Attribute
+##### 2.2.8.5 IP Address Attribute
 
 The IP Address attribute specifies an IP address of the Miracast Sink. This attribute can occur zero or
 more times in the Vendor Extension attribute. The set of IP addresses included in the Vendor
@@ -1813,7 +1708,8 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Length (2 bytes): The length of the IPAddress field, in bytes.
+
+Length (2 bytes): The length of the IPAddress field, in bytes.
 
 IPAddress (variable): An IP address string, encoded in ASCII. The supported address formats
 
@@ -1826,11 +1722,12 @@ Release: April 23, 2024
 
 23 / 48
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-MICE].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 A Miracast over Infrastructure session consists of three phases: device discovery, host name
 resolution, and projection, as shown in the following diagram.
@@ -1865,7 +1762,8 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The host name received by the Source during device discovery specifies the unqualified host name of
+
+The host name received by the Source during device discovery specifies the unqualified host name of
 the target Sink. The Source tries to resolve this host name by using DNS [IANA-DNS] [RFC1034]
 [RFC2181] and/or mDNS [RFC6762].
 
@@ -1893,7 +1791,8 @@ Release: April 23, 2024
 
 25 / 48
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-MICE].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1911,7 +1810,8 @@ Release: April 23, 2024
 
 26 / 48
 
-The Source will either begin at the Session Request step, Security Handshake step, or Begin Session
+
+The Source will either begin at the Session Request step, Security Handshake step, or Begin Session
 step, depending on what it supports and what support was indicated by the sink in the Vendor Specific
 attribute.
 
@@ -1948,9 +1848,9 @@ message to notify the Source of a graceful teardown of the session. Upon receipt
 Source stops sending RTP/RTSP frames, and a disconnection follows on the socket that is connected
 on port 7250.
 
-3.1  Miracast Sink Details
+### 3.1 Miracast Sink Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
  This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1979,7 +1879,8 @@ Release: April 23, 2024
 
 27 / 48
 
-  State: The current state of the connection establishment protocol, as defined in the diagram
+
+  State: The current state of the connection establishment protocol, as defined in the diagram
 
 below. Defaults to not connected.
 
@@ -2000,7 +1901,8 @@ Release: April 23, 2024
 
 28 / 48
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MICE].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -2013,7 +1915,8 @@ Release: April 23, 2024
 
 29 / 48
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 The Miracast Sink uses the following timers:
 
@@ -2027,7 +1930,7 @@ not used.
 Security Handshake Message Timer: This timer is used to limit the time to wait for a response to a
 DTLS handshake message. The timeout is 1 second.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Upon initialization, the Miracast Sink MUST register the following service instance name ([RFC6763]
 section 4.1) with the Sink's local mDNS implementation.
@@ -2053,16 +1956,16 @@ set according to the functionality that the Sink supports. The Sink SHOULD<2> su
 StreamSecuritySupported functionality.  Sinks that support the StreamSecuritySupported
 functionality SHOULD<3> also support the PinSupported functionality.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 When the higher-layer application or protocol requests to disconnect the Miracast connection, the Sink
 MUST send the Stop Projection message (section 2.2.2) to the Source to stop the projection of the
 multimedia data stream. After sending this message, the Sink MUST close the RTSP and TCP port
 7250 session.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Receive Probe Request
+##### 3.1.5.1 Receive Probe Request
 
 When a Miracast Sink receives a Probe Request message, the Sink MUST send a Probe Response
 message [WF-P2P1.2] and include a WSC IE [WF-WSC2.0.2] Vendor Extension attribute (section
@@ -2076,7 +1979,8 @@ Release: April 23, 2024
 
 30 / 48
 
-3.1.5.2  Receive Connection Request
+
+##### 3.1.5.2 Receive Connection Request
 
 When a Miracast Sink receives a new TCP connection attempt on port 7250, but it already has a TCP
 connection established, the Sink SHOULD reject the new connection request, but it MAY close the
@@ -2084,13 +1988,13 @@ existing TCP connection instead and accept the new one.<4> The Sink MUST enter t
 Connected state (section 3.1.1) and wait for the next message. The Sink MUST begin the Session
 Establishment Timer.
 
-3.1.5.3  Receive Source Ready Message
+##### 3.1.5.3 Receive Source Ready Message
 
 When a Miracast Sink receives a Source Ready message (section 2.2.1) while it is in the Socket
 Connected, Session Requested, DTLS Handshake Complete, or PIN Challenge state (section 3.1.1), it
 MUST connect back to the Source over TCP on the RTSP port specified in the message.
 
-3.1.5.4  Receive Session Request Message
+##### 3.1.5.4 Receive Session Request Message
 
 When a Miracast Sink receives a Session Request message (section 2.2.4), it MUST parse the Security
 Options TLV (section 2.2.7.5), store the Security Options (section 3.1.1), and determine the next
@@ -2100,7 +2004,7 @@ state (section 3.1.1). If the Security Options also indicate SinkDisplaysPin (se
 Sink included this bit in its capabilities, then the Sink MUST randomly generate and display an 8 digit
 numeric PIN.
 
-3.1.5.5  Receive Security Handshake Message
+##### 3.1.5.5 Receive Security Handshake Message
 
 When a Miracast Sink receives a Security Handshake message (section 2.2.3) and one of the following
 is true, it MUST proceed to complete the DTLS handshake procedure:
@@ -2142,7 +2046,8 @@ Release: April 23, 2024
 
 31 / 48
 
-3.1.5.6  Receive PIN Challenge Message
+
+##### 3.1.5.6 Receive PIN Challenge Message
 
 When the Miracast Sink receives a PIN Challenge message (section 2.2.7.6) and it is in the Waiting for
 PIN state (section 3.1.1), it MUST validate that the PIN Challenge TLV (section 2.2.7.6) contains the
@@ -2162,7 +2067,7 @@ Response message containing the PIN Response Reason 0x01 and no PIN Challenge TL
 In all other cases, the Sink MUST respond with a PIN Response message containing the PIN Response
 Reason 0x02 and MUST tear down the connection on TCP port 7250.
 
-3.1.5.6.1 Computing the PIN
+###### 3.1.5.6.1 Computing the PIN
 
 When a PIN is exchanged in the PIN Challenge (section 2.2.5) or PIN Response (section 2.2.6)
 messages, it MUST be encoded and hashed using the following format.
@@ -2213,23 +2118,24 @@ Release: April 23, 2024
 
 32 / 48
 
-3.1.5.7  Receive Stop Projection Message
+
+##### 3.1.5.7 Receive Stop Projection Message
 
 When a Miracast Sink receives a Stop Projection message (section 2.2.2), it MUST stop displaying the
 stream.
 
-3.1.5.8  Receive Unexpected Message on TCP Port 7250
+##### 3.1.5.8 Receive Unexpected Message on TCP Port 7250
 
 When the Miracast Sink receives an unknown message type or a message type that is not expected
 based on its current state (as defined in section 3.1.1 or in a subsection under 3.1.5), it MUST tear
 down the connection on TCP port 7250.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 If either of the Miracast Sink timers (section 3.1.2) reaches its timeout, the Sink MUST tear down the
 connection on TCP port 7250.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 If the RTSP connection receives a teardown message as it does in standard Miracast, or if the
 connection to the Source is lost, or if the TCP port 7250 connection is lost, the Sink MUST close its
@@ -2239,7 +2145,7 @@ If any global configuration from section 3.1.1 is changed, then the new configur
 future connections and the initialization step MUST be repeated. Any existing connections SHOULD be
 terminated but an implementation MAY leave the sessions connected.
 
-3.1.7.1  RTSP Connection is successfully established
+##### 3.1.7.1 RTSP Connection is successfully established
 
 When the Miracast Sink connects back to the Source over TCP on the RTSP port, the Sink MUST stop
 the Session Establishment Timer.
@@ -2256,14 +2162,14 @@ Encryption Key.
 The UIBC Input Body of the UIBC payload MUST be encrypted by the Sink and decrypted by the
 Source using the DTLS Encryption Key.
 
-3.1.7.2  RTSP Connection fails
+##### 3.1.7.2 RTSP Connection fails
 
 When the Miracast Sink fails to connect to the Source over TCP on the RTSP port, it MUST tear down
 the connection on TCP port 7250.
 
-3.2  Miracast Source Details
+### 3.2 Miracast Source Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2278,7 +2184,8 @@ Release: April 23, 2024
 
 33 / 48
 
-Source ID: A Source ID TLV (section 2.2.7.3) is maintained throughout the lifetime of the Miracast
+
+Source ID: A Source ID TLV (section 2.2.7.3) is maintained throughout the lifetime of the Miracast
 session. It is included in all Miracast messages (section 2.2) to identify the Miracast Source.
 
 Sink Capabilities: The data within a Capability attribute (section 2.2.8.1) received from a Sink is
@@ -2302,7 +2209,8 @@ Release: April 23, 2024
 
 34 / 48
 
-<!-- Extracted images from page 35 -->
+
+<!-- Extracted images from page 35 -->
 ![Extracted image 1 from page 35]([MS-MICE].images/page035-img01.png)
 <!-- /Extracted images from page 35 -->
 
@@ -2315,7 +2223,8 @@ Release: April 23, 2024
 
 35 / 48
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 This Miracast Source uses the following timers.
 
@@ -2328,32 +2237,32 @@ for the Sink to connect to it before giving up and falling back to standard Mira
 Security Handshake Message Timer: This timer is used to limit the time to wait for a response to a
 DTLS handshake message. The timeout is 1 second.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The Source ID TLV (section 2.2.7.3) of the abstract data model (section 3.2.1) is initialized to an
 implementation-dependent value.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Discovery
+##### 3.2.4.1 Discovery
 
 When a higher-layer application requests discovery of Miracast Sinks, the Miracast Source MUST send
 a standard Probe Request to Miracast Sinks within range, as specified in [WF-P2P1.2].
 
-3.2.4.2  PIN Entry
+##### 3.2.4.2 PIN Entry
 
 When a higher-layer application provides a PIN value, the Miracast Source MUST set its PIN (section
 3.2.1) to that value. The Source must wait for the DTLS Handshake to complete if it has not already.
 
-3.2.4.3  Disconnect Request
+##### 3.2.4.3 Disconnect Request
 
 When the higher-layer application or protocol requests to disconnect the Miracast connection, the
 Source MUST send the Stop Projection message (section 2.2.2) to the Sink to stop the projection of
 the multimedia data stream. After sending this message, the Source MUST close the TCP session
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receive Beacon with Vendor Extension Attribute
+##### 3.2.5.1 Receive Beacon with Vendor Extension Attribute
 
 When a Miracast Source receives a Beacon message that includes a Vendor Extension Attribute
 (section 2.2.8), it MUST read the Capability attribute (section 2.2.8.1), and store this information in
@@ -2381,11 +2290,12 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Begin host name resolution on the name in the Host Name Attribute (section 2.2.8.2),
+
+2.  Begin host name resolution on the name in the Host Name Attribute (section 2.2.8.2),
 
 using DNS and/or mDNS, the choice of which is implementation-specific.<7>
 
-3.2.5.2  Receive Probe Response with Vendor Extension Attribute
+##### 3.2.5.2 Receive Probe Response with Vendor Extension Attribute
 
 When a Miracast Source receives a Probe Response message that includes a Vendor Extension
 Attribute (section 2.2.8), the Source MUST store the Capability attribute (section 2.2.8.1), which
@@ -2396,7 +2306,7 @@ If Miracast over Infrastructure is supported by the Sink, the Source MUST perfor
 specified in section 3.2.5.1, as if it had received a Beacon message indicating that the Sink supports
 Miracast over Infrastructure.
 
-3.2.5.3  Host Name Resolution Complete
+##### 3.2.5.3 Host Name Resolution Complete
 
 When a Miracast Source obtains a set of one or more IP addresses of the Miracast Sink, the Source
 MUST do the following.
@@ -2411,7 +2321,7 @@ specific<8> time unless it receives a connection over the RTSP control channel.
 
 a Sink IP address is implementation-specific.<9>
 
-3.2.5.4  Miracast Connection Complete
+##### 3.2.5.4 Miracast Connection Complete
 
 When the connection to the Sink over TCP port 7250 fails, the Source MUST do the following:
 
@@ -2455,9 +2365,10 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Send a Source Ready message (section 2.2.1) over the TCP session.
 
-3.2.5.5  Receive Security Handshake Message
+2.  Send a Source Ready message (section 2.2.1) over the TCP session.
+
+##### 3.2.5.5 Receive Security Handshake Message
 
 When the Miracast Source receives a Security Handshake message (section 2.2.3) and it is in the
 Security Handshake state of the connection flow but not yet complete (section 3.2.1), it MUST proceed
@@ -2494,7 +2405,7 @@ If PIN entry is not set in Selected Sink Capabilities (section 3.2.1):
 
 2.  Send a Source Ready message (section 2.2.1) over the TCP session.
 
-3.2.5.6  Receive PIN Response Message
+##### 3.2.5.6 Receive PIN Response Message
 
 When a Miracast Source receives a PIN Response Message (section 2.2.6) after sending a PIN
 Challenge Message, it MUST validate the message first. If the PIN Response Reason TLV (section
@@ -2524,9 +2435,10 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Fall back to using standard Miracast [WF-WSC2.0.2].
 
-3.2.5.7  RTSP Connection Accepted
+2.  Fall back to using standard Miracast [WF-WSC2.0.2].
+
+##### 3.2.5.7 RTSP Connection Accepted
 
 When a Miracast Sink accepts an RTSP connection, the Miracast Source MUST do the following.
 
@@ -2548,7 +2460,7 @@ Encryption Key.
 The UIBC Input Body of the UIBC payload MUST be encrypted by the Sink and decrypted by the
 Source using the DTLS Encryption Key.
 
-3.2.5.8  Receive Unexpected Message on TCP Port 7250
+##### 3.2.5.8 Receive Unexpected Message on TCP Port 7250
 
 When the Miracast Source receives an unknown message type or a message type that is not expected,
 it MUST do the following.
@@ -2559,7 +2471,7 @@ the Sink and deleting its state.
 
 2.  Fall back to using standard Miracast [WF-WSC2.0.2].
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 If any of the Miracast Source timers (section 3.2.2) reaches its timeout, the Source MUST do the
 following.
@@ -2570,11 +2482,11 @@ the Sink and deleting its state.
 
 2.  Fall back to using standard Miracast [WF-WSC2.0.2].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.2.7.1  Connection Establishment Failure
+##### 3.2.7.1 Connection Establishment Failure
 
 If the connection fails at any point in the previous sections, the Source SHOULD fall back to standard
 Miracast or MAY fail the entire connection attempt<12>.
@@ -2586,11 +2498,12 @@ Release: April 23, 2024
 
 39 / 48
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 The following sections describe examples of Miracast over Infrastructure structures, which were taken
 from network captures of the protocol.
 
-4.1  Vendor Extension Attribute Example
+### 4.1 Vendor Extension Attribute Example
 
 This is an example of the Vendor Extension attribute (section 2.2.8).
 
@@ -2606,7 +2519,7 @@ This is an example of the Vendor Extension attribute (section 2.2.8).
 00 0F       // Length (15 bytes)
 44 75 6D 6D 79 31 2D 4B 61 62 79 6C 61 6B 65 // "Dummy1-Kabylake"
 
-4.2  Source Ready Message Example
+### 4.2 Source Ready Message Example
 
 This is an example of the Source Ready message (section 2.2.1).
 
@@ -2627,7 +2540,7 @@ This is an example of the Source Ready message (section 2.2.1).
 00 10       // Length (16 bytes)
 91 F4 AB E9 EF F5 46 4A AE E2 69 72 2A ED 11 B5 // Source ID
 
-4.3  Stop Projection Message Example
+### 4.3 Stop Projection Message Example
 
 This is an example of the Stop Projection message (section 2.2.2).
 
@@ -2651,7 +2564,8 @@ Release: April 23, 2024
 
 40 / 48
 
-4.4  Security Handshake Message Example
+
+### 4.4 Security Handshake Message Example
 
 This is an example of the Security Handshake message (section 2.2.3).
 
@@ -2664,7 +2578,7 @@ This is an example of the Security Handshake message (section 2.2.3).
 
 …      // DTLS Handshake Payload
 
-4.5  Session Request Message Example
+### 4.5 Session Request Message Example
 
 This is an example of the Session Request message (section 2.2.4).
 
@@ -2685,7 +2599,7 @@ This is an example of the Session Request message (section 2.2.4).
 00 10       // Length (16 bytes)
 91 F4 AB E9 EF F5 46 4A AE E2 69 72 2A ED 11 B5 // Source ID
 
-4.6  PIN Challenge Message Example
+### 4.6 PIN Challenge Message Example
 
 This is an example of the PIN Challenge message (section 2.2.5).
 
@@ -2701,7 +2615,7 @@ This is an example of the PIN Challenge message (section 2.2.5).
 00 10       // Length (16 bytes)
 91 F4 AB E9 EF F5 46 4A AE E2 69 72 2A ED 11 B5 // Source ID
 
-4.7  PIN Response Message Example
+### 4.7 PIN Response Message Example
 
 This is an example of the PIN Response message (section 2.2.6).
 
@@ -2720,7 +2634,8 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-F3 AF D8 60 A4 5E F1 37 ED 25 79 15 A8 BB 2D F7
+
+F3 AF D8 60 A4 5E F1 37 ED 25 79 15 A8 BB 2D F7
 07          // PIN Response Reason TLV
 00 01       // Length (1 byte)
 00          // Success
@@ -2732,7 +2647,8 @@ Release: April 23, 2024
 
 42 / 48
 
-5  Security Considerations
+
+## 5 Security Considerations
 
 A Miracast over Infrastructure session can be encrypted using DTLS encryption of the projection if it is
 supported by both the Source and Sink. Alternatively, it should be used only when security is provided
@@ -2746,7 +2662,8 @@ Release: April 23, 2024
 
 43 / 48
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2816,7 +2733,8 @@ Miracast over Infrastructure Connection Establishment Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<10> Section 3.2.5.4: On Windows 10 v1703 through Windows 10 v1803 the Source implementation
+
+<10> Section 3.2.5.4: On Windows 10 v1703 through Windows 10 v1803 the Source implementation
 does not support stream encryption.
 
 <11> Section 3.2.5.4: On Windows 10 v1703 through Windows 10 v1803 the Source implementation
@@ -2838,7 +2756,8 @@ Release: April 23, 2024
 
 45 / 48
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2882,7 +2801,8 @@ Release: April 23, 2024
 
 46 / 48
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3015,7 +2935,8 @@ Release: April 23, 2024
 
 47 / 48
 
-   normative 7
+
+   normative 7
 Relationship to other protocols 10
 RTSP Port TLV 17
 

@@ -63,7 +63,8 @@ Release: September 12, 2018
 
 1 / 39
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -283,7 +284,8 @@ Release: September 12, 2018
 
 2 / 39
 
-Date
+
+Date
 
 Revision
 History
@@ -338,194 +340,84 @@ Release: September 12, 2018
 
 3 / 39
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Role of Web Services on Devices (WSD)](#131-role-of-web-services-on-devices-wsd)
+    - [1.3.2 Role of the PeerGroup](#132-role-of-the-peergroup)
+    - [1.3.3 High Level Homegroup Events](#133-high-level-homegroup-events)
+      - [1.3.3.1 Creating a Homegroup](#1331-creating-a-homegroup)
+      - [1.3.3.2 Discovering and Joining the Homegroup](#1332-discovering-and-joining-the-homegroup)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 WSD Messages](#221-wsd-messages)
+      - [2.2.1.1 HomeGroup Invitation](#2211-homegroup-invitation)
+      - [2.2.1.2 Shared Printer](#2212-shared-printer)
+    - [2.2.2 PeerGroup Messages](#222-peergroup-messages)
+      - [2.2.2.1 HomeGroup Member Info](#2221-homegroup-member-info)
+      - [2.2.2.2 HomeGroup Record](#2222-homegroup-record)
+        - [2.2.2.2.1 HomeGroup Credentials](#22221-homegroup-credentials)
+        - [2.2.2.2.2 HomeGroup User Info Record](#22222-homegroup-user-info-record)
+          - [2.2.2.2.2.1 UserTileData Structure](#222221-usertiledata-structure)
+          - [2.2.2.2.2.2 PictureElement Structure](#222222-pictureelement-structure)
+          - [2.2.2.2.2.3 PictureFormatName Structure](#222223-pictureformatname-structure)
+          - [2.2.2.2.2.4 PictureFormatSource Structure](#222224-pictureformatsource-structure)
+          - [2.2.2.2.2.5 PictureFormatData Structure](#222225-pictureformatdata-structure)
+        - [2.2.2.2.3 HomeGroup MAC Address](#22223-homegroup-mac-address)
+        - [2.2.2.2.4 Data Protection Listener](#22224-data-protection-listener)
+        - [2.2.2.2.5 HomeGroup Signing Key](#22225-homegroup-signing-key)
+          - [2.2.2.2.5.1 RSAKeyBlob Structure](#222251-rsakeyblob-structure)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Homegroup Member Details](#31-homegroup-member-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Creating the Homegroup](#3141-creating-the-homegroup)
+      - [3.1.4.2 Joining the Homegroup](#3142-joining-the-homegroup)
+      - [3.1.4.3 Departing the Homegroup](#3143-departing-the-homegroup)
+      - [3.1.4.4 Changing the Homegroup Password](#3144-changing-the-homegroup-password)
+      - [3.1.4.5 Message Signing and Encryption](#3145-message-signing-and-encryption)
+        - [3.1.4.5.1 Encryption Key](#31451-encryption-key)
+        - [3.1.4.5.2 Public/Private Signing Keys](#31452-publicprivate-signing-keys)
+        - [3.1.4.5.3 WSD Hash](#31453-wsd-hash)
+        - [3.1.4.5.4 Printer Messages](#31454-printer-messages)
+        - [3.1.4.5.5 Encrypting HomeGroup Credentials, Signing Key and MAC Address](#31455-encrypting-homegroup-credentials-signing-key-and-mac-address)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 HomeGroup Invitation Messages](#3151-homegroup-invitation-messages)
+      - [3.1.5.2 Printer Messages](#3152-printer-messages)
+      - [3.1.5.3 HomeGroup Credentials and Signing Key Messages](#3153-homegroup-credentials-and-signing-key-messages)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 HomeGroup Invitation](#41-homegroup-invitation)
+  - [4.2 HomeGroup Member Info](#42-homegroup-member-info)
+  - [4.3 HomeGroup Credentials](#43-homegroup-credentials)
+  - [4.4 HomeGroup User Info](#44-homegroup-user-info)
+  - [4.5 HomeGroup MAC Address](#45-homegroup-mac-address)
+  - [4.6 Data Protection Listener](#46-data-protection-listener)
+  - [4.7 HomeGroup Signing Key](#47-homegroup-signing-key)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Role of Web Services on Devices (WSD) .......................................................... 8
-Role of the PeerGroup ................................................................................... 8
-High Level Homegroup Events ........................................................................ 9
-Creating a Homegroup ............................................................................. 9
-Discovering and Joining the Homegroup ..................................................... 9
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ..................................................................................... 9
-Standards Assignments ..................................................................................... 10
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.3.1
-1.3.3.2
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.1.1
-2.2.1.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-WSD Messages ........................................................................................... 11
-HomeGroup Invitation ........................................................................... 11
-Shared Printer ...................................................................................... 12
-PeerGroup Messages ................................................................................... 13
-HomeGroup Member Info ....................................................................... 13
-HomeGroup Record ............................................................................... 14
-HomeGroup Credentials ................................................................... 15
-HomeGroup User Info Record ............................................................ 15
-UserTileData Structure ............................................................... 17
-PictureElement Structure ............................................................ 18
-PictureFormatName Structure...................................................... 18
-PictureFormatSource Structure .................................................... 19
-PictureFormatData Structure ....................................................... 19
-HomeGroup MAC Address ................................................................. 20
-Data Protection Listener ................................................................... 20
-HomeGroup Signing Key................................................................... 21
-RSAKeyBlob Structure ................................................................ 23
-
-2.2.2.2.2.1
-2.2.2.2.2.2
-2.2.2.2.2.3
-2.2.2.2.2.4
-2.2.2.2.2.5
-
-2.2.2.2.3
-2.2.2.2.4
-2.2.2.2.5
-
-2.2.2.2.1
-2.2.2.2.2
-
-2.2.2.2.5.1
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 26
-Homegroup Member Details .............................................................................. 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 26
-Higher-Layer Triggered Events ..................................................................... 26
-Creating the Homegroup ........................................................................ 26
-Joining the Homegroup .......................................................................... 27
-Departing the Homegroup ...................................................................... 27
-Changing the Homegroup Password ........................................................ 28
-Message Signing and Encryption ............................................................. 28
-Encryption Key ................................................................................ 28
-Public/Private Signing Keys ............................................................... 28
-WSD Hash ...................................................................................... 28
-Printer Messages ............................................................................. 29
-Encrypting HomeGroup Credentials, Signing Key and MAC Address ........ 29
-
-3.1.4.5.1
-3.1.4.5.2
-3.1.4.5.3
-3.1.4.5.4
-3.1.4.5.5
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-
-[MS-HGRP] - v20180912
-HomeGroup Protocol
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-4 / 39
-
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.6
-3.1.7
-
-Processing Events and Sequencing Rules ....................................................... 29
-HomeGroup Invitation Messages ............................................................. 29
-Printer Messages ................................................................................... 29
-HomeGroup Credentials and Signing Key Messages ................................... 29
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-
-4  Protocol Examples ................................................................................................. 30
-HomeGroup Invitation ...................................................................................... 30
-HomeGroup Member Info .................................................................................. 31
-HomeGroup Credentials .................................................................................... 31
-HomeGroup User Info ....................................................................................... 31
-HomeGroup MAC Address.................................................................................. 32
-Data Protection Listener .................................................................................... 32
-HomeGroup Signing Key ................................................................................... 32
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-
-5  Security ................................................................................................................. 34
-Security Considerations for Implementers ........................................................... 34
-Index of Security Parameters ............................................................................ 34
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 35
-
-7  Change Tracking .................................................................................................... 37
-
-8  Index ..................................................................................................................... 38
-
-[MS-HGRP] - v20180912
-HomeGroup Protocol
-Copyright © 2018 Microsoft Corporation
-Release: September 12, 2018
-
-5 / 39
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the HomeGroup Protocol, which is used to create a trust relationship that
 facilitates the advertising and publishing of content between machines via a peer-to-peer (P2P)
@@ -534,7 +426,7 @@ infrastructure.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -596,7 +488,8 @@ Release: September 12, 2018
 
 6 / 39
 
-Rivest-Shamir-Adleman (RSA): A system for public key cryptography. RSA is specified in
+
+Rivest-Shamir-Adleman (RSA): A system for public key cryptography. RSA is specified in
 
 [RFC8017].
 
@@ -622,14 +515,14 @@ wireless access point (WAP): A wireless network access server (NAS) that impleme
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -668,7 +561,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-[PKCS1] RSA Laboratories, "PKCS #1: RSA Cryptography Standard", PKCS #1, Version 2.1, June
+
+[PKCS1] RSA Laboratories, "PKCS #1: RSA Cryptography Standard", PKCS #1, Version 2.1, June
 2002, http://www.emc.com/emc-plus/rsa-labs/standards-initiatives/pkcs-rsa-cryptography-
 standard.htm
 
@@ -692,7 +586,7 @@ RFC 3513, April 2003, https://www.rfc-editor.org/info/rfc3513
 Recommendation for Block Cipher Modes of Operation: Methods and Techniques", December 2001,
 https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [HomeGroupOvw] Microsoft Corporation, "HomeGroup Overview", October 2009,
 http://download.microsoft.com/download/8/4/D/84DDB871-DE0B-44FD-85B2-
@@ -701,7 +595,7 @@ http://download.microsoft.com/download/8/4/D/84DDB871-DE0B-44FD-85B2-
 [MS-OLEPS] Microsoft Corporation, "Object Linking and Embedding (OLE) Property Set Data
 Structures".
 
-1.3  Overview
+### 1.3 Overview
 
 The HomeGroup Protocol is used to create a trust relationship that facilitates the advertising and
 publishing of content between machines via a peer-to-peer infrastructure.<1><2> This relationship
@@ -709,13 +603,13 @@ is achieved with the use of Web Services on Devices (WSD) and a PeerGroup infras
 There is no client-server relationship in this protocol; in order to participate in a homegroup, all
 machines implement the protocol in the same manner. For more information, see [HomeGroupOvw].
 
-1.3.1  Role of Web Services on Devices (WSD)
+#### 1.3.1 Role of Web Services on Devices (WSD)
 
 WSD is used to publish messages that are discoverable to all machines on the subnet. These
 messages include the HomeGroup Invitation (section 2.2.1.1) and Shared Printer (section 2.2.1.2)
 messages.
 
-1.3.2  Role of the PeerGroup
+#### 1.3.2 Role of the PeerGroup
 
 The PeerGroup is used as a secure line of communication between homegroup members.
 
@@ -726,9 +620,10 @@ Release: September 12, 2018
 
 8 / 39
 
-1.3.3  High Level Homegroup Events
 
-1.3.3.1  Creating a Homegroup
+#### 1.3.3 High Level Homegroup Events
+
+##### 1.3.3.1 Creating a Homegroup
 
 A machine that attempts to create a homegroup accomplishes this by first creating a PeerGroup,
 which is the secure peer-to-peer connection through which the homegroup is synchronized, as
@@ -737,13 +632,13 @@ secure the homegroup. Once the PeerGroup has been created, this first machine pu
 invitation to the homegroup via WSD, which allows new machines on the subnet to discover the
 homegroup.
 
-1.3.3.2  Discovering and Joining the Homegroup
+##### 1.3.3.2 Discovering and Joining the Homegroup
 
 A machine detects that there is a homegroup on the subnet by receiving a HomeGroup Invitation
 message (section 2.2.1.1) over WSD. With the invitation and the correct homegroup password, the
 machine is able to join the PeerGroup, and by extension, the homegroup.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on [DPWS] to enable the discovery of a homegroup on the subnet, and [MS-
 PPSEC] to create a PeerGroup for communication between members of the homegroup. These two
@@ -753,7 +648,7 @@ relationship hierarchy.
 This protocol also requires that all machines implement the Internet protocol version 6 (IPv6)
 protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol include those for the WSD, as described in [DPWS], and PeerGroup,
 as described in [MS-PPSEC].
@@ -768,18 +663,18 @@ The underlying PeerGroup is restricted to machines on the same subnet.
 
 the cryptography technology defined in section 3.1.4.5.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The HomeGroup Protocol specifies a protocol for the creation of a trust relationship that facilitates the
 advertisement and publishing of content between machines on the same subnet.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document describes version 1 of this protocol, therefore there are no issues with capability
 negotiation. This protocol does provide versioning capability within the HomeGroup Record message
 (section 2.2.2.2) in both the <SOURCEOS> and <VERSION> elements.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -790,7 +685,8 @@ Release: September 12, 2018
 
 9 / 39
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -801,28 +697,29 @@ Release: September 12, 2018
 
 10 / 39
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Transport for this protocol is achieved through two channels: the PeerGroup and WSD, both of which
 are independent of the other. WSD is used to publish messages that are available to all machines on
 the subnet. The PeerGroup is used for sending secure communication between members of the
 homegroup.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All messages are generated in XML format. The following sections use the terminology sections, keys,
 and values to specify concrete syntax for each message. This specification uses globally unique
 identifiers (GUIDs), as specified in [MS-DTYP] section 2.3.4.3.
 
-2.2.1  WSD Messages
+#### 2.2.1 WSD Messages
 
 All messages described in this section MUST be transported using WSD and published to the local
 subnet. The HomeGroup Protocol uses WSD messages to advertise the presence of a homegroup, as
 well as shared resources on the home network.
 
-2.2.1.1  HomeGroup Invitation
+##### 2.2.1.1 HomeGroup Invitation
 
 The HomeGroup Invitation message is used to advertise the presence of the homegroup to other
 machines on the home network and to provide the required details to allow them to join that
@@ -867,7 +764,8 @@ Release: September 12, 2018
 
 11 / 39
 
- </xs:schema>
+
+ </xs:schema>
 
 INVITATION: The actual invitation from the PeerGroup. The format for this message and the manner
 in which it is generated is described in [MS-PPSEC].
@@ -907,7 +805,7 @@ DIGITALHASH: The values contained in the <NETWORKNAME> (if not empty), <GUIDNAME
 then signed using the homegroup signing keys. The signing and hashing process is described in
 section 3.1.4.5.3.
 
-2.2.1.2  Shared Printer
+##### 2.2.1.2 Shared Printer
 
 The Shared Printer message is used to advertise printers that are installed on the advertising machine.
 It is serialized into an XML string and then published on the local subnet using WSD. This message
@@ -934,7 +832,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-               <xs:element name="Name" type="xs:string" minOccurs="1" />
+
+               <xs:element name="Name" type="xs:string" minOccurs="1" />
              </xs:sequence>
            </xs:complexType>
          </xs:element>
@@ -948,13 +847,13 @@ RPRN] section 2.2.4.14.
 
 This message is signed and encoded before being sent, as described in section 3.1.4.5.4.
 
-2.2.2  PeerGroup Messages
+#### 2.2.2 PeerGroup Messages
 
 All messages described in this section MUST be transported using PeerGroup. PeerGroup messages
 are used for secure communication between members of the homegroup. All messages sent via the
 PeerGroup are converted to binary before being sent.
 
-2.2.2.1  HomeGroup Member Info
+##### 2.2.2.1 HomeGroup Member Info
 
 HomeGroup Member Info messages are used to broadcast a homegroup member's machine name
 and Peer ID.
@@ -1002,7 +901,8 @@ Release: September 12, 2018
 
 13 / 39
 
-RECORDID: A GUID-formatted string. This element SHOULD be an all null GUID formatted as:
+
+RECORDID: A GUID-formatted string. This element SHOULD be an all null GUID formatted as:
 {00000000-0000-0000-0000-000000000000}. This element can be populated with another GUID-
 formatted string, but it MUST contain a value.
 
@@ -1018,7 +918,7 @@ property.name: The name of the property contained in the <property> element.
 property.value: The value of the property contained in the <property> element, the data type of
 which is specified in the <property.type> element.<4>
 
-2.2.2.2  HomeGroup Record
+##### 2.2.2.2 HomeGroup Record
 
 The HomeGroup Record format is the base data structure that is used by the PeerGroup messages
 described in this section. Each subtype of message uses the HomeGroup Record to contain its relevant
@@ -1072,7 +972,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-FLAGS: MUST be set to 0 for all messages.
+
+FLAGS: MUST be set to 0 for all messages.
 
 SOURCEOS: This value identifies the source operating system. In the current version of this protocol,
 this value SHOULD be set to 100728832 for all messages.
@@ -1087,7 +988,7 @@ PEERID: The PeerID of the machine that creates the record [MS-PPSEC].
 HOMEGROUP_DATA: This element is used to transmit the data of the message subtypes and is
 populated by individual messages.
 
-2.2.2.2.1 HomeGroup Credentials
+###### 2.2.2.2.1 HomeGroup Credentials
 
 HomeGroup Credentials messages are used to synchronize homegroup credentials that are common
 to all homegroup members. This message contains the common credential name, its password, and its
@@ -1128,7 +1029,7 @@ PASSWORD: The binary version of the encrypted password, as described in section 
 ACCOUNTCREATED: The Int64 representation of a FILETIME structure that represents the creation
 time of the account described in [MS-FSCC]. The value is the same for all homegroup members.
 
-2.2.2.2.2 HomeGroup User Info Record
+###### 2.2.2.2.2 HomeGroup User Info Record
 
 HomeGroup User Info records<6> are used to broadcast information about each user on the machine
 to other machines in the homegroup. Each user account on each homegroup machine has a separate,
@@ -1144,7 +1045,8 @@ Release: September 12, 2018
 
 15 / 39
 
-       xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-
+
+       xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-
 com:xml-msdata">
      <xs:element name="propertyStore">
        <xs:complexType>
@@ -1248,7 +1150,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-FMTID
+
+FMTID
 
 Description
 
@@ -1332,7 +1235,7 @@ No
 
 (0x001F)
 
-2.2.2.2.2.1  UserTileData Structure
+###### 2.2.2.2.2.1 UserTileData Structure
 
 The UserTileData structure contains the image data that represents a user's tile, or picture, in
 Windows. The structures defined in sections 2.2.2.2.2.1 through 2.2.2.2.2.5 specify the image
@@ -1381,12 +1284,13 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-PictureElement1 (variable): The value MUST contain the first PictureElement.
+
+PictureElement1 (variable): The value MUST contain the first PictureElement.
 
 PictureElementN (variable): An ordered list of PictureElements that compose this message. Each
 PictureElement is of variable size and MUST follow the format specified in section 2.2.2.2.2.2.
 
-2.2.2.2.2.2  PictureElement Structure
+###### 2.2.2.2.2.2 PictureElement Structure
 
 The PictureElement structure provides information about the image data contained in the
 UserTileData structure (section 2.2.2.2.2.1).
@@ -1453,7 +1357,7 @@ PictureFormatData (section 2.2.2.2.2.5)
 
 PictureFormatSource (section 2.2.2.2.2.4)  Variable length
 
-2.2.2.2.2.3  PictureFormatName Structure
+###### 2.2.2.2.2.3 PictureFormatName Structure
 
 The PictureFormatName structure represents the image type of the UserTileData
 structure (section 2.2.2.2.2.1). This structure SHOULD contain the bytes included in the following
@@ -1465,7 +1369,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-diagram exactly as shown. These bytes are the byte representation of the Unicode string "bmp" for
+
+diagram exactly as shown. These bytes are the byte representation of the Unicode string "bmp" for
 bitmap.
 
 PictureFormatName is a PictureElement structure (section 2.2.2.2.2.2) type that has the following
@@ -1498,7 +1403,7 @@ format.
 
 0x00
 
-2.2.2.2.2.4  PictureFormatSource Structure
+###### 2.2.2.2.2.4 PictureFormatSource Structure
 
 The PictureFormatSource structure provides information about the original user tile image described
 in the UserTileData structure (section 2.2.2.2.2.1).
@@ -1525,7 +1430,7 @@ SourcePath (variable): A Unicode string of variable length that represents an ab
 
 the original user tile image. The string includes the terminating NULL character.
 
-2.2.2.2.2.5  PictureFormatData Structure
+###### 2.2.2.2.2.5 PictureFormatData Structure
 
 The PictureFormatData structure provides the DIB data for the user tile image described by the
 UserTileData structure (section 2.2.2.2.2.1).
@@ -1575,7 +1480,8 @@ Release: September 12, 2018
 
 19 / 39
 
-Length (4 bytes): A 32-bit unsigned integer that MUST indicate the length, in bytes, of this
+
+Length (4 bytes): A 32-bit unsigned integer that MUST indicate the length, in bytes, of this
 
 structure.
 
@@ -1587,7 +1493,7 @@ DeviceIndependentBitmap (variable): An image stored in DIB format as defined in 
 
 section 2.2.2.9.
 
-2.2.2.2.3 HomeGroup MAC Address
+###### 2.2.2.2.3 HomeGroup MAC Address
 
 HomeGroup MAC Address messages are used to broadcast the MAC addresses of all network
 adapters present in a homegroup member machine to all other members of the homegroup.
@@ -1632,7 +1538,7 @@ characters. Each MAC address is a binary string that contains a terminating NULL
 MAC address is followed by a double NULL. The resulting string is Base64 encoded with beginning and
 ending certificate headers as described in [RFC3548].
 
-2.2.2.2.4 Data Protection Listener
+###### 2.2.2.2.4 Data Protection Listener
 
  The Data Protection Listener<7> enables a user to back up their data to a different device from the
 device where it is currently located. This feature allows the user to recover data if the original copy is
@@ -1650,7 +1556,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-folder on the external device with a Universal Naming Convention (UNC) share to the folder, and
+
+folder on the external device with a Universal Naming Convention (UNC) share to the folder, and
 broadcasts a message containing information about the UNC share in the homegroup. The UNC share
 is then visible to all users across all PCs within the homegroup. Users can then select the shared
 device and specify it as the location where all data is to be sent for backup.
@@ -1680,7 +1587,7 @@ FriendlyName: A name that is used by all users in the homegroup to refer to the 
 UserName: The name of the user who originally configured and shared the device in the homegroup.
 This user knows which physical device has the UNC share.
 
-2.2.2.2.5 HomeGroup Signing Key
+###### 2.2.2.2.5 HomeGroup Signing Key
 
 HomeGroup Signing Key messages are used to distribute signing keys to the homegroup. The signing
 keys are used to verify the integrity of signed WSD messages that are sent by homegroup members
@@ -1723,7 +1630,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-       </xs:choice>
+
+       </xs:choice>
      </xs:complexType>
    </xs:element>
  </xs:schema>
@@ -1887,7 +1795,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-0x2D
+
+0x2D
 
 0x45
 
@@ -2008,7 +1917,7 @@ with a 64-bit line length and a terminating line feed. Note that line feeds are 
 
 5.  Represent the result from Step 4 as a Unicode string in little-endian UTF-16 encoding.
 
-2.2.2.2.5.1  RSAKeyBlob Structure
+###### 2.2.2.2.5.1 RSAKeyBlob Structure
 
 This section provides the definition for the RSAKeyBlob structure that is used to encode the value of
 the EncodedKeyBlob field of the HomeGroup Signing Key messages defined in section 2.2.2.2.5.
@@ -2020,7 +1929,8 @@ Release: September 12, 2018
 
 23 / 39
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2110,7 +2020,8 @@ Release: September 12, 2018
 
 24 / 39
 
-...
+
+...
 
 ...
 
@@ -2151,11 +2062,12 @@ Release: September 12, 2018
 
 25 / 39
 
-3  Protocol Details
 
-3.1  Homegroup Member Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Homegroup Member Details
+
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2172,11 +2084,11 @@ is propagated to all members of the homegroup.
 Note  The homegroup password is required to join a homegroup, but is never transmitted by this
 protocol.<8>
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 This protocol is initialized when a machine creates or joins a homegroup. When this protocol is first
 initialized, the machine SHOULD check for the HomeGroup Invitation WSD message (section 2.2.1.1).
@@ -2186,9 +2098,9 @@ section 3.1.4.2.
 If no invitation is detected, then the machine MAY create a homegroup, as described in section
 3.1.4.1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Creating the Homegroup
+##### 3.1.4.1 Creating the Homegroup
 
 To participate in a homegroup, a machine MUST create the homegroup when a HomeGroup
 Invitation message (section 2.2.1.1) does not exist. This requires a homegroup password. All other
@@ -2213,7 +2125,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-
+
+
 
 Publish a HomeGroup Invitation WSD message (section 2.2.1.1). If the data contained in the
 HomeGroup Invitation WSD message changes, the machine MUST create a new HomeGroup
@@ -2233,7 +2146,7 @@ PeerGroup.
 
 There is no required order for sending or publishing these messages.
 
-3.1.4.2  Joining the Homegroup
+##### 3.1.4.2 Joining the Homegroup
 
 Joining an existing homegroup requires the presence of a HomeGroup Invitation message. Multiple
 HomeGroup Invitation messages can be present on the network.<9> When a HomeGroup Invitation
@@ -2270,7 +2183,7 @@ be sent to the PeerGroup for that user account. If a user is deleted from the ma
 HomeGroup User Info record corresponding to that user account MUST be removed from the
 PeerGroup.
 
-3.1.4.3  Departing the Homegroup
+##### 3.1.4.3 Departing the Homegroup
 
 To depart from the homegroup, the machine MUST remove all messages that it sent to the
 PeerGroup from the group [MS-PPGRH], except those that are flagged to persist after the machine's
@@ -2288,7 +2201,8 @@ Release: September 12, 2018
 
 27 / 39
 
-3.1.4.4  Changing the Homegroup Password
+
+##### 3.1.4.4 Changing the Homegroup Password
 
 Changing the homegroup password is accomplished by departing the homegroup and creating a new
 homegroup with the new password.
@@ -2302,9 +2216,9 @@ name and the digital signature will be signed with the signing keys of the previ
 The other homegroup machines then detect the new HomeGroup Invitation WSD message and can
 join the homegroup by supplying the new password, as described in section 3.1.4.2.
 
-3.1.4.5  Message Signing and Encryption
+##### 3.1.4.5 Message Signing and Encryption
 
-3.1.4.5.1 Encryption Key
+###### 3.1.4.5.1 Encryption Key
 
 An encryption key is generated when a homegroup is created. The key is formed as specified in the
 description for the EncodedKeyBlob structure (step 2) in section 2.2.2.2.5.
@@ -2312,7 +2226,7 @@ description for the EncodedKeyBlob structure (step 2) in section 2.2.2.2.5.
 This encryption key is used to encrypt the HomeGroup Credentials message (section 2.2.2.2.1)
 account credentials, as well as the public/private signing keys, before sending over the network.
 
-3.1.4.5.2 Public/Private Signing Keys
+###### 3.1.4.5.2 Public/Private Signing Keys
 
 The creator of the homegroup generates a 2048-bit RSA key pair, as specified in [RFC3447] and
 [PKCS1].
@@ -2322,7 +2236,7 @@ homegroup over the PeerGroup channel via a HomeGroup Signing Key message (sectio
 
 The keys are used to sign or verify the integrity of signed WSD messages sent over the homegroup.
 
-3.1.4.5.3 WSD Hash
+###### 3.1.4.5.3 WSD Hash
 
 HomeGroup Invitation messages (section 3.1.5.1) are hashed. This hash is signed with the
 HomeGroup signing key and the signed version is included in the message in the <DIGITALHASH>
@@ -2353,25 +2267,26 @@ Release: September 12, 2018
 
 28 / 39
 
-This hash is computed, as specified in [FIPS180-3]. The optional fields are ignored when they do not
+
+This hash is computed, as specified in [FIPS180-3]. The optional fields are ignored when they do not
 contain a value. The hash is then signed with the public signing key described in section 3.1.4.5.2,
 using the RSASSA-PKCS1-v1_5 signature algorithm specified in [PKCS1] section 8.2.
 
-3.1.4.5.4 Printer Messages
+###### 3.1.4.5.4 Printer Messages
 
 HomeGroup Printer messages are signed with the public signing key, described in section 3.1.4.5.2,
 using the RSASSA-PKCS1-v1_5 signature algorithm specified in [PKCS1] section 8.2.
 
-3.1.4.5.5 Encrypting HomeGroup Credentials, Signing Key and MAC Address
+###### 3.1.4.5.5 Encrypting HomeGroup Credentials, Signing Key and MAC Address
 
 The <PASSWORD> element in the HomeGroup Credentials message and the <SIGNINGKEYS>
 element in the HomeGroup Signing Key message are encrypted using the Encryption Key (section
 3.1.4.5.1) with the AES-256 algorithm [FIPS197] in Cipher Block Chaining mode [SP800-38A] with a
 zero Initialization Vector (IV).
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
-3.1.5.1  HomeGroup Invitation Messages
+##### 3.1.5.1 HomeGroup Invitation Messages
 
 When a HomeGroup Invitation message is received by a machine that is not a member of the
 homegroup, the machine will not be able to verify the HomeGroup Invitation message. Instead, the
@@ -2386,7 +2301,7 @@ homegroup, and if the value of the <LASTCHANGED> element element for the message
 the <LASTCHANGED> value for the current homegroup, then a password reset condition is detected
 and the machine MUST change the password as defined in section 3.1.4.4.
 
-3.1.5.2  Printer Messages
+##### 3.1.5.2 Printer Messages
 
 When a Printer message is received, it MUST be decoded from Base64, as described in [RFC3548],
 and SHOULD then be verified using the RSASSA-PKCS1-v1_5 signature algorithm, specified in
@@ -2394,17 +2309,17 @@ and SHOULD then be verified using the RSASSA-PKCS1-v1_5 signature algorithm, spe
 
 Once verified, the machine SHOULD add the printer as described in [MS-RPRN].
 
-3.1.5.3  HomeGroup Credentials and Signing Key Messages
+##### 3.1.5.3 HomeGroup Credentials and Signing Key Messages
 
 Whenever a HomeGroup Credentials message or a HomeGroup Signing Key message is received, its
 encrypted fields MUST be decrypted using the Encryption Key (section 3.1.4.5.1) with the AES-256
 algorithm [FIPS197] in Cipher Block Chaining mode [SP800-38A] with a zero Initialization Vector (IV).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 For the purposes of participating in this protocol, any messages that are received over WSD or
 PeerGroup that do not conform to the message formats described in section 2 SHOULD be ignored.
@@ -2416,9 +2331,10 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-4  Protocol Examples
 
-4.1  HomeGroup Invitation
+## 4 Protocol Examples
+
+### 4.1 HomeGroup Invitation
 
 The following is an example of a WSD HomeGroup message that uses the layout of the HomeGroup
 Invitation message (section 2.2.1.1).
@@ -2489,7 +2405,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
-4.2  HomeGroup Member Info
+
+### 4.2 HomeGroup Member Info
 
 The following is an example HomeGroup Member Info message (section 2.2.2.1).
 
@@ -2502,7 +2419,7 @@ f0eb97049320127acd2a8f4990a389c3725a7a08.HomeGroupClassifier</PEERID>
 </property>
  </HOMEGROUP_RECORD>
 
-4.3  HomeGroup Credentials
+### 4.3 HomeGroup Credentials
 
 The following is an example of a HomeGroup Credentials Message (section 2.2.2.2.1)).
 
@@ -2530,7 +2447,7 @@ The following is an example of a HomeGroup Credentials Message (section 2.2.2.2.
  </HOMEGROUP_DATA>
  </HOMEGROUP_RECORD>
 
-4.4  HomeGroup User Info
+### 4.4 HomeGroup User Info
 
 The following is an example of a HomeGroup User Info record (section 2.2.2.2.2).
 
@@ -2559,7 +2476,8 @@ Release: September 12, 2018
 
 31 / 39
 
-   <value>AQUAAAAAAAUVAAAAtVSdnBR4KCHab17x6AMAAA==</value>
+
+   <value>AQUAAAAAAAUVAAAAtVSdnBR4KCHab17x6AMAAA==</value>
    <key>
      <guid>{705D8364-7547-468C-8C88-84860BCBED4C}</guid>
      <pid>18</pid>
@@ -2567,7 +2485,7 @@ Release: September 12, 2018
  </property>
  </propertyStore>
 
-4.5  HomeGroup MAC Address
+### 4.5 HomeGroup MAC Address
 
 The following is an example HomeGroup MAC Address message (section 2.2.2.2.3).
 
@@ -2595,7 +2513,7 @@ The following is an example HomeGroup MAC Address message (section 2.2.2.2.3).
  </HOMEGROUP_DATA>
  </HOMEGROUP_RECORD>
 
-4.6  Data Protection Listener
+### 4.6 Data Protection Listener
 
 The following is an example of a Data Protection Listener message (section 2.2.2.2.4).
 
@@ -2607,7 +2525,7 @@ The following is an example of a Data Protection Listener message (section 2.2.2
    <UserName>Tom</UserName>
  </DPSharedTargetInfo>
 
-4.7  HomeGroup Signing Key
+### 4.7 HomeGroup Signing Key
 
 The following is an example (in base64-encoded representation) of the HomeGroup Signing Key
 message (section 2.2.2.2.5).
@@ -2624,7 +2542,8 @@ HomeGroup Protocol
 Copyright © 2018 Microsoft Corporation
 Release: September 12, 2018
 
- ..At5749kc0igPNgwDBGkaz7W563GbNNoGMUUCxyK1rm+xw2S2ZxwurU/eqeJextpM
+
+ ..At5749kc0igPNgwDBGkaz7W563GbNNoGMUUCxyK1rm+xw2S2ZxwurU/eqeJextpM
  ..qrjRwO+ynAQI1bol9jZUKIzO+XXk7KJkS4NJFxCXeZCA7tByedOqMKoBj6NNGo72
  ..BYLawtt7rRcOGtdcr3b5ApcI2S5Zgovd63R/8obhEfepmb5r1WX7aLkpF9UiDHMn
  ..z1Xtp3p+BaWp0NphVpJM+iIPdMfd87EhUIKDoexh29CHxAOyTdQxaLBIHD5UBGrs
@@ -2657,15 +2576,16 @@ Release: September 12, 2018
 
 33 / 39
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The HomeGroup Protocol relies partially on the Peer-to-Peer Grouping Security Protocol [MS-PPSEC] to
 secure the PeerGroup traffic. Encryption and hashing within the sent messages is achieved through
 open cryptographic standards.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -2692,7 +2612,8 @@ Release: September 12, 2018
 
 34 / 39
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2770,7 +2691,8 @@ Release: September 12, 2018
 
 35 / 39
 
-<6> Section 2.2.2.2.2: The HomeGroup User Info record is not supported in Windows 7 and Windows
+
+<6> Section 2.2.2.2.2: The HomeGroup User Info record is not supported in Windows 7 and Windows
 Home Server 2011.
 
 <7> Section 2.2.2.2.4: The Data Protection Listener is not supported in Windows 7 and Windows
@@ -2800,7 +2722,8 @@ Release: September 12, 2018
 
 36 / 39
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2812,7 +2735,8 @@ Release: September 12, 2018
 
 37 / 39
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 26
@@ -2945,7 +2869,8 @@ R
 
 38 / 39
 
-Records
+
+Records
    HomeGroup User Info Record 15
 References 7
    informative 8

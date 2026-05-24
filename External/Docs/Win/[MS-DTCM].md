@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 64
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 64
 
-Date
+
+Date
 
 Revision
 History
@@ -524,7 +526,8 @@ Release: April 23, 2024
 
 3 / 64
 
-Date
+
+Date
 
 Revision
 History
@@ -549,379 +552,151 @@ Release: April 23, 2024
 
 4 / 64
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1.3.2.1
-1.3.2.2
-1.3.2.3
-1.3.2.4
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-OleTx Transaction Protocol (MS-DTCO) and TIP .............................................. 12
-OleTx Transaction Internet Protocol (MS-DTCM) ............................................. 12
-TIP Interoperability Application Role ........................................................ 12
-TIP Interoperability Provider Role ............................................................ 12
-High-Level Block Diagram ...................................................................... 13
-Protocol Interactions ............................................................................. 13
-TIP Push Propagation Interactions ..................................................... 13
-TIP Pull Propagation Interactions ....................................................... 15
-Relationship to Other Protocols .......................................................................... 16
-Prerequisites/Preconditions ............................................................................... 16
-Applicability Statement ..................................................................................... 17
-Versioning and Capability Negotiation ................................................................. 17
-Versioning ................................................................................................. 17
-Versioning Negotiation Mechanisms .............................................................. 17
-Capability Negotiation Mechanisms ............................................................... 17
-Vendor-Extensible Fields ................................................................................... 17
-Standards Assignments ..................................................................................... 17
-
-1.3.2.4.1
-1.3.2.4.2
-
-1.7.1
-1.7.2
-1.7.3
-
-1.4
-1.5
-1.6
-1.7
-
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.2.4
-
-2.1.3
-
-2.1.1
-2.1.2
-
-2.2.3.1
-2.2.3.2
-
-2.2.1
-2.2.2
-2.2.3
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-
-2  Messages ............................................................................................................... 18
-Transport ........................................................................................................ 18
-Messages, Connections, and Sessions ........................................................... 18
-Parameters Passed to the Transport Layer ..................................................... 18
-Establishing a Security Level .................................................................. 18
-Obtaining a Name Object ....................................................................... 18
-Obtaining the Minimum and Maximum Protocol Version Numbers ................ 18
-Protocol Versioning ..................................................................................... 19
-Message Syntax ............................................................................................... 19
-Protocol Connection Types ........................................................................... 19
-Connection Type Versioning ......................................................................... 19
-Protocol Data Structures .............................................................................. 19
-OLETX_TIP_TM_ID ................................................................................ 19
-OLETX_TIP_TX_ID ................................................................................ 20
-Protocol Enumerations................................................................................. 20
-TRUN_TIPPROXYGATEWAY_PULLERROR ................................................... 20
-TRUN_TIPPROXYGATEWAY_PUSHERROR .................................................. 21
-Connection Type Details .............................................................................. 21
-CONNTYPE_TXUSER_TIPPROXYGATEWAY ................................................. 21
-Message Types ................................................................................ 21
-Message Type Versioning ................................................................. 22
-Message Type Details ....................................................................... 22
-TXUSER_TIPPROXYGATEWAY_MTAG_PULL .................................... 22
-TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 .................................. 23
-TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE ........ 24
-TXUSER_TIPPROXYGATEWAY_MTAG_PULLED ................................ 24
-TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR .......................... 25
-TXUSER_TIPPROXYGATEWAY_MTAG_PUSH ................................... 25
-TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 ................................. 26
-TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED ............................... 27
-TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR ......................... 27
-
-2.2.5.1.3.1
-2.2.5.1.3.2
-2.2.5.1.3.3
-2.2.5.1.3.4
-2.2.5.1.3.5
-2.2.5.1.3.6
-2.2.5.1.3.7
-2.2.5.1.3.8
-2.2.5.1.3.9
-
-2.2.5.1.1
-2.2.5.1.2
-2.2.5.1.3
-
-2.2.4.1
-2.2.4.2
-
-2.2.5.1
-
-2.2.5
-
-[MS-DTCM] - v20240423
-MSDTC Connection Manager: OleTx Transaction Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 64
-
-3.2
-
-3.1
-
-3.2.5
-
-3.2.1
-
-3.1.8
-
-3.1.1
-
-3.2.1.1
-
-3.1.7.1
-
-3.2.4.1
-3.2.4.2
-
-3.1.1.1
-3.1.1.2
-
-3.2.2
-3.2.3
-3.2.4
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3.2.1.1.1
-3.2.1.1.2
-3.2.1.1.3
-3.2.1.1.4
-3.2.1.1.5
-
-3  Protocol Details ..................................................................................................... 29
-Common Details .............................................................................................. 29
-Abstract Data Model .................................................................................... 29
-Common Transport-Related Details ......................................................... 29
-Protocol Connection Objects ................................................................... 29
-Timers ...................................................................................................... 30
-Initialization ............................................................................................... 30
-Higher-Layer Triggered Events ..................................................................... 31
-Message Processing Events and Sequencing Rules .......................................... 31
-Timer Events .............................................................................................. 31
-Other Local Events ...................................................................................... 31
-Connection Disconnected ....................................................................... 31
-Versioning Negotiation ................................................................................ 32
-TIP Interoperability Application Role Details ......................................................... 32
-Abstract Data Model .................................................................................... 32
-CONNTYPE_TXUSER_TIPPROXYGATEWAY Initiator States ........................... 33
-Idle ............................................................................................... 34
-Awaiting Sync Pull Response ............................................................. 34
-Awaiting Async Pull Response ........................................................... 35
-Awaiting Push Response ................................................................... 35
-Ended ............................................................................................ 35
-Timers ...................................................................................................... 35
-Initialization ............................................................................................... 35
-Higher-Layer Triggered Events ..................................................................... 35
-Sending a TIP Pull Request ..................................................................... 36
-Sending a TIP Push Request ................................................................... 36
-Message Processing Events and Sequencing Rules .......................................... 37
-CONNTYPE_TXUSER_TIPPROXYGATEWAY as Initiator ................................ 37
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message ........ 37
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE
-Message ......................................................................................... 37
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR Message .. 37
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message ....... 38
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR Message . 38
-Connection Disconnected .................................................................. 38
-Timer Events .............................................................................................. 39
-Other Local Events ...................................................................................... 39
-TIP Interoperability Provider Role Details ............................................................ 39
-Abstract Data Model .................................................................................... 39
-Interface with the Core Transaction Manager Facet of the Local Transaction
-Manager .............................................................................................. 39
-Connection States ................................................................................. 40
-CONNTYPE_TXUSER_TIPPROXYGATEWAY Acceptor States .................... 40
-Idle .......................................................................................... 41
-Awaiting Sync Pull Response ....................................................... 42
-Awaiting Async Pull Response ...................................................... 42
-Awaiting Push Response ............................................................. 42
-Ended ....................................................................................... 42
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 42
-Role Initialization .................................................................................. 42
-Transaction Object Initialization .............................................................. 43
-Higher-Layer Triggered Events ..................................................................... 43
-Message Processing Events and Sequencing Rules .......................................... 43
-CONNTYPE_TXUSER_TIPPROXYGATEWAY as Acceptor ............................... 43
-
-3.3.1.2.1.1
-3.3.1.2.1.2
-3.3.1.2.1.3
-3.3.1.2.1.4
-3.3.1.2.1.5
-
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-
-3.2.5.1.1
-3.2.5.1.2
-
-3.3.3.1
-3.3.3.2
-
-3.2.6
-3.2.7
-
-3.3.2
-3.3.3
-
-3.3.4
-3.3.5
-
-3.3.1.2.1
-
-3.3.5.1
-
-3.2.5.1
-
-3.3.1.1
-
-3.3.1.2
-
-3.3.1
-
-3.3
-
-3.3.5.1.1
-
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL or a
-TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 Message ........................... 43
-
-6 / 64
-
-[MS-DTCM] - v20240423
-MSDTC Connection Manager: OleTx Transaction Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3.3.6
-3.3.7
-
-3.3.7.1
-
-3.3.5.1.2
-
-3.3.5.1.3
-
-Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSH or a
-TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 Message .......................... 45
-Connection Disconnected .................................................................. 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-TIP Transaction Propagation Events ......................................................... 46
-Pull TIP Transaction ......................................................................... 46
-Push TIP Transaction ....................................................................... 47
-TIP Pull Failure ................................................................................ 48
-TIP Pull Success .............................................................................. 49
-TIP Push Failure .............................................................................. 49
-TIP Push Success ............................................................................ 50
-Enlisting Events Signaled by the Core Transaction Manager Facet ............... 50
-Create Transaction Failure ................................................................ 50
-Create Transaction Success .............................................................. 51
-Create Subordinate Enlistment Failure................................................ 51
-Create Subordinate Enlistment Success .............................................. 51
-TIP Communication Events ..................................................................... 51
-
-3.3.7.1.1
-3.3.7.1.2
-3.3.7.1.3
-3.3.7.1.4
-3.3.7.1.5
-3.3.7.1.6
-
-3.3.7.2.1
-3.3.7.2.2
-3.3.7.2.3
-3.3.7.2.4
-
-3.3.7.2
-
-3.3.7.3
-
-4.1
-
-4.1.1
-4.1.2
-4.1.3
-
-4  Protocol Examples ................................................................................................. 53
-TIP Pull Propagation Scenario ............................................................................ 53
-Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection ................. 53
-Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 Message .................... 53
-Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message ................ 54
-TIP Push Propagation Scenario ........................................................................... 55
-Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection ................. 55
-Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 Message ................... 55
-Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message ............... 56
-
-4.2.1
-4.2.2
-4.2.3
-
-4.2
-
-5  Security ................................................................................................................. 58
-Security Considerations for Implementers ........................................................... 58
-Index of Security Parameters ............................................................................ 58
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 59
-
-7  Change Tracking .................................................................................................... 61
-
-8  Index ..................................................................................................................... 62
-
-[MS-DTCM] - v20240423
-MSDTC Connection Manager: OleTx Transaction Internet Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 64
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 OleTx Transaction Protocol (MS-DTCO) and TIP](#131-oletx-transaction-protocol-ms-dtco-and-tip)
+    - [1.3.2 OleTx Transaction Internet Protocol (MS-DTCM)](#132-oletx-transaction-internet-protocol-ms-dtcm)
+      - [1.3.2.1 TIP Interoperability Application Role](#1321-tip-interoperability-application-role)
+      - [1.3.2.2 TIP Interoperability Provider Role](#1322-tip-interoperability-provider-role)
+      - [1.3.2.3 High-Level Block Diagram](#1323-high-level-block-diagram)
+      - [1.3.2.4 Protocol Interactions](#1324-protocol-interactions)
+        - [1.3.2.4.1 TIP Push Propagation Interactions](#13241-tip-push-propagation-interactions)
+        - [1.3.2.4.2 TIP Pull Propagation Interactions](#13242-tip-pull-propagation-interactions)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+    - [1.7.1 Versioning](#171-versioning)
+    - [1.7.2 Versioning Negotiation Mechanisms](#172-versioning-negotiation-mechanisms)
+    - [1.7.3 Capability Negotiation Mechanisms](#173-capability-negotiation-mechanisms)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Messages, Connections, and Sessions](#211-messages-connections-and-sessions)
+    - [2.1.2 Parameters Passed to the Transport Layer](#212-parameters-passed-to-the-transport-layer)
+      - [2.1.2.1 Establishing a Security Level](#2121-establishing-a-security-level)
+      - [2.1.2.2 Obtaining a Name Object](#2122-obtaining-a-name-object)
+      - [2.1.2.3 Obtaining the Minimum and Maximum Protocol Version Numbers](#2123-obtaining-the-minimum-and-maximum-protocol-version-numbers)
+    - [2.1.3 Protocol Versioning](#213-protocol-versioning)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Protocol Connection Types](#221-protocol-connection-types)
+    - [2.2.2 Connection Type Versioning](#222-connection-type-versioning)
+    - [2.2.3 Protocol Data Structures](#223-protocol-data-structures)
+      - [2.2.3.1 OLETX_TIP_TM_ID](#2231-oletxtiptmid)
+      - [2.2.3.2 OLETX_TIP_TX_ID](#2232-oletxtiptxid)
+    - [2.2.4 Protocol Enumerations](#224-protocol-enumerations)
+      - [2.2.4.1 TRUN_TIPPROXYGATEWAY_PULLERROR](#2241-truntipproxygatewaypullerror)
+      - [2.2.4.2 TRUN_TIPPROXYGATEWAY_PUSHERROR](#2242-truntipproxygatewaypusherror)
+    - [2.2.5 Connection Type Details](#225-connection-type-details)
+      - [2.2.5.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY](#2251-conntypetxusertipproxygateway)
+        - [2.2.5.1.1 Message Types](#22511-message-types)
+        - [2.2.5.1.2 Message Type Versioning](#22512-message-type-versioning)
+        - [2.2.5.1.3 Message Type Details](#22513-message-type-details)
+          - [2.2.5.1.3.1 TXUSER_TIPPROXYGATEWAY_MTAG_PULL](#225131-txusertipproxygatewaymtagpull)
+          - [2.2.5.1.3.2 TXUSER_TIPPROXYGATEWAY_MTAG_PULL2](#225132-txusertipproxygatewaymtagpull2)
+          - [2.2.5.1.3.3 TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE](#225133-txusertipproxygatewaymtagpullasynccomplete)
+          - [2.2.5.1.3.4 TXUSER_TIPPROXYGATEWAY_MTAG_PULLED](#225134-txusertipproxygatewaymtagpulled)
+          - [2.2.5.1.3.5 TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR](#225135-txusertipproxygatewaymtagpullerror)
+          - [2.2.5.1.3.6 TXUSER_TIPPROXYGATEWAY_MTAG_PUSH](#225136-txusertipproxygatewaymtagpush)
+          - [2.2.5.1.3.7 TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2](#225137-txusertipproxygatewaymtagpush2)
+          - [2.2.5.1.3.8 TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED](#225138-txusertipproxygatewaymtagpushed)
+          - [2.2.5.1.3.9 TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR](#225139-txusertipproxygatewaymtagpusherror)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Common Transport-Related Details](#3111-common-transport-related-details)
+      - [3.1.1.2 Protocol Connection Objects](#3112-protocol-connection-objects)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Connection Disconnected](#3171-connection-disconnected)
+    - [3.1.8 Versioning Negotiation](#318-versioning-negotiation)
+  - [3.2 TIP Interoperability Application Role Details](#32-tip-interoperability-application-role-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY Initiator States](#3211-conntypetxusertipproxygateway-initiator-states)
+        - [3.2.1.1.1 Idle](#32111-idle)
+        - [3.2.1.1.2 Awaiting Sync Pull Response](#32112-awaiting-sync-pull-response)
+        - [3.2.1.1.3 Awaiting Async Pull Response](#32113-awaiting-async-pull-response)
+        - [3.2.1.1.4 Awaiting Push Response](#32114-awaiting-push-response)
+        - [3.2.1.1.5 Ended](#32115-ended)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Sending a TIP Pull Request](#3241-sending-a-tip-pull-request)
+      - [3.2.4.2 Sending a TIP Push Request](#3242-sending-a-tip-push-request)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY as Initiator](#3251-conntypetxusertipproxygateway-as-initiator)
+        - [3.2.5.1.1 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message](#32511-receiving-a-txusertipproxygatewaymtagpulled-message)
+        - [3.2.5.1.2 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE](#32512-receiving-a-txusertipproxygatewaymtagpullasynccomplete)
+        - [3.2.5.1.3 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR Message](#32513-receiving-a-txusertipproxygatewaymtagpullerror-message)
+        - [3.2.5.1.4 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message](#32514-receiving-a-txusertipproxygatewaymtagpushed-message)
+        - [3.2.5.1.5 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR Message](#32515-receiving-a-txusertipproxygatewaymtagpusherror-message)
+        - [3.2.5.1.6 Connection Disconnected](#32516-connection-disconnected)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 TIP Interoperability Provider Role Details](#33-tip-interoperability-provider-role-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Interface with the Core Transaction Manager Facet of the Local Transaction](#3311-interface-with-the-core-transaction-manager-facet-of-the-local-transaction)
+      - [3.3.1.2 Connection States](#3312-connection-states)
+        - [3.3.1.2.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY Acceptor States](#33121-conntypetxusertipproxygateway-acceptor-states)
+          - [3.3.1.2.1.1 Idle](#331211-idle)
+          - [3.3.1.2.1.2 Awaiting Sync Pull Response](#331212-awaiting-sync-pull-response)
+          - [3.3.1.2.1.3 Awaiting Async Pull Response](#331213-awaiting-async-pull-response)
+          - [3.3.1.2.1.4 Awaiting Push Response](#331214-awaiting-push-response)
+          - [3.3.1.2.1.5 Ended](#331215-ended)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+      - [3.3.3.1 Role Initialization](#3331-role-initialization)
+      - [3.3.3.2 Transaction Object Initialization](#3332-transaction-object-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY as Acceptor](#3351-conntypetxusertipproxygateway-as-acceptor)
+        - [3.3.5.1.1 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL or a](#33511-receiving-a-txusertipproxygatewaymtagpull-or-a)
+        - [3.3.5.1.2 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSH or a](#33512-receiving-a-txusertipproxygatewaymtagpush-or-a)
+        - [3.3.5.1.3 Connection Disconnected](#33513-connection-disconnected)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 TIP Transaction Propagation Events](#3371-tip-transaction-propagation-events)
+        - [3.3.7.1.1 Pull TIP Transaction](#33711-pull-tip-transaction)
+        - [3.3.7.1.2 Push TIP Transaction](#33712-push-tip-transaction)
+        - [3.3.7.1.3 TIP Pull Failure](#33713-tip-pull-failure)
+        - [3.3.7.1.4 TIP Pull Success](#33714-tip-pull-success)
+        - [3.3.7.1.5 TIP Push Failure](#33715-tip-push-failure)
+        - [3.3.7.1.6 TIP Push Success](#33716-tip-push-success)
+      - [3.3.7.2 Enlisting Events Signaled by the Core Transaction Manager Facet](#3372-enlisting-events-signaled-by-the-core-transaction-manager-facet)
+        - [3.3.7.2.1 Create Transaction Failure](#33721-create-transaction-failure)
+        - [3.3.7.2.2 Create Transaction Success](#33722-create-transaction-success)
+        - [3.3.7.2.3 Create Subordinate Enlistment Failure](#33723-create-subordinate-enlistment-failure)
+        - [3.3.7.2.4 Create Subordinate Enlistment Success](#33724-create-subordinate-enlistment-success)
+      - [3.3.7.3 TIP Communication Events](#3373-tip-communication-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 TIP Pull Propagation Scenario](#41-tip-pull-propagation-scenario)
+    - [4.1.1 Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection](#411-establishing-a-conntypetxusertipproxygateway-connection)
+    - [4.1.2 Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 Message](#412-sending-the-txusertipproxygatewaymtagpull2-message)
+    - [4.1.3 Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message](#413-receiving-the-txusertipproxygatewaymtagpulled-message)
+  - [4.2 TIP Push Propagation Scenario](#42-tip-push-propagation-scenario)
+    - [4.2.1 Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection](#421-establishing-a-conntypetxusertipproxygateway-connection)
+    - [4.2.2 Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 Message](#422-sending-the-txusertipproxygatewaymtagpush2-message)
+    - [4.2.3 Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message](#423-receiving-the-txusertipproxygatewaymtagpushed-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The MSDTC Connection Manager: OleTx Transaction Internet Protocol (TIP) is used between an
 application and a transaction manager to supply information that can be used to request that the
@@ -934,7 +709,7 @@ Transaction Internet Protocol (TIP), as specified in [RFC2371].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -990,7 +765,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
+
+ncacn_ip_tcp), an endpoint might be TCP port 1025. For RPC over Server Message Block (RPC
 Protocol Sequence ncacn_np), an endpoint might be the name of a named pipe. For more
 information, see [C706].
 
@@ -1072,7 +848,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-transactions as it reflects input changes from the startup of the system to the present moment.
+
+transactions as it reflects input changes from the startup of the system to the present moment.
 A transition (such as connecting a network share) indicates a state change and is described by a
 condition that would need to be fulfilled to enable the transition. An action is a description of an
 activity that is to be performed at a given moment. There are several action types: Entry action:
@@ -1152,7 +929,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-transaction object: Object representing a transaction, as specified in [MS-DTCO] section 3.2.1.
+
+transaction object: Object representing a transaction, as specified in [MS-DTCO] section 3.2.1.
 
 transaction propagation: The act of coordinating two transaction managers to work together on
 a single atomic transaction. When propagating a transaction to a transaction manager that is
@@ -1169,14 +947,14 @@ in that domain.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1204,7 +982,7 @@ Note There is a charge to download the specification.
 [RFC2371] Lyon, J., Evans, K., and Klein, J., "Transaction Internet Protocol Version 3.0", RFC 2371,
 July 1998, https://www.rfc-editor.org/info/rfc2371
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -1215,14 +993,15 @@ Release: April 23, 2024
 
 11 / 64
 
-1.3  Overview
+
+### 1.3 Overview
 
 The MSDTC Connection Manager: OleTx Transaction Internet Protocol serves as a bridge between the
 MSDTC Connection Manager: OleTx Transaction Protocol, as specified in [MS-DTCO], and the open-
 standard Transaction Internet Protocol (TIP), as specified in [RFC2371]. Functional details for TIP are
 provided in section 1.3.2 and in Connection Type Details (section 2.2.5).
 
-1.3.1  OleTx Transaction Protocol (MS-DTCO) and TIP
+#### 1.3.1 OleTx Transaction Protocol (MS-DTCO) and TIP
 
 The MSDTC Connection Manager: OleTx Transaction Protocol, as specified in [MS-DTCO], is a protocol
 for distributed transaction coordination. It is targeted for use in the enterprise and intranet
@@ -1237,7 +1016,7 @@ Transaction Protocol, TIP supports two types of transaction propagation: TIP pus
 and TIP pull propagation. More information about pull and push transaction propagation is specified
 in [RFC2371] section 6.
 
-1.3.2  OleTx Transaction Internet Protocol (MS-DTCM)
+#### 1.3.2 OleTx Transaction Internet Protocol (MS-DTCM)
 
 The MSDTC Connection Manager: OleTx Transaction Internet Protocol enables the propagation of
 transactions between an OleTx TM and a TIP transaction manager by using TIP. This section
@@ -1251,7 +1030,7 @@ The TIP interoperability application role (section 1.3.2.1)
 
 The TIP interoperability provider role (section 1.3.2.2)
 
-1.3.2.1  TIP Interoperability Application Role
+##### 1.3.2.1 TIP Interoperability Application Role
 
 The TIP interoperability application role performs the following tasks:
 
@@ -1274,7 +1053,7 @@ interoperability provider role (section 1.3.2.2). Conversely, when receiving pro
 the TIP interoperability provider role, the TIP interoperability application role converts the message
 data to an application-specific format and returns the result to the higher-layer business logic.
 
-1.3.2.2  TIP Interoperability Provider Role
+##### 1.3.2.2 TIP Interoperability Provider Role
 
 The TIP interoperability provider role performs the following tasks:
 
@@ -1289,7 +1068,8 @@ Release: April 23, 2024
 
 12 / 64
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-DTCM].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1317,7 +1097,7 @@ transactions that it propagates.
 Note  The processing that is performed by the TIP interoperability provider for TIP transaction
 coordination and TIP transaction recovery does not affect the wire representation of this protocol.
 
-1.3.2.3  High-Level Block Diagram
+##### 1.3.2.3 High-Level Block Diagram
 
 The following diagram provides a high-level view of the protocol roles and their interaction with
 other entities.
@@ -1325,9 +1105,9 @@ other entities.
 Figure 1: Interaction of MSDTC Connection Manager: OleTx Transaction Internet Protocol
 roles
 
-1.3.2.4  Protocol Interactions
+##### 1.3.2.4 Protocol Interactions
 
-1.3.2.4.1 TIP Push Propagation Interactions
+###### 1.3.2.4.1 TIP Push Propagation Interactions
 
 The following Unified Modeling Language (UML) diagram presents the sequence of actions that occur
 during the TIP push propagation of a transaction. This diagram shows a successful push
@@ -1341,7 +1121,8 @@ Release: April 23, 2024
 
 13 / 64
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-DTCM].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1392,14 +1173,15 @@ Release: April 23, 2024
 
 14 / 64
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-DTCM].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
 When all the preceding operations are complete, there is a superior-to-subordinate relationship
 between the OleTx TM and the TIP transaction manager.
 
-1.3.2.4.2 TIP Pull Propagation Interactions
+###### 1.3.2.4.2 TIP Pull Propagation Interactions
 
 The following diagram presents the sequence of actions that occur during a synchronous TIP pull
 propagation of a transaction. This diagram shows a successful synchronous pull propagation
@@ -1441,7 +1223,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 16 -->
+
+<!-- Extracted images from page 16 -->
 ![Extracted image 1 from page 16]([MS-DTCM].images/page016-img01.png)
 <!-- /Extracted images from page 16 -->
 
@@ -1452,7 +1235,7 @@ to the higher-layer business logic.
 When all the preceding operations are complete, there is a subordinate-to-superior relationship
 between the OleTx TM and the TIP transaction manager.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol establishes the following relationships with other protocols:
 
@@ -1474,7 +1257,7 @@ The following diagram illustrates the relationships with these other protocols.
 
 Figure 4: Protocol relationships
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The operation of this protocol assumes the following:
 
@@ -1508,7 +1291,8 @@ Release: April 23, 2024
 
 16 / 64
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 This protocol is applicable to scenarios where an OleTx TM needs to interoperate with other TIP
 transaction managers. The prerequisites that are provided in
@@ -1516,9 +1300,9 @@ Prerequisites/Preconditions (section 1.5), all the prerequisites that are requir
 OleTx TM (as specified in [MS-DTCO] section 1.5), and the TIP protocol (as specified in [RFC2371])
 need to be satisfied for this protocol to be employed successfully.<1>
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
-1.7.1  Versioning
+#### 1.7.1 Versioning
 
 This section specifies the versioning and capability negotiation dependencies for this protocol.
 
@@ -1528,7 +1312,7 @@ referred to as MS-DTCM 1.0 and MS-DTCM 1.1. More details about the protocol elem
 supported in each version are provided in Message Syntax (section 2.2). Protocol processing
 details that are version-specific are specified in Protocol Details (section 3).
 
-1.7.2  Versioning Negotiation Mechanisms
+#### 1.7.2 Versioning Negotiation Mechanisms
 
 This protocol uses the explicit versioning negotiation mechanism that is specified in [MS-CMPO]
 section 3.3.4.2, BuildContext. An implementation of this protocol uses that mechanism to specify
@@ -1546,16 +1330,16 @@ as follows:
 
   Data fields that are required for a certain message type
 
-1.7.3  Capability Negotiation Mechanisms
+#### 1.7.3 Capability Negotiation Mechanisms
 
 This protocol does not have optional capabilities for a specified version. Therefore, there are no
 capability negotiation features.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol has no vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments.
 
@@ -1566,18 +1350,19 @@ Release: April 23, 2024
 
 17 / 64
 
-2  Messages
+
+## 2 Messages
 
 This protocol references commonly used data types, such as GUID and UUID, as defined in [MS-DTYP]
 section 2.3.4.
 
-2.1  Transport
+### 2.1 Transport
 
 This protocol uses MSDTC Connection Manager: OleTx Transports Protocol [MS-CMPO] and MSDTC
 Connection Manager: OleTx Multiplexing Protocol [MS-CMP] as the transport layer for sending and
 receiving protocol messages.
 
-2.1.1  Messages, Connections, and Sessions
+#### 2.1.1 Messages, Connections, and Sessions
 
 The layout of each message that is defined by this protocol MUST extend the MESSAGE_PACKET
 structure, as specified in [MS-CMP] section 2.2.2.
@@ -1590,7 +1375,7 @@ Each connection MUST be initiated inside an active session, as specified in [MS-
 established between the two protocol participants. The mechanism that is used to establish sessions is
 specified in [MS-CMPO] section 1.3.3.1.
 
-2.1.2  Parameters Passed to the Transport Layer
+#### 2.1.2 Parameters Passed to the Transport Layer
 
 To establish a session, as specified in [MS-CMPO], the following values MUST be provided to the
 lower-layer protocol:
@@ -1610,18 +1395,18 @@ The minimum and maximum values of the protocol version number, which specify the
 and maximum protocol versions that are supported by the implementation. For more information,
 see section 3.1.3.
 
-2.1.2.1  Establishing a Security Level
+##### 2.1.2.1 Establishing a Security Level
 
 Every protocol participant SHOULD use mutual authentication when establishing a new session.
 If the destination does not support mutual authentication, a protocol participant SHOULD use
 incoming authentication. If the destination does not support incoming authentication, a protocol
 participant MAY use No Security.<2>
 
-2.1.2.2  Obtaining a Name Object
+##### 2.1.2.2 Obtaining a Name Object
 
 The process of obtaining a name object for a session partner is implementation-specific.<3>
 
-2.1.2.3  Obtaining the Minimum and Maximum Protocol Version Numbers
+##### 2.1.2.3 Obtaining the Minimum and Maximum Protocol Version Numbers
 
 The details of how to compute the minimum and maximum protocol version numbers are provided in
 Common Initialization Details (section 3.1.3).
@@ -1633,33 +1418,34 @@ Release: April 23, 2024
 
 18 / 64
 
-2.1.3  Protocol Versioning
+
+#### 2.1.3 Protocol Versioning
 
 This protocol has two versions: MS-DTCM 1.0 and MS-DTCM 1.1. Versioning aspects that are related
 to connection types, message types, and message fields are provided in the context of each
 connection type. For more information, see Connection Type Details (section 2.2.5).
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All messages in this protocol MUST extend the MESSAGE_PACKET structure, as specified in [MS-CMP]
 section 2.2.2.
 
-2.2.1  Protocol Connection Types
+#### 2.2.1 Protocol Connection Types
 
 This protocol MUST extend the set of connection types that are specified in [MS-DTCO] section 2.2
 by providing one new connection type: CONNTYPE_TXUSER_TIPPROXYGATEWAY (section 2.2.5.1).
 The protocol type field for connections that implement this connection type MUST be set to
 0x00000026.
 
-2.2.2  Connection Type Versioning
+#### 2.2.2 Connection Type Versioning
 
 Both the MS-DTCM 1.0 and MS-DTCM 1.1 versions of MSDTC Connection Manager: OleTx Transaction
 Internet Protocol MUST support the CONNTYPE_TXUSER_TIPPROXYGATEWAY (section 2.2.5.1)
 connection type.
 
-2.2.3  Protocol Data Structures
+#### 2.2.3 Protocol Data Structures
 
-2.2.3.1  OLETX_TIP_TM_ID
+##### 2.2.3.1 OLETX_TIP_TM_ID
 
 The OLETX_TIP_TM_ID structure is used to represent the identification (contact) information for a
 TIP transaction manager.
@@ -1702,7 +1488,8 @@ Release: April 23, 2024
 
 19 / 64
 
-lPort (4 bytes): This field MUST be a 4-byte unsigned integer that specifies the TCP port on which
+
+lPort (4 bytes): This field MUST be a 4-byte unsigned integer that specifies the TCP port on which
 
 the remote TIP transaction manager is listening.
 
@@ -1726,7 +1513,7 @@ that MUST specify the path of the remote TIP transaction manager. The size of th
 only by the maximum length of variable data that can be transmitted in a message, as specified in
 [MS-CMP] section 2.2.2.
 
-2.2.3.2  OLETX_TIP_TX_ID
+##### 2.2.3.2 OLETX_TIP_TX_ID
 
 The OLETX_TIP_TX_ID structure is used to represent a  transaction identifier as specified in
 [RFC2371] section 5.
@@ -1764,9 +1551,9 @@ MUST specify the transaction identifier as specified in [RFC2371] section 5. The
 limited only by the maximum length of variable data that can be transmitted in a message, as
 specified in [MS-CMP] section 2.2.2.
 
-2.2.4  Protocol Enumerations
+#### 2.2.4 Protocol Enumerations
 
-2.2.4.1  TRUN_TIPPROXYGATEWAY_PULLERROR
+##### 2.2.4.1 TRUN_TIPPROXYGATEWAY_PULLERROR
 
 The TRUN_TIPPROXYGATEWAY_PULLERROR enumeration defines the error values for a pull
 request that is initiated by a TIP interoperability application.
@@ -1782,7 +1569,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   TRUN_TIPPROXYGATEWAY_PULLERROR_TIPNOTPULLED = 0x00000004,
+
+   TRUN_TIPPROXYGATEWAY_PULLERROR_TIPNOTPULLED = 0x00000004,
    TRUN_TIPPROXYGATEWAY_PULLERROR_TIPERROR = 0x00000005,
    TRUN_TIPPROXYGATEWAY_PULLERROR_TIPDISABLED = 0x00000006
  } TRUN_TIPPROXYGATEWAY_PULLERROR;
@@ -1804,7 +1592,7 @@ TRUN_TIPPROXYGATEWAY_PULLERROR_TIPDISABLED:  The pull propagation failed because
 
 the TIP interoperability functionality is disabled.
 
-2.2.4.2  TRUN_TIPPROXYGATEWAY_PUSHERROR
+##### 2.2.4.2 TRUN_TIPPROXYGATEWAY_PUSHERROR
 
 The TRUN_TIPPROXYGATEWAY_PUSHERROR enumeration defines the error values for a push
 request that is initiated by a TIP interoperability application.
@@ -1828,15 +1616,15 @@ TRUN_TIPPROXYGATEWAY_PUSHERROR_TIPDISABLED:  The push propagation failed because
 
 the TIP interoperability functionality is disabled.
 
-2.2.5  Connection Type Details
+#### 2.2.5 Connection Type Details
 
-2.2.5.1  CONNTYPE_TXUSER_TIPPROXYGATEWAY
+##### 2.2.5.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY
 
 The CONNTYPE_TXUSER_TIPPROXYGATEWAY connection type is used by a TIP interoperability
 application to request that a TIP interoperability provider perform a TIP push or pull propagation, to
 propagate a transaction to or from a TIP transaction manager.
 
-2.2.5.1.1 Message Types
+###### 2.2.5.1.1 Message Types
 
 The CONNTYPE_TXUSER_TIPPROXYGATEWAY connection type defines the following message types:
 
@@ -1853,7 +1641,8 @@ Release: April 23, 2024
 
 21 / 64
 
-  TXUSER_TIPPROXYGATEWAY_MTAG_PULLED
+
+  TXUSER_TIPPROXYGATEWAY_MTAG_PULLED
 
   TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR
 
@@ -1865,7 +1654,7 @@ Release: April 23, 2024
 
   TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR
 
-2.2.5.1.2 Message Type Versioning
+###### 2.2.5.1.2 Message Type Versioning
 
 The following table shows the message types that are version-specific. Protocol messages that are
 not shown in this table MUST be supported by both protocol versions.
@@ -1884,9 +1673,9 @@ TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2  Not supported
 
 Supported
 
-2.2.5.1.3 Message Type Details
+###### 2.2.5.1.3 Message Type Details
 
-2.2.5.1.3.1  TXUSER_TIPPROXYGATEWAY_MTAG_PULL
+###### 2.2.5.1.3.1 TXUSER_TIPPROXYGATEWAY_MTAG_PULL
 
 The TXUSER_TIPPROXYGATEWAY_MTAG_PULL message is used by a TIP interoperability
 application to initiate a TIP pull propagation.
@@ -1931,7 +1720,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -1965,7 +1755,7 @@ tipTxId (variable): This field identifies the transaction for which the TIP pull
 
 requested. This field MUST contain an OLETX_TIP_TX_ID structure.
 
-2.2.5.1.3.2  TXUSER_TIPPROXYGATEWAY_MTAG_PULL2
+###### 2.2.5.1.3.2 TXUSER_TIPPROXYGATEWAY_MTAG_PULL2
 
   The TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 message is used by a TIP application to
 initiate a TIP pull propagation.
@@ -2012,7 +1802,8 @@ Release: April 23, 2024
 
 23 / 64
 
-
+
+
 
 The dwcbVarLenData field MUST be equal to the sum of the values of the cbHostName and
 cbPath fields in the tipTmId structure, rounded to a multiple of 4; plus the value of the
@@ -2044,7 +1835,7 @@ tipTxId (variable): This field identifies the transaction for which the TIP pull
 requested. This field MUST contain an OLETX_TIP_TX_ID structure and MUST be aligned on a 4-
 byte boundary by padding with arbitrary values.
 
-2.2.5.1.3.3  TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE
+###### 2.2.5.1.3.3 TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE
 
 The TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE message is sent from a TIP
 interoperability provider to a TIP interoperability application to indicate that the TIP pull
@@ -2077,7 +1868,7 @@ The dwUserMsgType field MUST be 0x00005104.
 
 The dwcbVarLenData field MUST be zero.
 
-2.2.5.1.3.4  TXUSER_TIPPROXYGATEWAY_MTAG_PULLED
+###### 2.2.5.1.3.4 TXUSER_TIPPROXYGATEWAY_MTAG_PULLED
 
 The TXUSER_TIPPROXYGATEWAY_MTAG_PULLED message is sent from a TIP interoperability
 provider to a TIP interoperability application to indicate the following:
@@ -2098,7 +1889,8 @@ Release: April 23, 2024
 
 24 / 64
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2135,7 +1927,7 @@ guidTx (16 bytes): This field MUST contain a GUID that specifies the transaction
 
 pulled transaction.<4>
 
-2.2.5.1.3.5  TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR
+###### 2.2.5.1.3.5 TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR
 
 The TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR message is sent from a TIP
 interoperability provider to a TIP interoperability application to indicate that an error occurred during
@@ -2173,7 +1965,7 @@ The dwcbVarLenData field MUST be 4.
 Error (4 bytes): This 4-byte field MUST contain the status value for the previous request. The value
 MUST be one of those defined by the TRUN_TIPPROXYGATEWAY_PULLERROR Enumeration.
 
-2.2.5.1.3.6  TXUSER_TIPPROXYGATEWAY_MTAG_PUSH
+###### 2.2.5.1.3.6 TXUSER_TIPPROXYGATEWAY_MTAG_PUSH
 
 The TXUSER_TIPPROXYGATEWAY_MTAG_PUSH message is used by a TIP application to initiate
 a TIP push propagation.
@@ -2185,7 +1977,8 @@ Release: April 23, 2024
 
 25 / 64
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2237,7 +2030,7 @@ tipTmId (variable): This field identifies the TIP transaction manager against wh
 propagation was requested. This field MUST contain an OLETX_TIP_TM_ID structure and MUST
 be aligned on a 4-byte boundary by padding with arbitrary values.
 
-2.2.5.1.3.7  TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2
+###### 2.2.5.1.3.7 TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2
 
   The TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 message is used by a TIP interoperability
 application to initiate a TIP push propagation.
@@ -2268,7 +2061,8 @@ Release: April 23, 2024
 
 26 / 64
 
-...
+
+...
 
 ...
 
@@ -2299,7 +2093,7 @@ tipTmId (variable): This field identifies the TIP transaction manager against wh
 
 propagation was requested. This field MUST contain an OLETX_TIP_TM_ID structure.
 
-2.2.5.1.3.8  TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED
+###### 2.2.5.1.3.8 TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED
 
 The TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED message is sent by a TIP interoperability
 provider to a TIP interoperability application to indicate that the transaction was successfully pushed
@@ -2341,7 +2135,7 @@ tipTxId (variable): This field identifies the transaction that was pushed. This 
 
 OLETX_TIP_TX_ID structure.
 
-2.2.5.1.3.9  TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR
+###### 2.2.5.1.3.9 TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR
 
 27 / 64
 
@@ -2350,7 +2144,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR message is sent from a TIP
+
+The TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR message is sent from a TIP
 interoperability provider to a TIP interoperability application to indicate that an error occurred during
 the push operation.
 
@@ -2393,18 +2188,19 @@ Release: April 23, 2024
 
 28 / 64
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 These sections define the expected behavior of the protocol roles that are introduced in Protocol
 Overview (section 1.3): the TIP interoperability application role (section 3.2) and the TIP
 interoperability provider role (section 3.3). The following sections provide a specification for the
 functionality that is required of each role.
 
-3.1  Common Details
+### 3.1 Common Details
 
 This section contains protocol details that are common to all protocol roles.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2412,7 +2208,7 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model as long as their external behavior is consistent with the behavior that is
 described in this document.
 
-3.1.1.1  Common Transport-Related Details
+##### 3.1.1.1 Common Transport-Related Details
 
 A protocol role that uses the transport layer to send or receive protocol messages MUST satisfy
 the following requirements:
@@ -2444,7 +2240,7 @@ MUST also support initiating multiple concurrent sessions to a number of differe
 
 For more information about the transport layer, see Transport (section 2.1).
 
-3.1.1.2  Protocol Connection Objects
+##### 3.1.1.2 Protocol Connection Objects
 
 The connection objects that are used in this specification extend the definition of a connection object,
 as specified in [MS-CMP] section 3.1.1.1, to include the following data elements:
@@ -2467,7 +2263,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following rules apply to a connection state machine:
+
+The following rules apply to a connection state machine:
 
   When a protocol participant initiates or accepts a connection, the state field of the connection
 MUST be set to the Idle (section 3.2.1.1.1 or section 3.3.1.2.1.1) state. When the connection is
@@ -2482,11 +2279,11 @@ disconnected.
 The preceding rules apply as specified in [MS-CMP] section 3.1.4, which provides more details about
 connection disconnection.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Related to protocol versioning, when a protocol role is initialized, it MUST do the following:
 
@@ -2551,11 +2348,12 @@ Release: April 23, 2024
 
 30 / 64
 
-3.1.4  Higher-Layer Triggered Events
+
+#### 3.1.4 Higher-Layer Triggered Events
 
 There are no common higher-layer triggered events.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 When a protocol participant receives an incoming message on a connection, it MUST perform the
 following actions to verify the validity of the message:
@@ -2597,16 +2395,16 @@ If the connection type of the recipient connection defines specific actions that
 when an invalid message is received, the protocol participant MUST perform those actions when an
 invalid message is received.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 A protocol participant that uses a connection object MUST be prepared to handle the Connection
 Disconnected event at any time during the lifetime of that connection.
 
-3.1.7.1  Connection Disconnected
+##### 3.1.7.1 Connection Disconnected
 
 When a connection is disconnected, a protocol participant MUST:
 
@@ -2622,7 +2420,8 @@ Release: April 23, 2024
 
 31 / 64
 
-
+
+
 
 
 
@@ -2633,7 +2432,7 @@ actions when a connection is disconnected.
 If the connection state is not already Ended (section 3.2.1.1.5 or section 3.3.1.2.1.5), the state
 MUST be set to Ended (section 3.2.1.1.5 or section 3.3.1.2.1.5).
 
-3.1.8  Versioning Negotiation
+#### 3.1.8 Versioning Negotiation
 
 This protocol has two versions: MS-DTCM 1.0 and MS-DTCM 1.1. Before exchanging any protocol
 messages, the two protocol participants MUST agree on what protocol version to use in their
@@ -2668,9 +2467,9 @@ The negotiated protocol version is MS-DTCM 1.1.
 The negotiated protocol version MUST be used when creating new connection objects, as specified in
 Common Initialization Details (section 3.1.3).
 
-3.2  TIP Interoperability Application Role Details
+### 3.2 TIP Interoperability Application Role Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2699,7 +2498,8 @@ Release: April 23, 2024
 
 32 / 64
 
-3.2.1.1  CONNTYPE_TXUSER_TIPPROXYGATEWAY Initiator States
+
+##### 3.2.1.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY Initiator States
 
 The TIP interoperability application MUST act as an initiator for the
 CONNTYPE_TXUSER_TIPPROXYGATEWAY connection type. In this role, the TIP interoperability
@@ -2729,13 +2529,14 @@ Release: April 23, 2024
 
 33 / 64
 
-<!-- Extracted images from page 34 -->
+
+<!-- Extracted images from page 34 -->
 ![Extracted image 1 from page 34]([MS-DTCM].images/page034-img01.png)
 <!-- /Extracted images from page 34 -->
 
 Figure 5: CONNTYPE_TXUSER_TIPPROXYGATEWAY initiator states
 
-3.2.1.1.1 Idle
+###### 3.2.1.1.1 Idle
 
 This is the initial state. The following events are processed in this state:
 
@@ -2745,7 +2546,7 @@ For synchronous or asynchronous requests, Sending a TIP Pull Request
 
   Sending a TIP Push Request
 
-3.2.1.1.2 Awaiting Sync Pull Response
+###### 3.2.1.1.2 Awaiting Sync Pull Response
 
 [MS-DTCM] - v20240423
 MSDTC Connection Manager: OleTx Transaction Internet Protocol
@@ -2754,7 +2555,8 @@ Release: April 23, 2024
 
 34 / 64
 
-The following events are processed in this state:
+
+The following events are processed in this state:
 
   Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message
 
@@ -2762,7 +2564,7 @@ Release: April 23, 2024
 
   Connection Disconnected
 
-3.2.1.1.3 Awaiting Async Pull Response
+###### 3.2.1.1.3 Awaiting Async Pull Response
 
 The following events are processed in this state:
 
@@ -2774,7 +2576,7 @@ The following events are processed in this state:
 
   Connection Disconnected
 
-3.2.1.1.4 Awaiting Push Response
+###### 3.2.1.1.4 Awaiting Push Response
 
 The following events are processed in this state:
 
@@ -2784,15 +2586,15 @@ The following events are processed in this state:
 
   Connection Disconnected
 
-3.2.1.1.5 Ended
+###### 3.2.1.1.5 Ended
 
 This is the final state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The TIP interoperability application role does not use any timers that are specific to this specification.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When a TIP interoperability application is initialized:
 
@@ -2808,7 +2610,7 @@ section 3.2.3.1.
 The TIP Interoperability Provider Name field MUST be set to a value that is obtained from an
 implementation-specific source.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The TIP interoperability application MUST be prepared to process a set of events that are triggered by
 the higher-layer business logic, the details of which are implementation-specific.
@@ -2825,7 +2627,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Failure
 
@@ -2835,7 +2638,7 @@ associated message processing event MUST communicate on the above results to the
 business logic. The TIP interoperability application MUST be prepared to process the events as
 specified in the following sections.
 
-3.2.4.1  Sending a TIP Pull Request
+##### 3.2.4.1 Sending a TIP Pull Request
 
 If the higher-layer business logic pulls a transaction by using the TIP protocol, the TIP interoperability
 application MUST perform the following actions:
@@ -2882,7 +2685,7 @@ the fAsync message field:
 
   Set the connection state to Awaiting Sync Pull Response.
 
-3.2.4.2  Sending a TIP Push Request
+##### 3.2.4.2 Sending a TIP Push Request
 
 If the higher-layer business logic decides to push a transaction by using the TIP protocol, the TIP
 interoperability application MUST perform the following actions:
@@ -2915,22 +2718,23 @@ Release: April 23, 2024
 
 36 / 64
 
-  Otherwise, the TIP interoperability application MUST send a TIPPROXYGATEWAY_MTAG_PUSH
+
+  Otherwise, the TIP interoperability application MUST send a TIPPROXYGATEWAY_MTAG_PUSH
 
 message by using the connection. The message fields MUST be set as specified above for sending
 a TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 message.
 
   Set the connection state to Awaiting Push Response.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  CONNTYPE_TXUSER_TIPPROXYGATEWAY as Initiator
+##### 3.2.5.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY as Initiator
 
 For all messages that are received in this connection type, the TIP interoperability application MUST
 process the message, as specified in Common Message Processing Events and Sequencing Rules. The
 application MUST also follow the processing rules that are specified in the following sections.
 
-3.2.5.1.1 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message
+###### 3.2.5.1.1 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message
 
 When the TIP interoperability application receives a TXUSER_TIPPROXYGATEWAY_MTAG_PULLED
 message, it MUST perform the following actions:
@@ -2953,7 +2757,7 @@ business logic.
 
   Otherwise, the message MUST be processed as an invalid message as specified in section 3.1.5.
 
-3.2.5.1.2 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE
+###### 3.2.5.1.2 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL_ASYNC_COMPLETE
 
 Message
 
@@ -2973,7 +2777,7 @@ Pull Request event from the higher-layer business logic.
 
   Otherwise, the message MUST be processed as an invalid message as specified in section 3.1.5.
 
-3.2.5.1.3 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR Message
+###### 3.2.5.1.3 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR Message
 
 When the TIP interoperability application receives a TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR
 message, it MUST perform the following actions:
@@ -2989,7 +2793,8 @@ Release: April 23, 2024
 
 37 / 64
 
-
+
+
 
 If the Error field from the message is set to one of the following values of the
 TRUN_TIPPROXYGATEWAY_PULLERROR enumeration
@@ -3007,7 +2812,7 @@ TIP Pull Request event from the higher-layer business logic.
 
   Otherwise, the message MUST be processed as an invalid message, as specified in section 3.1.5.
 
-3.2.5.1.4 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message
+###### 3.2.5.1.4 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message
 
 When the TIP interoperability application receives a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED
 message, it MUST perform the following actions:
@@ -3024,7 +2829,7 @@ layer business logic.
 
   Otherwise, the message MUST be processed as an invalid message, as specified in section 3.1.5.
 
-3.2.5.1.5 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR Message
+###### 3.2.5.1.5 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR Message
 
 When the TIP interoperability application receives a TXUSER_TIPPROXYGATEWAY_MTAG_PUSHERROR
 message, it MUST perform the following actions:
@@ -3048,7 +2853,7 @@ UsesVersion11 flag of the connection is set:
 
   Otherwise, the message MUST be processed as an invalid message, as specified in section 3.1.5.
 
-3.2.5.1.6 Connection Disconnected
+###### 3.2.5.1.6 Connection Disconnected
 
 When a CONNTYPE_TXUSER_TIPPROXYGATEWAY connection is disconnected, the TIP interoperability
 application MUST perform the following actions:
@@ -3067,19 +2872,20 @@ Release: April 23, 2024
 
 38 / 64
 
-  Otherwise, the event MUST be processed as specified in section 3.1.7.1.
 
-3.2.6  Timer Events
+  Otherwise, the event MUST be processed as specified in section 3.1.7.1.
+
+#### 3.2.6 Timer Events
 
 This role has no protocol-specific timer events.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  TIP Interoperability Provider Role Details
+### 3.3 TIP Interoperability Provider Role Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3115,7 +2921,7 @@ As specified in Prerequisites/Preconditions (section 1.5), the TIP interoperabil
 use implementation-specific functionality to perform TIP Communication with other TIP Transaction
 Managers.
 
-3.3.1.1  Interface with the Core Transaction Manager Facet of the Local Transaction
+##### 3.3.1.1 Interface with the Core Transaction Manager Facet of the Local Transaction
 
 Manager
 
@@ -3137,7 +2943,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The capability of receiving events from the Core Transaction Manager Facet of the OleTx
 transaction manager.
@@ -3145,12 +2952,12 @@ transaction manager.
 Through the above capabilities, the TIP interoperability provider becomes a facet of the OleTx
 transaction manager. (More information is specified in [MS-DTCO] section 1.3.3.3.)
 
-3.3.1.2  Connection States
+##### 3.3.1.2 Connection States
 
 The TIP interoperability provider MUST provide the CONNTYPE_TXUSER_TIPPROXYGATEWAY Acceptor
 States connection states in the following subsections of section 3.3.1.2.1.
 
-3.3.1.2.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY Acceptor States
+###### 3.3.1.2.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY Acceptor States
 
 The TIP interoperability provider MUST act as an acceptor for the
 CONNTYPE_TXUSER_TIPPROXYGATEWAY connection type. In this role, the TIP interoperability
@@ -3180,15 +2987,16 @@ Release: April 23, 2024
 
 40 / 64
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-DTCM].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
 Figure 6: CONNTYPE_TXUSER_ TIPPROXYGATEWAY acceptor states
 
-3.3.1.2.1.1
+###### 3.3.1.2.1.1 Idle
 
-Idle
+
 
 This is the initial state. The following events are processed in this state:
 
@@ -3207,7 +3015,8 @@ Release: April 23, 2024
 
 41 / 64
 
-3.3.1.2.1.2  Awaiting Sync Pull Response
+
+###### 3.3.1.2.1.2 Awaiting Sync Pull Response
 
 The following events are processed in this state:
 
@@ -3219,7 +3028,7 @@ TIP Pull Success
 
 TIP Pull Failure
 
-3.3.1.2.1.3  Awaiting Async Pull Response
+###### 3.3.1.2.1.3 Awaiting Async Pull Response
 
 The following events are processed in this state:
 
@@ -3231,7 +3040,7 @@ TIP Pull Success
 
 TIP Pull Failure
 
-3.3.1.2.1.4  Awaiting Push Response
+###### 3.3.1.2.1.4 Awaiting Push Response
 
 The following events are processed in this state:
 
@@ -3243,17 +3052,17 @@ TIP Push Success
 
 TIP Push Failure
 
-3.3.1.2.1.5  Ended
+###### 3.3.1.2.1.5 Ended
 
 This is the final state.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 There are no timers specifically for this protocol role.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
-3.3.3.1  Role Initialization
+##### 3.3.3.1 Role Initialization
 
 When the TIP interoperability provider role is initialized, it MUST perform the following actions:
 
@@ -3296,13 +3105,14 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The TIP interoperability provider MUST reject the incoming request for a connection, as
 specified in [MS-CMP] section 3.1.5.5 (MsgTag 0x00000005), with the rejection Reason
 set to 0x80070005, from remote machines for all its supported connection types.
 
-3.3.3.2  Transaction Object Initialization
+##### 3.3.3.2 Transaction Object Initialization
 
 A transaction object MUST be initialized by using all the initialization steps, as specified in [MS-
 DTCO] section 3.2.3.1. Also, the TIP interoperability provider MUST initialize each new transaction
@@ -3312,20 +3122,20 @@ The RemoteTipTransactionUrl field MUST default to an empty string.
 
 The OurTipTxId field MUST default to NULL.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 There are no higher-layer triggered events specifically for this role.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  CONNTYPE_TXUSER_TIPPROXYGATEWAY as Acceptor
+##### 3.3.5.1 CONNTYPE_TXUSER_TIPPROXYGATEWAY as Acceptor
 
 For all messages that are received in this connection type, the TIP interoperability provider MUST
 process the message as specified in Common Message Processing Events and Sequencing Rules. The
 TIP interoperability provider MUST also follow the processing rules that are specified in the following
 sections.
 
-3.3.5.1.1 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL or a
+###### 3.3.5.1.1 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PULL or a
 
 TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 Message
 
@@ -3376,7 +3186,8 @@ Release: April 23, 2024
 
 43 / 64
 
-  Otherwise, if the TIP interoperability provider does not have sufficient memory available to
+
+  Otherwise, if the TIP interoperability provider does not have sufficient memory available to
 
 process the message:
 
@@ -3467,7 +3278,8 @@ Release: April 23, 2024
 
 44 / 64
 
-  Set the RemoteTipTransactionUrl field to the TIP URL value.
+
+  Set the RemoteTipTransactionUrl field to the TIP URL value.
 
   Create a new GUID for the identifier field of the transaction object.
 
@@ -3493,7 +3305,7 @@ The transaction object
 
 Message Processing Events and Sequencing Rules (section 3.1.5).
 
-3.3.5.1.2 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSH or a
+###### 3.3.5.1.2 Receiving a TXUSER_TIPPROXYGATEWAY_MTAG_PUSH or a
 
 TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 Message
 
@@ -3558,7 +3370,8 @@ Release: April 23, 2024
 
 45 / 64
 
-
+
+
 
 Find the transaction object in the transaction table of the core transaction manager
 by using the guidTx field from the message as a key.
@@ -3596,23 +3409,23 @@ The value of the tipTmId field from the message
 
 Message Processing Events and Sequencing Rules (section 3.1.5).
 
-3.3.5.1.3 Connection Disconnected
+###### 3.3.5.1.3 Connection Disconnected
 
 When a CONNTYPE_TXUSER_TIPPROXYGATEWAY connection is disconnected, the TIP interoperability
 provider MUST process the event as specified in Connection Disconnected (section 3.1.7.1).
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 There are no timer events specifically for this role.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 A TIP interoperability provider MUST be capable of processing the local events as specified in the
 following sections.
 
-3.3.7.1  TIP Transaction Propagation Events
+##### 3.3.7.1 TIP Transaction Propagation Events
 
-3.3.7.1.1 Pull TIP Transaction
+###### 3.3.7.1.1 Pull TIP Transaction
 
 The Pull TIP Transaction event MUST be signaled by using the following arguments:
 
@@ -3643,7 +3456,8 @@ Release: April 23, 2024
 
 46 / 64
 
-  Using implementation-specific functionality, perform the TIP pull propagation of the transaction
+
+  Using implementation-specific functionality, perform the TIP pull propagation of the transaction
 
 that is identified by the TIP URL that is specified by the RemoteTipTransactionUrl field of the
 transaction.
@@ -3697,7 +3511,7 @@ replied with NOTPULLED. (For more information, see [RFC2371] section 13.)
 
 TIP Error: If any other failure occurred.
 
-3.3.7.1.2 Push TIP Transaction
+###### 3.3.7.1.2 Push TIP Transaction
 
 The Push TIP Transaction event MUST be signaled by using the following arguments:
 
@@ -3733,7 +3547,8 @@ Release: April 23, 2024
 
 47 / 64
 
-
+
+
 
 
 
@@ -3815,7 +3630,7 @@ TIP Connect Error: If the failure was caused by a connectivity issue.
 
 TIP Error: If any other failure occurred.
 
-3.3.7.1.3 TIP Pull Failure
+###### 3.3.7.1.3 TIP Pull Failure
 
 The TIP Pull Failure event MUST be signaled by using the following arguments:
 
@@ -3836,7 +3651,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 TIP Error
 
@@ -3875,7 +3691,7 @@ TIP Error: TRUN_TIPPROXYGATEWAY_PULLERROR_TIPERROR.
 
   Set the connection state to Ended.
 
-3.3.7.1.4 TIP Pull Success
+###### 3.3.7.1.4 TIP Pull Success
 
 The TIP Pull Success event MUST be signaled by using the following arguments:
 
@@ -3909,7 +3725,7 @@ current connection.
 
   Set the connection state to Ended.
 
-3.3.7.1.5 TIP Push Failure
+###### 3.3.7.1.5 TIP Push Failure
 
 The TIP Push Failure event MUST be signaled by using the following arguments:
 
@@ -3924,7 +3740,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -3955,7 +3772,7 @@ TIP Error: TRUN_TIPPROXYGATEWAY_PUSHERROR_TIPERROR.
 
   Set the connection state to Ended.
 
-3.3.7.1.6 TIP Push Success
+###### 3.3.7.1.6 TIP Push Success
 
 The TIP Push Success event MUST be signaled by using the following argument:
 
@@ -3979,9 +3796,9 @@ propagation.
 
   Set the connection state to Ended.
 
-3.3.7.2  Enlisting Events Signaled by the Core Transaction Manager Facet
+##### 3.3.7.2 Enlisting Events Signaled by the Core Transaction Manager Facet
 
-3.3.7.2.1 Create Transaction Failure
+###### 3.3.7.2.1 Create Transaction Failure
 
 The Create Transaction Failure event MUST be signaled by using the following arguments:
 
@@ -4011,7 +3828,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -4019,7 +3837,7 @@ The transaction object
 
 The TIP error reason value
 
-3.3.7.2.2 Create Transaction Success
+###### 3.3.7.2.2 Create Transaction Success
 
 The Create Transaction Success event MUST be signaled by using the following arguments:
 
@@ -4034,7 +3852,7 @@ the following actions:
 
 The transaction object
 
-3.3.7.2.3 Create Subordinate Enlistment Failure
+###### 3.3.7.2.3 Create Subordinate Enlistment Failure
 
 The Create Subordinate Enlistment Failure event MUST be signaled by using the following arguments:
 
@@ -4069,7 +3887,7 @@ The transaction object that is referenced by the enlistment object
 
 The TIP error code value
 
-3.3.7.2.4 Create Subordinate Enlistment Success
+###### 3.3.7.2.4 Create Subordinate Enlistment Success
 
 The Create Subordinate Enlistment Success event MUST be signaled by using the following argument:
 
@@ -4084,7 +3902,7 @@ perform the following actions:
 
 The transaction object that is referenced by the enlistment object
 
-3.3.7.3  TIP Communication Events
+##### 3.3.7.3 TIP Communication Events
 
 When performing a TIP transaction propagation operation, the TIP interoperability provider MUST
 establish itself as either a subordinate or a superior transaction manager. It does so on behalf of
@@ -4098,7 +3916,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-prepared to process events that are caused by the receiving of TIP communication verbs that are
+
+prepared to process events that are caused by the receiving of TIP communication verbs that are
 related to TIP transaction coordination and TIP transaction recovery (more information is
 specified in [RFC2371]). The details of how these events are processed by the TIP interoperability
 provider do not affect the wire representation of this protocol.
@@ -4110,7 +3929,8 @@ Release: April 23, 2024
 
 52 / 64
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following protocol examples assume that a session, as specified in [MS-CMPO], is already
 established between two protocol participants and that the negotiated protocol version for that
@@ -4123,12 +3943,12 @@ infrastructure. Example messages are based on a MESSAGE_PACKET structure, as des
 CMP] section 2.2.2, and are sent from one protocol participant to another by using the functionality
 that is provided by the underlying multiplexing protocol layer.
 
-4.1  TIP Pull Propagation Scenario
+### 4.1 TIP Pull Propagation Scenario
 
 This scenario shows how a TIP interoperability application pulls a transaction from a TIP transaction
 manager by using a TIP interoperability provider.
 
-4.1.1  Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection
+#### 4.1.1 Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection
 
 Before exchanging protocol-specific messages, the TIP interoperability application and the TIP
 interoperability provider need to establish a connection, as specified in [MS-CMP], with the protocol
@@ -4166,7 +3986,7 @@ dwReserved1
 
 dwReserved1: 0xcd64cd64
 
-4.1.2  Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 Message
+#### 4.1.2 Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 Message
 
 To request the TIP pull propagation of a transaction, the TIP interoperability application sends a
 TXUSER_TIPPROXYGATEWAY_MTAG_PULL2 user message that contains the TIP URL of the
@@ -4188,7 +4008,8 @@ Release: April 23, 2024
 
 53 / 64
 
- Field
+
+ Field
 
  Value
 
@@ -4306,7 +4127,7 @@ Padding: 00
 
 0x00003562
 
-4.1.3  Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message
+#### 4.1.3 Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PULLED Message
 
 When the TIP interoperability provider receives the TXUSER_TIPPROXYGATEWAY_MTAG_PULL2
 message from the TIP interoperability application, it attempts to perform the TIP pull propagation of
@@ -4328,7 +4149,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Field
+
+ Field
 
  Value
 
@@ -4374,19 +4196,19 @@ After the TIP interoperability application receives the TXUSER_TIPPROXYGATEWAY_M
 message, no more user messages can be sent over this connection, and the application initiates the
 disconnect sequence.
 
-4.2  TIP Push Propagation Scenario
+### 4.2 TIP Push Propagation Scenario
 
 This scenario shows how a TIP interoperability application pushes a transaction from an OleTx
 transaction manager to a TIP transaction manager by using a TIP interoperability provider.
 
-4.2.1  Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection
+#### 4.2.1 Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY Connection
 
 Before protocol-specific messages are exchanged, a CONNTYPE_TXUSER_TIPPROXYGATEWAY
 connection is established between the TIP interoperability application and the TIP interoperability
 provider—just as in the example Establishing a CONNTYPE_TXUSER_TIPPROXYGATEWAY
 Connection (section 4.1.1).
 
-4.2.2  Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 Message
+#### 4.2.2 Sending the TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 Message
 
 To request the TIP push propagation of a transaction, the TIP interoperability application sends a
 TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2 user message that contains the identifier of the
@@ -4433,7 +4255,8 @@ Release: April 23, 2024
 
 55 / 64
 
- Field
+
+ Field
 
  Value
 
@@ -4493,7 +4316,7 @@ Padding: 0000
 
 0x00000000
 
-4.2.3  Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message
+#### 4.2.3 Receiving the TXUSER_TIPPROXYGATEWAY_MTAG_PUSHED Message
 
 When the TIP interoperability provider receives the TXUSER_TIPPROXYGATEWAY_MTAG_PUSH2
 message from the application, it attempts to perform the TIP push propagation of the transaction
@@ -4566,7 +4389,8 @@ Release: April 23, 2024
 
 56 / 64
 
- Field
+
+ Field
 
  Value
 
@@ -4597,7 +4421,8 @@ Release: April 23, 2024
 
 57 / 64
 
-5  Security
+
+## 5 Security
 
 This protocol uses the security mechanism of the underlying transport infrastructure, as specified in
 [MS-CMP] and [MS-CMPO]. Because the information that is exchanged in messages by this protocol
@@ -4608,11 +4433,11 @@ addresses—implementers need to use mutual authentication, as specified in [MS-
 For situations in which mutual authentication is not supported, implementers can provide the
 alternative transport security setting of incoming authentication.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -4623,7 +4448,8 @@ Release: April 23, 2024
 
 58 / 64
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4692,7 +4518,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<4> Section 2.2.5.1.3.4: In Windows, except Windows NT and Windows 2000, a GUID is used for the
+
+<4> Section 2.2.5.1.3.4: In Windows, except Windows NT and Windows 2000, a GUID is used for the
 szTxId field in the OLETX_TIP_TX_ID structure. If szTxId is set to 0x0000000000000000 (GUID
 null) and the fAsync flag is set to 0x00000001 in the pull request, a new GUID will be generated and
 returned in the guidTx field for the TXUSER_TIPPROXYGATEWAY_MTAG_PULLED message.
@@ -4737,7 +4564,8 @@ Release: April 23, 2024
 
 60 / 64
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4781,7 +4609,8 @@ Release: April 23, 2024
 
 61 / 64
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model - TIP interoperability
@@ -4925,7 +4754,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-M
+
+M
 
 Message processing - TIP interoperability
    application role
@@ -5083,7 +4913,8 @@ MSDTC Connection Manager: OleTx Transaction Internet Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR
+
+TXUSER_TIPPROXYGATEWAY_MTAG_PULLERROR
 
 packet 25
 

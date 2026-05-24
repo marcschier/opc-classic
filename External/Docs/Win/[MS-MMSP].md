@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 103
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: June 1, 2017
 
 2 / 103
 
-Date
+
+Date
 
 Revision
 History
@@ -515,363 +517,154 @@ Release: June 1, 2017
 
 3 / 103
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Data Structures Used for Logging](#221-data-structures-used-for-logging)
+      - [2.2.1.1 CLIENT_LOG](#2211-clientlog)
+      - [2.2.1.2 CLIENT_LOG_INFO](#2212-clientloginfo)
+    - [2.2.2 Data](#222-data)
+    - [2.2.3 TcpMessageHeader](#223-tcpmessageheader)
+    - [2.2.4 Message Types](#224-message-types)
+      - [2.2.4.1 LinkMacToViewerPing](#2241-linkmactoviewerping)
+      - [2.2.4.2 LinkMacToViewerReportConnectedEX](#2242-linkmactoviewerreportconnectedex)
+      - [2.2.4.3 LinkMacToViewerReportConnectedFunnel](#2243-linkmactoviewerreportconnectedfunnel)
+      - [2.2.4.4 LinkMacToViewerReportDisconnectedFunnel](#2244-linkmactoviewerreportdisconnectedfunnel)
+      - [2.2.4.5 LinkMacToViewerReportEndOfStream](#2245-linkmactoviewerreportendofstream)
+      - [2.2.4.6 LinkMacToViewerReportFunnelInfo](#2246-linkmactoviewerreportfunnelinfo)
+      - [2.2.4.7 LinkMacToViewerReportOpenFile](#2247-linkmactoviewerreportopenfile)
+      - [2.2.4.8 LinkMacToViewerReportReadBlock](#2248-linkmactoviewerreportreadblock)
+      - [2.2.4.9 LinkMacToViewerReportRedirect](#2249-linkmactoviewerreportredirect)
+      - [2.2.4.10 LinkMacToViewerReportStartedPlaying](#22410-linkmactoviewerreportstartedplaying)
+      - [2.2.4.11 LinkMacToViewerReportStartStriding](#22411-linkmactoviewerreportstartstriding)
+      - [2.2.4.12 LinkMacToViewerReportStreamChange](#22412-linkmactoviewerreportstreamchange)
+      - [2.2.4.13 LinkMacToViewerReportStreamSwitch](#22413-linkmactoviewerreportstreamswitch)
+      - [2.2.4.14 LinkMacToViewerSecurityChallenge](#22414-linkmactoviewersecuritychallenge)
+        - [2.2.4.14.1 NTLM_AUTH Structure](#224141-ntlmauth-structure)
+      - [2.2.4.15 LinkViewerToMacCancelReadBlock](#22415-linkviewertomaccancelreadblock)
+      - [2.2.4.16 LinkViewerToMacCloseFile](#22416-linkviewertomacclosefile)
+      - [2.2.4.17 LinkViewerToMacConnect](#22417-linkviewertomacconnect)
+      - [2.2.4.18 LinkViewerToMacConnectFunnel](#22418-linkviewertomacconnectfunnel)
+      - [2.2.4.19 LinkViewerToMacFunnelInfo](#22419-linkviewertomacfunnelinfo)
+      - [2.2.4.20 LinkViewerToMacLogging](#22420-linkviewertomaclogging)
+      - [2.2.4.21 LinkViewerToMacOpenFile](#22421-linkviewertomacopenfile)
+      - [2.2.4.22 LinkViewerToMacPong](#22422-linkviewertomacpong)
+      - [2.2.4.23 LinkViewerToMacReadBlock](#22423-linkviewertomacreadblock)
+      - [2.2.4.24 LinkViewerToMacSecurityResponse](#22424-linkviewertomacsecurityresponse)
+      - [2.2.4.25 LinkViewerToMacStartPlaying](#22425-linkviewertomacstartplaying)
+      - [2.2.4.26 LinkViewerToMacStartStriding](#22426-linkviewertomacstartstriding)
+      - [2.2.4.27 LinkViewerToMacStopPlaying](#22427-linkviewertomacstopplaying)
+      - [2.2.4.28 LinkViewerToMacStreamSwitch](#22428-linkviewertomacstreamswitch)
+        - [2.2.4.28.1 STREAM_SWITCH_ENTRY](#224281-streamswitchentry)
+    - [2.2.5 RequestPacketListResend](#225-requestpacketlistresend)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Request to Retrieve Content Information](#3141-request-to-retrieve-content-information)
+        - [3.1.4.1.1 Sending a LinkViewerToMacConnect Message](#31411-sending-a-linkviewertomacconnect-message)
+      - [3.1.4.2 Request to Start Streaming Content](#3142-request-to-start-streaming-content)
+        - [3.1.4.2.1 Sending a LinkViewerToMacStartPlaying Message](#31421-sending-a-linkviewertomacstartplaying-message)
+        - [3.1.4.2.2 Sending a LinkViewerToMacStartStriding Message](#31422-sending-a-linkviewertomacstartstriding-message)
+      - [3.1.4.3 Request to Change Currently Selected Streams](#3143-request-to-change-currently-selected-streams)
+      - [3.1.4.4 Selecting Streams to Play from New Playlist Entry](#3144-selecting-streams-to-play-from-new-playlist-entry)
+      - [3.1.4.5 Request to Stop Streaming](#3145-request-to-stop-streaming)
+      - [3.1.4.6 Request to Change Playback Position](#3146-request-to-change-playback-position)
+      - [3.1.4.7 Request to Resend Lost Data Packets](#3147-request-to-resend-lost-data-packets)
+      - [3.1.4.8 Request to Finish Streaming Session](#3148-request-to-finish-streaming-session)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending a Message](#3151-sending-a-message)
+      - [3.1.5.2 Receiving a Packet](#3152-receiving-a-packet)
+      - [3.1.5.3 Receiving a LinkMacToViewerReportConnectedEX Message](#3153-receiving-a-linkmactoviewerreportconnectedex-message)
+      - [3.1.5.4 Receiving a LinkMacToViewerReportFunnelInfo Message](#3154-receiving-a-linkmactoviewerreportfunnelinfo-message)
+      - [3.1.5.5 Receiving a LinkMacToViewerReportDisconnectedFunnel Message](#3155-receiving-a-linkmactoviewerreportdisconnectedfunnel-message)
+      - [3.1.5.6 Receiving a LinkMacToViewerReportConnectedFunnel Message](#3156-receiving-a-linkmactoviewerreportconnectedfunnel-message)
+      - [3.1.5.7 Receiving a LinkMacToViewerReportRedirect Message](#3157-receiving-a-linkmactoviewerreportredirect-message)
+      - [3.1.5.8 Receiving a LinkMacToViewerSecurityChallenge Message](#3158-receiving-a-linkmactoviewersecuritychallenge-message)
+      - [3.1.5.9 Receiving a LinkMacToViewerReportOpenFile Message](#3159-receiving-a-linkmactoviewerreportopenfile-message)
+        - [3.1.5.9.1 Sending a LinkViewerToMacReadBlock Message](#31591-sending-a-linkviewertomacreadblock-message)
+      - [3.1.5.10 Receiving a LinkMacToViewerReportReadBlock Message](#31510-receiving-a-linkmactoviewerreportreadblock-message)
+      - [3.1.5.11 Receiving a Data Packet Containing a Packet-Pair Packet](#31511-receiving-a-data-packet-containing-a-packet-pair-packet)
+      - [3.1.5.12 Receiving a Data Packet Containing an ASF File Header](#31512-receiving-a-data-packet-containing-an-asf-file-header)
+      - [3.1.5.13 Receiving a LinkMacToViewerPing Message](#31513-receiving-a-linkmactoviewerping-message)
+      - [3.1.5.14 Receiving a LinkMacToViewerReportStreamSwitch Message](#31514-receiving-a-linkmactoviewerreportstreamswitch-message)
+      - [3.1.5.15 Receiving a LinkMacToViewerReportStartedPlaying Message](#31515-receiving-a-linkmactoviewerreportstartedplaying-message)
+      - [3.1.5.16 Receiving a LinkMacToViewerReportStartStriding Message](#31516-receiving-a-linkmactoviewerreportstartstriding-message)
+      - [3.1.5.17 Receiving a Data Packet Containing an ASF Data Packet](#31517-receiving-a-data-packet-containing-an-asf-data-packet)
+      - [3.1.5.18 Receiving a LinkMacToViewerReportEndOfStream Message](#31518-receiving-a-linkmactoviewerreportendofstream-message)
+      - [3.1.5.19 Receiving a LinkMacToViewerReportStreamChange Message](#31519-receiving-a-linkmactoviewerreportstreamchange-message)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Header Timer Expires](#3161-header-timer-expires)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Notification That the Last Data Packet Has Been Sent](#3241-notification-that-the-last-data-packet-has-been-sent)
+      - [3.2.4.2 Notification That a New ASF File Header Is Available](#3242-notification-that-a-new-asf-file-header-is-available)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a Packet](#3251-receiving-a-packet)
+      - [3.2.5.2 Sending a Message](#3252-sending-a-message)
+      - [3.2.5.3 Receiving a LinkViewerToMacConnect Message](#3253-receiving-a-linkviewertomacconnect-message)
+      - [3.2.5.4 Receiving a LinkViewerToMacFunnelInfo Message](#3254-receiving-a-linkviewertomacfunnelinfo-message)
+      - [3.2.5.5 Receiving a LinkViewerToMacConnectFunnel Message](#3255-receiving-a-linkviewertomacconnectfunnel-message)
+      - [3.2.5.6 Receiving a LinkViewerToMacOpenFile Message](#3256-receiving-a-linkviewertomacopenfile-message)
+      - [3.2.5.7 Receiving a LinkViewerToMacSecurityResponse Message](#3257-receiving-a-linkviewertomacsecurityresponse-message)
+      - [3.2.5.8 Receiving a LinkViewerToMacReadBlock Message](#3258-receiving-a-linkviewertomacreadblock-message)
+        - [3.2.5.8.1 Sending Data Packets Containing an ASF File Header](#32581-sending-data-packets-containing-an-asf-file-header)
+      - [3.2.5.9 Receiving a LinkViewerToMacCancelReadBlock Message](#3259-receiving-a-linkviewertomaccancelreadblock-message)
+      - [3.2.5.10 Receiving a LinkViewerToMacStreamSwitch Message](#32510-receiving-a-linkviewertomacstreamswitch-message)
+      - [3.2.5.11 Receiving a LinkViewerToMacStartPlaying Message](#32511-receiving-a-linkviewertomacstartplaying-message)
+        - [3.2.5.11.1 Sending Data Packets Containing ASF Data Packets](#325111-sending-data-packets-containing-asf-data-packets)
+      - [3.2.5.12 Receiving a LinkViewerToMacStartStriding Message](#32512-receiving-a-linkviewertomacstartstriding-message)
+      - [3.2.5.13 Receiving a RequestPacketListResend Packet](#32513-receiving-a-requestpacketlistresend-packet)
+      - [3.2.5.14 Receiving a LinkViewerToMacStopPlaying Message](#32514-receiving-a-linkviewertomacstopplaying-message)
+      - [3.2.5.15 Receiving a LinkViewerToMacLogging Message](#32515-receiving-a-linkviewertomaclogging-message)
+      - [3.2.5.16 Receiving a LinkViewerToMacPong Message](#32516-receiving-a-linkviewertomacpong-message)
+      - [3.2.5.17 Receiving a LinkViewerToMacCloseFile Message](#32517-receiving-a-linkviewertomacclosefile-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+      - [3.2.6.1 KeepAlive Timer Expires](#3261-keepalive-timer-expires)
+      - [3.2.6.2 Idle-Timeout Timer Expires](#3262-idle-timeout-timer-expires)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 TCP Connection Is Disconnected](#3271-tcp-connection-is-disconnected)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Client States](#41-client-states)
+  - [4.2 Server States](#42-server-states)
+  - [4.3 General Sequence](#43-general-sequence)
+  - [4.4 Packet-Pair Bandwidth Estimation for MMS](#44-packet-pair-bandwidth-estimation-for-mms)
+    - [4.4.1 Packet-Pair Commands for UDP Connections](#441-packet-pair-commands-for-udp-connections)
+    - [4.4.2 Packet-Pair Commands for TCP Connections](#442-packet-pair-commands-for-tcp-connections)
+  - [4.5 Playback Adjustment Sequence](#45-playback-adjustment-sequence)
+    - [4.5.1 Sequencing During Playback](#451-sequencing-during-playback)
+  - [4.6 Authentication Sequence](#46-authentication-sequence)
+    - [4.6.1 Basic Authentication Sequence](#461-basic-authentication-sequence)
+    - [4.6.2 NTLM Authentication Sequence](#462-ntlm-authentication-sequence)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-Relationship to Other Protocols ............................................................................ 9
-Prerequisites/Preconditions ................................................................................. 9
-Applicability Statement ....................................................................................... 9
-Versioning and Capability Negotiation ................................................................... 9
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.2
-2.2.3
-2.2.4
-
-2.2.4.1
-2.2.4.2
-2.2.4.3
-2.2.4.4
-2.2.4.5
-2.2.4.6
-2.2.4.7
-2.2.4.8
-2.2.4.9
-2.2.4.10
-2.2.4.11
-2.2.4.12
-2.2.4.13
-2.2.4.14
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Message Syntax ............................................................................................... 11
-Data Structures Used for Logging ................................................................. 11
-CLIENT_LOG ........................................................................................ 11
-CLIENT_LOG_INFO ................................................................................ 13
-Data ......................................................................................................... 17
-TcpMessageHeader ..................................................................................... 18
-Message Types ........................................................................................... 19
-LinkMacToViewerPing ............................................................................ 20
-LinkMacToViewerReportConnectedEX ....................................................... 20
-LinkMacToViewerReportConnectedFunnel ................................................. 23
-LinkMacToViewerReportDisconnectedFunnel ............................................. 23
-LinkMacToViewerReportEndOfStream ...................................................... 24
-LinkMacToViewerReportFunnelInfo .......................................................... 24
-LinkMacToViewerReportOpenFile ............................................................. 26
-LinkMacToViewerReportReadBlock ........................................................... 28
-LinkMacToViewerReportRedirect .............................................................. 29
-LinkMacToViewerReportStartedPlaying ..................................................... 30
-LinkMacToViewerReportStartStriding ....................................................... 31
-LinkMacToViewerReportStreamChange .................................................... 31
-LinkMacToViewerReportStreamSwitch ...................................................... 32
-LinkMacToViewerSecurityChallenge ......................................................... 32
-2.2.4.14.1  NTLM_AUTH Structure...................................................................... 33
-LinkViewerToMacCancelReadBlock ........................................................... 34
-LinkViewerToMacCloseFile ...................................................................... 35
-LinkViewerToMacConnect ....................................................................... 35
-LinkViewerToMacConnectFunnel .............................................................. 37
-LinkViewerToMacFunnelInfo ................................................................... 38
-LinkViewerToMacLogging ....................................................................... 38
-LinkViewerToMacOpenFile ...................................................................... 39
-LinkViewerToMacPong ........................................................................... 40
-LinkViewerToMacReadBlock .................................................................... 41
-LinkViewerToMacSecurityResponse .......................................................... 42
-LinkViewerToMacStartPlaying ................................................................. 43
-LinkViewerToMacStartStriding ................................................................ 44
-LinkViewerToMacStopPlaying .................................................................. 46
-LinkViewerToMacStreamSwitch ............................................................... 46
-STREAM_SWITCH_ENTRY ................................................................. 47
-RequestPacketListResend ............................................................................ 47
-
-2.2.4.15
-2.2.4.16
-2.2.4.17
-2.2.4.18
-2.2.4.19
-2.2.4.20
-2.2.4.21
-2.2.4.22
-2.2.4.23
-2.2.4.24
-2.2.4.25
-2.2.4.26
-2.2.4.27
-2.2.4.28
-
-2.2.4.28.1
-
-2.2.5
-
-3  Protocol Details ..................................................................................................... 49
-
-4 / 103
-
-[MS-MMSP] - v20170601
-Microsoft Media Server (MMS) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-
-3.1.4.1.1
-
-3.1.4.2
-
-3.1.4.2.1
-3.1.4.2.2
-
-3.1.5
-
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-Client Details ................................................................................................... 49
-Abstract Data Model .................................................................................... 49
-Timers ...................................................................................................... 51
-Initialization ............................................................................................... 51
-Higher-Layer Triggered Events ..................................................................... 52
-Request to Retrieve Content Information ................................................. 52
-Sending a LinkViewerToMacConnect Message ...................................... 52
-Request to Start Streaming Content ........................................................ 53
-Sending a LinkViewerToMacStartPlaying Message ................................ 53
-Sending a LinkViewerToMacStartStriding Message ............................... 54
-Request to Change Currently Selected Streams ........................................ 55
-Selecting Streams to Play from New Playlist Entry ..................................... 55
-Request to Stop Streaming .................................................................... 56
-Request to Change Playback Position ....................................................... 56
-Request to Resend Lost Data Packets ...................................................... 57
-Request to Finish Streaming Session ....................................................... 57
-Processing Events and Sequencing Rules ....................................................... 58
-Sending a Message ............................................................................... 58
-Receiving a Packet ................................................................................ 58
-Receiving a LinkMacToViewerReportConnectedEX Message ......................... 58
-Receiving a LinkMacToViewerReportFunnelInfo Message ............................ 59
-Receiving a LinkMacToViewerReportDisconnectedFunnel Message ............... 60
-Receiving a LinkMacToViewerReportConnectedFunnel Message ................... 60
-Receiving a LinkMacToViewerReportRedirect Message ................................ 61
-Receiving a LinkMacToViewerSecurityChallenge Message ........................... 62
-Receiving a LinkMacToViewerReportOpenFile Message ............................... 62
-Sending a LinkViewerToMacReadBlock Message .................................. 62
-Receiving a LinkMacToViewerReportReadBlock Message ............................. 63
-Receiving a Data Packet Containing a Packet-Pair Packet ........................... 63
-Receiving a Data Packet Containing an ASF File Header ............................. 64
-Receiving a LinkMacToViewerPing Message .............................................. 64
-Receiving a LinkMacToViewerReportStreamSwitch Message ........................ 64
-Receiving a LinkMacToViewerReportStartedPlaying Message ....................... 65
-Receiving a LinkMacToViewerReportStartStriding Message ......................... 65
-Receiving a Data Packet Containing an ASF Data Packet ............................ 66
-Receiving a LinkMacToViewerReportEndOfStream Message......................... 66
-Receiving a LinkMacToViewerReportStreamChange Message ...................... 67
-Timer Events .............................................................................................. 67
-Header Timer Expires ............................................................................ 67
-Other Local Events ...................................................................................... 67
-Server Details .................................................................................................. 67
-Abstract Data Model .................................................................................... 67
-Timers ...................................................................................................... 68
-Initialization ............................................................................................... 68
-Higher-Layer Triggered Events ..................................................................... 69
-Notification That the Last Data Packet Has Been Sent ................................ 69
-Notification That a New ASF File Header Is Available ................................. 69
-Processing Events and Sequencing Rules ....................................................... 70
-Receiving a Packet ................................................................................ 70
-Sending a Message ............................................................................... 70
-Receiving a LinkViewerToMacConnect Message ......................................... 70
-Receiving a LinkViewerToMacFunnelInfo Message...................................... 71
-Receiving a LinkViewerToMacConnectFunnel Message ................................ 71
-Receiving a LinkViewerToMacOpenFile Message ........................................ 72
-Receiving a LinkViewerToMacSecurityResponse Message ............................ 73
-Receiving a LinkViewerToMacReadBlock Message ...................................... 73
-Sending Data Packets Containing an ASF File Header ........................... 74
-Receiving a LinkViewerToMacCancelReadBlock Message ............................. 75
-
-3.1.5.9.1
-
-3.1.5.10
-3.1.5.11
-3.1.5.12
-3.1.5.13
-3.1.5.14
-3.1.5.15
-3.1.5.16
-3.1.5.17
-3.1.5.18
-3.1.5.19
-
-3.1.6.1
-
-3.2.5
-
-3.2.4.1
-3.2.4.2
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-3.2.5.6
-3.2.5.7
-3.2.5.8
-
-3.2.5.8.1
-
-3.2.5.9
-
-3.2
-
-3.1.6
-
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-[MS-MMSP] - v20170601
-Microsoft Media Server (MMS) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 103
-
-3.2.5.11.1
-
-3.2.5.10
-3.2.5.11
-
-3.2.5.12
-3.2.5.13
-3.2.5.14
-3.2.5.15
-3.2.5.16
-3.2.5.17
-
-Receiving a LinkViewerToMacStreamSwitch Message ................................. 75
-Receiving a LinkViewerToMacStartPlaying Message ................................... 75
-Sending Data Packets Containing ASF Data Packets ............................. 76
-Receiving a LinkViewerToMacStartStriding Message ................................... 77
-Receiving a RequestPacketListResend Packet ............................................ 77
-Receiving a LinkViewerToMacStopPlaying Message .................................... 77
-Receiving a LinkViewerToMacLogging Message ......................................... 78
-Receiving a LinkViewerToMacPong Message .............................................. 78
-Receiving a LinkViewerToMacCloseFile Message ........................................ 78
-Timer Events .............................................................................................. 79
-KeepAlive Timer Expires ........................................................................ 79
-Idle-Timeout Timer Expires .................................................................... 79
-Other Local Events ...................................................................................... 79
-TCP Connection Is Disconnected ............................................................. 79
-
-3.2.6
-
-3.2.6.1
-3.2.6.2
-
-3.2.7
-
-3.2.7.1
-
-4.1
-4.2
-4.3
-4.4
-
-4  Protocol Examples ................................................................................................. 80
-Client States .................................................................................................... 80
-Server States .................................................................................................. 81
-General Sequence ............................................................................................ 82
-Packet-Pair Bandwidth Estimation for MMS .......................................................... 84
-Packet-Pair Commands for UDP Connections .................................................. 84
-Packet-Pair Commands for TCP Connections................................................... 86
-Playback Adjustment Sequence .......................................................................... 87
-Sequencing During Playback ........................................................................ 87
-Authentication Sequence ................................................................................... 90
-Basic Authentication Sequence ..................................................................... 90
-NTLM Authentication Sequence ..................................................................... 91
-
-4.4.1
-4.4.2
-
-4.6.1
-4.6.2
-
-4.5.1
-
-4.6
-
-4.5
-
-5  Security ................................................................................................................. 93
-Security Considerations for Implementers ........................................................... 93
-Index of Security Parameters ............................................................................ 93
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 94
-
-7  Change Tracking .................................................................................................... 99
-
-8  Index ................................................................................................................... 100
-
-[MS-MMSP] - v20170601
-Microsoft Media Server (MMS) Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-6 / 103
-
-1  Introduction
+## 1 Introduction
 
 This specification defines a protocol referred to as the Microsoft Media Server (MMS) Protocol. MMS
 streams (1) multimedia from Windows Media Services to Windows Media Player or to another
@@ -880,7 +673,7 @@ instance of Windows Media Services. MMS uses TCP and the User Datagram Protocol 
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -943,14 +736,15 @@ Release: June 1, 2017
 
 7 / 103
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -981,13 +775,13 @@ Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-RTSP] Microsoft Corporation, "Real-Time Streaming Protocol (RTSP) Windows Media Extensions".
 
 [MS-WMSP] Microsoft Corporation, "Windows Media HTTP Streaming Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 The MMS Protocol is used for transferring real-time multimedia data (for example, audio and video).
 Because it is a streaming protocol, the MMS Protocol attempts to facilitate scenarios in which the
@@ -1007,7 +801,8 @@ Release: June 1, 2017
 
 8 / 103
 
-The client can send MMS Protocol request messages to the server over the TCP connection, requesting
+
+The client can send MMS Protocol request messages to the server over the TCP connection, requesting
 the server to perform actions such as starting and stopping the flow of multimedia data. The
 multimedia data is transferred either over the same TCP connection or as a flow of UDP packets.
 
@@ -1021,7 +816,7 @@ Protocol message to the server requesting that it resend a UDP packet. This is u
 not receive a UDP packet the server transmitted. Unlike other MMS Protocol messages sent by the
 client, the request to resend a UDP packet is sent using UDP.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The MMS Protocol relies on TCP for the connection that controls the streaming media session. MMS
 Protocol messages are sent over the TCP connection by both the client and the server. The multimedia
@@ -1033,13 +828,13 @@ The MMS Protocol is similar in functionality to the Real-Time Streaming Protocol
 Media Extensions [MS-RTSP]. However, RTSP extensions support functionality that is not available in
 MMS.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The MMS Protocol does not provide a mechanism for a client to discover the URL to the server.
 Therefore, it is a prerequisite that the client obtain a URL to the server before this protocol can be
 used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The MMS Protocol is suitable for streaming delivery of real-time multimedia data. The term streaming
 means that data is transmitted at some fixed rate or at some rate related to the rate at which the data
@@ -1057,7 +852,7 @@ If MMS is used in a scenario in which the multimedia data is always transferred 
 more appropriate to use the Windows Media HTTP Streaming Protocol instead because it does not
 include the UDP functionality.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
  This document covers versioning issues in the following areas:
 
@@ -1071,7 +866,8 @@ Release: June 1, 2017
 
 9 / 103
 
-Protocol Versions: Clients specify the protocol version using the subscriberName field in the
+
+Protocol Versions: Clients specify the protocol version using the subscriberName field in the
 LinkViewerToMacConnect (section 2.2.4.17) message. Servers specify the protocol version using the
 ServerVersionInfo field in the LinkMacToViewerReportConnectedEX (section 2.2.4.2) message.
 
@@ -1097,12 +893,12 @@ components are frequently updated independently of the rest of the operating sys
 protocol versioning mechanism relies on the version number of the Microsoft software product that is
 sending the request or response.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULTs, as specified in [MS-ERREF]. Vendors are free to choose their own values
 as long as the C bit (0x20000000) is set, indicating it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The following port numbers are assigned for use by MMS.
 
@@ -1131,9 +927,10 @@ Release: June 1, 2017
 
 10 / 103
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The MMS Protocol uses TCP for the connection that controls the streaming media session. The MMS
 server listens for incoming TCP connections from the client. Port 1755 has been registered with IANA
@@ -1144,13 +941,13 @@ If the server uses UDP to transmit multimedia data to the client, the client als
 requests to resend lost UDP packets. Port 1755 has been registered with IANA as the destination UDP
 port for such resend requests.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All 16-bit, 32-bit, and 64-bit integer fields MUST be transmitted in little-endian byte order.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.2.1  Data Structures Used for Logging
+#### 2.2.1 Data Structures Used for Logging
 
 Logging information sent by the client to the server is formatted as a CLIENT_LOG (section 2.2.1.1)
 data structure. The CLIENT_LOG (section 2.2.1.1) structure consists of a
@@ -1166,7 +963,7 @@ Strings MUST always be terminated by a NULL character. If a string is empty-that
 nothing but the NULL character - it MUST be set to a hyphen (-) followed by a terminating NULL
 character.
 
-2.2.1.1  CLIENT_LOG
+##### 2.2.1.1 CLIENT_LOG
 
 The CLIENT_LOG structure is used in the LinkViewerToMacLogging (section 2.2.4.20) message. The
 purpose of this structure is to provide logging information from the client when a stream (2) stops
@@ -1202,7 +999,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-...
+
+...
 
 ...
 
@@ -1287,7 +1085,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-dwIPAddress (4 bytes): An unsigned 32-bit integer. It SHOULD be set to 0xFFFFFFFF but MAY be
+
+dwIPAddress (4 bytes): An unsigned 32-bit integer. It SHOULD be set to 0xFFFFFFFF but MAY be
 
 set to the client's IPv4 address if IPv4 is used.<1>
 
@@ -1344,7 +1143,7 @@ dwPacketsResent (4 bytes): An unsigned 32-bit integer. It MUST be set to the num
 
 (section 2.2.2) packets that the client received that are resent by the server.
 
-2.2.1.2  CLIENT_LOG_INFO
+##### 2.2.1.2 CLIENT_LOG_INFO
 
 The CLIENT_LOG_INFO structure is a component of the CLIENT_LOG (section 2.2.1.1) structure. The
 purpose of this structure is to provide logging information from the client when a stream (2) stops
@@ -1370,7 +1169,8 @@ Release: June 1, 2017
 
 13 / 103
 
-szURL (260 bytes)
+
+szURL (260 bytes)
 
 ...
 
@@ -1427,7 +1227,8 @@ Release: June 1, 2017
 
 14 / 103
 
-msFileDuration
+
+msFileDuration
 
 qwFileSize
 
@@ -1502,7 +1303,8 @@ Release: June 1, 2017
 
 15 / 103
 
-szChannelURL (260 bytes): A string field. If the URL in the szURL field is obtained from a Windows
+
+szChannelURL (260 bytes): A string field. If the URL in the szURL field is obtained from a Windows
 
 Media Station (.nsc) file, the szChannelURL field MUST be set to the URL of that .nsc file.
 
@@ -1581,7 +1383,8 @@ Release: June 1, 2017
 
 16 / 103
 
-rate (2 bytes): A signed 16-bit integer. It MUST be set to the current playback rate in which a
+
+rate (2 bytes): A signed 16-bit integer. It MUST be set to the current playback rate in which a
 
 positive value specifies playback in the forward direction, and a negative value specifies playback
 in the reverse direction. The value 0x0001 MUST be specified if content has been played at the
@@ -1618,7 +1421,7 @@ no Data (section 2.2.2) packets received.
 
 hr (4 bytes): An unsigned 32-bit integer. It MUST be set to 0x00000000.
 
-2.2.2  Data
+#### 2.2.2 Data
 
 The Data packet is used by the server to send streaming media data to the client.
 
@@ -1667,7 +1470,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-number. The first ASF data packet in an ASF file MUST have a LocationId of 0x00000000, the
+
+number. The first ASF data packet in an ASF file MUST have a LocationId of 0x00000000, the
 second ASF data packet in the file MUST have a LocationId of 0x00000001, and so on. Note that
 because a server can skip ASF data packets, the value of the LocationId field might not be
 sequential from one MMS Data packet to the next. If the server does not have access to the ASF
@@ -1707,7 +1511,7 @@ LinkViewerToMacConnect (section 2.2.4.17) message. If the Padding Data field is 
 Padding Length field in the ASF payload parsing information (as specified in [ASF] section 5.2.2)
 MUST be updated to indicate a non-existent Padding Data field.
 
-2.2.3  TcpMessageHeader
+#### 2.2.3 TcpMessageHeader
 
 The TcpMessageHeader packet encapsulates MMS messages when they are sent over TCP. A single
 TcpMessageHeader packet can contain multiple MMS messages. TcpMessageHeader is not used for
@@ -1747,7 +1551,8 @@ Release: June 1, 2017
 
 18 / 103
 
-seq
+
+seq
 
 MBZ
 
@@ -1796,7 +1601,7 @@ MMS message (variable): A variable-size array of bytes. The size of the field MU
 
 8 bytes. This field contains zero or more MMS messages, as specified in section 2.2.4.
 
-2.2.4  Message Types
+#### 2.2.4 Message Types
 
 This section defines the MMS message types. All messages MUST be transmitted over TCP.
 
@@ -1817,7 +1622,8 @@ Release: June 1, 2017
 
 19 / 103
 
-2.2.4.1  LinkMacToViewerPing
+
+##### 2.2.4.1 LinkMacToViewerPing
 
 The LinkMacToViewerPing message is sent by the server to verify that a particular client is still active.
 
@@ -1852,7 +1658,7 @@ dwParam2 (4 bytes): A 32-bit field. SHOULD be set to 0x00000000 and MUST be igno
 
 receiver.<4>
 
-2.2.4.2  LinkMacToViewerReportConnectedEX
+##### 2.2.4.2 LinkMacToViewerReportConnectedEX
 
 The LinkMacToViewerReportConnectedEX message is sent by the server in response to a
 LinkViewerToMacConnect (section 2.2.4.17) message from the client.
@@ -1895,7 +1701,8 @@ Release: June 1, 2017
 
 20 / 103
 
-nBlockMaxBytes
+
+nBlockMaxBytes
 
 maxBitRate
 
@@ -1966,7 +1773,8 @@ Release: June 1, 2017
 
 21 / 103
 
-nMaxOpenFiles (4 bytes): A 32-bit field. It MUST be set to 0x00000001.
+
+nMaxOpenFiles (4 bytes): A 32-bit field. It MUST be set to 0x00000001.
 
 nBlockMaxBytes (4 bytes): A 32-bit field. It MUST be set to 0x00008000.
 
@@ -2031,7 +1839,8 @@ Release: June 1, 2017
 
 22 / 103
 
-2.2.4.3  LinkMacToViewerReportConnectedFunnel
+
+##### 2.2.4.3 LinkMacToViewerReportConnectedFunnel
 
 The LinkMacToViewerReportConnectedFunnel message is sent by the server in response to a
 LinkViewerToMacConnectFunnel (section 2.2.4.18) message sent by the client.
@@ -2079,7 +1888,7 @@ funnelName (variable): A variable size array of Unicode characters. MUST be set 
 
 character string "Funnel Of The Gods".<8>
 
-2.2.4.4  LinkMacToViewerReportDisconnectedFunnel
+##### 2.2.4.4 LinkMacToViewerReportDisconnectedFunnel
 
 The LinkMacToViewerReportDisconnectedFunnel message is sent by the server in response to a
 LinkViewerToMacConnectFunnel (section 2.2.4.18) message from the client when there is an error
@@ -2111,7 +1920,8 @@ Release: June 1, 2017
 
 23 / 103
 
-chunkLen (4 bytes): Length in chunks of the message. A chunk is 8 bytes.
+
+chunkLen (4 bytes): Length in chunks of the message. A chunk is 8 bytes.
 
 MID (4 bytes): Message ID. For this message, the value MUST be 0x00040003.
 
@@ -2123,7 +1933,7 @@ playIncarnation (4 bytes): A 32-bit field. SHOULD be set to 0x00000000. It MUST 
 
 the receiver.<9>
 
-2.2.4.5  LinkMacToViewerReportEndOfStream
+##### 2.2.4.5 LinkMacToViewerReportEndOfStream
 
 The LinkMacToViewerReportEndOfStream message is sent by the server to notify the client that the
 end of the current playlist entry has been reached.
@@ -2175,7 +1985,7 @@ LinkViewerToMacStopPlaying (section 2.2.4.27) message. Otherwise, the playIncarn
 MUST be set to the value of the playIncarnation field in the most recently received message of
 the following message types: LinkViewerToMacStartPlaying and LinkViewerToMacStartStriding.
 
-2.2.4.6  LinkMacToViewerReportFunnelInfo
+##### 2.2.4.6 LinkMacToViewerReportFunnelInfo
 
 The LinkMacToViewerReportFunnelInfo message is sent by the server to assign a unique identifier to a
 client in response to a LinkViewerToMacFunnelInfo (section 2.2.4.19) message received from the
@@ -2188,7 +1998,8 @@ Release: June 1, 2017
 
 24 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2275,7 +2086,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-transportMask (4 bytes): A 32-bit field. It MUST be set to 0x00000008.
+
+transportMask (4 bytes): A 32-bit field. It MUST be set to 0x00000008.
 
 nBlockFragments (4 bytes): A 32-bit field. It MUST be set to 0x00000001.
 
@@ -2299,7 +2111,7 @@ Packet-pair packet (variable): A variable-size array of bytes. This field MUST o
 value of the playIncarnation field is 0xF0F0F0F0 or 0xF0F0F0F1. In such cases, the server sends
 three LinkMacToViewerReportFunnelInfo messages.
 
-2.2.4.7  LinkMacToViewerReportOpenFile
+##### 2.2.4.7 LinkMacToViewerReportOpenFile
 
 The LinkMacToViewerReportOpenFile message is sent by the server in response to a
 LinkViewerToMacOpenFile (section 2.2.4.21) message by the client.
@@ -2346,7 +2158,8 @@ Release: June 1, 2017
 
 26 / 103
 
-...
+
+...
 
 ...
 
@@ -2426,7 +2239,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -2472,7 +2286,7 @@ ASF file header for the current playlist entry.
 
 unused2 (36 bytes): An array of 36 bytes. Each byte in this field MUST be set to 0x00.<10>
 
-2.2.4.8  LinkMacToViewerReportReadBlock
+##### 2.2.4.8 LinkMacToViewerReportReadBlock
 
 The LinkMacToViewerReportReadBlock message is sent by the server in response to a
 LinkViewerToMacReadBlock (section 2.2.4.23) message from the client.
@@ -2513,7 +2327,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-playIncarnation (4 bytes): A 32-bit field. This field MUST be set to the value of the
+
+playIncarnation (4 bytes): A 32-bit field. This field MUST be set to the value of the
 
 playIncarnation field in the LinkViewerToMacReadBlock (section 2.2.4.23) message that this
 LinkMacToViewerReportReadBlock message is a response to.
@@ -2522,7 +2337,7 @@ A value that specifies the type of packet-pair bandwidth estimation that is used
 
 playSequence (4 bytes): A 32-bit field. This field MUST be set to 0x00000000.
 
-2.2.4.9  LinkMacToViewerReportRedirect
+##### 2.2.4.9 LinkMacToViewerReportRedirect
 
 The LinkMacToViewerReportRedirect message is used by the server in response to a
 LinkViewerToMacOpenFile (section 2.2.4.21) message from the client. It is used to redirect the client
@@ -2591,7 +2406,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-port component, the client MUST use TCP port 1755. The scheme component of the URI MUST be
+
+port component, the client MUST use TCP port 1755. The scheme component of the URI MUST be
 one of the values in the following table.
 
 Value
@@ -2606,9 +2422,9 @@ MMS with Data (section 2.2.2) packets sent over UDP.
 
 "mmst"  MMS with Data (section 2.2.2) packets sent over TCP.
 
-2.2.4.10
+##### 2.2.4.10 LinkMacToViewerReportStartedPlaying
 
-LinkMacToViewerReportStartedPlaying
+
 
 The LinkMacToViewerReportStartedPlaying message is sent by the server in response to a
 LinkViewerToMacStartPlaying (section 2.2.4.25) message.
@@ -2670,11 +2486,12 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-unused2 (12 bytes): An array of 12 bytes. Each byte in this field MUST be set to 0x00.
 
-2.2.4.11
+unused2 (12 bytes): An array of 12 bytes. Each byte in this field MUST be set to 0x00.
 
-LinkMacToViewerReportStartStriding
+##### 2.2.4.11 LinkMacToViewerReportStartStriding
+
+
 
 The LinkMacToViewerReportStartStriding message is used by the server to respond to a
 LinkViewerToMacStartStriding (section 2.2.4.26) message from the client.
@@ -2715,9 +2532,9 @@ LinkMacToViewerReportStartStriding message is a response to.
 
 spare (4 bytes): A 32-bit field. It MUST be set to 0x00000000.
 
-2.2.4.12
+##### 2.2.4.12 LinkMacToViewerReportStreamChange
 
-LinkMacToViewerReportStreamChange
+
 
 The LinkMacToViewerReportStreamChange message is sent by the server to notify the client that it is
 starting to stream the next entry in a server-side playlist.
@@ -2752,7 +2569,8 @@ Release: June 1, 2017
 
 31 / 103
 
-dwBitRate
+
+dwBitRate
 
 dwStreamId
 
@@ -2780,9 +2598,9 @@ dwStreamId (4 bytes): A 32-bit field. This field SHOULD be set to 0x00000000. It
 
 by the receiver.<12>
 
-2.2.4.13
+##### 2.2.4.13 LinkMacToViewerReportStreamSwitch
 
-LinkMacToViewerReportStreamSwitch
+
 
 The LinkMacToViewerReportStreamSwitch message is used by the server to respond to a
 LinkViewerToMacStreamSwitch (section 2.2.4.28) message from the client.
@@ -2812,9 +2630,9 @@ hr (4 bytes): HRESULT. Result of processing the client LinkViewerToMacStreamSwit
 
 2.2.4.28) message. For HRESULT codes, see [MS-ERREF].
 
-2.2.4.14
+##### 2.2.4.14 LinkMacToViewerSecurityChallenge
 
-LinkMacToViewerSecurityChallenge
+
 
 The LinkMacToViewerSecurityChallenge message is sent by the server to request authentication from
 the client.
@@ -2839,7 +2657,8 @@ Release: June 1, 2017
 
 32 / 103
 
-MID
+
+MID
 
 playIncarnation
 
@@ -2886,7 +2705,7 @@ of the pToken field MUST be 0x00. Any subsequent bytes of pToken are either an N
 structure (as defined in section 2.2.4.14.1) or an NTLM challenge token (as defined in [MS-NLMP]
 section 2.2.1.2).
 
-2.2.4.14.1  NTLM_AUTH Structure
+###### 2.2.4.14.1 NTLM_AUTH Structure
 
 The NTLM_AUTH structure is defined as follows:
 
@@ -2910,7 +2729,8 @@ Release: June 1, 2017
 
 33 / 103
 
-One
+
+One
 
 Reserved1
 
@@ -2946,9 +2766,9 @@ NTLMToken (variable): A variable size array of bytes. This field must be set to 
 
 token or response token, as appropriate. These tokens are defined in [MS-NLMP].
 
-2.2.4.15
+##### 2.2.4.15 LinkViewerToMacCancelReadBlock
 
-LinkViewerToMacCancelReadBlock
+
 
 The LinkViewerToMacCancelReadBlock message is sent by the client to request that the server cancel
 sending of the ASF file header that the client previously requested with a
@@ -2987,9 +2807,10 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.4.16
 
-LinkViewerToMacCloseFile
+##### 2.2.4.16 LinkViewerToMacCloseFile
+
+
 
 The LinkViewerToMacCloseFile message is sent by the client to tell the server that it is finishing the
 streaming media session.
@@ -3026,9 +2847,9 @@ openFileId (4 bytes): A 32-bit field. This MUST be the value of the openFileId f
 LinkMacToViewerReportOpenFile (section 2.2.4.7) message that the client previously received
 from the server.
 
-2.2.4.17
+##### 2.2.4.17 LinkViewerToMacConnect
 
-LinkViewerToMacConnect
+
 
 The LinkViewerToMacConnect message is sent by the client to request a connection to a server.
 
@@ -3071,7 +2892,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Value
+
+Value
 
 Meaning
 
@@ -3179,7 +3001,8 @@ Release: June 1, 2017
 
 36 / 103
 
-Client-token  Major  Minor
+
+Client-token  Major  Minor
 
 NSPlayer
 
@@ -3203,9 +3026,9 @@ Example:
 
  NSPlayer/4.1.0.3928; {68c0a090-8797-11d2-a2b3-00a0c9b60551}
 
-2.2.4.18
+##### 2.2.4.18 LinkViewerToMacConnectFunnel
 
-LinkViewerToMacConnectFunnel
+
 
 The LinkViewerToMacConnectFunnel message is sent by the client to request that Data (section 2.2.2)
 packets be streamed by the server using a specific protocol and to a specific port.
@@ -3262,7 +3085,8 @@ Release: June 1, 2017
 
 37 / 103
 
-funnelName (variable): An array of Unicode characters containing the description of the socket
+
+funnelName (variable): An array of Unicode characters containing the description of the socket
 
 that the client uses to receive Data (section 2.2.2) packets. The syntax of the funnelName field
 MUST adhere to the following ABNF syntax.
@@ -3281,9 +3105,9 @@ MUST adhere to the following ABNF syntax.
 
 The port syntax element MUST have a value in the range 1-65535.
 
-2.2.4.19
+##### 2.2.4.19 LinkViewerToMacFunnelInfo
 
-LinkViewerToMacFunnelInfo
+
 
 The LinkViewerToMacFunnelInfo message is sent by the client to request an identifier for use in
 RequestPacketResend packets.
@@ -3344,9 +3168,9 @@ MMS_PACKET_PAIR_UDP_HIGH_ENTROPY
  Requests that high-entropy packet-pairs be sent over
 UDP.
 
-2.2.4.20
+##### 2.2.4.20 LinkViewerToMacLogging
 
-LinkViewerToMacLogging
+
 
 The LinkViewerToMacLogging packet is used by the client to report statistics about the current stream
 (2) to the server (as specified in section 2.2.1.1).
@@ -3358,7 +3182,8 @@ Release: June 1, 2017
 
 38 / 103
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3387,9 +3212,9 @@ MID (4 bytes): Message identifier. For this message, the value MUST be 0x0003003
 
 log (1490 bytes): A CLIENT_LOG (section 2.2.1.1) structure.
 
-2.2.4.21
+##### 2.2.4.21 LinkViewerToMacOpenFile
 
-LinkViewerToMacOpenFile
+
 
 The LinkViewerToMacOpenFile message is sent by the client to specify the name of the resource on
 the server that is to be streamed.
@@ -3436,7 +3261,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-playIncarnation (4 bytes): A 32-bit field. It MUST be set to a value in the range 0x00000001 to
+
+playIncarnation (4 bytes): A 32-bit field. It MUST be set to a value in the range 0x00000001 to
 
 0x000000FE, inclusive.
 
@@ -3476,9 +3302,9 @@ If the authentication data is for the NTLM authentication scheme (as specified i
 tokenData consists of either an NTLM_AUTH structure (as defined in section 2.2.4.14.1) or an
 NTLM response token (as defined in [MS-NLMP] section 2.2.1.1).
 
-2.2.4.22
+##### 2.2.4.22 LinkViewerToMacPong
 
-LinkViewerToMacPong
+
 
 The LinkViewerToMacPong message is sent by the client to inform the server that it is still active. It
 sends this message in response to a LinkMacToViewerPing (section 2.2.4.1) message from the server.
@@ -3513,7 +3339,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-dwParam1 (4 bytes): A 32-bit field. It SHOULD be set to 0x00000000 and MUST be ignored by the
+
+dwParam1 (4 bytes): A 32-bit field. It SHOULD be set to 0x00000000 and MUST be ignored by the
 
 receiver.<20>
 
@@ -3521,9 +3348,9 @@ dwParam2 (4 bytes): A 32-bit field. It SHOULD be set to 0x00000000 and MUST be i
 
 receiver.<21>
 
-2.2.4.23
+##### 2.2.4.23 LinkViewerToMacReadBlock
 
-LinkViewerToMacReadBlock
+
 
 The LinkViewerToMacReadBlock message is sent by the client to request the ASF file header. The ASF
 file header contains all of the codec initialization parameters needed by the client to decompress the
@@ -3587,7 +3414,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-length (4 bytes): A 32-bit field. It SHOULD be set to 0x00008000.<22>
+
+length (4 bytes): A 32-bit field. It SHOULD be set to 0x00008000.<22>
 
 flags (4 bytes): A 32-bit field. It MUST be set to 0xFFFFFFFF.
 
@@ -3609,9 +3437,9 @@ playIncarnation (4 bytes): A 32-bit field. It MUST be set to a value in the rang
 
 playSequence (4 bytes): A 32-bit field. It MUST be set to 0x00000000.
 
-2.2.4.24
+##### 2.2.4.24 LinkViewerToMacSecurityResponse
 
-LinkViewerToMacSecurityResponse
+
 
 The LinkViewerToMacSecurityResponse message is sent by the client in response to an authentication
 request by the server.
@@ -3669,7 +3497,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-credentials, as specified in [RFC2617]. The basic-credentials data MUST be stored in the pToken
+
+credentials, as specified in [RFC2617]. The basic-credentials data MUST be stored in the pToken
 field as a null-terminated ASCII string.
 
 If NT LAN Manager (NTLM) authentication (as specified in [MS-NLMP]) is used, the first two bytes
@@ -3677,9 +3506,9 @@ of the pToken field MUST be 0x00. The subsequent bytes of pToken are either an N
 structure (as defined in section 2.2.4.14.1) or an NTLM response token (as defined in [MS-NLMP]
 section 2.2.1.1 and section 2.2.1.3).
 
-2.2.4.25
+##### 2.2.4.25 LinkViewerToMacStartPlaying
 
-LinkViewerToMacStartPlaying
+
 
 The LinkViewerToMacStartPlaying message is sent by the client to request that the server start
 streaming the content for playback at the normal (real-time) rate.
@@ -3740,7 +3569,8 @@ Release: June 1, 2017
 
 43 / 103
 
-position (8 bytes): A DOUBLE data type field. This field MUST be set to either the time offset in
+
+position (8 bytes): A DOUBLE data type field. This field MUST be set to either the time offset in
 
 seconds from which the server is requested to start streaming the content, or to the maximum
 positive number for data type DOUBLE (DBL_MAX). The content is assumed to begin at time 0. For
@@ -3788,9 +3618,9 @@ dwLinkBandwidth (4 bytes): A 32-bit unsigned integer. If this field is present, 
 dwAccelBandwidth and dwAccelDuration fields MUST also be present. The
 dwLinkBandwidth field specifies the client's connection bandwidth, in bits per second.
 
-2.2.4.26
+##### 2.2.4.26 LinkViewerToMacStartStriding
 
-LinkViewerToMacStartStriding
+
 
 The LinkViewerToMacStartStriding message is sent by the client to request that the server start
 streaming the content for playback at a trick-mode rate, that is, fast forward or rewind.
@@ -3819,7 +3649,8 @@ Release: June 1, 2017
 
 44 / 103
 
-padding
+
+padding
 
 position
 
@@ -3889,9 +3720,10 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.2.4.27
 
-LinkViewerToMacStopPlaying
+##### 2.2.4.27 LinkViewerToMacStopPlaying
+
+
 
 The LinkViewerToMacStopPlaying message is sent by the client to request that the server stop
 streaming Data (section 2.2.2) packets.
@@ -3929,9 +3761,9 @@ playIncarnation (4 bytes): A 32-bit field. This field MUST be set to the value o
 playIncarnation field in the most recently sent message of the following message types:
 LinkViewerToMacStartPlaying and LinkViewerToMacStartStriding.<26>
 
-2.2.4.28
+##### 2.2.4.28 LinkViewerToMacStreamSwitch
 
-LinkViewerToMacStreamSwitch
+
 
 The LinkViewerToMacStreamSwitch message is sent by the client to select, unselect, thin, unthin, or
 replace individual streams (2) that it is currently receiving.
@@ -3974,13 +3806,14 @@ Release: June 1, 2017
 
 46 / 103
 
-Either stream can be set to a special value 0xFFFF to indicate that no stream is specified. If the
+
+Either stream can be set to a special value 0xFFFF to indicate that no stream is specified. If the
 source stream is set to 0xFFFF, the thinning level is ignored. Stream numbers are located in the
 ASF file header, as specified in [ASF], delivered by the server prior to the file stream.
 
-2.2.4.28.1
+###### 2.2.4.28.1 STREAM_SWITCH_ENTRY
 
-STREAM_SWITCH_ENTRY
+
 
 The STREAM_SWITCH_ENTRY data structure is defined as follows:
 
@@ -4013,7 +3846,7 @@ key frame data) are to be transmitted.
 
 0x0002  No ASF media objects for the stream given by wDstStreamNumber are to be transmitted.
 
-2.2.5  RequestPacketListResend
+#### 2.2.5 RequestPacketListResend
 
 The RequestPacketListResend packet is sent by the client to request that a number of
 Data (section 2.2.2) packets be resent by the server. The RequestPacketListResend packet MUST be
@@ -4049,7 +3882,8 @@ Release: June 1, 2017
 
 47 / 103
 
-Signature (4 bytes): A 32-bit field. It MUST be set to 0xBEEFF00D.
+
+Signature (4 bytes): A 32-bit field. It MUST be set to 0xBEEFF00D.
 
 dwClientId (4 bytes): A 32-bit field. It MUST be set to the value of the nCubs field in the
 
@@ -4079,9 +3913,10 @@ Release: June 1, 2017
 
 48 / 103
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 Note  Regarding concurrent programming, also known as multi-threaded programming:  The
 processing rules for the client role MUST be processed atomically up to the point where the client is
@@ -4116,7 +3951,7 @@ The connection to the server is unexpectedly closed.
 
 message does not adhere to the syntax for messages of that type).
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -4150,7 +3985,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Incarnation: This variable stores the next value of the playIncarnation field for certain MMS
+
+Incarnation: This variable stores the next value of the playIncarnation field for certain MMS
 messages. The variable can only assume values in the range 0x00000001 to 0x000000FE, inclusive. If
 the variable has the value 0x000000FE and is incremented, the next value becomes 0x00000001. The
 default value of this variable is 0x00000001.
@@ -4216,7 +4052,8 @@ Release: June 1, 2017
 
 50 / 103
 
-Striding-Sent: This variable specifies if a LinkMacToViewerReportStartStriding (section 2.2.4.11)
+
+Striding-Sent: This variable specifies if a LinkMacToViewerReportStartStriding (section 2.2.4.11)
 message is expected. The possible values are 0 and 1. A value of 0 means that a
 LinkMacToViewerReportStartStriding message is not expected. A value of 1 means that a
 LinkMacToViewerReportStartStriding is expected. The default value is 0.
@@ -4240,13 +4077,13 @@ State: This variable stores the client's state. Possible values are INIT, READY,
 
 Note  The preceding conceptual data can be implemented using a variety of techniques.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Header: This timer is used when waiting for the ASF file header when the server transmits it using
 UDP. The minimum allowed value for the time-out period is 1 second and the maximum value is 30
 seconds.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Initialization of the protocol occurs as the result of a higher layer asking for information on multimedia
 content located on a server. That event is defined in section 3.1.4.1. It also occurs as the result of
@@ -4292,12 +4129,13 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-or rewind). In the case of the normal playback rate, the Trick-Mode-Rate variable MUST be set
+
+or rewind). In the case of the normal playback rate, the Trick-Mode-Rate variable MUST be set
 to 0.  In the case of a trick-mode rate, the Trick-Mode-Rate variable MUST be set to 1.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Request to Retrieve Content Information
+##### 3.1.4.1 Request to Retrieve Content Information
 
 This event causes the client to send a LinkViewerToMacConnect (section 2.2.4.17) message to the
 server. An application asks the client for information on multimedia content most often under the
@@ -4335,7 +4173,7 @@ connection to the server by using the IP address and port number obtained by par
 Server-URL variable. Next, the client MUST send the LinkViewerToMacConnect (section 2.2.4.17)
 message to the server, as specified in section 3.1.4.1.1.
 
-3.1.4.1.1 Sending a LinkViewerToMacConnect Message
+###### 3.1.4.1.1 Sending a LinkViewerToMacConnect Message
 
 The client MUST fill in the fields of the LinkViewerToMacConnect (section 2.2.4.17) message.
 
@@ -4360,13 +4198,14 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The message MUST be sent by the rules specified in section 3.1.5.1.
+
+The message MUST be sent by the rules specified in section 3.1.5.1.
 
 After sending the message, the client MUST wait for the
 LinkMacToViewerReportConnectedEX (section 2.2.4.2) message to be received. How to process this
 message is specified in section 3.1.5.3.
 
-3.1.4.2  Request to Start Streaming Content
+##### 3.1.4.2 Request to Start Streaming Content
 
 This higher-layer triggered event can occur when the client is not currently streaming from the
 server. The event causes the client to send a LinkViewerToMacStartPlaying (section 2.2.4.25) message
@@ -4412,7 +4251,7 @@ LinkViewerToMacStartPlaying (section 2.2.4.25) message (as specified in section 
 server. If the value of the Trick-Mode-Rate variable is 1, the client MUST send a
 LinkViewerToMacStartStriding (section 2.2.4.26) message (as specified in section 3.1.4.2.2). <29>
 
-3.1.4.2.1 Sending a LinkViewerToMacStartPlaying Message
+###### 3.1.4.2.1 Sending a LinkViewerToMacStartPlaying Message
 
 The client MUST fill in the fields of the LinkViewerToMacStartPlaying (section 2.2.4.25) message.
 
@@ -4430,7 +4269,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the higher layer wants only a portion of the content to be streamed, the stop position SHOULD be
+
+If the higher layer wants only a portion of the content to be streamed, the stop position SHOULD be
 assigned to the frameOffset field.
 
 The value of the playIncarnation field in the LinkViewerToMacStartPlaying (section 2.2.4.25)
@@ -4459,7 +4299,7 @@ LinkMacToViewerReportStreamSwitch (section 2.2.4.13) message is specified in sec
 Otherwise, the client MUST wait for the LinkMacToViewerReportStartedPlaying (section 2.2.4.10)
 message to be received. How to process this message is specified in section 3.1.5.15.
 
-3.1.4.2.2 Sending a LinkViewerToMacStartStriding Message
+###### 3.1.4.2.2 Sending a LinkViewerToMacStartStriding Message
 
 The client MUST fill in the fields of the LinkViewerToMacStartStriding (section 2.2.4.26) message.
 
@@ -4499,13 +4339,14 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-LinkMacToViewerReportStreamSwitch (section 2.2.4.13) message to be received. How to process the
+
+LinkMacToViewerReportStreamSwitch (section 2.2.4.13) message to be received. How to process the
 LinkMacToViewerReportStreamSwitch (section 2.2.4.13) message is specified in section 3.1.5.14.
 
 Otherwise, the client MUST wait for the LinkMacToViewerReportStartStriding (section 2.2.4.11)
 message to be received. How to process this message is specified in section 3.1.5.16.
 
-3.1.4.3  Request to Change Currently Selected Streams
+##### 3.1.4.3 Request to Change Currently Selected Streams
 
 This event occurs when the higher layer wants to change the streams (2) that are currently being
 streamed. For example, the higher layer can switch from an English-language audio stream to a
@@ -4529,7 +4370,7 @@ After sending the LinkViewerToMacStreamSwitch (section 2.2.4.28) message, the cl
 the LinkMacToViewerReportStreamSwitch (section 2.2.4.13) message to be received. How to process
 this message is specified in section 3.1.5.14.
 
-3.1.4.4  Selecting Streams to Play from New Playlist Entry
+##### 3.1.4.4 Selecting Streams to Play from New Playlist Entry
 
 This event occurs after the higher layer has received the ASF file header for a new playlist entry, and
 the higher layer is ready to start processing the ASF data packets for the new playlist entry. This is the
@@ -4565,7 +4406,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-marked as off (by specifying the wDstStreamNumber field as 0xFFFF), depending on the selection
+
+marked as off (by specifying the wDstStreamNumber field as 0xFFFF), depending on the selection
 made by the higher layer.
 
 When sending the LinkViewerToMacStreamSwitch message, it MUST be sent by following the rules
@@ -4576,7 +4418,7 @@ LinkViewerToMacStartPlaying (section 2.2.4.25) message (as specified in section 
 server.  If the value of the Trick-Mode-Rate variable is 1, the client MUST send a
 LinkViewerToMacStartStriding (section 2.2.4.26) message (as specified in section 3.1.4.2.2).<34>
 
-3.1.4.5  Request to Stop Streaming
+##### 3.1.4.5 Request to Stop Streaming
 
 This event occurs if the higher layer wants to stop streaming. The end user can request that
 streaming stop or request to seek to some position in the content while the client is currently
@@ -4611,7 +4453,7 @@ After sending the LinkViewerToMacLogging message, the client MUST wait for the
 LinkMacToViewerReportEndOfStream (section 2.2.4.5) message to be received. How to process this
 message is specified in section 3.1.5.18.
 
-3.1.4.6  Request to Change Playback Position
+##### 3.1.4.6 Request to Change Playback Position
 
 This event occurs when the higher layer wants to start streaming from some specific position in the
 content.
@@ -4632,10 +4474,11 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-READY, and the client MUST request to start streaming at the new playback position, as specified in
+
+READY, and the client MUST request to start streaming at the new playback position, as specified in
 section 3.1.4.2.
 
-3.1.4.7  Request to Resend Lost Data Packets
+##### 3.1.4.7 Request to Resend Lost Data Packets
 
 This event occurs if the higher layer has detected that one or more Data (section 2.2.2) packets
 containing ASF data packets have been lost, and the higher layer wants to ask the server to resend
@@ -4670,7 +4513,7 @@ If the value of the Proxy-Port variable is not 0, then the RequestPacketListRese
 packet MUST be sent using UDP to the port number specified by the Proxy-Port variable and to the
 IP address specified by the Proxy-Address variable.
 
-3.1.4.8  Request to Finish Streaming Session
+##### 3.1.4.8 Request to Finish Streaming Session
 
 This event occurs if the higher layer wants to finish the streaming session. Possible causes include
 the end user requesting different content start streaming or attempting to exit the client software
@@ -4697,9 +4540,10 @@ Release: June 1, 2017
 
 57 / 103
 
-3.1.5  Processing Events and Sequencing Rules
 
-3.1.5.1  Sending a Message
+#### 3.1.5 Processing Events and Sequencing Rules
+
+##### 3.1.5.1 Sending a Message
 
 This section specifies common steps that MUST be performed whenever the client sends to the server
 a message of any of the types specified in section 2.2.4.
@@ -4707,7 +4551,7 @@ a message of any of the types specified in section 2.2.4.
 The message MUST be encapsulated in a TcpMessageHeader (section 2.2.3) packet. Multiple
 messages MUST NOT be combined in a single TcpMessageHeader (section 2.2.3) packet.
 
-3.1.5.2  Receiving a Packet
+##### 3.1.5.2 Receiving a Packet
 
 This section specifies common steps that MUST be performed whenever the client receives a packet on
 the TCP connection.
@@ -4724,7 +4568,7 @@ Data (section 2.2.2) packet and MUST verify that the fields of the Data (section
 to the syntax specified in section 2.2.2. If the packet does not adhere to the syntax, the client
 SHOULD treat this as an error.
 
-3.1.5.3  Receiving a LinkMacToViewerReportConnectedEX Message
+##### 3.1.5.3 Receiving a LinkMacToViewerReportConnectedEX Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportConnectedEX (section 2.2.4.2) message adheres to the syntax specified in
@@ -4760,7 +4604,8 @@ Release: June 1, 2017
 
 58 / 103
 
-After sending the LinkViewerToMacConnectFunnel (section 2.2.4.18) message, the client MUST wait
+
+After sending the LinkViewerToMacConnectFunnel (section 2.2.4.18) message, the client MUST wait
 for the LinkMacToViewerReportConnectedFunnel (section 2.2.4.3) message to be received. How to
 process this message is specified in section 3.1.5.6.
 
@@ -4783,7 +4628,7 @@ After sending the LinkViewerToMacFunnelInfo (section 2.2.4.19) message, the clie
 LinkMacToViewerReportFunnelInfo (section 2.2.4.6) message to be received. How to process this
 message is specified in section 3.1.5.4.
 
-3.1.5.4  Receiving a LinkMacToViewerReportFunnelInfo Message
+##### 3.1.5.4 Receiving a LinkMacToViewerReportFunnelInfo Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportFunnelInfo (section 2.2.4.6) message adheres to the syntax specified in
@@ -4828,14 +4673,15 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-After sending the LinkViewerToMacConnectFunnel (section 2.2.4.18) message, the client MUST wait
+
+After sending the LinkViewerToMacConnectFunnel (section 2.2.4.18) message, the client MUST wait
 for either a LinkMacToViewerReportDisconnectedFunnel (section 2.2.4.4) message or a
 LinkMacToViewerReportConnectedFunnel (section 2.2.4.3) message to be received. How to process a
 LinkMacToViewerReportDisconnectedFunnel (section 2.2.4.4) message is specified in section 3.1.5.5;
 how to process a LinkMacToViewerReportConnectedFunnel (section 2.2.4.3) message is specified in
 section 3.1.5.6.
 
-3.1.5.5  Receiving a LinkMacToViewerReportDisconnectedFunnel Message
+##### 3.1.5.5 Receiving a LinkMacToViewerReportDisconnectedFunnel Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportDisconnectedFunnel (section 2.2.4.4) message adheres to the syntax specified
@@ -4873,7 +4719,7 @@ LinkMacToViewerReportDisconnectedFunnel (section 2.2.4.4) message is specified i
 how to process a LinkMacToViewerReportConnectedFunnel (section 2.2.4.3) message is specified in
 section 3.1.5.6.
 
-3.1.5.6  Receiving a LinkMacToViewerReportConnectedFunnel Message
+##### 3.1.5.6 Receiving a LinkMacToViewerReportConnectedFunnel Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportConnectedFunnel (section 2.2.4.3) message adheres to the syntax specified in
@@ -4899,7 +4745,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-authentication scheme identified by the Auth-Scheme variable in the abstract data model. For
+
+authentication scheme identified by the Auth-Scheme variable in the abstract data model. For
 example, if the value of the Auth-Scheme variable is BASIC, the client includes the user name and
 password in the tokenData field formatted according to the syntax rules for Basic
 authentication.<40>
@@ -4913,7 +4760,7 @@ process a LinkMacToViewerSecurityChallenge (section 2.2.4.14) message is specifi
 3.1.5.8; and how to process a LinkMacToViewerReportOpenFile (section 2.2.4.7) message is specified
 in section 3.1.5.9.
 
-3.1.5.7  Receiving a LinkMacToViewerReportRedirect Message
+##### 3.1.5.7 Receiving a LinkMacToViewerReportRedirect Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportRedirect (section 2.2.4.9) message adheres to the syntax specified in section
@@ -4965,7 +4812,8 @@ Release: June 1, 2017
 
 61 / 103
 
-3.1.5.8  Receiving a LinkMacToViewerSecurityChallenge Message
+
+##### 3.1.5.8 Receiving a LinkMacToViewerSecurityChallenge Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerSecurityChallenge (section 2.2.4.14) message adheres to the syntax specified in
@@ -5000,7 +4848,7 @@ how to process a LinkMacToViewerSecurityChallenge message is specified in sectio
 to process a LinkMacToViewerReportOpenFile (section 2.2.4.7) message is specified in section
 3.1.5.9.<43>
 
-3.1.5.9  Receiving a LinkMacToViewerReportOpenFile Message
+##### 3.1.5.9 Receiving a LinkMacToViewerReportOpenFile Message
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportOpenFile (section 2.2.4.7) message adheres to the syntax specified in section
@@ -5011,7 +4859,7 @@ openFileId field in the LinkMacToViewerReportOpenFile (section 2.2.4.7) message.
 
 The client MUST process the rules specified in section 3.1.5.9.1.
 
-3.1.5.9.1 Sending a LinkViewerToMacReadBlock Message
+###### 3.1.5.9.1 Sending a LinkViewerToMacReadBlock Message
 
 The client MUST send a LinkViewerToMacReadBlock (section 2.2.4.23) message.
 
@@ -5032,7 +4880,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Furthermore, the client SHOULD start the Header timer and set its time-out value to 1 second plus the
+
+Furthermore, the client SHOULD start the Header timer and set its time-out value to 1 second plus the
 estimated transfer time of the ASF file header. The estimated transfer time of the ASF file header
 SHOULD be calculated by dividing the value of the fileHeaderSize field in the
 LinkMacToViewerReportOpenFile (section 2.2.4.7) message with the value of the fileBitRate field in
@@ -5050,9 +4899,9 @@ How to process a LinkMacToViewerReportReadBlock (section 2.2.4.8) message is spe
 in section 3.1.5.11; how to process a Data (section 2.2.2) packet that contains an ASF file header is
 specified in section 3.1.5.12.
 
-3.1.5.10
+##### 3.1.5.10 Receiving a LinkMacToViewerReportReadBlock Message
 
-Receiving a LinkMacToViewerReportReadBlock Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportReadBlock message adheres to the syntax specified in section 2.2.4.8.
@@ -5079,9 +4928,9 @@ packet.
 Section 3.1.5.18 specifies the processing information for a LinkMacToViewerReportEndOfStream
 message.
 
-3.1.5.11
+##### 3.1.5.11 Receiving a Data Packet Containing a Packet-Pair Packet
 
-Receiving a Data Packet Containing a Packet-Pair Packet
+
 
 The client MUST verify that the Data packet contains a packet-pair packet and that it adheres to the
 syntax specified in section 2.2.2. If the packet does not adhere to the syntax, the client SHOULD treat
@@ -5103,7 +4952,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the value of the Packet-Pair-Packets-Expected variable is greater than 0, the client MUST
+
+If the value of the Packet-Pair-Packets-Expected variable is greater than 0, the client MUST
 decrement the value of the Packet-Pair-Packets-Expected variable by 1.  If the value of the
 variable Packet-Pair-Packets-Expected is still greater than 0, then the client MUST wait for another
 Data packet to be received, and then process the rules (as specified in this section) again.
@@ -5112,9 +4962,9 @@ If the value of the Packet-Pair-Packets-Expected variable is 0, then the client 
 packet that contains an ASF file header. This Data packet arrives over UDP. How to process the Data
 packet is specified in section 3.1.5.12.
 
-3.1.5.12
+##### 3.1.5.12 Receiving a Data Packet Containing an ASF File Header
 
-Receiving a Data Packet Containing an ASF File Header
+
 
 If the value of the UDP-Selected variable is 0, the client MUST perform the steps in section 3.1.5.2.
 The client MUST verify that the Data packet contains an ASF file header (as specified in section 2.2.2)
@@ -5145,9 +4995,9 @@ message.
 How to process a LinkMacToViewerReportReadBlock message is specified in section 3.1.5.10; how to
 process a LinkMacToViewerPing message is specified in section 3.1.5.13.
 
-3.1.5.13
+##### 3.1.5.13 Receiving a LinkMacToViewerPing Message
 
-Receiving a LinkMacToViewerPing Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerPing message adheres to the syntax specified in section 2.2.4.1.
@@ -5157,9 +5007,9 @@ The client MUST send a LinkViewerToMacPong (section 2.2.4.22) message.
 After sending the LinkViewerToMacPong message, the client MUST wait for a LinkMacToViewerPing
 message. How to process a LinkMacToViewerPing message is specified in section 3.1.5.13.
 
-3.1.5.14
+##### 3.1.5.14 Receiving a LinkMacToViewerReportStreamSwitch Message
 
-Receiving a LinkMacToViewerReportStreamSwitch Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportStreamSwitch message adheres to the syntax specified in section 2.2.4.13.
@@ -5173,7 +5023,8 @@ Release: June 1, 2017
 
 64 / 103
 
-If the value of the State variable in the abstract data model is READY, and if the value of the Play-
+
+If the value of the State variable in the abstract data model is READY, and if the value of the Play-
 Sent variable is 1, then the client MUST wait for the LinkMacToViewerReportStartedPlaying to be
 received.
 
@@ -5198,9 +5049,9 @@ How to process a Data packet that contains an ASF data packet is specified in se
 
 How to process a LinkMacToViewerReportEndOfStream message is specified in section 3.1.5.18.
 
-3.1.5.15
+##### 3.1.5.15 Receiving a LinkMacToViewerReportStartedPlaying Message
 
-Receiving a LinkMacToViewerReportStartedPlaying Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportStartedPlaying message adheres to the syntax specified in section 2.2.4.10.
@@ -5216,9 +5067,9 @@ How to process a Data packet that contains an ASF data packet is specified in se
 
 How to process a LinkMacToViewerReportEndOfStream message is specified in section 3.1.5.18.
 
-3.1.5.16
+##### 3.1.5.16 Receiving a LinkMacToViewerReportStartStriding Message
 
-Receiving a LinkMacToViewerReportStartStriding Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportStartStriding message adheres to the syntax specified in section 2.2.4.11.
@@ -5241,9 +5092,10 @@ Release: June 1, 2017
 
 65 / 103
 
-3.1.5.17
 
-Receiving a Data Packet Containing an ASF Data Packet
+##### 3.1.5.17 Receiving a Data Packet Containing an ASF Data Packet
+
+
 
 If the Data packet is received over TCP, the client MUST perform the steps in section 3.1.5.2. The
 client MUST verify that the Data packet contains an ASF data packet and that it adheres to the syntax
@@ -5268,9 +5120,9 @@ How to process a Data packet that contains an ASF data packet is specified in se
 
 How to process a LinkMacToViewerReportEndOfStream message is specified in section 3.1.5.18.
 
-3.1.5.18
+##### 3.1.5.18 Receiving a LinkMacToViewerReportEndOfStream Message
 
-Receiving a LinkMacToViewerReportEndOfStream Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportEndOfStream message adheres to the syntax specified in section 2.2.4.5.
@@ -5311,15 +5163,16 @@ Release: June 1, 2017
 
 66 / 103
 
-If the value of the State variable is STREAMING, the client MUST wait for either a
+
+If the value of the State variable is STREAMING, the client MUST wait for either a
 LinkMacToViewerReportStreamChange message, or if the value of the  Stream-Switch-Sent variable
 is 1 a LinkMacToViewerReportStreamSwitch message, to be received. Processing information for the
 LinkMacToViewerReportStreamSwitch message is specified in section 3.1.5.14. Processing information
 for the LinkMacToViewerReportStreamChange is specified in section 3.1.5.19.
 
-3.1.5.19
+##### 3.1.5.19 Receiving a LinkMacToViewerReportStreamChange Message
 
-Receiving a LinkMacToViewerReportStreamChange Message
+
 
 The client MUST perform the steps in section 3.1.5.2. Also, the client MUST verify that the
 LinkMacToViewerReportStreamChange message adheres to the syntax specified in section 2.2.4.12.
@@ -5331,9 +5184,9 @@ packet is specified in section 3.1.5.12.
 If the client value of the UDP-Selected variable is 1, the client MUST send a
 LinkViewerToMacReadBlock message by following the rules specified in section 3.1.5.9.1.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Header Timer Expires
+##### 3.1.6.1 Header Timer Expires
 
 If the value of the State variable in the abstract data model is READY, the client MUST proceed with its
 previous activity (for example, waiting for a message to be received) and MUST NOT follow any of the
@@ -5357,13 +5210,13 @@ the value of the Packet-Pair-Packets-Expected to 2.
 
 3.  The client MUST also follow the rules specified in section 3.1.5.9.1.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5378,7 +5231,8 @@ Release: June 1, 2017
 
 67 / 103
 
-Client-ID: The value of this variable is an identifier assigned by the server for the current streaming
+
+Client-ID: The value of this variable is an identifier assigned by the server for the current streaming
 session. The initial value is undefined.
 
 Client-Port: The value of this variable is the UDP port number to which the client wants Data packets
@@ -5408,7 +5262,7 @@ pair packets over UDP. The default value is False.
 
 Note  The above conceptual data can be implemented using a variety of techniques.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Idle-Timeout: This timer is used for cleaning up an unused session state. If no requests are received
 from the client, the Idle-Timeout timer will expire and the server is then free to delete the session
@@ -5423,7 +5277,7 @@ effect.
 KeepAlive: This timer is used for sending LinkMacToViewerPing messages. The time-out period
 SHOULD be 30 seconds. The minimum allowed value for the time-out period is 10 seconds.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Initialization of the protocol occurs when a LinkViewerToMacConnect message is received.
 
@@ -5447,9 +5301,10 @@ Release: June 1, 2017
 
 68 / 103
 
-3.2.4  Higher-Layer Triggered Events
 
-3.2.4.1  Notification That the Last Data Packet Has Been Sent
+#### 3.2.4 Higher-Layer Triggered Events
+
+##### 3.2.4.1 Notification That the Last Data Packet Has Been Sent
 
 This event occurs when the value of the State variable in the abstract data model is STREAMING, and
 the higher layer notifies the server that the last Data packet has been sent.
@@ -5490,7 +5345,7 @@ How to process a LinkViewerToMacStartStriding message is specified in section 3.
 
 How to process a LinkViewerToMacCloseFile message is specified in section 3.2.5.17.
 
-3.2.4.2  Notification That a New ASF File Header Is Available
+##### 3.2.4.2 Notification That a New ASF File Header Is Available
 
 This event occurs when the server is ready to transmit a new entry in a server-side playlist. As a
 prerequisite for this event, the higher layer MUST already have notified the server that it sent the last
@@ -5515,7 +5370,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the value of the Client-Port variable is not 0x0000, the value of the State variable MUST be set to
+
+If the value of the Client-Port variable is not 0x0000, the value of the State variable MUST be set to
 READY, the Idle-Timeout timer MUST be started, and the server MUST also be prepared to receive a
 LinkViewerToMacReadBlock message from the client. How to process a LinkViewerToMacReadBlock
 message is specified in section 3.2.5.8.
@@ -5526,9 +5382,9 @@ new playlist entry to the client by following the rules specified in section 3.2
 server MUST start transmitting the ASF data packets from the beginning of the new playlist entry by
 following the rules specified in section 3.2.5.11.1.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a Packet
+##### 3.2.5.1 Receiving a Packet
 
 This section specifies common steps that MUST be performed whenever the server receives a packet.
 
@@ -5542,7 +5398,7 @@ If the packet is received over UDP, it MUST be a RequestPacketListResend (sectio
 
 If the KeepAlive timer (as specified in section 3.2.2) is running, it MUST be stopped.
 
-3.2.5.2  Sending a Message
+##### 3.2.5.2 Sending a Message
 
 This section specifies common steps that MUST be performed whenever the client sends a message to
 the server from any of the types specified in section 2.2.4.
@@ -5552,7 +5408,7 @@ be combined in a single TcpMessageHeader packet.
 
 The KeepAlive timer (as specified in section 3.2.2) MUST be started.
 
-3.2.5.3  Receiving a LinkViewerToMacConnect Message
+##### 3.2.5.3 Receiving a LinkViewerToMacConnect Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacConnect message adheres to the syntax specified in section 2.2.4.17.
@@ -5580,7 +5436,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-If the server supports authentication, and there is a possibility that authentication will be required, the
+
+If the server supports authentication, and there is a possibility that authentication will be required, the
 AuthenPackage field in the LinkMacToViewerReportConnectedEX message MUST be set to specify the
 name of the authentication scheme (either BASIC or NTLM).
 
@@ -5590,7 +5447,7 @@ LinkViewerToMacFunnelInfo message or a LinkViewerToMacConnectFunnel message to b
 How to process a LinkViewerToMacFunnelInfo message is specified in section 3.2.5.4; how to process
 a LinkViewerToMacConnectFunnel message is specified in section 3.2.5.5.
 
-3.2.5.4  Receiving a LinkViewerToMacFunnelInfo Message
+##### 3.2.5.4 Receiving a LinkViewerToMacFunnelInfo Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacFunnelInfo message adheres to the syntax specified in section 2.2.4.19.
@@ -5633,7 +5490,7 @@ After sending the last LinkMacToViewerReportFunnelInfo message, the server MUST 
 LinkViewerToMacConnectFunnel message to be received. How to process this message is specified in
 section 3.2.5.5.
 
-3.2.5.5  Receiving a LinkViewerToMacConnectFunnel Message
+##### 3.2.5.5 Receiving a LinkViewerToMacConnectFunnel Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacConnectFunnel message adheres to the syntax specified in section 2.2.4.18.
@@ -5645,7 +5502,8 @@ Release: June 1, 2017
 
 71 / 103
 
-The server MUST parse the funnelName field, and if the funnelName field specifies that the client
+
+The server MUST parse the funnelName field, and if the funnelName field specifies that the client
 wants to use UDP, the server MUST save the UDP port number specified in the funnelName field in
 the Client-Port variable of the abstract data model. The IP address specified in the funnelName field
 SHOULD be ignored. Instead, Data packets SHOULD be sent to the IP address used by the client for
@@ -5663,7 +5521,7 @@ If the server sent the LinkMacToViewerReportDisconnectedFunnel message, the serv
 a LinkViewerToMacConnectFunnel message to be received. How to process this message is specified in
 section 3.2.5.5.
 
-3.2.5.6  Receiving a LinkViewerToMacOpenFile Message
+##### 3.2.5.6 Receiving a LinkViewerToMacOpenFile Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacOpenFile message adheres to the syntax specified in section 2.2.4.21.
@@ -5709,7 +5567,8 @@ Release: June 1, 2017
 
 72 / 103
 
-If the server sent a LinkMacToViewerSecurityChallenge message, the server MUST wait for a
+
+If the server sent a LinkMacToViewerSecurityChallenge message, the server MUST wait for a
 LinkViewerToMacSecurityResponse message to be received. How to process this message is specified
 in section 3.2.5.7.
 
@@ -5723,7 +5582,7 @@ If the server sent a LinkMacToViewerReportOpenFile message, the server MUST wait
 LinkViewerToMacReadBlock message to be received. How to process this message is specified in
 section 3.2.5.8.
 
-3.2.5.7  Receiving a LinkViewerToMacSecurityResponse Message
+##### 3.2.5.7 Receiving a LinkViewerToMacSecurityResponse Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacSecurityResponse message adheres to the syntax specified in section 2.2.4.24.
@@ -5754,7 +5613,7 @@ If the server sent a LinkMacToViewerReportOpenFile message, the server MUST wait
 LinkViewerToMacReadBlock message to be received. How to process this message is specified in
 section 3.2.5.8.
 
-3.2.5.8  Receiving a LinkViewerToMacReadBlock Message
+##### 3.2.5.8 Receiving a LinkViewerToMacReadBlock Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacReadBlock message adheres to the syntax specified in section 2.2.4.23.
@@ -5776,7 +5635,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-bytes, and the contents of the Payload field MUST consist of random data that MUST be different for
+
+bytes, and the contents of the Payload field MUST consist of random data that MUST be different for
 each of the two Data packets.
 
 The value of the LocationId field MUST be set to 0xF0F0F000 for the first Data packet and to
@@ -5792,7 +5652,7 @@ The server MUST then send a LinkMacToViewerReportReadBlock (section 2.2.4.8) mes
 The server MUST send the ASF file header as one or more Data packets by following the rules
 specified in section 3.2.5.8.1.
 
-3.2.5.8.1 Sending Data Packets Containing an ASF File Header
+###### 3.2.5.8.1 Sending Data Packets Containing an ASF File Header
 
 The server MUST encapsulate the ASF file header specified in section 2.2.2 in one or more
 Data (section 2.2.2) packets.
@@ -5845,7 +5705,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.2.5.9  Receiving a LinkViewerToMacCancelReadBlock Message
+
+##### 3.2.5.9 Receiving a LinkViewerToMacCancelReadBlock Message
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacCancelReadBlock message adheres to the syntax specified in section 2.2.4.15.
@@ -5861,9 +5722,9 @@ How to process a LinkViewerToMacCancelReadBlock message is specified in section 
 process a LinkViewerToMacCloseFile message is specified in section 3.2.5.17.
 LinkViewerToMacReadBlock message processing is specified in section 3.2.5.8.
 
-3.2.5.10
+##### 3.2.5.10 Receiving a LinkViewerToMacStreamSwitch Message
 
-Receiving a LinkViewerToMacStreamSwitch Message
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacStreamSwitch message adheres to the syntax specified in section 2.2.4.28.
@@ -5889,9 +5750,9 @@ How to process a LinkViewerToMacStartStriding message is specified in section 3.
 
 How to process a LinkViewerToMacCloseFile message is specified in section 3.2.5.17.
 
-3.2.5.11
+##### 3.2.5.11 Receiving a LinkViewerToMacStartPlaying Message
 
-Receiving a LinkViewerToMacStartPlaying Message
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacStartPlaying message adheres to the syntax specified in section 2.2.4.25.
@@ -5916,7 +5777,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-4.1 (as specified in section 2.2.4.17), the server MUST assume that all streams (2) in the content
+
+4.1 (as specified in section 2.2.4.17), the server MUST assume that all streams (2) in the content
 are selected.
 
 Otherwise, if the server did not previously receive a LinkViewerToMacStreamSwitch message, the
@@ -5935,9 +5797,9 @@ If the LinkViewerToMacStartPlaying message includes the dwAccelBandwidth and
 dwAccelDuration fields, an initial amount of Data packets given by the dwAccelDuration field
 SHOULD be transmitted at the bit rate given by the dwAccelBandwidth field.<49>
 
-3.2.5.11.1
+###### 3.2.5.11.1 Sending Data Packets Containing ASF Data Packets
 
-Sending Data Packets Containing ASF Data Packets
+
 
 When the server sends ASF data packets, each ASF data packet MUST be encapsulated in a
 Data (section 2.2.2) packet. The ASF payloads in the ASF data packets MUST be filtered so that only
@@ -5981,9 +5843,10 @@ Release: June 1, 2017
 
 76 / 103
 
-3.2.5.12
 
-Receiving a LinkViewerToMacStartStriding Message
+##### 3.2.5.12 Receiving a LinkViewerToMacStartStriding Message
+
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacStartStriding message adheres to the syntax specified in section 2.2.4.26.
@@ -6016,9 +5879,9 @@ After this, the server MUST send the ASF data packets of the current playlist en
 specified by the rate field in the LinkViewerToMacStartStriding message by following the rules in
 section 3.2.5.11.1.
 
-3.2.5.13
+##### 3.2.5.13 Receiving a RequestPacketListResend Packet
 
-Receiving a RequestPacketListResend Packet
+
 
 The server MUST verify that the RequestPacketListResend packet adheres to the syntax specified in
 section 2.2.5.
@@ -6036,9 +5899,9 @@ NOT be modified when the Data packet is resent.
 After this, if the value of the State variable is STREAMING, the server MUST continue transmitting ASF
 data packets by following the rules specified in section 3.2.5.11.1.
 
-3.2.5.14
+##### 3.2.5.14 Receiving a LinkViewerToMacStopPlaying Message
 
-Receiving a LinkViewerToMacStopPlaying Message
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacStopPlaying message adheres to the syntax specified in section 2.2.4.27.
@@ -6054,7 +5917,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-The server MUST send a LinkMacToViewerReportEndOfStream (section 2.2.4.5) message.
+
+The server MUST send a LinkMacToViewerReportEndOfStream (section 2.2.4.5) message.
 
 The value of the hr field in the LinkMacToViewerReportEndOfStream message MUST be set to
 0x00000000.
@@ -6077,9 +5941,9 @@ How to process a LinkViewerToMacStartStriding message is specified in section 3.
 
 How to process a LinkViewerToMacCloseFile message is specified in section 3.2.5.17.
 
-3.2.5.15
+##### 3.2.5.15 Receiving a LinkViewerToMacLogging Message
 
-Receiving a LinkViewerToMacLogging Message
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacLogging message adheres to the syntax specified in section 2.2.4.20.
@@ -6099,9 +5963,9 @@ How to process a LinkViewerToMacStartStriding message is specified in section 3.
 
 How to process a LinkViewerToMacCloseFile message is specified in section 3.2.5.17.
 
-3.2.5.16
+##### 3.2.5.16 Receiving a LinkViewerToMacPong Message
 
-Receiving a LinkViewerToMacPong Message
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacPong message adheres to the syntax specified in section 2.2.4.22.
@@ -6111,9 +5975,9 @@ packets by following the rules specified in section 3.2.5.11.1. Otherwise, the s
 waiting for the messages that it was waiting for before the KeepAlive timer (as specified in section
 3.2.2) expired.
 
-3.2.5.17
+##### 3.2.5.17 Receiving a LinkViewerToMacCloseFile Message
 
-Receiving a LinkViewerToMacCloseFile Message
+
 
 The server MUST first follow the steps specified in section 3.2.5.1. Also, the server MUST verify that
 the LinkViewerToMacCloseFile message adheres to the syntax specified in section 2.2.4.16.
@@ -6125,14 +5989,15 @@ Release: June 1, 2017
 
 78 / 103
 
-The server MUST verify that the value of the openFileId field of the LinkViewerToMacCloseFile
+
+The server MUST verify that the value of the openFileId field of the LinkViewerToMacCloseFile
 message is identical to the value of the File-ID variable.
 
 The server MUST delete all session states and close the TCP connection to the client.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
-3.2.6.1  KeepAlive Timer Expires
+##### 3.2.6.1 KeepAlive Timer Expires
 
 When the KeepAlive timer expires, the following actions MUST occur:
 
@@ -6148,14 +6013,14 @@ LinkViewerToMacPong message to be received. How to process this message is speci
 Note  If the client is unreachable, the TCP connection eventually times out, which triggers the local
 event defined in section 3.2.7.1.
 
-3.2.6.2  Idle-Timeout Timer Expires
+##### 3.2.6.2 Idle-Timeout Timer Expires
 
 When the Idle-Timeout timer expires, the server MUST delete all session states and close the TCP
 connection to the client.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  TCP Connection Is Disconnected
+##### 3.2.7.1 TCP Connection Is Disconnected
 
 If the TCP connection is disconnected, all session states SHOULD be deleted.
 
@@ -6166,13 +6031,14 @@ Release: June 1, 2017
 
 79 / 103
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-MMSP].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Client States
+### 4.1 Client States
 
 The following diagram illustrates the states in the client role and the transitions between the states:
 
@@ -6206,7 +6072,8 @@ Release: June 1, 2017
 
 80 / 103
 
-  When the client is in STREAMING state, it can transition to READY if it receives a
+
+  When the client is in STREAMING state, it can transition to READY if it receives a
 
 LinkMacToViewerReportEndOfStream message, as described in section 3.1.5.18. The
 LinkMacToViewerReportEndOfStream message might have been sent by the server because it has
@@ -6236,7 +6103,7 @@ described in section 3.1.4.4.
 
 asks the client to finish the streaming session, as described in section 3.1.4.8.
 
-4.2  Server States
+### 4.2 Server States
 
 The following diagram illustrates the states in the server role and the transitions between the states:
 
@@ -6247,7 +6114,8 @@ Release: June 1, 2017
 
 81 / 103
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MS-MMSP].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -6298,7 +6166,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 83 -->
+
+<!-- Extracted images from page 83 -->
 ![Extracted image 1 from page 83]([MS-MMSP].images/page083-img01.png)
 <!-- /Extracted images from page 83 -->
 
@@ -6313,7 +6182,7 @@ terminates the connection, as described in section 3.2.5.17.
 
 connection, as described in section 3.2.7.1.
 
-4.3  General Sequence
+### 4.3 General Sequence
 
 The following list shows the sequence of TCP packets that pass over the wire when the client attempts
 to stream a media file from the server using the MMS Protocol. The sequence assumes that the media
@@ -6331,7 +6200,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  The server responds with a LinkMacToViewerReportConnectedEX message.
+
+2.  The server responds with a LinkMacToViewerReportConnectedEX message.
 
 3.  The client requests information from the server with a LinkViewerToMacFunnelInfo message.
 
@@ -6387,7 +6257,7 @@ to the client's request or because the end of the stream has been reached.
 
 connection.
 
-4.4  Packet-Pair Bandwidth Estimation for MMS
+### 4.4 Packet-Pair Bandwidth Estimation for MMS
 
 Packet-pair is a technique for estimating the bandwidth of a streaming media connection over the
 Internet.
@@ -6397,7 +6267,7 @@ the client estimates the bandwidth by measuring the difference between the times
 packets. This method is usually reliable; however, if the client traverses a network address translation,
 firewall, or proxy server, the packet-pair bandwidth measurement might be inaccurate.
 
-4.4.1  Packet-Pair Commands for UDP Connections
+#### 4.4.1 Packet-Pair Commands for UDP Connections
 
 The sequence of commands that is required to negotiate a packet-pair depends on whether the client
 and server have negotiated a UDP or a TCP connection for the transmission of streaming media
@@ -6410,7 +6280,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 85 -->
+
+<!-- Extracted images from page 85 -->
 ![Extracted image 1 from page 85]([MS-MMSP].images/page085-img01.png)
 <!-- /Extracted images from page 85 -->
 
@@ -6441,7 +6312,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 86 -->
+
+<!-- Extracted images from page 86 -->
 ![Extracted image 1 from page 86]([MS-MMSP].images/page086-img01.png)
 <!-- /Extracted images from page 86 -->
 
@@ -6475,7 +6347,7 @@ field is set to "0xF0F0F001".
 
 LinkMacToViewerReportReadBlock message to complete the conversation.
 
-4.4.2  Packet-Pair Commands for TCP Connections
+#### 4.4.2 Packet-Pair Commands for TCP Connections
 
 When TCP is used, the following sequence applies.
 
@@ -6488,7 +6360,8 @@ Release: June 1, 2017
 
 86 / 103
 
-1.  The client sends a LinkViewerToMacConnect message with the playIncarnation field set to
+
+1.  The client sends a LinkViewerToMacConnect message with the playIncarnation field set to
 "0xF0F0F0F0". This value corresponds to the named value of MMS_USE_PACKET_PAIR.
 
 2.  The server sends a LinkMacToViewerReportConnectedEX message with the playIncarnation field
@@ -6510,7 +6383,7 @@ end of this packet are 480 bytes of random data.
 
 that it is followed by 1,016 random bytes of data rather than 480.
 
-4.5  Playback Adjustment Sequence
+### 4.5 Playback Adjustment Sequence
 
 The MMS Protocol is used by Windows Media Services to stream data between the Windows Media
 Player and Windows Media server by means of TCP and UDP.
@@ -6518,7 +6391,7 @@ Player and Windows Media server by means of TCP and UDP.
 During the playback process, the user can drag the seek bar to a new position and fast forward and
 rewind the content. The following sequences are used to execute these maneuvers.
 
-4.5.1  Sequencing During Playback
+#### 4.5.1 Sequencing During Playback
 
 If the user drags the seek bar to a new position, the following sequence occurs.
 
@@ -6529,7 +6402,8 @@ Release: June 1, 2017
 
 87 / 103
 
-<!-- Extracted images from page 88 -->
+
+<!-- Extracted images from page 88 -->
 ![Extracted image 1 from page 88]([MS-MMSP].images/page088-img01.png)
 <!-- /Extracted images from page 88 -->
 
@@ -6560,7 +6434,8 @@ Release: June 1, 2017
 
 88 / 103
 
-<!-- Extracted images from page 89 -->
+
+<!-- Extracted images from page 89 -->
 ![Extracted image 1 from page 89]([MS-MMSP].images/page089-img01.png)
 <!-- /Extracted images from page 89 -->
 
@@ -6591,7 +6466,8 @@ Release: June 1, 2017
 
 89 / 103
 
-<!-- Extracted images from page 90 -->
+
+<!-- Extracted images from page 90 -->
 ![Extracted image 1 from page 90]([MS-MMSP].images/page090-img01.png)
 <!-- /Extracted images from page 90 -->
 
@@ -6638,17 +6514,18 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<!-- Extracted images from page 91 -->
+
+<!-- Extracted images from page 91 -->
 ![Extracted image 1 from page 91]([MS-MMSP].images/page091-img01.png)
 <!-- /Extracted images from page 91 -->
 
-4.6  Authentication Sequence
+### 4.6 Authentication Sequence
 
 Streaming media content can be made accessible only to authorized clients. The authentication
 sequences supported by the MMS Protocol are based on a Basic and NTLM sequence. Both sequences
 are specified in the following sections.
 
-4.6.1  Basic Authentication Sequence
+#### 4.6.1 Basic Authentication Sequence
 
 For Basic authentication, the following sequence is used.
 
@@ -6679,7 +6556,8 @@ Release: June 1, 2017
 
 91 / 103
 
-<!-- Extracted images from page 92 -->
+
+<!-- Extracted images from page 92 -->
 ![Extracted image 1 from page 92]([MS-MMSP].images/page092-img01.png)
 <!-- /Extracted images from page 92 -->
 
@@ -6689,7 +6567,7 @@ username and password. If the credentials are correct, the server responds with 
 LinkMacToViewerReportOpenFile message. Otherwise, the server responds with a
 LinkMacToViewerSecurityChallenge message.
 
-4.6.2  NTLM Authentication Sequence
+#### 4.6.2 NTLM Authentication Sequence
 
 For NTLM authentication, the following sequence is used.
 
@@ -6716,7 +6594,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-2.  Eventually, the client sends a LinkViewerToMacOpenFile packet request, to which the server
+
+2.  Eventually, the client sends a LinkViewerToMacOpenFile packet request, to which the server
 
 responds with a LinkMacToViewerSecurityChallenge message.
 
@@ -6736,9 +6615,10 @@ Release: June 1, 2017
 
 93 / 103
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The protocol is at risk of attack where the attacker spoofs RequestPacketListResend packets, causing
 the server to flood the client with unnecessarily retransmitted Data packets. To help mitigate against
@@ -6752,7 +6632,7 @@ to access data out of bounds. Some message structures also have a field that spe
 and a similar concern applies in this case. In addition, strings that appear in MMS messages are
 sometimes not required to be null-terminated.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -6773,7 +6653,8 @@ Release: June 1, 2017
 
 94 / 103
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6840,7 +6721,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<11> Section 2.2.4.10: Windows sets this field to either 0x00000000 or to the value of the
+
+<11> Section 2.2.4.10: Windows sets this field to either 0x00000000 or to the value of the
 openFileId field in the LinkMacToViewerReportOpenFile (section 2.2.4.7) message sent previously by
 the server.
 
@@ -6947,7 +6829,8 @@ Microsoft Media Server (MMS) Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<19> Section 2.2.4.21: Windows Media Services on Windows NT 4.0, Windows Media Services on
+
+<19> Section 2.2.4.21: Windows Media Services on Windows NT 4.0, Windows Media Services on
 Windows 2000 Server, Windows Media Player 6, Windows Media Format 7.0 SDK, Windows Media
 Format 7.1 SDK, Windows Media Player for Windows XP, Windows Media Format 9 Series SDK, and
 Windows Media Format 9.5 SDK set the value of the spare field from uninitialized memory so that it
@@ -7013,7 +6896,8 @@ Release: June 1, 2017
 
 97 / 103
 
-<32> Section 3.1.4.2.2: Windows Media Services on Windows NT 4.0, Windows Media Services on
+
+<32> Section 3.1.4.2.2: Windows Media Services on Windows NT 4.0, Windows Media Services on
 Windows 2000 Server, Windows Media Player 6, Windows Media Format 7.0 SDK, Windows Media
 Format 7.1 SDK, and Windows Media Player for Windows XP set the value of the playIncarnation
 field in the LinkViewerToMacStartStriding (section 2.2.4.26) message to the current value of the
@@ -7079,7 +6963,8 @@ Release: June 1, 2017
 
 98 / 103
 
-<46> Section 3.1.5.18: Windows Media Services on Windows NT 4.0, Windows Media Services on
+
+<46> Section 3.1.5.18: Windows Media Services on Windows NT 4.0, Windows Media Services on
 Windows 2000 Server, and Windows Media Player 6 do not send a LinkViewerToMacLogging message.
 
 <47> Section 3.2.4.1: Windows Media Services on Windows NT 4.0 and Windows Media Services on
@@ -7099,7 +6984,8 @@ Release: June 1, 2017
 
 99 / 103
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -7111,7 +6997,8 @@ Release: June 1, 2017
 
 100 / 103
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -7251,7 +7138,8 @@ LinkViewerToMacFunnelInfo 71
 
 101 / 103
 
-LinkViewerToMacFunnelInfo packet 38
+
+LinkViewerToMacFunnelInfo packet 38
 LinkViewerToMacLogging 78
 LinkViewerToMacLogging packet 38
 LinkViewerToMacOpenFile 72
@@ -7398,7 +7286,8 @@ Timers
 
 102 / 103
 
-Tracking changes 99
+
+Tracking changes 99
 Transport 11
 Triggered events - higher-layer
    client 52

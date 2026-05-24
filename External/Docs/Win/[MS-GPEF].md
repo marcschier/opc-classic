@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Release: April 23, 2024
 
 3 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -579,163 +582,69 @@ Release: April 23, 2024
 
 4 / 37
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 EFS Group Policy Extension Overview](#132-efs-group-policy-extension-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 EFS Recovery Policy](#221-efs-recovery-policy)
+      - [2.2.1.1 Recovery Agent Certificate](#2211-recovery-agent-certificate)
+        - [2.2.1.1.1 Certificate BLOB](#22111-certificate-blob)
+          - [2.2.1.1.1.1 Certificate BLOB Properties](#221111-certificate-blob-properties)
+            - [2.2.1.1.1.1.1 KEY_PROV_INFO](#2211111-keyprovinfo)
+          - [2.2.1.1.1.2 Certificate BLOB Encoding](#221112-certificate-blob-encoding)
+      - [2.2.1.2 EfsBlob Value](#2212-efsblob-value)
+        - [2.2.1.2.1 EfsBlob](#22121-efsblob)
+        - [2.2.1.2.2 EfsKey](#22122-efskey)
+    - [2.2.2 EFS Enabled Status](#222-efs-enabled-status)
+    - [2.2.3 EFS Additional Options](#223-efs-additional-options)
+    - [2.2.4 EFS Cache Timeout](#224-efs-cache-timeout)
+    - [2.2.5 EFS User Template Name](#225-efs-user-template-name)
+    - [2.2.6 EFS RSA Self-Signed Certificate Key Length](#226-efs-rsa-self-signed-certificate-key-length)
+    - [2.2.7 EFS ECC Self-Signed Certificate Algorithm Identifier](#227-efs-ecc-self-signed-certificate-algorithm-identifier)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Plug-in Details](#31-administrative-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving Updated Policy](#3251-receiving-updated-policy)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................. 10
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Background ............................................................................................... 10
-EFS Group Policy Extension Overview ............................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.1.1.1
-
-2.2.1.1.1.1
-
-2.2.1.1.1.1.1
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-EFS Recovery Policy .................................................................................... 14
-Recovery Agent Certificate ..................................................................... 15
-Certificate BLOB .............................................................................. 15
-Certificate BLOB Properties ......................................................... 15
-KEY_PROV_INFO .................................................................. 16
-Certificate BLOB Encoding ........................................................... 18
-EfsBlob Value ....................................................................................... 18
-EfsBlob .......................................................................................... 18
-EfsKey ........................................................................................... 19
-EFS Enabled Status ..................................................................................... 20
-EFS Additional Options ................................................................................ 20
-EFS Cache Timeout ..................................................................................... 21
-EFS User Template Name ............................................................................ 21
-EFS RSA Self-Signed Certificate Key Length ................................................... 22
-EFS ECC Self-Signed Certificate Algorithm Identifier........................................ 22
-
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-
-2.2.1.2.1
-2.2.1.2.2
-
-2.2.1.1.1.2
-
-2.2.1.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 24
-Administrative Plug-in Details ............................................................................ 24
-Abstract Data Model .................................................................................... 24
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Processing Events and Sequencing Rules ....................................................... 25
-Timer Events .............................................................................................. 26
-Other Local Events ...................................................................................... 26
-Client Details ................................................................................................... 26
-Abstract Data Model .................................................................................... 26
-Timers ...................................................................................................... 26
-Initialization ............................................................................................... 27
-Higher-Layer Triggered Events ..................................................................... 27
-Process Group Policy ............................................................................. 27
-Processing Events and Sequencing Rules ....................................................... 27
-Receiving Updated Policy ....................................................................... 27
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 28
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.5
-
-3.2
-
-4  Protocol Examples ................................................................................................. 29
-
-5 / 37
-
-[MS-GPEF] - v20240423
-Group Policy: Encrypting File System Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 32
-
-7  Change Tracking .................................................................................................... 35
-
-8  Index ..................................................................................................................... 36
-
-[MS-GPEF] - v20240423
-Group Policy: Encrypting File System Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 37
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: Encrypting File System Extension uses Group Policy: Core Protocol, specified in [MS-
 GPOL], to allow remote administrative configuration of the Encrypting File System (EFS).
@@ -743,7 +652,7 @@ GPOL], to allow remote administrative configuration of the Encrypting File Syste
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -801,7 +710,8 @@ Release: April 23, 2024
 
 7 / 37
 
-data recovery agent (DRA): A logical entity corresponding to an asymmetric key pair, which is
+
+data recovery agent (DRA): A logical entity corresponding to an asymmetric key pair, which is
 
 configured as part of Encrypting File System (EFS) administrative policy by an administrator.
 Whenever an EFS file is created or modified, it is also automatically configured to give
@@ -872,7 +782,8 @@ Release: April 23, 2024
 
 8 / 37
 
-update information in a directory service (DS), as described in [MS-ADTS]. The Lightweight
+
+update information in a directory service (DS), as described in [MS-ADTS]. The Lightweight
 Directory Access Protocol can be either version 2 [RFC1777] or version 3 [RFC3377].
 
 NT file system (NTFS): A proprietary Microsoft file system. For more information, see [MSFT-
@@ -933,7 +844,7 @@ specified in [RFC3280].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -945,10 +856,11 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -972,13 +884,13 @@ assist you in finding the relevant information.
 Certificate and Certificate Revocation List (CRL) Profile", RFC 5280, May 2008, https://www.rfc-
 editor.org/info/rfc5280
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-FASOD] Microsoft Corporation, "File Access Services Protocols Overview".
 
 [MS-LSAD] Microsoft Corporation, "Local Security Authority (Domain Policy) Remote Protocol".
 
-1.3  Overview
+### 1.3 Overview
 
 Encrypting File System (EFS) is a capability of the NT file system (NTFS). It encrypts files stored
 on disk in a manner transparent to users and applications. Each user of EFS is associated with a key
@@ -995,7 +907,7 @@ to enable or disable EFS, or to enforce policies such as those related to key ma
 recovery. All EFS policies are machine-specific, meaning that all users on a given machine will have
 the same policy applied to them.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol, specified in [MS-GPOL], allows clients to discover and retrieve policy
 settings created by administrators of a domain. These settings are persisted within Group Policy
@@ -1010,7 +922,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-consulting the Active Directory objects corresponding to its computer account and the user accounts of
+
+consulting the Active Directory objects corresponding to its computer account and the user accounts of
 any users logging on to the client computer.
 
 On each client, each GPO is interpreted and acted upon by software components known as client-side
@@ -1026,7 +939,7 @@ client-side plug-ins to handle the GPO.
 A client-side plug-in uses the contents of the GPO to retrieve and process settings specific to its class,
 in a manner specific to the plug-in.
 
-1.3.2  EFS Group Policy Extension Overview
+#### 1.3.2 EFS Group Policy Extension Overview
 
 EFS Group Policy settings are accessible from a GPO through the Group Policy: Encrypting File System
 Extension to the Group Policy: Core Protocol specified in [MS-GPOL]. The extension provides a
@@ -1079,7 +992,8 @@ Release: April 23, 2024
 
 11 / 37
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GPEF].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1088,7 +1002,7 @@ of the Group Policy: Core Protocol in step 2 is specified in [MS-GPOL] section 3
 retrieving the settings in step 3 is specified in [MS-GPREG] section 3.2. Step 4 and step 5 are specific
 to EFS and are not specified.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Group Policy: Encrypting File System Extension is invoked as an extension of the Group Policy: Core
 Protocol. Group Policy: Encrypting File System Extension is only initiated as part of the Group Policy:
@@ -1106,14 +1020,14 @@ settings are defined in [MS-EFSR] section 3.1.1.1.
 
 Figure 1: Protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this extension are the same as those for the Group Policy: Core Protocol.
 
 In addition, the Group Policy: Registry Extension Encoding needs to be present on the client to
 retrieve the settings stored by the EFS Group Policy administrative plug-in.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: Encrypting File System Extension is only applicable within the Group Policy
 framework and only when a number of client computers in a domain support EFS. The Group Policy:
@@ -1125,14 +1039,15 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Encrypting File System Extension is intended to be used to configure certain aspects of EFS behavior
+
+Encrypting File System Extension is intended to be used to configure certain aspects of EFS behavior
 on such clients.
 
 The Group Policy: Encrypting File System Extension is in a certain class of extensions that have only
 an administrative-side extension and no client-side extension. These extensions are data structures
 and are documented here for informative purposes only.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Group Policy: Encrypting File System Extension does not provide versioning or capability
 negotiations.
@@ -1148,11 +1063,11 @@ settings specified here. A client will not be able to use the administrative plu
 settings that it does not support. However, the EFS administrative plug-in will neither modify nor
 destroy any settings it does not support.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Encrypting File System Extension does not define any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol defines CSE GUID and tool extension GUID values as specified in [MS-GPOL] section
 1.8. The assignments are as follows.
@@ -1178,9 +1093,10 @@ Release: April 23, 2024
 
 13 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The EFS Group Policy administrative plug-in uses the transport specified in [MS-GPOL] to read and
 modify settings in the central policy store. Specifically, it uses the file access services protocols
@@ -1190,7 +1106,7 @@ by the Group Policy: Registry Extension Encoding ([MS-GPREG] section 3.2) using 
 as the underlying transport. The file access version, capabilities, and authentication used for this
 connection are negotiated between the client and the server when the connection is established.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Group Policy: Encrypting File System Extension MUST use the message syntaxes as specified in
 [MS-GPOL] section 2.2 and [MS-GPREG] section 2.2. EFS Group Policy options are implemented as
@@ -1227,7 +1143,7 @@ corresponding entries in the machine-specific Registry Policy file. The intent o
 described in the following sections; however, these settings are processed by the EFS in the client,
 and their descriptions here are only for informative purposes, not for normative purposes.
 
-2.2.1  EFS Recovery Policy
+#### 2.2.1 EFS Recovery Policy
 
 This option MUST be supported by all implementations of the Group Policy: Encrypting File System
 Extensions.
@@ -1251,7 +1167,8 @@ Release: April 23, 2024
 
 14 / 37
 
-2.2.1.1  Recovery Agent Certificate
+
+##### 2.2.1.1 Recovery Agent Certificate
 
 A separate registry key MUST be created for each EFS recovery agent under the path
 Software\Policies\Microsoft\SystemCertificates\EFS\Certificates. The name of this key MUST be the
@@ -1261,13 +1178,13 @@ contain a single value of type REG_BINARY. The name of this value MUST be "Blob"
 value (hereafter referred to as the certificate binary large object (BLOB)) is described in the following
 sections.
 
-2.2.1.1.1 Certificate BLOB
+###### 2.2.1.1.1 Certificate BLOB
 
 The certificate BLOB MUST consist of zero or more certificate properties, followed by the encoded
 certificate. The format of the properties is specified in section 2.2.1.1.1.1. The format of the encoded
 certificate is specified in section 2.2.1.1.1.2.
 
-2.2.1.1.1.1  Certificate BLOB Properties
+###### 2.2.1.1.1.1 Certificate BLOB Properties
 
 Each property in the certificate BLOB structure MUST be formatted as follows.
 
@@ -1347,7 +1264,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 11
 
@@ -1437,7 +1355,7 @@ Value (variable): This field MUST contain the value of the specified property, i
 
 for the property associated with the table of possible values for PropertyID.
 
-2.2.1.1.1.1.1  KEY_PROV_INFO
+###### 2.2.1.1.1.1.1 KEY_PROV_INFO
 
 The value for the KEY_PROV_INFO property (if this property is present) MUST be in the following
 format.
@@ -1466,7 +1384,8 @@ Release: April 23, 2024
 
 16 / 37
 
-Flags
+
+Flags
 
 Reserved
 
@@ -1539,7 +1458,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.1.1.1.2  Certificate BLOB Encoding
+
+###### 2.2.1.1.1.2 Certificate BLOB Encoding
 
 The encoded certificate structure MUST be formatted as follows.
 
@@ -1576,7 +1496,7 @@ Value (variable): This field MUST contain the ASN.1 DER encoding of the X.509 ce
 EFS Recovery Agent. The certificate MUST contain a public key for use with the RSA or ECC
 encryption algorithm. For more details, see [RFC5280].
 
-2.2.1.2  EfsBlob Value
+##### 2.2.1.2 EfsBlob Value
 
 The EfsBlob entry MUST be represented in the machine-specific Registry Policy file as follows:
 
@@ -1592,7 +1512,7 @@ Data: Specified in the next section.
 
 The format of the EfsBlob entry is specified in section 2.2.1.2.1.
 
-2.2.1.2.1 EfsBlob
+###### 2.2.1.2.1 EfsBlob
 
 The EfsBlob packet is a data structure that contains EFS Recovery Keys.
 
@@ -1620,7 +1540,8 @@ Release: April 23, 2024
 
 18 / 37
 
-...
+
+...
 
 Reserved (4 bytes): Reserved array of bytes. MUST be set to 0x01 0x00 0x01 0x00, in that order.
 
@@ -1632,7 +1553,7 @@ Keys (variable): This field MUST consist of one or more entries as specified in 
 
 with each entry being formatted as defined in section 2.2.1.2.2.
 
-2.2.1.2.2 EfsKey
+###### 2.2.1.2.2 EfsKey
 
 The EfsKey packet contains an EFS key.
 
@@ -1693,7 +1614,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Certificate length (4 bytes): This field MUST be equal to the length of the Certificate field in bytes.
+
+Certificate length (4 bytes): This field MUST be equal to the length of the Certificate field in bytes.
 
 This field MUST be a 32-bit unsigned integer in little-endian format.
 
@@ -1715,7 +1637,7 @@ Certificate (4 bytes): This field MUST contain the ASN.1 representation, in DER 
 
 X.509 certificate from among the EFS recovery agent certificates described earlier.
 
-2.2.2  EFS Enabled Status
+#### 2.2.2 EFS Enabled Status
 
 Key: Software\Policies\Microsoft\Windows NT\CurrentVersion\EFS
 
@@ -1734,7 +1656,7 @@ NOT modify the Registry Policy entry described earlier.
 If the client supports this option but the option is not present, the client SHOULD use a default value
 of 0x00000000.
 
-2.2.3  EFS Additional Options
+#### 2.2.3 EFS Additional Options
 
 Key: Software\Policies\Microsoft\Windows NT\CurrentVersion\EFS
 
@@ -1767,7 +1689,8 @@ Release: April 23, 2024
 
 20 / 37
 
- Value
+
+ Value
 
  Meaning
 
@@ -1807,7 +1730,7 @@ described in this section. An implementation MAY<4> support flag 0x00000200.
 If the client supports this option but the option is not present, the client SHOULD use a default value
 of 0x00000002 | 0x00000004 | 0x00000010.
 
-2.2.4  EFS Cache Timeout
+#### 2.2.4 EFS Cache Timeout
 
 The EFS cache timeout field is specified as follows:
 
@@ -1828,7 +1751,7 @@ SHOULD be no less than 5 and no greater than 10080 (that is, one week).<5>
 If the client supports this option but the option is not present, the client SHOULD use a default value
 of 480 (that is, 8 hours).
 
-2.2.5  EFS User Template Name
+#### 2.2.5 EFS User Template Name
 
 Key: Software\Policies\Microsoft\Windows NT\CurrentVersion\EFS
 
@@ -1843,7 +1766,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size: Equal to size of the Data field.
+
+Size: Equal to size of the Data field.
 
 Data: A variable-length, null-terminated Unicode string. This setting specifies the common name
 
@@ -1856,7 +1780,7 @@ This option SHOULD<6> be supported.
 If the client supports this option but the option is not present, the client SHOULD use the default value
 "EFS".
 
-2.2.6  EFS RSA Self-Signed Certificate Key Length
+#### 2.2.6 EFS RSA Self-Signed Certificate Key Length
 
 Key:Software\Policies\Microsoft\Windows NT\CurrentVersion\EFS
 
@@ -1880,7 +1804,7 @@ signed certificates (defined as 0x00000004 in section 2.2.3) MUST be supported.
 If the client supports this option but the option is not present, the client SHOULD use a default value
 of 2048.
 
-2.2.7  EFS ECC Self-Signed Certificate Algorithm Identifier
+#### 2.2.7 EFS ECC Self-Signed Certificate Algorithm Identifier
 
 Key: Software\Policies\Microsoft\Windows NT\CurrentVersion\EFS
 
@@ -1908,7 +1832,8 @@ Release: April 23, 2024
 
 22 / 37
 
-Algorithm Identifier  Description
+
+Algorithm Identifier  Description
 
 "ECDH_P256"
 
@@ -1932,15 +1857,16 @@ Release: April 23, 2024
 
 23 / 37
 
-3  Protocol Details
 
-3.1  Administrative Plug-in Details
+## 3 Protocol Details
+
+### 3.1 Administrative Plug-in Details
 
 The administrative plug-in mediates between the user interface (UI) and a remote data store that
 contains the EFS policy settings. Its purpose is to receive EFS policy information from a UI and to
 write the EFS policy information to a remote data store.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1966,15 +1892,15 @@ implement such data using any method.<10>
 This protocol also includes one ADM element, Administered GPO (Public), which is directly accessed
 from the Group Policy: Core Protocol, as specified in [MS-GPOL] section 3.3.1.3.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 This protocol does not introduce any new timers.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No additional initialization steps are needed.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The EFS Group Policy administrative plug-in is invoked when an administrator launches the user
 interface for editing Group Policy settings. The plug-in displays the current settings to the
@@ -1996,14 +1922,15 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-require smart cards for EFS, the administrative plug-in SHOULD ensure that this template is
+
+require smart cards for EFS, the administrative plug-in SHOULD ensure that this template is
 compatible with smart cards.
 
 Implementations SHOULD<12> prevent users from configuring very low values for the EFS self-
 signed certificate key length (as specified in section 2.2.6), as short keys are insecure.
 Implementations can also restrict the maximum key length permitted.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 The EFS Group Policy administrative plug-in reads extension-specific data from the remote storage
 location and will then pass that information to a UI to display the current settings to an administrator.
@@ -2085,25 +2012,26 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-accessed by this plug-in. The plug-in MUST use the registry policy file format specified in [MS-GPREG]
+
+accessed by this plug-in. The plug-in MUST use the registry policy file format specified in [MS-GPREG]
 section 2.2.1 to query and update the policy entries described in section 2.2 in the "registry.pol" file.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 This protocol does not introduce any new timers.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 The administrative plug-in MAY<13> use other events to populate the EFS policy, especially the
 recovery policy, to minimize the probability of data loss.
 
-3.2  Client Details
+### 3.2 Client Details
 
 Clients of this protocol consume the settings specified using the administrative plug-in (section 3.1).
 These settings specify behavior for EFS on the client. The client also provides a facility for higher-layer
 applications to bind a user to a certificate suitable for EFS.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2140,7 +2068,7 @@ File System Extension:
 
 The listed element is exposed by the ADM of [MS-EFSR], as specified in [MS-EFSR] section 3.1.1.2.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 This protocol does not introduce any new timers.
 
@@ -2151,13 +2079,14 @@ Release: April 23, 2024
 
 26 / 37
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 No additional initialization steps are needed.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 A client of the Group Policy: Encrypting File System Extension MAY<14> register an EFS extension
 plug-in component using the EFS extension's CSE GUID. If the client registers an EFS extension plug-
@@ -2165,14 +2094,14 @@ in component, the Group Policy: Core Protocol launches the component by invoking
 Policy event. The abstract interface for the Process Group Policy event is specified in [MS-GPOL]
 section 3.2.4.1.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 If a client of Group Policy: Encrypting File System Extension registers an EFS extension plug-in
 component, the client plug-in component that receives an updated collection of settings MUST only
 adjust the internal state of EFS on the client, as specified in section 3.2.5.1. It MUST NOT participate
 in any network communication.
 
-3.2.5.1  Receiving Updated Policy
+##### 3.2.5.1 Receiving Updated Policy
 
 When a client of the Group Policy: Encrypting File System Extension receives an updated collection of
 settings via the procedure in [MS-GPREG] section 3.2.4.1, it directly accesses the public User-
@@ -2207,7 +2136,7 @@ client database and equal to 0x00000001, the client SHOULD set this value to tru
 implementation MAY<15> use an alternative mechanism for configuring the EfsDisabled public
 ADM element.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
@@ -2218,7 +2147,8 @@ Release: April 23, 2024
 
 27 / 37
 
-3.2.7  Other Local Events
+
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -2229,7 +2159,8 @@ Release: April 23, 2024
 
 28 / 37
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following example, an administrator sets up a new domain and wants to enable EFS use on the
 computers in the domain. The client computers run an operating system whose EFS implementation
@@ -2301,7 +2232,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the user's public key, and another copy with the recovery certificate contained in the EfsBlob value
+
+the user's public key, and another copy with the recovery certificate contained in the EfsBlob value
 that it has stored internally. These two encrypted copies of the key are stored in the file's EFS
 metadata, which is then written to disk.
 
@@ -2312,9 +2244,10 @@ Release: April 23, 2024
 
 30 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Group Policy: Encrypting File System Extension sets the EFS recovery policy on the client
 computer. This policy consists of one or more public keys contained in X.509 certificates. Anyone
@@ -2344,7 +2277,7 @@ administrator to understand the conformant algorithms and to correspondingly con
 algorithms used, with the settings described above. Other implementations are not required to
 support algorithms included in Suite B.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 There are no security parameters used by this extension.
 
@@ -2355,7 +2288,8 @@ Release: April 23, 2024
 
 31 / 37
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2424,7 +2358,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-information transfer through old page file contents. The symmetric key for the encrypted page file is
+
+information transfer through old page file contents. The symmetric key for the encrypted page file is
 kept in memory at all times, effectively ensuring that the page file becomes unreadable when the
 system is powered off.
 
@@ -2496,7 +2431,8 @@ Group Policy: Encrypting File System Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the EFS Recovery Policy (section 2.2.1) is not present (that is, there is no recovery policy defined)
+
+If the EFS Recovery Policy (section 2.2.1) is not present (that is, there is no recovery policy defined)
 in the client database or is present but the number of keys under the Certificates subkey defined in
 section 2.2.1.1 is zero (that is, the recovery policy is empty), then the client sets the EfsDisabled
 ADM element value to true.
@@ -2508,7 +2444,8 @@ Release: April 23, 2024
 
 34 / 37
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2552,7 +2489,8 @@ Release: April 23, 2024
 
 35 / 37
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2688,7 +2626,8 @@ Identifier 22
 
 36 / 37
 
-N
+
+N
 
 Normative references 10
 

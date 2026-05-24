@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 22
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -223,127 +224,59 @@ Release: April 23, 2024
 
 2 / 22
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 KDC_PROXY_MESSAGE](#222-kdcproxymessage)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 ProxyMessage() Call](#3151-proxymessage-call)
+      - [3.1.5.2 Receiving a KDC_PROXY_MESSAGE](#3152-receiving-a-kdcproxymessage)
+      - [3.1.5.3 Receiving a HTTP Error or Dropped Connection](#3153-receiving-a-http-error-or-dropped-connection)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving a KDC_PROXY_MESSAGE](#3251-receiving-a-kdcproxymessage)
+      - [3.2.5.2 Receiving a Kerberos Message Response](#3252-receiving-a-kerberos-message-response)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Obtaining a Service Ticket](#41-obtaining-a-service-ticket)
+  - [4.2 Obtaining a Service Ticket with Password Change](#42-obtaining-a-service-ticket-with-password-change)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 5
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 6
-Vendor-Extensible Fields ..................................................................................... 6
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-Namespaces ................................................................................................ 8
-KDC_PROXY_MESSAGE ................................................................................. 8
-
-2.2.1
-2.2.2
-
-3.1
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ....................................................................................................... 9
-Client Details ..................................................................................................... 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-ProxyMessage() Call ................................................................................ 9
-Receiving a KDC_PROXY_MESSAGE ......................................................... 10
-Receiving a HTTP Error or Dropped Connection ......................................... 10
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-Server Details .................................................................................................. 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Receiving a KDC_PROXY_MESSAGE ......................................................... 11
-Receiving a Kerberos Message Response .................................................. 11
-Timer Events .............................................................................................. 12
-Other Local Events ...................................................................................... 12
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.2.5.1
-3.2.5.2
-
-3.1.6
-3.1.7
-
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 13
-Obtaining a Service Ticket ................................................................................. 13
-Obtaining a Service Ticket with Password Change ................................................ 15
-
-4.1
-4.2
-
-5  Security ................................................................................................................. 18
-Security Considerations for Implementers ........................................................... 18
-Index of Security Parameters ............................................................................ 18
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 19
-
-7  Change Tracking .................................................................................................... 20
-
-8  Index ..................................................................................................................... 21
-
-[MS-KKDCP] - v20240423
-Kerberos Key Distribution Center (KDC) Proxy Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-3 / 22
-
-1  Introduction
+## 1 Introduction
 
 The Kerberos Key Distribution Center (KDC) Proxy Protocol (KKDCP) is used by an HTTP-based KKDCP
 server and KKDCP client to relay the Kerberos Network Authentication Service (V5) protocol
@@ -358,7 +291,7 @@ Kerberos messages.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -413,7 +346,8 @@ Kerberos Key Distribution Center (KDC) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Transport Layer Security (TLS): A security protocol that supports confidentiality and integrity of
+
+Transport Layer Security (TLS): A security protocol that supports confidentiality and integrity of
 messages in client and server applications communicating over open networks. TLS supports
 server and, optionally, client authentication by using X.509 certificates (as specified in [X509]).
 TLS is standardized in the IETF TLS working group.
@@ -425,14 +359,14 @@ Generic Syntax [RFC3986].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -465,7 +399,7 @@ Recommendation X.680, July 2002, http://www.itu.int/rec/T-REC-X.680/en
 (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)", Recommendation
 X.690, July 2002, http://www.itu.int/rec/T-REC-X.690/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -476,11 +410,12 @@ Release: April 23, 2024
 
 5 / 22
 
-<!-- Extracted images from page 6 -->
+
+<!-- Extracted images from page 6 -->
 ![Extracted image 1 from page 6]([MS-KKDCP].images/page006-img01.png)
 <!-- /Extracted images from page 6 -->
 
-1.3  Overview
+### 1.3 Overview
 
 Kerberos V5 [RFC4120] requires client connectivity to the Key Distribution Center (KDC) for
 authentication. Kerberos Key Distribution Center (KDC) Proxy Protocol (KKDCP) provides a mechanism
@@ -493,14 +428,14 @@ using HTTPS to the KKDCP client.
 
 Figure 1: Messages between client, server, and KDC
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 KKDCP relies on either HTTP [RFC2616] or HTTPS [RFC2818] for network transport.
 
 The KDC proxy server relies on domain controller (DC) location ([MS-NRPC] section 3.4.5.1.1) to
 find KDCs.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 KKDCP assumes the following:
 
@@ -512,16 +447,16 @@ The KKDCP client is configured with the URL of the KKDCP server.
 
 The KKDCP client and server is configured for Transport Layer Security (TLS).
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 KKDCP provides suitable Kerberos message proxying capability for Kerberos V5 clients where the
 client does not have connectivity to the KDC and a KKDCP server does.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -532,7 +467,8 @@ Release: April 23, 2024
 
 6 / 22
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -543,9 +479,10 @@ Release: April 23, 2024
 
 7 / 22
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Messages are transported by using HTTP POST as specified in [RFC2616]. These messages are sent
 via Hypertext Transfer Protocol over Secure Sockets Layer (HTTPS) by default. The URI uses
@@ -555,15 +492,15 @@ the KDC_PROXY_MESSAGE (section 2.2.2).
 KDC proxy messages are defined using Abstract Syntax Notation One (ASN.1), as specified in [X680],
 and encoded using Distinguished Encoding Rules (DER), as specified in [X690] section 10.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 KKDCP does not alter the syntax of any Kerberos messages.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 None.
 
-2.2.2  KDC_PROXY_MESSAGE
+#### 2.2.2 KDC_PROXY_MESSAGE
 
 This structure is a KDC proxy message that contains the Kerberos message to be proxied and
 optional information for DC location at the KKDCP server.
@@ -593,14 +530,15 @@ Release: April 23, 2024
 
 8 / 22
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 This section describes details of protocol processing that must be understood in order to implement a
 client that can correctly perform its role in the protocol message exchange.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -620,22 +558,22 @@ Error: A temporary variable that contains an error message or NULL. By default, 
 
 TargetDomain: The realm field of the Kerberos message ([RFC4120] section 5.4.1).
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 As stated in section 1.5, the KKDCP client MUST be configured with the URL of the KKDCP server.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The KKDCP client is triggered when the Kerberos client calls ProxyMessage() and when HTTPS
 returns an error or data.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  ProxyMessage() Call
+##### 3.1.5.1 ProxyMessage() Call
 
 Inputs:
 
@@ -662,7 +600,8 @@ Release: April 23, 2024
 
 9 / 22
 
-The ProxyMessage() call enables Kerberos clients to pass Kerberos messages and realm data to the
+
+The ProxyMessage() call enables Kerberos clients to pass Kerberos messages and realm data to the
 KKDCP client to proxy.
 
 The KKDCP client SHOULD:
@@ -689,12 +628,12 @@ KerberosMessage (section 3.1.1) and return SUCCESS.
 
   Otherwise, the client SHOULD return Error, and SHOULD NOT return Output_kerb_message.
 
-3.1.5.2  Receiving a KDC_PROXY_MESSAGE
+##### 3.1.5.2 Receiving a KDC_PROXY_MESSAGE
 
 When the KKDCP client receives the KDC_PROXY_MESSAGE (section 2.2.2), it SHOULD set
 KerberosMessage (section 3.1.1) to KDC_PROXY_MESSAGE.kerb-message.
 
-3.1.5.3  Receiving a HTTP Error or Dropped Connection
+##### 3.1.5.3 Receiving a HTTP Error or Dropped Connection
 
 When the KKDCP client receives an HTTP error or dropped connection:
 
@@ -704,20 +643,20 @@ STATUS_AUTHENTICATION_FIREWALL_FAILED.
 
   Otherwise, the client SHOULD set Error (section 3.1.1) to STATUS_NO_LOGON_SERVERS.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Server Details
+### 3.2 Server Details
 
 This section describes details of protocol processing that must be understood to implement a server
 that can correctly perform its role in the protocol message exchange.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
@@ -728,22 +667,23 @@ Release: April 23, 2024
 
 10 / 22
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 Prior to receiving request messages, the server MUST open an HTTP/HTTPS endpoint, which will
 receive requests by clients with the URL for which they are configured.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving a KDC_PROXY_MESSAGE
+##### 3.2.5.1 Receiving a KDC_PROXY_MESSAGE
 
 When the KKDCP server receives the KDC_PROXY_MESSAGE (section 2.2.2), it SHOULD:
 
@@ -777,7 +717,7 @@ If the Kerberos message is "FAST armored", then also set bit U.
 
 5.  Send the KDC_PROXY_MESSAGE.kerb-message to the KDC.
 
-3.2.5.2  Receiving a Kerberos Message Response
+##### 3.2.5.2 Receiving a Kerberos Message Response
 
 When the KKDCP server receives the Kerberos message response, it SHOULD:
 
@@ -800,11 +740,12 @@ Release: April 23, 2024
 
 11 / 22
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -815,15 +756,16 @@ Release: April 23, 2024
 
 12 / 22
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-KKDCP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe two common scenarios to illustrate the function of the KKDCP.
 
-4.1  Obtaining a Service Ticket
+### 4.1 Obtaining a Service Ticket
 
 Figure 2: Obtaining a service ticket
 
@@ -859,7 +801,8 @@ Kerberos Key Distribution Center (KDC) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-9.  The KKDCP client sends a KDC_PROXY_MESSAGE containing the KRB_TGS_REQ to the KKDCP
+
+9.  The KKDCP client sends a KDC_PROXY_MESSAGE containing the KRB_TGS_REQ to the KKDCP
 
 server.
 
@@ -888,11 +831,12 @@ Release: April 23, 2024
 
 14 / 22
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-KKDCP].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
-4.2  Obtaining a Service Ticket with Password Change
+### 4.2 Obtaining a Service Ticket with Password Change
 
 Figure 3: Obtaining a service ticket with password change
 
@@ -916,7 +860,8 @@ Kerberos Key Distribution Center (KDC) Proxy Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The KKDCP server finds the KDC and sends the KRB_AS_REQ to the KDC.
+
+4.  The KKDCP server finds the KDC and sends the KRB_AS_REQ to the KDC.
 
 5.  The KDC returns KRB_ERROR for password change required before logon to the KKDCP server.
 
@@ -996,7 +941,8 @@ Release: April 23, 2024
 
 16 / 22
 
-28. The KKDCP server finds the KDC and sends the KRB_TGS_REQ to the KDC.
+
+28. The KKDCP server finds the KDC and sends the KRB_TGS_REQ to the KDC.
 
 29. The KDC returns a KRB_TGS_REP to the KKDCP server.
 
@@ -1021,9 +967,10 @@ Release: April 23, 2024
 
 17 / 22
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Because KKDCP is typically used in the Internet, messages are only protected when HTTPS is used,
 and the KKDCP server’s certificate is valid. When using HTTP, the KKDCP client is sending clear text
@@ -1037,7 +984,7 @@ and by throttling messages. KKDCP servers open KDCs to the Internet, exposing th
 service attacks (using Kerberos messages) that were previously only possible via other authentication
 protocols, such as NTLM.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1048,7 +995,8 @@ Release: April 23, 2024
 
 18 / 22
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1092,7 +1040,8 @@ Release: April 23, 2024
 
 19 / 22
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1136,7 +1085,8 @@ Release: April 23, 2024
 
 20 / 22
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1276,7 +1226,8 @@ Sequencing rules
 
 21 / 22
 
-      receiving KDC_PROXY_MESSAGE (section
+
+      receiving KDC_PROXY_MESSAGE (section
 
 3.1.5.2 10, section 3.1.5.3 10)
 

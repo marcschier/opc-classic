@@ -63,7 +63,8 @@ Release: January 26, 2026
 
 1 / 120
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -229,354 +230,141 @@ Release: January 26, 2026
 
 2 / 120
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 15
-Standards Assignments ..................................................................................... 15
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Common Message Syntax ................................................................................. 16
-Namespaces .............................................................................................. 16
-Messages ................................................................................................... 16
-Elements ................................................................................................... 17
-Complex Types ........................................................................................... 17
-Simple Types ............................................................................................. 17
-Attributes .................................................................................................. 17
-Groups ...................................................................................................... 17
-Attribute Groups ......................................................................................... 17
-Common Data Structures ............................................................................ 17
-XML Provisioning Schema ....................................................................... 17
-CertificateStore Configuration Service Provider ......................................... 20
-DMClient Configuration Service Provider .................................................. 28
-RootCATrustedCertificates Configuration Service Provider .......................... 39
-w7 APPLICATION Configuration Service Provider ....................................... 42
-OSEdition Enumeration .......................................................................... 46
-Faults ........................................................................................................ 48
-
-2.2.9.1
-2.2.9.2
-2.2.9.3
-2.2.9.4
-2.2.9.5
-2.2.9.6
-
-2.2.10
-
-3.1
-
-3.1.4.1
-
-3.1.4.1.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1.1.1
-3.1.4.1.1.2
-
-3  Protocol Details ..................................................................................................... 51
-IDiscoveryService Server Details ........................................................................ 51
-Abstract Data Model .................................................................................... 53
-Timers ...................................................................................................... 53
-Initialization ............................................................................................... 53
-Message Processing Events and Sequencing Rules .......................................... 53
-Discover .............................................................................................. 53
-Messages ....................................................................................... 54
-IDiscoveryService_Discover_InputMessage Message ...................... 54
-IDiscoveryService_Discover_OutputMessage Message .................... 54
-Elements ........................................................................................ 55
-Discover ................................................................................... 55
-DiscoverResponse ...................................................................... 55
-Complex Types ............................................................................... 55
-DiscoveryRequest ...................................................................... 56
-DiscoveryResponse .................................................................... 57
-Timer Events .............................................................................................. 57
-Other Local Events ...................................................................................... 57
-Interaction with Security Token Service (STS) ..................................................... 57
-Interaction with X.509 Certificate Enrollment Policy .............................................. 59
-Abstract Data Model .................................................................................... 61
-Timers ...................................................................................................... 61
-
-3.1.4.1.3.1
-3.1.4.1.3.2
-
-3.1.4.1.2.1
-3.1.4.1.2.2
-
-3.1.5
-3.1.6
-
-3.3.1
-3.3.2
-
-3.1.4.1.2
-
-3.1.4.1.3
-
-3.2
-3.3
-
-[MS-MDE2] - v20260126
-Mobile Device Enrollment Protocol Version 2
-Copyright © 2026 Microsoft Corporation
-Release: January 26, 2026
-
-3 / 120
-
-3.4.4.1
-
-3.4.4.1.1
-
-3.3.3
-3.3.4
-
-3.3.4.1
-
-3.3.4.1.1
-
-3.4.4.1.1.2
-
-3.4.4.1.1.1
-
-3.3.4.1.1.2
-
-3.3.4.1.1.1
-
-3.4.4.1.1.1.1
-3.4.4.1.1.1.2
-3.4.4.1.1.1.3
-
-3.3.4.1.1.1.1
-3.3.4.1.1.1.2
-3.3.4.1.1.1.3
-
-Initialization ............................................................................................... 61
-Message Processing Events and Sequencing Rules .......................................... 61
-GetPolicies Operation ............................................................................ 62
-Messages ....................................................................................... 62
-GetPolicies ................................................................................ 62
-Get Policies using Federated Authentication ............................. 62
-GetPolicies using Certificate Authentication .............................. 63
-GetPolicies using On-Premise Authentication ............................ 65
-GetPoliciesResponse ................................................................... 66
-Timer Events .............................................................................................. 68
-Other Local Events ...................................................................................... 68
-Interaction with WS-Trust X.509v3 Token Enrollment ........................................... 68
-Abstract Data Model .................................................................................... 70
-Timers ...................................................................................................... 70
-Initialization ............................................................................................... 70
-Message Processing Events and Sequencing Rules .......................................... 70
-RequestSecurityToken Operation ............................................................ 70
-Messages ....................................................................................... 71
-RequestSecurityToken ................................................................ 71
-RequestSecurityToken using Federated Authentication .............. 71
-RequestSecurityToken using Certificate Authentication .............. 76
-RequestSecurityToken using On-Premise Authentication ............ 81
-RequestSecurityTokenResponseCollection ..................................... 86
-Timer Events .............................................................................................. 86
-Other Local Events ...................................................................................... 86
-Certificate Renewal .......................................................................................... 87
-Abstract Data Model .................................................................................... 87
-Timers ...................................................................................................... 87
-Initialization ............................................................................................... 87
-Message Processing Events and Sequencing Rules .......................................... 87
-RequestSecurityToken Operation ............................................................ 87
-Messages ....................................................................................... 87
-RequestSecurityToken ................................................................ 88
-RequestSecurityTokenCollectionResponse ..................................... 90
-Timer Events .............................................................................................. 90
-Other Local Events ...................................................................................... 90
-Certificate Recovery ......................................................................................... 90
-Abstract Data Model .................................................................................... 91
-Timers ...................................................................................................... 91
-Initialization ............................................................................................... 92
-Message Processing Events and Sequencing Rules .......................................... 92
-RequestSecurityToken Operation ............................................................ 92
-Messages ....................................................................................... 92
-RequestSecurityToken ................................................................ 92
-Timer Events .............................................................................................. 92
-Other Local Events ...................................................................................... 92
-
-3.5.4.1.1.1
-3.5.4.1.1.2
-
-3.6.4.1.1.1
-
-3.4
-
-3.3.5
-3.3.6
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.5
-
-3.4.5
-3.4.6
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.5
-3.5.6
-
-3.6
-
-3.6.1
-3.6.2
-3.6.3
-3.6.4
-
-3.6.5
-3.6.6
-
-3.5.4.1
-
-3.5.4.1.1
-
-3.6.4.1
-
-3.6.4.1.1
-
-4.1
-
-4.1.1
-
-4.1.1.1
-4.1.1.2
-4.1.1.3
-
-4  Protocol Examples ................................................................................................. 93
-Discovery Example ........................................................................................... 93
-Discovery Example: Request ........................................................................ 93
-Discovery Example Request Using Federated Authentication ....................... 93
-Discovery Example Request Using Certificate Authentication ...................... 93
-Discovery Example Request Using On-Premise Authentication .................... 94
-Discovery Example: Response ...................................................................... 95
-Discovery Example Response using Federated Authentication ..................... 95
-Discovery Example Response using Certificate Authentication ..................... 95
-Discovery Example Response using On-Premise Authentication ................... 96
-GetPolicies Example ......................................................................................... 96
-
-4.1.2.1
-4.1.2.2
-4.1.2.3
-
-4.1.2
-
-4.2
-
-[MS-MDE2] - v20260126
-Mobile Device Enrollment Protocol Version 2
-Copyright © 2026 Microsoft Corporation
-Release: January 26, 2026
-
-4 / 120
-
-4.2.1
-
-4.2.1.1
-4.2.1.2
-4.2.1.3
-
-4.2.2
-4.2.3
-
-4.3.1
-
-4.3
-
-4.3.1.1
-4.3.1.2
-
-4.3.1.3
-4.3.1.4
-
-4.3.2
-
-GetPolicies Example: Request ...................................................................... 97
-GetPolicies Example Request using Federated Authentication...................... 97
-GetPolicies Example Request using Certificate Authentication ..................... 97
-GetPolicies Example Request using On-Premise Authentication ................... 98
-GetPolicies Example: Response .................................................................... 99
-GetPolicies With Azure Attestation Example: Response ................................... 100
-RequestSecurityToken Example ........................................................................ 102
-RequestSecurityToken Example: Request ..................................................... 102
-RequestSecurityToken Example: Request using Federated Authentication ... 102
-RequestSecurityToken Example: Request using Federated Authentication with
-Azure Attestation ................................................................................. 104
-RequestSecurityToken Example: Request using Certificate Authentication ... 106
-RequestSecurityToken Example: Request using On-Premise Authentication . 109
-RequestSecurityToken Example: Response ................................................... 110
-
-5  Security ............................................................................................................... 112
-Security Considerations for Implementers .......................................................... 112
-Index of Security Parameters ........................................................................... 112
-
-5.1
-5.2
-
-6  Appendix A: XSD Schema .................................................................................... 113
-
-7  Appendix B: Product Behavior ............................................................................. 115
-
-8  Change Tracking .................................................................................................. 118
-
-9  Index ................................................................................................................... 119
-
-[MS-MDE2] - v20260126
-Mobile Device Enrollment Protocol Version 2
-Copyright © 2026 Microsoft Corporation
-Release: January 26, 2026
-
-5 / 120
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Message Syntax](#22-common-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Messages](#222-messages)
+    - [2.2.3 Elements](#223-elements)
+    - [2.2.4 Complex Types](#224-complex-types)
+    - [2.2.5 Simple Types](#225-simple-types)
+    - [2.2.6 Attributes](#226-attributes)
+    - [2.2.7 Groups](#227-groups)
+    - [2.2.8 Attribute Groups](#228-attribute-groups)
+    - [2.2.9 Common Data Structures](#229-common-data-structures)
+      - [2.2.9.1 XML Provisioning Schema](#2291-xml-provisioning-schema)
+      - [2.2.9.2 CertificateStore Configuration Service Provider](#2292-certificatestore-configuration-service-provider)
+      - [2.2.9.3 DMClient Configuration Service Provider](#2293-dmclient-configuration-service-provider)
+      - [2.2.9.4 RootCATrustedCertificates Configuration Service Provider](#2294-rootcatrustedcertificates-configuration-service-provider)
+      - [2.2.9.5 w7 APPLICATION Configuration Service Provider](#2295-w7-application-configuration-service-provider)
+      - [2.2.9.6 OSEdition Enumeration](#2296-osedition-enumeration)
+    - [2.2.10 Faults](#2210-faults)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IDiscoveryService Server Details](#31-idiscoveryservice-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 Discover](#3141-discover)
+        - [3.1.4.1.1 Messages](#31411-messages)
+          - [3.1.4.1.1.1 IDiscoveryService_Discover_InputMessage Message](#314111-idiscoveryservicediscoverinputmessage-message)
+          - [3.1.4.1.1.2 IDiscoveryService_Discover_OutputMessage Message](#314112-idiscoveryservicediscoveroutputmessage-message)
+        - [3.1.4.1.2 Elements](#31412-elements)
+          - [3.1.4.1.2.1 Discover](#314121-discover)
+          - [3.1.4.1.2.2 DiscoverResponse](#314122-discoverresponse)
+        - [3.1.4.1.3 Complex Types](#31413-complex-types)
+          - [3.1.4.1.3.1 DiscoveryRequest](#314131-discoveryrequest)
+          - [3.1.4.1.3.2 DiscoveryResponse](#314132-discoveryresponse)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Interaction with Security Token Service (STS)](#32-interaction-with-security-token-service-sts)
+  - [3.3 Interaction with X.509 Certificate Enrollment Policy](#33-interaction-with-x509-certificate-enrollment-policy)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Message Processing Events and Sequencing Rules](#334-message-processing-events-and-sequencing-rules)
+      - [3.3.4.1 GetPolicies Operation](#3341-getpolicies-operation)
+        - [3.3.4.1.1 Messages](#33411-messages)
+          - [3.3.4.1.1.1 GetPolicies](#334111-getpolicies)
+            - [3.3.4.1.1.1.1 Get Policies using Federated Authentication](#3341111-get-policies-using-federated-authentication)
+            - [3.3.4.1.1.1.2 GetPolicies using Certificate Authentication](#3341112-getpolicies-using-certificate-authentication)
+            - [3.3.4.1.1.1.3 GetPolicies using On-Premise Authentication](#3341113-getpolicies-using-on-premise-authentication)
+          - [3.3.4.1.1.2 GetPoliciesResponse](#334112-getpoliciesresponse)
+    - [3.3.5 Timer Events](#335-timer-events)
+    - [3.3.6 Other Local Events](#336-other-local-events)
+  - [3.4 Interaction with WS-Trust X.509v3 Token Enrollment](#34-interaction-with-ws-trust-x509v3-token-enrollment)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Message Processing Events and Sequencing Rules](#344-message-processing-events-and-sequencing-rules)
+      - [3.4.4.1 RequestSecurityToken Operation](#3441-requestsecuritytoken-operation)
+        - [3.4.4.1.1 Messages](#34411-messages)
+          - [3.4.4.1.1.1 RequestSecurityToken](#344111-requestsecuritytoken)
+            - [3.4.4.1.1.1.1 RequestSecurityToken using Federated Authentication](#3441111-requestsecuritytoken-using-federated-authentication)
+            - [3.4.4.1.1.1.2 RequestSecurityToken using Certificate Authentication](#3441112-requestsecuritytoken-using-certificate-authentication)
+            - [3.4.4.1.1.1.3 RequestSecurityToken using On-Premise Authentication](#3441113-requestsecuritytoken-using-on-premise-authentication)
+          - [3.4.4.1.1.2 RequestSecurityTokenResponseCollection](#344112-requestsecuritytokenresponsecollection)
+    - [3.4.5 Timer Events](#345-timer-events)
+    - [3.4.6 Other Local Events](#346-other-local-events)
+  - [3.5 Certificate Renewal](#35-certificate-renewal)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Message Processing Events and Sequencing Rules](#354-message-processing-events-and-sequencing-rules)
+      - [3.5.4.1 RequestSecurityToken Operation](#3541-requestsecuritytoken-operation)
+        - [3.5.4.1.1 Messages](#35411-messages)
+          - [3.5.4.1.1.1 RequestSecurityToken](#354111-requestsecuritytoken)
+          - [3.5.4.1.1.2 RequestSecurityTokenCollectionResponse](#354112-requestsecuritytokencollectionresponse)
+    - [3.5.5 Timer Events](#355-timer-events)
+    - [3.5.6 Other Local Events](#356-other-local-events)
+  - [3.6 Certificate Recovery](#36-certificate-recovery)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Message Processing Events and Sequencing Rules](#364-message-processing-events-and-sequencing-rules)
+      - [3.6.4.1 RequestSecurityToken Operation](#3641-requestsecuritytoken-operation)
+        - [3.6.4.1.1 Messages](#36411-messages)
+          - [3.6.4.1.1.1 RequestSecurityToken](#364111-requestsecuritytoken)
+    - [3.6.5 Timer Events](#365-timer-events)
+    - [3.6.6 Other Local Events](#366-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Discovery Example](#41-discovery-example)
+    - [4.1.1 Discovery Example: Request](#411-discovery-example-request)
+      - [4.1.1.1 Discovery Example Request Using Federated Authentication](#4111-discovery-example-request-using-federated-authentication)
+      - [4.1.1.2 Discovery Example Request Using Certificate Authentication](#4112-discovery-example-request-using-certificate-authentication)
+      - [4.1.1.3 Discovery Example Request Using On-Premise Authentication](#4113-discovery-example-request-using-on-premise-authentication)
+    - [4.1.2 Discovery Example: Response](#412-discovery-example-response)
+      - [4.1.2.1 Discovery Example Response using Federated Authentication](#4121-discovery-example-response-using-federated-authentication)
+      - [4.1.2.2 Discovery Example Response using Certificate Authentication](#4122-discovery-example-response-using-certificate-authentication)
+      - [4.1.2.3 Discovery Example Response using On-Premise Authentication](#4123-discovery-example-response-using-on-premise-authentication)
+  - [4.2 GetPolicies Example](#42-getpolicies-example)
+    - [4.2.1 GetPolicies Example: Request](#421-getpolicies-example-request)
+      - [4.2.1.1 GetPolicies Example Request using Federated Authentication](#4211-getpolicies-example-request-using-federated-authentication)
+      - [4.2.1.2 GetPolicies Example Request using Certificate Authentication](#4212-getpolicies-example-request-using-certificate-authentication)
+      - [4.2.1.3 GetPolicies Example Request using On-Premise Authentication](#4213-getpolicies-example-request-using-on-premise-authentication)
+    - [4.2.2 GetPolicies Example: Response](#422-getpolicies-example-response)
+    - [4.2.3 GetPolicies With Azure Attestation Example: Response](#423-getpolicies-with-azure-attestation-example-response)
+  - [4.3 RequestSecurityToken Example](#43-requestsecuritytoken-example)
+    - [4.3.1 RequestSecurityToken Example: Request](#431-requestsecuritytoken-example-request)
+      - [4.3.1.1 RequestSecurityToken Example: Request using Federated Authentication](#4311-requestsecuritytoken-example-request-using-federated-authentication)
+      - [4.3.1.2 RequestSecurityToken Example: Request using Federated Authentication with](#4312-requestsecuritytoken-example-request-using-federated-authentication-with)
+      - [4.3.1.3 RequestSecurityToken Example: Request using Certificate Authentication](#4313-requestsecuritytoken-example-request-using-certificate-authentication)
+      - [4.3.1.4 RequestSecurityToken Example: Request using On-Premise Authentication](#4314-requestsecuritytoken-example-request-using-on-premise-authentication)
+    - [4.3.2 RequestSecurityToken Example: Response](#432-requestsecuritytoken-example-response)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: XSD Schema](#6-appendix-a-xsd-schema)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
+
+## 1 Introduction
 
 An industry trend has been developing in which employees connect their personal mobile computing
 devices to the corporate network and resources (either on premise or through the cloud) to perform
@@ -594,7 +382,7 @@ enrollment with the ES.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -646,7 +434,8 @@ Release: January 26, 2026
 
 6 / 120
 
-certificate template: A list of attributes that define a blueprint for creating an X.509 certificate.
+
+certificate template: A list of attributes that define a blueprint for creating an X.509 certificate.
 It is often referred to in non-Microsoft documentation as a "certificate profile". A certificate
 template is used to define the content and purpose of a digital certificate, including issuance
 requirements (certificate policies), implemented X.509 extensions such as application policies,
@@ -722,7 +511,8 @@ Release: January 26, 2026
 
 7 / 120
 
-Media Access Control (MAC) address: A hardware address provided by the network interface
+
+Media Access Control (MAC) address: A hardware address provided by the network interface
 vendor that uniquely identifies each interface on a physical network for communication with
 other interfaces, as specified in [IEEE802.3]. It is used by the media access control sublayer of
 the data link layer of a network connection.
@@ -799,7 +589,8 @@ Release: January 26, 2026
 
 8 / 120
 
-Transmission Control Protocol (TCP): A protocol used with the Internet Protocol (IP) to send
+
+Transmission Control Protocol (TCP): A protocol used with the Internet Protocol (IP) to send
 data in the form of message units between computers over the Internet. TCP handles keeping
 track of the individual units of data (called packets) that a message is divided into for efficient
 routing through the Internet.
@@ -874,7 +665,8 @@ Release: January 26, 2026
 
 9 / 120
 
-XML Path Language (XPath): A language used to create expressions that can address parts of
+
+XML Path Language (XPath): A language used to create expressions that can address parts of
 
 an XML document, manipulate strings, numbers, and Booleans, and can match a set of nodes in
 the document, as specified in [XPATH]. XPath models an XML document as a tree of nodes of
@@ -885,14 +677,14 @@ to other nodes in the document.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -941,14 +733,15 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
+
+[XMLSCHEMA1] Thompson, H., Beech, D., Maloney, M., and Mendelsohn, N., Eds., "XML Schema Part
 1: Structures", W3C Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-1-
 20010502/
 
 [XMLSCHEMA2] Biron, P.V., Ed. and Malhotra, A., Ed., "XML Schema Part 2: Datatypes", W3C
 Recommendation, May 2001, https://www.w3.org/TR/2001/REC-xmlschema-2-20010502/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-WinMAM] Micorosoft Corporation, "Implement server-side support for mobile application
 management on Windows", https://msdn.microsoft.com/en-
@@ -1004,11 +797,12 @@ Release: January 26, 2026
 
 11 / 120
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-MDE2].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The Mobile Device Enrollment (MDE) protocol enables a device to be enrolled with a Device
 Management Service (DMS) through an Enrollment Service (ES), including the discovery of the
@@ -1042,7 +836,8 @@ Release: January 26, 2026
 
 12 / 120
 
-containing the Uniform Resource Locators (URLs) of service endpoints required for the following
+
+containing the Uniform Resource Locators (URLs) of service endpoints required for the following
 steps.
 
 5.  The enrollment client communicates with the security token service (STS) (section 3.2) to
@@ -1072,7 +867,8 @@ Release: January 26, 2026
 
 13 / 120
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-MDE2].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
@@ -1082,7 +878,7 @@ For Mobile Application Management (MAM), the server skips the discover, get secu
 policies phases and goes straight to the request security token phase (see MAM product notes section
 2.2.9.1 and section 2.2.9.5). For more information on MAM, see [MSDN-WinMAM].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 MDE2 depends on the WS-Trust X.509v3 Token Enrollment Extensions [MS-WSTEP].
 
@@ -1095,7 +891,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-MDE2].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1104,7 +901,7 @@ MES through the use of MDE2 before the device can be managed using MDM [MS-MDM].
 
 Figure 3: Relationship to other protocols
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 MDE2 issues X.509v3 [MS-WSTEP] certificates and provisioning information for device
 management clients [MS-MDM] to enable a relationship between the user and a device in the DMS.
@@ -1117,20 +914,20 @@ The ES communicates with a certification authority (CA) to issue an X.509 certif
 The ES issues provisioning information for a device management client [MS-MDM]. The ES has to be
 configured with this information or be able to retrieve it from the DMS.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 A device has to be enrolled in an MES through the use of MDE2 before the device can be managed
 using MDM [MS-MDM].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1141,9 +938,10 @@ Release: January 26, 2026
 
 15 / 120
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 MDE2 is a client-to-server protocol that consists of a SOAP-based Web service.
 
@@ -1151,13 +949,13 @@ MDE2 operates over the following Web services transport:
 
   SOAP 1.1 ([SOAP1.1], [SOAP1.1-Envelope]) over HTTPS over TCP/IP [RFC2616]
 
-2.2  Common Message Syntax
+### 2.2 Common Message Syntax
 
 This section contains common definitions used by this protocol. The syntax of the definitions uses the
 XML Schema as defined in [XMLSCHEMA1] and [XMLSCHEMA2], and the Web Services Description
 Language (WSDL) as defined in [WSDL].
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 This specification defines and references various XML namespaces using the mechanisms specified in
 [XMLNS]. Although this specification associates a specific XML namespace prefix for each XML
@@ -1225,7 +1023,7 @@ wsse
 http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-
 1.0.xsd
 
-2.2.2  Messages
+#### 2.2.2 Messages
 
 This specification does not define any common XML Schema message definitions.
 
@@ -1236,33 +1034,34 @@ Release: January 26, 2026
 
 16 / 120
 
-2.2.3  Elements
+
+#### 2.2.3 Elements
 
 This specification does not define any common XML Schema element definitions.
 
-2.2.4  Complex Types
+#### 2.2.4 Complex Types
 
 This specification does not define any common XML Schema complex type definitions.
 
-2.2.5  Simple Types
+#### 2.2.5 Simple Types
 
 This specification does not define any common XML Schema simple type definitions.
 
-2.2.6  Attributes
+#### 2.2.6 Attributes
 
 This specification does not define any common XML Schema attribute definitions.
 
-2.2.7  Groups
+#### 2.2.7 Groups
 
 This specification does not define any common XML Schema group definitions.
 
-2.2.8  Attribute Groups
+#### 2.2.8 Attribute Groups
 
 This specification does not define any common XML Schema attribute group definitions.
 
-2.2.9  Common Data Structures
+#### 2.2.9 Common Data Structures
 
-2.2.9.1  XML Provisioning Schema
+##### 2.2.9.1 XML Provisioning Schema
 
 The entire XML provisioning document is base64-encoded. The document contains:
 
@@ -1306,7 +1105,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-           <parm name="EncodedCertificate" value="B64EncodedCertInsertedHere" />
+
+           <parm name="EncodedCertificate" value="B64EncodedCertInsertedHere" />
          </characteristic>
          <characteristic type="PrivateKeyContainer"/>
          <!-- This tag must be present for XML syntax correctness. -->
@@ -1382,7 +1182,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
- </wap-provisioningdoc>
+
+ </wap-provisioningdoc>
 
 The following XML is a provisioning example for Mobile Device Management (MDM) in device context.
 
@@ -1457,7 +1258,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-           <parm name="NumberOfFirstRetries" value="8" datatype="integer" />
+
+           <parm name="NumberOfFirstRetries" value="8" datatype="integer" />
            <parm name="IntervalForFirstSetOfRetries" value="15" datatype="integer" />
            <parm name="NumberOfSecondRetries" value="5" datatype="integer" />
            <parm name="IntervalForSecondSetOfRetries" value="3" datatype="integer" />
@@ -1499,7 +1301,7 @@ The following XML is a provisioning example for Mobile Application Management (M
    </characteristic>
  </wap-provisioningdoc>
 
-2.2.9.2  CertificateStore Configuration Service Provider
+##### 2.2.9.2 CertificateStore Configuration Service Provider
 
 The CertificateStore configuration service provider is used to add Secure Sockets Layer (SSL),
 intermediate, and self-signed certificates.
@@ -1520,7 +1322,8 @@ Release: January 26, 2026
 
 20 / 120
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-MDE2].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
@@ -1531,7 +1334,8 @@ Release: January 26, 2026
 
 21 / 120
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-MDE2].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1542,7 +1346,8 @@ Release: January 26, 2026
 
 22 / 120
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-MDE2].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1560,7 +1365,8 @@ Release: January 26, 2026
 
 23 / 120
 
-CA/System: Defines the certificate store that contains cryptographic information, including
+
+CA/System: Defines the certificate store that contains cryptographic information, including
 
 intermediary certification authorities. Supported operation is Get. Note that CA/System is case
 sensitive.
@@ -1637,7 +1443,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-My/SCEP/[UniqueID]/Install/Challenge: Required for SCEP certificate enrollment. Base64
+
+My/SCEP/[UniqueID]/Install/Challenge: Required for SCEP certificate enrollment. Base64
 encoded SCEP enrollment challenge. Value type is chr. Supported operations are Add, Get,
 Delete, and Replace. Challenge will be deleted shortly after the Exec command is accepted.
 
@@ -1710,7 +1517,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-this certificate. If it does not match, the authentication fails. Value type is chr. Supported
+
+this certificate. If it does not match, the authentication fails. Value type is chr. Supported
 operations are Add, Delete, Get, and Replace.
 
 My/SCEP/[UniqueID]/Install/SubjectAlternativeNames: Optional. Specifies the subject
@@ -1781,7 +1589,8 @@ Release: January 26, 2026
 
 26 / 120
 
-My/WSTEP: Required for MDM enrolled device. The parent node that hosts the MDM enrollment client
+
+My/WSTEP: Required for MDM enrolled device. The parent node that hosts the MDM enrollment client
 certificate related settings that is enrolled via WSTEP. The nodes under WSTEP are mostly for MDM
 client certificate renew requests. Value type is node. Supported operation is Get.
 
@@ -1855,10 +1664,11 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-shows the thumbprint of the certificate that needs to be renewed. Value type is chr. Supported
+
+shows the thumbprint of the certificate that needs to be renewed. Value type is chr. Supported
 operation is Get.
 
-2.2.9.3  DMClient Configuration Service Provider
+##### 2.2.9.3 DMClient Configuration Service Provider
 
 The DMClient configuration service provider is used to specify additional enterprise-specific mobile
 device management configuration settings for identifying the device in the enterprise domain, security
@@ -1873,7 +1683,8 @@ Release: January 26, 2026
 
 28 / 120
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MDE2].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
@@ -1884,7 +1695,8 @@ Release: January 26, 2026
 
 29 / 120
 
-<!-- Extracted images from page 30 -->
+
+<!-- Extracted images from page 30 -->
 ![Extracted image 1 from page 30]([MS-MDE2].images/page030-img01.png)
 <!-- /Extracted images from page 30 -->
 
@@ -1909,7 +1721,8 @@ Release: January 26, 2026
 
 30 / 120
 
-ProviderID: Optional. This node contains the URI-encoded value of the bootstrapped device
+
+ProviderID: Optional. This node contains the URI-encoded value of the bootstrapped device
 
 management account's Provider ID. Scope is dynamic. As a best practice, use text that doesn't
 require XML/URI escaping. Supported operations are Add and Get.
@@ -1975,7 +1788,8 @@ Release: January 26, 2026
 
 31 / 120
 
-Name
+
+Name
 
 Value
 
@@ -2054,7 +1868,8 @@ Release: January 26, 2026
 
 32 / 120
 
-ProviderID/PublisherDeviceID: (Only for phones). Optional. The PublisherDeviceID is a device-
+
+ProviderID/PublisherDeviceID: (Only for phones). Optional. The PublisherDeviceID is a device-
 unique ID created based on the enterprise Publisher ID. Publisher ID is created based on the
 enterprise application token and enterprise ID via
 ./Vendor/MSFT/EnterpriseAppManagement/<enterprise id>/EnrollmentToken. It is to ensure that
@@ -2129,7 +1944,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-MDM-Signature. This header contains Base64-encoded Cryptographic Message Syntax using a
+
+MDM-Signature. This header contains Base64-encoded Cryptographic Message Syntax using a
 Detached Signature of the complete SyncML message SHA-2 (inclusive of the SyncHdr and
 SyncBody tags). Signing is performed using the private key of the management session certificate
 that was enrolled as part of the MDE2 enrollment process. The device's public key and PKCS9 UTC
@@ -2201,7 +2017,8 @@ Release: January 26, 2026
 
 34 / 120
 
-   <Item>
+
+   <Item>
      <Meta>
        <Type xmlns="syncml:metinf">Reversed-Domain-
 Name:com.microsoft.mdm.requestpending</Type>
@@ -2272,7 +2089,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-If there is no infinite schedule set, then a 24-hour schedule is created and scheduled to launch in
+
+If there is no infinite schedule set, then a 24-hour schedule is created and scheduled to launch in
 the maintenance window.
 
 Valid poll schedule: sigmoid polling schedule with infinite schedule (Recommended)
@@ -2401,7 +2219,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-Schedule name
+
+Schedule name
 
 Schedule set by the
 server
@@ -2521,7 +2340,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ProviderID/Poll/IntervalForSecondSetOfRetries: Optional. The waiting time (in minutes) for the
+
+ProviderID/Poll/IntervalForSecondSetOfRetries: Optional. The waiting time (in minutes) for the
 
 second set of retries as specified by the number of retries in
 /<ProviderID>/Poll/NumberOfSecondRetries. Default value is 0. If this value is set to zero, then
@@ -2595,7 +2415,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ProviderID/Push/ChannelURI: Required. A string that contains the channel that the Windows
+
+ProviderID/Push/ChannelURI: Required. A string that contains the channel that the Windows
 
 Notification Service (WNS) client has negotiated for the OMA DM client on the device based on
 the PFN that was provided. If no valid PFN is currently set, ChannelURI will return null.
@@ -2671,7 +2492,7 @@ inserted in the general DM packages sent from the server to the device.
     </Item>
   </Exec>
 
-2.2.9.4  RootCATrustedCertificates Configuration Service Provider
+##### 2.2.9.4 RootCATrustedCertificates Configuration Service Provider
 
 The RootCATrustedCertificates configuration service provider enables the enterprise to set the Root
 Certificate Authority (CA)  certificates. The ./User/ configuration is not supported in
@@ -2684,7 +2505,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-<!-- Extracted images from page 40 -->
+
+<!-- Extracted images from page 40 -->
 ![Extracted image 1 from page 40]([MS-MDE2].images/page040-img01.png)
 <!-- /Extracted images from page 40 -->
 
@@ -2698,7 +2520,8 @@ Release: January 26, 2026
 
 40 / 120
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-MDE2].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
@@ -2744,13 +2567,14 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-/ValidTo: Returns the expiration date of the certificate. This is equivalent to the NotAfter member in
+
+/ValidTo: Returns the expiration date of the certificate. This is equivalent to the NotAfter member in
 
 the CERT_INFO structure. The only supported operation is Get.
 
 /TemplateName: Returns the certificate template name. The only supported operation is Get.
 
-2.2.9.5  w7 APPLICATION Configuration Service Provider
+##### 2.2.9.5 w7 APPLICATION Configuration Service Provider
 
 The APPLICATION configuration service provider that has an APPID of w7 is used for bootstrapping a
 device with an OMA DM account. Although this configuration service provider is used to set up an
@@ -2768,7 +2592,8 @@ Release: January 26, 2026
 
 42 / 120
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-MDE2].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -2799,7 +2624,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-APPADDR/PORT/PORTNBR: Required. The PORTNBR parameter is used in the PORT characteristic
+
+APPADDR/PORT/PORTNBR: Required. The PORTNBR parameter is used in the PORT characteristic
 to get or set the number of the port to connect to. This parameter takes a numeric value in string
 format.
 
@@ -2874,7 +2700,8 @@ Release: January 26, 2026
 
 44 / 120
 
-CONNRETRYFREQ: Optional. The CONNRETRYFREQ parameter is used in the APPLICATION
+
+CONNRETRYFREQ: Optional. The CONNRETRYFREQ parameter is used in the APPLICATION
 
 characteristic to specify how many retries the device management client performs when there
 are Connection Manager-level or WinInet-level errors. This parameter takes a numeric value in
@@ -2950,7 +2777,8 @@ Release: January 26, 2026
 
 45 / 120
 
-ROLE: Optional. The ROLE parameter is used in the APPLICATION characteristic to specify the security
+
+ROLE: Optional. The ROLE parameter is used in the APPLICATION characteristic to specify the security
 
 application chamber that the DM session runs with when communicating with the DM server. The
 only supported roles are 8 (mobile operator) and 32 (enterprise). If this parameter is not present,
@@ -2999,7 +2827,7 @@ Subject attribute ("CN=Tester,O=Microsoft"), implementers can use the following:
  <parm name="SSLCLIENTCERTSEARCHCRITERIA"
     value="Subject=CN%3DTester,O%3DMicrosoft&amp;Stores=My%5CUser" />
 
-2.2.9.6  OSEdition Enumeration
+##### 2.2.9.6 OSEdition Enumeration
 
 This section provides the product enumerations for the OSEdition element.
 
@@ -3020,7 +2848,8 @@ Release: January 26, 2026
 
 46 / 120
 
- #define PRODUCT_SMALLBUSINESS_SERVER                0x00000009
+
+ #define PRODUCT_SMALLBUSINESS_SERVER                0x00000009
  #define PRODUCT_ENTERPRISE_SERVER                   0x0000000A
  #define PRODUCT_STARTER                             0x0000000B
  #define PRODUCT_DATACENTER_SERVER_CORE              0x0000000C
@@ -3097,7 +2926,8 @@ Release: January 26, 2026
 
 47 / 120
 
- #define PRODUCT_EMBEDDED_INDUSTRY_A                 0x00000056
+
+ #define PRODUCT_EMBEDDED_INDUSTRY_A                 0x00000056
  #define PRODUCT_THINPC                              0x00000057
  #define PRODUCT_EMBEDDED_A                          0x00000058
  #define PRODUCT_EMBEDDED_INDUSTRY                   0x00000059
@@ -3143,7 +2973,7 @@ Release: January 26, 2026
  #define PRODUCT_HOLOGRAPHIC_BUSINESS                0x00000088
  #define PRODUCT_SERVERRDSH                          0x000000AF
 
-2.2.10 Faults
+#### 2.2.10 Faults
 
 The enrollment server can decline enrollment messages using the SOAP Fault format. Errors created
 can be sent as follows.
@@ -3171,7 +3001,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-           <s:subcode>
+
+           <s:subcode>
              <s:value>s:authorization</s:value>
            </s:subcode>
        </s:code>
@@ -3312,7 +3143,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-         <s:text xml:lang="en-us">device cap reached</s:text>
+
+         <s:text xml:lang="en-us">device cap reached</s:text>
        </s:reason>
        <s:detail>
          <deviceenrollmentserviceerror
@@ -3435,13 +3267,14 @@ Release: January 26, 2026
 
 50 / 120
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-MDE2].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
-3.1  IDiscoveryService Server Details
+### 3.1 IDiscoveryService Server Details
 
 This section describes the first and second phases in MDE2 device enrollment: resolving the
 Discovery Service (DS) and discovering the ES. The following diagram highlights these two phases.
@@ -3455,7 +3288,8 @@ Release: January 26, 2026
 
 51 / 120
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-MDE2].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
@@ -3480,7 +3314,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-resolves to the Discovery Service (DS). The enrollment client extracts the domain suffix from the
+
+resolves to the Discovery Service (DS). The enrollment client extracts the domain suffix from the
 email address of the enrolling user and prepends it with the DNS to construct the address for the DS.
 For example, if the email address for the user is "user1@contoso.com", the enrollment client extracts
 the domain suffix "contoso.com" and prepends it with the DNS to construct the DS address
@@ -3494,7 +3329,7 @@ The path portion of the URL "/EnrollmentServer/Discovery.svc" is always constant
 The enrollment client validates the Secure Sockets Layer (SSL) certificate that is protecting the
 DS endpoint, along with any intermediary certificates that are signed by a trusted CA.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3505,15 +3340,15 @@ document.
 EnrollmentServiceDirectory: A repository which stores the URLs for the services used during
 enrollment.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The EnrollmentServiceDirectory element MUST be initialized with the list of ES's.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations for discovering the ES.
 
@@ -3527,7 +3362,7 @@ Description
 Describes the messages for discovering service endpoints to complete enrollment. Service
 endpoints include the security token issuance endpoints and the ES endpoints.
 
-3.1.4.1  Discover
+##### 3.1.4.1 Discover
 
 The Discover operation defines the client request and server response messages that are used to
 complete the process of discovering URLs for the ES's.
@@ -3547,7 +3382,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-     <wsdl:output
+
+     <wsdl:output
 wsaw:Action="http://schemas.microsoft.com/windows/management/2012/01/enrollment/IDiscoverySer
 vice/DiscoverResponse" name="IDiscoveryService_Discover_OutputMessage"
 message="tns:IDiscoveryService_Discover_OutputMessage"/>
@@ -3556,7 +3392,7 @@ message="tns:IDiscoveryService_Discover_OutputMessage"/>
 The following sections specify the request commands used in conjunction with the SyncML message
 specified in [MS-MDM] section 2.2.4.1.
 
-3.1.4.1.1 Messages
+###### 3.1.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -3573,9 +3409,9 @@ IDiscoveryService_Discover_OutputMessage  Sent from the server to the client and
 
 about the service endpoints.
 
-3.1.4.1.1.1
+###### 3.1.4.1.1.1 IDiscoveryService_Discover_InputMessage Message
 
-IDiscoveryService_Discover_InputMessage Message
+
 
 The IDiscoveryService_Discover_InputMessage message contains the Discover request
 message for the Discover operation.
@@ -3592,9 +3428,9 @@ The Discover request message is sent from the client to the server to discover E
 
 tns:Discover: An instance of a <Discover> element (section 3.1.4.1.2.1).
 
-3.1.4.1.1.2
+###### 3.1.4.1.1.2 IDiscoveryService_Discover_OutputMessage Message
 
-IDiscoveryService_Discover_OutputMessage Message
+
 
 The IDiscoveryService_Discover_OutputMessage message contains the DiscoverResponse
 response message for the Discover operation.
@@ -3617,11 +3453,12 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
- </wsdl:message>
+
+ </wsdl:message>
 
 tns:DiscoverResponse: An instance of a <DiscoverResponse> element (section 3.1.4.1.2.2).
 
-3.1.4.1.2 Elements
+###### 3.1.4.1.2 Elements
 
 The following table summarizes the set of XML Schema element definitions that are specific to this
 operation.
@@ -3638,7 +3475,7 @@ DiscoverResponse   Contains the body of the Discover response message sent by th
 
 request message received from the client (section 3.1.4.1.2.2).
 
-3.1.4.1.2.1  Discover
+###### 3.1.4.1.2.1 Discover
 
 The <Discover> element contains the client request to the server.
 
@@ -3654,7 +3491,7 @@ type="tns:DiscoveryRequest"/>
 request: This element is of type <DiscoveryRequest> (section 3.1.4.1.3.1) and contains information
 about the request.
 
-3.1.4.1.2.2  DiscoverResponse
+###### 3.1.4.1.2.2 DiscoverResponse
 
 The <DiscoverResponse> element contains the information to send in the response from the server to
 the client.
@@ -3671,7 +3508,7 @@ type="tns:DiscoveryResponse"/>
 DiscoverResult: This element is of type <DiscoveryResponse> (section 3.1.4.1.3.2) and contains
 response information from the server.
 
-3.1.4.1.3 Complex Types
+###### 3.1.4.1.3 Complex Types
 
 The following table summarizes the set of XML Schema complex type definitions that are specific to
 this operation.
@@ -3683,7 +3520,8 @@ Release: January 26, 2026
 
 55 / 120
 
-ComplexType
+
+ComplexType
 
 Description
 
@@ -3696,7 +3534,7 @@ DiscoveryResponse   Specifies the type of the <DiscoverResponse> element for the
 
 message (section 3.1.4.1.1.2).
 
-3.1.4.1.3.1  DiscoveryRequest
+###### 3.1.4.1.3.1 DiscoveryRequest
 
 The <DiscoveryRequest> complex type describes the information to send to the server in the
 <Discover> request element (section 3.1.4.1).
@@ -3757,10 +3595,11 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-AuthPolicy: This element specifies the authentication method and MUST be set to Federated,
+
+AuthPolicy: This element specifies the authentication method and MUST be set to Federated,
 Certificate, or OnPremise.
 
-3.1.4.1.3.2  DiscoveryResponse
+###### 3.1.4.1.3.2 DiscoveryResponse
 
 The <DiscoveryResponse> complex type describes the information to send to the client in the
 <DiscoverResponse> request element (section 3.1.4.1.2.2).
@@ -3803,15 +3642,15 @@ the WS-Trust X.509v3 Token Enrollment Extensions [MS-WSTEP] operations are perfo
 
 EnrollmentVersion: The value can be 3.0, 4.0, 5.0, 6.0, or 7.0.<21>
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Interaction with Security Token Service (STS)
+### 3.2 Interaction with Security Token Service (STS)
 
 This section describes the third phase in MDE2 device enrollment: requesting and receiving the
 security token. The following diagram highlights this phase.
@@ -3823,7 +3662,8 @@ Release: January 26, 2026
 
 57 / 120
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-MDE2].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
@@ -3846,7 +3686,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-The following are the explicit requirements for the STS.
+
+The following are the explicit requirements for the STS.
 
 The <DiscoveryResponse><AuthenticationServiceUrl> element (section 3.1.4.1.3.2) MUST support
 HTTPS.
@@ -3892,7 +3733,7 @@ app) as indicated in the POST method action. The security token in wresult is la
 <wsse:BinarySecurityToken> (section 3.3). This string is opaque to the enrollment client; the client
 does not interpret the string.
 
-3.3  Interaction with X.509 Certificate Enrollment Policy
+### 3.3 Interaction with X.509 Certificate Enrollment Policy
 
 This section describes the fourth phase in MDE2 device enrollment: interacting with the X.509
 Certificate Enrollment Policy Protocol [MS-XCEP] to obtain the certificate policies. The following
@@ -3905,7 +3746,8 @@ Release: January 26, 2026
 
 59 / 120
 
-<!-- Extracted images from page 60 -->
+
+<!-- Extracted images from page 60 -->
 ![Extracted image 1 from page 60]([MS-MDE2].images/page060-img01.png)
 <!-- /Extracted images from page 60 -->
 
@@ -3928,7 +3770,8 @@ Release: January 26, 2026
 
 60 / 120
 
-MDE2 implements the authentication provisions in WS-Security 2004 [WSS] to enable the ES [MS-
+
+MDE2 implements the authentication provisions in WS-Security 2004 [WSS] to enable the ES [MS-
 XCEP] to authenticate the GetPolicies requestor [MS-XCEP]. This section defines the schema used to
 express the credential descriptor for the credential type. The security token credential is provided in
 a request message using the <wsse:BinarySecurityToken> element [WSS]. The security token is
@@ -3961,19 +3804,19 @@ wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 None.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None.
 
-3.3.4  Message Processing Events and Sequencing Rules
+#### 3.3.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations for obtaining the certificate policies.
 
@@ -3993,7 +3836,8 @@ Release: January 26, 2026
 
 61 / 120
 
-3.3.4.1  GetPolicies Operation
+
+##### 3.3.4.1 GetPolicies Operation
 
 The GetPolicies operation defines the client request and server response messages that are used to
 complete the process of retrieving a certificate policy for enrollment.
@@ -4007,7 +3851,7 @@ wsaw:Action="http://schemas.microsoft.com/windows/pki/2009/01/enrollmentpolicy/I
 iciesResponse" message="xcep:IPolicy_GetPolicies_OutputMessage"/>
    </wsdl:operation>
 
-3.3.4.1.1 Messages
+###### 3.3.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -4025,7 +3869,7 @@ GetPoliciesResponse  Sent from the server to the client and contains the request
 
 enrollment (section 3.3.4.1.1.2).
 
-3.3.4.1.1.1  GetPolicies
+###### 3.3.4.1.1.1 GetPolicies
 
 The GetPolicies message contains the request for the GetPolicies operation.
 
@@ -4033,7 +3877,7 @@ The SOAP action value is
 
  http://schemas.microsoft.com/windows/pki/2009/01/enrollmentpolicy/IPolicy/GetPolicies
 
-3.3.4.1.1.1.1  Get Policies using Federated Authentication
+###### 3.3.4.1.1.1.1 Get Policies using Federated Authentication
 
 The GetPolicies request message is sent from the client to the server to retrieve the certificate
 policies for enrollment.
@@ -4060,7 +3904,8 @@ Release: January 26, 2026
 
 62 / 120
 
-wsse:BinarySecurityToken/attributes/ValueType: The <wsse:BinarySecurityToken> ValueType
+
+wsse:BinarySecurityToken/attributes/ValueType: The <wsse:BinarySecurityToken> ValueType
 attribute MUST be
 "http://schemas.microsoft.com/5.0.0.0/ConfigurationManager/Enrollment/DeviceEnrollment
 UserToken".
@@ -4082,7 +3927,7 @@ xcep:preferredLanguage: MDE2 modifies the <GetPolicies> xcep:client attribute by
 <Client> <preferredLanguage> element xsi:nil attribute to "true" (see [MS-XCEP] section
 3.1.4.1.3.9).
 
-3.3.4.1.1.1.2  GetPolicies using Certificate Authentication
+###### 3.3.4.1.1.1.2 GetPolicies using Certificate Authentication
 
 The GetPolicies request message is sent from the client to the server to retrieve the certificate
 policies for enrollment.
@@ -4124,7 +3969,8 @@ Release: January 26, 2026
 
 63 / 120
 
-wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
+
+wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary" for certificate authentication.
 
@@ -4193,7 +4039,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-The following elements with their specified values MUST be included in the SOAP body of the request
+
+The following elements with their specified values MUST be included in the SOAP body of the request
 message.
 
 xcep:requestfilter: MDE2 modifies the <GetPolicies> element by setting the <requestFilter>
@@ -4206,7 +4053,7 @@ xcep:preferredLanguage: MDE2 modifies the <GetPolicies> xcep:client attribute by
 <Client> <preferredLanguage> element xsi:nil attribute to "true" (see [MS-XCEP] section
 3.1.4.1.3.9).
 
-3.3.4.1.1.1.3  GetPolicies using On-Premise Authentication
+###### 3.3.4.1.1.1.3 GetPolicies using On-Premise Authentication
 
 The GetPolicies request message is sent from the client to the server to retrieve the certificate
 policies for enrollment.
@@ -4259,7 +4106,8 @@ Release: January 26, 2026
 
 65 / 120
 
-3.3.4.1.1.2  GetPoliciesResponse
+
+###### 3.3.4.1.1.2 GetPoliciesResponse
 
 The GetPoliciesResponse message contains the response for the GetPolicies operation.
 
@@ -4327,7 +4175,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-xcep:GetPoliciesResponse/response/policies/policy/attributes/privatekeyattributes/keyUs
+
+xcep:GetPoliciesResponse/response/policies/policy/attributes/privatekeyattributes/keyUs
 ageProperty (see [MS-XCEP] section 3.1.4.1.3.20).
 
 xcep:GetPoliciesResponse/response/policies/policy/attributes/privatekeyattributes/permi
@@ -4394,7 +4243,8 @@ Release: January 26, 2026
 
 67 / 120
 
-xcep:GetPoliciesResponse/response/policies/policy/attributes/attestation/attestationFail
+
+xcep:GetPoliciesResponse/response/policies/policy/attributes/attestation/attestationFail
 ureBehavior: This functions identically to the
 xcepGetPoliciesResponse/response/policies/policy/attributes/privatekeyattributes/AttestationFailureBe
 havior node, except this one takes precedence if both are set.  This node is available on
@@ -4427,15 +4277,15 @@ hashAlgorithmOIDReference element specified in the previous point (see [MS-XCEP]
 3.1.4.1.2.2). The value MUST conform to the constraints specified in [MS-XCEP] section 3.1.4.1.3.16.
 For example, the <group> element value is 1.
 
-3.3.5  Timer Events
+#### 3.3.5 Timer Events
 
 None.
 
-3.3.6  Other Local Events
+#### 3.3.6 Other Local Events
 
 None.
 
-3.4  Interaction with WS-Trust X.509v3 Token Enrollment
+### 3.4 Interaction with WS-Trust X.509v3 Token Enrollment
 
 This section describes the fifth phase in MDE2 device enrollment: interacting with the WS-Trust
 X.509v3 Token Enrollment Extensions [MS-WSTEP] to complete enrollment. The following diagram
@@ -4448,7 +4298,8 @@ Release: January 26, 2026
 
 68 / 120
 
-<!-- Extracted images from page 69 -->
+
+<!-- Extracted images from page 69 -->
 ![Extracted image 1 from page 69]([MS-MDE2].images/page069-img01.png)
 <!-- /Extracted images from page 69 -->
 
@@ -4472,7 +4323,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-token requestor. This section defines the schema used to express the credential descriptor for each
+
+token requestor. This section defines the schema used to express the credential descriptor for each
 supported credential type. The security token credential is provided in a request message using the
 <wsse:BinarySecurityToken> element [WSS]. The security token is retrieved as specified in section
 3.2. The authentication information is as follows:
@@ -4504,19 +4356,19 @@ wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 None.
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 None.
 
-3.4.4  Message Processing Events and Sequencing Rules
+#### 3.4.4 Message Processing Events and Sequencing Rules
 
 The following table summarizes the list of WSDL operations for completing enrollment.
 
@@ -4529,7 +4381,7 @@ RequestSecurityToken  Provides the mechanism for completing the enrollment proce
 messages as specified in the WS-Trust X.509v3 Token Enrollment Extensions (see [MS-
 WSTEP] section 3.1.4).
 
-3.4.4.1  RequestSecurityToken Operation
+##### 3.4.4.1 RequestSecurityToken Operation
 
 The RequestSecurityToken operation is called by the client to register a device.
 
@@ -4540,7 +4392,8 @@ Release: January 26, 2026
 
 70 / 120
 
-   <wsdl:operation name="RequestSecurityToken">
+
+   <wsdl:operation name="RequestSecurityToken">
      <wsdl:input
 wsaw:Action="http://schemas.microsoft.com/windows/pki/2009/01/enrollment/RST/wstep"
 name="RequestSecurityTokenRequest" message="tns:RequestSecurityTokenMsg"/>
@@ -4549,7 +4402,7 @@ wsaw:Action="http://schemas.microsoft.com/windows/pki/2009/01/enrollment/RSTRC/w
 name="RequestSecurityTokenResponse" message="tns:RequestSecurityTokenResponseCollectionMsg"/>
    </wsdl:operation>
 
-3.4.4.1.1 Messages
+###### 3.4.4.1.1 Messages
 
 The following table summarizes the set of WSDL message definitions that are specific to this
 operation.
@@ -4567,7 +4420,7 @@ RequestSecurityTokenResponseCollection  Sent from the server to the client and c
 
 certificate and provisioning information (section 3.4.4.1.1.2).
 
-3.4.4.1.1.1  RequestSecurityToken
+###### 3.4.4.1.1.1 RequestSecurityToken
 
 The RequestSecurityToken message contains the request for the RequestSecurityToken
 operation.
@@ -4586,7 +4439,7 @@ the server to enroll a certificate and to retrieve provisioning information.
 wst:RequestSecurityToken: MDE2 modifies the implementation of the RequestSecurityToken
 message as defined in [MS-WSTEP] section 3.1.4.1.1.1 and its associated protocols.
 
-3.4.4.1.1.1.1  RequestSecurityToken using Federated Authentication
+###### 3.4.4.1.1.1.1 RequestSecurityToken using Federated Authentication
 
 Authentication MUST be implemented for this message as defined in section 3.4. In summary, the
 following elements and attributes MUST be specified in the SOAP header:
@@ -4608,7 +4461,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
+
+wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute MUST be "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
@@ -4676,7 +4530,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
+
+ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
 string "DeviceType".
 
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value is a
@@ -4744,7 +4599,8 @@ Release: January 26, 2026
 
 73 / 120
 
-ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
+
+ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
 MUST be the literal string “true” indicating that the enrollment is taking place as part of Bulk Azure
 Active Directory Join.
 
@@ -4812,7 +4668,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-server can provision policies and resources prior to the user enrolling into management (with AAD
+
+server can provision policies and resources prior to the user enrolling into management (with AAD
 Join).
 
 ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
@@ -4880,7 +4737,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
+
+ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
 MUST be a string value. This value contains the base64-encoded AAD public key. This node will
 only be present if claim creation succeeds, an attestable crypto provider stored the MDM private
 key, the enrollment is using AAD, and the EnrollmentVersion value is 5.0 or higher.
@@ -4936,7 +4794,7 @@ Azure Attestation fields were supplied in the earlier message.
 
 Namespace: http://schemas.xmlsoap.org/ws/2006/12/authorization
 
-3.4.4.1.1.1.2  RequestSecurityToken using Certificate Authentication
+###### 3.4.4.1.1.1.2 RequestSecurityToken using Certificate Authentication
 
 Authentication MUST be implemented for this message as defined in section 3.4. In summary, the
 following elements and attributes MUST be specified in the SOAP header:
@@ -4948,7 +4806,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-wsse:Security: The <wsse:Security> element MUST be a child of <s:Header>.
+
+wsse:Security: The <wsse:Security> element MUST be a child of <s:Header>.
 
 u:Timestamp: The <u:Timestamp> element MUST be a child of <wsse:Security> in <s:Header> for
 certificate authentication.
@@ -5016,7 +4875,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ds:DigestValue: The <ds:DigestValue> element MUST be a child of <ds:Reference> in <s:Header>
+
+ds:DigestValue: The <ds:DigestValue> element MUST be a child of <ds:Reference> in <s:Header>
 for certificate authentication. The value is a string.
 
 ds:SignatureValue: The <ds:SignatureValue> element MUST be a child of <ds:Signature> in
@@ -5082,7 +4942,8 @@ Release: January 26, 2026
 
 78 / 120
 
-ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value
+
+ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value
 MUST be a string (UTF-8) in the format int.int.int.int.
 
 ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
@@ -5149,7 +5010,8 @@ Release: January 26, 2026
 
 79 / 120
 
-ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
+
+ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
 string "Locale".
 
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value is a
@@ -5217,7 +5079,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
+
+ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
 MUST be a string value. This value contains a base64-encoded claim blob generated by
 NCryptCreateClaim, with the MDM private key as the subject and the device’s AIK key as the
 authority. This node will be present only if claim creation succeeds, an attestable crypto provider
@@ -5274,7 +5137,7 @@ the client. This node will be present only with EnrollmentVersion value 5.0 or h
 
 Namespace: http://schemas.xmlsoap.org/ws/2006/12/authorization
 
-3.4.4.1.1.1.3  RequestSecurityToken using On-Premise Authentication
+###### 3.4.4.1.1.1.3 RequestSecurityToken using On-Premise Authentication
 
 [MS-MDE2] - v20260126
 Mobile Device Enrollment Protocol Version 2
@@ -5283,7 +5146,8 @@ Release: January 26, 2026
 
 81 / 120
 
-Authentication MUST be implemented for this message as defined in section 3.4. In summary, the
+
+Authentication MUST be implemented for this message as defined in section 3.4. In summary, the
 following elements and attributes MUST be specified in the SOAP header:
 
 wsse:Security: The <wsse:Security> element MUST be a child of <s:Header>.
@@ -5352,7 +5216,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
+
+ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
 string "OSVersion".
 
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value
@@ -5420,7 +5285,8 @@ Release: January 26, 2026
 
 83 / 120
 
-The following elements are supported in an implementation-specific manner.<31>
+
+The following elements are supported in an implementation-specific manner.<31>
 
 ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
 string "Locale".
@@ -5487,7 +5353,8 @@ Release: January 26, 2026
 
 84 / 120
 
-ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
+
+ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
 string "AIKAttestationClaim".
 
 ac:Value: If included, this <ac:Value> element MUST be a child of <ac:AdditionalContext> and
@@ -5554,7 +5421,8 @@ Release: January 26, 2026
 
 85 / 120
 
-3.4.4.1.1.2  RequestSecurityTokenResponseCollection
+
+###### 3.4.4.1.1.2 RequestSecurityTokenResponseCollection
 
 The RequestSecurityTokenResponseCollection message contains the response for the
 RequestSecurityToken operation.
@@ -5604,11 +5472,11 @@ wsse:BinarySecurityToken/attributes/EncodingType: The <wsse:BinarySecurityToken>
 EncodingType attribute is "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-secext-1.0.xsd#base64binary".
 
-3.4.5  Timer Events
+#### 3.4.5 Timer Events
 
 None.
 
-3.4.6  Other Local Events
+#### 3.4.6 Other Local Events
 
 None.
 
@@ -5619,11 +5487,12 @@ Release: January 26, 2026
 
 86 / 120
 
-<!-- Extracted images from page 87 -->
+
+<!-- Extracted images from page 87 -->
 ![Extracted image 1 from page 87]([MS-MDE2].images/page087-img01.png)
 <!-- /Extracted images from page 87 -->
 
-3.5  Certificate Renewal
+### 3.5 Certificate Renewal
 
 The enrollment client can request to renew an existing certificate. This section defines how the
 RequestSecurityToken message (section 3.5.4.1.1.1) and
@@ -5632,28 +5501,28 @@ existing certificate for authentication.
 
 Figure 13: Enrollment client certificate renewal
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 None.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 None.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Message Processing Events and Sequencing Rules
+#### 3.5.4 Message Processing Events and Sequencing Rules
 
 The WSDL operations for certificate renewal are as specified in section 3.4.4.
 
-3.5.4.1  RequestSecurityToken Operation
+##### 3.5.4.1 RequestSecurityToken Operation
 
 MDE2 does not modify the RequestSecurityToken operation for the certificate renewal process. The
 operation is as specified in section 3.4.4.1.
 
-3.5.4.1.1 Messages
+###### 3.5.4.1.1 Messages
 
 [MS-MDE2] - v20260126
 Mobile Device Enrollment Protocol Version 2
@@ -5662,10 +5531,11 @@ Release: January 26, 2026
 
 87 / 120
 
-MDE2 does not modify the set of messages for the RequestSecurityToken operation for the certificate
+
+MDE2 does not modify the set of messages for the RequestSecurityToken operation for the certificate
 renewal process. The set of messages are as specified in section 3.4.4.1.1.
 
-3.5.4.1.1.1  RequestSecurityToken
+###### 3.5.4.1.1.1 RequestSecurityToken
 
 For the certificate renewal process, MDE2 modifies the RequestSecurityToken message as follows.
 The remainder of the definition for the RequestSecurityToken message is as specified in section
@@ -5730,7 +5600,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value
+
+ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value
 MUST be a string (UTF-8) in the format int.int.int.int.
 
 ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
@@ -5797,7 +5668,8 @@ Release: January 26, 2026
 
 89 / 120
 
-ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value is a
+
+ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value is a
 string (UTF-8) that specifies the MAC address of the device.
 
 ac:ContextItem/attributes/Name: The <ac:ContextItem> Name attribute MUST be the literal
@@ -5806,7 +5678,7 @@ string "IMEI".
 ac:Value: The <ac:Value> element MUST be a child of <ac:AdditionalContext> and the value is
 an int (integer) that specifies the mobile equipment ID.
 
-3.5.4.1.1.2  RequestSecurityTokenCollectionResponse
+###### 3.5.4.1.1.2 RequestSecurityTokenCollectionResponse
 
 For the certificate renewal process, MDE2 modifies the RequestSecurityTokenCollectionResponse
 message as follows. The remainder of the definition for the RequestSecurityTokenCollectionResponse
@@ -5834,15 +5706,15 @@ For the certificate renewal process, the same provisioning document is used as s
        </characteristic>
     </characteristic>
 
-3.5.5  Timer Events
+#### 3.5.5 Timer Events
 
 None.
 
-3.5.6  Other Local Events
+#### 3.5.6 Other Local Events
 
 None.
 
-3.6  Certificate Recovery
+### 3.6 Certificate Recovery
 
 The enrollment client can request to recover an existing certificate if the existing certificate is lost or
 corrupted in some way. This section defines how the RequestSecurityToken message (section
@@ -5857,17 +5729,18 @@ Release: January 26, 2026
 
 90 / 120
 
-<!-- Extracted images from page 91 -->
+
+<!-- Extracted images from page 91 -->
 ![Extracted image 1 from page 91]([MS-MDE2].images/page091-img01.png)
 <!-- /Extracted images from page 91 -->
 
 Figure 14: Enrollment client certificate recovery
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 None.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 None.
 
@@ -5878,25 +5751,26 @@ Release: January 26, 2026
 
 91 / 120
 
-3.6.3  Initialization
+
+#### 3.6.3 Initialization
 
 None.
 
-3.6.4  Message Processing Events and Sequencing Rules
+#### 3.6.4 Message Processing Events and Sequencing Rules
 
 The WSDL operations for certificate recovery are as specified in section 3.4.4.
 
-3.6.4.1  RequestSecurityToken Operation
+##### 3.6.4.1 RequestSecurityToken Operation
 
 MDE2 does not modify the RequestSecurityToken operation for the certificate recovery process. The
 operation is as specified in section 3.4.4.1.
 
-3.6.4.1.1 Messages
+###### 3.6.4.1.1 Messages
 
 MDE2 does not modify the set of messages for the RequestSecurityToken operation for the
 certificate recovery process. The set of messages are as specified in section 3.4.4.1.1.
 
-3.6.4.1.1.1  RequestSecurityToken
+###### 3.6.4.1.1.1 RequestSecurityToken
 
 For the certificate recovery process, MDE2 modifies the RequestSecurityToken message as follows.
 The remainder of the definition for the RequestSecurityToken message is as specified in section
@@ -5905,11 +5779,11 @@ The remainder of the definition for the RequestSecurityToken message is as speci
 wst:RequestType: The <wst:RequestType> element MUST be the value "http://docs.oasis-
 open.org/ws-sx/ws-trust/200512/Recovery".
 
-3.6.5  Timer Events
+#### 3.6.5 Timer Events
 
 None.
 
-3.6.6  Other Local Events
+#### 3.6.6 Other Local Events
 
 None.
 
@@ -5920,19 +5794,20 @@ Release: January 26, 2026
 
 92 / 120
 
-4  Protocol Examples
 
-4.1  Discovery Example
+## 4 Protocol Examples
+
+### 4.1 Discovery Example
 
 The examples in the following subsections demonstrate a full request/response sequence using the
 Discovery protocol to auto-discover a management enrollment server based on the user’s email
 address.
 
-4.1.1  Discovery Example: Request
+#### 4.1.1 Discovery Example: Request
 
 The following subsections demonstrate requests using different authentication methods.
 
-4.1.1.1  Discovery Example Request Using Federated Authentication
+##### 4.1.1.1 Discovery Example Request Using Federated Authentication
 
 The following snippet demonstrates the call to the Discovery input message using <AuthPolicy>
 "Federated".
@@ -5969,7 +5844,7 @@ http://schemas.microsoft.com/windows/management/2012/01/enrollment/IDiscoverySer
    </s:Body>
  </s:Envelope>
 
-4.1.1.2  Discovery Example Request Using Certificate Authentication
+##### 4.1.1.2 Discovery Example Request Using Certificate Authentication
 
 The following snippet demonstrates the call to the Discovery input message using <AuthPolicy>
 "Certificate".
@@ -5987,7 +5862,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-http://schemas.microsoft.com/windows/management/2012/01/enrollment/IDiscoveryService/Discover
+
+http://schemas.microsoft.com/windows/management/2012/01/enrollment/IDiscoveryService/Discover
      </a:Action>
      <a:MessageID>urn:uuid: 748132ec-a575-4329-b01b-6171a9cf8478</a:MessageID>
      <a:ReplyTo>
@@ -6013,7 +5889,7 @@ Release: January 26, 2026
    </s:Body>
  </s:Envelope>
 
-4.1.1.3  Discovery Example Request Using On-Premise Authentication
+##### 4.1.1.3 Discovery Example Request Using On-Premise Authentication
 
 The following snippet demonstrates the call to the Discovery input message using <AuthPolicy>
 "OnPremise".
@@ -6057,11 +5933,12 @@ Release: January 26, 2026
 
 94 / 120
 
-4.1.2  Discovery Example: Response
+
+#### 4.1.2 Discovery Example: Response
 
 The following sections are examples of responses using different authentication methods.
 
-4.1.2.1  Discovery Example Response using Federated Authentication
+##### 4.1.2.1 Discovery Example Response using Federated Authentication
 
 The following snippet demonstrates the call to the Discovery output message using <AuthPolicy>
 "Federated".
@@ -6100,7 +5977,7 @@ Response
    </s:Body>
  </s:Envelope>
 
-4.1.2.2  Discovery Example Response using Certificate Authentication
+##### 4.1.2.2 Discovery Example Response using Certificate Authentication
 
 The following snippet demonstrates the call to the Discovery output message using <AuthPolicy>
 "Certificate".
@@ -6127,7 +6004,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-      xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema">
      <DiscoverResponse
         xmlns="http://schemas.microsoft.com/windows/management/2012/01/enrollment">
        <DiscoverResult>
@@ -6144,7 +6022,7 @@ Release: January 26, 2026
    </s:Body>
  </s:Envelope>
 
-4.1.2.3  Discovery Example Response using On-Premise Authentication
+##### 4.1.2.3 Discovery Example Response using On-Premise Authentication
 
 The following snippet demonstrates the call to the Discovery output message using <AuthPolicy>
 "OnPremise".
@@ -6180,7 +6058,7 @@ Response
    </s:Body>
  </s:Envelope>
 
-4.2  GetPolicies Example
+### 4.2 GetPolicies Example
 
 The examples in the following subsections demonstrate a full request/response sequence where the
 caller requests certificate policies that are used to determine if the enrollment service is compliant
@@ -6193,12 +6071,13 @@ Release: January 26, 2026
 
 96 / 120
 
-4.2.1  GetPolicies Example: Request
+
+#### 4.2.1 GetPolicies Example: Request
 
 The following subsections demonstrate the call to the GetPolicies message (section 3.3.4.1.1.1)
 using different authentication methods.
 
-4.2.1.1  GetPolicies Example Request using Federated Authentication
+##### 4.2.1.1 GetPolicies Example Request using Federated Authentication
 
 The following snippet demonstrates a call to the GetPolicies message using <AuthPolicy> "Federated".
 
@@ -6247,7 +6126,7 @@ en"
    </s:Body>
  </s:Envelope>
 
-4.2.1.2  GetPolicies Example Request using Certificate Authentication
+##### 4.2.1.2 GetPolicies Example Request using Certificate Authentication
 
 The following snippet demonstrates a call to the GetPolicies message using <AuthPolicy>
 "Certificate".
@@ -6264,7 +6143,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-    xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-
+
+    xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-
 1.0.xsd"
     xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512"
     xmlns:ac="http://schemas.xmlsoap.org/ws/2006/12/authorization">
@@ -6325,7 +6205,7 @@ ValueType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-pr
    </s:Body>
  </s:Envelope>
 
-4.2.1.3  GetPolicies Example Request using On-Premise Authentication
+##### 4.2.1.3 GetPolicies Example Request using On-Premise Authentication
 
 The following snippet demonstrates a call to the GetPolicies message using <AuthPolicy>
 "OnPremise".
@@ -6337,7 +6217,8 @@ Release: January 26, 2026
 
 98 / 120
 
- <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
+
+ <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
     xmlns:a="http://www.w3.org/2005/08/addressing"
     xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
 1.0.xsd"
@@ -6377,7 +6258,7 @@ username-token-profile-1.0#PasswordText">mypassword</wsse:Password>
    </s:Body>
  </s:Envelope>
 
-4.2.2  GetPolicies Example: Response
+#### 4.2.2 GetPolicies Example: Response
 
 The following snippet demonstrates the call to the GetPoliciesResponse message.
 
@@ -6411,7 +6292,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-           <policiesNotChanged xsi:nil="true"
+
+           <policiesNotChanged xsi:nil="true"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
            <policies>
              <policy>
@@ -6471,7 +6353,7 @@ Release: January 26, 2026
      </s:Body>
    </s:Envelope>
 
-4.2.3  GetPolicies With Azure Attestation Example: Response
+#### 4.2.3 GetPolicies With Azure Attestation Example: Response
 
 The following snippet demonstrates the call to the GetPoliciesResponse message with the fields
 required for Azure Attestation present.
@@ -6485,7 +6367,8 @@ Release: January 26, 2026
 
 100 / 120
 
-      xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
+
+      xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
 1.0.xsd"
       xmlns:s="http://www.w3.org/2003/05/soap-envelope"
       xmlns:a="http://www.w3.org/2005/08/addressing">
@@ -6561,7 +6444,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-                   <operationTimeout p10:nil="true"
+
+                   <operationTimeout p10:nil="true"
 xmlns:p10="http://www.w3.org/2001/XMLSchema-instance">100</operationTimeout>
                      <azureAttestation>
                        <nonce>NonceBlob</nonce>
@@ -6586,17 +6470,17 @@ xmlns:p10="http://www.w3.org/2001/XMLSchema-instance">100</operationTimeout>
      </s:Body>
    </s:Envelope>
 
-4.3  RequestSecurityToken Example
+### 4.3 RequestSecurityToken Example
 
 The examples in the following subsections demonstrate a full request/response sequence where the
 caller requests a security token (provisioning document) for the device type "CIMClient_Windows".
 
-4.3.1  RequestSecurityToken Example: Request
+#### 4.3.1 RequestSecurityToken Example: Request
 
 The following subsections demonstrate the call to the RequestSecurityToken message using
 different authentication methods.
 
-4.3.1.1  RequestSecurityToken Example: Request using Federated Authentication
+##### 4.3.1.1 RequestSecurityToken Example: Request using Federated Authentication
 
 The following snippet demonstrates features of the call to the RequestSecurityToken message using
 <AuthPolicy> "Federated". The example below is for illustrative purposes only and does not
@@ -6631,7 +6515,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
- "http://schemas.microsoft.com/5.0.0.0/ConfigurationManager/Enrollment/DeviceEnrollmentUserTok
+
+ "http://schemas.microsoft.com/5.0.0.0/ConfigurationManager/Enrollment/DeviceEnrollmentUserTok
 en"
          EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-
 secext-1.0.xsd#base64binary">B64EncodedSampleBinarySecurityToken"
@@ -6708,7 +6593,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-                <ac:Value>True</ac:Value>
+
+                <ac:Value>True</ac:Value>
              </ac:ContextItem>
              <ac:ContextItem Name="Locale">
                 <ac:Value>en-us</ac:Value>
@@ -6764,7 +6650,7 @@ Release: January 26, 2026
    </s:Body>
  </s:Envelope>
 
-4.3.1.2  RequestSecurityToken Example: Request using Federated Authentication with
+##### 4.3.1.2 RequestSecurityToken Example: Request using Federated Authentication with
 
 Azure Attestation
 
@@ -6782,7 +6668,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-    xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
+
+    xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
 1.0.xsd"
     xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-
 1.0.xsd"
@@ -6859,7 +6746,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-             <ac:ContextItem Name="IMEI">
+
+             <ac:ContextItem Name="IMEI">
                 <ac:Value>30215420323756</ac:Value>
              </ac:ContextItem>
              <ac:ContextItem Name="EnrollmentType">
@@ -6922,7 +6810,7 @@ Release: January 26, 2026
    </s:Body>
  </s:Envelope>
 
-4.3.1.3  RequestSecurityToken Example: Request using Certificate Authentication
+##### 4.3.1.3 RequestSecurityToken Example: Request using Certificate Authentication
 
 The following snippet demonstrates the call to the RequestSecurityToken message using
 <AuthPolicy> "Certificate".
@@ -6934,7 +6822,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
- <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
+
+ <s:Envelope xmlns:s="http://www.w3.org/2003/05/soap-envelope"
     xmlns:a="http://www.w3.org/2005/08/addressing"
     xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
 1.0.xsd"
@@ -7011,7 +6900,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-       </wst:RequestType>
+
+       </wst:RequestType>
        <wsse:BinarySecurityToken
           ValueType="http://schemas.microsoft.com/windows/pki/2009/01/enrollment#PKCS10"
           EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-
@@ -7088,7 +6978,8 @@ Release: January 26, 2026
 
 108 / 120
 
-             <ac:ContextItem Name="NotInOobe">
+
+             <ac:ContextItem Name="NotInOobe">
                 <ac:Value>True</ac:Value>
              </ac:ContextItem>
            </ac:AdditionalContext>
@@ -7096,7 +6987,7 @@ Release: January 26, 2026
    </s:Body>
  </s:Envelope>
 
-4.3.1.4  RequestSecurityToken Example: Request using On-Premise Authentication
+##### 4.3.1.4 RequestSecurityToken Example: Request using On-Premise Authentication
 
 The following snippet demonstrates the call to the RequestSecurityToken message using
 <AuthPolicy> "OnPremise".
@@ -7162,7 +7053,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-             <ac:ContextItem Name="OSEdition">
+
+             <ac:ContextItem Name="OSEdition">
                 <ac:Value> 4</ac:Value>
              </ac:ContextItem>
              <ac:ContextItem Name="OSVersion">
@@ -7222,7 +7114,7 @@ Release: January 26, 2026
     </s:Body>
  </s:Envelope>
 
-4.3.2  RequestSecurityToken Example: Response
+#### 4.3.2 RequestSecurityToken Example: Response
 
 The following snippet demonstrates the call to the RequestSecurityTokenResponseCollection
 (section 3.4.4.1.1.2) message.
@@ -7236,7 +7128,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-    xmlns:a="http://www.w3.org/2005/08/addressing"
+
+    xmlns:a="http://www.w3.org/2005/08/addressing"
     xmlns:u="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-
 1.0.xsd">
     <s:Header>
@@ -7289,9 +7182,10 @@ Release: January 26, 2026
 
 111 / 120
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 MDE2 does not provide message-level signing or message-level encryption for any messages.
 Implementers can make use of transport protection as available in HTTPS to provide security to the
@@ -7300,7 +7194,7 @@ client/server interaction.
 MDE2 does not define a mechanism to limit a client's use of server resources, such as CPU, network
 bandwidth, and memory.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -7311,7 +7205,8 @@ Release: January 26, 2026
 
 112 / 120
 
-6  Appendix A: XSD Schema
+
+## 6 Appendix A: XSD Schema
 
 The targetNamespace http://schemas.microsoft.com/windows/pki/2012/01/enrollment referenced in
 section 2.2.1 comprises the following schema:
@@ -7386,7 +7281,8 @@ Release: January 26, 2026
 
 113 / 120
 
-     </xsd:restriction>
+
+     </xsd:restriction>
    </xsd:simpleType>
    <xsd:simpleType name="DottedQuadType">
      <xsd:restriction base="xsd:string">
@@ -7421,7 +7317,8 @@ Release: January 26, 2026
 
 114 / 120
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -7489,7 +7386,8 @@ Mobile Device Enrollment Protocol Version 2
 Copyright © 2026 Microsoft Corporation
 Release: January 26, 2026
 
-<15> Section 2.2.9.3: ManagementServerAddressList is not supported in Windows 10 v1511 and
+
+<15> Section 2.2.9.3: ManagementServerAddressList is not supported in Windows 10 v1511 and
 earlier.
 
 <16> Section 2.2.9.5: Mobile Application Management is not supported in Windows 10 v1607 and
@@ -7554,7 +7452,8 @@ Release: January 26, 2026
 
 116 / 120
 
-<30> Section 3.4.4.1.1.1.2: EnrollmentVersion value 5.0 is supported in Windows 11 (version 1)
+
+<30> Section 3.4.4.1.1.1.2: EnrollmentVersion value 5.0 is supported in Windows 11 (version 1)
 2022 10C patch and later and supported in Windows 10 v2004 (v20H1) 2023 1C patch and later. See
 section 3.1.4.1.3.2.
 
@@ -7579,7 +7478,8 @@ Release: January 26, 2026
 
 117 / 120
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -7623,7 +7523,8 @@ Release: January 26, 2026
 
 118 / 120
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -7754,7 +7655,8 @@ Types
 
 119 / 120
 
-V
+
+V
 
 Vendor-extensible fields 15
 Versioning 15

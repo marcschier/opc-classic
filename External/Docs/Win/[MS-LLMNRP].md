@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 20
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -290,7 +291,8 @@ Release: April 23, 2024
 
 2 / 20
 
-Date
+
+Date
 
 Revision
 History
@@ -445,103 +447,50 @@ Release: April 23, 2024
 
 3 / 20
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 LLMNR Sender Details](#31-llmnr-sender-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 LLMNR Responder Details](#32-llmnr-responder-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 5
-Normative References ................................................................................... 5
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 6
-Relationship to Other Protocols ............................................................................ 6
-Prerequisites/Preconditions ................................................................................. 6
-Applicability Statement ....................................................................................... 6
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 7
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ................................................................................................................. 8
-Transport .......................................................................................................... 8
-Message Syntax ................................................................................................. 8
-
-2.1
-2.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ....................................................................................................... 9
-LLMNR Sender Details ......................................................................................... 9
-Abstract Data Model ...................................................................................... 9
-Timers ........................................................................................................ 9
-Initialization ................................................................................................. 9
-Higher-Layer Triggered Events ....................................................................... 9
-Message Processing Events and Sequencing Rules ............................................ 9
-Timer Events .............................................................................................. 10
-Other Local Events ...................................................................................... 10
-LLMNR Responder Details .................................................................................. 10
-Abstract Data Model .................................................................................... 10
-Timers ...................................................................................................... 10
-Initialization ............................................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Timer Events .............................................................................................. 11
-Other Local Events ...................................................................................... 11
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ................................................................................................. 12
-
-5  Security ................................................................................................................. 16
-Security Considerations for Implementers ........................................................... 16
-Index of Security Parameters ............................................................................ 16
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 17
-
-7  Change Tracking .................................................................................................... 18
-
-8  Index ..................................................................................................................... 19
-
-[MS-LLMNRP] - v20240423
-Link Local Multicast Name Resolution (LLMNR) Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 20
-
-1  Introduction
+## 1 Introduction
 
 The Link Local Multicast Name Resolution (LLMNR) Profile describes a profile of the Link Local Multicast
 Name Resolution (LLMNR) protocol, specified in [RFC4795] that does not send or respond to unicast
@@ -552,7 +501,7 @@ conventional DNS local link, as specified in [RFC1035].
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -573,14 +522,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -608,13 +557,14 @@ Link Local Multicast Name Resolution (LLMNR) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
+
+[RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
 [RFC793] Postel, J., Ed., "Transmission Control Protocol: DARPA Internet Program Protocol
 Specification", RFC 793, September 1981, https://www.rfc-editor.org/info/rfc793
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC2308] Andrews, M., "Negative Caching of DNS Queries (DNS NCACHE)", RFC 2308, March 1998,
 https://www.rfc-editor.org/info/rfc2308
@@ -625,7 +575,7 @@ https://www.rfc-editor.org/info/rfc2937
 [RFC3492] Costello, A., "Punycode: A Bootstring encoding of Unicode for Internationalized Domain
 Names in Applications", RFC 3492, March 2003, http://www.ietf.org/rfc/rfc3492.txt
 
-1.3  Overview
+### 1.3 Overview
 
 The Link Local Multicast Name Resolution (LLMNR) protocol, specified in [RFC4795] does not send or
 respond to unicast queries in TCP and does not support Extension Mechanisms for DNS (EDNS0)
@@ -645,7 +595,7 @@ profile.
 
 [RFC4795] requires EDNS0 [RFC2671] support, but EDNS0 support is optional in this profile.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Relationship to other protocols is unchanged from [RFC4795].
 
@@ -653,11 +603,11 @@ Implementations of this LLMNRP profile without TCP do not preclude or prohibit [
 implementations with TCP from operating on the same network; however, senders and responders
 using this LLMNR profile cannot participate in TCP transactions.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Prerequisites and preconditions for this profile are unchanged from [RFC4795].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The applicability of this LLMNR profile is unchanged from [RFC4795] except for the following:
 
@@ -677,7 +627,8 @@ Release: April 23, 2024
 
 6 / 20
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 This profile introduces no new versioning or capability negotiation mechanisms beyond those
 described in [RFC4795]. An implementation of this LLMNR profile can interoperate with an
@@ -690,11 +641,11 @@ that are covered in detail in section 3 of this document:
 
   Querying resource records other than A, AAAA, and PTR.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This profile does not support any vendor-extensible fields.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This profile includes no standards assignments beyond those specified in [RFC4795].
 
@@ -705,9 +656,10 @@ Release: April 23, 2024
 
 7 / 20
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 [RFC4795] requires support for both the User Datagram Protocol (UDP)  [RFC768] and the
 Transmission Control Protocol (TCP) as transports for LLMNR messages.
@@ -715,7 +667,7 @@ Transmission Control Protocol (TCP) as transports for LLMNR messages.
 An implementation of this profile MUST support UDP as a transport and MAY support TCP as a
 transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The message syntax remains unchanged from the protocol specified in [RFC4795] section 2.
 
@@ -726,14 +678,15 @@ Release: April 23, 2024
 
 8 / 20
 
-3  Protocol Details
 
-3.1  LLMNR Sender Details
+## 3 Protocol Details
+
+### 3.1 LLMNR Sender Details
 
 LLMNR sender details are specified in [RFC4795] sections 1, 2, and 3, with differences specified as
 follows.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -754,7 +707,7 @@ cache entry exists, by issuing a DNS query. A response of NXDOMAIN indicates tha
 does not exist and will thus result in a negative DNS cache entry. Any other response indicates that a
 negative DNS cache entry does not exist [RFC2308].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The timers required by a sender in this LLMNR profile are unchanged from [RFC4795] except for the
 following.<1>
@@ -764,7 +717,7 @@ query SHOULD be delayed by a time randomly selected from the interval 0 to JITTE
 Implementing this behavior requires a timer. In this profile, the sender SHOULD send queries
 immediately without a random delay thereby avoiding the need for such a timer.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The initialization required by this LLMNR profile is unchanged from [RFC4795].
 
@@ -774,7 +727,7 @@ only as informative references, indicating that they need not be read or underst
 LLMNR. As such, this profile clarifies that there are no conformance requirements with respect to those
 references.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 Processing of higher-layer triggered events is unchanged from [RFC4795].
 
@@ -785,7 +738,8 @@ Release: April 23, 2024
 
 9 / 20
 
-3.1.5  Message Processing Events and Sequencing Rules
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 Except as specified in this section, the message processing and sequencing rules for an LLMNR profile
 sender are unchanged from [RFC4795].
@@ -822,20 +776,20 @@ for PTR queries, but instead SHOULD use UDP multicast.
 [RFC4795] does not specify whether names in queries are to be sent in UTF-8 [RFC3629] or Punycode
 [RFC3492]. In this LLMNR profile, a sender MUST send queries in UTF-8, not Punycode.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 Handling of timer events by a sender in this LLMNR profile is unchanged from [RFC4795].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 Handling of other local events by a sender in this LLMNR profile is unchanged from [RFC4795].
 
-3.2  LLMNR Responder Details
+### 3.2 LLMNR Responder Details
 
 LLMNR responder details are specified in [RFC4795] sections 2 and 4, with differences as specified
 below.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The state that needs to be maintained by a responder in this LLMNR profile is unchanged from
 [RFC4795].
@@ -850,7 +804,8 @@ Link Local Multicast Name Resolution (LLMNR) Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 The timers required by a responder in this LLMNR profile are unchanged from [RFC4795] except for
 the following.<3>
@@ -860,7 +815,7 @@ LLMNR response SHOULD be delayed by a time randomly selected from the interval 0
 JITTER_INTERVAL. Implementing this behavior requires a timer. In this profile, the responder SHOULD
 send responses immediately without a random delay thereby avoiding the need for such a timer.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The initialization required by this LLMNR profile is unchanged from [RFC4795] except for the following.
 
@@ -868,11 +823,11 @@ In [RFC4795], listening on TCP port 5355 is required. In this LLMNR profile, the
 on TCP port 5355 and MAY respond to TCP queries as specified in [RFC4795] sections 2.3 and
 2.4.<4>
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Processing of higher-layer triggered events is unchanged from [RFC4795].
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 Except as specified in this section, the message processing and sequencing rules are unchanged from
 [RFC4795].
@@ -897,11 +852,11 @@ and MAY respond to queries for internationalized names converted to Punycode [RF
 [RFC4795] section 4.2 specifies that an LLMNR responder SHOULD log name conflicts detected as a
 result of uniqueness verification. A responder in this LLMNR profile MAY log name conflicts.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 Handling of timer events by a responder in this LLMNR profile is unchanged from [RFC4795].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Handling of other local events by a responder in this LLMNR profile is unchanged from [RFC4795].
 
@@ -912,7 +867,8 @@ Release: April 23, 2024
 
 11 / 20
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example illustrates an LLMNR query for AAAA resource records for a host name that
 starts with a non-ASCII character (represented in UTF-8 encoding) and the corresponding response,
@@ -980,7 +936,8 @@ Release: April 23, 2024
 
 12 / 20
 
-      OPCode:   (.0000...........) Standard
+
+      OPCode:   (.0000...........) Standard
       C:        (.....0..........)
       TC:       (......0.........)
       T:        (.......0........)
@@ -1057,7 +1014,8 @@ Release: April 23, 2024
 
 13 / 20
 
-      IPv6Address: FE80:0:0:0:0:0:0:104
+
+      IPv6Address: FE80:0:0:0:0:0:0:104
    - ARecord:
       ResourceName: çest (0xC0 0x17)
       ResourceType: AAAA, 28(0x1c)
@@ -1134,7 +1092,8 @@ Release: April 23, 2024
 
 14 / 20
 
-      ResourceDataLength: 16 (0x10)
+
+      ResourceDataLength: 16 (0x10)
       IPv6Address: FE80:0:0:0:0:0:0:114
    - ARecord:
       ResourceName: çest (0xC0 0x17)
@@ -1193,13 +1152,14 @@ Release: April 23, 2024
 
 15 / 20
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Security considerations for this profile of LLMNR are unchanged from [RFC4795].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1210,7 +1170,8 @@ Release: April 23, 2024
 
 16 / 20
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1276,7 +1237,8 @@ Release: April 23, 2024
 
 17 / 20
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1320,7 +1282,8 @@ Release: April 23, 2024
 
 18 / 20
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -1450,7 +1413,8 @@ Release: April 23, 2024
 
 19 / 20
 
-   sender 9
+
+   sender 9
 Tracking changes 18
 Transport 8
 Triggered events - higher-layer

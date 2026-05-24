@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ No changes to the meaning, language, or formatting of the
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -530,7 +532,8 @@ Release: April 23, 2024
 
 3 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -563,144 +566,64 @@ Release: April 23, 2024
 
 4 / 32
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 DSROLER_PRIMARY_DOMAIN_INFO_BASIC](#221-dsrolerprimarydomaininfobasic)
+    - [2.2.2 DSROLE_MACHINE_ROLE](#222-dsrolemachinerole)
+    - [2.2.3 DSROLE_OPERATION_STATE_INFO](#223-dsroleoperationstateinfo)
+    - [2.2.4 DSROLE_OPERATION_STATE](#224-dsroleoperationstate)
+    - [2.2.5 DSROLE_UPGRADE_STATUS_INFO](#225-dsroleupgradestatusinfo)
+    - [2.2.6 DSROLE_SERVER_STATE](#226-dsroleserverstate)
+    - [2.2.7 DSROLE_PRIMARY_DOMAIN_INFO_LEVEL](#227-dsroleprimarydomaininfolevel)
+    - [2.2.8 DSROLER_PRIMARY_DOMAIN_INFORMATION](#228-dsrolerprimarydomaininformation)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Promotion](#3241-promotion)
+      - [3.2.4.2 Demotion](#3242-demotion)
+      - [3.2.4.3 Upgrade](#3243-upgrade)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 DsRolerGetPrimaryDomainInformation (Opnum 0)](#3251-dsrolergetprimarydomaininformation-opnum-0)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 9
-Normative References ................................................................................... 9
-Informative References ............................................................................... 10
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Common Data Types ........................................................................................ 12
-DSROLER_PRIMARY_DOMAIN_INFO_BASIC ................................................... 12
-DSROLE_MACHINE_ROLE ............................................................................ 13
-DSROLE_OPERATION_STATE_INFO ............................................................... 14
-DSROLE_OPERATION_STATE ....................................................................... 14
-DSROLE_UPGRADE_STATUS_INFO ............................................................... 14
-DSROLE_SERVER_STATE ............................................................................. 15
-DSROLE_PRIMARY_DOMAIN_INFO_LEVEL ..................................................... 15
-DSROLER_PRIMARY_DOMAIN_INFORMATION ................................................ 15
-Directory Service Schema Elements ................................................................... 16
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2.3
-
-3.2
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 17
-Client Details ................................................................................................... 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 17
-Initialization ............................................................................................... 17
-Higher-Layer Triggered Events ..................................................................... 17
-Message Processing Events and Sequencing Rules .......................................... 17
-Timer Events .............................................................................................. 17
-Other Local Events ...................................................................................... 17
-Server Details .................................................................................................. 17
-Abstract Data Model .................................................................................... 17
-Timers ...................................................................................................... 18
-Initialization ............................................................................................... 18
-Higher-Layer Triggered Events ..................................................................... 19
-Promotion ............................................................................................ 19
-Demotion ............................................................................................. 19
-Upgrade ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 20
-DsRolerGetPrimaryDomainInformation (Opnum 0) .................................... 20
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6
-3.2.7
-
-3.2.5.1
-
-3.2.5
-
-4  Protocol Examples ................................................................................................. 23
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 25
-
-7  Appendix B: Product Behavior ............................................................................... 27
-
-5 / 32
-
-[MS-DSSP] - v20240423
-Directory Services Setup Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8  Change Tracking .................................................................................................... 30
-
-9  Index ..................................................................................................................... 31
-
-[MS-DSSP] - v20240423
-Directory Services Setup Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 32
-
-1  Introduction
+## 1 Introduction
 
 The Directory Services Setup Remote Protocol is a client/server-based remote procedure call (RPC)
 protocol. The protocol exposes an RPC interface that a client can call to obtain domain-related
@@ -709,7 +632,7 @@ computer state and configuration information.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -771,7 +694,8 @@ Directory Services Setup Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-domain membership role: Quantifies the relationship between a computer and a domain. A
+
+domain membership role: Quantifies the relationship between a computer and a domain. A
 
 computer can act in one of three roles: (1) Joined -- linked to a domain for purposes of policy
 and security; (2) Stand-alone -- not associated with any domain; or (3) Domain controller --
@@ -845,7 +769,8 @@ Directory Services Setup Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-opnum: An operation number or numeric identifier that is used to identify a specific remote
+
+opnum: An operation number or numeric identifier that is used to identify a specific remote
 
 procedure call (RPC) method or a method in an interface. For more information, see [C706]
 section 12.5.2.12 or [MS-RPCE].
@@ -898,14 +823,14 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -918,7 +843,8 @@ Release: April 23, 2024
 
 9 / 32
 
-[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
+
+[C706] The Open Group, "DCE 1.1: Remote Procedure Call", C706, August 1997,
 https://publications.opengroup.org/c706
 
 Note Registration is required to download the document.
@@ -936,11 +862,11 @@ Note Registration is required to download the document.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol provides a remote procedure call (RPC) interface for querying domain-related
 computer state and configuration data. The client end of the Directory Services Setup Remote Protocol
@@ -950,7 +876,7 @@ computer on which the server is running. If the client connects to and requests 
 domain controller (DC) for the directory service, this data includes the status of any pending
 promotion or demotion of that DC.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Directory Services Setup Remote Protocol is dependent upon Microsoft remote procedure call
 (RPC) (Remote Procedure Call Protocol Extensions, as specified in [MS-RPCE]), which is used to
@@ -959,14 +885,14 @@ communicate between computers on a network.
 This protocol depends on the Server Message Block (SMB) Protocol, as specified in [MS-SMB], and
 TCP/IP protocols for sending messages on the wire.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol is a remote procedure call (RPC)-based protocol and therefore has the prerequisites,
 as specified in [MS-RPCE], common to all RPC interfaces.
 
 Security considerations for RPC usage are specified in section 5.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol can be used to perform the following functions:
 
@@ -982,14 +908,15 @@ Directory Services Setup Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Query the progress of the promotion or demotion of a DC.
+
+  Query the progress of the promotion or demotion of a DC.
 
   Retrieve the upgrade status of a DC. This information is only applicable for the upgrade of a
 legacy domain controller to a version of Windows that is able to host Active Directory.
 
   Retrieve the domain membership role type for the computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: This protocol uses only RPCs. The protocol supports the Server Message
 Block (SMB) transport. For more information, see section 2.1.
@@ -1004,11 +931,11 @@ and [MS-RPCE].
 [MS-SMB] and [MS-RPCE]. Anonymous access can be allowed for some operations, as specified in
 DsRolerGetPrimaryDomainInformation (Opnum 0) (section 3.2.5.1).
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol does not define any vendor-extensible fields within the protocol itself.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Parameter
 
@@ -1040,9 +967,10 @@ Release: April 23, 2024
 
 11 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol MUST use the following remote procedure call (RPC) protocol sequence: RPC over
 SMB (ncacn_np), as specified in [MS-RPCE].
@@ -1067,7 +995,7 @@ authentication, authorization, confidentiality, or tamper-resistance services).
 This protocol MUST use this universally unique identifier (UUID) interface (3919286a-b10c-11d0-
 9ba8-00c04fd92ef5). The interface version number is 0.0.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types, the sections that follow use the definition of GUID as specified in [MS-
 DTYP] Appendix A.
@@ -1075,7 +1003,7 @@ DTYP] Appendix A.
 Additional data types that follow are defined in the Microsoft Interface Definition Language
 (MIDL) (as specified in section 6) for this RPC interface.
 
-2.2.1  DSROLER_PRIMARY_DOMAIN_INFO_BASIC
+#### 2.2.1 DSROLER_PRIMARY_DOMAIN_INFO_BASIC
 
 The DSROLER_PRIMARY_DOMAIN_INFO_BASIC structure contains basic information, including the role
 of the computer, domain name, and GUID of the domain.
@@ -1106,7 +1034,8 @@ Release: April 23, 2024
 
 12 / 32
 
-Value
+
+Value
 
 Meaning
 
@@ -1157,7 +1086,7 @@ DomainGuid:   The UUID of the domain to which the computer belongs. The value of
 
 valid only if the DSROLE_PRIMARY_DOMAIN_GUID_PRESENT flag is set.
 
-2.2.2  DSROLE_MACHINE_ROLE
+#### 2.2.2 DSROLE_MACHINE_ROLE
 
 The DSROLE_MACHINE_ROLE enumeration specifies the current role of the computer.
 
@@ -1194,7 +1123,8 @@ Release: April 23, 2024
 
 13 / 32
 
-2.2.3  DSROLE_OPERATION_STATE_INFO
+
+#### 2.2.3 DSROLE_OPERATION_STATE_INFO
 
 The DSROLE_OPERATION_STATE_INFO structure contains the status of a pending domain controller
 (DC) domain membership role change operation, if any, for the computer.
@@ -1208,7 +1138,7 @@ OperationState:   The domain membership role change status of the computer, as s
 
 DSROLE_OPERATION_STATE enumeration.
 
-2.2.4  DSROLE_OPERATION_STATE
+#### 2.2.4 DSROLE_OPERATION_STATE
 
 The DSROLE_OPERATION_STATE enumeration specifies values that determine whether a DC
 promotion or demotion operation is currently being performed on a computer.<4>
@@ -1230,7 +1160,7 @@ DsRoleOperationNeedReboot:  A promotion or demotion operation has been performed
 
 computer MUST be restarted to function in the new role.
 
-2.2.5  DSROLE_UPGRADE_STATUS_INFO
+#### 2.2.5 DSROLE_UPGRADE_STATUS_INFO
 
 The DSROLE_UPGRADE_STATUS_INFO structure contains information about the status of a pending
 operating system upgrade, if any, for the computer. This structure is intended to store only the
@@ -1267,12 +1197,13 @@ Release: April 23, 2024
 
 14 / 32
 
-PreviousServerState:  The role of the computer prior to the upgrade. The value of this member is
+
+PreviousServerState:  The role of the computer prior to the upgrade. The value of this member is
 
 valid only if an upgrade is in progress (that is, if the OperationState member is set to
 DSROLE_UPGRADE_IN_PROGRESS).
 
-2.2.6  DSROLE_SERVER_STATE
+#### 2.2.6 DSROLE_SERVER_STATE
 
 The DSROLE_SERVER_STATE enumeration specifies the role of the computer prior to the upgrade.
 
@@ -1294,7 +1225,7 @@ DsRoleServerBackup:  The previous role of the computer was backup domain control
 
 legacy domain.
 
-2.2.7  DSROLE_PRIMARY_DOMAIN_INFO_LEVEL
+#### 2.2.7 DSROLE_PRIMARY_DOMAIN_INFO_LEVEL
 
 The DSROLE_PRIMARY_DOMAIN_INFO_LEVEL enumeration defines the information level that the
 client requests.
@@ -1314,7 +1245,7 @@ DsRoleUpgradeStatus:  Request for computer operating system upgrade status.
 
 DsRoleOperationState:  Request for computer operation state.
 
-2.2.8  DSROLER_PRIMARY_DOMAIN_INFORMATION
+#### 2.2.8 DSROLER_PRIMARY_DOMAIN_INFORMATION
 
 The DSROLER_PRIMARY_DOMAIN_INFORMATION union contains one of three types of information
 about a computer.
@@ -1337,7 +1268,8 @@ Release: April 23, 2024
 
 15 / 32
 
-  *PDSROLER_PRIMARY_DOMAIN_INFORMATION;
+
+  *PDSROLER_PRIMARY_DOMAIN_INFORMATION;
 
 DomainInfoBasic:  Basic information about a computer. For more information, see
 
@@ -1351,7 +1283,7 @@ OperationStateInfo:  Domain membership role change status of the computer. For m
 
 information, see DSROLE_OPERATION_STATE_INFO (section 2.2.3).
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 None.
 
@@ -1362,25 +1294,26 @@ Release: April 23, 2024
 
 16 / 32
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 The client side of this protocol is simply a pass-through. That is, no additional timers or other state is
 required on the client side of this protocol. Calls made by the higher-layer protocol or application are
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 No abstract data model is used.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required other than those internal ones used in RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 No initialization is performed by the client side of the Directory Services Setup Remote Protocol. The
 RPC association (or binding)<6> to the server RPC needed to call the methods of this protocol is
@@ -1389,28 +1322,28 @@ simply uses the association established by the client application to call the RP
 of RPC binding can be found in [MS-RPCE] section 3. The client application MUST create a separate
 association for each method invocation.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 No higher-layer triggered events are used.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 No special message processing is required on the client beyond the processing required in the
 underlying RPC protocol.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 No protocol timer events are required on the client other than the events maintained in the underlying
 RPC transport.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 No additional local events are used on the client other than the events maintained in the underlying
 RPC transport.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The following information is maintained by the server to respond to client queries.
 
@@ -1421,7 +1354,8 @@ Release: April 23, 2024
 
 17 / 32
 
-The computer maintains abstract variables that contain the identity of the directory service domain
+
+The computer maintains abstract variables that contain the identity of the directory service domain
 and forest to which it belongs, if any. The variables are as follows:
 
 NetBIOSDomainName: The name of the domain or nondomain workgroup, as known by NetBIOS
@@ -1462,12 +1396,12 @@ ComputerUpgrade is TRUE, it contains the security role that the domain controlle
 have after the upgrade event (as specified in section 3.2.4.3) is complete. When
 ComputerUpgrade is FALSE, it contains DsRoleServerUnknown.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timer events are required on the server other than the timers required in the underlying
 RPC transport, as specified in [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The server MUST listen on the well-known endpoint that is defined for this RPC interface. For more
 information, see section 2.1.<8>
@@ -1501,7 +1435,8 @@ Directory Services Setup Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Else
 
@@ -1510,9 +1445,9 @@ Else
 If DNSDomainName is not NULL, then ComputerRole is set to DsRole_RoleMemberServer, else
 ComputerRole is set to DsRoleStandaloneServer.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Promotion
+##### 3.2.4.1 Promotion
 
 Promotion is the act of configuring a server operating system to be a domain controller. At the
 beginning of promotion, ComputerOperationState MUST be set to DsRoleOperationActive. At the end
@@ -1527,7 +1462,7 @@ are not required for interoperation with clients. The required configuration for
 the abstract state required of a domain controller's existence as described in [MS-ADTS] section
 6.1.2.1.
 
-3.2.4.2  Demotion
+##### 3.2.4.2 Demotion
 
 Demotion is the act of configuring a domain controller to no longer be a domain controller. At the
 beginning of demotion, ComputerOperationState MUST be set to DsRoleOperationActive. At the end of
@@ -1540,7 +1475,7 @@ The operation or set of operations that constitute demotion (that configure a do
 longer be a domain controller) are server-to-server operations and are not included in this document,
 and are not required for interoperation with clients.
 
-3.2.4.3  Upgrade
+##### 3.2.4.3 Upgrade
 
 Upgrade is the act of promotion using values suggested from a previously existing source.<11> No
 upgrade-specific constraints are applied to these values; for example, the NetBIOS name of the new
@@ -1572,7 +1507,8 @@ Directory Services Setup Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  ComputerUpgrade MUST be set to FALSE.
+
+  ComputerUpgrade MUST be set to FALSE.
 
 
 
@@ -1581,7 +1517,7 @@ PreviousServerState MUST be set to DsRoleServerUnknown.
 The operation or set of operations that constitute upgrade are server-to-server operations and are not
 included in this document; they are not required for interoperation with clients.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 For authenticated RPC over SMB, the details of method authentication are specific to the underlying
 RPC implementation, as specified in [C706] section 13, [MS-RPCE] section 5, and [MS-SMB] section 5.
@@ -1648,7 +1584,7 @@ Opnum: 11
 
 All methods MUST NOT throw exceptions.
 
-3.2.5.1  DsRolerGetPrimaryDomainInformation (Opnum 0)
+##### 3.2.5.1 DsRolerGetPrimaryDomainInformation (Opnum 0)
 
 The DsRolerGetPrimaryDomainInformation (Opnum 0) method returns the requested information
 about the current configuration or state of the computer on which the server is running.
@@ -1668,7 +1604,8 @@ Directory Services Setup Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-InfoLevel: The type of data requested by the client. For possible values in this enumeration, see
+
+InfoLevel: The type of data requested by the client. For possible values in this enumeration, see
 
 section 2.2.7.
 
@@ -1746,7 +1683,8 @@ Release: April 23, 2024
 
 21 / 32
 
-When InfoLevel is DsRoleUpgradeStatus, the server sets the requested information into the
+
+When InfoLevel is DsRoleUpgradeStatus, the server sets the requested information into the
 UpgradStatusInfo field of the DomainInfo parameter, whose type is
 DSROLE_UPGRADE_STATUS_INFO. The result MUST be constructed in the following manner:
 
@@ -1764,12 +1702,12 @@ DSROLE_OPERATION_STATE_INFO. The result MUST be constructed by setting the Opera
 member of the OperationStateInfo structure according to the value of the ComputerOperationState
 state element.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 No timer events are required on the server other than the events maintained in the underlying RPC
 transport.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 No additional local events are used on the server other than the events maintained in the underlying
 RPC transport.
@@ -1781,7 +1719,8 @@ Release: April 23, 2024
 
 22 / 32
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following is an example of a DsRolerGetPrimaryDomainInformation RPC method.
 
@@ -1808,16 +1747,17 @@ Release: April 23, 2024
 
 23 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Information returned by this protocol can reveal more than is appropriate for anonymous users, thus
 resulting in an information leak. An anonymous user can access DsRolerGetPrimaryDomainInformation
 on a domain controller but not on a computer that is not running a domain controller. Implementers
 therefore need to determine whether to allow access to anonymous users.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -1841,7 +1781,8 @@ Release: April 23, 2024
 
 24 / 32
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
  import "ms-dtyp.idl";
   [
@@ -1916,7 +1857,8 @@ Release: April 23, 2024
 
 25 / 32
 
- PDSROLER_PRIMARY_DOMAIN_INFORMATION *DomainInfo );
+
+ PDSROLER_PRIMARY_DOMAIN_INFORMATION *DomainInfo );
 
  /*The following methods are part of the dssetup
  interface in Windows 2000, Windows XP RTM,
@@ -1945,7 +1887,8 @@ Release: April 23, 2024
 
 26 / 32
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2013,7 +1956,8 @@ Release: April 23, 2024
 
 27 / 32
 
-<1> Section 1.7: Windows RPC protocol returns RPC_S_PROCNUM_OUT_OF_RANGE to notify the
+
+<1> Section 1.7: Windows RPC protocol returns RPC_S_PROCNUM_OUT_OF_RANGE to notify the
 client that an RPC method is out of range, as specified in [MS-RPCE].
 
 <2> Section 2.1: Applicable Windows Server releases listen on all protocols bound to RPC. Windows
@@ -2081,7 +2025,8 @@ Release: April 23, 2024
 
 28 / 32
 
-<13> Section 3.2.5.1: Windows domain controllers allow any authenticated or unauthenticated
+
+<13> Section 3.2.5.1: Windows domain controllers allow any authenticated or unauthenticated
 connection to invoke DsRolerGetPrimaryDomainInformation. Computers running Windows that are not
 domain controllers require the connection not to be anonymous.
 
@@ -2095,7 +2040,8 @@ Release: April 23, 2024
 
 29 / 32
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2139,7 +2085,8 @@ Release: April 23, 2024
 
 30 / 32
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2278,7 +2225,8 @@ Product behavior 27
 
 31 / 32
 
-R
+
+R
 
 References 9
    informative 10

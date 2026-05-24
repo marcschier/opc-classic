@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 63
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 63
 
-Date
+
+Date
 
 Revision
 History
@@ -518,7 +520,8 @@ Release: April 23, 2024
 
 3 / 63
 
-Date
+
+Date
 
 Revision
 History
@@ -551,184 +554,86 @@ Release: April 23, 2024
 
 4 / 63
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server](#211-server)
+    - [2.1.2 Client](#212-client)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 INET_INFO_IMPERSONATE_HANDLE](#221-inetinfoimpersonatehandle)
+    - [2.2.2 Internet Protocol Server Identifiers](#222-internet-protocol-server-identifiers)
+    - [2.2.3 INET_INFO_CONFIG_INFO](#223-inetinfoconfiginfo)
+    - [2.2.4 INET_LOG_CONFIGURATION](#224-inetlogconfiguration)
+    - [2.2.5 INET_INFO_IP_SEC_LIST](#225-inetinfoipseclist)
+    - [2.2.6 INET_INFO_IP_SEC_ENTRY](#226-inetinfoipsecentry)
+    - [2.2.7 INET_INFO_VIRTUAL_ROOT_LIST](#227-inetinfovirtualrootlist)
+    - [2.2.8 INET_INFO_VIRTUAL_ROOT_ENTRY](#228-inetinfovirtualrootentry)
+    - [2.2.9 INET_INFO_SITE_LIST](#229-inetinfositelist)
+    - [2.2.10 INET_INFO_SITE_ENTRY](#2210-inetinfositeentry)
+    - [2.2.11 INET_INFO_GLOBAL_CONFIG_INFO](#2211-inetinfoglobalconfiginfo)
+    - [2.2.12 INET_INFO_STATISTICS_INFO](#2212-inetinfostatisticsinfo)
+    - [2.2.13 INET_INFO_STATISTICS_0](#2213-inetinfostatistics0)
+    - [2.2.14 INETA_ATQ_STATISTICS](#2214-inetaatqstatistics)
+    - [2.2.15 INETA_CACHE_STATISTICS](#2215-inetacachestatistics)
+    - [2.2.16 INET_INFO_CAPABILITIES_STRUCT](#2216-inetinfocapabilitiesstruct)
+    - [2.2.17 INET_INFO_CAP_FLAGS](#2217-inetinfocapflags)
+    - [2.2.18 W3_STATISTICS_STRUCT](#2218-w3statisticsstruct)
+    - [2.2.19 W3_STATISTICS_1](#2219-w3statistics1)
+    - [2.2.20 FTP_STATISTICS_STRUCT](#2220-ftpstatisticsstruct)
+    - [2.2.21 FTP_STATISTICS_0](#2221-ftpstatistics0)
+    - [2.2.22 IIS_USER_ENUM_STRUCT](#2222-iisuserenumstruct)
+    - [2.2.23 IIS_USER_INFO_1_CONTAINER](#2223-iisuserinfo1container)
+    - [2.2.24 IIS_USER_INFO_1](#2224-iisuserinfo1)
+    - [2.2.25 Common Error Codes](#2225-common-error-codes)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Inetinfo Server Details](#31-inetinfo-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 R_InetInfoGetVersion (Opnum 0)](#3151-rinetinfogetversion-opnum-0)
+      - [3.1.5.2 R_InetInfoGetAdminInformation (Opnum 1)](#3152-rinetinfogetadmininformation-opnum-1)
+      - [3.1.5.3 R_InetInfoGetSites (Opnum 2)](#3153-rinetinfogetsites-opnum-2)
+      - [3.1.5.4 R_InetInfoSetAdminInformation (Opnum 3)](#3154-rinetinfosetadmininformation-opnum-3)
+      - [3.1.5.5 R_InetInfoGetGlobalAdminInformation (Opnum 4)](#3155-rinetinfogetglobaladmininformation-opnum-4)
+      - [3.1.5.6 R_InetInfoSetGlobalAdminInformation (Opnum 5)](#3156-rinetinfosetglobaladmininformation-opnum-5)
+      - [3.1.5.7 R_InetInfoQueryStatistics (Opnum 6)](#3157-rinetinfoquerystatistics-opnum-6)
+      - [3.1.5.8 R_InetInfoClearStatistics (Opnum 7)](#3158-rinetinfoclearstatistics-opnum-7)
+      - [3.1.5.9 R_InetInfoFlushMemoryCache (Opnum 8)](#3159-rinetinfoflushmemorycache-opnum-8)
+      - [3.1.5.10 R_InetInfoGetServerCapabilities (Opnum 9)](#31510-rinetinfogetservercapabilities-opnum-9)
+      - [3.1.5.11 R_W3QueryStatistics2 (Opnum 10)](#31511-rw3querystatistics2-opnum-10)
+      - [3.1.5.12 R_W3ClearStatistics2 (Opnum 11)](#31512-rw3clearstatistics2-opnum-11)
+      - [3.1.5.13 R_FtpQueryStatistics2 (Opnum 12)](#31513-rftpquerystatistics2-opnum-12)
+      - [3.1.5.14 R_FtpClearStatistics2 (Opnum 13)](#31514-rftpclearstatistics2-opnum-13)
+      - [3.1.5.15 R_IISEnumerateUsers (Opnum 14)](#31515-riisenumerateusers-opnum-14)
+      - [3.1.5.16 R_IISDisconnectUser (Opnum 15)](#31516-riisdisconnectuser-opnum-15)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ........................................................................................................ 8
-Normative References ................................................................................... 9
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 10
-Standards Assignments ..................................................................................... 10
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-
-2  Messages ............................................................................................................... 11
-Transport ........................................................................................................ 11
-Server ....................................................................................................... 11
-Client ........................................................................................................ 11
-Common Data Types ........................................................................................ 11
-INET_INFO_IMPERSONATE_HANDLE ............................................................. 11
-2.2.1
-Internet Protocol Server Identifiers ............................................................... 11
-2.2.2
-INET_INFO_CONFIG_INFO ........................................................................... 12
-2.2.3
-INET_LOG_CONFIGURATION ........................................................................ 15
-2.2.4
-INET_INFO_IP_SEC_LIST ............................................................................ 16
-2.2.5
-INET_INFO_IP_SEC_ENTRY.......................................................................... 16
-2.2.6
-INET_INFO_VIRTUAL_ROOT_LIST ................................................................. 17
-2.2.7
-INET_INFO_VIRTUAL_ROOT_ENTRY .............................................................. 17
-2.2.8
-INET_INFO_SITE_LIST ................................................................................ 17
-2.2.9
-INET_INFO_SITE_ENTRY ............................................................................. 18
-2.2.10
-INET_INFO_GLOBAL_CONFIG_INFO .............................................................. 18
-2.2.11
-INET_INFO_STATISTICS_INFO ..................................................................... 19
-2.2.12
-INET_INFO_STATISTICS_0 .......................................................................... 19
-2.2.13
-INETA_ATQ_STATISTICS ............................................................................. 19
-2.2.14
-INETA_CACHE_STATISTICS ......................................................................... 20
-2.2.15
-INET_INFO_CAPABILITIES_STRUCT .............................................................. 21
-2.2.16
-2.2.17
-INET_INFO_CAP_FLAGS .............................................................................. 22
-2.2.18  W3_STATISTICS_STRUCT ............................................................................ 24
-2.2.19  W3_STATISTICS_1 ..................................................................................... 25
-FTP_STATISTICS_STRUCT ........................................................................... 28
-2.2.20
-FTP_STATISTICS_0 ..................................................................................... 28
-2.2.21
-IIS_USER_ENUM_STRUCT ........................................................................... 29
-2.2.22
-IIS_USER_INFO_1_CONTAINER.................................................................... 30
-2.2.23
-IIS_USER_INFO_1 ...................................................................................... 30
-2.2.24
-Common Error Codes .................................................................................. 30
-2.2.25
-
-3.1
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 32
-Inetinfo Server Details ...................................................................................... 32
-Abstract Data Model .................................................................................... 32
-Timers ...................................................................................................... 32
-Initialization ............................................................................................... 32
-Higher-Layer Triggered Events ..................................................................... 32
-Message Processing Events and Sequencing Rules .......................................... 32
-R_InetInfoGetVersion (Opnum 0) ............................................................ 35
-R_InetInfoGetAdminInformation (Opnum 1) ............................................. 36
-R_InetInfoGetSites (Opnum 2) ............................................................... 36
-R_InetInfoSetAdminInformation (Opnum 3) ............................................. 37
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-[MS-IRP] - v20240423
-Internet Information Services (IIS) Inetinfo Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 63
-
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-3.1.5.10
-3.1.5.11
-3.1.5.12
-3.1.5.13
-3.1.5.14
-3.1.5.15
-3.1.5.16
-
-R_InetInfoGetGlobalAdminInformation (Opnum 4) .................................... 38
-R_InetInfoSetGlobalAdminInformation (Opnum 5) .................................... 38
-R_InetInfoQueryStatistics (Opnum 6) ...................................................... 39
-R_InetInfoClearStatistics (Opnum 7) ....................................................... 40
-R_InetInfoFlushMemoryCache (Opnum 8) ................................................ 40
-R_InetInfoGetServerCapabilities (Opnum 9) ............................................. 41
-R_W3QueryStatistics2 (Opnum 10) ......................................................... 41
-R_W3ClearStatistics2 (Opnum 11) .......................................................... 42
-R_FtpQueryStatistics2 (Opnum 12) ......................................................... 43
-R_FtpClearStatistics2 (Opnum 13) .......................................................... 44
-R_IISEnumerateUsers (Opnum 14) ......................................................... 45
-R_IISDisconnectUser (Opnum 15) ........................................................... 45
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 47
-
-5  Security ................................................................................................................. 48
-Security Considerations for Implementers ........................................................... 48
-Index of Security Parameters ............................................................................ 48
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 49
-
-7  Appendix B: Product Behavior ............................................................................... 56
-
-8  Change Tracking .................................................................................................... 60
-
-9  Index ..................................................................................................................... 61
-
-[MS-IRP] - v20240423
-Internet Information Services (IIS) Inetinfo Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 63
-
-1  Introduction
+## 1 Introduction
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol is a remote procedure call (RPC)–
 based client/server protocol that is used for managing Internet protocol servers such as those
@@ -743,7 +648,7 @@ The version for this interface is 2.0.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -801,7 +706,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Internet protocol server instance (server instance): A configuration collection for an
+
+Internet protocol server instance (server instance): A configuration collection for an
 
 Internet protocol server that will establish its own network protocol endpoint. A single
 Internet protocol server can configure multiple server instances that would each appear to
@@ -865,7 +771,7 @@ client/server instance. For more information, see [C706].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -877,10 +783,11 @@ Release: April 23, 2024
 
 8 / 63
 
-in the library are not updated at the same time, the section numbers in the documents may not
+
+in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -897,7 +804,7 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-IIS] Microsoft Corporation, "Internet Information Services (IIS)",
 http://msdn.microsoft.com/en-us/library/aa286507.aspx
@@ -920,7 +827,7 @@ editor.org/info/rfc2818
 [RFC3875] Robinson, D., and Coar, K., "The Common Gateway Interface (CGI) Version 1.1", October
 2004, http://www.ietf.org/rfc/rfc3875
 
-1.3  Overview
+### 1.3 Overview
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol provides functions that allow remote
 administration and statistics gathering from an Internet protocol server such as a server
@@ -938,34 +845,35 @@ Release: April 23, 2024
 
 9 / 63
 
-1.4  Relationship to Other Protocols
+
+### 1.4 Relationship to Other Protocols
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol uses RPC as its protocol transport,
 as specified in [MS-RPCE].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that the client and server be able to communicate by means of an RPC
 connection, as specified in section 2.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol is appropriate for managing an
 Internet protocol server or a collection of such servers on a remote computer.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol has been modified between versions
 of IIS in ways that make interoperability between different server implementations difficult.
 Modifications to the interface between IIS versions will be noted in section 2.2 or section 3.1.<1>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses Win32 error codes. These values are taken from the Windows error number space
 as specified in [MS-ERREF] section 2.2. Vendors SHOULD reuse those values with their indicated
 meaning.  Choosing any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -976,14 +884,15 @@ Release: April 23, 2024
 
 10 / 63
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol MUST use RPC as the transport
 protocol.
 
-2.1.1  Server
+#### 2.1.1 Server
 
 The server interface MUST be identified by UUID "82ad4280-036b-11cf-972c-00aa006887b0", version
 2.0.
@@ -998,7 +907,7 @@ implementation, as specified in [MS-RPCE] section 2.1.1.1.
 The server SHOULD specify "NTLM" (0xA) as the RPC authentication service, as specified in [MS-
 RPCE] section 3.<2>
 
-2.1.2  Client
+#### 2.1.2 Client
 
 The client SHOULD use RPC over SMB (ncacn_np) or RPC over TCP/IP (ncacn_ip_tcp) as the RPC
 protocol sequence to communicate with the server. Using other protocol sequences MAY work
@@ -1008,7 +917,7 @@ The client MAY use an authentication level of privacy to connect to the server a
 not support this authentication level, it MAY fall back to connection. Authentication levels are specified
 in [MS-RPCE].
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to the RPC data types that are specified in [MS-RPCE], the sections that follow use the
 definitions of DWORD, WCHAR, LPWSTR, LCID, LARGE_INTEGER, and BYTE, as specified in [MS-
@@ -1016,7 +925,7 @@ DTYP].
 
 For more information on the additional data types in the following sections, see [MSDN-MIDL].
 
-2.2.1  INET_INFO_IMPERSONATE_HANDLE
+#### 2.2.1 INET_INFO_IMPERSONATE_HANDLE
 
 The INET_INFO_IMPERSONATE_HANDLE type defines a pointer to an array of WCHAR elements. The
 client uses this pointer as a custom binding handle, which it converts to an explicit server binding
@@ -1034,7 +943,8 @@ Release: April 23, 2024
 
 11 / 63
 
-2.2.2  Internet Protocol Server Identifiers
+
+#### 2.2.2 Internet Protocol Server Identifiers
 
 The service identifiers listed below are used by several methods of the Internet Information Services
 (IIS) Inetinfo Remote Protocol to indicate the type of Internet protocol server targeted by the
@@ -1121,7 +1031,7 @@ Identifies the Internet Message Access Protocol (IMAP) service.
 
 0x00001000
 
-2.2.3  INET_INFO_CONFIG_INFO
+#### 2.2.3 INET_INFO_CONFIG_INFO
 
 The INET_INFO_CONFIG_INFO structure stores configuration values for an Internet protocol
 server.<3>
@@ -1138,7 +1048,8 @@ Release: April 23, 2024
 
 12 / 63
 
-   DWORD dwConnectionTimeout;
+
+   DWORD dwConnectionTimeout;
    DWORD dwMaxConnections;
    [string] LPWSTR lpszAdminName;
    [string] LPWSTR lpszAdminEmail;
@@ -1248,7 +1159,8 @@ Release: April 23, 2024
 
 13 / 63
 
-Name
+
+Name
 
 Value
 
@@ -1339,7 +1251,8 @@ Release: April 23, 2024
 
 14 / 63
 
-GrantIPList:  A pointer to an INET_INFO_IP_SEC_LIST structure that contains a list of IP
+
+GrantIPList:  A pointer to an INET_INFO_IP_SEC_LIST structure that contains a list of IP
 
 addresses that will be granted connections to the Internet protocol server.
 
@@ -1347,7 +1260,7 @@ VirtualRoots:  A pointer to an INET_INFO_VIRTUAL_ROOT_LIST structure that contai
 
 virtual root directories for the Internet protocol server instance.
 
-2.2.4  INET_LOG_CONFIGURATION
+#### 2.2.4 INET_LOG_CONFIGURATION
 
 The INET_LOG_CONFIGURATION structure contains configuration information for Internet
 protocol server logging.
@@ -1437,7 +1350,8 @@ Release: April 23, 2024
 
 15 / 63
 
-Value
+
+Value
 
 Meaning
 
@@ -1481,7 +1395,7 @@ rgchPassword:  A null-terminated string that specifies the password associated w
 
 rgchUserName user name.
 
-2.2.5  INET_INFO_IP_SEC_LIST
+#### 2.2.5 INET_INFO_IP_SEC_LIST
 
 The INET_INFO_IP_SEC_LIST structure contains a list of INET_INFO_IP_SEC_ENTRY entries.
 
@@ -1497,7 +1411,7 @@ cEntries:  The number of entries contained in the list.
 
 aIPSecEntry:  An array of INET_INFO_IP_SEC_ENTRY entries.
 
-2.2.6  INET_INFO_IP_SEC_ENTRY
+#### 2.2.6 INET_INFO_IP_SEC_ENTRY
 
 The INET_INFO_IP_SEC_ENTRY structure contains Internet Protocol Security (IPv4) entries.
 
@@ -1518,9 +1432,10 @@ Release: April 23, 2024
 
 16 / 63
 
-dwNetwork:  The IP address. Data is stored in network byte order.
 
-2.2.7  INET_INFO_VIRTUAL_ROOT_LIST
+dwNetwork:  The IP address. Data is stored in network byte order.
+
+#### 2.2.7 INET_INFO_VIRTUAL_ROOT_LIST
 
 The INET_INFO_VIRTUAL_ROOT_LIST structure contains a list of
 INET_INFO_VIRTUAL_ROOT_ENTRY virtual root entries.
@@ -1537,7 +1452,7 @@ cEntries:  The number of entries contained in the list.
 
 aVirtRootEntry:  An array of INET_INFO_VIRTUAL_ROOT_ENTRY entries.
 
-2.2.8  INET_INFO_VIRTUAL_ROOT_ENTRY
+#### 2.2.8 INET_INFO_VIRTUAL_ROOT_ENTRY
 
 The INET_INFO_VIRTUAL_ROOT_ENTRY structure contains data describing a virtual root for the
 Internet protocol server instance.
@@ -1569,7 +1484,7 @@ AccountPassword:  Null-terminated WCHAR array containing the password for pszAcc
 
 dwError:  The error code stored for the virtual root.
 
-2.2.9  INET_INFO_SITE_LIST
+#### 2.2.9 INET_INFO_SITE_LIST
 
 The INET_INFO_SITE_LIST structure contains a list of INET_INFO_SITE_ENTRY site entries.
 
@@ -1584,7 +1499,8 @@ Release: April 23, 2024
 
 17 / 63
 
-   DWORD cEntries;
+
+   DWORD cEntries;
    [size_is(cEntries)] INET_INFO_SITE_ENTRY aSiteEntry[];
  } INET_INFO_SITE_LIST,
   *LPINET_INFO_SITE_LIST;
@@ -1593,7 +1509,7 @@ cEntries:  The number of entries contained in the list.
 
 aSiteEntry:   An array of INET_INFO_SITE_ENTRY site entries.
 
-2.2.10 INET_INFO_SITE_ENTRY
+#### 2.2.10 INET_INFO_SITE_ENTRY
 
 The INET_INFO_SITE_ENTRY structure contains information describing an Internet protocol
 server instance.
@@ -1610,7 +1526,7 @@ pszComment:  The server instance comment.
 
 dwInstance:  The server instance identifier.
 
-2.2.11 INET_INFO_GLOBAL_CONFIG_INFO
+#### 2.2.11 INET_INFO_GLOBAL_CONFIG_INFO
 
 The INET_INFO_GLOBAL_CONFIG_INFO structure contains configuration data global to all the
 Internet protocol services managed by this protocol.
@@ -1651,7 +1567,8 @@ Release: April 23, 2024
 
 18 / 63
 
-2.2.12 INET_INFO_STATISTICS_INFO
+
+#### 2.2.12 INET_INFO_STATISTICS_INFO
 
 The INET_INFO_STATISTICS_INFO union contains a pointer to an INET_INFO_STATISTICS_0
 structure.
@@ -1671,7 +1588,7 @@ InetStats0:  The pointer to an INET_INFO_STATISTICS_0 structure that contains st
 
 information relevant to the Internet protocol server.
 
-2.2.13 INET_INFO_STATISTICS_0
+#### 2.2.13 INET_INFO_STATISTICS_0
 
 The INET_INFO_STATISTICS_0 structure contains statistics for an Internet protocol server.
 
@@ -1697,7 +1614,7 @@ nAuxCounters:  The number of initialized elements in rgCounters. MUST be 0.
 
 rgCounters:  An array of 20 elements. This field is unused and MUST be ignored by clients.
 
-2.2.14 INETA_ATQ_STATISTICS
+#### 2.2.14 INETA_ATQ_STATISTICS
 
 The INETA_ATQ_STATISTICS structure contains network I/O statistics and client connection
 information for an Internet protocol server.
@@ -1720,7 +1637,8 @@ Release: April 23, 2024
 
 19 / 63
 
-TotalBlockedRequests:  The total number of blocked requests.
+
+TotalBlockedRequests:  The total number of blocked requests.
 
 TotalRejectedRequests:  The total number of rejected requests.
 
@@ -1730,7 +1648,7 @@ CurrentBlockedRequests:  The total number of currently blocked requests.
 
 MeasuredBandwidth:  The measured network bandwidth in bytes per second.
 
-2.2.15 INETA_CACHE_STATISTICS
+#### 2.2.15 INETA_CACHE_STATISTICS
 
  The INETA_CACHE_STATISTICS structure contains statistics for the Internet protocol server's
 caches.<6>
@@ -1793,7 +1711,8 @@ Release: April 23, 2024
 
 20 / 63
 
-TotalFlushed:  The number of files removed from the cache since Internet protocol server startup.
+
+TotalFlushed:  The number of files removed from the cache since Internet protocol server startup.
 
 URICached:  The number of URI information blocks currently cached by the Internet protocol server.
 
@@ -1829,7 +1748,7 @@ TotalBlobFlushed:  The total number of BLOB information blocks that have been re
 
 cache since Internet protocol server startup.
 
-2.2.16 INET_INFO_CAPABILITIES_STRUCT
+#### 2.2.16 INET_INFO_CAPABILITIES_STRUCT
 
 The INET_INFO_CAPABILITIES_STRUCT structure specifies the features supported by an
 Internet protocol server implementation.
@@ -1874,7 +1793,8 @@ Release: April 23, 2024
 
 21 / 63
 
-Value
+
+Value
 
 0x00000002
 
@@ -1914,7 +1834,7 @@ CapFlags:  The pointer to an array of INET_INFO_CAP_FLAGS structures that define
 
 capabilities.
 
-2.2.17 INET_INFO_CAP_FLAGS
+#### 2.2.17 INET_INFO_CAP_FLAGS
 
 The INET_INFO_CAP_FLAGS structure contains information on features that are available for a
 protocol server.
@@ -1976,7 +1896,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2095,7 +2016,8 @@ Release: April 23, 2024
 
 23 / 63
 
-Value
+
+Value
 
 Meaning
 
@@ -2196,7 +2118,7 @@ IIS_CAP1_POOLED_OOP
 The Internet protocol server supports running a pool of applications in
 a separate process.
 
-2.2.18 W3_STATISTICS_STRUCT
+#### 2.2.18 W3_STATISTICS_STRUCT
 
 The W3_STATISTICS_STRUCT union contains a pointer to a W3_STATISTICS_1 structure.
 
@@ -2213,7 +2135,8 @@ Release: April 23, 2024
 
 24 / 63
 
-   [case(0)]
+
+   [case(0)]
      LPW3_STATISTICS_1 StatInfo1;
    [default]     ;
  } W3_STATISTICS_STRUCT,
@@ -2221,7 +2144,7 @@ Release: April 23, 2024
 
 StatInfo1:  The pointer to a W3_STATISTICS_1 structure that contains the HTTP protocol statistics.
 
-2.2.19 W3_STATISTICS_1
+#### 2.2.19 W3_STATISTICS_1
 
 The W3_STATISTICS_1 structure contains statistics on the usage of the HTTP server.
 
@@ -2287,7 +2210,8 @@ Release: April 23, 2024
 
 25 / 63
 
-   DWORD TimeOfLastClear;
+
+   DWORD TimeOfLastClear;
    DWORD nAuxCounters;
    DWORD rgCounters[20];
  } W3_STATISTICS_1,
@@ -2362,7 +2286,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TotalProppatch:  The total number of WebDAV requests made using the PROPPATCH method.
+
+TotalProppatch:  The total number of WebDAV requests made using the PROPPATCH method.
 
 TotalSearch:  The total number of requests made using the SEARCH method.
 
@@ -2436,7 +2361,8 @@ Release: April 23, 2024
 
 27 / 63
 
-2.2.20 FTP_STATISTICS_STRUCT
+
+#### 2.2.20 FTP_STATISTICS_STRUCT
 
 The FTP_STATISTICS_STRUCT union contains a pointer to an FTP_STATISTICS_0 structure.
 
@@ -2453,7 +2379,7 @@ This type is declared as follows:
 
 StatInfo0:  The pointer to an FTP_STATISTICS_0 structure that contains the FTP server statistics.
 
-2.2.21 FTP_STATISTICS_0
+#### 2.2.21 FTP_STATISTICS_0
 
 The FTP_STATISTICS_0 structure contains statistics on the usage of the FTP server.
 
@@ -2505,7 +2431,8 @@ Release: April 23, 2024
 
 28 / 63
 
-TotalAnonymousUsers:  The total number of anonymous users that have ever connected to the FTP
+
+TotalAnonymousUsers:  The total number of anonymous users that have ever connected to the FTP
 
 server.
 
@@ -2543,7 +2470,7 @@ MeasuredBandwidth:  The measured network bandwidth for the FTP server.
 
 TimeOfLastClear:  The time of the last clear.
 
-2.2.22 IIS_USER_ENUM_STRUCT
+#### 2.2.22 IIS_USER_ENUM_STRUCT
 
 The IIS_USER_ENUM_STRUCT structure contains a pointer to an
 IIS_USER_INFO_1_CONTAINER.
@@ -2577,7 +2504,8 @@ Release: April 23, 2024
 
 29 / 63
 
-2.2.23 IIS_USER_INFO_1_CONTAINER
+
+#### 2.2.23 IIS_USER_INFO_1_CONTAINER
 
 The IIS_USER_INFO_1_CONTAINER structure contains a list of IIS_USER_INFO_1 structures
 describing users who are actively connected to the Internet protocol server.
@@ -2594,7 +2522,7 @@ EntriesRead:  The total number of IIS_USER_INFO objects in Buffer.
 
 Buffer:  The pointer to an array of IIS_USER_INFO_1 structures.
 
-2.2.24 IIS_USER_INFO_1
+#### 2.2.24 IIS_USER_INFO_1
 
 The IIS_USER_INFO_1 structure describes a user connected to an Internet protocol server.
 
@@ -2635,7 +2563,7 @@ inetHost:  The host IPv4 address. Data is stored in network byte order.
 
 tConnect:  The user connection time measured in elapsed seconds.
 
-2.2.25 Common Error Codes
+#### 2.2.25 Common Error Codes
 
 Unless specified explicitly, the methods of the Internet Information Services (IIS) Inetinfo Remote
 Protocol MUST return 0 to indicate success and a nonzero implementation-specific value to indicate
@@ -2648,7 +2576,8 @@ Release: April 23, 2024
 
 30 / 63
 
-purposes and SHOULD simply be passed back to the invoking application. A list of error codes that are
+
+purposes and SHOULD simply be passed back to the invoking application. A list of error codes that are
 potentially returned is available, as specified in [MS-ERREF].<7>
 
 [MS-IRP] - v20240423
@@ -2658,7 +2587,8 @@ Release: April 23, 2024
 
 31 / 63
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the Internet Information Services (IIS) Inetinfo Remote
 Protocol, including abstract data models, interface method syntax, and message processing rules.
@@ -2668,7 +2598,7 @@ required on the client side of this protocol. Calls made by the higher-layer pro
 passed directly to the transport, and the results returned by the transport are passed directly back to
 the higher-layer protocol or application.
 
-3.1  Inetinfo Server Details
+### 3.1 Inetinfo Server Details
 
 The IIS Inetinfo Remote Protocol server handles client requests for any of the messages that are
 specified in section 2. For each of those messages, the behavior of the server is specified in section
@@ -2679,7 +2609,7 @@ a particular Internet protocol server might only be able to support a subset of 
 the interface. For methods that are not implemented, the server SHOULD return
 ERROR_NOT_SUPPORTED (0x00000032).
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol provides runtime status and
 statistical data and manages runtime configuration for the Internet protocol server. The Internet
@@ -2687,23 +2617,23 @@ protocol server MUST provide a mechanism to collect runtime data and expose it t
 Information Services (IIS) Inetinfo Remote Protocol server. Some methods operate on configuration
 data that SHOULD be persisted beyond the lifetime of an Internet protocol server process.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol server MUST be initialized by
 registering the RPC interface and listening on the RPC well-known endpoint, as specified in section
 2.1. The server MUST then wait for Internet Information Services (IIS) Inetinfo Remote Protocol
 clients to establish a connection.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The Internet Information Services (IIS) Inetinfo Remote Protocol is invoked explicitly by an
 application.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The remainder of this section describes the server behavior for the RPC methods on the inetinfo
 interface that makes up the IIS Inetinfo Remote Protocol. IIS Inetinfo Remote Protocol clients can
@@ -2721,7 +2651,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2833,7 +2764,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -2946,7 +2878,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Structure
+
+Structure
 
 Description
 
@@ -2987,7 +2920,7 @@ This union contains a pointer to an FTP_STATISTICS_0 structure.
 In the preceding tables, "Reserved for local use" means that the client MUST NOT send the opnum,
 and the server behavior is undefined because it does not affect interoperability.<8>
 
-3.1.5.1  R_InetInfoGetVersion (Opnum 0)
+##### 3.1.5.1 R_InetInfoGetVersion (Opnum 0)
 
 The R_InetInfoGetVersion method is called by the client. In response, the server returns its version
 information.
@@ -3029,7 +2962,8 @@ Release: April 23, 2024
 
 35 / 63
 
-3.1.5.2  R_InetInfoGetAdminInformation (Opnum 1)
+
+##### 3.1.5.2 R_InetInfoGetAdminInformation (Opnum 1)
 
 The R_InetInfoGetAdminInformation method is called by the client. In response, the server
 retrieves configuration data for the specified Internet protocol server.
@@ -3084,7 +3018,7 @@ An implementation MAY support only a subset of the configuration data specified 
 INET_INFO_CONFIG_INFO structure, but it MUST set the FieldControl member for any valid value
 returned.
 
-3.1.5.3  R_InetInfoGetSites (Opnum 2)
+##### 3.1.5.3 R_InetInfoGetSites (Opnum 2)
 
 The R_InetInfoGetSites method is called by the client. In response, the server retrieves a list of
 server instances for the specified Internet protocol server.
@@ -3106,7 +3040,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-dwServerMask: The identifier for the target Internet protocol server, as specified in section 2.2.2.
+
+dwServerMask: The identifier for the target Internet protocol server, as specified in section 2.2.2.
 
 ppSites: The pointer to a pointer to INET_INFO_SITE_LIST that specifies the list of defined server
 
@@ -3133,7 +3068,7 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server SHOULD return a list of defined server instances
 in ppSites if the return code indicates success.<10>
 
-3.1.5.4  R_InetInfoSetAdminInformation (Opnum 3)
+##### 3.1.5.4 R_InetInfoSetAdminInformation (Opnum 3)
 
 The R_InetInfoSetAdminInformation method is called by the client. In response, the server sets
 configurable properties for the specified Internet protocol server.
@@ -3192,7 +3127,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-In response to this request from the client, the server SHOULD set the configurable properties in
+
+In response to this request from the client, the server SHOULD set the configurable properties in
 pConfig into the configuration store for the Internet protocol server specified by dwServerMask.
 
 The server MUST NOT access a field value in pConfig unless the corresponding flag in the
@@ -3204,7 +3140,7 @@ structure. If so, the server MUST ignore the field values sent by the client.
 The implementation MAY return an error if it is unable to persist a field value due to some internal
 error.
 
-3.1.5.5  R_InetInfoGetGlobalAdminInformation (Opnum 4)
+##### 3.1.5.5 R_InetInfoGetGlobalAdminInformation (Opnum 4)
 
 The R_InetInfoGetGlobalAdminInformation method is called by the client. In response, the server
 retrieves configuration data shared by all Internet protocol servers.
@@ -3236,7 +3172,7 @@ protocol, as specified in [MS-RPCE].
 In response to this request from the client, the server MUST return the configuration data in ppConfig,
 if the return code indicates success.
 
-3.1.5.6  R_InetInfoSetGlobalAdminInformation (Opnum 5)
+##### 3.1.5.6 R_InetInfoSetGlobalAdminInformation (Opnum 5)
 
 The R_InetInfoSetGlobalAdminInformation assigns global settings for all Internet protocol
 servers present on the host system.
@@ -3260,7 +3196,8 @@ Release: April 23, 2024
 
 38 / 63
 
-pConfig: The pointer to an INET_INFO_GLOBAL_CONFIG_INFO structure that contains global
+
+pConfig: The pointer to an INET_INFO_GLOBAL_CONFIG_INFO structure that contains global
 
 administrative information.
 
@@ -3291,7 +3228,7 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MUST set the configurable properties in pConfig
 into the configuration store for the Internet protocol servers if the return code indicates success.
 
-3.1.5.7  R_InetInfoQueryStatistics (Opnum 6)
+##### 3.1.5.7 R_InetInfoQueryStatistics (Opnum 6)
 
 The R_InetInfoQueryStatistics method is called by the client. In response, the server retrieves
 statistical data for the specified Internet protocol server.
@@ -3344,10 +3281,11 @@ Release: April 23, 2024
 
 39 / 63
 
-In response to this request from the client, the server MAY return the statistical data in StatsInfo if the
+
+In response to this request from the client, the server MAY return the statistical data in StatsInfo if the
 return code indicates success.<11>
 
-3.1.5.8  R_InetInfoClearStatistics (Opnum 7)
+##### 3.1.5.8 R_InetInfoClearStatistics (Opnum 7)
 
 The R_InetInfoClearStatistics is called by the client. In response, the server resets the statistical
 data maintained by the specified Internet protocol server.
@@ -3396,7 +3334,7 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MAY clear any accumulated data that would be
 returned by R_InetInfoQueryStatistics.<12>
 
-3.1.5.9  R_InetInfoFlushMemoryCache (Opnum 8)
+##### 3.1.5.9 R_InetInfoFlushMemoryCache (Opnum 8)
 
 The R_InetInfoFlushMemoryCache method is called by the client. In response, the server flushes
 data from the internal caches of the specified Internet protocol server.
@@ -3419,7 +3357,8 @@ Release: April 23, 2024
 
 40 / 63
 
-Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
+
+Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
 nonzero error code, as specified in [MS-ERREF] section 2.2 or  [MS-ERREF] section 2.3.1. The
 most common error codes are listed in the following table.
 
@@ -3440,9 +3379,9 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MUST flush data from the internal caches of the
 specified Internet protocol server. If dwServerMask is 0, caches are flushed for all protocol servers.
 
-3.1.5.10
+##### 3.1.5.10 R_InetInfoGetServerCapabilities (Opnum 9)
 
-R_InetInfoGetServerCapabilities (Opnum 9)
+
 
 The R_InetInfoGetServerCapabilities method is called by the client. In response, the server
 returns information on the features of the Internet protocol servers and the host operating system.
@@ -3476,9 +3415,9 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MUST initialize ppCap with those features
 supported by the current version of the Internet protocol servers if the return code indicates success.
 
-3.1.5.11
+##### 3.1.5.11 R_W3QueryStatistics2 (Opnum 10)
 
-R_W3QueryStatistics2 (Opnum 10)
+
 
 The R_W3QueryStatistics2 method is called by the client. In response, the server returns statistical
 data from the HTTP server.
@@ -3498,7 +3437,8 @@ Release: April 23, 2024
 
 41 / 63
 
-pszServer: The custom binding handle for the target system, as specified in section 2.1.1. The value
+
+pszServer: The custom binding handle for the target system, as specified in section 2.1.1. The value
 
 MUST NOT be used by the server implementation.
 
@@ -3559,9 +3499,9 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MUST initialize InfoStruct with the statistical
 data for the HTTP server if the return code indicates success.
 
-3.1.5.12
+##### 3.1.5.12 R_W3ClearStatistics2 (Opnum 11)
 
-R_W3ClearStatistics2 (Opnum 11)
+
 
 The R_W3ClearStatistics2 method is called by the client. In response, the server resets statistical
 data for the HTTP server.
@@ -3584,7 +3524,8 @@ Release: April 23, 2024
 
 42 / 63
 
-Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
+
+Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
 nonzero error code, as specified in [MS-ERREF] section 2.2 or [MS-ERREF] section 2.3.1. The most
 common error codes are listed in the following table.
 
@@ -3619,9 +3560,9 @@ server if the return code indicates success. If the data is reset, a time stamp 
 time stamp SHOULD be used to populate the TimeOfLastClear field of the W3_STATISTICS_1
 structure in subsequent calls to R_W3QueryStatistics2.<13>
 
-3.1.5.13
+##### 3.1.5.13 R_FtpQueryStatistics2 (Opnum 12)
 
-R_FtpQueryStatistics2 (Opnum 12)
+
 
 The R_FtpQueryStatistics2 method is called by the client. In response, the server returns statistical
 data from the FTP server.
@@ -3667,7 +3608,8 @@ Release: April 23, 2024
 
 43 / 63
 
-Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
+
+Return Values: The method returns 0 (ERROR_SUCCESS) to indicate success; otherwise, it returns a
 nonzero error code, as specified in [MS-ERREF] section 2.2 or [MS-ERREF] section 2.3.1. The most
 common error codes are listed in the following table.
 
@@ -3700,9 +3642,9 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MUST initialize InfoStruct with the statistical
 data for the FTP server if the return code indicates success.
 
-3.1.5.14
+##### 3.1.5.14 R_FtpClearStatistics2 (Opnum 13)
 
-R_FtpClearStatistics2 (Opnum 13)
+
 
 The R_FtpClearStatistics2 method is called by the client. In response, the server resets statistical
 data for the FTP server.
@@ -3758,12 +3700,13 @@ Release: April 23, 2024
 
 44 / 63
 
-stamp SHOULD be used to populate the TimeOfLastClear field of the FTP_STATISTICS_0 structure
+
+stamp SHOULD be used to populate the TimeOfLastClear field of the FTP_STATISTICS_0 structure
 in subsequent calls to R_FtpQueryStatistics2.<14>
 
-3.1.5.15
+##### 3.1.5.15 R_IISEnumerateUsers (Opnum 14)
 
-R_IISEnumerateUsers (Opnum 14)
+
 
 The R_IISEnumerateUsers method is called by the client. In response, the server returns a list of
 clients connected to the specified Internet protocol server.
@@ -3820,9 +3763,9 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MAY return a list of the clients connected to the
 protocol server if the return code indicates success.<15>
 
-3.1.5.16
+##### 3.1.5.16 R_IISDisconnectUser (Opnum 15)
 
-R_IISDisconnectUser (Opnum 15)
+
 
 The R_IISDisconnectUser method is called by the client. In response, the server disconnects the
 specified user from the specified Internet protocol server.
@@ -3841,7 +3784,8 @@ Release: April 23, 2024
 
 45 / 63
 
-pszServer: The custom binding handle for the target system, as specified in section 2.1.1. The value
+
+pszServer: The custom binding handle for the target system, as specified in section 2.1.1. The value
 
 MUST NOT be used by the server implementation.
 
@@ -3894,11 +3838,11 @@ as specified in [MS-RPCE].
 In response to this request from the client, the server MAY disconnect a specific user if the dwIdUser
 value specifies that user and SHOULD attempt to disconnect all users if dwIdUser is 0.<16>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -3909,7 +3853,8 @@ Release: April 23, 2024
 
 46 / 63
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section describes a sequence of operations to illustrate the function of the Internet Information
 Services (IIS) Inetinfo Remote Protocol.
@@ -3955,13 +3900,14 @@ Release: April 23, 2024
 
 47 / 63
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -3984,7 +3930,8 @@ Release: April 23, 2024
 
 48 / 63
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided where "ms-dtyp.idl" is the IDL, as specified in
 [MS-DTYP] Appendix A.
@@ -4057,7 +4004,8 @@ Release: April 23, 2024
 
 49 / 63
 
-     [string] LPWSTR  pszDirectory;
+
+     [string] LPWSTR  pszDirectory;
      DWORD   dwMask;
      [string] LPWSTR  pszAccountName;
      WCHAR   AccountPassword[257];
@@ -4134,7 +4082,8 @@ Release: April 23, 2024
 
 50 / 63
 
-     DWORD TotalURICached;
+
+     DWORD TotalURICached;
      DWORD URIHits;
      DWORD URIMisses;
      DWORD URIFlushes;
@@ -4211,7 +4160,8 @@ Release: April 23, 2024
 
 51 / 63
 
-     DWORD         TotalUnlock;
+
+     DWORD         TotalUnlock;
      DWORD         TotalOthers;
      DWORD         TotalCGIRequests;
      DWORD         TotalBGIRequests;
@@ -4288,7 +4238,8 @@ Release: April 23, 2024
 
 52 / 63
 
-  *LPFTP_STATISTICS_STRUCT;
+
+  *LPFTP_STATISTICS_STRUCT;
 
  typedef struct _IIS_USER_INFO_1 {
      DWORD           idUser;
@@ -4365,7 +4316,8 @@ Release: April 23, 2024
 
 53 / 63
 
-     );
+
+     );
 
  DWORD
  R_InetInfoQueryStatistics(
@@ -4442,7 +4394,8 @@ Release: April 23, 2024
 
 54 / 63
 
-     [in, string, unique] INET_INFO_IMPERSONATE_HANDLE pszServer,
+
+     [in, string, unique] INET_INFO_IMPERSONATE_HANDLE pszServer,
      [in] DWORD dwServiceId,
      [in] DWORD dwInstance,
      [in] DWORD dwIdUser
@@ -4462,7 +4415,8 @@ Release: April 23, 2024
 
 55 / 63
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -4529,7 +4483,8 @@ Internet Information Services (IIS) Inetinfo Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The version described as the standard in this document is IIS version 5.0 that shipped with Windows
+
+The version described as the standard in this document is IIS version 5.0 that shipped with Windows
 2000 Professional, and Windows 2000 Server.
 
 <2> Section 2.1.1: When the Windows implementation specifies "ncacn_np" as the RPC protocol, a
@@ -4595,7 +4550,8 @@ Release: April 23, 2024
 
 57 / 63
 
-     DWORD FileHits;
+
+     DWORD FileHits;
      DWORD FileMisses;
      DWORD FileFlushes;
      DWORDLONG CurrentFileCacheSize;
@@ -4669,7 +4625,8 @@ Release: April 23, 2024
 
 58 / 63
 
-     );
+
+     );
 
 This method returns 0 and does nothing.
 
@@ -4703,7 +4660,8 @@ Release: April 23, 2024
 
 59 / 63
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4747,7 +4705,8 @@ Release: April 23, 2024
 
 60 / 63
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -4879,7 +4838,8 @@ Release: April 23, 2024
 
 61 / 63
 
-   R_FtpClearStatistics2 (Opnum 13) 44
+
+   R_FtpClearStatistics2 (Opnum 13) 44
    R_FtpQueryStatistics2 (Opnum 12) 43
    R_IISDisconnectUser (Opnum 15) 45
    R_IISEnumerateUsers (Opnum 14) 45
@@ -5044,7 +5004,8 @@ Timers
 
 62 / 63
 
-   server 32
+
+   server 32
 Timers - server 32
 Tracking changes 60
 Transport 11

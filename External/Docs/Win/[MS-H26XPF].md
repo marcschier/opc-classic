@@ -64,7 +64,8 @@ Release: June 1, 2017
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -300,7 +301,8 @@ Release: June 1, 2017
 
 2 / 26
 
-Date
+
+Date
 
 Revision
 History
@@ -451,122 +453,59 @@ Release: June 1, 2017
 
 3 / 26
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 H.261 Payload Header](#221-h261-payload-header)
+    - [2.2.2 H.263 Payload Header, RFC Mode](#222-h263-payload-header-rfc-mode)
+    - [2.2.3 H.263 Payload Header, Draft Mode](#223-h263-payload-header-draft-mode)
+      - [2.2.3.1 Mode A](#2231-mode-a)
+      - [2.2.3.2 Mode B](#2232-mode-b)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client and Server Role Details](#31-client-and-server-role-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 H.261 Payload Format](#3111-h261-payload-format)
+      - [3.1.1.2 H.263 Payload Formats](#3112-h263-payload-formats)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 H.261 Payload Header, Intraframe](#41-h261-payload-header-intraframe)
+  - [4.2 H.263 Payload Header in Draft Mode, Mode B, Interframe](#42-h263-payload-header-in-draft-mode-mode-b-interframe)
+  - [4.3 H.261 Payload Header, Interframe](#43-h261-payload-header-interframe)
+  - [4.4 H.263 Payload Header in RFC Mode, Mode A, Intraframe](#44-h263-payload-header-in-rfc-mode-mode-a-intraframe)
+  - [4.5 H.263 Payload Header in RFC Mode, Mode A, Interframe](#45-h263-payload-header-in-rfc-mode-mode-a-interframe)
+  - [4.6 H.263 Payload Header in RFC Mode, Mode B, Intraframe](#46-h263-payload-header-in-rfc-mode-mode-b-intraframe)
+  - [4.7 H.263 Payload Header in RFC Mode, Mode B, Interframe](#47-h263-payload-header-in-rfc-mode-mode-b-interframe)
+  - [4.8 H.263 Payload Header in Draft Mode, Mode A, Intraframe](#48-h263-payload-header-in-draft-mode-mode-a-intraframe)
+  - [4.9 H.263 Payload Header in Draft Mode, Mode A, Interframe](#49-h263-payload-header-in-draft-mode-mode-a-interframe)
+  - [4.10 H.263 Payload Header in Draft Mode, Mode B, Intraframe](#410-h263-payload-header-in-draft-mode-mode-b-intraframe)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 6
-Normative References ................................................................................... 6
-Informative References ................................................................................. 6
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 7
-Applicability Statement ....................................................................................... 7
-Versioning and Capability Negotiation ................................................................... 7
-Vendor-Extensible Fields ..................................................................................... 7
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-H.261 Payload Header ................................................................................... 9
-H.263 Payload Header, RFC Mode ................................................................... 9
-H.263 Payload Header, Draft Mode ................................................................. 9
-Mode A .................................................................................................. 9
-Mode B ................................................................................................ 10
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2.3.1
-2.2.3.2
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3  Protocol Details ..................................................................................................... 12
-Client and Server Role Details ............................................................................ 12
-Abstract Data Model .................................................................................... 12
-H.261 Payload Format ........................................................................... 12
-H.263 Payload Formats .......................................................................... 12
-Timers ...................................................................................................... 12
-Initialization ............................................................................................... 12
-Higher-Layer Triggered Events ..................................................................... 13
-Message Processing Events and Sequencing Rules .......................................... 13
-Timer Events .............................................................................................. 13
-Other Local Events ...................................................................................... 13
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-4  Protocol Examples ................................................................................................. 14
-H.261 Payload Header, Intraframe ..................................................................... 14
-4.1
-H.263 Payload Header in Draft Mode, Mode B, Interframe ..................................... 15
-4.2
-H.261 Payload Header, Interframe ..................................................................... 16
-4.3
-H.263 Payload Header in RFC Mode, Mode A, Intraframe ....................................... 16
-4.4
-H.263 Payload Header in RFC Mode, Mode A, Interframe ....................................... 17
-4.5
-H.263 Payload Header in RFC Mode, Mode B, Intraframe ....................................... 18
-4.6
-H.263 Payload Header in RFC Mode, Mode B, Interframe ....................................... 19
-4.7
-H.263 Payload Header in Draft Mode, Mode A, Intraframe ..................................... 19
-4.8
-4.9
-H.263 Payload Header in Draft Mode, Mode A, Interframe ..................................... 20
-4.10  H.263 Payload Header in Draft Mode, Mode B, Intraframe ..................................... 21
-
-5  Security ................................................................................................................. 22
-Security Considerations for Implementers ........................................................... 22
-Index of Security Parameters ............................................................................ 22
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 23
-
-7  Change Tracking .................................................................................................... 24
-
-8  Index ..................................................................................................................... 25
-
-[MS-H26XPF] - v20170601
-Real-Time Transport Protocol (RTP/RTCP): H.261 and H.263 Video Streams Extensions
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 This is a specification of the Real-Time Transport Protocol (RTP/RTCP): H.261 and H.263 Video
 Streams Extensions (H26XPF).
@@ -578,7 +517,7 @@ video streams in a two-party peer-to-peer call.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -641,7 +580,8 @@ Release: June 1, 2017
 
 5 / 26
 
-PB-Frame: A P frame and a B frame, which are coded into one bitstream with macro blocks from
+
+PB-Frame: A P frame and a B frame, which are coded into one bitstream with macro blocks from
 the two frames interleaved. In a packet, an MB from the P frame and an MB from the B frame
 have to be treated together, because each MB for the B frame is coded based on the
 corresponding MB for the P frame. A means has to be provided to ensure proper rendering of
@@ -668,14 +608,14 @@ pixels for luminance and 64x48 pixels for chrominance.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -692,7 +632,7 @@ Oct. 1996, http://www.ietf.org/rfc/rfc2032.txt
 [RFC2190] Zhu, C., "RTP Payload Format for H.263 Video Streams", RFC 2190, September 1997,
 http://www.rfc-editor.org/rfc/rfc2190.txt
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [H245] ITU-T, "Control protocol for multimedia communication", Recommendation H.245, May 2006,
 http://www.itu.int/rec/T-REC-H.245/en
@@ -710,14 +650,15 @@ Release: June 1, 2017
 
 6 / 26
 
-[H323] ITU-T, "Packet-based multimedia communications systems", Recommendation H.323, June
+
+[H323] ITU-T, "Packet-based multimedia communications systems", Recommendation H.323, June
 2006, http://www.itu.int/rec/T-REC-H.323-200606-S/en
 
 [MS-SDP] Microsoft Corporation, "Session Description Protocol (SDP) Extensions".
 
 [MS-SIP] Microsoft Corporation, "Session Initiation Protocol Extensions".
 
-1.3  Overview
+### 1.3 Overview
 
 H26XPF specifies the payload format for encapsulating an H.261 [H261] bitstream and two payload
 formats for encapsulating an H.263 [H263] bitstream in the Real-Time Transport Protocol (RTP/RTCP):
@@ -738,14 +679,14 @@ RFC mode of the H.263 payload format is used in conjunction with the Session Ini
 of the H.263 payload format is used in conjunction with the H.323 [H323] application layer control
 protocol. H.245 is used to negotiate codec usage with H.323.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 H26XPF extends the base protocol for the H.261 payload format [RFC2032] and the base protocol for
 the H.263 payload format [RFC2190]. It carries a payload consisting of an H.261 bitstream or an
 H.263 bitstream in the formats specified in [H261] or [H263] and, in turn, it is carried as a payload of
 the RTP extensions specified in [MS-RTPME].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 H26XPF specifies only the payload formats for H.261 or H.263 video streams. It requires the
 establishment of an RTP stream, a mechanism for obtaining H.261 or H.263 video frames for it to
@@ -754,16 +695,16 @@ packets.
 
 H26XPF requires an upper layer to select only one of the three payload formats explicitly.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 H26XPF can only be used to transform H.261 or H.263 video frames into packets.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 H26XPF has no versioning or capability negotiation constraints beyond those specified in [RFC2032]
 and [RFC2190].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -774,7 +715,8 @@ Release: June 1, 2017
 
 7 / 26
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 H26XPF has no standards assignments beyond those specified in [RFC2032] and [RFC2190].
 
@@ -785,20 +727,21 @@ Release: June 1, 2017
 
 8 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 H26XPF is carried as a payload in RTP [MS-RTPME] and therefore relies on RTP for providing the
 means to transport its payload over the network.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  H.261 Payload Header
+#### 2.2.1 H.261 Payload Header
 
 The H.261 payload header is specified in [RFC2032] section 4.1.
 
-2.2.2  H.263 Payload Header, RFC Mode
+#### 2.2.2 H.263 Payload Header, RFC Mode
 
 The H.263 payload header that includes mode A, mode B, and mode C is specified in [RFC2190]
 section 5. H26XPF imposes the following constraints on values in the H.263 payload header in RFC
@@ -822,7 +765,7 @@ H26XPF does not support optional PB-frames or optional mode C packets. As a resu
 the P field in the payload MUST be 0. The sender MUST NOT send the mode C payload header or the
 mode A payload header with the P field set to 1.
 
-2.2.3  H.263 Payload Header, Draft Mode
+#### 2.2.3 H.263 Payload Header, Draft Mode
 
 The fields defined in the H.263 payload header in draft mode differ from the payload header in RFC
 mode in the following ways:
@@ -841,7 +784,7 @@ The H.263 payload header in draft mode does not specify a U field.
 
 Details of these differences are specified in the following sections.
 
-2.2.3.1  Mode A
+##### 2.2.3.1 Mode A
 
 The H.263 mode A payload header, which consists of 4 bytes, and is present before the actual
 compression of the H.263 video bitstream in a packet. It allows for fragmentation at group of blocks
@@ -854,7 +797,8 @@ Release: June 1, 2017
 
 9 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -944,7 +888,7 @@ TR (1 byte): Temporal Reference for the P frame as defined by [H263]. The PB-Fra
 
 supported in H26XPF. This value MUST be ignored.
 
-2.2.3.2  Mode B
+##### 2.2.3.2 Mode B
 
 The H.263 mode B payload header, which consists of 8 bytes and starts at the luminance boundaries
 without the PB-frames option.
@@ -956,7 +900,8 @@ Release: June 1, 2017
 
 10 / 26
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -1060,21 +1005,22 @@ Release: June 1, 2017
 
 11 / 26
 
-3  Protocol Details
 
-3.1  Client and Server Role Details
+## 3 Protocol Details
+
+### 3.1 Client and Server Role Details
 
 H26XPF does not have any role-specific behavior. The behavior specified in this section applies to both
 client and server roles.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
 explanation of how the protocol behaves. This document does not mandate that implementations
 adhere to this model as long as their external behavior is consistent with those described.
 
-3.1.1.1  H.261 Payload Format
+##### 3.1.1.1 H.261 Payload Format
 
 An H.261 video frame is fragmented and converted to packets using the mechanism specified in
 [RFC2032] and in this document.
@@ -1089,7 +1035,7 @@ H.261 video packets are considered to be complete if they satisfy the following 
 Note  The above conceptual data can be implemented using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.1.1.2  H.263 Payload Formats
+##### 3.1.1.2 H.263 Payload Formats
 
 The description in this section applies to the H.263 payload headers in both RFC mode and draft
 mode. An H.263 payload is carried within RTP packets; the Real-Time Transport Protocol (RTP/RTCP):
@@ -1109,7 +1055,7 @@ H.263 video packets are considered to be complete if they satisfy the following 
 Note  The above conceptual data can be implemented using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 H26XPF has no additional timers beyond those specified in [RFC2032] and [RFC2190].
 
@@ -1120,26 +1066,27 @@ Release: June 1, 2017
 
 12 / 26
 
-3.1.3  Initialization
+
+#### 3.1.3 Initialization
 
 H26XPF has no additional initialization requirements beyond those specified in [RFC2032] and
 [RFC2190].
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 H26XPF has no additional higher-layer triggered events beyond those specified in [RFC2032] and
 [RFC2190].
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 H26XPF has no additional message processing events or sequencing rules beyond those specified in
 [RFC2032] and [RFC2190].
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 H26XPF has no additional timer events beyond those specified in [RFC2032] and [RFC2190].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 H26XPF has no additional local events beyond those specified in [RFC2032] and [RFC2190].
 
@@ -1150,12 +1097,13 @@ Release: June 1, 2017
 
 13 / 26
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The field names in the payload headers used in this section are defined in [RFC2032], [RFC2190], or
 in this document.
 
-4.1  H.261 Payload Header, Intraframe
+### 4.1 H.261 Payload Header, Intraframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1250,7 +1198,8 @@ Release: June 1, 2017
 
 14 / 26
 
-4.2  H.263 Payload Header in Draft Mode, Mode B, Interframe
+
+### 4.2 H.263 Payload Header in Draft Mode, Mode B, Interframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1355,7 +1304,8 @@ Release: June 1, 2017
 
 15 / 26
 
-Field
+
+Field
 
 PT
 
@@ -1376,7 +1326,7 @@ SSRC
 The H.263 payload is recognized by the PT (payload type) field, with the value being negotiated in
 H.245 [H245].
 
-4.3  H.261 Payload Header, Interframe
+### 4.3 H.261 Payload Header, Interframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1422,7 +1372,7 @@ VMVD
 
 0
 
-4.4  H.263 Payload Header in RFC Mode, Mode A, Intraframe
+### 4.4 H.263 Payload Header in RFC Mode, Mode A, Intraframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1453,7 +1403,8 @@ Release: June 1, 2017
 
 16 / 26
 
- Field
+
+ Field
 
  Value
 
@@ -1542,7 +1493,7 @@ SSRC
 The H.263 payload is recognized by the PT (payload type) field, with the value being negotiated in
 SDP [MS-SDP].
 
-4.5  H.263 Payload Header in RFC Mode, Mode A, Interframe
+### 4.5 H.263 Payload Header in RFC Mode, Mode A, Interframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1557,7 +1508,8 @@ Release: June 1, 2017
 
 17 / 26
 
- Field
+
+ Field
 
  Value
 
@@ -1613,7 +1565,7 @@ TR
 
 2
 
-4.6  H.263 Payload Header in RFC Mode, Mode B, Intraframe
+### 4.6 H.263 Payload Header in RFC Mode, Mode B, Intraframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1678,7 +1630,8 @@ Release: June 1, 2017
 
 18 / 26
 
- Field
+
+ Field
 
  Value
 
@@ -1702,7 +1655,7 @@ VMV2
 
 0
 
-4.7  H.263 Payload Header in RFC Mode, Mode B, Interframe
+### 4.7 H.263 Payload Header in RFC Mode, Mode B, Interframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1780,7 +1733,7 @@ VMV2
 
 0
 
-4.8  H.263 Payload Header in Draft Mode, Mode A, Intraframe
+### 4.8 H.263 Payload Header in Draft Mode, Mode A, Intraframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1791,7 +1744,8 @@ Release: June 1, 2017
 
 19 / 26
 
- 0x00, 0x40, 0x80, 0x00
+
+ 0x00, 0x40, 0x80, 0x00
 
 This corresponds to payload header fields with the following values.
 
@@ -1847,7 +1801,7 @@ TR
 
 0
 
-4.9  H.263 Payload Header in Draft Mode, Mode A, Interframe
+### 4.9 H.263 Payload Header in Draft Mode, Mode A, Interframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1904,7 +1858,8 @@ Release: June 1, 2017
 
 20 / 26
 
-Field  Value
+
+Field  Value
 
 TRB
 
@@ -1914,7 +1869,7 @@ TR
 
 5
 
-4.10  H.263 Payload Header in Draft Mode, Mode B, Intraframe
+### 4.10 H.263 Payload Header in Draft Mode, Mode B, Intraframe
 
 Consider the following payload header in big-endian byte order.
 
@@ -1991,13 +1946,14 @@ Release: June 1, 2017
 
 21 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 H26XPF has no additional security considerations beyond those specified in [RFC2032] and [RFC2190].
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2008,7 +1964,8 @@ Release: June 1, 2017
 
 22 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2036,7 +1993,8 @@ Release: June 1, 2017
 
 23 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2048,7 +2006,8 @@ Release: June 1, 2017
 
 24 / 26
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2182,7 +2141,8 @@ Release: June 1, 2017
 
 25 / 26
 
-   server 13
+
+   server 13
 Timers
    client 12
    server 12

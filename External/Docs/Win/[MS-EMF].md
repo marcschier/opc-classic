@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 282
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -521,7 +523,8 @@ Release: April 23, 2024
 
 3 / 282
 
-Date
+
+Date
 
 Revision
 History
@@ -578,555 +581,234 @@ Release: April 23, 2024
 
 4 / 282
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 16
-Normative References ................................................................................. 16
-Informative References ............................................................................... 17
-Overview ........................................................................................................ 17
-Metafile Structure ....................................................................................... 17
-Graphics Objects ........................................................................................ 19
-Byte Ordering ............................................................................................ 19
-Relationship to Protocols and Other Structures .................................................... 19
-Applicability Statement ..................................................................................... 20
-Versioning and Localization ............................................................................... 20
-Vendor-Extensible Fields ................................................................................... 20
-
-1.3.1
-1.3.2
-1.3.3
-
-1.4
-1.5
-1.6
-1.7
-
-2.1
-
-2  Structures ............................................................................................................. 21
-EMF Enumerations............................................................................................ 21
-RecordType Enumeration ............................................................................. 21
-2.1.1
-ArcDirection Enumeration ............................................................................ 28
-2.1.2
-ArmStyle Enumeration ................................................................................ 29
-2.1.3
-BackgroundMode Enumeration ..................................................................... 29
-2.1.4
-ColorAdjustment Enumeration ...................................................................... 30
-2.1.5
-ColorMatchToTarget Enumeration ................................................................. 30
-2.1.6
-ColorSpace Enumeration .............................................................................. 30
-2.1.7
-Contrast Enumeration ................................................................................. 31
-2.1.8
-DIBColors Enumeration ............................................................................... 31
-2.1.9
-EmrComment Enumeration .......................................................................... 32
-2.1.10
-ExtTextOutOptions Enumeration ................................................................... 32
-2.1.11
-FamilyType Enumeration ............................................................................. 33
-2.1.12
-FloodFill Enumeration .................................................................................. 34
-2.1.13
-2.1.14
-FormatSignature Enumeration ...................................................................... 34
-2.1.15  GradientFill Enumeration ............................................................................. 34
-2.1.16  GraphicsMode Enumeration .......................................................................... 35
-2.1.17  HatchStyle Enumeration .............................................................................. 36
-ICMMode Enumeration ................................................................................ 36
-2.1.18
-Illuminant Enumeration ............................................................................... 36
-2.1.19
-Letterform Enumeration .............................................................................. 37
-2.1.20
-2.1.21  MapMode Enumeration ................................................................................ 38
-2.1.22  MetafileVersion Enumeration ........................................................................ 39
-2.1.23  MidLine Enumeration ................................................................................... 39
-2.1.24  ModifyWorldTransformMode Enumeration ...................................................... 40
-PenStyle Enumeration ................................................................................. 40
-2.1.25
-Point Enumeration ...................................................................................... 41
-2.1.26
-PolygonFillMode Enumeration ....................................................................... 42
-2.1.27
-Proportion Enumeration ............................................................................... 42
-2.1.28
-RegionMode Enumeration ............................................................................ 43
-2.1.29
-SerifType Enumeration ................................................................................ 43
-2.1.30
-StockObject Enumeration ............................................................................ 44
-2.1.31
-StretchMode Enumeration ............................................................................ 47
-2.1.32
-2.1.33
-StrokeVariation Enumeration ........................................................................ 47
-2.1.34  Weight Enumeration ................................................................................... 48
-XHeight Enumeration .................................................................................. 48
-2.1.35
-EMF Objects .................................................................................................... 49
-BitFIX28_4 Object ...................................................................................... 49
-ColorAdjustment Object ............................................................................... 49
-DesignVector Object ................................................................................... 51
-
-2.2.1
-2.2.2
-2.2.3
-
-2.2
-
-[MS-EMF] - v20240423
-Enhanced Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 282
-
-2.3
-
-2.3.1
-
-EmrFormat Object ...................................................................................... 51
-2.2.4
-EmrText Object .......................................................................................... 52
-2.2.5
-EpsData Object .......................................................................................... 54
-2.2.6
-GradientRectangle Object ............................................................................ 55
-2.2.7
-GradientTriangle Object ............................................................................... 55
-2.2.8
-2.2.9
-Header Object ............................................................................................ 56
-2.2.10  HeaderExtension1 Object ............................................................................. 57
-2.2.11  HeaderExtension2 Object ............................................................................. 58
-LogBrushEx Object ..................................................................................... 58
-2.2.12
-LogFont Object ........................................................................................... 59
-2.2.13
-LogFontEx Object ....................................................................................... 61
-2.2.14
-LogFontExDv Object .................................................................................... 62
-2.2.15
-LogFontPanose Object ................................................................................. 62
-2.2.16
-LogPalette Object ....................................................................................... 64
-2.2.17
-LogPaletteEntry Object ................................................................................ 64
-2.2.18
-LogPen Object ............................................................................................ 65
-2.2.19
-LogPenEx Object ........................................................................................ 65
-2.2.20
-Panose Object ............................................................................................ 67
-2.2.21
-PixelFormatDescriptor Object ....................................................................... 68
-2.2.22
-Point28_4 Object ........................................................................................ 71
-2.2.23
-RegionData Object ...................................................................................... 71
-2.2.24
-RegionDataHeader Object ............................................................................ 72
-2.2.25
-2.2.26
-TriVertex Object ......................................................................................... 72
-2.2.27  UniversalFontId Object ................................................................................ 73
-XForm Object ............................................................................................. 74
-2.2.28
-EMF Records .................................................................................................... 74
-Bitmap Record Types .................................................................................. 75
-EMR_ALPHABLEND Record ..................................................................... 77
-EMR_BITBLT Record .............................................................................. 82
-EMR_MASKBLT Record ........................................................................... 84
-EMR_PLGBLT Record ............................................................................. 88
-EMR_SETDIBITSTODEVICE Record .......................................................... 92
-EMR_STRETCHBLT Record ...................................................................... 94
-EMR_STRETCHDIBITS Record ................................................................. 97
-EMR_TRANSPARENTBLT Record ............................................................. 100
-Clipping Record Types ................................................................................ 102
-EMR_EXCLUDECLIPRECT Record ............................................................ 104
-EMR_EXTSELECTCLIPRGN Record .......................................................... 105
-EMR_INTERSECTCLIPRECT Record ......................................................... 105
-EMR_OFFSETCLIPRGN Record ................................................................ 106
-EMR_SELECTCLIPPATH Record ............................................................... 106
-Comment Record Types .............................................................................. 107
-EMR_COMMENT Record......................................................................... 108
-EMR_COMMENT_EMFPLUS Record .......................................................... 109
-EMR_COMMENT_EMFSPOOL Record ........................................................ 109
-EMR_COMMENT_PUBLIC Record Types ................................................... 110
-EMR_COMMENT_BEGINGROUP Record .............................................. 111
-EMR_COMMENT_ENDGROUP Record ................................................. 112
-EMR_COMMENT_MULTIFORMATS Record ........................................... 113
-EMR_COMMENT_WINDOWS_METAFILE Record ................................... 114
-Control Record Types ................................................................................. 115
-EMR_EOF Record ................................................................................. 116
-EMR_HEADER Record Types .................................................................. 117
-EmfMetafileHeader Record ............................................................... 120
-EmfMetafileHeaderExtension1 Record ............................................... 121
-EmfMetafileHeaderExtension2 Record ............................................... 122
-Drawing Record Types ................................................................................ 124
-EMR_ANGLEARC Record ........................................................................ 128
-
-2.3.1.1
-2.3.1.2
-2.3.1.3
-2.3.1.4
-2.3.1.5
-2.3.1.6
-2.3.1.7
-2.3.1.8
-
-2.3.3.4.1
-2.3.3.4.2
-2.3.3.4.3
-2.3.3.4.4
-
-2.3.2.1
-2.3.2.2
-2.3.2.3
-2.3.2.4
-2.3.2.5
-
-2.3.3.1
-2.3.3.2
-2.3.3.3
-2.3.3.4
-
-2.3.4.2.1
-2.3.4.2.2
-2.3.4.2.3
-
-2.3.4.1
-2.3.4.2
-
-2.3.5.1
-
-2.3.5
-
-2.3.4
-
-2.3.2
-
-2.3.3
-
-[MS-EMF] - v20240423
-Enhanced Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 282
-
-2.3.5.2
-2.3.5.3
-2.3.5.4
-2.3.5.5
-2.3.5.6
-2.3.5.7
-2.3.5.8
-2.3.5.9
-2.3.5.10
-2.3.5.11
-2.3.5.12
-2.3.5.13
-2.3.5.14
-2.3.5.15
-2.3.5.16
-2.3.5.17
-2.3.5.18
-2.3.5.19
-2.3.5.20
-2.3.5.21
-2.3.5.22
-2.3.5.23
-2.3.5.24
-2.3.5.25
-2.3.5.26
-2.3.5.27
-2.3.5.28
-2.3.5.29
-2.3.5.30
-2.3.5.31
-2.3.5.32
-2.3.5.33
-2.3.5.34
-2.3.5.35
-2.3.5.36
-2.3.5.37
-2.3.5.38
-2.3.5.39
-
-2.3.6
-
-2.3.7
-
-2.3.6.1
-2.3.6.2
-2.3.6.3
-
-2.3.7.1
-2.3.7.2
-2.3.7.3
-2.3.7.4
-2.3.7.5
-2.3.7.6
-2.3.7.7
-2.3.7.8
-2.3.7.9
-
-2.3.8.1
-2.3.8.2
-2.3.8.3
-2.3.8.4
-2.3.8.5
-
-2.3.8
-
-EMR_ARC Record ................................................................................. 129
-EMR_ARCTO Record ............................................................................. 130
-EMR_CHORD Record ............................................................................. 131
-EMR_ELLIPSE Record ............................................................................ 132
-EMR_EXTFLOODFILL Record .................................................................. 132
-EMR_EXTTEXTOUTA Record ................................................................... 133
-EMR_EXTTEXTOUTW Record .................................................................. 134
-EMR_FILLPATH Record .......................................................................... 135
-EMR_FILLRGN Record ........................................................................... 135
-EMR_FRAMERGN Record ....................................................................... 136
-EMR_GRADIENTFILL Record .................................................................. 137
-EMR_LINETO Record ............................................................................ 139
-EMR_PAINTRGN Record ........................................................................ 140
-EMR_PIE Record .................................................................................. 140
-EMR_POLYBEZIER Record ..................................................................... 141
-EMR_POLYBEZIER16 Record .................................................................. 142
-EMR_POLYBEZIERTO Record ................................................................. 143
-EMR_POLYBEZIERTO16 Record .............................................................. 144
-EMR_POLYDRAW Record ....................................................................... 145
-EMR_POLYDRAW16 Record.................................................................... 146
-EMR_POLYGON Record ......................................................................... 147
-EMR_POLYGON16 Record ...................................................................... 148
-EMR_POLYLINE Record ......................................................................... 149
-EMR_POLYLINE16 Record ...................................................................... 150
-EMR_POLYLINETO Record ..................................................................... 150
-EMR_POLYLINETO16 Record .................................................................. 151
-EMR_POLYPOLYGON Record .................................................................. 152
-EMR_POLYPOLYGON16 Record ............................................................... 153
-EMR_POLYPOLYLINE Record .................................................................. 154
-EMR_POLYPOLYLINE16 Record ............................................................... 156
-EMR_POLYTEXTOUTA Record ................................................................. 156
-EMR_POLYTEXTOUTW Record ................................................................ 158
-EMR_RECTANGLE Record ...................................................................... 159
-EMR_ROUNDRECT Record ..................................................................... 159
-EMR_SETPIXELV Record ........................................................................ 160
-EMR_SMALLTEXTOUT Record ................................................................. 161
-EMR_STROKEANDFILLPATH Record ........................................................ 162
-EMR_STROKEPATH Record .................................................................... 163
-Escape Record Types ................................................................................. 163
-EMR_DRAWESCAPE Record ................................................................... 164
-EMR_EXTESCAPE Record ....................................................................... 165
-EMR_NAMEDESCAPE Record .................................................................. 165
-Object Creation Record Types ..................................................................... 166
-EMR_CREATEBRUSHINDIRECT Record .................................................... 168
-EMR_CREATECOLORSPACE Record ......................................................... 169
-EMR_CREATECOLORSPACEW Record ...................................................... 169
-EMR_CREATEDIBPATTERNBRUSHPT Record ............................................. 170
-EMR_CREATEMONOBRUSH Record ......................................................... 172
-EMR_CREATEPALETTE Record ................................................................ 173
-EMR_CREATEPEN Record ...................................................................... 174
-EMR_EXTCREATEFONTINDIRECTW Record .............................................. 175
-EMR_EXTCREATEPEN Record ................................................................. 176
-Object Manipulation Record Types ............................................................... 177
-EMR_COLORCORRECTPALETTE Record .................................................... 179
-EMR_DELETECOLORSPACE Record ......................................................... 180
-EMR_DELETEOBJECT Record ................................................................. 180
-EMR_RESIZEPALETTE Record ................................................................ 181
-EMR_SELECTOBJECT Record.................................................................. 181
-
-[MS-EMF] - v20240423
-Enhanced Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 282
-
-2.3.9
-
-2.3.10
-2.3.11
-
-2.3.9.1
-2.3.9.2
-
-2.3.8.6
-2.3.8.7
-2.3.8.8
-
-EMR_SELECTPALETTE Record ................................................................ 182
-EMR_SETCOLORSPACE Record ............................................................... 182
-EMR_SETPALETTEENTRIES Record ......................................................... 183
-OpenGL Record Types ................................................................................ 184
-EMR_GLSBOUNDEDRECORD Record ....................................................... 185
-EMR_GLSRECORD Record ..................................................................... 185
-Path Bracket Record Types ......................................................................... 186
-State Record Types .................................................................................... 187
-2.3.11.1
-EMR_COLORMATCHTOTARGETW Record ................................................. 191
-2.3.11.2
-EMR_FORCEUFIMAPPING Record ............................................................ 192
-2.3.11.3
-EMR_INVERTRGN Record ...................................................................... 192
-2.3.11.4
-EMR_MOVETOEX Record ....................................................................... 193
-2.3.11.5
-EMR_PIXELFORMAT Record ................................................................... 194
-2.3.11.6
-EMR_RESTOREDC Record ...................................................................... 194
-2.3.11.7
-EMR_SCALEVIEWPORTEXTEX Record ...................................................... 195
-2.3.11.8
-EMR_SCALEWINDOWEXTEX Record ........................................................ 195
-EMR_SETARCDIRECTION Record ............................................................ 196
-2.3.11.9
-2.3.11.10  EMR_SETBKCOLOR Record .................................................................... 197
-2.3.11.11  EMR_SETBKMODE Record ..................................................................... 197
-2.3.11.12  EMR_SETBRUSHORGEX Record .............................................................. 198
-2.3.11.13  EMR_SETCOLORADJUSTMENT Record ..................................................... 198
-2.3.11.14  EMR_SETICMMODE Record .................................................................... 199
-2.3.11.15  EMR_SETICMPROFILEA Record .............................................................. 199
-2.3.11.16  EMR_SETICMPROFILEW Record ............................................................. 200
-2.3.11.17  EMR_SETLAYOUT Record ...................................................................... 201
-2.3.11.18  EMR_SETLINKEDUFIS Record ................................................................ 202
-2.3.11.19  EMR_SETMAPMODE Record ................................................................... 202
-2.3.11.20  EMR_SETMAPPERFLAGS Record ............................................................. 203
-2.3.11.21  EMR_SETMITERLIMIT Record ................................................................. 203
-2.3.11.22  EMR_SETPOLYFILLMODE Record ............................................................ 204
-2.3.11.23  EMR_SETROP2 Record .......................................................................... 204
-2.3.11.24  EMR_SETSTRETCHBLTMODE Record ....................................................... 205
-2.3.11.25  EMR_SETTEXTALIGN Record .................................................................. 205
-2.3.11.26  EMR_SETTEXTCOLOR Record ................................................................. 206
-2.3.11.27  EMR_SETTEXTJUSTIFICATION Record ..................................................... 206
-2.3.11.28  EMR_SETVIEWPORTEXTEX Record ......................................................... 207
-2.3.11.29  EMR_SETVIEWPORTORGEX Record......................................................... 207
-2.3.11.30  EMR_SETWINDOWEXTEX Record ........................................................... 208
-2.3.11.31  EMR_SETWINDOWORGEX Record........................................................... 208
-Transform Record Types ............................................................................. 209
-EMR_MODIFYWORLDTRANSFORM Record ................................................ 210
-EMR_SETWORLDTRANSFORM Record ..................................................... 211
-
-2.3.12.1
-2.3.12.2
-
-2.3.12
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3  Structure Examples ............................................................................................. 212
-EMF Metafile Playback ...................................................................................... 212
-Abstract Data Model ................................................................................... 212
-EMF Object Table ................................................................................. 212
-Graphics Environment .......................................................................... 214
-Regions ......................................................................................... 214
-Colors ........................................................................................... 215
-Text .............................................................................................. 215
-Drawing ........................................................................................ 216
-Byte Ordering ........................................................................................... 217
-EMF Metafile Example ...................................................................................... 218
-EMR_HEADER Example ............................................................................... 231
-EMR_CREATEBRUSHINDIRECT Example........................................................ 233
-EMR_SELECTOBJECT Example 1 .................................................................. 234
-EMR_BITBLT Example 1 .............................................................................. 235
-
-3.1.1.2.1
-3.1.1.2.2
-3.1.1.2.3
-3.1.1.2.4
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.1.2
-
-3.2
-
-[MS-EMF] - v20240423
-Enhanced Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 282
-
-3.2.5
-3.2.6
-3.2.7
-3.2.8
-3.2.9
-3.2.10
-3.2.11
-3.2.12
-3.2.13
-3.2.14
-3.2.15
-3.2.16
-3.2.17
-3.2.18
-3.2.19
-3.2.20
-3.2.21
-3.2.22
-
-EMR_SELECTOBJECT Example 2 .................................................................. 237
-EMR_BITBLT Example 2 .............................................................................. 237
-EMR_SETBKMODE Example ......................................................................... 251
-EMR_EXTCREATEFONTINDIRECTW Example 1 ............................................... 251
-EMR_SELECTOBJECT Example 3 .................................................................. 254
-EMR_EXTTEXTOUTW Example ..................................................................... 255
-EMR_EXTCREATEFONTINDIRECTW Example 2 ............................................... 256
-EMR_SELECTOBJECT Example 4 .................................................................. 259
-EMR_EXTCREATEFONTINDIRECTW Example 3 ............................................... 260
-EMR_SELECTOBJECT Example 5 .................................................................. 263
-EMR_DELETEOBJECT Example 1 .................................................................. 263
-EMR_EXTCREATEFONTINDIRECTW Example 4 ............................................... 264
-EMR_SELECTOBJECT Example 6 .................................................................. 267
-EMR_SELECTOBJECT Example 7 .................................................................. 267
-EMR_DELETEOBJECT Example 2 .................................................................. 268
-EMR_DELETEOBJECT Example 3 .................................................................. 268
-EMR_SELECTOBJECT Example 8 .................................................................. 268
-EMR_EOF Example ..................................................................................... 269
-
-4  Security Considerations ....................................................................................... 270
-
-5  Appendix A: Product Behavior ............................................................................. 271
-
-6  Change Tracking .................................................................................................. 278
-
-7  Index ................................................................................................................... 279
-
-[MS-EMF] - v20240423
-Enhanced Metafile Format
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 282
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Metafile Structure](#131-metafile-structure)
+    - [1.3.2 Graphics Objects](#132-graphics-objects)
+    - [1.3.3 Byte Ordering](#133-byte-ordering)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 EMF Enumerations](#21-emf-enumerations)
+    - [2.1.1 RecordType Enumeration](#211-recordtype-enumeration)
+    - [2.1.2 ArcDirection Enumeration](#212-arcdirection-enumeration)
+    - [2.1.3 ArmStyle Enumeration](#213-armstyle-enumeration)
+    - [2.1.4 BackgroundMode Enumeration](#214-backgroundmode-enumeration)
+    - [2.1.5 ColorAdjustment Enumeration](#215-coloradjustment-enumeration)
+    - [2.1.6 ColorMatchToTarget Enumeration](#216-colormatchtotarget-enumeration)
+    - [2.1.7 ColorSpace Enumeration](#217-colorspace-enumeration)
+    - [2.1.8 Contrast Enumeration](#218-contrast-enumeration)
+    - [2.1.9 DIBColors Enumeration](#219-dibcolors-enumeration)
+    - [2.1.10 EmrComment Enumeration](#2110-emrcomment-enumeration)
+    - [2.1.11 ExtTextOutOptions Enumeration](#2111-exttextoutoptions-enumeration)
+    - [2.1.12 FamilyType Enumeration](#2112-familytype-enumeration)
+    - [2.1.13 FloodFill Enumeration](#2113-floodfill-enumeration)
+    - [2.1.14 FormatSignature Enumeration](#2114-formatsignature-enumeration)
+    - [2.1.15 GradientFill Enumeration](#2115-gradientfill-enumeration)
+    - [2.1.16 GraphicsMode Enumeration](#2116-graphicsmode-enumeration)
+    - [2.1.17 HatchStyle Enumeration](#2117-hatchstyle-enumeration)
+    - [2.1.18 ICMMode Enumeration](#2118-icmmode-enumeration)
+    - [2.1.19 Illuminant Enumeration](#2119-illuminant-enumeration)
+    - [2.1.20 Letterform Enumeration](#2120-letterform-enumeration)
+    - [2.1.21 MapMode Enumeration](#2121-mapmode-enumeration)
+    - [2.1.22 MetafileVersion Enumeration](#2122-metafileversion-enumeration)
+    - [2.1.23 MidLine Enumeration](#2123-midline-enumeration)
+    - [2.1.24 ModifyWorldTransformMode Enumeration](#2124-modifyworldtransformmode-enumeration)
+    - [2.1.25 PenStyle Enumeration](#2125-penstyle-enumeration)
+    - [2.1.26 Point Enumeration](#2126-point-enumeration)
+    - [2.1.27 PolygonFillMode Enumeration](#2127-polygonfillmode-enumeration)
+    - [2.1.28 Proportion Enumeration](#2128-proportion-enumeration)
+    - [2.1.29 RegionMode Enumeration](#2129-regionmode-enumeration)
+    - [2.1.30 SerifType Enumeration](#2130-seriftype-enumeration)
+    - [2.1.31 StockObject Enumeration](#2131-stockobject-enumeration)
+    - [2.1.32 StretchMode Enumeration](#2132-stretchmode-enumeration)
+    - [2.1.33 StrokeVariation Enumeration](#2133-strokevariation-enumeration)
+    - [2.1.34 Weight Enumeration](#2134-weight-enumeration)
+    - [2.1.35 XHeight Enumeration](#2135-xheight-enumeration)
+  - [2.2 EMF Objects](#22-emf-objects)
+    - [2.2.1 BitFIX28_4 Object](#221-bitfix284-object)
+    - [2.2.2 ColorAdjustment Object](#222-coloradjustment-object)
+    - [2.2.3 DesignVector Object](#223-designvector-object)
+    - [2.2.4 EmrFormat Object](#224-emrformat-object)
+    - [2.2.5 EmrText Object](#225-emrtext-object)
+    - [2.2.6 EpsData Object](#226-epsdata-object)
+    - [2.2.7 GradientRectangle Object](#227-gradientrectangle-object)
+    - [2.2.8 GradientTriangle Object](#228-gradienttriangle-object)
+    - [2.2.9 Header Object](#229-header-object)
+    - [2.2.10 HeaderExtension1 Object](#2210-headerextension1-object)
+    - [2.2.11 HeaderExtension2 Object](#2211-headerextension2-object)
+    - [2.2.12 LogBrushEx Object](#2212-logbrushex-object)
+    - [2.2.13 LogFont Object](#2213-logfont-object)
+    - [2.2.14 LogFontEx Object](#2214-logfontex-object)
+    - [2.2.15 LogFontExDv Object](#2215-logfontexdv-object)
+    - [2.2.16 LogFontPanose Object](#2216-logfontpanose-object)
+    - [2.2.17 LogPalette Object](#2217-logpalette-object)
+    - [2.2.18 LogPaletteEntry Object](#2218-logpaletteentry-object)
+    - [2.2.19 LogPen Object](#2219-logpen-object)
+    - [2.2.20 LogPenEx Object](#2220-logpenex-object)
+    - [2.2.21 Panose Object](#2221-panose-object)
+    - [2.2.22 PixelFormatDescriptor Object](#2222-pixelformatdescriptor-object)
+    - [2.2.23 Point28_4 Object](#2223-point284-object)
+    - [2.2.24 RegionData Object](#2224-regiondata-object)
+    - [2.2.25 RegionDataHeader Object](#2225-regiondataheader-object)
+    - [2.2.26 TriVertex Object](#2226-trivertex-object)
+    - [2.2.27 UniversalFontId Object](#2227-universalfontid-object)
+    - [2.2.28 XForm Object](#2228-xform-object)
+  - [2.3 EMF Records](#23-emf-records)
+    - [2.3.1 Bitmap Record Types](#231-bitmap-record-types)
+      - [2.3.1.1 EMR_ALPHABLEND Record](#2311-emralphablend-record)
+      - [2.3.1.2 EMR_BITBLT Record](#2312-emrbitblt-record)
+      - [2.3.1.3 EMR_MASKBLT Record](#2313-emrmaskblt-record)
+      - [2.3.1.4 EMR_PLGBLT Record](#2314-emrplgblt-record)
+      - [2.3.1.5 EMR_SETDIBITSTODEVICE Record](#2315-emrsetdibitstodevice-record)
+      - [2.3.1.6 EMR_STRETCHBLT Record](#2316-emrstretchblt-record)
+      - [2.3.1.7 EMR_STRETCHDIBITS Record](#2317-emrstretchdibits-record)
+      - [2.3.1.8 EMR_TRANSPARENTBLT Record](#2318-emrtransparentblt-record)
+    - [2.3.2 Clipping Record Types](#232-clipping-record-types)
+      - [2.3.2.1 EMR_EXCLUDECLIPRECT Record](#2321-emrexcludecliprect-record)
+      - [2.3.2.2 EMR_EXTSELECTCLIPRGN Record](#2322-emrextselectcliprgn-record)
+      - [2.3.2.3 EMR_INTERSECTCLIPRECT Record](#2323-emrintersectcliprect-record)
+      - [2.3.2.4 EMR_OFFSETCLIPRGN Record](#2324-emroffsetcliprgn-record)
+      - [2.3.2.5 EMR_SELECTCLIPPATH Record](#2325-emrselectclippath-record)
+    - [2.3.3 Comment Record Types](#233-comment-record-types)
+      - [2.3.3.1 EMR_COMMENT Record](#2331-emrcomment-record)
+      - [2.3.3.2 EMR_COMMENT_EMFPLUS Record](#2332-emrcommentemfplus-record)
+      - [2.3.3.3 EMR_COMMENT_EMFSPOOL Record](#2333-emrcommentemfspool-record)
+      - [2.3.3.4 EMR_COMMENT_PUBLIC Record Types](#2334-emrcommentpublic-record-types)
+        - [2.3.3.4.1 Specifies the beginning of a group of drawing records.](#23341-specifies-the-beginning-of-a-group-of-drawing-records)
+        - [2.3.3.4.2 Specifies the end of a group of drawing records.](#23342-specifies-the-end-of-a-group-of-drawing-records)
+        - [2.3.3.4.3 Specifies an image in multiple graphics formats.](#23343-specifies-an-image-in-multiple-graphics-formats)
+        - [2.3.3.4.4 EMR_COMMENT_WINDOWS_METAFILE Record](#23344-emrcommentwindowsmetafile-record)
+    - [2.3.4 Control Record Types](#234-control-record-types)
+      - [2.3.4.1 EMR_EOF Record](#2341-emreof-record)
+      - [2.3.4.2 EMR_HEADER Record Types](#2342-emrheader-record-types)
+        - [2.3.4.2.1 The original EMF header record.](#23421-the-original-emf-header-record)
+        - [2.3.4.2.2 EmfMetafileHeaderExtension1 Record](#23422-emfmetafileheaderextension1-record)
+        - [2.3.4.2.3 EmfMetafileHeaderExtension2 Record](#23423-emfmetafileheaderextension2-record)
+    - [2.3.5 Drawing Record Types](#235-drawing-record-types)
+      - [2.3.5.9 Closes any open figures in the current path bracket and fills the path's](#2359-closes-any-open-figures-in-the-current-path-bracket-and-fills-the-paths)
+      - [2.3.5.10 Fills the specified region with the specified brush.](#23510-fills-the-specified-region-with-the-specified-brush)
+      - [2.3.5.11 Draws a border around the specified region with the specified brush.](#23511-draws-a-border-around-the-specified-region-with-the-specified-brush)
+      - [2.3.5.12 Fills the specified rectangle and triangle structures.](#23512-fills-the-specified-rectangle-and-triangle-structures)
+      - [2.3.5.13 Draws a line from the current position up to, but not including, the](#23513-draws-a-line-from-the-current-position-up-to-but-not-including-the)
+      - [2.3.5.14 Paints the specified region with the current brush.](#23514-paints-the-specified-region-with-the-current-brush)
+      - [2.3.5.15 Draws a pie-shaped wedge bounded by the intersection of an ellipse and](#23515-draws-a-pie-shaped-wedge-bounded-by-the-intersection-of-an-ellipse-and)
+      - [2.3.5.16 Draws one or more Bezier curves. The cubic Bezier curves are defined](#23516-draws-one-or-more-bezier-curves-the-cubic-bezier-curves-are-defined)
+      - [2.3.5.17 Draws one or more Bezier curves with the current pen.](#23517-draws-one-or-more-bezier-curves-with-the-current-pen)
+      - [2.3.5.18 Draws one or more Bezier curves based on the current position.](#23518-draws-one-or-more-bezier-curves-based-on-the-current-position)
+      - [2.3.5.19 Draws one or more Bezier curves based on the current position.](#23519-draws-one-or-more-bezier-curves-based-on-the-current-position)
+      - [2.3.5.20 Draws a set of line segments and Bezier curves.](#23520-draws-a-set-of-line-segments-and-bezier-curves)
+      - [2.3.5.21 Draws a set of line segments and Bezier curves.](#23521-draws-a-set-of-line-segments-and-bezier-curves)
+      - [2.3.5.22 Draws a polygon consisting of two or more vertexes connected by](#23522-draws-a-polygon-consisting-of-two-or-more-vertexes-connected-by)
+      - [2.3.5.23 Draws a polygon consisting of two or more vertexes connected by](#23523-draws-a-polygon-consisting-of-two-or-more-vertexes-connected-by)
+      - [2.3.5.24 Draws a series of line segments by connecting the points in the specified](#23524-draws-a-series-of-line-segments-by-connecting-the-points-in-the-specified)
+      - [2.3.5.25 Draws a series of line segments by connecting the points in the specified](#23525-draws-a-series-of-line-segments-by-connecting-the-points-in-the-specified)
+      - [2.3.5.26 Draws one or more straight lines based upon the current position.](#23526-draws-one-or-more-straight-lines-based-upon-the-current-position)
+      - [2.3.5.27 Draws one or more straight lines based upon the current position.](#23527-draws-one-or-more-straight-lines-based-upon-the-current-position)
+      - [2.3.5.28 Paints a series of closed polygons. Each polygon is outlined with the](#23528-paints-a-series-of-closed-polygons-each-polygon-is-outlined-with-the)
+      - [2.3.5.29 Paints a series of closed polygons. Each polygon is outlined with the](#23529-paints-a-series-of-closed-polygons-each-polygon-is-outlined-with-the)
+      - [2.3.5.30 Draws multiple series of connected line segments.](#23530-draws-multiple-series-of-connected-line-segments)
+      - [2.3.5.31 Draws multiple series of connected line segments.](#23531-draws-multiple-series-of-connected-line-segments)
+      - [2.3.5.32 Draws one or more ASCII text strings using the current font and text](#23532-draws-one-or-more-ascii-text-strings-using-the-current-font-and-text)
+      - [2.3.5.33 Draws one or more Unicode text strings using the current font and text](#23533-draws-one-or-more-unicode-text-strings-using-the-current-font-and-text)
+      - [2.3.5.34 Draws a rectangle. The rectangle is outlined with the current pen and](#23534-draws-a-rectangle-the-rectangle-is-outlined-with-the-current-pen-and)
+      - [2.3.5.35 Draws a rectangle with rounded corners.](#23535-draws-a-rectangle-with-rounded-corners)
+      - [2.3.5.36 Defines the color of the pixel at the specified logical coordinates.](#23536-defines-the-color-of-the-pixel-at-the-specified-logical-coordinates)
+      - [2.3.5.37 Outputs a string.](#23537-outputs-a-string)
+      - [2.3.5.39 Draws the specified path with the current pen.](#23539-draws-the-specified-path-with-the-current-pen)
+    - [2.3.6 Escape Record Types](#236-escape-record-types)
+      - [2.3.6.1 EMR_DRAWESCAPE Record](#2361-emrdrawescape-record)
+      - [2.3.6.2 EMR_EXTESCAPE Record](#2362-emrextescape-record)
+      - [2.3.6.3 EMR_NAMEDESCAPE Record](#2363-emrnamedescape-record)
+    - [2.3.7 Object Creation Record Types](#237-object-creation-record-types)
+      - [2.3.7.8 Defines a logical font with either a LogFont object (section](#2378-defines-a-logical-font-with-either-a-logfont-object-section)
+      - [2.3.7.9 Defines a logical pen with a LogPenEx object (section 2.2.20)](#2379-defines-a-logical-pen-with-a-logpenex-object-section-2220)
+    - [2.3.8 Object Manipulation Record Types](#238-object-manipulation-record-types)
+      - [2.3.8.5 Specifies an existing object based on its index in the EMF object table](#2385-specifies-an-existing-object-based-on-its-index-in-the-emf-object-table)
+      - [2.3.8.6 Selects the specified LogPalette object into the playback device](#2386-selects-the-specified-logpalette-object-into-the-playback-device)
+      - [2.3.8.7 Specifies a logical color space, based on its index in the EMF object](#2387-specifies-a-logical-color-space-based-on-its-index-in-the-emf-object)
+      - [2.3.8.8 Defines RGB color values in a range of entries for an existing](#2388-defines-rgb-color-values-in-a-range-of-entries-for-an-existing)
+    - [2.3.9 OpenGL Record Types](#239-opengl-record-types)
+      - [2.3.9.1 EMR_GLSBOUNDEDRECORD Record](#2391-emrglsboundedrecord-record)
+      - [2.3.9.2 EMR_GLSRECORD Record](#2392-emrglsrecord-record)
+    - [2.3.10 Path Bracket Record Types](#2310-path-bracket-record-types)
+    - [2.3.11 State Record Types](#2311-state-record-types)
+      - [2.3.11.6 Restores the playback device context to the specified state, which](#23116-restores-the-playback-device-context-to-the-specified-state-which)
+      - [2.3.11.7 Specifies the viewport by using the ratios formed by the specified](#23117-specifies-the-viewport-by-using-the-ratios-formed-by-the-specified)
+      - [2.3.11.8 Specifies the window by using the ratios formed by the specified](#23118-specifies-the-window-by-using-the-ratios-formed-by-the-specified)
+      - [2.3.11.9 Specifies the drawing direction to be used for arc and rectangle](#23119-specifies-the-drawing-direction-to-be-used-for-arc-and-rectangle)
+      - [2.3.11.10 Specifies the background color.](#231110-specifies-the-background-color)
+      - [2.3.11.11 Specifies the background mode, which determines how to](#231111-specifies-the-background-mode-which-determines-how-to)
+      - [2.3.11.12 Specifies the origin of the current brush.](#231112-specifies-the-origin-of-the-current-brush)
+      - [2.3.11.13 Specifies color adjustment values to use in bitmap stretching.](#231113-specifies-color-adjustment-values-to-use-in-bitmap-stretching)
+      - [2.3.11.14 Specifies ICM to be enabled, disabled, or queried.](#231114-specifies-icm-to-be-enabled-disabled-or-queried)
+      - [2.3.11.15 Specifies how to set a specified color profile as the output](#231115-specifies-how-to-set-a-specified-color-profile-as-the-output)
+      - [2.3.11.16 Specifies how to set a specified color profile as the output profile.](#231116-specifies-how-to-set-a-specified-color-profile-as-the-output-profile)
+      - [2.3.11.17 Specifies the layout of the playback device context.](#231117-specifies-the-layout-of-the-playback-device-context)
+      - [2.3.11.18 Sets the UniversalFontId (section 2.2.27) of the linked fonts to](#231118-sets-the-universalfontid-section-2227-of-the-linked-fonts-to)
+      - [2.3.11.19 Specifies the mapping mode.](#231119-specifies-the-mapping-mode)
+      - [2.3.11.20 Specifies the algorithm the font mapper uses when it maps logical](#231120-specifies-the-algorithm-the-font-mapper-uses-when-it-maps-logical)
+      - [2.3.11.21 Specifies the limit for the length of miter joins.](#231121-specifies-the-limit-for-the-length-of-miter-joins)
+      - [2.3.11.22 Defines polygon fill mode.](#231122-defines-polygon-fill-mode)
+      - [2.3.11.23 Defines a binary raster operation mode.](#231123-defines-a-binary-raster-operation-mode)
+      - [2.3.11.24 Specifies bitmap stretch mode.](#231124-specifies-bitmap-stretch-mode)
+      - [2.3.11.25 Specifies text alignment.](#231125-specifies-text-alignment)
+      - [2.3.11.26 Defines the current text color.](#231126-defines-the-current-text-color)
+      - [2.3.11.27 Sets the amount of extra space to add to break characters for](#231127-sets-the-amount-of-extra-space-to-add-to-break-characters-for)
+      - [2.3.11.28 Defines the viewport extent.](#231128-defines-the-viewport-extent)
+      - [2.3.11.29 Defines the viewport origin.](#231129-defines-the-viewport-origin)
+      - [2.3.11.30 Defines the window extent.](#231130-defines-the-window-extent)
+      - [2.3.11.31 Defines the window origin.](#231131-defines-the-window-origin)
+    - [2.3.12 Transform Record Types](#2312-transform-record-types)
+      - [2.3.12.2 Specifies a two-dimensional linear transform between world space](#23122-specifies-a-two-dimensional-linear-transform-between-world-space)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 EMF Metafile Playback](#31-emf-metafile-playback)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 EMF Object Table](#3111-emf-object-table)
+      - [3.1.1.2 Graphics Environment](#3112-graphics-environment)
+        - [3.1.1.2.1 The current clipping regions and related properties](#31121-the-current-clipping-regions-and-related-properties)
+        - [3.1.1.2.2 The current color profile and related properties](#31122-the-current-color-profile-and-related-properties)
+        - [3.1.1.2.3 Properties related to fonts and rendering text](#31123-properties-related-to-fonts-and-rendering-text)
+        - [3.1.1.2.4 The graphics properties that determine how drawing commands render the](#31124-the-graphics-properties-that-determine-how-drawing-commands-render-the)
+    - [3.1.2 Byte Ordering](#312-byte-ordering)
+  - [3.2 EMF Metafile Example](#32-emf-metafile-example)
+    - [3.2.1 EMR_HEADER Example](#321-emrheader-example)
+    - [3.2.2 EMR_CREATEBRUSHINDIRECT Example](#322-emrcreatebrushindirect-example)
+    - [3.2.3 EMR_SELECTOBJECT Example 1](#323-emrselectobject-example-1)
+    - [3.2.4 EMR_BITBLT Example 1](#324-emrbitblt-example-1)
+    - [3.2.5 EMR_SELECTOBJECT Example 2](#325-emrselectobject-example-2)
+    - [3.2.6 EMR_BITBLT Example 2](#326-emrbitblt-example-2)
+    - [3.2.7 EMR_SETBKMODE Example](#327-emrsetbkmode-example)
+    - [3.2.8 EMR_EXTCREATEFONTINDIRECTW Example 1](#328-emrextcreatefontindirectw-example-1)
+    - [3.2.9 EMR_SELECTOBJECT Example 3](#329-emrselectobject-example-3)
+    - [3.2.10 EMR_EXTTEXTOUTW Example](#3210-emrexttextoutw-example)
+    - [3.2.11 EMR_EXTCREATEFONTINDIRECTW Example 2](#3211-emrextcreatefontindirectw-example-2)
+    - [3.2.12 EMR_SELECTOBJECT Example 4](#3212-emrselectobject-example-4)
+    - [3.2.13 EMR_EXTCREATEFONTINDIRECTW Example 3](#3213-emrextcreatefontindirectw-example-3)
+    - [3.2.14 EMR_SELECTOBJECT Example 5](#3214-emrselectobject-example-5)
+    - [3.2.15 EMR_DELETEOBJECT Example 1](#3215-emrdeleteobject-example-1)
+    - [3.2.16 EMR_EXTCREATEFONTINDIRECTW Example 4](#3216-emrextcreatefontindirectw-example-4)
+    - [3.2.17 EMR_SELECTOBJECT Example 6](#3217-emrselectobject-example-6)
+    - [3.2.18 EMR_SELECTOBJECT Example 7](#3218-emrselectobject-example-7)
+    - [3.2.19 EMR_DELETEOBJECT Example 2](#3219-emrdeleteobject-example-2)
+    - [3.2.20 EMR_DELETEOBJECT Example 3](#3220-emrdeleteobject-example-3)
+    - [3.2.21 EMR_SELECTOBJECT Example 8](#3221-emrselectobject-example-8)
+    - [3.2.22 EMR_EOF Example](#3222-emreof-example)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
+
+## 1 Introduction
 
 Enhanced metafile format (EMF) is a file format that is used to store portable representations of
 graphical images. EMF metafiles contain sequential records that are parsed and processed to render
@@ -1135,7 +817,7 @@ the stored image on any output device.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1196,7 +878,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-points. The curve does not pass through the control points, but the control points act like
+
+points. The curve does not pass through the control points, but the control points act like
 magnets, pulling the curve in certain directions and influencing the way the curve bends. With
 multiple Bezier curves, the endpoint of one is the starting point of the next.
 
@@ -1274,7 +957,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-design vector: A set of specific values for the font axes of a multiple master font.
+
+design vector: A set of specific values for the font axes of a multiple master font.
 
 device context: A collection of properties and objects that defines a dynamic environment for
 
@@ -1352,7 +1036,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-halftone: A color representation consisting of a discrete gray or tone level.
+
+halftone: A color representation consisting of a discrete gray or tone level.
 
 Image Color Management (ICM): Technology that ensures that a color image, graphic, or text
 
@@ -1427,7 +1112,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-variations of a font, called instances, as well as the emulation of typefaces that might not be
+
+variations of a font, called instances, as well as the emulation of typefaces that might not be
 present on the user's system.
 
 OpenGL: A software API for graphics hardware that supports the rendering of multidimensional
@@ -1505,7 +1191,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-raster operation: The process of combining the bits in a source bitmap with the bits in a
+
+raster operation: The process of combining the bits in a source bitmap with the bits in a
 destination bitmap and in a specified pattern, to achieve a particular graphical output.
 
 rasterized font: A font produced with rasterization. Such fonts are not scalable; they define glyph
@@ -1583,7 +1270,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The lower-level language embedded within the TrueType font allows great flexibility in its
+
+The lower-level language embedded within the TrueType font allows great flexibility in its
 design. Both TrueType and Type 1 font technologies are part of the OpenType format.
 
 Type 1 font: A public, standard type format originally developed for use with PostScript printers.
@@ -1635,14 +1323,14 @@ scaling, translation, rotation, shearing, and reflection.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1655,7 +1343,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[ISO/IEC-8859-1] International Organization for Standardization, "Information Technology -- 8-Bit
+
+[ISO/IEC-8859-1] International Organization for Standardization, "Information Technology -- 8-Bit
 Single-Byte Coded Graphic Character Sets -- Part 1: Latin Alphabet No. 1", ISO/IEC 8859-1, 1998,
 http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=28245
 
@@ -1670,7 +1359,7 @@ Note There is a charge to download the specification.
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DEVMODE] Microsoft Corporation, "DEVMODE structure", http://msdn.microsoft.com/en-
 us/library/dd183565(VS.85).aspx
@@ -1691,7 +1380,7 @@ http://msdn.microsoft.com/en-us/library/ms532657.aspx
 [OPENGL] Segal, M. and Akeley, K., "The OpenGL Graphics System: A Specification, Version 2.1",
 December 2006, http://www.opengl.org/registry/doc/glspec21.20061201.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 An EMF metafile is a sequence of variable-length records that contain drawing commands, object
 definitions, and graphics properties to render a graphical image on any output device.
@@ -1701,7 +1390,7 @@ dimensions, shape, proportions, color, and so on, as the original, regardless of
 created. At any given point in the playback, the state of the graphics environment is defined by the
 playback device context.
 
-1.3.1  Metafile Structure
+#### 1.3.1 Metafile Structure
 
 An EMF metafile begins with a EMR_HEADER record (section 2.3.4.2), which includes the metafile
 version, its size, the resolution of the device on which the picture was created, and it ends with an
@@ -1720,7 +1409,8 @@ Release: April 23, 2024
 
 17 / 282
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-EMF].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1755,11 +1445,12 @@ Release: April 23, 2024
 
 18 / 282
 
-EMF records are contiguous because the information that is available for traversing the metafile from
+
+EMF records are contiguous because the information that is available for traversing the metafile from
 record to record depends on it. From any given EMF record, except EMR_EOF, the length of that
 record can be used to move to the next record in the metafile.
 
-1.3.2  Graphics Objects
+#### 1.3.2 Graphics Objects
 
 Graphics objects are used by the drawing and painting operations specified in an EMF metafile. They
 are created by object creation records (section 2.3.7) during the metafile playback and saved for later
@@ -1788,7 +1479,7 @@ Pens (sections 2.2.19 and 2.2.20)
 
 Stock objects are used until graphics objects are created.
 
-1.3.3  Byte Ordering
+#### 1.3.3 Byte Ordering
 
 Data in metafile records is stored in little-endian format.
 
@@ -1823,7 +1514,7 @@ Little-endian  0x78
 For an example of how the use of the big-endian and little-endian methods can affect the compatibility
 of applications, see section 3.1.2.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Several related metafile formats can be used together for device-independent printing. Their
 relationships are:
@@ -1841,7 +1532,8 @@ Release: April 23, 2024
 
 19 / 282
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-EMF].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1853,12 +1545,12 @@ This is illustrated qualitatively in the following figure.
 
 Figure 2: Relationships of metafile record types
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 EMF metafiles are portable containers for graphical output. The graphics format supported by EMF is
 applicable to rendering output on all devices, including displays, printers, and plotters.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This specification covers versioning issues in the following areas:
 
@@ -1878,7 +1570,7 @@ Extension 2: Added the capability of measuring display dimensions in micrometers
 
 Localization: This structure defines no locale-specific processes or data.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 EMF metafiles define a mechanism for the encapsulation of arbitrary vendor-defined data. The
 EMR_COMMENT record (section 2.3.3.1) can contain arbitrary private data that is unknown to EMF.
@@ -1891,7 +1583,8 @@ Release: April 23, 2024
 
 20 / 282
 
-2  Structures
+
+## 2 Structures
 
 The following sections specify EMF enumerations, objects, and records.
 
@@ -1900,9 +1593,9 @@ unless stated otherwise.
 
 Unreferenced intrinsic types are defined in [MS-DTYP].
 
-2.1  EMF Enumerations
+### 2.1 EMF Enumerations
 
-2.1.1  RecordType Enumeration
+#### 2.1.1 RecordType Enumeration
 
 The RecordType enumeration defines values that uniquely identify records in an EMF metafile.
 These values are specified in the Type fields of EMF records (section 2.3).
@@ -1963,7 +1656,8 @@ Release: April 23, 2024
 
 21 / 282
 
-   EMR_PIE = 0x0000002F,
+
+   EMR_PIE = 0x0000002F,
    EMR_SELECTPALETTE = 0x00000030,
    EMR_CREATEPALETTE = 0x00000031,
    EMR_SETPALETTEENTRIES = 0x00000032,
@@ -2040,7 +1734,8 @@ Release: April 23, 2024
 
 22 / 282
 
-   EMR_SETLINKEDUFIS = 0x00000077,
+
+   EMR_SETLINKEDUFIS = 0x00000077,
    EMR_SETTEXTJUSTIFICATION = 0x00000078,
    EMR_COLORMATCHTOTARGETW = 0x00000079,
    EMR_CREATECOLORSPACEW = 0x0000007A
@@ -2114,7 +1809,8 @@ Release: April 23, 2024
 
 23 / 282
 
-EMR_SETBKMODE: This record defines the background mix mode, which is used with text, hatched
+
+EMR_SETBKMODE: This record defines the background mix mode, which is used with text, hatched
 
 brushes, and pen styles that are not solid lines.
 
@@ -2197,7 +1893,8 @@ Release: April 23, 2024
 
 24 / 282
 
-EMR_ANGLEARC: This record defines a line segment of an arc. The line segment is drawn from the
+
+EMR_ANGLEARC: This record defines a line segment of an arc. The line segment is drawn from the
 
 current drawing position to the beginning of the arc. The arc is drawn along the perimeter of a
 circle with the given radius and center. The length of the arc is defined by the given start and
@@ -2278,7 +1975,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EMR_STROKEANDFILLPATH: This record closes any open figures in a path, strokes the outline of
+
+EMR_STROKEANDFILLPATH: This record closes any open figures in a path, strokes the outline of
 
 the path by using the current pen, and fills its interior by using the current brush.
 
@@ -2357,7 +2055,8 @@ Release: April 23, 2024
 
 26 / 282
 
-EMR_POLYBEZIER16: This record defines one or more Bezier curves. The curves are drawn using
+
+EMR_POLYBEZIER16: This record defines one or more Bezier curves. The curves are drawn using
 
 the current pen.
 
@@ -2435,7 +2134,8 @@ Release: April 23, 2024
 
 27 / 282
 
-Note: An EMR_DELETEOBJECT record SHOULD be used instead of EMR_DELETECOLORSPACE to
+
+Note: An EMR_DELETEOBJECT record SHOULD be used instead of EMR_DELETECOLORSPACE to
 delete a logical color space object.<9>
 
 EMR_GLSRECORD: This record specifies an OpenGL function.<10>
@@ -2505,7 +2205,7 @@ EMR_CREATECOLORSPACEW: This record creates a logical color space object from a c
 
 with a name consisting of Unicode characters.<22>
 
-2.1.2  ArcDirection Enumeration
+#### 2.1.2 ArcDirection Enumeration
 
 The ArcDirection enumeration is used in setting the drawing direction for arcs and rectangles.
 
@@ -2516,7 +2216,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef  enum
+
+ typedef  enum
  {
    AD_COUNTERCLOCKWISE = 0x00000001,
    AD_CLOCKWISE = 0x00000002
@@ -2526,7 +2227,7 @@ AD_COUNTERCLOCKWISE: Figures drawn counterclockwise.
 
 AD_CLOCKWISE: Figures drawn clockwise.
 
-2.1.3  ArmStyle Enumeration
+#### 2.1.3 ArmStyle Enumeration
 
 The ArmStyle enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -2571,7 +2272,7 @@ PAN_BENT_ARMS_SINGLE_SERIF: Nonstraight arms/single-serif.
 
 PAN_BENT_ARMS_DOUBLE_SERIF: Nonstraight arms/double-serif.
 
-2.1.4  BackgroundMode Enumeration
+#### 2.1.4 BackgroundMode Enumeration
 
 The BackgroundMode enumeration is used to specify the background mode to be used with text,
 hatched brushes, and pen styles that are not solid. The background mode determines how to combine
@@ -2584,7 +2285,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- typedef  enum
+
+ typedef  enum
  {
    TRANSPARENT = 0x0001,
    OPAQUE = 0x0002
@@ -2596,7 +2298,7 @@ OPAQUE: Background is filled with the current background color before the text, 
 
 pen is drawn.
 
-2.1.5  ColorAdjustment Enumeration
+#### 2.1.5 ColorAdjustment Enumeration
 
 The ColorAdjustment enumeration is used to specify how the output image is prepared when the
 stretch mode is HALFTONE.
@@ -2613,7 +2315,7 @@ CA_LOG_FILTER: Specifies that a logarithmic process SHOULD be applied to the fin
 
 output colors. This will increase the color contrast when the luminance is low.
 
-2.1.6  ColorMatchToTarget Enumeration
+#### 2.1.6 ColorMatchToTarget Enumeration
 
 The ColorMatchToTarget enumeration is used to determine whether a color profile has been
 embedded in the metafile.
@@ -2632,7 +2334,7 @@ COLORMATCHTOTARGET_EMBEDDED: Indicates that a color profile has been embedded in
 
 metafile.
 
-2.1.7  ColorSpace Enumeration
+#### 2.1.7 ColorSpace Enumeration
 
 The ColorSpace enumeration is used to specify when to turn color proofing on and off, and when to
 delete transforms.
@@ -2651,7 +2353,8 @@ Release: April 23, 2024
 
 30 / 282
 
-CS_ENABLE: Maps colors to the target device's color gamut. This enables color proofing. All
+
+CS_ENABLE: Maps colors to the target device's color gamut. This enables color proofing. All
 subsequent draw commands render colors as they would appear on the target device.
 
 CS_DISABLE: Disables color proofing.
@@ -2660,7 +2363,7 @@ CS_DELETE_TRANSFORM: If color management is enabled for the target profile, disa
 
 deletes the current color transform.
 
-2.1.8  Contrast Enumeration
+#### 2.1.8 Contrast Enumeration
 
 The Contrast enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -2699,7 +2402,7 @@ PAN_CONTRAST_HIGH: High.
 
 PAN_CONTRAST_VERY_HIGH: Very high.
 
-2.1.9  DIBColors Enumeration
+#### 2.1.9 DIBColors Enumeration
 
 The DIBColors enumeration defines how to interpret the values in the color table of a DIB.
 
@@ -2719,7 +2422,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DIB_PAL_COLORS: The color table consists of an array of 16-bit indexes into the LogPalette object
+
+DIB_PAL_COLORS: The color table consists of an array of 16-bit indexes into the LogPalette object
 
 (section 2.2.17) that is currently defined in the playback device context.
 
@@ -2729,7 +2433,7 @@ palette in the playback device context.
 
 DIBs are specified by DeviceIndependentBitmap objects ([MS-WMF] section 2.2.2.9).
 
-2.1.10 EmrComment Enumeration
+#### 2.1.10 EmrComment Enumeration
 
 The EmrComment enumeration defines the types of data that a public comment record can contain,
 as specified in section 2.3.3.4.
@@ -2763,7 +2467,7 @@ EMR_COMMENT_UNICODE_STRING: This comment record is reserved and MUST NOT be used
 
 EMR_COMMENT_UNICODE_END: This comment record is reserved and MUST NOT be used.
 
-2.1.11 ExtTextOutOptions Enumeration
+#### 2.1.11 ExtTextOutOptions Enumeration
 
 The ExtTextOutOptions enumeration specifies parameters that control various aspects of the output of
 text by EMR_SMALLTEXTOUT (section 2.3.5.37) records and in EmrText objects.
@@ -2790,7 +2494,8 @@ Release: April 23, 2024
 
 32 / 282
 
-ETO_OPAQUE: This bit indicates that the current background color SHOULD be used to fill the
+
+ETO_OPAQUE: This bit indicates that the current background color SHOULD be used to fill the
 
 rectangle.
 
@@ -2835,7 +2540,7 @@ be provided.<28>
 
 ETO_REVERSE_INDEX_MAP: This bit is reserved and SHOULD NOT be used.<29>
 
-2.1.12 FamilyType Enumeration
+#### 2.1.12 FamilyType Enumeration
 
 The FamilyType enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -2867,9 +2572,10 @@ Release: April 23, 2024
 
 33 / 282
 
-PAN_FAMILY_PICTORIAL: Pictorial.
 
-2.1.13 FloodFill Enumeration
+PAN_FAMILY_PICTORIAL: Pictorial.
+
+#### 2.1.13 FloodFill Enumeration
 
 The FloodFill enumeration defines values that specify how to determine the area for a flood fill
 operation.
@@ -2887,7 +2593,7 @@ FLOODFILLSURFACE: The fill area is defined by a specific color. Filling continue
 directions as long as the color is encountered. This style is useful for filling areas with multicolored
 boundaries.
 
-2.1.14 FormatSignature Enumeration
+#### 2.1.14 FormatSignature Enumeration
 
 The FormatSignature enumeration defines values that are used to identify the format of embedded
 data in EMF metafiles.
@@ -2922,7 +2628,7 @@ denotes encapsulated PostScript (EPS) data. The reverse of the string is "EPSF".
 This signature is used in EmrFormat objects to specify embedded PostScript data in the EpsData
 object (section 2.2.6) in EMR_COMMENT_MULTIFORMATS records.
 
-2.1.15 GradientFill Enumeration
+#### 2.1.15 GradientFill Enumeration
 
 The GradientFill enumeration defines the modes for gradient fill operations.
 
@@ -2939,7 +2645,8 @@ Release: April 23, 2024
 
 34 / 282
 
- } GradientFill;
+
+ } GradientFill;
 
 GRADIENT_FILL_RECT_H: Color interpolation along a gradient from the left to the right edges of a
 
@@ -2951,7 +2658,7 @@ a rectangle.
 
 GRADIENT_FILL_TRIANGLE: Color interpolation between vertexes of a triangle.
 
-2.1.16 GraphicsMode Enumeration
+#### 2.1.16 GraphicsMode Enumeration
 
 The GraphicsMode enumeration is used to specify how to interpret shape data such as rectangle
 coordinates.
@@ -3005,7 +2712,8 @@ Release: April 23, 2024
 
 35 / 282
 
-2.1.17 HatchStyle Enumeration
+
+#### 2.1.17 HatchStyle Enumeration
 
 The HatchStyle enumeration is an extension to the WMF HatchStyle enumeration ([MS-WMF]
 section 2.1.1.12).
@@ -3040,7 +2748,7 @@ HS_DITHEREDBKCLR: The hatch is not a pattern, but is a dithered color, defined b
 
 background color.
 
-2.1.18 ICMMode Enumeration
+#### 2.1.18 ICMMode Enumeration
 
 The ICMMode enumeration defines values that specify when to turn on and off Image Color
 Management (ICM).<32>
@@ -3061,7 +2769,7 @@ ICM_QUERY: Queries the current state of color management.
 
 ICM_DONE_OUTSIDEDC: Turns off both ICM and old-style color correction of halftones.
 
-2.1.19 Illuminant Enumeration
+#### 2.1.19 Illuminant Enumeration
 
 The Illuminant enumeration defines values that specify the illuminant value of an image, which
 determines the standard light source under which the image is viewed so that the color can be
@@ -3074,7 +2782,8 @@ Release: April 23, 2024
 
 36 / 282
 
- typedef  enum
+
+ typedef  enum
  {
    ILLUMINANT_DEVICE_DEFAULT = 0x00,
    ILLUMINANT_TUNGSTEN = 0x01,
@@ -3105,7 +2814,7 @@ ILLUMINANT_D75: Northern daylight.
 
 ILLUMINANT_FLUORESCENT: Cool white lamp.
 
-2.1.20 Letterform Enumeration
+#### 2.1.20 Letterform Enumeration
 
 The Letterform enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -3143,7 +2852,8 @@ Release: April 23, 2024
 
 37 / 282
 
-PAN_LETT_NORMAL_WEIGHTED: Normal/weighted.
+
+PAN_LETT_NORMAL_WEIGHTED: Normal/weighted.
 
 PAN_LETT_NORMAL_BOXED: Normal/boxed.
 
@@ -3169,7 +2879,7 @@ PAN_LETT_OBLIQUE_OFF_CENTER: Oblique/off center.
 
 PAN_LETT_OBLIQUE_SQUARE: Oblique/square.
 
-2.1.21 MapMode Enumeration
+#### 2.1.21 MapMode Enumeration
 
 The MapMode enumeration is used to define the unit of measure for transforming page space units
 into device space units and for defining the orientation of the drawing axes.
@@ -3215,7 +2925,8 @@ Release: April 23, 2024
 
 38 / 282
 
-MM_ISOTROPIC: Logical units are isotropic; that is, they are mapped to arbitrary units with equally
+
+MM_ISOTROPIC: Logical units are isotropic; that is, they are mapped to arbitrary units with equally
 
 scaled axes. Thus, one unit along the x-axis is equal to one unit along the y-axis. The
 EMR_SETWINDOWEXTEX (section 2.3.11.30) and EMR_SETVIEWPORTEXTEX (section 2.3.11.28)
@@ -3229,7 +2940,7 @@ MM_ANISOTROPIC: Logical units are anisotropic; that is, they are mapped to arbit
 arbitrarily scaled axes. The EMR_SETWINDOWEXTEX and EMR_SETVIEWPORTEXTEX records are
 used to specify the units, orientation, and scaling of the axes.
 
-2.1.22 MetafileVersion Enumeration
+#### 2.1.22 MetafileVersion Enumeration
 
 The MetafileVersion enumeration defines the interoperability version for EMF metafile.
 
@@ -3240,7 +2951,7 @@ The MetafileVersion enumeration defines the interoperability version for EMF met
 
 META_FORMAT_ENHANCED: Specifies EMF metafile interoperability.
 
-2.1.23 MidLine Enumeration
+#### 2.1.23 MidLine Enumeration
 
 The MidLine enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -3282,7 +2993,8 @@ Release: April 23, 2024
 
 39 / 282
 
-PAN_MIDLINE_HIGH_POINTED: High/pointed.
+
+PAN_MIDLINE_HIGH_POINTED: High/pointed.
 
 PAN_MIDLINE_HIGH_SERIFED: High/serifed.
 
@@ -3298,7 +3010,7 @@ PAN_MIDLINE_LOW_POINTED: Low/pointed.
 
 PAN_MIDLINE_LOW_SERIFED: Low/serifed.
 
-2.1.24 ModifyWorldTransformMode Enumeration
+#### 2.1.24 ModifyWorldTransformMode Enumeration
 
 The ModifyWorldTransformMode enumeration defines modes for changing the world-space to
 page-space transform that is currently defined in the playback device context.
@@ -3329,7 +3041,7 @@ The transform data is specified as an XForm object (section 2.2.28).
 
 For more information concerning transforms and coordinate spaces, see [MSDN-WRLDPGSPC].
 
-2.1.25 PenStyle Enumeration
+#### 2.1.25 PenStyle Enumeration
 
 The PenStyle enumeration defines the attributes of pens that can be used in graphics operations. A
 pen style is a combination of pen type, line style, line cap, and line join.
@@ -3354,7 +3066,8 @@ Release: April 23, 2024
 
 40 / 282
 
-   PS_USERSTYLE = 0x00000007,
+
+   PS_USERSTYLE = 0x00000007,
    PS_ALTERNATE = 0x00000008,
    PS_ENDCAP_SQUARE = 0x00000100,
    PS_ENDCAP_FLAT = 0x00000200,
@@ -3412,7 +3125,7 @@ PS_GEOMETRIC: A pen type that specifies a line with a width that is measured in 
 
 style that can contain any of the attributes of a brush.
 
-2.1.26 Point Enumeration
+#### 2.1.26 Point Enumeration
 
 The Point enumeration is used to specify how a point is to be used in a drawing call.
 
@@ -3426,7 +3139,8 @@ Release: April 23, 2024
 
 41 / 282
 
-   PT_CLOSEFIGURE = 0x01,
+
+   PT_CLOSEFIGURE = 0x01,
    PT_LINETO = 0x02,
    PT_BEZIERTO = 0x04,
    PT_MOVETO = 0x06
@@ -3454,7 +3168,7 @@ PT_MOVETO: Specifies that this point starts a disjoint figure. This point become
 
 position.
 
-2.1.27 PolygonFillMode Enumeration
+#### 2.1.27 PolygonFillMode Enumeration
 
 The PolygonFillMode enumeration defines values that specify how to calculate the region of a polygon
 that is to be filled.
@@ -3471,7 +3185,7 @@ polygon sides on each scan line).
 
 WINDING: Selects winding mode (fills any region with a nonzero winding value).
 
-2.1.28 Proportion Enumeration
+#### 2.1.28 Proportion Enumeration
 
 The Proportion enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -3496,7 +3210,8 @@ Release: April 23, 2024
 
 42 / 282
 
- } Proportion;
+
+ } Proportion;
 
 PAN_ANY: Any.
 
@@ -3518,7 +3233,7 @@ PAN_PROP_VERY_CONDENSED: Very condensed.
 
 PAN_PROP_MONOSPACED: Monospaced.
 
-2.1.29 RegionMode Enumeration
+#### 2.1.29 RegionMode Enumeration
 
 The RegionMode enumeration defines values that are used with EMR_SELECTCLIPPATH and
 EMR_EXTSELECTCLIPRGN, specifying the current path bracket or a new region that is being
@@ -3551,7 +3266,7 @@ current path bracket (or new region) excluded.
 
 RGN_COPY: The new clipping region is the current path bracket (or the new region).
 
-2.1.30 SerifType Enumeration
+#### 2.1.30 SerifType Enumeration
 
 The SerifType enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -3566,7 +3281,8 @@ Release: April 23, 2024
 
 43 / 282
 
-   PAN_ANY = 0x00,
+
+   PAN_ANY = 0x00,
    PAN_NO_FIT = 0x01,
    PAN_SERIF_COVE = 0x02,
    PAN_SERIF_OBTUSE_COVE = 0x03,
@@ -3616,7 +3332,7 @@ PAN_SERIF_FLARED: Flared.
 
 PAN_SERIF_ROUNDED: Rounded.
 
-2.1.31 StockObject Enumeration
+#### 2.1.31 StockObject Enumeration
 
 The StockObject enumeration specifies the indexes of predefined logical graphics objects that can be
 used in graphics operations.
@@ -3636,7 +3352,8 @@ Release: April 23, 2024
 
 44 / 282
 
-   LTGRAY_BRUSH = 0x80000001,
+
+   LTGRAY_BRUSH = 0x80000001,
    GRAY_BRUSH = 0x80000002,
    DKGRAY_BRUSH = 0x80000003,
    BLACK_BRUSH = 0x80000004,
@@ -3713,7 +3430,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  ColorRef: 0x00FFFFFF in a ColorRef object.
+
+  ColorRef: 0x00FFFFFF in a ColorRef object.
 
 BLACK_PEN: A black, solid-color pen that is equivalent to a logical pen with the following properties:
 
@@ -3792,7 +3510,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.1.32 StretchMode Enumeration
+
+#### 2.1.32 StretchMode Enumeration
 
 The StretchMode enumeration is used to specify how color data is added to or removed from
 bitmaps that are stretched or compressed.<41>
@@ -3825,7 +3544,7 @@ source pixels.
 After setting the STRETCH_HALFTONE stretching mode, the brush origin SHOULD be defined by
 an EMR_SETBRUSHORGEX record. If it fails to do so, brush misalignment can occur.
 
-2.1.33 StrokeVariation Enumeration
+#### 2.1.33 StrokeVariation Enumeration
 
 The StrokeVariation enumeration defines values for one of the characteristics in the PANOSE system
 for classifying typefaces.
@@ -3862,13 +3581,14 @@ Release: April 23, 2024
 
 47 / 282
 
-PAN_STROKE_RAPID_VERT: Rapid/vertical.
+
+PAN_STROKE_RAPID_VERT: Rapid/vertical.
 
 PAN_STROKE_RAPID_HORZ: Rapid/horizontal.
 
 PAN_STROKE_INSTANT_VERT: Instant/vertical.
 
-2.1.34 Weight Enumeration
+#### 2.1.34 Weight Enumeration
 
 The Weight enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -3913,7 +3633,7 @@ PAN_WEIGHT_BLACK: Black.
 
 PAN_WEIGHT_NORD: Nord.
 
-2.1.35 XHeight Enumeration
+#### 2.1.35 XHeight Enumeration
 
 The XHeight enumeration defines values for one of the characteristics in the PANOSE system for
 classifying typefaces.
@@ -3931,7 +3651,8 @@ Release: April 23, 2024
 
 48 / 282
 
-   PAN_XHEIGHT_CONSTANT_STD = 0x03,
+
+   PAN_XHEIGHT_CONSTANT_STD = 0x03,
    PAN_XHEIGHT_CONSTANT_LARGE = 0x04,
    PAN_XHEIGHT_DUCKING_SMALL = 0x05,
    PAN_XHEIGHT_DUCKING_STD = 0x06,
@@ -3954,9 +3675,9 @@ PAN_XHEIGHT_DUCKING_STD: Ducking/standard.
 
 PAN_XHEIGHT_DUCKING_LARGE: Ducking/large.
 
-2.2  EMF Objects
+### 2.2 EMF Objects
 
-2.2.1  BitFIX28_4 Object
+#### 2.2.1 BitFIX28_4 Object
 
 The BitFIX28_4 object defines a numeric value in 28.4 bit FIX notation.
 
@@ -3983,7 +3704,7 @@ The real number represented by this object is computed as follows:
 
  IntValue + (FracValue / 16)
 
-2.2.2  ColorAdjustment Object
+#### 2.2.2 ColorAdjustment Object
 
 The ColorAdjustment object defines values for adjusting the colors in source bitmaps in bit-block
 transfers.<42>
@@ -4018,7 +3739,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ReferenceBlack
+
+ReferenceBlack
 
 ReferenceWhite
 
@@ -4094,13 +3816,14 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-An EMR_SETCOLORADJUSTMENT record (section 2.3.11.13) sets the current ColorAdjustment object
+
+An EMR_SETCOLORADJUSTMENT record (section 2.3.11.13) sets the current ColorAdjustment object
 in the playback device context. That ColorAdjustment object affects all subsequent
 EMR_STRETCHBLT and EMR_STRETCHDIBITS records until a different ColorAdjustment object is
 specified by another EMR_SETCOLORADJUSTMENT record, or until the object is removed by a
 EMR_DELETEOBJECT record.
 
-2.2.3  DesignVector Object
+#### 2.2.3 DesignVector Object
 
 The DesignVector (section 2.2.3) object defines the design vector, which specifies values for the
 font axes of a multiple master font.
@@ -4133,7 +3856,7 @@ It MUST be in the range 0 to 16, inclusive.
 Values (variable, optional): An array of 32-bit signed integers that specify the values of the font
 axes of a multiple master, OpenType font. The maximum number of values in the array is 16.
 
-2.2.4  EmrFormat Object
+#### 2.2.4 EmrFormat Object
 
 The EmrFormat object contains information that identifies the format of image data in an
 EMR_COMMENT_MULTIFORMATS record (section 2.3.3.4.3).
@@ -4174,12 +3897,13 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-offData (4 bytes): An unsigned integer that specifies the offset to the data from the start of the
+
+offData (4 bytes): An unsigned integer that specifies the offset to the data from the start of the
 
 identifier field in an EMR_COMMENT_PUBLIC record (section 2.3.3.4). The offset MUST be 32-bit
 aligned.
 
-2.2.5  EmrText Object
+#### 2.2.5 EmrText Object
 
 The EmrText object contains values for text output.
 
@@ -4242,7 +3966,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-alignment is (TA_LEFT, TA_TOP), which is specified using TextAlignmentMode flags ([MS-WMF]
+
+alignment is (TA_LEFT, TA_TOP), which is specified using TextAlignmentMode flags ([MS-WMF]
 section 2.1.2.3).
 
 Chars (4 bytes): An unsigned integer that specifies the number of characters in the string.
@@ -4327,7 +4052,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OutputDx (variable): An array of 32-bit unsigned integers that specify the output spacing
+
+OutputDx (variable): An array of 32-bit unsigned integers that specify the output spacing
 
 between the origins of adjacent character cells in logical units. The location of this field is
 specified by the value of offDx in bytes from the start of this record. If spacing is defined, this
@@ -4353,7 +4079,7 @@ ASCII characters.
 EMR_EXTTEXTOUTW (section 2.3.5.8) and EMR_POLYTEXTOUTW (section 2.3.5.33) records: 16-
 bit Unicode UTF16-LE characters.
 
-2.2.6  EpsData Object
+#### 2.2.6 EpsData Object
 
 The EpsData object is a container for EPS data.
 
@@ -4405,7 +4131,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- D = B + C A
+
+ D = B + C A
 
 PostScriptData (variable): An array of bytes of PostScript data. The length of this array can be
 
@@ -4435,7 +4162,7 @@ EMR_COMMENT_MULTIFORMATS record contains an EpsData object.
 The EmrFormat object also specifies an offData field that indicates where the EpsData object is in
 the FormatData field in the EMR_COMMENT_MULTIFORMATS record.
 
-2.2.7  GradientRectangle Object
+#### 2.2.7 GradientRectangle Object
 
 The GradientRectangle object defines a rectangle using TriVertex objects (section 2.2.26) in an
 EMR_GRADIENTFILL record (section 2.3.5.12).
@@ -4463,7 +4190,7 @@ LowerRight (4 bytes): An index into an array of TriVertex objects that specifies
 vertex of a rectangle. The index MUST be smaller than the size of the array, as defined by the
 nVer field of the EMR_GRADIENTFILL record.
 
-2.2.8  GradientTriangle Object
+#### 2.2.8 GradientTriangle Object
 
 The GradientTriangle object defines a triangle using TriVertex objects (section 2.2.26) in an
 EMR_GRADIENTFILL record (section 2.3.5.12).
@@ -4492,7 +4219,8 @@ Release: April 23, 2024
 
 55 / 282
 
-Vertex1 (4 bytes): An index into an array of TriVertex objects that specifies a vertex of a triangle.
+
+Vertex1 (4 bytes): An index into an array of TriVertex objects that specifies a vertex of a triangle.
 
 The index MUST be smaller than the size of the array, as defined by the nVer field of the
 EMR_GRADIENTFILL record.
@@ -4507,7 +4235,7 @@ Vertex3 (4 bytes): An index into an array of TriVertex objects that specifies a 
 The index MUST be smaller than the size of the array, as defined by the nVer field of the
 EMR_GRADIENTFILL record.
 
-2.2.9  Header Object
+#### 2.2.9 Header Object
 
 The Header object defines the EMF metafile header. It specifies properties of the device on which the
 image in the metafile was created.
@@ -4564,7 +4292,8 @@ Release: April 23, 2024
 
 56 / 282
 
-Device
+
+Device
 
 ...
 
@@ -4617,7 +4346,7 @@ device, in pixels.
 
 Millimeters (8 bytes): A SizeL object that specifies the size of the reference device, in millimeters.
 
-2.2.10 HeaderExtension1 Object
+#### 2.2.10 HeaderExtension1 Object
 
 The HeaderExtension1 object defines the first extension to the EMF metafile header. It adds support
 for a PixelFormatDescriptor object (section 2.2.22) and OpenGL [OPENGL] records (section 2.3.9).
@@ -4644,7 +4373,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-bOpenGL
+
+bOpenGL
 
 cbPixelFormat (4 bytes): An unsigned integer that specifies the size of the PixelFormatDescriptor
 
@@ -4666,7 +4396,7 @@ Meaning
 
 0x00000001  OpenGL records are present in the metafile.
 
-2.2.11 HeaderExtension2 Object
+#### 2.2.11 HeaderExtension2 Object
 
 The HeaderExtension2 object defines the second extension to the EMF metafile header. It adds the
 ability to measure device surfaces in micrometers, which enhances the resolution and scalability of
@@ -4695,7 +4425,7 @@ MicrometersY (4 bytes): The 32-bit vertical size of the display device for which
 
 was generated, in micrometers.
 
-2.2.12 LogBrushEx Object
+#### 2.2.12 LogBrushEx Object
 
 The LogBrushEx object defines the style, color, and pattern of a device-independent brush.
 
@@ -4727,7 +4457,8 @@ Release: April 23, 2024
 
 58 / 282
 
-supported in this structure are listed later in this section. The BS_NULL style SHOULD be used to
+
+supported in this structure are listed later in this section. The BS_NULL style SHOULD be used to
 specify a brush that has no effect.
 
 Color (4 bytes): A 32-bit ColorRef object ([MS-WMF] section 2.2.2.8) that specifies a color. The
@@ -4770,7 +4501,7 @@ A value from the HatchStyle enumeration (section 2.1.17),
 which specifies the orientation of lines used to create the
 hatch.
 
-2.2.13 LogFont Object
+#### 2.2.13 LogFont Object
 
 The LogFont object specifies the basic attributes of a logical font.
 
@@ -4826,7 +4557,8 @@ Release: April 23, 2024
 
 59 / 282
 
-Height (4 bytes): A signed integer that specifies the height of the font's character cell in logical
+
+Height (4 bytes): A signed integer that specifies the height of the font's character cell in logical
 
 units. The character height value, also known as the em size, is the character cell height value
 minus the internal leading value. The font mapper SHOULD interpret the value specified in the
@@ -4904,7 +4636,8 @@ Release: April 23, 2024
 
 60 / 282
 
-Applications can use the output precision to control how the font mapper chooses a font when the
+
+Applications can use the output precision to control how the font mapper chooses a font when the
 operating system contains more than one font with a specified name. For example, if an operating
 system contains a font named Symbol in rasterized and TrueType forms, an output precision
 value of OUT_TT_PRECIS forces the font mapper to choose the TrueType version. A value of
@@ -4928,7 +4661,7 @@ Facename (64 bytes): A string of no more than 32 Unicode characters that specifi
 name of the font. If the length of this string is less than 32 characters, a terminating NULL MUST
 be present, after which the remainder of this field MUST be ignored.
 
-2.2.14 LogFontEx Object
+#### 2.2.14 LogFontEx Object
 
 The LogFontEx object specifies the extended attributes of a logical font.
 
@@ -4974,7 +4707,8 @@ Release: April 23, 2024
 
 61 / 282
 
-Script (64 bytes)
+
+Script (64 bytes)
 
 ...
 
@@ -4999,7 +4733,7 @@ Script (64 bytes): A string of 32 Unicode characters that defines the character 
 length of this string is less than 32 characters, a terminating NULL MUST be present, after which
 the remainder of this field MUST be ignored.
 
-2.2.15 LogFontExDv Object
+#### 2.2.15 LogFontExDv Object
 
 The LogFontExDv object specifies the design vector for an extended logical font.
 
@@ -5036,7 +4770,7 @@ DesignVector (variable): A DesignVector object (section 2.2.3). This field MUST 
 
 A design vector SHOULD be specified only for a multiple master OpenType font.
 
-2.2.16 LogFontPanose Object
+#### 2.2.16 LogFontPanose Object
 
 The LogFontPanose object specifies the PANOSE characteristics of a logical font.
 
@@ -5047,7 +4781,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5118,7 +4853,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Style (64 bytes): A string of 32 Unicode characters that defines the font's style. If the length of this
+
+Style (64 bytes): A string of 32 Unicode characters that defines the font's style. If the length of this
 string is less than 32 characters, a terminating NULL MUST be present, after which the remainder
 of this field MUST be ignored.
 
@@ -5145,7 +4881,7 @@ Padding (2 bytes): A field that exists only to ensure 32-bit alignment of this s
 
 ignored.
 
-2.2.17 LogPalette Object
+#### 2.2.17 LogPalette Object
 
 The LogPalette object specifies a logical_palette that contains device-independent color definitions.
 
@@ -5183,7 +4919,7 @@ and usage of each entry in the logical_palette.
 EMF MUST define colors as device-independent values because the metafile itself is device-
 independent.
 
-2.2.18 LogPaletteEntry Object
+#### 2.2.18 LogPaletteEntry Object
 
 The LogPaletteEntry object defines the values that make up a single entry in a LogPalette object
 (section 2.2.17).
@@ -5195,7 +4931,8 @@ Release: April 23, 2024
 
 64 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5225,7 +4962,7 @@ Red (1 byte): An unsigned integer that defines the red intensity value for the e
 EMF MUST define colors as device-independent values because the metafile itself is device-
 independent.
 
-2.2.19 LogPen Object
+#### 2.2.19 LogPen Object
 
 The LogPen object defines the style, width, and color of a logical pen.
 
@@ -5264,7 +5001,7 @@ ColorRef (4 bytes): A ColorRef object ([MS-WMF] section 2.2.2.8) that specifies 
 
 value.
 
-2.2.20 LogPenEx Object
+#### 2.2.20 LogPenEx Object
 
 The LogPenEx object specifies the style, width, and color of an extended logical pen.
 
@@ -5290,7 +5027,8 @@ Release: April 23, 2024
 
 65 / 282
 
-BrushStyle
+
+BrushStyle
 
 ColorRef
 
@@ -5369,7 +5107,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BrushStyle
+
+BrushStyle
 
 ColorRef
 
@@ -5418,7 +5157,7 @@ Not used and is ignored.
 
 from the ColorUsage enumeration.
 
-2.2.21 Panose Object
+#### 2.2.21 Panose Object
 
 The Panose object describes the PANOSE font-classification values for a TrueType font. These
 characteristics are used to associate the font with other fonts of similar appearance but different
@@ -5486,7 +5225,8 @@ Release: April 23, 2024
 
 67 / 282
 
-ArmStyle (1 byte): An unsigned integer that specifies the arm style of the font. This value is in the
+
+ArmStyle (1 byte): An unsigned integer that specifies the arm style of the font. This value is in the
 
 ArmStyle (section 2.1.3) enumeration table.
 
@@ -5502,7 +5242,7 @@ XHeight (1 byte): An unsigned integer that specifies the x height of the font. T
 
 XHeight (section 2.1.35) enumeration table.
 
-2.2.22 PixelFormatDescriptor Object
+#### 2.2.22 PixelFormatDescriptor Object
 
 The PixelFormatDescriptor object specifies the pixel format of a drawing surface.
 
@@ -5630,7 +5370,8 @@ Release: April 23, 2024
 
 68 / 282
 
-Value
+
+Value
 
 D
 
@@ -5762,7 +5503,8 @@ Release: April 23, 2024
 
 69 / 282
 
-Value
+
+Value
 
 DP
 
@@ -5849,7 +5591,8 @@ Release: April 23, 2024
 
 70 / 282
 
-bReserved (1 byte): Specifies the number of overlay and underlay planes. Bits 0 through 3 specify
+
+bReserved (1 byte): Specifies the number of overlay and underlay planes. Bits 0 through 3 specify
 
 up to 15 overlay planes and bits 4 through 7 specify up to 15 underlay planes.
 
@@ -5865,7 +5608,7 @@ dwDamageMask (4 bytes): This field SHOULD be ignored.
 The PixelFormatDescriptor object is used in EMR_HEADER records (section 2.3.4.2) to specify the pixel
 format of the output surface.
 
-2.2.23 Point28_4 Object
+#### 2.2.23 Point28_4 Object
 
 The Point28_4 object represents the location of a point on a device surface with coordinates in 28.4
 bit FIX notation.
@@ -5891,7 +5634,7 @@ point.
 
 y (4 bytes): A BitFIX28_4 object that represents the vertical coordinate of the point.
 
-2.2.24 RegionData Object
+#### 2.2.24 RegionData Object
 
 The RegionData object specifies data that defines a region, which is made of non-overlapping
 rectangles.
@@ -5930,11 +5673,12 @@ Release: April 23, 2024
 
 71 / 282
 
-Data (variable): An array of RectL objects ([MS-WMF] section 2.2.2.19); the objects are merged to
+
+Data (variable): An array of RectL objects ([MS-WMF] section 2.2.2.19); the objects are merged to
 
 create the region.
 
-2.2.25 RegionDataHeader Object
+#### 2.2.25 RegionDataHeader Object
 
 The RegionDataHeader object defines the properties of a RegionData (section 2.2.24) object.
 
@@ -5979,7 +5723,7 @@ Bounds (16 bytes): A RectL object ([MS-WMF] section 2.2.2.19), which specifies t
 
 region.
 
-2.2.26 TriVertex Object
+#### 2.2.26 TriVertex Object
 
 The TriVertex object specifies color and position information for the definition of a rectangle or triangle
 vertex.
@@ -6014,7 +5758,8 @@ Release: April 23, 2024
 
 72 / 282
 
-x (4 bytes): A signed integer that specifies the horizontal position, in logical units.
+
+x (4 bytes): A signed integer that specifies the horizontal position, in logical units.
 
 y (4 bytes): A signed integer that specifies the vertical position, in logical units.
 
@@ -6026,7 +5771,7 @@ Blue (2 bytes): An unsigned integer that specifies the blue color value for the 
 
 Alpha (2 bytes): An unsigned integer that specifies the alpha transparency value for the point.
 
-2.2.27 UniversalFontId Object
+#### 2.2.27 UniversalFontId Object
 
 The UniversalFontId object defines a mechanism for identifying fonts in EMF metafiles.
 
@@ -6097,7 +5842,8 @@ Release: April 23, 2024
 
 73 / 282
 
-     return ( sum < 2 ) ? 2 : sum;
+
+     return ( sum < 2 ) ? 2 : sum;
  }
 
 pvView: A pointer to the start of the font.
@@ -6108,7 +5854,7 @@ Index (4 bytes): An unsigned integer that is an index associated with the font o
 
 of this field is determined by the type of font.
 
-2.2.28 XForm Object
+#### 2.2.28 XForm Object
 
 The XForm object defines a two-dimensional, linear transform matrix.
 
@@ -6155,7 +5901,7 @@ point (X',Y'):
 
 For more information concerning transforms and coordinate spaces, see [MSDN-WRLDPGSPC].
 
-2.3  EMF Records
+### 2.3 EMF Records
 
 This section specifies the EMF metafile records, which have been grouped into the following
 categories.
@@ -6167,7 +5913,8 @@ Release: April 23, 2024
 
 74 / 282
 
-Name
+
+Name
 
 Section  Description
 
@@ -6256,7 +6003,7 @@ To ensure maximum compatibility, implementations need to allow for record trunca
 fields at the end of an EMF record. If there are extra data at the end of the record undocumented by
 this specification, these data MUST be ignored.
 
-2.3.1  Bitmap Record Types
+#### 2.3.1 Bitmap Record Types
 
 The Bitmap record types perform block transfers of bitmap images.
 
@@ -6298,7 +6045,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section  Description
 
@@ -6410,7 +6158,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BitmapRecordBuffer (variable): An array of bytes that contains the remainder of the bitmap
+
+BitmapRecordBuffer (variable): An array of bytes that contains the remainder of the bitmap
 
 record.
 
@@ -6474,7 +6223,7 @@ For more information concerning transforms and coordinate spaces, see [MSDN-WRLD
 
 See section 2.3 for more EMF record types.
 
-2.3.1.1  EMR_ALPHABLEND Record
+##### 2.3.1.1 EMR_ALPHABLEND Record
 
 The EMR_ALPHABLEND record specifies a block transfer of pixels from a source bitmap to a
 destination rectangle, including alpha transparency data, according to a specified blending
@@ -6502,7 +6251,8 @@ Release: April 23, 2024
 
 77 / 282
 
-Size
+
+Size
 
 Bounds
 
@@ -6559,7 +6309,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Type (4 bytes): An unsigned integer that identifies this record type as EMR_ALPHABLEND. This
 
@@ -6654,7 +6405,8 @@ Release: April 23, 2024
 
 79 / 282
 
-xSrc (4 bytes): A signed integer that specifies the logical x-coordinate of the upper-left corner of the
+
+xSrc (4 bytes): A signed integer that specifies the logical x-coordinate of the upper-left corner of the
 
 source rectangle.
 
@@ -6737,7 +6489,8 @@ Release: April 23, 2024
 
 80 / 282
 
-BitsSrc (variable): The source bitmap bits.
+
+BitsSrc (variable): The source bitmap bits.
 
 The following equations show how destination pixels are computed from source pixels using
 BLENDFUNCTION. In the equations, "dst" refers to the destination bitmap, and "src" refers to the
@@ -6797,7 +6550,8 @@ Release: April 23, 2024
 
 81 / 282
 
-2.3.1.2  EMR_BITBLT Record
+
+##### 2.3.1.2 EMR_BITBLT Record
 
 The EMR_BITBLT record specifies a block transfer of pixels from a source bitmap to a destination
 rectangle, optionally in combination with a brush pattern, according to a specified raster operation.
@@ -6864,7 +6618,8 @@ Release: April 23, 2024
 
 82 / 282
 
-offBitsSrc
+
+offBitsSrc
 
 cbBitsSrc
 
@@ -6945,7 +6700,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BitmapBuffer (variable): A buffer containing the source bitmap, which is not required to be
+
+BitmapBuffer (variable): A buffer containing the source bitmap, which is not required to be
 
 contiguous with the fixed portion of the EMR_BITBLT record. Thus, fields in this buffer that are
 labeled "UndefinedSpace" are optional and MUST be ignored.
@@ -6986,7 +6742,7 @@ BitsSrc (variable): The source bitmap bits.
 
 See section 2.3.1 for more bitmap record types.
 
-2.3.1.3  EMR_MASKBLT Record
+##### 2.3.1.3 EMR_MASKBLT Record
 
 The EMR_MASKBLT record specifies a block transfer of pixels from a source bitmap to a destination
 rectangle, optionally in combination with a brush pattern and with the application of a color mask
@@ -7022,7 +6778,8 @@ Release: April 23, 2024
 
 84 / 282
 
-...
+
+...
 
 xDest
 
@@ -7079,7 +6836,8 @@ Release: April 23, 2024
 
 85 / 282
 
-BitmapBuffer (variable)
+
+BitmapBuffer (variable)
 
 ...
 
@@ -7166,7 +6924,8 @@ Release: April 23, 2024
 
 86 / 282
 
-offBmiSrc (4 bytes): An unsigned integer that specifies the offset in bytes, from the start of this
+
+offBmiSrc (4 bytes): An unsigned integer that specifies the offset in bytes, from the start of this
 
 record to the source bitmap header in the BitmapBuffer field.
 
@@ -7248,7 +7007,8 @@ Release: April 23, 2024
 
 87 / 282
 
-...
+
+...
 
 BmiMask (variable)
 
@@ -7278,7 +7038,7 @@ the mask pattern MUST be replicated as necessary.
 
 See section 2.3.1 for more bitmap record types.
 
-2.3.1.4  EMR_PLGBLT Record
+##### 2.3.1.4 EMR_PLGBLT Record
 
 The EMR_PLGBLT record specifies a block transfer of pixels from a source bitmap to a destination
 parallelogram, with the application of a color mask bitmap.
@@ -7317,7 +7077,8 @@ Release: April 23, 2024
 
 88 / 282
 
-...
+
+...
 
 ...
 
@@ -7374,7 +7135,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 Type (4 bytes): An unsigned integer that identifies this record type as EMR_PLGBLT. This value is
 
@@ -7454,7 +7216,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-offBmiMask (4 bytes): An unsigned integer that specifies the offset in bytes, from the start of this
+
+offBmiMask (4 bytes): An unsigned integer that specifies the offset in bytes, from the start of this
 
 record to the header of the mask bitmap in the BitmapBuffer field.
 
@@ -7526,7 +7289,8 @@ Release: April 23, 2024
 
 91 / 282
 
-BitsSrc (variable): The source bitmap bits.
+
+BitsSrc (variable): The source bitmap bits.
 
 BmiMask (variable): The mask bitmap header.
 
@@ -7540,7 +7304,7 @@ the mask pattern MUST be replicated as necessary.
 
 See section 2.3.1 for more bitmap record types.
 
-2.3.1.5  EMR_SETDIBITSTODEVICE Record
+##### 2.3.1.5 EMR_SETDIBITSTODEVICE Record
 
 The EMR_SETDIBITSTODEVICE record specifies a block transfer of pixels from specified scanlines of a
 source bitmap to a destination rectangle.
@@ -7595,7 +7359,8 @@ Release: April 23, 2024
 
 92 / 282
 
-cbBitsSrc
+
+cbBitsSrc
 
 UsageSrc
 
@@ -7671,7 +7436,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7707,7 +7473,7 @@ bitmap header specifies the image format.
 
 See section 2.3.1 for more bitmap record types.
 
-2.3.1.6  EMR_STRETCHBLT Record
+##### 2.3.1.6 EMR_STRETCHBLT Record
 
 The EMR_STRETCHBLT record specifies a block transfer of pixels from a source bitmap to a
 destination rectangle, optionally in combination with a brush pattern, according to a specified raster
@@ -7747,7 +7513,8 @@ Release: April 23, 2024
 
 94 / 282
 
-yDest
+
+yDest
 
 cxDest
 
@@ -7808,7 +7575,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-yDest (4 bytes): A signed integer that specifies the logical y-coordinate of the upper-left corner of
+
+yDest (4 bytes): A signed integer that specifies the logical y-coordinate of the upper-left corner of
 
 the destination rectangle.
 
@@ -7892,7 +7660,8 @@ Release: April 23, 2024
 
 96 / 282
 
-...
+
+...
 
 UndefinedSpace2 (variable, optional)
 
@@ -7908,7 +7677,7 @@ BitsSrc (variable): The source bitmap bits.
 
 See section 2.3.1 for more bitmap record types.
 
-2.3.1.7  EMR_STRETCHDIBITS Record
+##### 2.3.1.7 EMR_STRETCHDIBITS Record
 
 The EMR_STRETCHDIBITS record specifies a block transfer of pixels from a source bitmap to a
 destination rectangle, optionally in combination with a brush pattern, according to a specified raster
@@ -7958,7 +7727,8 @@ Release: April 23, 2024
 
 97 / 282
 
-offBmiSrc
+
+offBmiSrc
 
 cbBmiSrc
 
@@ -8029,7 +7799,8 @@ Release: April 23, 2024
 
 98 / 282
 
-UsageSrc (4 bytes): An unsigned integer that specifies how to interpret values in the color table in
+
+UsageSrc (4 bytes): An unsigned integer that specifies how to interpret values in the color table in
 
 the source bitmap header. This value is in the DIBColors enumeration (section 2.1.9).
 
@@ -8099,7 +7870,8 @@ Release: April 23, 2024
 
 99 / 282
 
-2.3.1.8  EMR_TRANSPARENTBLT Record
+
+##### 2.3.1.8 EMR_TRANSPARENTBLT Record
 
 The EMR_TRANSPARENTBLT record specifies a block transfer of pixels from a source bitmap to a
 destination rectangle, treating a specified color as transparent, stretching or compressing the output
@@ -8165,7 +7937,8 @@ Release: April 23, 2024
 
 100 / 282
 
-cbBmiSrc
+
+cbBmiSrc
 
 offBitsSrc
 
@@ -8242,7 +8015,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-cbBitsSrc (4 bytes): An unsigned integer that specifies the size in bytes, of the source bitmap bits.
+
+cbBitsSrc (4 bytes): An unsigned integer that specifies the size in bytes, of the source bitmap bits.
 
 cxSrc (4 bytes): A signed integer that specifies the logical width of the source rectangle.
 
@@ -8289,7 +8063,7 @@ BitsSrc (variable): The source bitmap bits.
 
 See section 2.3.1 for more bitmap record types.
 
-2.3.2  Clipping Record Types
+#### 2.3.2 Clipping Record Types
 
 The Clipping record types define and manage clipping regions. The clipping regions used by clipping
 record types are part of the Regions state element (section 3.1.1.2.1) in the playback device
@@ -8324,7 +8098,8 @@ Release: April 23, 2024
 
 102 / 282
 
-Name
+
+Name
 
 Section  Description
 
@@ -8429,7 +8204,8 @@ Release: April 23, 2024
 
 103 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8458,7 +8234,7 @@ its total size is a multiple of 4 bytes. This field MUST be ignored.
 
 See section 2.3 for more EMF record types.
 
-2.3.2.1  EMR_EXCLUDECLIPRECT Record
+##### 2.3.2.1 EMR_EXCLUDECLIPRECT Record
 
 The EMR_EXCLUDECLIPRECT record excludes the specified rectangle from the current clipping
 region.
@@ -8508,7 +8284,8 @@ Release: April 23, 2024
 
 104 / 282
 
-2.3.2.2  EMR_EXTSELECTCLIPRGN Record
+
+##### 2.3.2.2 EMR_EXTSELECTCLIPRGN Record
 
 The EMR_EXTSELECTCLIPRGN record combines the specified region with the current clipping region
 using the specified mode.
@@ -8554,7 +8331,7 @@ set to the default clipping region.
 
 See section 2.3.2 for more clipping record types.
 
-2.3.2.3  EMR_INTERSECTCLIPRECT Record
+##### 2.3.2.3 EMR_INTERSECTCLIPRECT Record
 
 The EMR_INTERSECTCLIPRECT record specifies a new clipping region from the intersection of the
 current clipping region and the specified rectangle.
@@ -8587,7 +8364,8 @@ Release: April 23, 2024
 
 105 / 282
 
-...
+
+...
 
 ...
 
@@ -8603,7 +8381,7 @@ The lower and right edges of the specified rectangle are excluded from the clipp
 
 See section 2.3.2 for more clipping record types.
 
-2.3.2.4  EMR_OFFSETCLIPRGN Record
+##### 2.3.2.4 EMR_OFFSETCLIPRGN Record
 
 The EMR_OFFSETCLIPRGN record moves the current clipping region in the playback device context
 by the specified offsets.
@@ -8639,7 +8417,7 @@ vertical offsets in logical units.
 
 See section 2.3.2 for more clipping record types.
 
-2.3.2.5  EMR_SELECTCLIPPATH Record
+##### 2.3.2.5 EMR_SELECTCLIPPATH Record
 
 The EMR_SELECTCLIPPATH record sets the current clipping region in the playback device
 context to the current clipping region combined with current path bracket.
@@ -8668,7 +8446,8 @@ Release: April 23, 2024
 
 106 / 282
 
-RegionMode
+
+RegionMode
 
 Type (4 bytes): An unsigned integer that identifies this record type as EMR_SELECTCLIPPATH. This
 
@@ -8681,7 +8460,7 @@ region with the current path bracket. This value is in the RegionMode enumeratio
 
 See section 2.3.2 for more clipping record types.
 
-2.3.3  Comment Record Types
+#### 2.3.3 Comment Record Types
 
 The Comment record types define formats for specifying arbitrary private data, embedding records in
 other metafile formats, and adding new or special-purpose commands.
@@ -8760,7 +8539,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -8812,7 +8592,7 @@ total size is a multiple of 4 bytes. This field MUST be ignored.
 
 See section 2.3 for more EMF record types.
 
-2.3.3.1  EMR_COMMENT Record
+##### 2.3.3.1 EMR_COMMENT Record
 
 The EMR_COMMENT record contains arbitrary private data.
 
@@ -8846,7 +8626,8 @@ Release: April 23, 2024
 
 108 / 282
 
-PrivateData (variable, optional): An array of bytes that specifies the private data. The first 32-bit
+
+PrivateData (variable, optional): An array of bytes that specifies the private data. The first 32-bit
 
 field of this data MUST NOT be one of the predefined comment identifier values specified in section
 2.3.3.
@@ -8856,7 +8637,7 @@ and how to use it. EMR_COMMENT private data records MAY<60> be ignored.
 
 See section 2.3.3 for more comment record types.
 
-2.3.3.2  EMR_COMMENT_EMFPLUS Record
+##### 2.3.3.2 EMR_COMMENT_EMFPLUS Record
 
 The EMR_COMMENT_EMFPLUS record contains embedded EMF+ records ([MS-EMFPLUS] section
 2.3).
@@ -8895,7 +8676,7 @@ EMFPlusRecords (variable): An array of bytes that contains one or more EMF+ reco
 
 See section 2.3.3 for more comment record types.
 
-2.3.3.3  EMR_COMMENT_EMFSPOOL Record
+##### 2.3.3.3 EMR_COMMENT_EMFSPOOL Record
 
 The EMR_COMMENT_EMFSPOOL record contains embedded EMFSPOOL records ([MS-EMFSPOOL]
 section 2.2).
@@ -8926,7 +8707,8 @@ Release: April 23, 2024
 
 109 / 282
 
-CommentIdentifier
+
+CommentIdentifier
 
 EMFSpoolRecordIdentifier
 
@@ -8948,7 +8730,7 @@ EMFSpoolRecords (variable): An array of bytes that contain one or more font defi
 
 See section 2.3.3 for more comment record types.
 
-2.3.3.4  EMR_COMMENT_PUBLIC Record Types
+##### 2.3.3.4 EMR_COMMENT_PUBLIC Record Types
 
 The EMR_COMMENT_PUBLIC record types specify extensions to EMF processing.
 
@@ -8960,15 +8742,15 @@ Section  Description
 
 EMR_COMMENT_BEGINGROUP
 
-2.3.3.4.1  Specifies the beginning of a group of drawing records.
+###### 2.3.3.4.1 Specifies the beginning of a group of drawing records.
 
 EMR_COMMENT_ENDGROUP
 
-2.3.3.4.2  Specifies the end of a group of drawing records.
+###### 2.3.3.4.2 Specifies the end of a group of drawing records.
 
 EMR_COMMENT_MULTIFORMATS
 
-2.3.3.4.3  Specifies an image in multiple graphics formats.
+###### 2.3.3.4.3 Specifies an image in multiple graphics formats.
 
 EMR_COMMENT_WINDOW_METAFILE  2.3.3.4.4  Specifies an image in an embedded WMF metafile.
 
@@ -9006,7 +8788,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 CommentIdentifier (4 bytes): An unsigned integer that identifies this comment record as specifying
 
@@ -9088,7 +8871,8 @@ Release: April 23, 2024
 
 111 / 282
 
-...
+
+...
 
 ...
 
@@ -9160,7 +8944,8 @@ Release: April 23, 2024
 
 112 / 282
 
-This record MUST be preceded by a corresponding. EMR_COMMENT_BEGINGROUP (section 2.3.3.4.1).
+
+This record MUST be preceded by a corresponding. EMR_COMMENT_BEGINGROUP (section 2.3.3.4.1).
 These records can be nested.
 
 See section 2.3.3.4 for more public comment record types.
@@ -9234,7 +9019,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FormatData (variable): The image data for all graphics formats contained in this record.
+
+FormatData (variable): The image data for all graphics formats contained in this record.
 
 The size of the data for each image is specified by the DataSize field in the corresponding EmrFormat
 object. Thus, the total size of this field is the sum of DataSize values in all EmrFormat objects.
@@ -9248,7 +9034,7 @@ graphics format is supported by the printer driver on the playback system.<61>
 
 See section 2.3.3.4 for more public comment record types.
 
-2.3.3.4.4 EMR_COMMENT_WINDOWS_METAFILE Record
+###### 2.3.3.4.4 EMR_COMMENT_WINDOWS_METAFILE Record
 
 The EMR_COMMENT_WINDOWS_METAFILE record specifies an image in an embedded WMF
 metafile.
@@ -9309,7 +9095,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flags (4 bytes): A value that MUST be 0x00000000 and MUST be ignored.
+
+Flags (4 bytes): A value that MUST be 0x00000000 and MUST be ignored.
 
 WinMetafileSize (4 bytes): An unsigned integer that specifies the size in bytes, of the WinMetafile
 
@@ -9319,7 +9106,7 @@ WinMetafile (variable): A buffer that contains the WMF metafile.
 
 See section 2.3.3.4 for more public comment record types.
 
-2.3.4  Control Record Types
+#### 2.3.4 Control Record Types
 
 The Control record types define the start and end of an EMF metafile and its properties.
 
@@ -9402,7 +9189,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-AlignmentPadding (variable, optional)
+
+AlignmentPadding (variable, optional)
 
 ...
 
@@ -9416,7 +9204,7 @@ its total size is a multiple of 4 bytes. This field MUST be ignored.
 
 See section 2.3 for more EMF record types.
 
-2.3.4.1  EMR_EOF Record
+##### 2.3.4.1 EMR_EOF Record
 
 The EMR_EOF record indicates the end of the metafile and specifies a palette.
 
@@ -9484,7 +9272,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PaletteEntries (variable)
+
+PaletteEntries (variable)
 
 ...
 
@@ -9502,7 +9291,7 @@ field.
 
 See section 2.3.4 for more control record types.
 
-2.3.4.2  EMR_HEADER Record Types
+##### 2.3.4.2 EMR_HEADER Record Types
 
 The EMR_HEADER record is the starting point of an EMF metafile. It specifies properties of the
 device on which the image in the metafile was recorded; this information in the header record makes
@@ -9516,7 +9305,7 @@ Section  Description
 
 EmfMetafileHeader
 
-2.3.4.2.1  The original EMF header record.
+###### 2.3.4.2.1 The original EMF header record.
 
 EmfMetafileHeaderExtension1  2.3.4.2.2  The header record defined in the first extension to EMF, which added
 
@@ -9562,7 +9351,8 @@ Release: April 23, 2024
 
 117 / 282
 
-...
+
+...
 
 EmfHeaderRecordBuffer (variable, optional)
 
@@ -9641,7 +9431,8 @@ Release: April 23, 2024
 
 118 / 282
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-EMF].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -9656,7 +9447,8 @@ Release: April 23, 2024
 
 119 / 282
 
-
+
+
 
 
 
@@ -9739,12 +9531,13 @@ Release: April 23, 2024
 
 120 / 282
 
-The value of the Size field can be used to distinguish between the different EMR_HEADER record
+
+The value of the Size field can be used to distinguish between the different EMR_HEADER record
 types. See the flowchart in section 2.3.4.2 for details.
 
 See section 2.3.4.2 for more header record types.
 
-2.3.4.2.2 EmfMetafileHeaderExtension1 Record
+###### 2.3.4.2.2 EmfMetafileHeaderExtension1 Record
 
 The EmfMetafileHeaderExtension1 record is the header record used in the first extension to EMF
 metafiles. Following the EmfHeaderExtension1 field, the remaining fields are optional and can be
@@ -9818,7 +9611,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 EmfDescription (variable)
 
@@ -9873,7 +9667,7 @@ present in each metafile and for unmarshaling the contents of each field appropr
 The value of the Size field can be used to distinguish between the different EMR_HEADER record
 types. See the flowchart in section 2.3.4.2 for details.
 
-2.3.4.2.3 EmfMetafileHeaderExtension2 Record
+###### 2.3.4.2.3 EmfMetafileHeaderExtension2 Record
 
 The EmfMetafileHeaderExtension2 record is the header record used in the second extension to
 EMF metafiles. Following the EmfHeaderExtension2 field, the remaining fields are optional and can
@@ -9888,7 +9682,8 @@ Release: April 23, 2024
 
 122 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9967,7 +9762,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 EmfDescription (variable): A null-terminated Unicode UTF16-LE string of arbitrary length and
 
@@ -10018,7 +9814,7 @@ present in each metafile, and for unmarshaling the contents of each field approp
 The value of the Size field can be used to distinguish between the different EMR_HEADER record
 types. See the flowchart in section 2.3.4.2 for details.
 
-2.3.5  Drawing Record Types
+#### 2.3.5 Drawing Record Types
 
 The Drawing record types perform graphics drawing and painting functions. The clipping regions
 used by drawing records are maintained in the Regions state element (section 3.1.1.2.1) in the
@@ -10055,7 +9851,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section  Description
 
@@ -10094,104 +9891,104 @@ Draws a Unicode text string using the current font and text colors.
 
 EMR_FILLPATH
 
-2.3.5.9
+##### 2.3.5.9 Closes any open figures in the current path bracket and fills the path's
 
-Closes any open figures in the current path bracket and fills the path's
+
 interior with the current brush.
 
 EMR_FILLRGN
 
-2.3.5.10  Fills the specified region with the specified brush.
+##### 2.3.5.10 Fills the specified region with the specified brush.
 
 EMR_FRAMERGN
 
-2.3.5.11  Draws a border around the specified region with the specified brush.
+##### 2.3.5.11 Draws a border around the specified region with the specified brush.
 
 EMR_GRADIENTFILL
 
-2.3.5.12  Fills the specified rectangle and triangle structures.
+##### 2.3.5.12 Fills the specified rectangle and triangle structures.
 
 EMR_LINETO
 
-2.3.5.13  Draws a line from the current position up to, but not including, the
+##### 2.3.5.13 Draws a line from the current position up to, but not including, the
 
 specified point. This record resets the current position to that point.
 
 EMR_PAINTRGN
 
-2.3.5.14  Paints the specified region with the current brush.
+##### 2.3.5.14 Paints the specified region with the current brush.
 
 EMR_PIE
 
-2.3.5.15  Draws a pie-shaped wedge bounded by the intersection of an ellipse and
+##### 2.3.5.15 Draws a pie-shaped wedge bounded by the intersection of an ellipse and
 
 two radials.
 
 EMR_POLYBEZIER
 
-2.3.5.16  Draws one or more Bezier curves. The cubic Bezier curves are defined
+##### 2.3.5.16 Draws one or more Bezier curves. The cubic Bezier curves are defined
 with the endpoints and control points specified in this record.
 
 EMR_POLYBEZIER16
 
-2.3.5.17  Draws one or more Bezier curves with the current pen.
+##### 2.3.5.17 Draws one or more Bezier curves with the current pen.
 
 EMR_POLYBEZIERTO
 
-2.3.5.18  Draws one or more Bezier curves based on the current position.
+##### 2.3.5.18 Draws one or more Bezier curves based on the current position.
 
 EMR_POLYBEZIERTO16
 
-2.3.5.19  Draws one or more Bezier curves based on the current position.
+##### 2.3.5.19 Draws one or more Bezier curves based on the current position.
 
 EMR_POLYDRAW
 
-2.3.5.20  Draws a set of line segments and Bezier curves.
+##### 2.3.5.20 Draws a set of line segments and Bezier curves.
 
 EMR_POLYDRAW16
 
-2.3.5.21  Draws a set of line segments and Bezier curves.
+##### 2.3.5.21 Draws a set of line segments and Bezier curves.
 
 EMR_POLYGON
 
-2.3.5.22  Draws a polygon consisting of two or more vertexes connected by
+##### 2.3.5.22 Draws a polygon consisting of two or more vertexes connected by
 
 straight lines.
 
 EMR_POLYGON16
 
-2.3.5.23  Draws a polygon consisting of two or more vertexes connected by
+##### 2.3.5.23 Draws a polygon consisting of two or more vertexes connected by
 
 straight lines.
 
 EMR_POLYLINE
 
-2.3.5.24  Draws a series of line segments by connecting the points in the specified
+##### 2.3.5.24 Draws a series of line segments by connecting the points in the specified
 
 array.
 
 EMR_POLYLINE16
 
-2.3.5.25  Draws a series of line segments by connecting the points in the specified
+##### 2.3.5.25 Draws a series of line segments by connecting the points in the specified
 
 array.
 
 EMR_POLYLINETO
 
-2.3.5.26  Draws one or more straight lines based upon the current position.
+##### 2.3.5.26 Draws one or more straight lines based upon the current position.
 
 EMR_POLYLINETO16
 
-2.3.5.27  Draws one or more straight lines based upon the current position.
+##### 2.3.5.27 Draws one or more straight lines based upon the current position.
 
 EMR_POLYPOLYGON
 
-2.3.5.28  Paints a series of closed polygons. Each polygon is outlined with the
+##### 2.3.5.28 Paints a series of closed polygons. Each polygon is outlined with the
 current pen and filled with the current brush and polygon fill mode.
 
 EMR_POLYPOLYGON16
 
-2.3.5.29  Paints a series of closed polygons. Each polygon is outlined with the
+##### 2.3.5.29 Paints a series of closed polygons. Each polygon is outlined with the
 
 125 / 282
 
@@ -10200,7 +9997,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section  Description
 
@@ -10208,41 +10006,41 @@ current pen and filled with the current brush and polygon fill mode.
 
 EMR_POLYPOLYLINE
 
-2.3.5.30  Draws multiple series of connected line segments.
+##### 2.3.5.30 Draws multiple series of connected line segments.
 
 EMR_POLYPOLYLINE16
 
-2.3.5.31  Draws multiple series of connected line segments.
+##### 2.3.5.31 Draws multiple series of connected line segments.
 
 EMR_POLYTEXTOUTA
 
-2.3.5.32  Draws one or more ASCII text strings using the current font and text
+##### 2.3.5.32 Draws one or more ASCII text strings using the current font and text
 
 colors.
 
 EMR_POLYTEXTOUTW
 
-2.3.5.33  Draws one or more Unicode text strings using the current font and text
+##### 2.3.5.33 Draws one or more Unicode text strings using the current font and text
 
 colors.
 
 EMR_RECTANGLE
 
-2.3.5.34  Draws a rectangle. The rectangle is outlined with the current pen and
+##### 2.3.5.34 Draws a rectangle. The rectangle is outlined with the current pen and
 
 filled with the current brush.
 
 EMR_ROUNDRECT
 
-2.3.5.35  Draws a rectangle with rounded corners.
+##### 2.3.5.35 Draws a rectangle with rounded corners.
 
 EMR_SETPIXELV
 
-2.3.5.36  Defines the color of the pixel at the specified logical coordinates.
+##### 2.3.5.36 Defines the color of the pixel at the specified logical coordinates.
 
 EMR_SMALLTEXTOUT
 
-2.3.5.37  Outputs a string.
+##### 2.3.5.37 Outputs a string.
 
 EMR_STROKEANDFILLPATH  2.3.5.38  Closes any open figures in a path, draws the outline of the path with the
 
@@ -10250,7 +10048,7 @@ current pen, and fills its interior with the current brush.
 
 EMR_STROKEPATH
 
-2.3.5.39  Draws the specified path with the current pen.
+##### 2.3.5.39 Draws the specified path with the current pen.
 
 The generic structure of drawing records is specified as follows.
 
@@ -10320,7 +10118,8 @@ Release: April 23, 2024
 
 126 / 282
 
-Name
+
+Name
 
 Value
 
@@ -10453,7 +10252,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DrawingRecordBuffer (variable): An array of bytes that contains the remainder of the drawing
+
+DrawingRecordBuffer (variable): An array of bytes that contains the remainder of the drawing
 
 record.
 
@@ -10536,7 +10336,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-StartAngle (4 bytes): A 32-bit float that specifies the arc's start angle, in degrees.
+
+StartAngle (4 bytes): A 32-bit float that specifies the arc's start angle, in degrees.
 
 SweepAngle (4 bytes): A 32-bit float that specifies the arc's sweep angle, in degrees.
 
@@ -10611,7 +10412,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.5 for more drawing record types.
+
+See section 2.3.5 for more drawing record types.
 
 2.3.5.3  EMR_ARCTO Record
 
@@ -10682,7 +10484,8 @@ Release: April 23, 2024
 
 130 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10755,7 +10558,8 @@ Release: April 23, 2024
 
 131 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10838,7 +10642,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-FloodFillMode (4 bytes): An unsigned integer that specifies how to use the Color value to
+
+FloodFillMode (4 bytes): An unsigned integer that specifies how to use the Color value to
 
 determine the area for the flood fill operation. This value is in the FloodFill enumeration (section
 2.1.13).
@@ -10911,7 +10716,8 @@ Release: April 23, 2024
 
 133 / 282
 
-aEmrText (variable): An EmrText object (section 2.2.5) that specifies the output string in 8-bit
+
+aEmrText (variable): An EmrText object (section 2.2.5) that specifies the output string in 8-bit
 
 ASCII characters, text attributes, and spacing values.
 
@@ -10987,7 +10793,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-eyScale (4 bytes): A FLOAT value that specifies the scale factor to apply along the Y axis to convert
+
+eyScale (4 bytes): A FLOAT value that specifies the scale factor to apply along the Y axis to convert
 
 from page space units to .01mm units. This is used only if the graphics mode specified by
 iGraphicsMode is GM_COMPATIBLE.
@@ -11072,7 +10879,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Bounds
+
+Bounds
 
 ...
 
@@ -11146,7 +10954,8 @@ Release: April 23, 2024
 
 136 / 282
 
-...
+
+...
 
 ...
 
@@ -11224,7 +11033,8 @@ Release: April 23, 2024
 
 137 / 282
 
-...
+
+...
 
 ...
 
@@ -11297,7 +11107,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-VertexIndexes (variable): An array of nTri GradientRectangle objects (section 2.2.7) or
+
+VertexIndexes (variable): An array of nTri GradientRectangle objects (section 2.2.7) or
 
 GradientTriangle objects (section 2.2.8), depending on the value of the ulMode field. Each
 object specifies indexes into the array of TriVertex objects in the VertexObjects field.
@@ -11375,7 +11186,8 @@ Release: April 23, 2024
 
 139 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -11457,7 +11269,8 @@ Release: April 23, 2024
 
 140 / 282
 
-...
+
+...
 
 ...
 
@@ -11531,7 +11344,8 @@ Release: April 23, 2024
 
 141 / 282
 
-...
+
+...
 
 Count
 
@@ -11621,7 +11435,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Bounds
+
+Bounds
 
 ...
 
@@ -11695,7 +11510,8 @@ Release: April 23, 2024
 
 143 / 282
 
-aPoints (variable)
+
+aPoints (variable)
 
 ...
 
@@ -11786,7 +11602,8 @@ Release: April 23, 2024
 
 144 / 282
 
-aPoints (variable)
+
+aPoints (variable)
 
 ...
 
@@ -11862,7 +11679,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size (4 bytes): An unsigned integer that specifies the size of this record in bytes.
+
+Size (4 bytes): An unsigned integer that specifies the size of this record in bytes.
 
 Bounds (16 bytes): A RectL object, specified in [MS-WMF] section 2.2.2.19, which specifies the
 
@@ -11938,7 +11756,8 @@ Release: April 23, 2024
 
 146 / 282
 
-aPoints (variable): A Count length array of PointS objects, specified in [MS-WMF] section 2.2.2.16,
+
+aPoints (variable): A Count length array of PointS objects, specified in [MS-WMF] section 2.2.2.16,
 
 which specifies the array of points.
 
@@ -12031,7 +11850,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The polygon SHOULD be outlined using the current pen and filled using the current brush and polygon
+
+The polygon SHOULD be outlined using the current pen and filled using the current brush and polygon
 fill mode. The polygon SHOULD be closed automatically by drawing a line from the last vertex to the
 first.
 
@@ -12107,7 +11927,8 @@ Release: April 23, 2024
 
 148 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12194,7 +12015,8 @@ Release: April 23, 2024
 
 149 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12276,7 +12098,8 @@ Release: April 23, 2024
 
 150 / 282
 
-...
+
+...
 
 Count
 
@@ -12365,7 +12188,8 @@ Release: April 23, 2024
 
 151 / 282
 
-...
+
+...
 
 Count
 
@@ -12439,7 +12263,8 @@ Release: April 23, 2024
 
 152 / 282
 
-...
+
+...
 
 aPoints (variable)
 
@@ -12529,7 +12354,8 @@ Release: April 23, 2024
 
 153 / 282
 
-...
+
+...
 
 ...
 
@@ -12603,7 +12429,8 @@ Release: April 23, 2024
 
 154 / 282
 
-...
+
+...
 
 ...
 
@@ -12687,7 +12514,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12762,7 +12590,8 @@ Release: April 23, 2024
 
 156 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12838,7 +12667,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.5 for more drawing record types.
+
+See section 2.3.5 for more drawing record types.
 
 2.3.5.33
 
@@ -12913,7 +12743,8 @@ Release: April 23, 2024
 
 158 / 282
 
-wEmrText (variable): An array of EmrText objects (section 2.2.5) that specify the output strings in
+
+wEmrText (variable): An array of EmrText objects (section 2.2.5) that specify the output strings in
 
 Unicode UTF16-LE characters, with text attributes and spacing values. The number of EmrText
 objects is specified by cStrings.
@@ -13000,7 +12831,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size
+
+Size
 
 Box
 
@@ -13076,7 +12908,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.5 for more drawing record types.
+
+See section 2.3.5 for more drawing record types.
 
 2.3.5.37
 
@@ -13146,7 +12979,8 @@ Release: April 23, 2024
 
 161 / 282
 
-fuOptions (4 bytes): An unsigned integer specifying the text output options to use. These options
+
+fuOptions (4 bytes): An unsigned integer specifying the text output options to use. These options
 
 are specified by one or a combination of values from the ExtTextOutOptions enumeration (section
 2.1.11).
@@ -13224,7 +13058,8 @@ Release: April 23, 2024
 
 162 / 282
 
-2.3.5.39
+
+2.3.5.39
 
 EMR_STROKEPATH Record
 
@@ -13265,7 +13100,7 @@ rectangle in logical units.
 
 See section 2.3.5 for more drawing record types.
 
-2.3.6  Escape Record Types
+#### 2.3.6 Escape Record Types
 
 The Escape record types execute printer driver functions.
 
@@ -13319,7 +13154,8 @@ Release: April 23, 2024
 
 163 / 282
 
-EscapeRecordBuffer (variable)
+
+EscapeRecordBuffer (variable)
 
 ...
 
@@ -13381,7 +13217,7 @@ its total size is a multiple of 4 bytes. This field MUST be ignored.
 
 See section 2.3 for more EMF record types.
 
-2.3.6.1  EMR_DRAWESCAPE Record
+##### 2.3.6.1 EMR_DRAWESCAPE Record
 
 The EMR_DRAWESCAPE record passes arbitrary information to a printer driver. The intent is that the
 information results in drawing being done.
@@ -13408,7 +13244,8 @@ Release: April 23, 2024
 
 164 / 282
 
-Size
+
+Size
 
 iEscape
 
@@ -13427,7 +13264,7 @@ Data (variable): The data to pass to the printer driver. There MUST be cjIn byte
 
 See section 2.3.6 for more escape record types.
 
-2.3.6.2  EMR_EXTESCAPE Record
+##### 2.3.6.2 EMR_EXTESCAPE Record
 
 The EMR_EXTESCAPE record passes arbitrary information to a printer driver. The intent is that the
 information does not result in drawing being done.
@@ -13467,7 +13304,7 @@ Data (variable): The data to pass to the printer driver. There MUST be cjIn byte
 
 See section 2.3.6 for more escape record types.
 
-2.3.6.3  EMR_NAMEDESCAPE Record
+##### 2.3.6.3 EMR_NAMEDESCAPE Record
 
 The EMR_NAMEDESCAPE record passes arbitrary information to a named printer driver.
 
@@ -13478,7 +13315,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Fields not specified in this section are specified in section 2.3.6.
+
+Fields not specified in this section are specified in section 2.3.6.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -13528,7 +13366,7 @@ Data (variable): The data to pass to the printer driver.
 
 See section 2.3.6 for more escape record types.
 
-2.3.7  Object Creation Record Types
+#### 2.3.7 Object Creation Record Types
 
 The Object Creation record types create graphics objects.
 
@@ -13566,7 +13404,8 @@ Release: April 23, 2024
 
 166 / 282
 
-Name
+
+Name
 
 Section  Description
 
@@ -13597,16 +13436,16 @@ Defines a logical pen with a LogPen object (section 2.2.19).
 
 EMR_EXTCREATEFONTINDIRECTW
 
-2.3.7.8
+##### 2.3.7.8 Defines a logical font with either a LogFont object (section
 
-Defines a logical font with either a LogFont object (section
+
 2.2.13) or LogFontExDv object (section 2.2.15).
 
 EMR_EXTCREATEPEN
 
-2.3.7.9
+##### 2.3.7.9 Defines a logical pen with a LogPenEx object (section 2.2.20)
 
-Defines a logical pen with a LogPenEx object (section 2.2.20)
+
 and optional DeviceIndependentBitmap object.
 
 The generic structure of object creation records is specified as follows.
@@ -13686,7 +13525,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13768,7 +13608,8 @@ Release: April 23, 2024
 
 168 / 282
 
-2.3.7.2  EMR_CREATECOLORSPACE Record
+
+2.3.7.2  EMR_CREATECOLORSPACE Record
 
 The EMR_CREATECOLORSPACE record creates a logical color space object from a color profile
 with a name consisting of ASCII characters.<72>
@@ -13849,7 +13690,8 @@ Release: April 23, 2024
 
 169 / 282
 
-dwFlags
+
+dwFlags
 
 cbData
 
@@ -13931,7 +13773,8 @@ Release: April 23, 2024
 
 170 / 282
 
-Usage
+
+Usage
 
 offBmi
 
@@ -14006,7 +13849,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BmiSrc (variable): The DIB header, which is the DibHeaderInfo field of a
+
+BmiSrc (variable): The DIB header, which is the DibHeaderInfo field of a
 
 DeviceIndependentBitmap object.
 
@@ -14082,7 +13926,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-offBits (4 bytes): An unsigned integer that specifies the offset from the start of this record to the
+
+offBits (4 bytes): An unsigned integer that specifies the offset from the start of this record to the
 
 DIB bits.
 
@@ -14164,7 +14009,8 @@ Release: April 23, 2024
 
 173 / 282
 
-Type (4 bytes): An unsigned integer that identifies this record type as EMR_CREATEPALETTE. This
+
+Type (4 bytes): An unsigned integer that identifies this record type as EMR_CREATEPALETTE. This
 
 value is 0x00000031.
 
@@ -14241,7 +14087,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.7.8  EMR_EXTCREATEFONTINDIRECTW Record
+
+2.3.7.8  EMR_EXTCREATEFONTINDIRECTW Record
 
 The EMR_EXTCREATEFONTINDIRECTW record defines a logical font for graphics operations.
 
@@ -14324,7 +14171,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  LogFont: The size of a LogFont object is 0x005C (92 decimal). It is determined by adding up the
+
+  LogFont: The size of a LogFont object is 0x005C (92 decimal). It is determined by adding up the
 
 sizes of its fields, as follows:
 
@@ -14398,7 +14246,8 @@ Release: April 23, 2024
 
 176 / 282
 
-ihPen (4 bytes): An unsigned integer that specifies the index of the extended logical pen object in
+
+ihPen (4 bytes): An unsigned integer that specifies the index of the extended logical pen object in
 the EMF object table (section 3.1.1.1). This index MUST be saved so that this object can be
 reused or modified.
 
@@ -14464,7 +14313,7 @@ subsequent graphics operations.
 
 See section 2.3.7 for more object creation record types.
 
-2.3.8  Object Manipulation Record Types
+#### 2.3.8 Object Manipulation Record Types
 
 The Object Manipulation record types manage and modify graphics objects.
 
@@ -14477,7 +14326,8 @@ Release: April 23, 2024
 
 177 / 282
 
-Name
+
+Name
 
 Section  Description
 
@@ -14508,30 +14358,30 @@ Increases or decreases the size of an existing LogPalette object.
 
 EMR_SELECTOBJECT
 
-2.3.8.5
+##### 2.3.8.5 Specifies an existing object based on its index in the EMF object table
 
-Specifies an existing object based on its index in the EMF object table
+
 and selects it into the playback device context
 
 EMR_SELECTPALETTE
 
-2.3.8.6
+##### 2.3.8.6 Selects the specified LogPalette object into the playback device
 
-Selects the specified LogPalette object into the playback device
+
 context.
 
 EMR_SETCOLORSPACE
 
-2.3.8.7
+##### 2.3.8.7 Specifies a logical color space, based on its index in the EMF object
 
-Specifies a logical color space, based on its index in the EMF object
+
 table.
 
 EMR_SETPALETTEENTRIES
 
-2.3.8.8
+##### 2.3.8.8 Defines RGB color values in a range of entries for an existing
 
-Defines RGB color values in a range of entries for an existing
+
 LogPalette object.
 
 The generic structure of object manipulation records is specified as follows.
@@ -14600,7 +14450,8 @@ Release: April 23, 2024
 
 178 / 282
 
-Size (4 bytes): An unsigned integer that specifies the size in bytes of this record in the metafile.
+
+Size (4 bytes): An unsigned integer that specifies the size in bytes of this record in the metafile.
 
 This value MUST be a multiple of 4 bytes.
 
@@ -14686,7 +14537,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-nPalEntries (4 bytes): An unsigned integer that specifies the number of palette entries to correct.
+
+nPalEntries (4 bytes): An unsigned integer that specifies the number of palette entries to correct.
 
 nReserved (4 bytes): An unsigned integer that is undefined and unused.
 
@@ -14767,7 +14619,8 @@ Release: April 23, 2024
 
 180 / 282
 
-ihObject (4 bytes): An unsigned integer that specifies the index of a graphics object in the EMF
+
+ihObject (4 bytes): An unsigned integer that specifies the index of a graphics object in the EMF
 
 object table.
 
@@ -14851,7 +14704,8 @@ Release: April 23, 2024
 
 181 / 282
 
-Type (4 bytes): An unsigned integer that identifies this record type as EMR_SELECTOBJECT. This
+
+Type (4 bytes): An unsigned integer that identifies this record type as EMR_SELECTOBJECT. This
 
 value is 0x00000025.
 
@@ -14934,7 +14788,8 @@ Release: April 23, 2024
 
 182 / 282
 
-Size
+
+Size
 
 ihCS
 
@@ -15011,13 +14866,14 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-aPalEntries (variable): An array of LogPaletteEntry objects (section 2.2.18) that specify the palette
+
+aPalEntries (variable): An array of LogPaletteEntry objects (section 2.2.18) that specify the palette
 
 data.
 
 See section 2.3.8 for more object manipulation record types.
 
-2.3.9  OpenGL Record Types
+#### 2.3.9 OpenGL Record Types
 
 The OpenGL record types specify OpenGL functions [OPENGL].
 
@@ -15105,7 +14961,8 @@ Release: April 23, 2024
 
 184 / 282
 
-OpenGLRecordParm (variable): An array of bytes that contains the parameters for the OpenGL
+
+OpenGLRecordParm (variable): An array of bytes that contains the parameters for the OpenGL
 
 record.
 
@@ -15115,7 +14972,7 @@ its total size is a multiple of 4 bytes. This field MUST be ignored.
 
 See section 2.3 for more EMF record types.
 
-2.3.9.1  EMR_GLSBOUNDEDRECORD Record
+##### 2.3.9.1 EMR_GLSBOUNDEDRECORD Record
 
 The EMR_GLSBOUNDEDRECORD record specifies an OpenGL function with a bounding rectangle for
 output.
@@ -15167,7 +15024,7 @@ Data (variable, optional): An array of bytes that specifies data for the OpenGL 
 
 See section 2.3.9 for more OpenGL record types.
 
-2.3.9.2  EMR_GLSRECORD Record
+##### 2.3.9.2 EMR_GLSRECORD Record
 
 The EMR_GLSRECORD record specifies an OpenGL function.
 
@@ -15180,7 +15037,8 @@ Release: April 23, 2024
 
 185 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15213,7 +15071,7 @@ Data (variable, optional): An array of bytes that specifies data for the OpenGL 
 
 See section 2.3.9 for more OpenGL record types.
 
-2.3.10 Path Bracket Record Types
+#### 2.3.10 Path Bracket Record Types
 
 The Path Bracket record types are used to construct a path bracket, which defines the current path
 in the playback device context.
@@ -15268,7 +15126,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Description
 
@@ -15333,7 +15192,7 @@ path bracket records, this value is 0x00000008
 
 See section 2.3 for more EMF record types.
 
-2.3.11 State Record Types
+#### 2.3.11 State Record Types
 
 The State record types specify graphics properties that define the playback device context during
 the processing of EMF metafile records. For more information about the state used for metafile
@@ -15368,7 +15227,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section
 
@@ -15404,9 +15264,9 @@ This record specifies no parameters.
 
 EMR_RESTOREDC
 
-2.3.11.6
+##### 2.3.11.6 Restores the playback device context to the specified state, which
 
-Restores the playback device context to the specified state, which
+
 was saved by a preceding EMR_SAVEDC record.
 
 EMR_SAVEDC
@@ -15422,93 +15282,93 @@ This record specifies no parameters.
 
 EMR_SCALEVIEWPORTEXTEX
 
-2.3.11.7
+##### 2.3.11.7 Specifies the viewport by using the ratios formed by the specified
 
-Specifies the viewport by using the ratios formed by the specified
+
 multiplicands and divisors.
 
 EMR_SCALEWINDOWEXTEX
 
-2.3.11.8
+##### 2.3.11.8 Specifies the window by using the ratios formed by the specified
 
-Specifies the window by using the ratios formed by the specified
+
 multiplicands and divisors.
 
 EMR_SETARCDIRECTION
 
-2.3.11.9
+##### 2.3.11.9 Specifies the drawing direction to be used for arc and rectangle
 
-Specifies the drawing direction to be used for arc and rectangle
+
 output.
 
 EMR_SETBKCOLOR
 
-2.3.11.10  Specifies the background color.
+##### 2.3.11.10 Specifies the background color.
 
 EMR_SETBKMODE
 
-2.3.11.11  Specifies the background mode, which determines how to
+##### 2.3.11.11 Specifies the background mode, which determines how to
 
 combine the background with foreground text, hatched brushes,
 and pen styles that are not solid lines.
 
 EMR_SETBRUSHORGEX
 
-2.3.11.12  Specifies the origin of the current brush.
+##### 2.3.11.12 Specifies the origin of the current brush.
 
 EMR_SETCOLORADJUSTMENT
 
-2.3.11.13  Specifies color adjustment values to use in bitmap stretching.
+##### 2.3.11.13 Specifies color adjustment values to use in bitmap stretching.
 
 EMR_SETICMMODE
 
-2.3.11.14  Specifies ICM to be enabled, disabled, or queried.
+##### 2.3.11.14 Specifies ICM to be enabled, disabled, or queried.
 
 EMR_SETICMPROFILEA
 
-2.3.11.15  Specifies how to set a specified color profile as the output
+##### 2.3.11.15 Specifies how to set a specified color profile as the output
 
 profile.
 
 EMR_SETICMPROFILEW
 
-2.3.11.16  Specifies how to set a specified color profile as the output profile.
+##### 2.3.11.16 Specifies how to set a specified color profile as the output profile.
 
 EMR_SETLAYOUT
 
-2.3.11.17  Specifies the layout of the playback device context.
+##### 2.3.11.17 Specifies the layout of the playback device context.
 
 EMR_SETLINKEDUFIS
 
-2.3.11.18  Sets the UniversalFontId (section 2.2.27) of the linked fonts to
+##### 2.3.11.18 Sets the UniversalFontId (section 2.2.27) of the linked fonts to
 
 use during character lookup.
 
 EMR_SETMAPMODE
 
-2.3.11.19  Specifies the mapping mode.
+##### 2.3.11.19 Specifies the mapping mode.
 
 EMR_SETMAPPERFLAGS
 
-2.3.11.20  Specifies the algorithm the font mapper uses when it maps logical
+##### 2.3.11.20 Specifies the algorithm the font mapper uses when it maps logical
 
 fonts to physical fonts.
 
 EMR_SETMITERLIMIT
 
-2.3.11.21  Specifies the limit for the length of miter joins.
+##### 2.3.11.21 Specifies the limit for the length of miter joins.
 
 EMR_SETPOLYFILLMODE
 
-2.3.11.22  Defines polygon fill mode.
+##### 2.3.11.22 Defines polygon fill mode.
 
 EMR_SETROP2
 
-2.3.11.23  Defines a binary raster operation mode.
+##### 2.3.11.23 Defines a binary raster operation mode.
 
 EMR_SETSTRETCHBLTMODE
 
-2.3.11.24  Specifies bitmap stretch mode.
+##### 2.3.11.24 Specifies bitmap stretch mode.
 
 188 / 282
 
@@ -15517,7 +15377,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section
 
@@ -15525,33 +15386,33 @@ Description
 
 EMR_SETTEXTALIGN
 
-2.3.11.25  Specifies text alignment.
+##### 2.3.11.25 Specifies text alignment.
 
 EMR_SETTEXTCOLOR
 
-2.3.11.26  Defines the current text color.
+##### 2.3.11.26 Defines the current text color.
 
 EMR_SETTEXTJUSTIFICATION
 
-2.3.11.27  Sets the amount of extra space to add to break characters for
+##### 2.3.11.27 Sets the amount of extra space to add to break characters for
 
 justification purposes.
 
 EMR_SETVIEWPORTEXTEX
 
-2.3.11.28  Defines the viewport extent.
+##### 2.3.11.28 Defines the viewport extent.
 
 EMR_SETVIEWPORTORGEX
 
-2.3.11.29  Defines the viewport origin.
+##### 2.3.11.29 Defines the viewport origin.
 
 EMR_SETWINDOWEXTEX
 
-2.3.11.30  Defines the window extent.
+##### 2.3.11.30 Defines the window extent.
 
 EMR_SETWINDOWORGEX
 
-2.3.11.31  Defines the window origin.
+##### 2.3.11.31 Defines the window origin.
 
 The generic structure of state records is specified as follows.
 
@@ -15641,7 +15502,8 @@ Release: April 23, 2024
 
 189 / 282
 
-Name
+
+Name
 
 Value
 
@@ -15759,7 +15621,8 @@ Release: April 23, 2024
 
 190 / 282
 
-StateRecordParm (variable): An array of bytes that contains the parameters for the state
+
+StateRecordParm (variable): An array of bytes that contains the parameters for the state
 
 record.
 
@@ -15841,7 +15704,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Before applying the current color transform, WCS SHOULD be enabled in the playback device
+
+Before applying the current color transform, WCS SHOULD be enabled in the playback device
 context.<82>
 
 While color mapping to the target is enabled by a dwAction value of CS_ENABLE, changes to the
@@ -15927,7 +15791,8 @@ Release: April 23, 2024
 
 192 / 282
 
-...
+
+...
 
 RgnDataSize
 
@@ -16004,7 +15869,8 @@ Release: April 23, 2024
 
 193 / 282
 
-2.3.11.5
+
+2.3.11.5
 
 EMR_PIXELFORMAT Record
 
@@ -16090,7 +15956,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.3.11 for more state record types.
+
+See section 2.3.11 for more state record types.
 
 2.3.11.7
 
@@ -16173,7 +16040,8 @@ Release: April 23, 2024
 
 195 / 282
 
-Size
+
+Size
 
 xNum
 
@@ -16246,7 +16114,8 @@ Release: April 23, 2024
 
 196 / 282
 
-ArcDirection (4 bytes): An unsigned integer that specifies the arc direction. This value is in the
+
+ArcDirection (4 bytes): An unsigned integer that specifies the arc direction. This value is in the
 
 ArcDirection enumeration (section 2.1.2). The default direction is counterclockwise.
 
@@ -16348,7 +16217,8 @@ Release: April 23, 2024
 
 197 / 282
 
-Type (4 bytes): An unsigned integer that identifies this record type as EMR_SETBKMODE. This value
+
+Type (4 bytes): An unsigned integer that identifies this record type as EMR_SETBKMODE. This value
 
 is 0x00000012.
 
@@ -16434,7 +16304,8 @@ Release: April 23, 2024
 
 198 / 282
 
-Type (4 bytes): An unsigned integer that identifies this record type as
+
+Type (4 bytes): An unsigned integer that identifies this record type as
 
 EMR_SETCOLORADJUSTMENT. This value is 0x00000017.
 
@@ -16513,7 +16384,8 @@ Release: April 23, 2024
 
 199 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -16597,7 +16469,8 @@ Release: April 23, 2024
 
 200 / 282
 
-...
+
+...
 
 Type (4 bytes): An unsigned integer that identifies this record type as EMR_SETICMPROFILEW.
 
@@ -16686,7 +16559,8 @@ Release: April 23, 2024
 
 201 / 282
 
-2.3.11.18
+
+2.3.11.18
 
 EMR_SETLINKEDUFIS Record
 
@@ -16772,7 +16646,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MapMode (4 bytes): An unsigned integer from the MapMode enumeration (section 2.1.21).
+
+MapMode (4 bytes): An unsigned integer from the MapMode enumeration (section 2.1.21).
 
 MM_TEXT mode allows applications to work in device pixels, whose size varies from device to device.
 
@@ -16863,7 +16738,8 @@ Release: April 23, 2024
 
 203 / 282
 
-Type (4 bytes): An unsigned integer that identifies this record type as EMR_SETMITERLIMIT. This
+
+Type (4 bytes): An unsigned integer that identifies this record type as EMR_SETMITERLIMIT. This
 
 value is 0x0000003A.
 
@@ -16949,7 +16825,8 @@ Release: April 23, 2024
 
 204 / 282
 
-ROP2Mode
+
+ROP2Mode
 
 Type (4 bytes): An unsigned integer that identifies this record type as EMR_SETROP2. This value is
 
@@ -17028,7 +16905,8 @@ Release: April 23, 2024
 
 205 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17116,7 +16994,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17202,7 +17081,8 @@ Release: April 23, 2024
 
 207 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17296,7 +17176,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size
+
+Size
 
 Origin
 
@@ -17314,7 +17195,7 @@ and vertical origin in logical units.
 
 See section 2.3.11 for more state record types.
 
-2.3.12 Transform Record Types
+#### 2.3.12 Transform Record Types
 
 The transform record types specify and modify world-space to page-space transforms.
 
@@ -17328,7 +17209,7 @@ EMR_MODIFYWORLDTRANSFORM  2.3.12.1  Modifies the current world-space to page-spa
 
 EMR_SETWORLDTRANSFORM
 
-2.3.12.2  Specifies a two-dimensional linear transform between world space
+##### 2.3.12.2 Specifies a two-dimensional linear transform between world space
 
 and page space.
 
@@ -17378,7 +17259,8 @@ Release: April 23, 2024
 
 209 / 282
 
-Name
+
+Name
 
 Value
 
@@ -17456,7 +17338,8 @@ Release: April 23, 2024
 
 210 / 282
 
-2.3.12.2
+
+2.3.12.2
 
 EMR_SETWORLDTRANSFORM Record
 
@@ -17509,15 +17392,16 @@ Release: April 23, 2024
 
 211 / 282
 
-3  Structure Examples
 
-3.1  EMF Metafile Playback
+## 3 Structure Examples
+
+### 3.1 EMF Metafile Playback
 
 This section describes the data and processing required for rendering the image stored in an EMF
 metafile. This process is referred to as “playback” throughout this specification. During metafile
 playback, the graphics state is maintained in the playback device context (section 3.1).
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains during the processing of this file format. The description of the organization is provided to
@@ -17540,7 +17424,7 @@ rendering of the image in the metafile. The Graphics Environment is described in
 No part of the abstract data model is assumed to persist across system restarts; however, with this
 data it would be possible to recover the playback device context and resume metafile playback.
 
-3.1.1.1  EMF Object Table
+##### 3.1.1.1 EMF Object Table
 
 The EMF object table is an element of the state maintained during EMF metafile playback. It
 contains data used for managing graphics objects as they are created, activated, used, deactivated,
@@ -17587,7 +17471,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-used in graphics operations specified by subsequent metafile records. Until the object is activated,
+
+used in graphics operations specified by subsequent metafile records. Until the object is activated,
 it is not used. Later, if a different object of the same type is activated, the former object is
 deactivated but not deleted. An object is not deleted until an object manipulation record is
 processed that deletes it.
@@ -17684,14 +17569,15 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Indexes that have the most-significant bit set refer to stock objects.
 
 The object state changes of creation, activation, deactivation, and deletion, require management
 during playback to achieve the expected results in rendering the image stored in the metafile.
 
-3.1.1.2  Graphics Environment
+##### 3.1.1.2 Graphics Environment
 
 The Graphics Environment describes the graphics state maintained during EMF metafile playback.
 A possible implementation is described by the following elements.
@@ -17728,19 +17614,19 @@ Description
 
 Regions
 
-3.1.1.2.1  The current clipping regions and related properties
+###### 3.1.1.2.1 The current clipping regions and related properties
 
 Colors
 
-3.1.1.2.2  The current color profile and related properties
+###### 3.1.1.2.2 The current color profile and related properties
 
 Text
 
-3.1.1.2.3  Properties related to fonts and rendering text
+###### 3.1.1.2.3 Properties related to fonts and rendering text
 
 Drawing
 
-3.1.1.2.4  The graphics properties that determine how drawing commands render the
+###### 3.1.1.2.4 The graphics properties that determine how drawing commands render the
 
 image
 
@@ -17803,7 +17689,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Clipping: The current clipping region, which with MetaClipping defines the bounds of the drawing
+
+Clipping: The current clipping region, which with MetaClipping defines the bounds of the drawing
 
 area. The default value for the Clipping element is implementation-specific.<92>
 
@@ -17930,7 +17817,8 @@ Release: April 23, 2024
 
 215 / 282
 
-The Text group of elements define the current font and text properties in the playback device
+
+The Text group of elements define the current font and text properties in the playback device
 context.
 
 Text elements are used by the following EMF text drawing records.
@@ -18089,7 +17977,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Element name
+
+Element name
 
 Type
 
@@ -18123,7 +18012,7 @@ BrushOrigin: The horizontal and vertical origin of the current brush in logical 
 
 needed to maintain an alignment of patterns on the display surface.
 
-3.1.2  Byte Ordering
+#### 3.1.2 Byte Ordering
 
 The following code snippet illustrates how the use of the big-endian and little-endian methods can
 affect the compatibility of applications.
@@ -18166,14 +18055,15 @@ Release: April 23, 2024
 
 217 / 282
 
-<!-- Extracted images from page 218 -->
+
+<!-- Extracted images from page 218 -->
 ![Extracted image 1 from page 218]([MS-EMF].images/page218-img01.png)
 <!-- /Extracted images from page 218 -->
 
 Because metafiles are developed and written on little-endian computers, playback performs this
 computation on computers that are big-endian.
 
-3.2  EMF Metafile Example
+### 3.2 EMF Metafile Example
 
 This section describes an example of an EMF metafile, which when processed renders the following
 image.
@@ -18235,7 +18125,8 @@ Release: April 23, 2024
 
 218 / 282
 
- 000002A0:5D 0D 42 5D 0D 44 5D 0D 44 5D 0D 43 5C 0C 43 5C ].B].D].D].C\.C\
+
+ 000002A0:5D 0D 42 5D 0D 44 5D 0D 44 5D 0D 43 5C 0C 43 5C ].B].D].D].C\.C\
  000002B0:0C 43 5C 0C 42 5B 0B 43 5C 0C 43 5C 0C 43 5C 0C .C\.B[.C\.C\.C\.
  000002C0:43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 C\.C\.C\.C\.C\.C
  000002D0:5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C \.C\.C\.C\.C\.C\
@@ -18312,7 +18203,8 @@ Release: April 23, 2024
 
 219 / 282
 
- 000006F0:43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 C\.C\.C\.C\.C\.C
+
+ 000006F0:43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 C\.C\.C\.C\.C\.C
  00000700:5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C \.C\.C\.C\.C\.C\
  00000710:0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5D 0A .C\.C\.C\.C\.C].
  00000720:45 5C 0A 45 5C 0A 45 5C 0A 45 5C 0A 45 5C 0A 00 E\.E\.E\.E\.E\..
@@ -18389,7 +18281,8 @@ Release: April 23, 2024
 
 220 / 282
 
- 00000B40:0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 45 5C 0A .C\.C\.C\.C\.E\.
+
+ 00000B40:0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 45 5C 0A .C\.C\.C\.C\.E\.
  00000B50:45 5C 0A 45 5C 0A 45 5C 0A 45 5C 0A 45 5B 0C 00 E\.E\.E\.E\.E[..
  00000B60:3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F ?_.?_.?_.?_.?_.?
  00000B70:5F 0E 3F 5F 0E 40 5D 0D 3F 5F 0E 3F 5F 0E 41 5E _.?_.@].?_.?_.A^
@@ -18466,7 +18359,8 @@ Release: April 23, 2024
 
 221 / 282
 
- 00000F90:3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F ?_.?_.?_.?_.?_.?
+
+ 00000F90:3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F ?_.?_.?_.?_.?_.?
  00000FA0:5F 0E 3F 5F 0E 40 5D 0D 40 5D 0D 40 5D 0D 40 5D _.?_.@].@].@].@]
  00000FB0:0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D .@].@].@].@].@].
  00000FC0:40 5D 0D 40 5D 0D 40 5D 0D 41 5E 0E 40 5D 0D 40 @].@].@].A^.@].@
@@ -18543,7 +18437,8 @@ Release: April 23, 2024
 
 222 / 282
 
- 000013E0:0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D .@].@].@].@].@].
+
+ 000013E0:0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D .@].@].@].@].@].
  000013F0:40 5D 0D 40 5D 0D 40 5D 0D 41 5E 0E 40 5D 0D 40 @].@].@].A^.@].@
  00001400:5D 0D 41 5D 0E 59 67 24 A9 B2 8C D1 BB 98 D7 A5 ].A].Yg$©²ŒÑ»˜×¥
  00001410:7C D4 B0 8D DE D4 C5 DA CA BB DE D1 C5 DB D0 C3 |Ô°□ÞÔÅÚÊ»ÞÑÅÛÐÃ
@@ -18620,7 +18515,8 @@ Release: April 23, 2024
 
 223 / 282
 
- 00001830:5D 0D 4E 60 17 9B 9C 6F BB C2 9E D7 D5 C2 E0 C0 ].N`.›œo»Âž×ÕÂàÀ
+
+ 00001830:5D 0D 4E 60 17 9B 9C 6F BB C2 9E D7 D5 C2 E0 C0 ].N`.›œo»Âž×ÕÂàÀ
  00001840:A6 D7 A0 76 D6 9C 72 D8 A1 7A D4 95 6A D0 82 51 ¦× vÖœrØ¡zÔ•jÐ‚Q
  00001850:CD 7A 47 CA 6D 38 D7 A7 88 DB BF AA D9 C9 B8 D3 ÍzGÊm8×§ˆÛ¿ªÙÉ¸Ó
  00001860:C3 B2 D0 BF AC D0 BE AC D1 C0 AE CF BD AA C6 B3 Ã²Ð¿¬Ð¾¬ÑÀ®Ï½ªÆ³
@@ -18697,7 +18593,8 @@ Release: April 23, 2024
 
 224 / 282
 
- 00001C80:DC CD BD E5 D6 C7 F1 E4 D8 F0 E3 D6 EA DC CE E5 ÜÍ½åÖÇñäØðãÖêÜÎå
+
+ 00001C80:DC CD BD E5 D6 C7 F1 E4 D8 F0 E3 D6 EA DC CE E5 ÜÍ½åÖÇñäØðãÖêÜÎå
  00001C90:D6 C7 E1 D2 C2 DF CF C0 DF CF C0 DD CD BD D9 C8 ÖÇáÒÂßÏÀßÏÀÝÍ½ÙÈ
  00001CA0:B8 D7 C6 B5 E0 D3 C6 E6 DB CF EB E0 D5 E1 D5 C8 ¸×ÆµàÓÆæÛÏëàÕáÕÈ
  00001CB0:DF D3 C7 E4 D8 CB A7 A3 88 77 82 4F 77 86 4B 6B ßÓÇäØË§£ˆw‚Ow†Kk
@@ -18774,7 +18671,8 @@ Release: April 23, 2024
 
 225 / 282
 
- 000020D0:C9 C1 AE 98 CA B9 A8 E8 DC D1 EC E1 D7 E7 DC D0 ÉÁ®˜Ê¹¨èÜÑìá×çÜÐ
+
+ 000020D0:C9 C1 AE 98 CA B9 A8 E8 DC D1 EC E1 D7 E7 DC D0 ÉÁ®˜Ê¹¨èÜÑìá×çÜÐ
  000020E0:DD D0 C3 D4 C6 B7 D8 CB BC AE AC 8B 79 87 4D 7B ÝÐÃÔÆ•ØË¼®¬‹y‡M{
  000020F0:84 4A 5C 67 20 41 5C 0C 43 5C 0C 43 5C 0C 43 5C „J\g A\.C\.C\.C\
  00002100:0C 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B .B[.B[.B[.B[.B[.
@@ -18851,7 +18749,8 @@ Release: April 23, 2024
 
 226 / 282
 
- 00002520:8A 4F 7B 7D 3D 4B 5F 13 43 5C 0C 42 5B 0B 42 5B ŠO{}=K_.C\.B[.B[
+
+ 00002520:8A 4F 7B 7D 3D 4B 5F 13 43 5C 0C 42 5B 0B 42 5B ŠO{}=K_.C\.B[.B[
  00002530:0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B .B[.B[.B[.B[.B[.
  00002540:42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 B[.B[.B[.B[.B[.B
  00002550:5B 0B 44 5A 0B 44 5A 0B 42 5B 0B 42 5B 0B 42 5B [.DZ.DZ.B[.B[.B[
@@ -18928,7 +18827,8 @@ Release: April 23, 2024
 
 227 / 282
 
- 00002970:42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 B[.B[.B[.B[.B[.B
+
+ 00002970:42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 B[.B[.B[.B[.B[.B
  00002980:5B 0B 44 5A 0B 44 5A 0B 42 5B 0B 42 5B 0B 42 5B [.DZ.DZ.B[.B[.B[
  00002990:0B 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C .C\.C\.C\.C\.C\.
  000029A0:43 5D 0A 42 5C 09 44 5A 0B 44 5A 0B 43 59 0A 43 C].B\.DZ.DZ.CY.C
@@ -19005,7 +18905,8 @@ Release: April 23, 2024
 
 228 / 282
 
- 00002DC0:0A 44 5C 0A 44 5C 0A 44 5C 0A 44 5C 0A 44 5C 0A .D\.D\.D\.D\.D\.
+
+ 00002DC0:0A 44 5C 0A 44 5C 0A 44 5C 0A 44 5C 0A 44 5C 0A .D\.D\.D\.D\.D\.
  00002DD0:43 5B 0A 43 5B 0A 43 5B 0A 43 5B 0A 43 5B 0A 43 C[.C[.C[.C[.C[.C
  00002DE0:5B 0A 43 5B 0A 43 5B 0A 43 5D 09 00 3F 61 0C 40 [.C[.C[.C]..?A.@
  00002DF0:62 0D 40 62 0D 3F 61 0C 3F 61 0C 3F 61 0C 3F 61 B.@B.?A.?A.?A.?A
@@ -19082,7 +18983,8 @@ Release: April 23, 2024
 
 229 / 282
 
- 00003210:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+
+ 00003210:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
  00003220:D0 C5 35 00 00 00 00 00 28 00 00 00 59 00 00 00 ÐÅ5.....(...Y...
  00003230:2D 00 00 00 01 00 18 00 00 00 00 00 1C 2F 00 00 -............/..
  00003240:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -19159,7 +19061,8 @@ Release: April 23, 2024
 
 230 / 282
 
- 00003660:04 00 00 02 4D 00 69 00 63 00 72 00 6F 00 73 00 ....M.i.C.r.o.s.
+
+ 00003660:04 00 00 02 4D 00 69 00 63 00 72 00 6F 00 73 00 ....M.i.C.r.o.s.
  00003670:6F 00 66 00 74 00 20 00 53 00 61 00 6E 00 73 00 o.F.t. .S.A.n.s.
  00003680:20 00 53 00 65 00 72 00 69 00 66 00 00 00 00 00 .S.E.r.i.F.....
  00003690:00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
@@ -19186,7 +19089,7 @@ Release: April 23, 2024
  000037E0:0C 00 00 00 0D 00 00 80 0E 00 00 00 14 00 00 00 .......€........
  000037F0:00 00 00 00 10 00 00 00 14 00 00 00             ............
 
-3.2.1  EMR_HEADER Example
+#### 3.2.1 EMR_HEADER Example
 
 This section provides an example of an EMR_HEADER record (section 2.3.4.2).
 
@@ -19233,7 +19136,8 @@ Release: April 23, 2024
 
 231 / 282
 
-... (0x00000059)
+
+... (0x00000059)
 
 Frame (0x00000000)
 
@@ -19304,7 +19208,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved (2 bytes): 0x0000 is ignored.
+
+Reserved (2 bytes): 0x0000 is ignored.
 
 nDescription (4 bytes): 0x00000034 specifies the number of characters in the array that contains
 the description of the metafile's contents.
@@ -19364,7 +19269,7 @@ reference device, in micrometers.
 
 EmfDescription (4 bytes): "Sample EMF that has a brush fill, bitmap, and text".
 
-3.2.2  EMR_CREATEBRUSHINDIRECT Example
+#### 3.2.2 EMR_CREATEBRUSHINDIRECT Example
 
 This section provides an example of an EMR_CREATEBRUSHINDIRECT record (section 2.3.7.1).
 
@@ -19375,7 +19280,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 000000D0:            27 00 00 00 18 00 00 00 01 00 00 00
+
+ 000000D0:            27 00 00 00 18 00 00 00 01 00 00 00
  000000E0:02 00 00 00 52 47 2A 00 03 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
@@ -19436,7 +19342,7 @@ brush color value.
 BrushHatch (4 bytes): 0x00000003 specifies the brush hatch. Its interpretation depends on the
 value of BrushStyle. In this case, it specifies a 45-degree upward, left-to-right hatch pattern.
 
-3.2.3  EMR_SELECTOBJECT Example 1
+#### 3.2.3 EMR_SELECTOBJECT Example 1
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -19450,7 +19356,8 @@ Release: April 23, 2024
 
 234 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -19473,7 +19380,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 ihObject (4 bytes): 0x00000001 specifies the index of an object in the EMF object table.
 
-3.2.4  EMR_BITBLT Example 1
+#### 3.2.4 EMR_BITBLT Example 1
 
 This section provides an example of an EMR_BITBLT record (section 2.3.1.2).
 
@@ -19525,7 +19432,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size (4 bytes): 0x00000064 specifies the size of this record in bytes.
+
+Size (4 bytes): 0x00000064 specifies the size of this record in bytes.
 
 Bounds (16 bytes): 0x00000000, 0x00000000, 0x00000059, 0x00000059 specify the bounding
 rectangle in logical units.
@@ -19604,7 +19512,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-UsageSrc (0x00000000)
+
+UsageSrc (0x00000000)
 
 offBmiSrc (0x00000000)
 
@@ -19630,7 +19539,7 @@ offBitsSrc (4 bytes): 0x00000000 specifies the offset to the source bitmap bits.
 
 cbBitsSrc (4 bytes): 0x00000000 specifies the size of the source bitmap bits.
 
-3.2.5  EMR_SELECTOBJECT Example 2
+#### 3.2.5 EMR_SELECTOBJECT Example 2
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -19660,7 +19569,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 ihObject (4 bytes): 0x80000000 specifies the index of an object in the EMF object table.
 
-3.2.6  EMR_BITBLT Example 2
+#### 3.2.6 EMR_BITBLT Example 2
 
 This section provides an example of an EMR_BITBLT record (section 2.3.1.2).
 
@@ -19671,7 +19580,8 @@ Release: April 23, 2024
 
 237 / 282
 
- 00000160:                        4C 00 00 00 A8 2F 00 00
+
+ 00000160:                        4C 00 00 00 A8 2F 00 00
  00000170:00 00 00 00 2D 00 00 00 59 00 00 00 59 00 00 00
  00000180:00 00 00 00 2D 00 00 00 5A 00 00 00 2D 00 00 00
  00000190:20 00 CC 00 00 00 00 00 00 00 00 00 00 00 80 3F
@@ -19748,7 +19658,8 @@ Release: April 23, 2024
 
 238 / 282
 
- 000005B0:15 3C 54 0C 38 50 0B 38 4E 0B 39 50 0B 3D 55 0C
+
+ 000005B0:15 3C 54 0C 38 50 0B 38 4E 0B 39 50 0B 3D 55 0C
  000005C0:40 5B 0D 42 5D 0D 42 5D 0D 42 5D 0D 43 5C 0C 43
  000005D0:5C 0C 43 5C 0C 43 5C 0C 42 5B 0B 43 5C 0C 43 5C
  000005E0:0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C
@@ -19825,7 +19736,8 @@ Release: April 23, 2024
 
 239 / 282
 
- 00000A00:5C 0C 43 5C 0C 45 5B 0C 43 5C 0C 43 5C 0C 43 5C
+
+ 00000A00:5C 0C 43 5C 0C 45 5B 0C 43 5C 0C 43 5C 0C 43 5C
  00000A10:0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C
  00000A20:43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43
  00000A30:5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C
@@ -19902,7 +19814,8 @@ Release: April 23, 2024
 
 240 / 282
 
- 00000E50:43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43
+
+ 00000E50:43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43
  00000E60:5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C 0C 43 5C
  00000E70:0C 44 5C 0A 44 5C 0A 45 5B 0A 45 5B 0A 45 5B 0A
  00000E80:45 5B 0B 00 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E
@@ -19979,7 +19892,8 @@ Release: April 23, 2024
 
 241 / 282
 
- 000012A0:0C 43 5C 0C 43 5C 0C 45 5B 0C 45 5B 0C 45 5B 0C
+
+ 000012A0:0C 43 5C 0C 43 5C 0C 45 5B 0C 45 5B 0C 45 5B 0C
  000012B0:45 5C 0A 00 3F 5F 0E 3F 5F 0E 3F 5F 0E 3F 5F 0E
  000012C0:3F 5F 0E 3F 5F 0E 3F 5F 0E 40 5D 0D 40 5D 0D 40
  000012D0:5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D
@@ -20056,7 +19970,8 @@ Release: April 23, 2024
 
 242 / 282
 
- 000016F0:3F 60 0C 3F 5F 0E 41 5E 0E 40 5D 0D 40 5D 0D 40
+
+ 000016F0:3F 60 0C 3F 5F 0E 41 5E 0E 40 5D 0D 40 5D 0D 40
  00001700:5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D
  00001710:0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D
  00001720:40 5D 0D 40 5D 0D 47 5E 12 91 93 61 BC C2 A1 C3
@@ -20133,7 +20048,8 @@ Release: April 23, 2024
 
 243 / 282
 
- 00001B40:0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D
+
+ 00001B40:0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D 40 5D 0D
  00001B50:40 5D 0D 41 5D 0D 6D 73 32 B9 BA 9B D6 D1 BF EC
  00001B60:E3 DA EE E7 DF E1 C0 A5 D7 AB 88 D7 A3 7E DA A7
  00001B70:84 DD B1 94 D9 C4 B1 D4 C5 B4 DB CB BB E9 DB CD
@@ -20210,7 +20126,8 @@ Release: April 23, 2024
 
 244 / 282
 
- 00001F90:E8 E0 F2 EA E2 F2 E9 E0 E7 D8 C8 E4 D4 C4 E1 D0
+
+ 00001F90:E8 E0 F2 EA E2 F2 E9 E0 E7 D8 C8 E4 D4 C4 E1 D0
  00001FA0:C1 E4 D5 C6 DD CD BD D7 C6 B6 DE CF BF E5 D6 C8
  00001FB0:EB DE D0 F0 E3 D6 F1 E5 D8 F0 E3 D6 ED DF D3 E9
  00001FC0:DB CD E8 DA CC E3 D4 C5 E3 D7 CA E4 D8 CC D9 CB
@@ -20287,7 +20204,8 @@ Release: April 23, 2024
 
 245 / 282
 
- 000023E0:CC C1 B5 C8 BD B2 C3 B9 AF C0 B6 AB BA AE A2 AA
+
+ 000023E0:CC C1 B5 C8 BD B2 C3 B9 AF C0 B6 AB BA AE A2 AA
  000023F0:9A 8B A6 95 84 BB AD 9E D7 CE C5 D5 CA BF D3 C6
  00002400:B9 DC CF C1 E5 D7 C9 EB DF D2 E6 DC CF 8D 92 67
  00002410:7A 87 4D 73 82 45 79 79 39 49 5E 11 43 5C 0C 42
@@ -20364,7 +20282,8 @@ Release: April 23, 2024
 
 246 / 282
 
- 00002830:BE D1 CD C7 C5 B8 99 9A 8F 4D 91 88 43 9A 90 4E
+
+ 00002830:BE D1 CD C7 C5 B8 99 9A 8F 4D 91 88 43 9A 90 4E
  00002840:A5 99 61 B2 A9 8B CB CB CC 9D A4 90 43 5C 0C 42
  00002850:5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B
  00002860:0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B 42 5B 0B
@@ -20441,7 +20360,8 @@ Release: April 23, 2024
 
 247 / 282
 
- 00002C80:5B 0A 42 5B 0A 42 5B 0A 42 5B 0A 42 5B 0A 42 5B
+
+ 00002C80:5B 0A 42 5B 0A 42 5B 0A 42 5B 0A 42 5B 0A 42 5B
  00002C90:0A 41 5A 0A 42 5A 0C 42 5A 0C 42 5A 0C 42 5B 0B
  00002CA0:42 5B 0B 42 5B 0B 42 5B 0A 42 5B 0A 44 5A 0B 44
  00002CB0:5A 0B 44 5A 0A 44 5A 0A 44 5A 0A 45 5B 0B 45 5B
@@ -20518,7 +20438,8 @@ Release: April 23, 2024
 
 248 / 282
 
- 000030D0:3E 60 0B 3D 5F 0A 3E 5F 0A 3E 5F 0A 3F 60 0B 3F
+
+ 000030D0:3E 60 0B 3D 5F 0A 3E 5F 0A 3E 5F 0A 3F 60 0B 3F
  000030E0:60 0B 3F 60 0B 3F 60 0B 3F 60 0B 3F 60 0B 3F 60
  000030F0:0B 3F 60 0B 3E 60 0B 3E 60 0B 3E 60 0B 3F 60 0B
  00003100:3F 60 0B 3F 60 0B 3F 5F 0D 3F 5F 0D 3D 5F 0A 00
@@ -20593,7 +20514,8 @@ Release: April 23, 2024
 
 249 / 282
 
-ySrc (0x00000000)
+
+ySrc (0x00000000)
 
 xformSrc (0x3F800000) (24 bytes)
 
@@ -20661,14 +20583,15 @@ Release: April 23, 2024
 
 250 / 282
 
-cbBmiSrc (4 bytes): 0x00000000 specifies the size of the source DeviceIndependentBitmap
+
+cbBmiSrc (4 bytes): 0x00000000 specifies the size of the source DeviceIndependentBitmap
 object.
 
 offBitsSrc (4 bytes): 0x0000008C specifies the offset to the source bitmap bits.
 
 cbBitsSrc (4 bytes): 0x00002F1C specifies the size of the source bitmap bits.
 
-3.2.7  EMR_SETBKMODE Example
+#### 3.2.7 EMR_SETBKMODE Example
 
 This section provides an example of an EMR_SETBKMODE record (section 2.3.11.11).
 
@@ -20697,7 +20620,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 Mode (4 bytes): 0x00000001 specifies the background color value.
 
-3.2.8  EMR_EXTCREATEFONTINDIRECTW Example 1
+#### 3.2.8 EMR_EXTCREATEFONTINDIRECTW Example 1
 
 This section provides an example of an EMR_EXTCREATEFONTINDIRECTW record (section 2.3.7.8).
 
@@ -20733,7 +20656,8 @@ Release: April 23, 2024
 
 251 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20821,7 +20745,8 @@ Release: April 23, 2024
 
 252 / 282
 
-Height (4 bytes): 0xFFFFFFF3 has an absolute value of 13, which specifies the character height for
+
+Height (4 bytes): 0xFFFFFFF3 has an absolute value of 13, which specifies the character height for
 this font, in logical units.
 
 Width (4 bytes): 0x00000000 specifies a computed font width. The aspect ratio of the device is
@@ -20893,7 +20818,8 @@ Release: April 23, 2024
 
 253 / 282
 
-...
+
+...
 
 ...
 
@@ -20920,7 +20846,7 @@ Signature (4 bytes): 0x08007664 specifies the signature of a DesignVector object
 NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the DesignVector
 object.
 
-3.2.9  EMR_SELECTOBJECT Example 3
+#### 3.2.9 EMR_SELECTOBJECT Example 3
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -20957,7 +20883,8 @@ Release: April 23, 2024
 
 254 / 282
 
-3.2.10 EMR_EXTTEXTOUTW Example
+
+#### 3.2.10 EMR_EXTTEXTOUTW Example
 
 This section provides an example of an EMR_EXTTEXTOUTW record (section 2.3.5.8).
 
@@ -21027,7 +20954,8 @@ Release: April 23, 2024
 
 255 / 282
 
-aemrtext (variable): An array of EmrText objects (section 2.2.5) that specifies the properties of the
+
+aemrtext (variable): An array of EmrText objects (section 2.2.5) that specifies the properties of the
 strings to be output, and where to find the output strings and spacing values.
 
 0  1  2  3  4  5  6  7  8  9
@@ -21080,7 +21008,7 @@ the start of the EMR_EXTTEXTOUTW record.
 
 text (4 bytes): "Simple Sample".
 
-3.2.11 EMR_EXTCREATEFONTINDIRECTW Example 2
+#### 3.2.11 EMR_EXTCREATEFONTINDIRECTW Example 2
 
 This section provides an example of an EMR_EXTCREATEFONTINDIRECTW record (section 2.3.7.8).
 
@@ -21099,7 +21027,8 @@ Release: April 23, 2024
 
 256 / 282
 
- 000033A0:00 00 00 00 28 00 00 00 59 00 00 00 2D 00 00 00
+
+ 000033A0:00 00 00 00 28 00 00 00 59 00 00 00 2D 00 00 00
  000033B0:01 00 18 00 00 00 00 00 1C 2F 00 00 00 00 00 00
  000033C0:00 00 00 00 00 00 00 00 00 00 00 00 10 00 90 01
  000033D0:00 00 00 00 25 00 00 00 00 00 00 00 D3 3F EC FE
@@ -21177,7 +21106,8 @@ Release: April 23, 2024
 
 257 / 282
 
-Orientation (0x00000C4E)
+
+Orientation (0x00000C4E)
 
 Weight 0x000000C8)
 
@@ -21252,7 +21182,8 @@ Release: April 23, 2024
 
 258 / 282
 
-Facename (68 bytes): "Microsoft Sans Serif" specifies the typeface name of the font in Unicode
+
+Facename (68 bytes): "Microsoft Sans Serif" specifies the typeface name of the font in Unicode
 characters.
 
 0  1  2  3  4  5  6  7  8  9
@@ -21305,7 +21236,7 @@ Signature (4 bytes): 0x08007664 specifies the signature of a DesignVector object
 NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the DesignVector
 object.
 
-3.2.12 EMR_SELECTOBJECT Example 4
+#### 3.2.12 EMR_SELECTOBJECT Example 4
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -21319,7 +21250,8 @@ Release: April 23, 2024
 
 259 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -21342,7 +21274,7 @@ Size (4 bytes): Specifies the size of this record in bytes.
 
 ihObject (4 bytes): Specifies the index of an object in the EMF object table.
 
-3.2.13 EMR_EXTCREATEFONTINDIRECTW Example 3
+#### 3.2.13 EMR_EXTCREATEFONTINDIRECTW Example 3
 
 This section provides an example of an EMR_EXTCREATEFONTINDIRECTW record (section 2.3.7.8).
 
@@ -21399,7 +21331,8 @@ Release: April 23, 2024
 
 260 / 282
 
-...
+
+...
 
 ...
 
@@ -21479,7 +21412,8 @@ Release: April 23, 2024
 
 261 / 282
 
-Weight (4 bytes): 0x000000C8 specifies that the weight of the font is 200, in the range 0 through
+
+Weight (4 bytes): 0x000000C8 specifies that the weight of the font is 200, in the range 0 through
 1000, from lightest to darkest, with 400 (0x00000190) considered normal.
 
 Italic (1 byte): 0x00 specifies that the font is not italic.
@@ -21549,7 +21483,8 @@ Release: April 23, 2024
 
 262 / 282
 
-...
+
+...
 
 Signature (0x80007664)
 
@@ -21566,7 +21501,7 @@ Signature (4 bytes): 0x08007664 specifies the signature of a DesignVector object
 NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the DesignVector
 object.
 
-3.2.14 EMR_SELECTOBJECT Example 5
+#### 3.2.14 EMR_SELECTOBJECT Example 5
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -21595,7 +21530,7 @@ Size (4 bytes): Specifies the size of this record in bytes.
 
 ihObject (4 bytes): Specifies the index of an object in the EMF object table.
 
-3.2.15 EMR_DELETEOBJECT Example 1
+#### 3.2.15 EMR_DELETEOBJECT Example 1
 
 This section provides an example of an EMR_DELETEOBJECT record (section 2.3.8.3).
 
@@ -21623,7 +21558,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ihObject (0x00000003)
+
+ihObject (0x00000003)
 
 Type (4 bytes): Identifies this record type as EMR_DELETEOBJECT.
 
@@ -21631,7 +21567,7 @@ Size (4 bytes): Specifies the size of this record in bytes.
 
 ihObject (4 bytes): Specifies the index of the object to be deleted.
 
-3.2.16 EMR_EXTCREATEFONTINDIRECTW Example 4
+#### 3.2.16 EMR_EXTCREATEFONTINDIRECTW Example 4
 
 This section provides an example of an EMR_EXTCREATEFONTINDIRECTW record (section 2.3.7.8).
 
@@ -21694,7 +21630,8 @@ Release: April 23, 2024
 
 264 / 282
 
-Type (4 bytes): 0x00000052 identifies this record type as EMR_EXTCREATEFONTINDIRECTW.
+
+Type (4 bytes): 0x00000052 identifies this record type as EMR_EXTCREATEFONTINDIRECTW.
 
 Size (4 bytes): 0x00000170 specifies the size of this record in bytes.
 
@@ -21776,7 +21713,8 @@ Release: April 23, 2024
 
 265 / 282
 
-CharSet (1 byte): 0x00 specifies the ANSI_CHARSET, as defined in the CharacterSet enumeration
+
+CharSet (1 byte): 0x00 specifies the ANSI_CHARSET, as defined in the CharacterSet enumeration
 ([MS-WMF] section 2.1.1.5).
 
 OutPrecision (1 byte): 0x04 specifies the output precision, which is how closely the output is
@@ -21845,7 +21783,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Style (68 bytes): An empty string describes the font's style.
+
+Style (68 bytes): An empty string describes the font's style.
 
 Script (68 bytes): An empty string describes the font's character set.
 
@@ -21854,7 +21793,7 @@ Signature (4 bytes): 0x08007664 specifies the signature of a DesignVector object
 NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the DesignVector
 object.
 
-3.2.17 EMR_SELECTOBJECT Example 6
+#### 3.2.17 EMR_SELECTOBJECT Example 6
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -21884,7 +21823,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 ihObject (4 bytes): 0x00000003 specifies the index of an object in the EMF object table.
 
-3.2.18 EMR_SELECTOBJECT Example 7
+#### 3.2.18 EMR_SELECTOBJECT Example 7
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -21921,7 +21860,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.19 EMR_DELETEOBJECT Example 2
+
+#### 3.2.19 EMR_DELETEOBJECT Example 2
 
 This section provides an example of an EMR_DELETEOBJECT record (section 2.3.8.3).
 
@@ -21950,7 +21890,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 ihObject (4 bytes): 0x00000004 specifies the index of the object to be deleted.
 
-3.2.20 EMR_DELETEOBJECT Example 3
+#### 3.2.20 EMR_DELETEOBJECT Example 3
 
 This section provides an example of an EMR_DELETEOBJECT record (section 2.3.8.3).
 
@@ -21979,7 +21919,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 ihObject (4 bytes): 0x00000003 specifies the index of the object to be deleted.
 
-3.2.21 EMR_SELECTOBJECT Example 8
+#### 3.2.21 EMR_SELECTOBJECT Example 8
 
 This section provides an example of an EMR_SELECTOBJECT record (section 2.3.8.5).
 
@@ -21993,7 +21933,8 @@ Release: April 23, 2024
 
 268 / 282
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -22016,7 +21957,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 ihObject (4 bytes): 0x8000000D specifies the index of an object in the EMF object table.
 
-3.2.22 EMR_EOF Example
+#### 3.2.22 EMR_EOF Example
 
 This section provides an example of an EMR_EOF record (section 2.3.4.1).
 
@@ -22061,7 +22002,8 @@ Release: April 23, 2024
 
 269 / 282
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 This file format enables third parties to send payloads (such as PostScript) to pass through as
 executable code.
@@ -22073,7 +22015,8 @@ Release: April 23, 2024
 
 270 / 282
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -22143,7 +22086,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<1> Section 1.3.1: EMF metafiles have changed over the years with the evolution of Windows
+
+<1> Section 1.3.1: EMF metafiles have changed over the years with the evolution of Windows
 operating systems. They were introduced with 32-bit Windows and replaced the 16-bit WMF metafile
 [MS-WMF] as the Windows standard.
 
@@ -22210,7 +22154,8 @@ Release: April 23, 2024
 
 272 / 282
 
-<20> Section 2.1.1: Windows GDI uses an EMR_EXTTEXTOUTW record (section 2.3.5.8) to perform
+
+<20> Section 2.1.1: Windows GDI uses an EMR_EXTTEXTOUTW record (section 2.3.5.8) to perform
 this function.
 
 <21> Section 2.1.1: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, and Windows NT 4.0 do not
@@ -22279,7 +22224,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<37> Section 2.1.31: On Windows, this palette consists of the static colors in the system palette.
+
+<37> Section 2.1.31: On Windows, this palette consists of the static colors in the system palette.
 
 <38> Section 2.1.31: On Windows, the default user interface font is "Tahoma".
 
@@ -22363,7 +22309,8 @@ Release: April 23, 2024
 
 274 / 282
 
-<48> Section 2.2.22: Windows implementations do not support this flag.
+
+<48> Section 2.2.22: Windows implementations do not support this flag.
 
 <49> Section 2.2.22: Windows can use this flag to indicate that the pixel format specified by this
 structure is supported by GDI. See [MSDN-GDI+] for more information.
@@ -22432,7 +22379,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<69> Section 2.3.5.14:  The Windows playback implementation computes the bounding region from
+
+<69> Section 2.3.5.14:  The Windows playback implementation computes the bounding region from
 the sum of all the rectangles specified by the RgnData field.
 
 <70> Section 2.3.5.32: Windows NT 3.1 is the only Windows version in which GDI uses
@@ -22500,7 +22448,8 @@ Enhanced Metafile Format
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<88> Section 2.3.11.17: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, and Windows NT 4.0
+
+<88> Section 2.3.11.17: Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, and Windows NT 4.0
 do not support EMR_SETLAYOUT.
 
 <89> Section 2.3.11.20:  Only Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, and Windows NT
@@ -22566,7 +22515,8 @@ Release: April 23, 2024
 
 277 / 282
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -22610,7 +22560,8 @@ Release: April 23, 2024
 
 278 / 282
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 20
@@ -22748,7 +22699,8 @@ EMR_EXTESCAPE packet 165
 
 279 / 282
 
-EMR_EXTESCAPE Record 165
+
+EMR_EXTESCAPE Record 165
 EMR_EXTFLOODFILL packet 132
 EMR_EXTFLOODFILL Record 132
 EMR_EXTSELECTCLIPRGN packet 105
@@ -22888,7 +22840,8 @@ EMR_SETICMPROFILEW record 200
 
 280 / 282
 
-EMR_SETLAYOUT packet 201
+
+EMR_SETLAYOUT packet 201
 EMR_SETLAYOUT record 201
 EMR_SETLINKEDUFIS packet 202
 EMR_SETLINKEDUFIS Record 202
@@ -23032,7 +22985,8 @@ LogPalette packet 64
 
 281 / 282
 
-StateRecordTypes packet 187
+
+StateRecordTypes packet 187
 StockObject enumeration 44
 StretchMode enumeration 47
 StrokeVariation enumeration 47

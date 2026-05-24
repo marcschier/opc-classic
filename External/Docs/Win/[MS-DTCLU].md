@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 199
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -520,1111 +522,387 @@ Release: April 23, 2024
 
 3 / 199
 
-Table of Contents
 
-1.3
-
-1.3.2
-
-1.3.1
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1.1
-1.3.1.2
-
-1  Introduction .......................................................................................................... 13
-Glossary ......................................................................................................... 13
-References ...................................................................................................... 16
-Normative References ................................................................................. 16
-Informative References ............................................................................... 16
-Overview ........................................................................................................ 17
-Scenarios .................................................................................................. 17
-Enlistment and Completion ..................................................................... 18
-Transaction Recovery ............................................................................ 19
-Transaction Roles ....................................................................................... 20
-LU 6.2 Implementation Role ................................................................... 21
-Transaction Manager Role ...................................................................... 21
-Transaction Manager Communicating with an LU 6.2 Implementation Facet
- ..................................................................................................... 21
-Relationship to Other Protocols .......................................................................... 21
-Prerequisites/Preconditions ............................................................................... 22
-Applicability Statement ..................................................................................... 22
-Versioning and Capability Negotiation ................................................................. 22
-Vendor-Extensible Fields ................................................................................... 22
-Standards Assignments ..................................................................................... 23
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2.1
-1.3.2.2
-
-1.3.2.2.1
-
-2.2.2
-
-2.2.3
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-
-2  Messages ............................................................................................................... 24
-Transport ........................................................................................................ 24
-Message Syntax ............................................................................................... 24
-Common Structures .................................................................................... 24
-MESSAGE_PACKET ................................................................................ 24
-DTCLU_VARLEN_BYTEARRAY .................................................................. 25
-Transaction Enumerations ............................................................................ 25
-DTCLUCOMPARESTATE .......................................................................... 25
-DTCLUCOMPARESTATESCONFIRMATION .................................................. 26
-DTCLUCOMPARESTATESERROR ............................................................... 26
-DTCLUXLN ........................................................................................... 26
-DTCLUXLNCONFIRMATION ..................................................................... 26
-DTCLUXLNERROR .................................................................................. 27
-DTCLUCOMPARESTATESRESPONSE ......................................................... 27
-DTCLUXLNRESPONSE ............................................................................ 28
-CONNTYPE ........................................................................................... 28
-Connection Types Relevant to LU 6.2 ............................................................ 29
-CONNTYPE_TXUSER_DTCLUCONFIGURE .................................................. 29
-TXUSER_DTCLURMCONFIGURE_MTAG_ADD ....................................... 29
-TXUSER_DTCLURMCONFIGURE_MTAG_DELETE ................................... 29
-TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED.............. 30
-TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE ...................... 30
-TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND ............... 31
-TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS  31
-TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE ........................ 31
-TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL ....................... 32
-CONNTYPE_TXUSER_DTCLURECOVERY .................................................... 32
-TXUSER_DTCLURMRECOVERY_MTAG_ATTACH .................................... 32
-TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED ............... 33
-TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE .................. 33
-TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND ................. 34
-CONNTYPE_TXUSER_DTCLURMENLISTMENT ............................................. 34
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE ................................. 34
-TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED ............ 35
-
-2.2.3.1.1
-2.2.3.1.2
-2.2.3.1.3
-2.2.3.1.4
-2.2.3.1.5
-2.2.3.1.6
-2.2.3.1.7
-2.2.3.1.8
-
-2.2.3.2.1
-2.2.3.2.2
-2.2.3.2.3
-2.2.3.2.4
-
-2.2.3.3.1
-2.2.3.3.2
-
-2.2.3.3
-
-2.2.3.2
-
-2.2.3.1
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 199
-
-2.2.3.3.3
-2.2.3.3.4
-2.2.3.3.5
-2.2.3.3.6
-2.2.3.3.7
-2.2.3.3.8
-2.2.3.3.9
-2.2.3.3.10
-2.2.3.3.11
-2.2.3.3.12
-2.2.3.3.13
-2.2.3.3.14
-2.2.3.3.15
-2.2.3.3.16
-2.2.3.3.17
-2.2.3.3.18
-2.2.3.3.19
-
-2.2.3.3.20
-
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST . 35
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT .............. 36
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT .................. 36
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_COMMITTED .............. 36
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET .................... 37
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT ...... 37
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT ................ 38
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT .................... 38
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED ................ 38
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE ..................... 39
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TX_NOT_FOUND ........ 39
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_LATE ................. 40
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LOG_FULL ................. 40
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_MANY ................ 40
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NOT_FOUND......... 41
-TXUSER_DTCLURMENLISTMENT_MTAG_UNPLUG ................................. 41
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_DUPLICATE_LU_TRANSID
- ..................................................................................................... 42
-
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NO_RECOVERY_PROCE
-SS ................................................................................................. 42
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_DOWN ................. 42
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERING ....... 43
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERY_MISMATCH
- ..................................................................................................... 43
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC ............................ 44
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK ............. 44
-
-2.2.3.3.21
-2.2.3.3.22
-2.2.3.3.23
-
-2.2.3.4
-
-2.2.3.4.1
-2.2.3.4.2
-
-2.2.3.4.3
-
-2.2.3.4.4
-2.2.3.4.5
-2.2.3.4.6
-2.2.3.4.7
-
-2.2.3.4.8
-
-2.2.3.4.9
-
-2.2.3.4.10
-
-2.2.3.4.11
-
-2.2.3.4.12
-
-2.2.3.4.13
-
-2.2.3.4.14
-
- TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUN
-D .................................................................................................. 44
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATU
-S ................................................................................................... 45
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS ....... 45
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS ............. 46
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE 47
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM
-_OUR_XLN ..................................................................................... 47
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE
- ..................................................................................................... 47
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
-HEIR_XLN ...................................................................................... 48
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_XL
-N ................................................................................................... 49
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CHECK_FOR_COMPARE
-STATES .......................................................................................... 49
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_COMPARESTATES_INFO
- ..................................................................................................... 50
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NO_COMPARESTATES
- ..................................................................................................... 50
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_COMPARESTATE
-S ................................................................................................... 51
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 199
-
-2.2.3.4.15
-
-2.2.3.4.16
-
-2.2.3.4.17
-
-2.2.3.4.18
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
-HEIR_COMPARESTATES ................................................................... 51
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_CO
-MPARESTATES ................................................................................ 52
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONVERSATION_LOST
- ..................................................................................................... 52
-
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NEW_RECOVERY_SEQ_
-NUM .............................................................................................. 53
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU .............................. 53
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN .............. 53
-
-2.2.3.5
-
-2.2.3.5.1
-2.2.3.5.2
-
-2.2.3.5.3
-
-2.2.3.5.4
-
-2.2.3.5.5
-
-2.2.3.5.6
-
-2.2.3.5.7
-
-2.2.3.5.8
-2.2.3.5.9
-2.2.3.5.10
-
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
-XLN ............................................................................................... 54
-
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
-_XLN ............................................................................................. 55
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES
- ..................................................................................................... 56
-
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
-COMPARESTATES ............................................................................ 56
-
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
-_COMPARESTATES .......................................................................... 57
-
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_ERROR_OF_OUR_COMPA
-RESTATES ...................................................................................... 57
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONVERSATION_LOST58
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE . 58
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FOUND
- ..................................................................................................... 59
-
-3.1
-
-3.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-3.1.8
-
-3  Protocol Details ..................................................................................................... 60
-Common Details .............................................................................................. 60
-Abstract Data Model .................................................................................... 60
-Timers ...................................................................................................... 60
-Initialization ............................................................................................... 60
-Protocol Version Negotiation ........................................................................ 60
-Higher-Layer Triggered Events ..................................................................... 61
-Message Processing Events and Sequencing Rules .......................................... 61
-Timer Events .............................................................................................. 61
-Other Local Events ...................................................................................... 61
-LU 6.2 Implementation Details ........................................................................... 61
-Abstract Data Model .................................................................................... 61
-CONNTYPE_TXUSER_DTCLUCONFIGURE Initiator States ............................ 62
-Idle ............................................................................................... 63
-Awaiting Add Response .................................................................... 63
-Awaiting Delete Response ................................................................. 63
-Ended ............................................................................................ 64
-CONNTYPE_TXUSER_DTCLURECOVERY Initiator States .............................. 64
-Idle ............................................................................................... 65
-Awaiting Register Response .............................................................. 65
-Registered ...................................................................................... 65
-Ended ............................................................................................ 66
-CONNTYPE_TXUSER_DTCLURMENLISTMENT Initiator States ....................... 66
-
-3.2.1.2.1
-3.2.1.2.2
-3.2.1.2.3
-3.2.1.2.4
-
-3.2.1.1.1
-3.2.1.1.2
-3.2.1.1.3
-3.2.1.1.4
-
-3.2.1.3
-
-3.2.1.1
-
-3.2.1.2
-
-3.2.1
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 199
-
-3.2.1.3.1
-3.2.1.3.2
-3.2.1.3.3
-3.2.1.3.4
-3.2.1.3.5
-3.2.1.3.6
-3.2.1.3.7
-3.2.1.3.8
-3.2.1.3.9
-
-3.2.1.4
-
-3.2.1.4.1
-3.2.1.4.2
-3.2.1.4.3
-3.2.1.4.4
-3.2.1.4.5
-3.2.1.4.6
-3.2.1.4.7
-3.2.1.4.8
-3.2.1.4.9
-3.2.1.4.10
-3.2.1.4.11
-3.2.1.4.12
-3.2.1.4.13
-3.2.1.4.14
-
-3.2.1.5.1
-3.2.1.5.2
-3.2.1.5.3
-3.2.1.5.4
-3.2.1.5.5
-3.2.1.5.6
-3.2.1.5.7
-3.2.1.5.8
-3.2.1.5.9
-3.2.1.5.10
-
-3.2.1.5
-
-Idle ............................................................................................... 67
-Awaiting Enlistment Response ........................................................... 68
-Active ............................................................................................ 68
-Preparing for Transaction Commit...................................................... 68
-Awaiting Backout Response .............................................................. 68
-Awaiting Transaction Outcome .......................................................... 68
-Finalizing Abort Operations ............................................................... 69
-Finalizing Commit Operations ............................................................ 69
-Ended ............................................................................................ 69
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Initiator States ...... 69
-Idle ............................................................................................... 71
-Awaiting Response to Work Query ..................................................... 71
-Processing Cold XLN Request ............................................................ 72
-Processing Warm XLN Request .......................................................... 72
-Awaiting Response to XLN Confirmation ............................................. 72
-Awaiting Response to XLN ................................................................ 72
-Awaiting Response to Compare States Query During Warm XLN ............ 72
-XLN Exchange Complete ................................................................... 73
-Awaiting Response to Compare States Query ...................................... 73
-Processing Compare States Request .................................................. 73
-Awaiting Response to Compare States ............................................... 73
-Processing LU Status Check .............................................................. 73
-Awaiting Request Complete .............................................................. 73
-Ended ............................................................................................ 74
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Initiator States ........ 74
-Idle ............................................................................................... 75
-Awaiting Response to XLN Request .................................................... 75
-Processing XLN Confirmation ............................................................ 76
-Awaiting Response to XLN Confirmation ............................................. 76
-Awaiting Response to XLN Confirmation with Error .............................. 76
-XLN Exchange Complete ................................................................... 76
-Awaiting Response to Compare States ............................................... 76
-Processing Compare States Response ................................................ 76
-Awaiting Request Complete .............................................................. 77
-Ended ............................................................................................ 77
-Timers ...................................................................................................... 77
-Initialization ............................................................................................... 77
-Higher-Layer Triggered Events ..................................................................... 77
-Adding an LU Name Pair ........................................................................ 77
-Deleting an LU Name Pair ...................................................................... 78
-Registering Recovery Process For LU Pair ................................................. 78
-All Sessions Lost ................................................................................... 78
-Creating LU 6.2 Subordinate Enlistment ................................................... 79
-Aborting LU 6.2 Subordinate Enlistment ................................................... 79
-LU 6.2 Subordinate Enlistment Prepare Request Completed ........................ 80
-LU 6.2 Subordinate Enlistment Conversation Lost...................................... 80
-Unplugging LU 6.2 Subordinate Enlistment ............................................... 81
-LU 6.2 Subordinate Enlistment Abort Request Completed ........................... 81
-LU 6.2 Subordinate Enlistment Commit Request Completed ....................... 81
-LU 6.2 Subordinate Enlistment Single-Phase Commit Request Completed .... 82
-Local LU Initiated Recovery Sending Query For Work ................................. 82
-Local LU Initiated Recovery Sending New Recovery Sequence Number ........ 82
-Local LU Initiated Recovery Sending XLN Error ......................................... 83
-Local LU Initiated Recovery Sending XLN Response ................................... 83
-Local LU Initiated Recovery Sending XLN Confirmation .............................. 84
-Local LU Initiated Recovery Sending Compare States Query ....................... 85
-Local LU Initiated Recovery Sending Compare States ................................ 86
-Local LU Initiated Recovery Sending Compare States Error......................... 86
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-3.2.4.7
-3.2.4.8
-3.2.4.9
-3.2.4.10
-3.2.4.11
-3.2.4.12
-3.2.4.13
-3.2.4.14
-3.2.4.15
-3.2.4.16
-3.2.4.17
-3.2.4.18
-3.2.4.19
-3.2.4.20
-
-3.2.2
-3.2.3
-3.2.4
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 199
-
-3.2.4.21
-3.2.4.22
-3.2.4.23
-3.2.4.24
-3.2.4.25
-3.2.4.26
-3.2.4.27
-3.2.4.28
-
-Local LU Initiated Recovery Sending LU Status ......................................... 87
-Local LU Initiated Recovery Conversation Lost .......................................... 87
-Remote LU Initiated Recovery Sending XLN .............................................. 88
-Remote LU Initiated Recovery Sending XLN Confirmation ........................... 89
-Remote LU Initiated Recovery Sending Compare States ............................. 90
-Remote LU Initiated Recovery Sending Compare States Confirmation .......... 91
-Remote LU Initiated Recovery Sending Compare States Error ..................... 91
-Remote LU Initiated Recovery Conversation Lost....................................... 92
-Message Processing Events and Sequencing Rules .......................................... 92
-CONNTYPE_TXUSER_DTCLUCONFIGURE as Initiator .................................. 92
-
-3.2.5.1
-
-3.2.5
-
-3.2.5.1.1
-
-3.2.5.1.2
-
-3.2.5.1.3
-
-3.2.5.1.4
-
-3.2.5.1.5
-
-3.2.5.1.6
-
-3.2.5.1.7
-
-3.2.5.2
-
-3.2.5.2.1
-
-3.2.5.2.2
-
-3.2.5.2.3
-
-3.2.5.2.4
-
-3.2.5.3
-
-3.2.5.3.1
-
-3.2.5.3.2
-3.2.5.3.3
-
-3.2.5.3.4
-
-3.2.5.3.5
-
-3.2.5.3.6
-
-3.2.5.3.7
-
-3.2.5.4
-
-3.2.5.4.1
-
-3.2.5.4.2
-
-3.2.5.4.3
-
-3.2.5.4.4
-
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE
-Message ......................................................................................... 92
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND
-Message ......................................................................................... 92
-Receiving a
-TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS
-Message ......................................................................................... 93
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE Message
- ..................................................................................................... 93
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED
-Message ......................................................................................... 93
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL
-Message ......................................................................................... 93
-Connection Disconnected .................................................................. 94
-CONNTYPE_TXUSER_DTCLURECOVERY as Initiator .................................... 94
-Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND
-Message ......................................................................................... 94
-Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE
-Message ......................................................................................... 94
-Receiving a TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED
-Message ......................................................................................... 94
-Connection Disconnected .................................................................. 95
-CONNTYPE_TXUSER_DTCLURMENLISTMENT as Initiator ............................ 95
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED
-Message ......................................................................................... 95
-Receiving Other TXUSER_DTCLURMENLISTMENT_MTAG Messages ......... 95
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE
-Message ......................................................................................... 96
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT
-Message ......................................................................................... 96
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT
-Message ......................................................................................... 96
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED
-Message ......................................................................................... 97
-Connection Disconnected .................................................................. 97
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Initiator ........... 97
-
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUN
-D Message ...................................................................................... 97
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATU
-S Message ...................................................................................... 98
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS Message
- ..................................................................................................... 98
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
-HEIR_XLN Message ......................................................................... 98
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 199
-
-3.2.5.4.5
-
-3.2.5.4.6
-
-3.2.5.4.7
-
-3.2.5.4.8
-
-3.2.5.4.9
-
-3.2.5.5
-
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NO_COMPARESTATES
-Message ......................................................................................... 99
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_COMPARESTATES_INFO
-Message ........................................................................................ 100
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
-HEIR_COMPARESTATES Message ..................................................... 100
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE
-Message ........................................................................................ 100
-Connection Disconnected ................................................................. 101
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Initiator ............. 101
-
-3.2.5.5.1
-
-3.2.5.5.5
-
-3.2.5.5.2
-
-3.2.5.5.4
-
-3.2.5.5.3
-
-3.3.1.2.1
-3.3.1.2.2
-3.3.1.2.3
-3.3.1.2.4
-3.3.1.2.5
-
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FOUND
-Message ........................................................................................ 101
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
-XLN Message ................................................................................. 101
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
-COMPARESTATES Message .............................................................. 102
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE
-Message ........................................................................................ 103
-Connection Disconnected ................................................................. 103
-Timer Events ............................................................................................. 103
-Other Local Events ..................................................................................... 103
-Transaction Manager Communicating with an LU 6.2 Implementation Facet Details . 104
-Abstract Data Model ................................................................................... 104
-Logging .............................................................................................. 106
-CONNTYPE_TXUSER_DTCLUCONFIGURE Acceptor States .......................... 107
-Idle .............................................................................................. 107
-Processing Add Request .................................................................. 107
-Processing Delete Request ............................................................... 107
-Ended ........................................................................................... 107
-State Diagram ............................................................................... 107
-CONNTYPE_TXUSER_DTCLURECOVERY Acceptor States ............................ 108
-Idle .............................................................................................. 108
-Processing Register Request ............................................................ 108
-Registered ..................................................................................... 109
-Ended ........................................................................................... 109
-State Diagram ............................................................................... 109
-CONNTYPE_TXUSER_DTCLURMENLISTMENT Acceptor States ..................... 109
-Idle .............................................................................................. 110
-Processing Enlistment Request ......................................................... 110
-Active ........................................................................................... 110
-Awaiting Prepare Response .............................................................. 110
-Processing Backout Request............................................................. 110
-Prepared ....................................................................................... 111
-Awaiting Commit Response .............................................................. 111
-Awaiting Abort Response ................................................................. 111
-Ended ........................................................................................... 111
-State Diagram ............................................................................... 111
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Acceptor States .... 112
-Idle .............................................................................................. 113
-Processing Work Query ................................................................... 113
-
-3.3.1.4.1
-3.3.1.4.2
-3.3.1.4.3
-3.3.1.4.4
-3.3.1.4.5
-3.3.1.4.6
-3.3.1.4.7
-3.3.1.4.8
-3.3.1.4.9
-3.3.1.4.10
-
-3.3.1.3.1
-3.3.1.3.2
-3.3.1.3.3
-3.3.1.3.4
-3.3.1.3.5
-
-3.3.1.5.1
-3.3.1.5.2
-
-3.3.1.3
-
-3.3.1.4
-
-3.3.1.5
-
-3.2.6
-3.2.7
-
-3.3.1
-
-3.3
-
-3.3.1.1
-3.3.1.2
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 199
-
-3.3.1.6
-
-3.3.1.5.3
-3.3.1.5.4
-3.3.1.5.5
-3.3.1.5.6
-3.3.1.5.7
-3.3.1.5.8
-3.3.1.5.9
-3.3.1.5.10
-3.3.1.5.11
-3.3.1.5.12
-3.3.1.5.13
-3.3.1.5.14
-3.3.1.5.15
-3.3.1.5.16
-3.3.1.5.17
-3.3.1.5.18
-3.3.1.5.19
-3.3.1.5.20
-3.3.1.5.21
-
-3.3.1.6.1
-3.3.1.6.2
-3.3.1.6.3
-3.3.1.6.4
-3.3.1.6.5
-3.3.1.6.6
-3.3.1.6.7
-3.3.1.6.8
-3.3.1.6.9
-3.3.1.6.10
-3.3.1.6.11
-
-Awaiting Response To Cold XLN........................................................ 113
-Processing Response To Cold XLN ..................................................... 114
-Awaiting Response To Warm XLN ..................................................... 114
-Processing Response to Warm XLN ................................................... 114
-Processing Compare State Query During Warm XLN............................ 114
-Awaiting LU Status Response ........................................................... 114
-Processing LU Status Response ........................................................ 114
-Awaiting Compare States Query ....................................................... 115
-Processing Compare States Query .................................................... 115
-Awaiting Compare States Response .................................................. 115
-Processing Compare States Response ............................................... 115
-Processing Compare States Error ...................................................... 115
-Is Obsolete Awaiting Response To Cold XLN ....................................... 115
-Is Obsolete Awaiting Response To Warm XLN ..................................... 115
-Is Obsolete Awaiting LU Status Response .......................................... 116
-Is Obsolete Processing Response ...................................................... 116
-Is Obsolete Processing Compare State Query During Warm XLN ........... 116
-Ended ........................................................................................... 116
-State Diagram ............................................................................... 116
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Acceptor States ...... 120
-Idle .............................................................................................. 121
-Processing XLN Request .................................................................. 121
-Awaiting XLN Confirmation .............................................................. 121
-Processing XLN Confirmation ........................................................... 121
-Awaiting Compare States Request .................................................... 121
-Processing Compare States Request ................................................. 121
-Awaiting Compare States Confirmation ............................................. 121
-Processing Compare States Confirmation ........................................... 122
-Is Obsolete Awaiting XLN Confirmation .............................................. 122
-Ended ........................................................................................... 122
-State Diagram ............................................................................... 122
-Timers ..................................................................................................... 123
-LU Status Timer ................................................................................... 123
-Initialization .............................................................................................. 124
-Higher-Layer Triggered Events .................................................................... 124
-Recover .............................................................................................. 124
-Message Processing Events and Sequencing Rules ......................................... 125
-CONNTYPE_TXUSER_DTCLUCONFIGURE as Acceptor ................................ 125
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD Message ......... 125
-Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE Message .... 126
-CONNTYPE_TXUSER_DTCLURECOVERY as Acceptor .................................. 127
-Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH Message ..... 127
-Connection Disconnected ................................................................. 128
-CONNTYPE_TXUSER_DTCLURMENLISTMENT as Acceptor .......................... 128
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_CREATE Message... 129
-Receiving a
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT
-Message ........................................................................................ 131
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT
-Message ........................................................................................ 131
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET
-Message ........................................................................................ 132
-Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT
-Message ........................................................................................ 132
-Receiving a
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST
-Message ........................................................................................ 133
-Connection Disconnected ................................................................. 134
-
-3.3.5.3.3
-
-3.3.5.3.4
-
-3.3.5.3.5
-
-3.3.5.3.6
-
-3.3.5.3.7
-
-3.3.5.1
-
-3.3.5.1.1
-3.3.5.1.2
-
-3.3.5.2
-
-3.3.5.2.1
-3.3.5.2.2
-
-3.3.5.3
-
-3.3.5.3.1
-3.3.5.3.2
-
-3.3.2.1
-
-3.3.4.1
-
-3.3.2
-
-3.3.3
-3.3.4
-
-3.3.5
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-10 / 199
-
-3.3.5.4
-
-3.3.5.4.1
-
-3.3.5.4.2
-
-3.3.5.4.3
-
-3.3.5.4.4
-
-3.3.5.4.5
-
-3.3.5.4.6
-
-3.3.5.4.7
-
-3.3.5.4.8
-
-3.3.5.4.9
-
-3.3.5.4.10
-
-3.3.5.5
-
-3.3.5.5.1
-
-3.3.5.5.2
-
-3.3.5.5.3
-
-3.3.5.5.4
-
-3.3.5.5.5
-
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Acceptor ......... 134
-Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
-Message ........................................................................................ 135
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NEW_RECOVERY_SEQ_
-NUM Message ................................................................................ 135
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM
-_OUR_XLN Message ....................................................................... 137
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_XL
-N Message ..................................................................................... 138
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE
-Message ........................................................................................ 140
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CHECK_FOR_COMPARE
-STATES Message ............................................................................ 143
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_COMPARESTATE
-S Message ..................................................................................... 146
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_CO
-MPARESTATES Message .................................................................. 148
-Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS
-Message ........................................................................................ 148
-Connection Disconnected ................................................................. 149
-CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Acceptor ............ 150
-Receiving a TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN
-Message ........................................................................................ 150
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
-_XLN Message ............................................................................... 154
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES
-Message ........................................................................................ 155
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
-_COMPARESTATES Message ............................................................ 158
-Receiving a
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_ERROR_OF_OUR_COMPA
-RESTATES Message ........................................................................ 159
-Connection Disconnected ................................................................. 159
-Timer Events ............................................................................................. 160
-LU Status Timer Tick ............................................................................ 160
-Other Local Events ..................................................................................... 160
-Create Subordinate Enlistment Success .................................................. 160
-Create Subordinate Enlistment Failure .................................................... 161
-Begin Phase One .................................................................................. 161
-Begin Rollback ..................................................................................... 162
-Begin Commit ...................................................................................... 162
-Local LU Initiated Recovery Obsolete XLN Exchange ................................. 163
-Send Cold XLN ..................................................................................... 164
-Send Warm XLN .................................................................................. 164
-Send Check LU Status .......................................................................... 165
-Remote LU Initiated Recovery Obsolete XLN Exchange ............................. 165
-Recovery Work Ready ........................................................................... 165
-Received New Recovery Sequence Number ............................................. 168
-
-3.3.7.1
-3.3.7.2
-3.3.7.3
-3.3.7.4
-3.3.7.5
-3.3.7.6
-3.3.7.7
-3.3.7.8
-3.3.7.9
-3.3.7.10
-3.3.7.11
-3.3.7.12
-
-3.3.5.5.6
-
-3.3.6
-
-3.3.7
-
-3.3.6.1
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-11 / 199
-
-3.3.7.13  Obsolete All XLN Exchanges .................................................................. 168
-Received New Remote Log Name ........................................................... 169
-3.3.7.14
-Begin Remote LU Initiated Synchronization ............................................. 169
-3.3.7.15
-Begin Local LU Initiated Synchronization ................................................. 169
-3.3.7.16
-Synchronization Successful ................................................................... 170
-3.3.7.17
-Synchronization Inconsistent ................................................................. 170
-3.3.7.18
-Received LU Status .............................................................................. 171
-3.3.7.19
-Local LU Initiated Recovery Worker Ended .............................................. 171
-3.3.7.20
-Synchronization Connection Down .......................................................... 172
-3.3.7.21
-Remote LU Initiated Recovery Ended ...................................................... 172
-3.3.7.22
-Recovery Down .................................................................................... 173
-3.3.7.23
-LUW Conversation Lost ......................................................................... 173
-3.3.7.24
-
-4.2
-
-4.1
-
-4.1.1
-4.1.2
-
-4.2.1
-4.2.2
-
-4  Protocol Examples ............................................................................................... 174
-LU Name Pair Configuration Scenario ................................................................. 174
-Configuring an LU Name Pair ....................................................................... 174
-Deleting an LU Name Pair ........................................................................... 175
-Registering as the Recovery Process for an LU Name Pair Scenario ........................ 177
-Registering the Recovery Process ................................................................ 177
-Unregistering the Recovery Process ............................................................. 179
-Performing Cold Recovery for an LU Name Pair Scenario ...................................... 179
-Performing Cold Recovery ........................................................................... 179
-Enlisting in an OleTx Transaction as an LU 6.2 Implementation Scenario ................ 183
-Enlisting an LUW on an OleTx Transaction .................................................... 183
-Participating in Two Phase Commit .............................................................. 185
-Performing Warm Recovery for an LU Name Pair Scenario .................................... 187
-Performing Warm Recovery ......................................................................... 187
-
-4.4.1
-4.4.2
-
-4.3.1
-
-4.5.1
-
-4.3
-
-4.4
-
-4.5
-
-5  Security ............................................................................................................... 193
-Security Considerations for Implementers .......................................................... 193
-
-5.1
-
-6  Appendix A: Product Behavior ............................................................................. 194
-
-7  Change Tracking .................................................................................................. 196
-
-8  Index ................................................................................................................... 197
-
-[MS-DTCLU] - v20240423
-MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-12 / 199
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Scenarios](#131-scenarios)
+      - [1.3.1.1 Enlistment and Completion](#1311-enlistment-and-completion)
+      - [1.3.1.2 Transaction Recovery](#1312-transaction-recovery)
+    - [1.3.2 Transaction Roles](#132-transaction-roles)
+      - [1.3.2.1 LU 6.2 Implementation Role](#1321-lu-62-implementation-role)
+      - [1.3.2.2 Transaction Manager Role](#1322-transaction-manager-role)
+        - [1.3.2.2.1 Transaction Manager Communicating with an LU 6.2 Implementation Facet](#13221-transaction-manager-communicating-with-an-lu-62-implementation-facet)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Structures](#221-common-structures)
+      - [2.2.1.1 MESSAGE_PACKET](#2211-messagepacket)
+      - [2.2.1.2 DTCLU_VARLEN_BYTEARRAY](#2212-dtcluvarlenbytearray)
+    - [2.2.2 Transaction Enumerations](#222-transaction-enumerations)
+      - [2.2.2.1 DTCLUCOMPARESTATE](#2221-dtclucomparestate)
+      - [2.2.2.2 DTCLUCOMPARESTATESCONFIRMATION](#2222-dtclucomparestatesconfirmation)
+      - [2.2.2.3 DTCLUCOMPARESTATESERROR](#2223-dtclucomparestateserror)
+      - [2.2.2.4 DTCLUXLN](#2224-dtcluxln)
+      - [2.2.2.5 DTCLUXLNCONFIRMATION](#2225-dtcluxlnconfirmation)
+      - [2.2.2.6 DTCLUXLNERROR](#2226-dtcluxlnerror)
+      - [2.2.2.7 DTCLUCOMPARESTATESRESPONSE](#2227-dtclucomparestatesresponse)
+      - [2.2.2.8 DTCLUXLNRESPONSE](#2228-dtcluxlnresponse)
+      - [2.2.2.9 CONNTYPE](#2229-conntype)
+    - [2.2.3 Connection Types Relevant to LU 6.2](#223-connection-types-relevant-to-lu-62)
+      - [2.2.3.1 CONNTYPE_TXUSER_DTCLUCONFIGURE](#2231-conntypetxuserdtcluconfigure)
+        - [2.2.3.1.1 TXUSER_DTCLURMCONFIGURE_MTAG_ADD](#22311-txuserdtclurmconfiguremtagadd)
+        - [2.2.3.1.2 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE](#22312-txuserdtclurmconfiguremtagdelete)
+        - [2.2.3.1.3 TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED](#22313-txuserdtclurmconfiguremtagrequestcompleted)
+        - [2.2.3.1.4 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE](#22314-txuserdtclurmconfiguremtagaddduplicate)
+        - [2.2.3.1.5 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND](#22315-txuserdtclurmconfiguremtagdeletenotfound)
+        - [2.2.3.1.6 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS](#22316-txuserdtclurmconfiguremtagdeleteunrecoveredtrans)
+        - [2.2.3.1.7 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE](#22317-txuserdtclurmconfiguremtagdeleteinuse)
+        - [2.2.3.1.8 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL](#22318-txuserdtclurmconfiguremtagaddlogfull)
+      - [2.2.3.2 CONNTYPE_TXUSER_DTCLURECOVERY](#2232-conntypetxuserdtclurecovery)
+        - [2.2.3.2.1 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH](#22321-txuserdtclurmrecoverymtagattach)
+        - [2.2.3.2.2 TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED](#22322-txuserdtclurmrecoverymtagrequestcompleted)
+        - [2.2.3.2.3 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE](#22323-txuserdtclurmrecoverymtagattachduplicate)
+        - [2.2.3.2.4 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND](#22324-txuserdtclurmrecoverymtagattachnotfound)
+      - [2.2.3.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT](#2233-conntypetxuserdtclurmenlistment)
+        - [2.2.3.3.1 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE](#22331-txuserdtclurmenlistmentmtagcreate)
+        - [2.2.3.3.2 TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED](#22332-txuserdtclurmenlistmentmtagrequestcompleted)
+        - [2.2.3.3.3 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST](#22333-txuserdtclurmenlistmentmtagtodtcconversationlost)
+        - [2.2.3.3.4 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT](#22334-txuserdtclurmenlistmentmtagtodtcbackedout)
+        - [2.2.3.3.5 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT](#22335-txuserdtclurmenlistmentmtagtodtcbackout)
+        - [2.2.3.3.6 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_COMMITTED](#22336-txuserdtclurmenlistmentmtagtodtccommitted)
+        - [2.2.3.3.7 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET](#22337-txuserdtclurmenlistmentmtagtodtcforget)
+        - [2.2.3.3.8 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT](#22338-txuserdtclurmenlistmentmtagtodtcrequestcommit)
+        - [2.2.3.3.9 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT](#22339-txuserdtclurmenlistmentmtagtolubackedout)
+        - [2.2.3.3.10 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT](#223310-txuserdtclurmenlistmentmtagtolubackout)
+        - [2.2.3.3.11 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED](#223311-txuserdtclurmenlistmentmtagtolucommitted)
+        - [2.2.3.3.12 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE](#223312-txuserdtclurmenlistmentmtagtoluprepare)
+        - [2.2.3.3.13 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TX_NOT_FOUND](#223313-txuserdtclurmenlistmentmtagcreatetxnotfound)
+        - [2.2.3.3.14 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_LATE](#223314-txuserdtclurmenlistmentmtagcreatetoolate)
+        - [2.2.3.3.15 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LOG_FULL](#223315-txuserdtclurmenlistmentmtagcreatelogfull)
+        - [2.2.3.3.16 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_MANY](#223316-txuserdtclurmenlistmentmtagcreatetoomany)
+        - [2.2.3.3.17 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NOT_FOUND](#223317-txuserdtclurmenlistmentmtagcreatelunotfound)
+        - [2.2.3.3.18 TXUSER_DTCLURMENLISTMENT_MTAG_UNPLUG](#223318-txuserdtclurmenlistmentmtagunplug)
+        - [2.2.3.3.19 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_DUPLICATE_LU_TRANS](#223319-txuserdtclurmenlistmentmtagcreateduplicatelutrans)
+        - [2.2.3.3.20 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NO_RECOVERY_PR](#223320-txuserdtclurmenlistmentmtagcreatelunorecoverypr)
+        - [2.2.3.3.21 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_DOWN](#223321-txuserdtclurmenlistmentmtagcreateludown)
+        - [2.2.3.3.22 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERING](#223322-txuserdtclurmenlistmentmtagcreatelurecovering)
+        - [2.2.3.3.23 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERY_MISMA](#223323-txuserdtclurmenlistmentmtagcreatelurecoverymisma)
+      - [2.2.3.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC](#2234-conntypetxuserdtclurecoveryinitiatedbydtc)
+        - [2.2.3.4.1 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK](#22341-txuserdtclurecoveryinitiatedbydtcmtaggetwork)
+        - [2.2.3.4.2 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUND](#22342-txuserdtclurecoveryinitiatedbydtcmtaggetworknotfound)
+        - [2.2.3.4.3 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATUS](#22343-txuserdtclurecoveryinitiatedbydtcmtagworkchecklustatus)
+        - [2.2.3.4.4 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS](#22344-txuserdtclurecoveryinitiatedbydtcmtagworktrans)
+        - [2.2.3.4.5 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS](#22345-txuserdtclurecoveryinitiatedbydtcmtaglustatus)
+        - [2.2.3.4.6 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE](#22346-txuserdtclurecoveryinitiatedbydtcmtagrequestcomplete)
+        - [2.2.3.4.7 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM_](#22347-txuserdtclurecoveryinitiatedbydtcmtagconfirmationfrom)
+        - [2.2.3.4.8 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE](#22348-txuserdtclurecoveryinitiatedbydtcmtagtheirxlnresponse)
+        - [2.2.3.4.9 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T](#22349-txuserdtclurecoveryinitiatedbydtcmtagconfirmationfort)
+        - [2.2.3.4.10 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR](#223410-txuserdtclurecoveryinitiatedbydtcmtagerrorfromour)
+        - [2.2.3.4.11 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CHECK_FOR_COMPA](#223411-txuserdtclurecoveryinitiatedbydtcmtagcheckforcompa)
+        - [2.2.3.4.12 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_COMPARESTATES_I](#223412-txuserdtclurecoveryinitiatedbydtcmtagcomparestatesi)
+        - [2.2.3.4.14 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_COMPAREST](#223414-txuserdtclurecoveryinitiatedbydtcmtagtheircomparest)
+        - [2.2.3.4.15 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FO](#223415-txuserdtclurecoveryinitiatedbydtcmtagconfirmationfo)
+        - [2.2.3.4.16 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR](#223416-txuserdtclurecoveryinitiatedbydtcmtagerrorfromour)
+        - [2.2.3.4.17 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONVERSATION_LO](#223417-txuserdtclurecoveryinitiatedbydtcmtagconversationlo)
+        - [2.2.3.4.18 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NEW_RECOVERY_SE](#223418-txuserdtclurecoveryinitiatedbydtcmtagnewrecoveryse)
+      - [2.2.3.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU](#2235-conntypetxuserdtclurecoveryinitiatedbylu)
+        - [2.2.3.5.1 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN](#22351-txuserdtclurecoveryinitiatedbylumtagtheirxln)
+        - [2.2.3.5.2 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_](#22352-txuserdtclurecoveryinitiatedbylumtagresponsefortheir)
+        - [2.2.3.5.3 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR](#22353-txuserdtclurecoveryinitiatedbylumtagconfirmationofour)
+        - [2.2.3.5.4 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES](#22354-txuserdtclurecoveryinitiatedbylumtagtheircomparestates)
+        - [2.2.3.5.5 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_C](#22355-txuserdtclurecoveryinitiatedbylumtagresponsefortheirc)
+        - [2.2.3.5.6 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR](#22356-txuserdtclurecoveryinitiatedbylumtagconfirmationofour)
+        - [2.2.3.5.7 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_ERROR_OF_OUR_COMPA](#22357-txuserdtclurecoveryinitiatedbylumtagerrorofourcompa)
+        - [2.2.3.5.8 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONVERSATION_LOST](#22358-txuserdtclurecoveryinitiatedbylumtagconversationlost)
+        - [2.2.3.5.9 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE](#22359-txuserdtclurecoveryinitiatedbylumtagrequestcomplete)
+        - [2.2.3.5.10 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FO](#223510-txuserdtclurecoveryinitiatedbylumtagtheirxlnnotfo)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Protocol Version Negotiation](#314-protocol-version-negotiation)
+    - [3.1.5 Higher-Layer Triggered Events](#315-higher-layer-triggered-events)
+    - [3.1.6 Message Processing Events and Sequencing Rules](#316-message-processing-events-and-sequencing-rules)
+    - [3.1.7 Timer Events](#317-timer-events)
+    - [3.1.8 Other Local Events](#318-other-local-events)
+  - [3.2 LU 6.2 Implementation Details](#32-lu-62-implementation-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 CONNTYPE_TXUSER_DTCLUCONFIGURE Initiator States](#3211-conntypetxuserdtcluconfigure-initiator-states)
+        - [3.2.1.1.1 Idle](#32111-idle)
+        - [3.2.1.1.2 Awaiting Add Response](#32112-awaiting-add-response)
+        - [3.2.1.1.3 Awaiting Delete Response](#32113-awaiting-delete-response)
+        - [3.2.1.1.4 Ended](#32114-ended)
+      - [3.2.1.2 CONNTYPE_TXUSER_DTCLURECOVERY Initiator States](#3212-conntypetxuserdtclurecovery-initiator-states)
+        - [3.2.1.2.1 Idle](#32121-idle)
+        - [3.2.1.2.2 Awaiting Register Response](#32122-awaiting-register-response)
+        - [3.2.1.2.3 Registered](#32123-registered)
+        - [3.2.1.2.4 Ended](#32124-ended)
+      - [3.2.1.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT Initiator States](#3213-conntypetxuserdtclurmenlistment-initiator-states)
+        - [3.2.1.3.1 Idle](#32131-idle)
+        - [3.2.1.3.2 Awaiting Enlistment Response](#32132-awaiting-enlistment-response)
+        - [3.2.1.3.3 Active](#32133-active)
+        - [3.2.1.3.4 Preparing for Transaction Commit](#32134-preparing-for-transaction-commit)
+        - [3.2.1.3.5 Awaiting Backout Response](#32135-awaiting-backout-response)
+        - [3.2.1.3.6 Awaiting Transaction Outcome](#32136-awaiting-transaction-outcome)
+        - [3.2.1.3.7 Finalizing Abort Operations](#32137-finalizing-abort-operations)
+        - [3.2.1.3.8 Finalizing Commit Operations](#32138-finalizing-commit-operations)
+        - [3.2.1.3.9 Ended](#32139-ended)
+      - [3.2.1.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Initiator States](#3214-conntypetxuserdtclurecoveryinitiatedbydtc-initiator-states)
+        - [3.2.1.4.1 Idle](#32141-idle)
+        - [3.2.1.4.2 Awaiting Response to Work Query](#32142-awaiting-response-to-work-query)
+        - [3.2.1.4.3 Processing Cold XLN Request](#32143-processing-cold-xln-request)
+        - [3.2.1.4.4 Processing Warm XLN Request](#32144-processing-warm-xln-request)
+        - [3.2.1.4.5 Awaiting Response to XLN Confirmation](#32145-awaiting-response-to-xln-confirmation)
+        - [3.2.1.4.6 Awaiting Response to XLN](#32146-awaiting-response-to-xln)
+        - [3.2.1.4.7 Awaiting Response to Compare States Query During Warm XLN](#32147-awaiting-response-to-compare-states-query-during-warm-xln)
+        - [3.2.1.4.8 XLN Exchange Complete](#32148-xln-exchange-complete)
+        - [3.2.1.4.9 Awaiting Response to Compare States Query](#32149-awaiting-response-to-compare-states-query)
+        - [3.2.1.4.10 Processing Compare States Request](#321410-processing-compare-states-request)
+        - [3.2.1.4.11 Awaiting Response to Compare States](#321411-awaiting-response-to-compare-states)
+        - [3.2.1.4.12 Processing LU Status Check](#321412-processing-lu-status-check)
+        - [3.2.1.4.13 Awaiting Request Complete](#321413-awaiting-request-complete)
+        - [3.2.1.4.14 Ended](#321414-ended)
+      - [3.2.1.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Initiator States](#3215-conntypetxuserdtclurecoveryinitiatedbylu-initiator-states)
+        - [3.2.1.5.1 Idle](#32151-idle)
+        - [3.2.1.5.2 Awaiting Response to XLN Request](#32152-awaiting-response-to-xln-request)
+        - [3.2.1.5.3 Processing XLN Confirmation](#32153-processing-xln-confirmation)
+        - [3.2.1.5.4 Awaiting Response to XLN Confirmation](#32154-awaiting-response-to-xln-confirmation)
+        - [3.2.1.5.5 Awaiting Response to XLN Confirmation with Error](#32155-awaiting-response-to-xln-confirmation-with-error)
+        - [3.2.1.5.6 XLN Exchange Complete](#32156-xln-exchange-complete)
+        - [3.2.1.5.7 Awaiting Response to Compare States](#32157-awaiting-response-to-compare-states)
+        - [3.2.1.5.8 Processing Compare States Response](#32158-processing-compare-states-response)
+        - [3.2.1.5.9 Awaiting Request Complete](#32159-awaiting-request-complete)
+        - [3.2.1.5.10 Ended](#321510-ended)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Adding an LU Name Pair](#3241-adding-an-lu-name-pair)
+      - [3.2.4.2 Deleting an LU Name Pair](#3242-deleting-an-lu-name-pair)
+      - [3.2.4.3 Registering Recovery Process For LU Pair](#3243-registering-recovery-process-for-lu-pair)
+      - [3.2.4.4 All Sessions Lost](#3244-all-sessions-lost)
+      - [3.2.4.5 Creating LU 6.2 Subordinate Enlistment](#3245-creating-lu-62-subordinate-enlistment)
+      - [3.2.4.6 Aborting LU 6.2 Subordinate Enlistment](#3246-aborting-lu-62-subordinate-enlistment)
+      - [3.2.4.7 LU 6.2 Subordinate Enlistment Prepare Request Completed](#3247-lu-62-subordinate-enlistment-prepare-request-completed)
+      - [3.2.4.8 LU 6.2 Subordinate Enlistment Conversation Lost](#3248-lu-62-subordinate-enlistment-conversation-lost)
+      - [3.2.4.9 Unplugging LU 6.2 Subordinate Enlistment](#3249-unplugging-lu-62-subordinate-enlistment)
+      - [3.2.4.10 LU 6.2 Subordinate Enlistment Abort Request Completed](#32410-lu-62-subordinate-enlistment-abort-request-completed)
+      - [3.2.4.11 LU 6.2 Subordinate Enlistment Commit Request Completed](#32411-lu-62-subordinate-enlistment-commit-request-completed)
+      - [3.2.4.12 LU 6.2 Subordinate Enlistment Single-Phase Commit Request Completed](#32412-lu-62-subordinate-enlistment-single-phase-commit-request-completed)
+      - [3.2.4.13 Local LU Initiated Recovery Sending Query For Work](#32413-local-lu-initiated-recovery-sending-query-for-work)
+      - [3.2.4.14 Local LU Initiated Recovery Sending New Recovery Sequence Number](#32414-local-lu-initiated-recovery-sending-new-recovery-sequence-number)
+      - [3.2.4.15 Local LU Initiated Recovery Sending XLN Error](#32415-local-lu-initiated-recovery-sending-xln-error)
+      - [3.2.4.16 Local LU Initiated Recovery Sending XLN Response](#32416-local-lu-initiated-recovery-sending-xln-response)
+      - [3.2.4.17 Local LU Initiated Recovery Sending XLN Confirmation](#32417-local-lu-initiated-recovery-sending-xln-confirmation)
+      - [3.2.4.18 Local LU Initiated Recovery Sending Compare States Query](#32418-local-lu-initiated-recovery-sending-compare-states-query)
+      - [3.2.4.19 Local LU Initiated Recovery Sending Compare States](#32419-local-lu-initiated-recovery-sending-compare-states)
+      - [3.2.4.20 Local LU Initiated Recovery Sending Compare States Error](#32420-local-lu-initiated-recovery-sending-compare-states-error)
+      - [3.2.4.21 Local LU Initiated Recovery Sending LU Status](#32421-local-lu-initiated-recovery-sending-lu-status)
+      - [3.2.4.22 Local LU Initiated Recovery Conversation Lost](#32422-local-lu-initiated-recovery-conversation-lost)
+      - [3.2.4.23 Remote LU Initiated Recovery Sending XLN](#32423-remote-lu-initiated-recovery-sending-xln)
+      - [3.2.4.24 Remote LU Initiated Recovery Sending XLN Confirmation](#32424-remote-lu-initiated-recovery-sending-xln-confirmation)
+      - [3.2.4.25 Remote LU Initiated Recovery Sending Compare States](#32425-remote-lu-initiated-recovery-sending-compare-states)
+      - [3.2.4.26 Remote LU Initiated Recovery Sending Compare States Confirmation](#32426-remote-lu-initiated-recovery-sending-compare-states-confirmation)
+      - [3.2.4.27 Remote LU Initiated Recovery Sending Compare States Error](#32427-remote-lu-initiated-recovery-sending-compare-states-error)
+      - [3.2.4.28 Remote LU Initiated Recovery Conversation Lost](#32428-remote-lu-initiated-recovery-conversation-lost)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 CONNTYPE_TXUSER_DTCLUCONFIGURE as Initiator](#3251-conntypetxuserdtcluconfigure-as-initiator)
+        - [3.2.5.1.1 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE](#32511-receiving-a-txuserdtclurmconfiguremtagaddduplicate)
+        - [3.2.5.1.2 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND](#32512-receiving-a-txuserdtclurmconfiguremtagdeletenotfound)
+        - [3.2.5.1.3 Receiving a](#32513-receiving-a)
+        - [3.2.5.1.4 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE Message](#32514-receiving-a-txuserdtclurmconfiguremtagdeleteinuse-message)
+        - [3.2.5.1.5 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED](#32515-receiving-a-txuserdtclurmconfiguremtagrequestcompleted)
+        - [3.2.5.1.6 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL Message](#32516-receiving-a-txuserdtclurmconfiguremtagaddlogfull-message)
+        - [3.2.5.1.7 Connection Disconnected](#32517-connection-disconnected)
+      - [3.2.5.2 CONNTYPE_TXUSER_DTCLURECOVERY as Initiator](#3252-conntypetxuserdtclurecovery-as-initiator)
+        - [3.2.5.2.1 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND](#32521-receiving-a-txuserdtclurmrecoverymtagattachnotfound)
+        - [3.2.5.2.2 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE](#32522-receiving-a-txuserdtclurmrecoverymtagattachduplicate)
+        - [3.2.5.2.3 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED](#32523-receiving-a-txuserdtclurmrecoverymtagrequestcompleted)
+        - [3.2.5.2.4 Connection Disconnected](#32524-connection-disconnected)
+      - [3.2.5.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT as Initiator](#3253-conntypetxuserdtclurmenlistment-as-initiator)
+        - [3.2.5.3.1 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED](#32531-receiving-a-txuserdtclurmenlistmentmtagrequestcompleted)
+        - [3.2.5.3.2 Receiving Other TXUSER_DTCLURMENLISTMENT_MTAG Messages](#32532-receiving-other-txuserdtclurmenlistmentmtag-messages)
+        - [3.2.5.3.3 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE](#32533-receiving-a-txuserdtclurmenlistmentmtagtoluprepare)
+        - [3.2.5.3.4 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT](#32534-receiving-a-txuserdtclurmenlistmentmtagtolubackedout)
+        - [3.2.5.3.5 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT](#32535-receiving-a-txuserdtclurmenlistmentmtagtolubackout)
+        - [3.2.5.3.6 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED](#32536-receiving-a-txuserdtclurmenlistmentmtagtolucommitted)
+        - [3.2.5.3.7 Connection Disconnected](#32537-connection-disconnected)
+      - [3.2.5.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Initiator](#3254-conntypetxuserdtclurecoveryinitiatedbydtc-as-initiator)
+        - [3.2.5.4.1 Receiving a](#32541-receiving-a)
+        - [3.2.5.4.2 Receiving a](#32542-receiving-a)
+        - [3.2.5.4.3 Receiving a](#32543-receiving-a)
+        - [3.2.5.4.4 Receiving a](#32544-receiving-a)
+        - [3.2.5.4.5 Receiving a](#32545-receiving-a)
+        - [3.2.5.4.6 Receiving a](#32546-receiving-a)
+        - [3.2.5.4.7 Receiving a](#32547-receiving-a)
+        - [3.2.5.4.8 Receiving a](#32548-receiving-a)
+        - [3.2.5.4.9 Connection Disconnected](#32549-connection-disconnected)
+      - [3.2.5.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Initiator](#3255-conntypetxuserdtclurecoveryinitiatedbylu-as-initiator)
+        - [3.2.5.5.1 Receiving a](#32551-receiving-a)
+        - [3.2.5.5.2 Receiving a](#32552-receiving-a)
+        - [3.2.5.5.3 Receiving a](#32553-receiving-a)
+        - [3.2.5.5.4 Receiving a](#32554-receiving-a)
+        - [3.2.5.5.5 Connection Disconnected](#32555-connection-disconnected)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 Transaction Manager Communicating with an LU 6.2 Implementation Facet](#33-transaction-manager-communicating-with-an-lu-62-implementation-facet)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Logging](#3311-logging)
+      - [3.3.1.2 CONNTYPE_TXUSER_DTCLUCONFIGURE Acceptor States](#3312-conntypetxuserdtcluconfigure-acceptor-states)
+        - [3.3.1.2.1 Idle](#33121-idle)
+        - [3.3.1.2.2 Processing Add Request](#33122-processing-add-request)
+        - [3.3.1.2.3 Processing Delete Request](#33123-processing-delete-request)
+        - [3.3.1.2.4 Ended](#33124-ended)
+        - [3.3.1.2.5 State Diagram](#33125-state-diagram)
+      - [3.3.1.3 CONNTYPE_TXUSER_DTCLURECOVERY Acceptor States](#3313-conntypetxuserdtclurecovery-acceptor-states)
+        - [3.3.1.3.1 Idle](#33131-idle)
+        - [3.3.1.3.2 Processing Register Request](#33132-processing-register-request)
+        - [3.3.1.3.3 Registered](#33133-registered)
+        - [3.3.1.3.4 Ended](#33134-ended)
+        - [3.3.1.3.5 State Diagram](#33135-state-diagram)
+      - [3.3.1.4 CONNTYPE_TXUSER_DTCLURMENLISTMENT Acceptor States](#3314-conntypetxuserdtclurmenlistment-acceptor-states)
+        - [3.3.1.4.1 Idle](#33141-idle)
+        - [3.3.1.4.2 Processing Enlistment Request](#33142-processing-enlistment-request)
+        - [3.3.1.4.3 Active](#33143-active)
+        - [3.3.1.4.4 Awaiting Prepare Response](#33144-awaiting-prepare-response)
+        - [3.3.1.4.5 Processing Backout Request](#33145-processing-backout-request)
+        - [3.3.1.4.6 Prepared](#33146-prepared)
+        - [3.3.1.4.7 Awaiting Commit Response](#33147-awaiting-commit-response)
+        - [3.3.1.4.8 Awaiting Abort Response](#33148-awaiting-abort-response)
+        - [3.3.1.4.9 Ended](#33149-ended)
+        - [3.3.1.4.10 State Diagram](#331410-state-diagram)
+      - [3.3.1.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Acceptor States](#3315-conntypetxuserdtclurecoveryinitiatedbydtc-acceptor-states)
+        - [3.3.1.5.1 Idle](#33151-idle)
+        - [3.3.1.5.2 Processing Work Query](#33152-processing-work-query)
+        - [3.3.1.5.3 Awaiting Response To Cold XLN](#33153-awaiting-response-to-cold-xln)
+        - [3.3.1.5.4 Processing Response To Cold XLN](#33154-processing-response-to-cold-xln)
+        - [3.3.1.5.5 Awaiting Response To Warm XLN](#33155-awaiting-response-to-warm-xln)
+        - [3.3.1.5.6 Processing Response to Warm XLN](#33156-processing-response-to-warm-xln)
+        - [3.3.1.5.7 Processing Compare State Query During Warm XLN](#33157-processing-compare-state-query-during-warm-xln)
+        - [3.3.1.5.8 Awaiting LU Status Response](#33158-awaiting-lu-status-response)
+        - [3.3.1.5.9 Processing LU Status Response](#33159-processing-lu-status-response)
+        - [3.3.1.5.10 Awaiting Compare States Query](#331510-awaiting-compare-states-query)
+        - [3.3.1.5.11 Processing Compare States Query](#331511-processing-compare-states-query)
+        - [3.3.1.5.12 Awaiting Compare States Response](#331512-awaiting-compare-states-response)
+        - [3.3.1.5.13 Processing Compare States Response](#331513-processing-compare-states-response)
+        - [3.3.1.5.14 Processing Compare States Error](#331514-processing-compare-states-error)
+        - [3.3.1.5.15 Is Obsolete Awaiting Response To Cold XLN](#331515-is-obsolete-awaiting-response-to-cold-xln)
+        - [3.3.1.5.16 Is Obsolete Awaiting Response To Warm XLN](#331516-is-obsolete-awaiting-response-to-warm-xln)
+        - [3.3.1.5.17 Is Obsolete Awaiting LU Status Response](#331517-is-obsolete-awaiting-lu-status-response)
+        - [3.3.1.5.18 Is Obsolete Processing Response](#331518-is-obsolete-processing-response)
+        - [3.3.1.5.19 Is Obsolete Processing Compare State Query During Warm XLN](#331519-is-obsolete-processing-compare-state-query-during-warm-xln)
+        - [3.3.1.5.20 Ended](#331520-ended)
+        - [3.3.1.5.21 State Diagram](#331521-state-diagram)
+      - [3.3.1.6 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Acceptor States](#3316-conntypetxuserdtclurecoveryinitiatedbylu-acceptor-states)
+        - [3.3.1.6.1 Idle](#33161-idle)
+        - [3.3.1.6.2 Processing XLN Request](#33162-processing-xln-request)
+        - [3.3.1.6.3 Awaiting XLN Confirmation](#33163-awaiting-xln-confirmation)
+        - [3.3.1.6.4 Processing XLN Confirmation](#33164-processing-xln-confirmation)
+        - [3.3.1.6.5 Awaiting Compare States Request](#33165-awaiting-compare-states-request)
+        - [3.3.1.6.6 Processing Compare States Request](#33166-processing-compare-states-request)
+        - [3.3.1.6.7 Awaiting Compare States Confirmation](#33167-awaiting-compare-states-confirmation)
+        - [3.3.1.6.8 Processing Compare States Confirmation](#33168-processing-compare-states-confirmation)
+        - [3.3.1.6.9 Is Obsolete Awaiting XLN Confirmation](#33169-is-obsolete-awaiting-xln-confirmation)
+        - [3.3.1.6.10 Ended](#331610-ended)
+        - [3.3.1.6.11 State Diagram](#331611-state-diagram)
+    - [3.3.2 Timers](#332-timers)
+      - [3.3.2.1 LU Status Timer](#3321-lu-status-timer)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Recover](#3341-recover)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 CONNTYPE_TXUSER_DTCLUCONFIGURE as Acceptor](#3351-conntypetxuserdtcluconfigure-as-acceptor)
+        - [3.3.5.1.1 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD Message](#33511-receiving-a-txuserdtclurmconfiguremtagadd-message)
+        - [3.3.5.1.2 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE Message](#33512-receiving-a-txuserdtclurmconfiguremtagdelete-message)
+      - [3.3.5.2 CONNTYPE_TXUSER_DTCLURECOVERY as Acceptor](#3352-conntypetxuserdtclurecovery-as-acceptor)
+        - [3.3.5.2.1 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH Message](#33521-receiving-a-txuserdtclurmrecoverymtagattach-message)
+        - [3.3.5.2.2 Connection Disconnected](#33522-connection-disconnected)
+      - [3.3.5.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT as Acceptor](#3353-conntypetxuserdtclurmenlistment-as-acceptor)
+        - [3.3.5.3.1 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_CREATE Message](#33531-receiving-a-txuserdtclurmenlistmentmtagcreate-message)
+        - [3.3.5.3.2 Receiving a](#33532-receiving-a)
+        - [3.3.5.3.3 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT](#33533-receiving-a-txuserdtclurmenlistmentmtagtodtcbackout)
+        - [3.3.5.3.4 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET](#33534-receiving-a-txuserdtclurmenlistmentmtagtodtcforget)
+        - [3.3.5.3.5 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT](#33535-receiving-a-txuserdtclurmenlistmentmtagtodtcbackedout)
+        - [3.3.5.3.6 Receiving a](#33536-receiving-a)
+        - [3.3.5.3.7 Connection Disconnected](#33537-connection-disconnected)
+      - [3.3.5.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Acceptor](#3354-conntypetxuserdtclurecoveryinitiatedbydtc-as-acceptor)
+        - [3.3.5.4.1 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK](#33541-receiving-a-txuserdtclurecoveryinitiatedbydtcmtaggetwork)
+        - [3.3.5.4.2 Receiving a](#33542-receiving-a)
+        - [3.3.5.4.3 Receiving a](#33543-receiving-a)
+        - [3.3.5.4.4 Receiving a](#33544-receiving-a)
+        - [3.3.5.4.5 Receiving a](#33545-receiving-a)
+        - [3.3.5.4.6 Receiving a](#33546-receiving-a)
+        - [3.3.5.4.7 Receiving a](#33547-receiving-a)
+        - [3.3.5.4.8 Receiving a](#33548-receiving-a)
+        - [3.3.5.4.9 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS](#33549-receiving-a-txuserdtclurecoveryinitiatedbydtcmtaglustatus)
+        - [3.3.5.4.10 Connection Disconnected](#335410-connection-disconnected)
+      - [3.3.5.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Acceptor](#3355-conntypetxuserdtclurecoveryinitiatedbylu-as-acceptor)
+        - [3.3.5.5.1 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN](#33551-receiving-a-txuserdtclurecoveryinitiatedbylumtagtheirxln)
+        - [3.3.5.5.2 Receiving a](#33552-receiving-a)
+        - [3.3.5.5.3 Receiving a](#33553-receiving-a)
+        - [3.3.5.5.4 Receiving a](#33554-receiving-a)
+        - [3.3.5.5.5 Receiving a](#33555-receiving-a)
+        - [3.3.5.5.6 Connection Disconnected](#33556-connection-disconnected)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 LU Status Timer Tick](#3361-lu-status-timer-tick)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+      - [3.3.7.1 Create Subordinate Enlistment Success](#3371-create-subordinate-enlistment-success)
+      - [3.3.7.2 Create Subordinate Enlistment Failure](#3372-create-subordinate-enlistment-failure)
+      - [3.3.7.3 Begin Phase One](#3373-begin-phase-one)
+      - [3.3.7.4 Begin Rollback](#3374-begin-rollback)
+      - [3.3.7.5 Begin Commit](#3375-begin-commit)
+      - [3.3.7.6 Local LU Initiated Recovery Obsolete XLN Exchange](#3376-local-lu-initiated-recovery-obsolete-xln-exchange)
+      - [3.3.7.7 Send Cold XLN](#3377-send-cold-xln)
+      - [3.3.7.8 Send Warm XLN](#3378-send-warm-xln)
+      - [3.3.7.9 Send Check LU Status](#3379-send-check-lu-status)
+      - [3.3.7.10 Remote LU Initiated Recovery Obsolete XLN Exchange](#33710-remote-lu-initiated-recovery-obsolete-xln-exchange)
+      - [3.3.7.11 Recovery Work Ready](#33711-recovery-work-ready)
+      - [3.3.7.12 Received New Recovery Sequence Number](#33712-received-new-recovery-sequence-number)
+      - [3.3.7.13 Obsolete All XLN Exchanges](#33713-obsolete-all-xln-exchanges)
+      - [3.3.7.14 Received New Remote Log Name](#33714-received-new-remote-log-name)
+      - [3.3.7.15 Begin Remote LU Initiated Synchronization](#33715-begin-remote-lu-initiated-synchronization)
+      - [3.3.7.16 Begin Local LU Initiated Synchronization](#33716-begin-local-lu-initiated-synchronization)
+      - [3.3.7.17 Synchronization Successful](#33717-synchronization-successful)
+      - [3.3.7.18 Synchronization Inconsistent](#33718-synchronization-inconsistent)
+      - [3.3.7.19 Received LU Status](#33719-received-lu-status)
+      - [3.3.7.20 Local LU Initiated Recovery Worker Ended](#33720-local-lu-initiated-recovery-worker-ended)
+      - [3.3.7.21 Synchronization Connection Down](#33721-synchronization-connection-down)
+      - [3.3.7.22 Remote LU Initiated Recovery Ended](#33722-remote-lu-initiated-recovery-ended)
+      - [3.3.7.23 Recovery Down](#33723-recovery-down)
+      - [3.3.7.24 LUW Conversation Lost](#33724-luw-conversation-lost)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 LU Name Pair Configuration Scenario](#41-lu-name-pair-configuration-scenario)
+    - [4.1.1 Configuring an LU Name Pair](#411-configuring-an-lu-name-pair)
+    - [4.1.2 Deleting an LU Name Pair](#412-deleting-an-lu-name-pair)
+  - [4.2 Registering as the Recovery Process for an LU Name Pair Scenario](#42-registering-as-the-recovery-process-for-an-lu-name-pair-scenario)
+    - [4.2.1 Registering the Recovery Process](#421-registering-the-recovery-process)
+    - [4.2.2 Unregistering the Recovery Process](#422-unregistering-the-recovery-process)
+  - [4.3 Performing Cold Recovery for an LU Name Pair Scenario](#43-performing-cold-recovery-for-an-lu-name-pair-scenario)
+    - [4.3.1 Performing Cold Recovery](#431-performing-cold-recovery)
+  - [4.4 Enlisting in an OleTx Transaction as an LU 6.2 Implementation Scenario](#44-enlisting-in-an-oletx-transaction-as-an-lu-62-implementation-scenario)
+    - [4.4.1 Enlisting an LUW on an OleTx Transaction](#441-enlisting-an-luw-on-an-oletx-transaction)
+    - [4.4.2 Participating in Two Phase Commit](#442-participating-in-two-phase-commit)
+  - [4.5 Performing Warm Recovery for an LU Name Pair Scenario](#45-performing-warm-recovery-for-an-lu-name-pair-scenario)
+    - [4.5.1 Performing Warm Recovery](#451-performing-warm-recovery)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 The MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
 (DTCLU) provides transaction processing support to implementations of Logical Unit type 6.2 (LU 6.2).
@@ -1637,7 +915,7 @@ that does not use the presumed-abort two-phase-commit variant.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1697,7 +975,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-transaction manager, or between a subordinate transaction manager facet and its
+
+transaction manager, or between a subordinate transaction manager facet and its
 superior transaction manager facet.
 
 Exchange Log Name (XLN): In LU 6.2, Exchange Log Name messages are sent from one LU
@@ -1772,7 +1051,8 @@ Release: April 23, 2024
 
 14 / 199
 
-outcome: One of the three possible results (Commit, Abort, In Doubt) reachable at the end of a
+
+outcome: One of the three possible results (Commit, Abort, In Doubt) reachable at the end of a
 
 life cycle for an atomic transaction.
 
@@ -1848,7 +1128,8 @@ Release: April 23, 2024
 
 15 / 199
 
-transaction identifier: The GUID that uniquely identifies an atomic transaction.
+
+transaction identifier: The GUID that uniquely identifies an atomic transaction.
 
 transaction manager: The party that is responsible for managing and distributing the outcome of
 
@@ -1880,14 +1161,14 @@ work: The set of state changes that are applied to resources inside an atomic tr
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1906,7 +1187,7 @@ Guide", SC27-3669-40, June 2019, https://www-
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
@@ -1917,11 +1198,12 @@ Release: April 23, 2024
 
 16 / 199
 
-<!-- Extracted images from page 17 -->
+
+<!-- Extracted images from page 17 -->
 ![Extracted image 1 from page 17]([MS-DTCLU].images/page017-img01.png)
 <!-- /Extracted images from page 17 -->
 
-1.3  Overview
+### 1.3 Overview
 
 The MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
 (DTCLU) is used between an implementation of Logical Unit type 6.2 (LU 6.2) and a transaction
@@ -1951,7 +1233,7 @@ transaction recovery.
 The distinct transaction roles that are played by participants in these scenarios in addition to
 those described in [MS-DTCO].
 
-1.3.1  Scenarios
+#### 1.3.1 Scenarios
 
 The following diagram shows some of the components involved in typical usage scenarios for the
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension.
@@ -1969,11 +1251,12 @@ Release: April 23, 2024
 
 17 / 199
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-DTCLU].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
-1.3.1.1  Enlistment and Completion
+##### 1.3.1.1 Enlistment and Completion
 
 The following sequence diagram is a schematic of the interactions that take place between a
 transaction program, a local LU, a transaction manager, and a remote LU when a logical unit of
@@ -2005,7 +1288,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The protocol between the transaction program and the local LU is specified in [IBM-LU62Guide].
 
@@ -2021,7 +1305,7 @@ Note also that although the role played by the local LU is broadly similar to a 
 does not correspond exactly with any of the roles specified by [MS-DTCO]. Consequently, this
 document specifies an additional role, LU 6.2 Implementation, in section 1.3.2.1.
 
-1.3.1.2  Transaction Recovery
+##### 1.3.1.2 Transaction Recovery
 
 The atomicity property of a transaction guarantees that all participants in the transaction receive
 the same outcome. To honor this guarantee, transaction managers have to be capable of
@@ -2042,7 +1326,8 @@ Release: April 23, 2024
 
 19 / 199
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-DTCLU].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -2066,7 +1351,7 @@ the role played by Local LU.SPS does not correspond exactly with any of the role
 DTCO]. Consequently, this document specifies an additional role, LU 6.2 Implementation, in section
 1.3.2.1.
 
-1.3.2  Transaction Roles
+#### 1.3.2 Transaction Roles
 
 This protocol specifies an additional role, the LU 6.2 Implementation, and extends the transaction
 manager role as specified in [MS-DTCO]. These roles are described in the following sections.
@@ -2078,7 +1363,8 @@ Release: April 23, 2024
 
 20 / 199
 
-1.3.2.1  LU 6.2 Implementation Role
+
+##### 1.3.2.1 LU 6.2 Implementation Role
 
 The LU 6.2 Implementation role is performed by an implementation of LU 6.2, and is typically
 responsible for performing the following tasks:
@@ -2103,11 +1389,11 @@ Participating in recovery initiated by a transaction manager.
 
 process.
 
-1.3.2.2  Transaction Manager Role
+##### 1.3.2.2 Transaction Manager Role
 
 This document specifies the following facet, in addition to those specified in [MS-DTCO].
 
-1.3.2.2.1 Transaction Manager Communicating with an LU 6.2 Implementation Facet
+###### 1.3.2.2.1 Transaction Manager Communicating with an LU 6.2 Implementation Facet
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet provides the following
 services to an LU 6.2 Implementation:
@@ -2124,7 +1410,7 @@ Phase One and Phase Two notifications inside the Two-Phase Commit Protocol.
 
   Recovery and outcome notification for logical units of work enlisted on a transaction.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol extends the protocol specified in [MS-DTCO]. The following diagram illustrates the
 protocol layering for this protocol.
@@ -2136,20 +1422,21 @@ Release: April 23, 2024
 
 21 / 199
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-DTCLU].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
 Figure 4: Protocol layering for MS-DTCLU
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires that all participating roles possess implementations of the transports protocol
 specified in [MS-CMPO] and the multiplexing protocol specified in [MS-CMP]. This protocol also
 requires that an implementation of the transaction protocol specified in [MS-DTCO] is accessible using
 the protocols specified in [MS-CMPO] and [MS-CMP].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol applies to scenarios where an LU 6.2 implementation (section 3.2) provides support for
 Sync Point Processing, and an implementation of the protocol described in [MS-DTCO] is available.
@@ -2160,7 +1447,7 @@ This protocol requires network topologies where the transports protocol describe
 multiplexing protocol described in [MS-CMP] constitute a viable network transport for establishing
 many short-lived connection exchanges that accomplish specific tasks.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This section specifies the versioning and capability aspects of this protocol.
 
@@ -2169,7 +1456,7 @@ The protocol specified in this document is not version-specific, and its capabil
 This protocol supports Logical Unit type 6.2 (LU 6.2) and requires that the external entities comply
 with LU 6.2 as specified in [IBM-LU62Guide].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
@@ -2180,7 +1467,8 @@ Release: April 23, 2024
 
 22 / 199
 
-1.9  Standards Assignments
+
+### 1.9 Standards Assignments
 
 None.
 
@@ -2191,20 +1479,21 @@ Release: April 23, 2024
 
 23 / 199
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 An implementation of this protocol uses the transport infrastructure provided by the underlying
 implementation of the transaction protocol specified in [MS-DTCO]. Because this protocol uses the
 transport infrastructure provided by the transaction protocol, the set of requirements specified in [MS-
 DTCO] section 2.1 MUST also apply to this protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Structures
+#### 2.2.1 Common Structures
 
-2.2.1.1  MESSAGE_PACKET
+##### 2.2.1.1 MESSAGE_PACKET
 
 The MESSAGE_PACKET structure defines the initial message fields that are contained by all message
 tags (MTAGs) in this protocol, as specified in [MS-CMP] section 2.2.2.
@@ -2263,7 +1552,8 @@ Release: April 23, 2024
 
 24 / 199
 
-dwcbVarLenData (4 bytes): An unsigned integer value that MUST contain the size, in bytes, of the
+
+dwcbVarLenData (4 bytes): An unsigned integer value that MUST contain the size, in bytes, of the
 message buffer that contains the MESSAGE_PACKET structure, minus the size, in bytes, of the
 MESSAGE_PACKET structure itself.
 
@@ -2271,7 +1561,7 @@ dwReserved1 (4 bytes): Reserved. This value MUST be set to an implementation-spe
 
 and MUST be ignored on receipt.
 
-2.2.1.2  DTCLU_VARLEN_BYTEARRAY
+##### 2.2.1.2 DTCLU_VARLEN_BYTEARRAY
 
 The DTCLU_VARLEN_BYTEARRAY structure is used to represent a variable-length byte array.
 
@@ -2300,9 +1590,9 @@ rgbBlob (variable): This field contains the byte array. The number of bytes in t
 
 equal to the value of cbLength. If cbLength is 0, this field MUST NOT be present.
 
-2.2.2  Transaction Enumerations
+#### 2.2.2 Transaction Enumerations
 
-2.2.2.1  DTCLUCOMPARESTATE
+##### 2.2.2.1 DTCLUCOMPARESTATE
 
 The DTCLUCOMPARESTATE enumeration defines the status values for a logical unit of work.
 
@@ -2341,7 +1631,8 @@ Release: April 23, 2024
 
 25 / 199
 
-2.2.2.2  DTCLUCOMPARESTATESCONFIRMATION
+
+##### 2.2.2.2 DTCLUCOMPARESTATESCONFIRMATION
 
 The DTCLUCOMPARESTATESCONFIRMATION enumeration defines the completion status values for
 a comparison of the LUW state between a local LU and a remote LU during recovery.
@@ -2360,7 +1651,7 @@ DTCLUCOMPARESTATESCONFIRMATION_PROTOCOL:  The LUW state supplied by a remote LU
 
 does not match the local LU LUW state held by a transaction manager.
 
-2.2.2.3  DTCLUCOMPARESTATESERROR
+##### 2.2.2.3 DTCLUCOMPARESTATESERROR
 
 The DTCLUCOMPARESTATESERROR enumeration defines the error status values for a comparison
 of the state of an LUW between a local LU and a remote LU during recovery.
@@ -2372,7 +1663,7 @@ of the state of an LUW between a local LU and a remote LU during recovery.
 
 DTCLUCOMPARESTATESERROR_PROTOCOL:  A protocol error occurred.
 
-2.2.2.4  DTCLUXLN
+##### 2.2.2.4 DTCLUXLN
 
 The DTCLUXLN enumeration defines the log status values used in an exchange of state information
 between a remote LU and a local LU.
@@ -2387,7 +1678,7 @@ DTCLUXLN_COLD:  The log status of an LU is Log Status Cold.
 
 DTCLUXLN_WARM:  The log status of an LU is Log Status Warm.
 
-2.2.2.5  DTCLUXLNCONFIRMATION
+##### 2.2.2.5 DTCLUXLNCONFIRMATION
 
 The DTCLUXLNCONFIRMATION enumeration defines the completion status values for an exchange
 of Exchange Log Name (XLN) messages with a remote LU.
@@ -2407,7 +1698,8 @@ Release: April 23, 2024
 
 26 / 199
 
-DTCLUXLNCONFIRMATION_CONFIRM:  No inconsistencies were detected between the remote LU
+
+DTCLUXLNCONFIRMATION_CONFIRM:  No inconsistencies were detected between the remote LU
 
 state and the local LU state held by a transaction manager.
 
@@ -2422,7 +1714,7 @@ transaction manager is Log Status Warm.
 DTCLUXLNCONFIRMATION_OBSOLETE:  The exchange of XLNs has been invalidated, for example,
 because the recovery sequence number has been incremented since the exchange began.
 
-2.2.2.6  DTCLUXLNERROR
+##### 2.2.2.6 DTCLUXLNERROR
 
 The DTCLUXLNERROR enumeration defines the error status values for an exchange of XLN
 messages with a remote LU.
@@ -2448,7 +1740,7 @@ remote LU is Log Status Cold, and the log status of the local LU held by a trans
 Log Status Warm; or the log status of the remote LU supplied by a remote LU is Log Status
 Warm, and the log status of the local LU held by a transaction manager is Log Status Cold.
 
-2.2.2.7  DTCLUCOMPARESTATESRESPONSE
+##### 2.2.2.7 DTCLUCOMPARESTATESRESPONSE
 
 The DTCLUCOMPARESTATESRESPONSE enumeration defines the completion status of an exchange
 of LUW state information between a local LU and a remote LU during recovery.
@@ -2474,7 +1766,8 @@ Release: April 23, 2024
 
 27 / 199
 
-2.2.2.8  DTCLUXLNRESPONSE
+
+##### 2.2.2.8 DTCLUXLNRESPONSE
 
 The DTCLUXLNRESPONSE enumeration defines the completion status of an exchange of XLN
 messages with a remote LU.
@@ -2506,7 +1799,7 @@ DTCLUXLNRESPONSE_COLDWARMMISMATCH:  The remote LU's log status supplied by the
 remote LU is Log Status Cold, and the local LU's log status held by the transaction manager is
 Log Status Warm.
 
-2.2.2.9  CONNTYPE
+##### 2.2.2.9 CONNTYPE
 
 The CONNTYPE enumeration defines the connection types that are used by this protocol.
 
@@ -2545,9 +1838,10 @@ Release: April 23, 2024
 
 28 / 199
 
-2.2.3  Connection Types Relevant to LU 6.2
 
-2.2.3.1  CONNTYPE_TXUSER_DTCLUCONFIGURE
+#### 2.2.3 Connection Types Relevant to LU 6.2
+
+##### 2.2.3.1 CONNTYPE_TXUSER_DTCLUCONFIGURE
 
 The CONNTYPE_TXUSER_DTCLUCONFIGURE connection type is used to manage a set of LU
 Name Pairs held by a transaction manager.
@@ -2555,7 +1849,7 @@ Name Pairs held by a transaction manager.
 The use of CONNTYPE_TXUSER_DTCLUCONFIGURE as an initiator is specified in section 3.2.5.1,
 and as an acceptor is specified in section 3.3.5.1.
 
-2.2.3.1.1 TXUSER_DTCLURMCONFIGURE_MTAG_ADD
+###### 2.2.3.1.1 TXUSER_DTCLURMCONFIGURE_MTAG_ADD
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_ADD message is sent by an LU 6.2 implementation
 (section 3.2) to request the addition of an LU Name Pair to the set of LU Name Pairs held by a
@@ -2596,7 +1890,7 @@ LuNamePair (variable): This field MUST contain a DTCLU_VARLEN_BYTEARRAY structur
 identifies an LU Name Pair. If cbLength is not a multiple of 4, the end of the field MUST be
 aligned on a 4-byte boundary by padding with arbitrary values that MUST be ignored on receipt.
 
-2.2.3.1.2 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE
+###### 2.2.3.1.2 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_DELETE message is sent by an LU 6.2 implementation
 (section 3.2) to request the deletion of an LU Name Pair from the set of LU Name Pairs held by a
@@ -2626,7 +1920,8 @@ Release: April 23, 2024
 
 29 / 199
 
-LuNamePair (variable)
+
+LuNamePair (variable)
 
 ...
 
@@ -2644,7 +1939,7 @@ LuNamePair (variable): This field MUST contain a DTCLU_VARLEN_BYTEARRAY structur
 identifies an LU Name Pair. If cbLength is not a multiple of 4, the end of the field MUST be
 aligned on a 4-byte boundary by padding with arbitrary values that MUST be ignored on receipt.
 
-2.2.3.1.3 TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED
+###### 2.2.3.1.3 TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED message is sent by a transaction
 manager to indicate that an LU Name Pair has been successfully added to or removed from a set of
@@ -2677,7 +1972,7 @@ The value of the dwUserMsgType field MUST be 0x00004203.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.1.4 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE
+###### 2.2.3.1.4 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE message is sent by a transaction
 manager to indicate that an LU Name Pair is already a member of the set of LU Name Pairs held by
@@ -2717,7 +2012,8 @@ Release: April 23, 2024
 
 30 / 199
 
-2.2.3.1.5 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND
+
+###### 2.2.3.1.5 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND message is sent by a transaction
 manager to indicate that an LU Name Pair is not a member of the set of LU Name Pairs held by a
@@ -2750,7 +2046,7 @@ The value of the dwUserMsgType field MUST be 0x00004205.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.1.6 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS
+###### 2.2.3.1.6 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS message is sent by a
 transaction manager to indicate that an LU Name Pair cannot be removed from the set of LU
@@ -2784,7 +2080,7 @@ The value of the dwUserMsgType field MUST be 0x00004206.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.1.7 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE
+###### 2.2.3.1.7 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE message is sent by a transaction
 manager to indicate that an LU Name Pair cannot be removed from the set of LU Name Pairs
@@ -2812,7 +2108,8 @@ Release: April 23, 2024
 
 31 / 199
 
-...
+
+...
 
 MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
@@ -2824,7 +2121,7 @@ The value of the dwUserMsgType field MUST be 0x00004207.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.1.8 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL
+###### 2.2.3.1.8 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL
 
 The TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL message SHOULD<2> be sent by a
 transaction manager to indicate that the LU Name Pair cannot be added to the set of LU Name
@@ -2858,7 +2155,7 @@ The value of the dwUserMsgType field MUST be 0x00004208.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.2  CONNTYPE_TXUSER_DTCLURECOVERY
+##### 2.2.3.2 CONNTYPE_TXUSER_DTCLURECOVERY
 
 The CONNTYPE_TXUSER_DTCLURECOVERY connection type is used by an LU 6.2
 Implementation to register as a recovery process with a transaction manager.
@@ -2866,7 +2163,7 @@ Implementation to register as a recovery process with a transaction manager.
 The use of CONNTYPE_TXUSER_DTCLURECOVERY as an initiator is specified in section 3.2.5.2,
 and as an acceptor in section 3.3.5.2.
 
-2.2.3.2.1 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH
+###### 2.2.3.2.1 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH
 
 The TXUSER_DTCLURMRECOVERY_MTAG_ATTACH message is sent by an LU 6.2 implementation
 (section 3.2) to register as a recovery process for logical units of work that involve the logical
@@ -2898,7 +2195,8 @@ Release: April 23, 2024
 
 32 / 199
 
-...
+
+...
 
 MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
@@ -2916,7 +2214,7 @@ identifies an LU Name Pair. If the value of cbLength is not a multiple of 4, the
 MUST be aligned on a 4-byte boundary by padding with arbitrary values that MUST be ignored on
 receipt.
 
-2.2.3.2.2 TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED
+###### 2.2.3.2.2 TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED
 
 The TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED message is sent by a transaction
 manager to indicate that a request by an LU 6.2 implementation (section 3.2) to register as a
@@ -2950,7 +2248,7 @@ The value of the dwUserMsgType field MUST be 0x00004303.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.2.3 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE
+###### 2.2.3.2.3 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE
 
 The TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE message is sent by a transaction
 manager to indicate that the requested recovery process is already registered for logical units of
@@ -2987,11 +2285,12 @@ Release: April 23, 2024
 
 33 / 199
 
-
+
+
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.2.4 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND
+###### 2.2.3.2.4 TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND
 
 The TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND message is sent by a transaction
 manager to indicate that the LU Name Pair specified by the request is not a member of the set of
@@ -3024,7 +2323,7 @@ The value of the dwUserMsgType field MUST be 0x00004305.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3  CONNTYPE_TXUSER_DTCLURMENLISTMENT
+##### 2.2.3.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT
 
 The CONNTYPE_TXUSER_DTCLURMENLISTMENT connection type is used by an LU 6.2
 implementation (section 3.2) to establish a subordinate enlistment with a transaction manager.
@@ -3032,7 +2331,7 @@ implementation (section 3.2) to establish a subordinate enlistment with a transa
 The use of CONNTYPE_TXUSER_DTCLURMENLISTMENT as an initiator is specified in section
 3.2.5.3, and as an acceptor in section 3.3.5.3.
 
-2.2.3.3.1 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE
+###### 2.2.3.3.1 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE message is sent by an LU 6.2 implementation
 (section 3.2) to request the creation of an LU 6.2 subordinate enlistment on a transaction managed
@@ -3070,7 +2369,8 @@ Release: April 23, 2024
 
 34 / 199
 
-...
+
+...
 
 LuTransId (variable)
 
@@ -3101,7 +2401,7 @@ LuTransId (variable): This field MUST contain a DTCLU_VARLEN_BYTEARRAY structure
 the LUW ID. If the value of cbLength is not a multiple of 4, the end of the field MUST be aligned
 on a 4-byte boundary by padding with arbitrary values that MUST be ignored on receipt.
 
-2.2.3.3.2 TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED
+###### 2.2.3.3.2 TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED message is sent by a transaction
 manager to indicate that a request to create an LU 6.2 subordinate enlistment on a transaction
@@ -3134,7 +2434,7 @@ The value of the dwUserMsgType field MUST be 0x00004102.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.3 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST
+###### 2.2.3.3.3 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message is sent by an LU
 6.2 implementation (section 3.2) to indicate that the conversation with a remote LU was lost.
@@ -3159,7 +2459,8 @@ Release: April 23, 2024
 
 35 / 199
 
-...
+
+...
 
 ...
 
@@ -3173,7 +2474,7 @@ The value of the dwUserMsgType field MUST be 0x00004103.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.4 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT
+###### 2.2.3.3.4 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT message is sent by an LU 6.2
 implementation (section 3.2) to acknowledge that the LU 6.2 implementation has successfully
@@ -3207,7 +2508,7 @@ The value of the dwUserMsgType field MUST be 0x00004104.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.5 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT
+###### 2.2.3.3.5 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT message is sent by an LU 6.2
 implementation to request a transaction manager to abort a logical unit of work.
@@ -3239,7 +2540,7 @@ The value of the dwUserMsgType field MUST be 0x00004105.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.6 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_COMMITTED
+###### 2.2.3.3.6 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_COMMITTED
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -3248,7 +2549,8 @@ Release: April 23, 2024
 
 36 / 199
 
-The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_COMMITTED message is sent by an LU 6.2
+
+The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_COMMITTED message is sent by an LU 6.2
 implementation to a transaction manager to indicate that it has successfully committed a logical
 unit of work.
 
@@ -3279,7 +2581,7 @@ The value of the dwUserMsgType field MUST be 0x00004106.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.7 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET
+###### 2.2.3.3.7 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET message is sent by an LU 6.2
 implementation (section 3.2) to a transaction manager to indicate that it has successfully
@@ -3312,7 +2614,7 @@ The value of the dwUserMsgType field MUST be 0x00004107.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.8 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT
+###### 2.2.3.3.8 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT message is sent by an LU 6.2
 implementation (section 3.2) to indicate that it has successfully processed a request to carry out the
@@ -3342,7 +2644,8 @@ Release: April 23, 2024
 
 37 / 199
 
-MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
+
+MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
 
 
@@ -3352,7 +2655,7 @@ The value of the dwUserMsgType field MUST be 0x00004108.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.9 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT
+###### 2.2.3.3.9 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT message is sent by a transaction
 manager to acknowledge that it has successfully processed a request to abort a logical unit of
@@ -3385,9 +2688,9 @@ The value of the dwUserMsgType field MUST be 0x00004109.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.10
+###### 2.2.3.3.10 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT
 
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT message is sent by a transaction
 manager to inform the LU 6.2 implementation (section 3.2) that a logical unit of work has
@@ -3420,9 +2723,9 @@ The value of the dwUserMsgType field MUST be 0x00004110.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.11
+###### 2.2.3.3.11 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED
 
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED message is sent by a transaction
 manager to indicate that a logical unit of work was successfully committed.
@@ -3434,7 +2737,8 @@ Release: April 23, 2024
 
 38 / 199
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3461,9 +2765,9 @@ The value of the dwUserMsgType field MUST be 0x00004111.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.12
+###### 2.2.3.3.12 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE
 
-TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE message is sent by a transaction
 manager to request that the LU 6.2 implementation (section 3.2) perform the actions that are
@@ -3496,9 +2800,9 @@ The value of the dwUserMsgType field MUST be 0x00004113.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.13
+###### 2.2.3.3.13 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TX_NOT_FOUND
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TX_NOT_FOUND
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TX_NOT_FOUND message is sent by a
 transaction manager to indicate that a request to create an LU 6.2 subordinate enlistment failed
@@ -3535,13 +2839,14 @@ Release: April 23, 2024
 
 39 / 199
 
-
+
+
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.14
+###### 2.2.3.3.14 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_LATE
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_LATE
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_LATE message is sent by a transaction
 manager to indicate that a request to create an LU 6.2 subordinate enlistment failed because it is
@@ -3574,9 +2879,9 @@ The value of the dwUserMsgType field MUST be 0x00004117.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.15
+###### 2.2.3.3.15 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LOG_FULL
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LOG_FULL
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LOG_FULL message is sent by a transaction
 manager to indicate that a request to create an LU 6.2 subordinate enlistment failed because
@@ -3610,9 +2915,9 @@ The value of the dwUserMsgType field MUST be 0x00004118.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.16
+###### 2.2.3.3.16 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_MANY
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_MANY
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_TOO_MANY message is sent by a transaction
 manager to indicate that a request to create an LU 6.2 subordinate enlistment failed because the
@@ -3626,7 +2931,8 @@ Release: April 23, 2024
 
 40 / 199
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3653,9 +2959,9 @@ The value of the dwUserMsgType field MUST be 0x00004119.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.17
+###### 2.2.3.3.17 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NOT_FOUND
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NOT_FOUND
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NOT_FOUND message is sent by a
 transaction manager to indicate that a request to create an LU 6.2 subordinate enlistment failed
@@ -3689,9 +2995,9 @@ The value of the dwUserMsgType field MUST be 0x00004120.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.18
+###### 2.2.3.3.18 TXUSER_DTCLURMENLISTMENT_MTAG_UNPLUG
 
-TXUSER_DTCLURMENLISTMENT_MTAG_UNPLUG
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_UNPLUG message is sent by an LU 6.2 implementation
 (section 3.2) to a transaction manager to unplug itself from a subordinate enlistment.
@@ -3726,13 +3032,14 @@ Release: April 23, 2024
 
 41 / 199
 
-
+
+
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.19
+###### 2.2.3.3.19 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_DUPLICATE_LU_TRANS
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_DUPLICATE_LU_TRANS
+
 
 ID
 
@@ -3768,9 +3075,9 @@ The value of the dwUserMsgType field MUST be 0x00004123.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.20
+###### 2.2.3.3.20 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NO_RECOVERY_PR
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_NO_RECOVERY_PR
+
 
 OCESS
 
@@ -3806,9 +3113,9 @@ The value of the dwUserMsgType field MUST be 0x00004124.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.21
+###### 2.2.3.3.21 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_DOWN
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_DOWN
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_DOWN message is sent by a transaction
 manager to indicate that a request to create an LU 6.2 subordinate enlistment failed because the
@@ -3822,7 +3129,8 @@ Release: April 23, 2024
 
 42 / 199
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -3849,9 +3157,9 @@ The value of the dwUserMsgType field MUST be 0x00004125.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.22
+###### 2.2.3.3.22 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERING
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERING
+
 
 The TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERING message is sent by a
 transaction manager to indicate that a request to create an LU 6.2 subordinate enlistment failed
@@ -3885,9 +3193,9 @@ The value of the dwUserMsgType field MUST be 0x00004126.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.3.23
+###### 2.2.3.3.23 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERY_MISMA
 
-TXUSER_DTCLURMENLISTMENT_MTAG_CREATE_LU_RECOVERY_MISMA
+
 
 TCH
 
@@ -3922,7 +3230,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -3930,7 +3239,7 @@ The value of the dwUserMsgType field MUST be 0x00004127.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.4  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC
+##### 2.2.3.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC
 
 The CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC connection type is used to
 request LU 6.2 recovery work from the transaction manager.
@@ -3938,7 +3247,7 @@ request LU 6.2 recovery work from the transaction manager.
 The use of CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as an initiator is specified in
 section 3.2.5.4, and as an acceptor in section 3.3.5.4.
 
-2.2.3.4.1 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
+###### 2.2.3.4.1 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
 
 The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK message is sent by an LU 6.2
 implementation to query for LU 6.2 recovery work for a pair of logical units identified by an LU
@@ -3981,7 +3290,7 @@ identifies an LU Name Pair. If the value of cbLength is not a multiple of 4, the
 MUST be aligned on a 4-byte boundary by padding with arbitrary values that MUST be ignored on
 receipt.
 
-2.2.3.4.2 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUND
+###### 2.2.3.4.2 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUND
 
 The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUND message is sent by a
 transaction manager to indicate that a query for LU 6.2 recovery work failed because the LU
@@ -4010,7 +3319,8 @@ Release: April 23, 2024
 
 44 / 199
 
-...
+
+...
 
 MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
@@ -4022,7 +3332,7 @@ The value of the dwUserMsgType field MUST be 0x00004402.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.4.3 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATUS
+###### 2.2.3.4.3 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATUS
 
 The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATUS message is sent by
 a transaction manager to request a status check of the sessions between a pair of logical units
@@ -4056,7 +3366,7 @@ The value of the dwUserMsgType field MUST be 0x00004403.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.4.4 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS
+###### 2.2.3.4.4 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS
 
 The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS message is sent by a
 transaction manager to initiate recovery for a pair of logical units identified by the LU Name Pair
@@ -4094,7 +3404,8 @@ Release: April 23, 2024
 
 45 / 199
 
-...
+
+...
 
 RemoteLogName (variable)
 
@@ -4132,7 +3443,7 @@ which either has the cbLength field set to 0, or contains the remote log name su
 remote LU. If cbLength is not a multiple of 4, the end of the field MUST be aligned on a 4-byte
 boundary by padding with arbitrary values that MUST be ignored on receipt.
 
-2.2.3.4.5 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS
+###### 2.2.3.4.5 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS
 
 The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS message is sent by an LU 6.2
 implementation (section 3.2) to provide the recovery sequence number held by an LU 6.2
@@ -4179,10 +3490,11 @@ Release: April 23, 2024
 
 46 / 199
 
-Pair specified by a previous TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
+
+Pair specified by a previous TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
 message.
 
-2.2.3.4.6 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE
+###### 2.2.3.4.6 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE
 
 The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE message is sent by a
 transaction manager to indicate that a request initiated by an LU 6.2 implementation (section 3.2)
@@ -4215,7 +3527,7 @@ The value of the dwUserMsgType field MUST be 0x00004408.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.4.7 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM_
+###### 2.2.3.4.7 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM_
 
 OUR_XLN
 
@@ -4257,7 +3569,7 @@ XlnConfirmation (4 bytes): This field MUST contain the completion status of an e
 messages with a remote LU. The value MUST be one defined by the DTCLUXLNCONFIRMATION
 enumeration.
 
-2.2.3.4.8 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE
+###### 2.2.3.4.8 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -4266,7 +3578,8 @@ Release: April 23, 2024
 
 47 / 199
 
-The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE message is sent by
+
+The TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE message is sent by
 an LU 6.2 implementation (section 3.2) to report the contents of an XLN response sent by a remote
 LU.
 
@@ -4317,7 +3630,7 @@ contains the remote log name supplied by a remote LU. If the value of cbLength i
 multiple of 4, the end of the field MUST be aligned on a 4-byte boundary by padding with arbitrary
 values that MUST be ignored on receipt.
 
-2.2.3.4.9 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
+###### 2.2.3.4.9 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
 
 HEIR_XLN
 
@@ -4351,7 +3664,8 @@ Release: April 23, 2024
 
 48 / 199
 
-MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
+
+MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
 
 
@@ -4366,9 +3680,9 @@ XlnConfirmation (4 bytes): This field MUST contain the completion status of an e
 messages with a remote LU. The value MUST be one defined by the DTCLUXLNCONFIRMATION
 enumeration.
 
-2.2.3.4.10
+###### 2.2.3.4.10 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR
+
 
 _XLN
 
@@ -4409,9 +3723,9 @@ XlnError (4 bytes): This field MUST contain the error status resulting from an e
 messages with a remote LU. The value MUST be one defined by the DTCLUXLNERROR
 enumeration.
 
-2.2.3.4.11
+###### 2.2.3.4.11 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CHECK_FOR_COMPA
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CHECK_FOR_COMPA
+
 
 RESTATES
 
@@ -4445,7 +3759,8 @@ Release: April 23, 2024
 
 49 / 199
 
-
+
+
 
 
 
@@ -4453,9 +3768,9 @@ The value of the dwUserMsgType field MUST be 0x00004413.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.4.12
+###### 2.2.3.4.12 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_COMPARESTATES_I
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_COMPARESTATES_I
+
 
 NFO
 
@@ -4537,7 +3852,8 @@ Release: April 23, 2024
 
 50 / 199
 
-MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
+
+MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
 
 
@@ -4547,9 +3863,9 @@ The value of the dwUserMsgType field MUST be 0x00004415.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.4.14
+###### 2.2.3.4.14 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_COMPAREST
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_COMPAREST
+
 
 ATES
 
@@ -4590,9 +3906,9 @@ CompareStates (4 bytes): This field MUST contain the status of a logical unit of
 
 MUST be one defined by the DTCLUCOMPARESTATE enumeration.
 
-2.2.3.4.15
+###### 2.2.3.4.15 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FO
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FO
+
 
 R_THEIR_COMPARESTATES
 
@@ -4633,7 +3949,8 @@ Release: April 23, 2024
 
 51 / 199
 
-
+
+
 
 The value of the dwcbVarLenData field MUST be 4.
 
@@ -4642,9 +3959,9 @@ CompareStatesConfirmation (4 bytes): This field MUST contain the completion stat
 exchange of LUW state information between a local LU and a remote LU during recovery. The
 value MUST be one defined by the DTCLUCOMPARESTATESCONFIRMATION enumeration.
 
-2.2.3.4.16
+###### 2.2.3.4.16 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR
+
 
 _COMPARESTATES
 
@@ -4686,9 +4003,9 @@ CompareStatesError (4 bytes): This field MUST contain the error status for an ex
 state information between a local LU and a remote LU during recovery. The value MUST be one
 defined by the DTCLUCOMPARESTATESERROR enumeration.
 
-2.2.3.4.17
+###### 2.2.3.4.17 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONVERSATION_LO
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONVERSATION_LO
+
 
 ST
 
@@ -4729,9 +4046,10 @@ Release: April 23, 2024
 
 52 / 199
 
-2.2.3.4.18
 
-TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NEW_RECOVERY_SE
+###### 2.2.3.4.18 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NEW_RECOVERY_SE
+
+
 
 Q_NUM
 
@@ -4773,7 +4091,7 @@ sequence number held by an LU 6.2 implementation for a pair of logical units ide
 LU Name Pair specified in a previous
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK message.
 
-2.2.3.5  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU
+##### 2.2.3.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU
 
 The CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU connection type is used for LU 6.2
 recovery work initiated by an LU 6.2 implementation (section 3.2).
@@ -4781,7 +4099,7 @@ recovery work initiated by an LU 6.2 implementation (section 3.2).
 The use of CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as an initiator is specified in
 section 3.2.5.5, and as an acceptor in section 3.3.5.5.
 
-2.2.3.5.1 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN
+###### 2.2.3.5.1 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN
 
 The TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN message is sent by an LU 6.2
 implementation (section 3.2) to initiate recovery work for a pair of LUs identified by the LU Name
@@ -4815,7 +4133,8 @@ Release: April 23, 2024
 
 53 / 199
 
-dwProtocol
+
+dwProtocol
 
 RemoteLogName (variable)
 
@@ -4868,7 +4187,7 @@ identifies an LU Name Pair. If the value of cbLength is not a multiple of 4, the
 MUST be aligned on a 4-byte boundary by padding with arbitrary values that MUST be ignored on
 receipt.
 
-2.2.3.5.2 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
+###### 2.2.3.5.2 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
 
 XLN
 
@@ -4895,7 +4214,8 @@ Release: April 23, 2024
 
 54 / 199
 
-...
+
+...
 
 ...
 
@@ -4935,7 +4255,7 @@ contains the local log name held by a transaction manager. If the value of cbLen
 multiple of 4, the end of the field MUST be aligned on a 4-byte boundary by padding with arbitrary
 values that MUST be ignored on receipt.
 
-2.2.3.5.3 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
+###### 2.2.3.5.3 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
 
 _XLN
 
@@ -4975,7 +4295,8 @@ Release: April 23, 2024
 
 55 / 199
 
-
+
+
 
 The value of the dwcbVarLenData field MUST be 4.
 
@@ -4984,7 +4305,7 @@ XlnConfirmation (4 bytes): This field MUST contain the completion status for an 
 messages with a remote LU. The value MUST be one defined by the DTCLUXLNCONFIRMATION
 enumeration.
 
-2.2.3.5.4 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES
+###### 2.2.3.5.4 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES
 
 The TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES message is sent by an
 LU 6.2 implementation (section 3.2) to report the state information received from a remote LU for
@@ -5032,7 +4353,7 @@ LuTransId (variable): This field MUST contain a DTCLU_VARLEN_BYTEARRAY structure
 the LUW ID. If the value of cbLength is not a multiple of 4, the end of the field MUST be aligned
 on a 4-byte boundary by padding with arbitrary values that MUST be ignored on receipt.
 
-2.2.3.5.5 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_C
+###### 2.2.3.5.5 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_C
 
 OMPARESTATES
 
@@ -5064,7 +4385,8 @@ Release: April 23, 2024
 
 56 / 199
 
-CompareStatesResponse
+
+CompareStatesResponse
 
 CompareStates
 
@@ -5086,7 +4408,7 @@ DTCLUCOMPARESTATESRESPONSE enumeration.
 CompareStates (4 bytes): This field MUST contain the status of an LUW held by a transaction
 manager. The value MUST be one defined by the DTCLUCOMPARESTATE enumeration.
 
-2.2.3.5.6 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
+###### 2.2.3.5.6 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
 
 _COMPARESTATES
 
@@ -5128,7 +4450,7 @@ CompareStatesConfirmation (4 bytes): This field MUST contain the completion stat
 exchange of LUW state information between a local LU and a remote LU during recovery. The
 value MUST be one defined by the DTCLUCOMPARESTATESCONFIRMATION enumeration.
 
-2.2.3.5.7 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_ERROR_OF_OUR_COMPA
+###### 2.2.3.5.7 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_ERROR_OF_OUR_COMPA
 
 RESTATES
 
@@ -5143,7 +4465,8 @@ Release: April 23, 2024
 
 57 / 199
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5177,7 +4500,7 @@ CompareStatesError (4 bytes): This field MUST contain the error status for an ex
 state information between a local LU and a remote LU during recovery. The value MUST be one
 defined by the DTCLUCOMPARESTATESERROR enumeration.
 
-2.2.3.5.8 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONVERSATION_LOST
+###### 2.2.3.5.8 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONVERSATION_LOST
 
 The TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONVERSATION_LOST message is sent by an
 LU 6.2 implementation (section 3.2) to report that the conversation with a remote LU was lost.
@@ -5209,7 +4532,7 @@ The value of the dwUserMsgType field MUST be 0x00004508.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.5.9 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE
+###### 2.2.3.5.9 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE
 
 The TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE message is sent by a
 transaction manager to indicate that a request initiated by an LU 6.2 implementation (section 3.2)
@@ -5237,7 +4560,8 @@ Release: April 23, 2024
 
 58 / 199
 
-...
+
+...
 
 MsgHeader (24 bytes): This field MUST contain a MESSAGE_PACKET structure.
 
@@ -5249,9 +4573,9 @@ The value of the dwUserMsgType field MUST be 0x00004509.
 
 The value of the dwcbVarLenData field MUST be 0.
 
-2.2.3.5.10
+###### 2.2.3.5.10 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FO
 
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FO
+
 
 UND
 
@@ -5294,14 +4618,15 @@ Release: April 23, 2024
 
 59 / 199
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 This section defines common details for the transaction participants, as specified in sections 3.2
 and 3.3. Each participant MUST conform to the details as specified in this section.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5339,15 +4664,15 @@ connection type inside the same, or different, MSDTC Connection Manager: OleTx T
 multiple instances of a single connection of the same type. A participant MUST also support initiating
 multiple concurrent sessions to several different endpoints.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 As specified in [MS-DTCO] section 3.1.3.
 
-3.1.4  Protocol Version Negotiation
+#### 3.1.4 Protocol Version Negotiation
 
 As specified in [MS-DTCO] section 3.1.4.
 
@@ -5358,25 +4683,26 @@ Release: April 23, 2024
 
 60 / 199
 
-3.1.5  Higher-Layer Triggered Events
+
+#### 3.1.5 Higher-Layer Triggered Events
 
 None.
 
-3.1.6  Message Processing Events and Sequencing Rules
+#### 3.1.6 Message Processing Events and Sequencing Rules
 
 As specified in [MS-DTCO] section 3.1.6.
 
-3.1.7  Timer Events
+#### 3.1.7 Timer Events
 
 None.
 
-3.1.8  Other Local Events
+#### 3.1.8 Other Local Events
 
 As specified in [MS-DTCO] section 3.1.8.
 
-3.2  LU 6.2 Implementation Details
+### 3.2 LU 6.2 Implementation Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -5434,7 +4760,8 @@ Release: April 23, 2024
 
 61 / 199
 
-  LU Pair: Specifies a reference to the LU Pair object that is associated with the connection.
+
+  LU Pair: Specifies a reference to the LU Pair object that is associated with the connection.
 
   LUW To Recover: Specifies a reference to the LUW object that is associated with the
 
@@ -5452,7 +4779,7 @@ protocol. This flag is used to disable or enable all functionality of this proto
 The LU Transactions Enabled flag is initialized based on the value of the Allow LUTransactions
 flag in the transaction manager, as specified in section 3.2.3.
 
-3.2.1.1  CONNTYPE_TXUSER_DTCLUCONFIGURE Initiator States
+##### 3.2.1.1 CONNTYPE_TXUSER_DTCLUCONFIGURE Initiator States
 
 The LU 6.2 implementation (section 3.2) MUST act as an initiator for the
 CONNTYPE_TXUSER_DTCLUCONFIGURE connection type. In this role, an LU 6.2 implementation MUST
@@ -5480,13 +4807,14 @@ Release: April 23, 2024
 
 62 / 199
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-DTCLU].images/page063-img01.png)
 <!-- /Extracted images from page 63 -->
 
 Figure 5: CONNTYPE_TXUSER_DTCLUCONFIGURE initiator states
 
-3.2.1.1.1 Idle
+###### 3.2.1.1.1 Idle
 
 Idle is the initial state. The following events are processed in this state:
 
@@ -5494,7 +4822,7 @@ Idle is the initial state. The following events are processed in this state:
 
   Deleting an LU Name Pair
 
-3.2.1.1.2 Awaiting Add Response
+###### 3.2.1.1.2 Awaiting Add Response
 
 The following events are processed in the Awaiting Add Response state:
 
@@ -5506,7 +4834,7 @@ The following events are processed in the Awaiting Add Response state:
 
   Connection Disconnected (section 3.2.5.1.7)
 
-3.2.1.1.3 Awaiting Delete Response
+###### 3.2.1.1.3 Awaiting Delete Response
 
 The following events are processed in the Awaiting Delete Response state:
 
@@ -5517,7 +4845,8 @@ Release: April 23, 2024
 
 63 / 199
 
-  Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND message
+
+  Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND message
 
   Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS message
 
@@ -5527,11 +4856,11 @@ Release: April 23, 2024
 
   Connection Disconnected (section 3.2.5.1.7)
 
-3.2.1.1.4 Ended
+###### 3.2.1.1.4 Ended
 
 Ended is the final state.
 
-3.2.1.2  CONNTYPE_TXUSER_DTCLURECOVERY Initiator States
+##### 3.2.1.2 CONNTYPE_TXUSER_DTCLURECOVERY Initiator States
 
 The LU 6.2 implementation (section 3.2) MUST act as an initiator for the
 CONNTYPE_TXUSER_DTCLURECOVERY connection type. In this role, an LU 6.2 implementation MUST
@@ -5559,19 +4888,20 @@ Release: April 23, 2024
 
 64 / 199
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-DTCLU].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
 Figure 6: CONNTYPE_TXUSER_DTCLURECOVERY initiator states
 
-3.2.1.2.1 Idle
+###### 3.2.1.2.1 Idle
 
 Idle is the initial state. The following event is processed in this state:
 
   Registering recovery process for LU pair
 
-3.2.1.2.2 Awaiting Register Response
+###### 3.2.1.2.2 Awaiting Register Response
 
 The following events are processed in the Awaiting Register Response state:
 
@@ -5583,7 +4913,7 @@ The following events are processed in the Awaiting Register Response state:
 
   Connection Disconnected (section 3.2.5.2.4)
 
-3.2.1.2.3 Registered
+###### 3.2.1.2.3 Registered
 
 The Disconnect event indicates that if the connection is disconnected, then the registration as a
 recovery process by an LU 6.2 implementation is ended. So the LU 6.2 implementation (section 3.2)
@@ -5596,15 +4926,16 @@ Release: April 23, 2024
 
 65 / 199
 
-intended lifetime of any CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC and
+
+intended lifetime of any CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC and
 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU connections that are associated with the same
 LU Pair object.
 
-3.2.1.2.4 Ended
+###### 3.2.1.2.4 Ended
 
 Ended is the final state.
 
-3.2.1.3  CONNTYPE_TXUSER_DTCLURMENLISTMENT Initiator States
+##### 3.2.1.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT Initiator States
 
 The LU 6.2 implementation (section 3.2) MUST act as an initiator for the
 CONNTYPE_TXUSER_DTCLURMENLISTMENT connection type. In this role, an LU 6.2 implementation
@@ -5648,13 +4979,14 @@ Release: April 23, 2024
 
 66 / 199
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-DTCLU].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
 Figure 7: CONNTYPE_TXUSER_DTCLURMENLISTMENT initiator states
 
-3.2.1.3.1 Idle
+###### 3.2.1.3.1 Idle
 
 Idle is the initial state. The following events are processed in this state:
 
@@ -5673,7 +5005,8 @@ Release: April 23, 2024
 
 67 / 199
 
-3.2.1.3.2 Awaiting Enlistment Response
+
+###### 3.2.1.3.2 Awaiting Enlistment Response
 
 The following events are processed in the Awaiting Enlistment Response state:
 
@@ -5687,7 +5020,7 @@ The following events are processed in the Awaiting Enlistment Response state:
 
   Connection Disconnected (section 3.2.5.3.7)
 
-3.2.1.3.3 Active
+###### 3.2.1.3.3 Active
 
 The following events are processed in the Active state:
 
@@ -5705,7 +5038,7 @@ LU 6.2 Subordinate Enlistment-Conversation Lost
 
   Connection Disconnected (section 3.2.5.3.7)
 
-3.2.1.3.4 Preparing for Transaction Commit
+###### 3.2.1.3.4 Preparing for Transaction Commit
 
 The following events are processed in the Preparing for Transaction Commit state:
 
@@ -5717,7 +5050,7 @@ LU 6.2 Subordinate Enlistment-Conversation Lost
 
   Unplugging LU 6.2 Subordinate Enlistment
 
-3.2.1.3.5 Awaiting Backout Response
+###### 3.2.1.3.5 Awaiting Backout Response
 
 The following events are processed in the Awaiting Backout Response state:
 
@@ -5729,7 +5062,7 @@ The following events are processed in the Awaiting Backout Response state:
 
   Connection Disconnected (section 3.2.5.3.7)
 
-3.2.1.3.6 Awaiting Transaction Outcome
+###### 3.2.1.3.6 Awaiting Transaction Outcome
 
 The following events are processed in the Awaiting Transaction Outcome state:
 
@@ -5746,11 +5079,12 @@ Release: April 23, 2024
 
 68 / 199
 
-  Unplugging LU 6.2 Subordinate Enlistment
+
+  Unplugging LU 6.2 Subordinate Enlistment
 
   Connection Disconnected (section 3.2.5.3.7)
 
-3.2.1.3.7 Finalizing Abort Operations
+###### 3.2.1.3.7 Finalizing Abort Operations
 
 The following events are processed in the Finalizing Abort Operations state:
 
@@ -5762,7 +5096,7 @@ LU 6.2 Subordinate Enlistment-Conversation Lost
 
   Unplugging LU 6.2 Subordinate Enlistment
 
-3.2.1.3.8 Finalizing Commit Operations
+###### 3.2.1.3.8 Finalizing Commit Operations
 
 The following events are processed in the Finalizing Commit Operations state:
 
@@ -5774,11 +5108,11 @@ LU 6.2 Subordinate Enlistment-Conversation Lost
 
   Unplugging LU 6.2 Subordinate Enlistment
 
-3.2.1.3.9 Ended
+###### 3.2.1.3.9 Ended
 
 Ended is the final state.
 
-3.2.1.4  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Initiator States
+##### 3.2.1.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Initiator States
 
 The LU 6.2 implementation (section 3.2) MUST act as an initiator for the
 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC connection type. In this role, the LU 6.2
@@ -5831,7 +5165,8 @@ Release: April 23, 2024
 
 69 / 199
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-DTCLU].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
@@ -5847,13 +5182,14 @@ Release: April 23, 2024
 
 70 / 199
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-DTCLU].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
 Figure 9: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC initiator states, part 2
 
-3.2.1.4.1 Idle
+###### 3.2.1.4.1 Idle
 
 Idle is the initial state. The following events are processed in this state:
 
@@ -5865,7 +5201,7 @@ Local LU Initiated Recovery Sending Query for Work
 
 Local LU Initiated Recovery Conversation Lost
 
-3.2.1.4.2 Awaiting Response to Work Query
+###### 3.2.1.4.2 Awaiting Response to Work Query
 
 The following events are processed in the Awaiting Response to Work Query state:
 
@@ -5882,13 +5218,14 @@ Release: April 23, 2024
 
 71 / 199
 
-
+
+
 
 Local LU Initiated Recovery Conversation Lost
 
   Connection Disconnected
 
-3.2.1.4.3 Processing Cold XLN Request
+###### 3.2.1.4.3 Processing Cold XLN Request
 
 The following events are processed in the Processing Cold XLN Request state:
 
@@ -5908,7 +5245,7 @@ Local LU Initiated Recovery Sending XLN Response
 
 Local LU Initiated Recovery Conversation Lost
 
-3.2.1.4.4 Processing Warm XLN Request
+###### 3.2.1.4.4 Processing Warm XLN Request
 
 The following events are processed in the Processing Warm XLN Request state:
 
@@ -5936,7 +5273,7 @@ Local LU Initiated Recovery Sending Compare-States Query
 
 Local LU Initiated Recovery Conversation Lost
 
-3.2.1.4.5 Awaiting Response to XLN Confirmation
+###### 3.2.1.4.5 Awaiting Response to XLN Confirmation
 
 The following events are processed in the Awaiting Response to XLN Confirmation state:
 
@@ -5948,7 +5285,7 @@ Local LU Initiated Recovery Conversation Lost
 
   Connection Disconnected
 
-3.2.1.4.6 Awaiting Response to XLN
+###### 3.2.1.4.6 Awaiting Response to XLN
 
 The following events are processed in the Awaiting Response to XLN state:
 
@@ -5962,7 +5299,7 @@ Local LU Initiated Recovery Conversation Lost
 
   Connection Disconnected
 
-3.2.1.4.7 Awaiting Response to Compare States Query During Warm XLN
+###### 3.2.1.4.7 Awaiting Response to Compare States Query During Warm XLN
 
 The following events are processed in the Awaiting Response to Compare States Query During Warm
 XLN state:
@@ -5978,13 +5315,14 @@ Release: April 23, 2024
 
 72 / 199
 
-
+
+
 
 Local LU Initiated Recovery Conversation Lost
 
   Connection Disconnected
 
-3.2.1.4.8 XLN Exchange Complete
+###### 3.2.1.4.8 XLN Exchange Complete
 
 The following events are processed in the XLN Exchange Complete state:
 
@@ -5996,7 +5334,7 @@ Local LU Initiated Recovery Sending Compare States Query
 
 Local LU Initiated Recovery Conversation Lost
 
-3.2.1.4.9 Awaiting Response to Compare States Query
+###### 3.2.1.4.9 Awaiting Response to Compare States Query
 
 The following events are processed in the Awaiting Response to Compare States Query state:
 
@@ -6010,9 +5348,9 @@ Local LU Initiated Recovery Conversation Lost
 
   Connection Disconnected
 
-3.2.1.4.10
+###### 3.2.1.4.10 Processing Compare States Request
 
-Processing Compare States Request
+
 
 The following events are processed in the Processing Compare States Request state:
 
@@ -6028,7 +5366,7 @@ Local LU Initiated Recovery Sending Compare States Error
 
 Local LU Initiated Recovery Conversation Lost
 
-3.2.1.4.11  Awaiting Response to Compare States
+###### 3.2.1.4.11 Awaiting Response to Compare States
 
 The following events are processed in Awaiting Response to Compare States state:
 
@@ -6043,9 +5381,9 @@ Local LU Initiated Recovery Conversation Lost
 
   Connection Disconnected
 
-3.2.1.4.12
+###### 3.2.1.4.12 Processing LU Status Check
 
-Processing LU Status Check
+
 
 The following events are processed in the Processing LU Status Check state:
 
@@ -6057,7 +5395,7 @@ Local LU Initiated Recovery Sending LU Status
 
 Local LU Initiated Recovery Conversation Lost
 
-3.2.1.4.13  Awaiting Request Complete
+###### 3.2.1.4.13 Awaiting Request Complete
 
 The following events are processed in the Awaiting Request Complete state:
 
@@ -6074,15 +5412,16 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Connection Disconnected
 
-3.2.1.4.14
+  Connection Disconnected
 
-Ended
+###### 3.2.1.4.14 Ended
+
+
 
 Ended is the final state.
 
-3.2.1.5  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Initiator States
+##### 3.2.1.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Initiator States
 
 The LU 6.2 implementation (section 3.2) MUST act as an initiator for the
 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU connection type. In this role, the LU 6.2
@@ -6126,13 +5465,14 @@ Release: April 23, 2024
 
 74 / 199
 
-<!-- Extracted images from page 75 -->
+
+<!-- Extracted images from page 75 -->
 ![Extracted image 1 from page 75]([MS-DTCLU].images/page075-img01.png)
 <!-- /Extracted images from page 75 -->
 
 Figure 10: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU initiator states
 
-3.2.1.5.1 Idle
+###### 3.2.1.5.1 Idle
 
 Idle is the initial state. The following events are processed in this state:
 
@@ -6140,7 +5480,7 @@ Idle is the initial state. The following events are processed in this state:
 
   Remote LU Initiated Recovery Conversation Lost
 
-3.2.1.5.2 Awaiting Response to XLN Request
+###### 3.2.1.5.2 Awaiting Response to XLN Request
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -6149,7 +5489,8 @@ Release: April 23, 2024
 
 75 / 199
 
-The following events are processed in the Awaiting Response to XLN Request state:
+
+The following events are processed in the Awaiting Response to XLN Request state:
 
   Receiving a TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FOUND message
 
@@ -6161,7 +5502,7 @@ message
 
   Connection Disconnected (section 3.2.5.5.5)
 
-3.2.1.5.3 Processing XLN Confirmation
+###### 3.2.1.5.3 Processing XLN Confirmation
 
 The following events are processed in the Processing XLN Confirmation state:
 
@@ -6169,7 +5510,7 @@ The following events are processed in the Processing XLN Confirmation state:
 
   Remote LU Initiated Recovery Conversation Lost
 
-3.2.1.5.4 Awaiting Response to XLN Confirmation
+###### 3.2.1.5.4 Awaiting Response to XLN Confirmation
 
 The following events are processed in the Awaiting Response to XLN Confirmation state:
 
@@ -6179,7 +5520,7 @@ The following events are processed in the Awaiting Response to XLN Confirmation 
 
   Connection Disconnected (section 3.2.5.5.5)
 
-3.2.1.5.5 Awaiting Response to XLN Confirmation with Error
+###### 3.2.1.5.5 Awaiting Response to XLN Confirmation with Error
 
 The following events are processed in the Awaiting Response to XLN Confirmation with Error state:
 
@@ -6189,7 +5530,7 @@ The following events are processed in the Awaiting Response to XLN Confirmation 
 
   Connection Disconnected (section 3.2.5.5.5)
 
-3.2.1.5.6 XLN Exchange Complete
+###### 3.2.1.5.6 XLN Exchange Complete
 
 The following events are processed in the XLN Exchange Complete state:
 
@@ -6197,7 +5538,7 @@ The following events are processed in the XLN Exchange Complete state:
 
   Remote LU Initiated Recovery Conversation Lost
 
-3.2.1.5.7 Awaiting Response to Compare States
+###### 3.2.1.5.7 Awaiting Response to Compare States
 
 The following events are processed in the Awaiting Response to Compare States state:
 
@@ -6210,7 +5551,7 @@ message
 
   Connection Disconnected (section 3.2.5.5.5)
 
-3.2.1.5.8 Processing Compare States Response
+###### 3.2.1.5.8 Processing Compare States Response
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -6219,7 +5560,8 @@ Release: April 23, 2024
 
 76 / 199
 
-The following events are processed in the Processing Compare States Response state:
+
+The following events are processed in the Processing Compare States Response state:
 
   Remote LU Initiated Recovery Sending Compare States Confirmation
 
@@ -6227,7 +5569,7 @@ Release: April 23, 2024
 
   Remote LU Initiated Recovery Conversation Lost
 
-3.2.1.5.9 Awaiting Request Complete
+###### 3.2.1.5.9 Awaiting Request Complete
 
 The following events are processed in the Awaiting Request Complete state:
 
@@ -6237,17 +5579,17 @@ The following events are processed in the Awaiting Request Complete state:
 
   Connection Disconnected (section 3.2.5.5.5)
 
-3.2.1.5.10
+###### 3.2.1.5.10 Ended
 
-Ended
+
 
 Ended is the final state.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When an LU 6.2 Implementation is initialized, the Transaction Manager Name field MUST be set to
 a value that is obtained from an implementation-specific source.
@@ -6262,7 +5604,7 @@ transaction manager supports LU transactions by setting the
 DTCADVCONFIG_OPTIONS_LUTRANSACTIONS_DISABLE bit in the grfOptions field, as specified
 in section 3.4.5.4.1.1 in [MS-DTCO].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 The LU 6.2 Implementation MUST be prepared to process a set of higher-layer events. These events
 are triggered by decisions that are made by the higher-layer business logic of the LU 6.2
@@ -6273,7 +5615,7 @@ When an LU 6.2 Implementation processes one of these events, it MUST communicate
 Failure result to the higher-layer business logic. The LU 6.2 Implementation MUST be prepared to
 process the events in the following sections.
 
-3.2.4.1  Adding an LU Name Pair
+##### 3.2.4.1 Adding an LU Name Pair
 
 This event MUST be signaled by the higher-layer business logic with the LU Name Pair argument.
 
@@ -6287,7 +5629,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Initiate a new CONNTYPE_TXUSER_DTCLUCONFIGURE connection using the Transaction
 Manager Name field of the LU 6.2 Implementation.
@@ -6306,7 +5649,7 @@ The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY stru
 
   Set the connection state to Awaiting Add Response.
 
-3.2.4.2  Deleting an LU Name Pair
+##### 3.2.4.2 Deleting an LU Name Pair
 
 This event MUST be signaled by the higher-layer business logic with the LU Name Pair argument.
 
@@ -6332,7 +5675,7 @@ The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY stru
 
   Set the connection state to Awaiting Delete Response.
 
-3.2.4.3  Registering Recovery Process For LU Pair
+##### 3.2.4.3 Registering Recovery Process For LU Pair
 
 This event MUST be signaled by the higher-layer business logic with the LU Name Pair argument.
 
@@ -6360,7 +5703,7 @@ The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY stru
 
   Set the connection state to Awaiting Register Response.
 
-3.2.4.4  All Sessions Lost
+##### 3.2.4.4 All Sessions Lost
 
 This event MUST be signaled by the higher-layer business logic with the LU Name Pair argument.
 
@@ -6371,7 +5714,8 @@ Release: April 23, 2024
 
 78 / 199
 
-If the All Sessions Lost event is signaled, the LU 6.2 Implementation MUST perform the following
+
+If the All Sessions Lost event is signaled, the LU 6.2 Implementation MUST perform the following
 actions:
 
   Attempt to find the recovery sequence number keyed by the LU Name Pair in the Recovery
@@ -6390,7 +5734,7 @@ If the recovery sequence number is not found:
 
 Increment the found recovery sequence number.
 
-3.2.4.5  Creating LU 6.2 Subordinate Enlistment
+##### 3.2.4.5 Creating LU 6.2 Subordinate Enlistment
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6436,7 +5780,7 @@ The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY stru
 
   Set the connection state to Awaiting Enlistment Response.
 
-3.2.4.6  Aborting LU 6.2 Subordinate Enlistment
+##### 3.2.4.6 Aborting LU 6.2 Subordinate Enlistment
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6458,7 +5802,8 @@ Release: April 23, 2024
 
 79 / 199
 
-  Otherwise:
+
+  Otherwise:
 
   Send a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT message using the
 
@@ -6466,7 +5811,7 @@ provided connection.
 
   Set the connection state to Awaiting Backout Response.
 
-3.2.4.7  LU 6.2 Subordinate Enlistment Prepare Request Completed
+##### 3.2.4.7 LU 6.2 Subordinate Enlistment Prepare Request Completed
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6521,7 +5866,7 @@ provided connection.
 
   Set the connection state to Ended.
 
-3.2.4.8  LU 6.2 Subordinate Enlistment Conversation Lost
+##### 3.2.4.8 LU 6.2 Subordinate Enlistment Conversation Lost
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -6537,13 +5882,14 @@ Release: April 23, 2024
 
 80 / 199
 
-  Send a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message using the
+
+  Send a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message using the
 
 provided connection.
 
   Set the connection state to Ended.
 
-3.2.4.9  Unplugging LU 6.2 Subordinate Enlistment
+##### 3.2.4.9 Unplugging LU 6.2 Subordinate Enlistment
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -6556,9 +5902,9 @@ If the Unplugging LU 6.2 Subordinate Enlistment event is signaled, the LU 6.2 im
 
   Set the connection state to Ended.
 
-3.2.4.10
+##### 3.2.4.10 LU 6.2 Subordinate Enlistment Abort Request Completed
 
-LU 6.2 Subordinate Enlistment Abort Request Completed
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -6581,9 +5927,9 @@ provided connection.
 
   Set the connection state to Ended.
 
-3.2.4.11
+##### 3.2.4.11 LU 6.2 Subordinate Enlistment Commit Request Completed
 
-LU 6.2 Subordinate Enlistment Commit Request Completed
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -6613,9 +5959,10 @@ Release: April 23, 2024
 
 81 / 199
 
-3.2.4.12
 
-LU 6.2 Subordinate Enlistment Single-Phase Commit Request Completed
+##### 3.2.4.12 LU 6.2 Subordinate Enlistment Single-Phase Commit Request Completed
+
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -6628,9 +5975,9 @@ implementation (section 3.2) MUST perform the following action:
 
 connection.
 
-3.2.4.13
+##### 3.2.4.13 Local LU Initiated Recovery Sending Query For Work
 
-Local LU Initiated Recovery Sending Query For Work
+
 
 This event MUST be signaled by the higher-layer business logic with the LU Name Pair argument.
 
@@ -6660,9 +6007,9 @@ The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY stru
 
   Set the connection state to Awaiting Response To Work Query.
 
-3.2.4.14
+##### 3.2.4.14 Local LU Initiated Recovery Sending New Recovery Sequence Number
 
-Local LU Initiated Recovery Sending New Recovery Sequence Number
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6699,7 +6046,8 @@ Release: April 23, 2024
 
 82 / 199
 
-  Otherwise:
+
+  Otherwise:
 
   Update the recovery sequence number keyed by the LU Name Pair in the Recovery
 
@@ -6716,9 +6064,9 @@ number.
 
   Set the connection state to Awaiting Request Complete.
 
-3.2.4.15
+##### 3.2.4.15 Local LU Initiated Recovery Sending XLN Error
 
-Local LU Initiated Recovery Sending XLN Error
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6769,9 +6117,9 @@ Warm Mismatch
 
   Set the connection state to Awaiting Request Complete.
 
-3.2.4.16
+##### 3.2.4.16 Local LU Initiated Recovery Sending XLN Response
 
-Local LU Initiated Recovery Sending XLN Response
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6786,7 +6134,8 @@ Release: April 23, 2024
 
 83 / 199
 
-  Warm
+
+  Warm
 
   Cold
 
@@ -6835,9 +6184,9 @@ log name.
 
   Set the connection state to Awaiting Response To XLN.
 
-3.2.4.17
+##### 3.2.4.17 Local LU Initiated Recovery Sending XLN Confirmation
 
-Local LU Initiated Recovery Sending XLN Confirmation
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -6873,7 +6222,8 @@ Release: April 23, 2024
 
 84 / 199
 
-  Send a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM_OUR_XLN
+
+  Send a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM_OUR_XLN
 
 message using the provided connection:
 
@@ -6910,9 +6260,9 @@ Mismatch:
 
   Set the connection state to Ended.
 
-3.2.4.18
+##### 3.2.4.18 Local LU Initiated Recovery Sending Compare States Query
 
-Local LU Initiated Recovery Sending Compare States Query
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -6959,9 +6309,10 @@ Release: April 23, 2024
 
 85 / 199
 
-3.2.4.19
 
-Local LU Initiated Recovery Sending Compare States
+##### 3.2.4.19 Local LU Initiated Recovery Sending Compare States
+
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -7023,9 +6374,9 @@ Reset
 
   Set the connection state to Awaiting Response To Compare States.
 
-3.2.4.20
+##### 3.2.4.20 Local LU Initiated Recovery Sending Compare States Error
 
-Local LU Initiated Recovery Sending Compare States Error
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -7045,7 +6396,8 @@ Release: April 23, 2024
 
 86 / 199
 
-  Return a failure result to the higher-layer business logic.
+
+  Return a failure result to the higher-layer business logic.
 
   Otherwise:
 
@@ -7061,9 +6413,9 @@ DTCLUCOMPARESTATESERROR_PROTOCOL.
 
   Set the connection state to Awaiting Request Complete.
 
-3.2.4.21
+##### 3.2.4.21 Local LU Initiated Recovery Sending LU Status
 
-Local LU Initiated Recovery Sending LU Status
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -7104,9 +6456,9 @@ The RecoverySeqNum field MUST be set to the found recovery sequence number.
 
   Set the connection state to Awaiting Request Complete.
 
-3.2.4.22
+##### 3.2.4.22 Local LU Initiated Recovery Conversation Lost
 
-Local LU Initiated Recovery Conversation Lost
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -7128,9 +6480,10 @@ Release: April 23, 2024
 
 87 / 199
 
-3.2.4.23
 
-Remote LU Initiated Recovery Sending XLN
+##### 3.2.4.23 Remote LU Initiated Recovery Sending XLN
+
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -7215,7 +6568,8 @@ Release: April 23, 2024
 
 88 / 199
 
-
+
+
 
 
 
@@ -7233,9 +6587,9 @@ structure (contained in the LuNamePair field) MUST be set to the provided LU Nam
 
   Set the connection state to Awaiting Response To XLN Request.
 
-3.2.4.24
+##### 3.2.4.24 Remote LU Initiated Recovery Sending XLN Confirmation
 
-Remote LU Initiated Recovery Sending XLN Confirmation
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -7304,13 +6658,14 @@ Release: April 23, 2024
 
 89 / 199
 
-  Otherwise, if the provided XLN Response value is set to Obsolete:
+
+  Otherwise, if the provided XLN Response value is set to Obsolete:
 
   Set the connection state to Ended.
 
-3.2.4.25
+##### 3.2.4.25 Remote LU Initiated Recovery Sending Compare States
 
-Remote LU Initiated Recovery Sending Compare States
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -7390,16 +6745,17 @@ Release: April 23, 2024
 
 90 / 199
 
-
+
+
 
 The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY
 structure (contained in the LuTransId field) MUST be set to the provided LUW identifier.
 
   Set the connection state to Awaiting Response To Compare States.
 
-3.2.4.26
+##### 3.2.4.26 Remote LU Initiated Recovery Sending Compare States Confirmation
 
-Remote LU Initiated Recovery Sending Compare States Confirmation
+
 
 This event MUST be signaled by the higher-layer business logic with the following arguments:
 
@@ -7446,9 +6802,9 @@ Confirmation value is Protocol Error
 
 The connection state SHOULD be set to Awaiting Request Complete.
 
-3.2.4.27
+##### 3.2.4.27 Remote LU Initiated Recovery Sending Compare States Error
 
-Remote LU Initiated Recovery Sending Compare States Error
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -7481,11 +6837,12 @@ Release: April 23, 2024
 
 91 / 199
 
-  Set the connection state to Awaiting Request Complete.
 
-3.2.4.28
+  Set the connection state to Awaiting Request Complete.
 
-Remote LU Initiated Recovery Conversation Lost
+##### 3.2.4.28 Remote LU Initiated Recovery Conversation Lost
+
+
 
 This event MUST be signaled by the higher-layer business logic with the following argument:
 
@@ -7500,15 +6857,15 @@ the provided connection.
 
   Set the connection state to Ended.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  CONNTYPE_TXUSER_DTCLUCONFIGURE as Initiator
+##### 3.2.5.1 CONNTYPE_TXUSER_DTCLUCONFIGURE as Initiator
 
 For all messages that are received in this connection type, the LU 6.2 implementation (section 3.2)
 MUST process the message as specified in section 3.1. The LU 6.2 implementation MUST additionally
 follow the processing rules specified in the following sections.
 
-3.2.5.1.1 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE
+###### 3.2.5.1.1 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_DUPLICATE
 
 Message
 
@@ -7528,7 +6885,7 @@ If the connection state is Awaiting Add Response:
 
 section 3.1.6.
 
-3.2.5.1.2 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND
+###### 3.2.5.1.2 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_NOT_FOUND
 
 Message
 
@@ -7555,7 +6912,8 @@ Release: April 23, 2024
 
 92 / 199
 
-3.2.5.1.3 Receiving a
+
+###### 3.2.5.1.3 Receiving a
 
 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_UNRECOVERED_TRANS
 Message
@@ -7576,7 +6934,7 @@ If the connection state is Awaiting Delete Response:
 
 section 3.1.6.
 
-3.2.5.1.4 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE Message
+###### 3.2.5.1.4 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE Message
 
 When the LU 6.2 implementation (section 3.2) receives a
 TXUSER_DTCLURMCONFIGURE_MTAG_DELETE_INUSE message, it MUST perform the following
@@ -7594,7 +6952,7 @@ If the connection state is Awaiting Delete Response:
 
 section 3.1.6.
 
-3.2.5.1.5 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED
+###### 3.2.5.1.5 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED
 
 Message
 
@@ -7614,7 +6972,7 @@ If the connection state is either Awaiting Add Response or Awaiting Delete Respo
 
 section 3.1.6.
 
-3.2.5.1.6 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL Message
+###### 3.2.5.1.6 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL Message
 
 When the LU 6.2 implementation (section 3.2) receives a
 TXUSER_DTCLURMCONFIGURE_MTAG_ADD_LOG_FULL message, it MUST perform the following
@@ -7635,11 +6993,12 @@ Release: April 23, 2024
 
 93 / 199
 
-  Otherwise, the message MUST be processed as an invalid message, as specified in [MS-DTCO],
+
+  Otherwise, the message MUST be processed as an invalid message, as specified in [MS-DTCO],
 
 section 3.1.6.
 
-3.2.5.1.7 Connection Disconnected
+###### 3.2.5.1.7 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLUCONFIGURE is disconnected, the LU 6.2 implementation (section
 3.2) MUST perform the following actions:
@@ -7652,13 +7011,13 @@ If the connection state is either Awaiting Add Response or Awaiting Delete Respo
 
   Otherwise, the event MUST be processed as specified in section 3.1.8.
 
-3.2.5.2  CONNTYPE_TXUSER_DTCLURECOVERY as Initiator
+##### 3.2.5.2 CONNTYPE_TXUSER_DTCLURECOVERY as Initiator
 
 For all messages that are received in this connection type, the LU 6.2 implementation (section 3.2)
 MUST process the message, as specified in section 3.1. The LU 6.2 Implementation MUST additionally
 follow the processing rules as specified in the following sections.
 
-3.2.5.2.1 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND
+###### 3.2.5.2.1 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_NOT_FOUND
 
 Message
 
@@ -7678,7 +7037,7 @@ If the connection state is Awaiting Register Response:
 
 section 3.1.6.
 
-3.2.5.2.2 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE
+###### 3.2.5.2.2 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH_DUPLICATE
 
 Message
 
@@ -7698,7 +7057,7 @@ If the connection state is Awaiting Register Response:
 
 section 3.1.6.
 
-3.2.5.2.3 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED
+###### 3.2.5.2.3 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_REQUEST_COMPLETED
 
 Message
 
@@ -7713,7 +7072,8 @@ Release: April 23, 2024
 
 94 / 199
 
-
+
+
 
 If the connection state is Awaiting Register Response:
 
@@ -7729,7 +7089,7 @@ Sequence Number Table with the recovery sequence number initialized to 1.
 
 section 3.1.6.
 
-3.2.5.2.4 Connection Disconnected
+###### 3.2.5.2.4 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURECOVERY is disconnected, the LU 6.2 implementation (section
 3.2) MUST perform the following actions:
@@ -7746,13 +7106,13 @@ Table keyed by the LU Name Pair associated with the connection object.
 
   Otherwise, the event MUST be processed as specified in section 3.1.8.
 
-3.2.5.3  CONNTYPE_TXUSER_DTCLURMENLISTMENT as Initiator
+##### 3.2.5.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT as Initiator
 
 For all messages that are received in this connection type, the LU 6.2 implementation (section 3.2)
 MUST process the message, as specified in section 3.1. The LU 6.2 implementation MUST additionally
 follow the processing rules as specified in the following sections.
 
-3.2.5.3.1 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED
+###### 3.2.5.3.1 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED
 
 Message
 
@@ -7772,7 +7132,7 @@ If the connection state is Awaiting Enlistment Response:
 
 section 3.1.6.
 
-3.2.5.3.2 Receiving Other TXUSER_DTCLURMENLISTMENT_MTAG Messages
+###### 3.2.5.3.2 Receiving Other TXUSER_DTCLURMENLISTMENT_MTAG Messages
 
 When the LU 6.2 implementation (section 3.2) receives one of the following messages:
 
@@ -7799,7 +7159,8 @@ Release: April 23, 2024
 
 95 / 199
 
-
+
+
 
 
 
@@ -7837,7 +7198,7 @@ If the connection state is Awaiting Enlistment Response:
 
 section 3.1.6.
 
-3.2.5.3.3 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE
+###### 3.2.5.3.3 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE
 
 Message
 
@@ -7857,7 +7218,7 @@ If the connection state is Active:
 
 section 3.1.6.
 
-3.2.5.3.4 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT
+###### 3.2.5.3.4 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKEDOUT
 
 Message
 
@@ -7877,7 +7238,7 @@ If the connection state is Awaiting Backout Response:
 
 section 3.1.6.
 
-3.2.5.3.5 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT
+###### 3.2.5.3.5 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_BACKOUT
 
 Message
 
@@ -7892,7 +7253,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If the connection state is Awaiting Transaction Outcome or Active:
 
@@ -7904,7 +7266,7 @@ If the connection state is Awaiting Transaction Outcome or Active:
 
 section 3.1.6.
 
-3.2.5.3.6 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED
+###### 3.2.5.3.6 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_COMMITTED
 
 Message
 
@@ -7924,7 +7286,7 @@ If the connection state is Awaiting Transaction Outcome:
 
 section 3.1.6.
 
-3.2.5.3.7 Connection Disconnected
+###### 3.2.5.3.7 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURMENLISTMENT is disconnected, the LU 6.2 implementation
 (section 3.2) MUST perform the following actions.
@@ -7938,13 +7300,13 @@ or Awaiting Transaction Outcome:
 
   Otherwise, the event MUST be processed as specified in section 3.1.8.
 
-3.2.5.4  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Initiator
+##### 3.2.5.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Initiator
 
 For all messages that are received in this connection type, the LU 6.2 implementation (section 3.2)
 MUST process the message, as specified in section 3.1. The LU 6.2 implementation MUST additionally
 follow the processing rules as specified in the following sections.
 
-3.2.5.4.1 Receiving a
+###### 3.2.5.4.1 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK_NOT_FOUND
 Message
@@ -7972,7 +7334,8 @@ Release: April 23, 2024
 
 97 / 199
 
-3.2.5.4.2 Receiving a
+
+###### 3.2.5.4.2 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_CHECKLUSTATUS
 Message
@@ -7993,7 +7356,7 @@ If the connection state is Awaiting Response To Work Query:
 
 section 3.1.6.
 
-3.2.5.4.3 Receiving a
+###### 3.2.5.4.3 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_WORK_TRANS Message
 
@@ -8044,7 +7407,7 @@ If the Xln field of the message is set to DTCLUXLN_COLD:
 
 section 3.1.6.
 
-3.2.5.4.4 Receiving a
+###### 3.2.5.4.4 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
 HEIR_XLN Message
@@ -8060,7 +7423,8 @@ Release: April 23, 2024
 
 98 / 199
 
-
+
+
 
 If the connection state is Awaiting Response To XLN:
 
@@ -8108,7 +7472,7 @@ The XlnConfirmation field.
 
 section 3.1.6.
 
-3.2.5.4.5 Receiving a
+###### 3.2.5.4.5 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NO_COMPARESTATES
 Message
@@ -8144,7 +7508,8 @@ Release: April 23, 2024
 
 99 / 199
 
-3.2.5.4.6 Receiving a
+
+###### 3.2.5.4.6 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_COMPARESTATES_INFO
 Message
@@ -8193,7 +7558,7 @@ The LuTransId field
 
 section 3.1.6.
 
-3.2.5.4.7 Receiving a
+###### 3.2.5.4.7 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_T
 HEIR_COMPARESTATES Message
@@ -8220,7 +7585,7 @@ The CompareStatesConfirmation field
 
 section 3.1.6.
 
-3.2.5.4.8 Receiving a
+###### 3.2.5.4.8 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE
 Message
@@ -8232,7 +7597,8 @@ Release: April 23, 2024
 
 100 / 199
 
-When the LU 6.2 implementation (section 3.2) receives a
+
+When the LU 6.2 implementation (section 3.2) receives a
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_REQUESTCOMPLETE message, it MUST perform
 the following actions:
 
@@ -8254,7 +7620,7 @@ If the connection state is Awaiting Request Complete:
 
 section 3.1.6.
 
-3.2.5.4.9 Connection Disconnected
+###### 3.2.5.4.9 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC is disconnected, the LU 6.2
 implementation (section 3.2) MUST perform the following actions:
@@ -8270,13 +7636,13 @@ or Awaiting Request Complete:
 
   Otherwise, the event MUST be processed as specified in section 3.1.8.
 
-3.2.5.5  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Initiator
+##### 3.2.5.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Initiator
 
 For all messages that are received in this connection type, the LU 6.2 implementation (section 3.2)
 MUST process the message, as specified in section 3.1. The LU 6.2 Implementation MUST additionally
 follow the processing rules as specified in the following sections.
 
-3.2.5.5.1 Receiving a
+###### 3.2.5.5.1 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN_NOT_FOUND
 Message
@@ -8297,7 +7663,7 @@ If the connection state is Awaiting Response To XLN Request:
 
 section 3.1.6.
 
-3.2.5.5.2 Receiving a
+###### 3.2.5.5.2 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_
 XLN Message
@@ -8309,7 +7675,8 @@ Release: April 23, 2024
 
 101 / 199
 
-When an LU 6.2 implementation (section 3.2) receives a
+
+When an LU 6.2 implementation (section 3.2) receives a
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_XLN message, it MUST
 perform the following actions:
 
@@ -8361,7 +7728,7 @@ DTCLUXLNRESPONSE_OK_SENDOURXLNBACK:
 
 section 3.1.6.
 
-3.2.5.5.3 Receiving a
+###### 3.2.5.5.3 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_RESPONSE_FOR_THEIR_C
 OMPARESTATES Message
@@ -8402,13 +7769,14 @@ Release: April 23, 2024
 
 102 / 199
 
-  Set the connection state to Processing Compare States Response.
+
+  Set the connection state to Processing Compare States Response.
 
   Otherwise, the message MUST be processed as an invalid message, as specified in [MS-DTCO],
 
 section 3.1.6.
 
-3.2.5.5.4 Receiving a
+###### 3.2.5.5.4 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_REQUESTCOMPLETE
 Message
@@ -8441,7 +7809,7 @@ If the connection state is Awaiting Response To XLN Confirmation:
 
 section 3.1.6.
 
-3.2.5.5.5 Connection Disconnected
+###### 3.2.5.5.5 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU is disconnected, the LU 6.2
 implementation (section 3.2) MUST perform the following actions:
@@ -8456,11 +7824,11 @@ States, or Awaiting Request Complete:
 
   Otherwise, the event MUST be processed as specified in section 3.1.8.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -8471,11 +7839,12 @@ Release: April 23, 2024
 
 103 / 199
 
-3.3  Transaction Manager Communicating with an LU 6.2 Implementation Facet
+
+### 3.3 Transaction Manager Communicating with an LU 6.2 Implementation Facet
 
 Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -8552,7 +7921,8 @@ Release: April 23, 2024
 
 104 / 199
 
-  Transaction Identifier: A durable GUID that specifies the transaction identifier of the
+
+  Transaction Identifier: A durable GUID that specifies the transaction identifier of the
 
 transaction that is associated with the logical unit of work.
 
@@ -8640,7 +8010,8 @@ Release: April 23, 2024
 
 105 / 199
 
-  Recovery Process Not Attached: This value is used to indicate that a recovery process has not
+
+  Recovery Process Not Attached: This value is used to indicate that a recovery process has not
 
 been registered for the LU Name Pair.
 
@@ -8702,7 +8073,7 @@ Forget: The logical unit of work has been completed.
 
 restarts or transient failures.
 
-3.3.1.1  Logging
+##### 3.3.1.1 Logging
 
 When an LU Pair object is stored in the log, the Transaction Manager Communicating with an LU 6.2
 Implementation Facet MUST record only the object fields marked as durable.
@@ -8721,7 +8092,8 @@ Release: April 23, 2024
 
 106 / 199
 
-
+
+
 
 Is LUW Triggered Recovery Pending: To the value FALSE.
 
@@ -8746,7 +8118,7 @@ Implementation Facet MUST record all of the object fields.
 When a connection object is retrieved from the log, the Transaction Manager Communicating with an
 LU 6.2 Implementation Facet MUST set its state to Ended.
 
-3.3.1.2  CONNTYPE_TXUSER_DTCLUCONFIGURE Acceptor States
+##### 3.3.1.2 CONNTYPE_TXUSER_DTCLUCONFIGURE Acceptor States
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST act as an
 acceptor for the CONNTYPE_TXUSER_DTCLUCONFIGURE connection type. In this role, the Transaction
@@ -8769,7 +8141,7 @@ Processing Delete Request
 
 Ended
 
-3.3.1.2.1 Idle
+###### 3.3.1.2.1 Idle
 
 This is the initial state. The following events are processed in this state:
 
@@ -8777,21 +8149,21 @@ This is the initial state. The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE message
 
-3.3.1.2.2 Processing Add Request
+###### 3.3.1.2.2 Processing Add Request
 
 This is a transient state that is assumed during the synchronous processing of adding an LU Pair
 request. No events are processed in this state.
 
-3.3.1.2.3 Processing Delete Request
+###### 3.3.1.2.3 Processing Delete Request
 
 This is a transient state that is assumed during the synchronous processing of deleting an LU Pair
 request. No events are processed in this state.
 
-3.3.1.2.4 Ended
+###### 3.3.1.2.4 Ended
 
 This is the final state.
 
-3.3.1.2.5 State Diagram
+###### 3.3.1.2.5 State Diagram
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -8800,7 +8172,8 @@ Release: April 23, 2024
 
 107 / 199
 
-<!-- Extracted images from page 108 -->
+
+<!-- Extracted images from page 108 -->
 ![Extracted image 1 from page 108]([MS-DTCLU].images/page108-img01.png)
 <!-- /Extracted images from page 108 -->
 
@@ -8809,7 +8182,7 @@ acceptor states.
 
 Figure 11: CONNTYPE_TXUSER_DTCLUCONFIGURE acceptor states
 
-3.3.1.3  CONNTYPE_TXUSER_DTCLURECOVERY Acceptor States
+##### 3.3.1.3 CONNTYPE_TXUSER_DTCLURECOVERY Acceptor States
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST act as an
 acceptor for the CONNTYPE_TXUSER_DTCLURECOVERY connection type. In this role, the Transaction
@@ -8830,13 +8203,13 @@ Processing Register Request
 
 Ended
 
-3.3.1.3.1 Idle
+###### 3.3.1.3.1 Idle
 
 This is the initial state. The following event is processed in this state:
 
   Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH message
 
-3.3.1.3.2 Processing Register Request
+###### 3.3.1.3.2 Processing Register Request
 
 This is a transient state that is assumed during the synchronous processing of a register request. No
 events are processed in this state.
@@ -8848,28 +8221,29 @@ Release: April 23, 2024
 
 108 / 199
 
-<!-- Extracted images from page 109 -->
+
+<!-- Extracted images from page 109 -->
 ![Extracted image 1 from page 109]([MS-DTCLU].images/page109-img01.png)
 <!-- /Extracted images from page 109 -->
 
-3.3.1.3.3 Registered
+###### 3.3.1.3.3 Registered
 
 The following event is processed in this state:
 
   Connection Disconnected (section 3.3.5.2.2)
 
-3.3.1.3.4 Ended
+###### 3.3.1.3.4 Ended
 
 This is the final state.
 
-3.3.1.3.5 State Diagram
+###### 3.3.1.3.5 State Diagram
 
 The following figure shows the relationship between the CONNTYPE_TXUSER_DTCLURECOVERY
 acceptor states.
 
 Figure 12: CONNTYPE_TXUSER_DTCLURECOVERY acceptor states
 
-3.3.1.4  CONNTYPE_TXUSER_DTCLURMENLISTMENT Acceptor States
+##### 3.3.1.4 CONNTYPE_TXUSER_DTCLURMENLISTMENT Acceptor States
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST act as an
 acceptor for the CONNTYPE_TXUSER_DTCLURMENLISTMENT connection type. In this role, the
@@ -8887,7 +8261,8 @@ Release: April 23, 2024
 
 109 / 199
 
-
+
+
 
 Processing Enlistment Request
 
@@ -8911,7 +8286,7 @@ Prepared
 
 Ended
 
-3.3.1.4.1 Idle
+###### 3.3.1.4.1 Idle
 
 This is the initial state. The following events are processed in this state:
 
@@ -8919,7 +8294,7 @@ This is the initial state. The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.2 Processing Enlistment Request
+###### 3.3.1.4.2 Processing Enlistment Request
 
 The following events are processed in this state:
 
@@ -8929,7 +8304,7 @@ The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.3 Active
+###### 3.3.1.4.3 Active
 
 The following events are processed in this state:
 
@@ -8941,7 +8316,7 @@ The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.4 Awaiting Prepare Response
+###### 3.3.1.4.4 Awaiting Prepare Response
 
 The following events are processed in this state:
 
@@ -8953,7 +8328,7 @@ The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.5 Processing Backout Request
+###### 3.3.1.4.5 Processing Backout Request
 
 The following events are processed in this state:
 
@@ -8964,11 +8339,12 @@ Release: April 23, 2024
 
 110 / 199
 
-  Begin Rollback
+
+  Begin Rollback
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.6 Prepared
+###### 3.3.1.4.6 Prepared
 
 The following events are processed in this state:
 
@@ -8978,7 +8354,7 @@ The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.7 Awaiting Commit Response
+###### 3.3.1.4.7 Awaiting Commit Response
 
 The following events are processed in this state:
 
@@ -8986,7 +8362,7 @@ The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.8 Awaiting Abort Response
+###### 3.3.1.4.8 Awaiting Abort Response
 
 The following events are processed in this state:
 
@@ -8994,13 +8370,13 @@ The following events are processed in this state:
 
   Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST message
 
-3.3.1.4.9 Ended
+###### 3.3.1.4.9 Ended
 
 This is the final state.
 
-3.3.1.4.10
+###### 3.3.1.4.10 State Diagram
 
-State Diagram
+
 
 The following figure shows the relationship between the CONNTYPE_TXUSER_DTCLURMENLISTMENT
 acceptor states.
@@ -9012,13 +8388,14 @@ Release: April 23, 2024
 
 111 / 199
 
-<!-- Extracted images from page 112 -->
+
+<!-- Extracted images from page 112 -->
 ![Extracted image 1 from page 112]([MS-DTCLU].images/page112-img01.png)
 <!-- /Extracted images from page 112 -->
 
 Figure 13: CONNTYPE_TXUSER_DTCLURMENLISTMENT acceptor states
 
-3.3.1.5  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Acceptor States
+##### 3.3.1.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC Acceptor States
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST act as an
 acceptor for the CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC connection type. In this role,
@@ -9036,7 +8413,8 @@ Release: April 23, 2024
 
 112 / 199
 
-
+
+
 
 Processing Work Query
 
@@ -9098,7 +8476,7 @@ Is Obsolete Processing Compare State Query During Warm XLN
 
 Ended
 
-3.3.1.5.1 Idle
+###### 3.3.1.5.1 Idle
 
 This is the initial state. The following events are processed in this state:
 
@@ -9106,7 +8484,7 @@ This is the initial state. The following events are processed in this state:
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.2 Processing Work Query
+###### 3.3.1.5.2 Processing Work Query
 
 The following events are processed in this state:
 
@@ -9120,7 +8498,7 @@ The following events are processed in this state:
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.3 Awaiting Response To Cold XLN
+###### 3.3.1.5.3 Awaiting Response To Cold XLN
 
 The following events are processed in this state:
 
@@ -9131,7 +8509,8 @@ Release: April 23, 2024
 
 113 / 199
 
-
+
+
 
 Local LU Initiated Recovery Obsolete XLN Exchange
 
@@ -9145,12 +8524,12 @@ message
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.4 Processing Response To Cold XLN
+###### 3.3.1.5.4 Processing Response To Cold XLN
 
 This is a transient state that is assumed during the synchronous processing of a response to a Cold
 XLN request. No events are processed in this state.
 
-3.3.1.5.5 Awaiting Response To Warm XLN
+###### 3.3.1.5.5 Awaiting Response To Warm XLN
 
 The following events are processed in this state:
 
@@ -9176,17 +8555,17 @@ message
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.6 Processing Response to Warm XLN
+###### 3.3.1.5.6 Processing Response to Warm XLN
 
 This is a transient state that is assumed during the synchronous processing of a response to a Warm
 XLN request. No events are processed in this state.
 
-3.3.1.5.7 Processing Compare State Query During Warm XLN
+###### 3.3.1.5.7 Processing Compare State Query During Warm XLN
 
 This is a transient state that is assumed during the synchronous processing of a Compare States
 query during a Warm XLN request. No events are processed in this state.
 
-3.3.1.5.8 Awaiting LU Status Response
+###### 3.3.1.5.8 Awaiting LU Status Response
 
 The following events are processed in this state:
 
@@ -9198,7 +8577,7 @@ Local LU Initiated Recovery Obsolete XLN Exchange
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.9 Processing LU Status Response
+###### 3.3.1.5.9 Processing LU Status Response
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -9207,10 +8586,11 @@ Release: April 23, 2024
 
 114 / 199
 
-This is a transient state that is assumed during the synchronous processing of a response to an LU
+
+This is a transient state that is assumed during the synchronous processing of a response to an LU
 status request. No events are processed in this state.
 
-3.3.1.5.10  Awaiting Compare States Query
+###### 3.3.1.5.10 Awaiting Compare States Query
 
 The following events are processed in this state:
 
@@ -9220,14 +8600,14 @@ message
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.11
+###### 3.3.1.5.11 Processing Compare States Query
 
-Processing Compare States Query
+
 
 This is a transient state that is assumed during the synchronous processing of a query for a Compare
 States request. No events are processed in this state.
 
-3.3.1.5.12  Awaiting Compare States Response
+###### 3.3.1.5.12 Awaiting Compare States Response
 
 The following events are processed in this state:
 
@@ -9238,23 +8618,23 @@ The following events are processed in this state:
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_COMPARESTATES
 message
 
-3.3.1.5.13
+###### 3.3.1.5.13 Processing Compare States Response
 
-Processing Compare States Response
+
 
 This is a transient state that is assumed during the synchronous processing of a response for a
 Compare States request. No events are processed in this state.
 
-3.3.1.5.14
+###### 3.3.1.5.14 Processing Compare States Error
 
-Processing Compare States Error
+
 
 This is a transient state that is assumed during the synchronous processing of a response for a
 Compare States error request. No events are processed in this state.
 
-3.3.1.5.15
+###### 3.3.1.5.15 Is Obsolete Awaiting Response To Cold XLN
 
-Is Obsolete Awaiting Response To Cold XLN
+
 
 The following events are processed in this state:
 
@@ -9268,9 +8648,9 @@ message
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.16
+###### 3.3.1.5.16 Is Obsolete Awaiting Response To Warm XLN
 
-Is Obsolete Awaiting Response To Warm XLN
+
 
 The following events are processed in this state:
 
@@ -9289,7 +8669,8 @@ Release: April 23, 2024
 
 115 / 199
 
-  Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_XLN message
+
+  Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_XLN message
 
   Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE message
 
@@ -9299,9 +8680,9 @@ message
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.17
+###### 3.3.1.5.17 Is Obsolete Awaiting LU Status Response
 
-Is Obsolete Awaiting LU Status Response
+
 
 The following events are processed in this state:
 
@@ -9309,29 +8690,29 @@ The following events are processed in this state:
 
   Connection Disconnected (section 3.3.5.4.10)
 
-3.3.1.5.18
+###### 3.3.1.5.18 Is Obsolete Processing Response
 
-Is Obsolete Processing Response
 
-This is a transient state that is assumed during the synchronous processing of a request. No events
-are processed in this state.
-
-3.3.1.5.19
-
-Is Obsolete Processing Compare State Query During Warm XLN
 
 This is a transient state that is assumed during the synchronous processing of a request. No events
 are processed in this state.
 
-3.3.1.5.20
+###### 3.3.1.5.19 Is Obsolete Processing Compare State Query During Warm XLN
 
-Ended
+
+
+This is a transient state that is assumed during the synchronous processing of a request. No events
+are processed in this state.
+
+###### 3.3.1.5.20 Ended
+
+
 
 This is the final state.
 
-3.3.1.5.21
+###### 3.3.1.5.21 State Diagram
 
-State Diagram
+
 
 The following figure shows the relationship between the
 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC acceptor states.
@@ -9343,7 +8724,8 @@ Release: April 23, 2024
 
 116 / 199
 
-<!-- Extracted images from page 117 -->
+
+<!-- Extracted images from page 117 -->
 ![Extracted image 1 from page 117]([MS-DTCLU].images/page117-img01.png)
 <!-- /Extracted images from page 117 -->
 
@@ -9356,7 +8738,8 @@ Release: April 23, 2024
 
 117 / 199
 
-<!-- Extracted images from page 118 -->
+
+<!-- Extracted images from page 118 -->
 ![Extracted image 1 from page 118]([MS-DTCLU].images/page118-img01.png)
 <!-- /Extracted images from page 118 -->
 
@@ -9369,7 +8752,8 @@ Release: April 23, 2024
 
 118 / 199
 
-<!-- Extracted images from page 119 -->
+
+<!-- Extracted images from page 119 -->
 ![Extracted image 1 from page 119]([MS-DTCLU].images/page119-img01.png)
 <!-- /Extracted images from page 119 -->
 
@@ -9382,13 +8766,14 @@ Release: April 23, 2024
 
 119 / 199
 
-<!-- Extracted images from page 120 -->
+
+<!-- Extracted images from page 120 -->
 ![Extracted image 1 from page 120]([MS-DTCLU].images/page120-img01.png)
 <!-- /Extracted images from page 120 -->
 
 Figure 17: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC, Part 4
 
-3.3.1.6  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Acceptor States
+##### 3.3.1.6 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU Acceptor States
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST act as an
 acceptor for the CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU connection type. In this role,
@@ -9410,7 +8795,8 @@ Release: April 23, 2024
 
 120 / 199
 
-  Awaiting XLN Confirmation
+
+  Awaiting XLN Confirmation
 
 
 
@@ -9436,7 +8822,7 @@ Is Obsolete Awaiting XLN Confirmation
 
 Ended
 
-3.3.1.6.1 Idle
+###### 3.3.1.6.1 Idle
 
 This is the initial state. The following event is processed in this state:
 
@@ -9444,12 +8830,12 @@ This is the initial state. The following event is processed in this state:
 
 message (section 3.3.5.5.1)
 
-3.3.1.6.2 Processing XLN Request
+###### 3.3.1.6.2 Processing XLN Request
 
 This is a transient state that is assumed during the synchronous processing of a XLN request. No
 events are processed in this state.
 
-3.3.1.6.3 Awaiting XLN Confirmation
+###### 3.3.1.6.3 Awaiting XLN Confirmation
 
 The following events are processed in this state:
 
@@ -9461,12 +8847,12 @@ message (section 3.3.5.5.2)
 
   Connection Disconnected (section 3.3.5.5.6)
 
-3.3.1.6.4 Processing XLN Confirmation
+###### 3.3.1.6.4 Processing XLN Confirmation
 
 This is a transient state that is assumed during the synchronous processing of an XLN confirmation
 request. No events are processed in this state.
 
-3.3.1.6.5 Awaiting Compare States Request
+###### 3.3.1.6.5 Awaiting Compare States Request
 
 The following event is processed in this state:
 
@@ -9476,12 +8862,12 @@ The following event is processed in this state:
 
   Connection Disconnected (section 3.3.5.5.6)
 
-3.3.1.6.6 Processing Compare States Request
+###### 3.3.1.6.6 Processing Compare States Request
 
 This is a transient state that is assumed during the synchronous processing of a Compare States
 request. No events are processed in this state.
 
-3.3.1.6.7 Awaiting Compare States Confirmation
+###### 3.3.1.6.7 Awaiting Compare States Confirmation
 
 [MS-DTCLU] - v20240423
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension
@@ -9490,7 +8876,8 @@ Release: April 23, 2024
 
 121 / 199
 
-The following events are processed in this state:
+
+The following events are processed in this state:
 
   Receiving a
 
@@ -9503,12 +8890,12 @@ message (section 3.3.5.5.5)
 
   Connection Disconnected (section 3.3.5.5.6)
 
-3.3.1.6.8 Processing Compare States Confirmation
+###### 3.3.1.6.8 Processing Compare States Confirmation
 
 This is a transient state that is assumed during the synchronous processing of a Compare States
 confirmation request. No events are processed in this state.
 
-3.3.1.6.9 Is Obsolete Awaiting XLN Confirmation
+###### 3.3.1.6.9 Is Obsolete Awaiting XLN Confirmation
 
 The following events are processed in this state:
 
@@ -9518,15 +8905,15 @@ message (section 3.3.5.5.2)
 
   Connection Disconnected (section 3.3.5.5.6)
 
-3.3.1.6.10
+###### 3.3.1.6.10 Ended
 
-Ended
+
 
 This is the final state.
 
-3.3.1.6.11
+###### 3.3.1.6.11 State Diagram
 
-State Diagram
+
 
 The following figure shows the relationship between the
 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU acceptor states.
@@ -9538,18 +8925,19 @@ Release: April 23, 2024
 
 122 / 199
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-DTCLU].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
 Figure 18: CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU acceptor states
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST provide the
 timer that is specified in the next section.
 
-3.3.2.1  LU Status Timer
+##### 3.3.2.1 LU Status Timer
 
 The LU Status timer is a nonrecurring timer. The timer MUST be started whenever an LU Pair object
 is synchronized and no recovery is in progress, as specified by the processing of the Synchronization
@@ -9568,10 +8956,11 @@ Release: April 23, 2024
 
 123 / 199
 
-Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST provide a distinct LU
+
+Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST provide a distinct LU
 Status timer instance for each LU Pair object.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST examine the
 following security flags on the Core Transaction Manager Facet (as specified in [MS-DTCO] section 3.2)
@@ -9610,12 +8999,12 @@ rejection reason set to 0x80070005:
 
   CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 The operation of the Core Transaction Manager Facet MUST be prepared to process the higher-layer
 events in this section.
 
-3.3.4.1  Recover
+##### 3.3.4.1 Recover
 
 This event is triggered by the higher-layer software hosting infrastructure when it reinitializes the
 system after a software failure or restart.
@@ -9644,7 +9033,8 @@ Release: April 23, 2024
 
 124 / 199
 
-
+
+
 
 For each LUW object in the LUW List of the currently referenced LU Pair object:
 
@@ -9699,16 +9089,16 @@ The Recovery Work Ready Reason set to LUW Recovery.
 Begin Commit event or Begin Rollback event for each transaction. Connection rejection is as
 specified in [MS-CMP] section 3.1.5.5, with the rejection reason value set to 0x80070005.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  CONNTYPE_TXUSER_DTCLUCONFIGURE as Acceptor
+##### 3.3.5.1 CONNTYPE_TXUSER_DTCLUCONFIGURE as Acceptor
 
 For all messages received in this Connection Type, the Transaction Manager Communicating with an
 LU 6.2 Implementation Facet MUST process the message, as specified in section 3.1. The Transaction
 Manager Communicating with an LU 6.2 Implementation Facet MUST also follow the processing rules
 specified in the following sections.
 
-3.3.5.1.1 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD Message
+###### 3.3.5.1.1 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_ADD Message
 
 When the Transaction Manager Communicating with an LU 6.2 Implementation Facet receives a
 TXUSER_DTCLURMCONFIGURE_MTAG_ADD (section 2.2.3.1.1) message, it MUST perform the
@@ -9727,7 +9117,8 @@ Release: April 23, 2024
 
 125 / 199
 
-  Attempt to find the LU Pair object keyed by the first cbLength bytes of the rgbBlob field of
+
+  Attempt to find the LU Pair object keyed by the first cbLength bytes of the rgbBlob field of
 
 the DTCLU_VARLEN_BYTEARRAY structure (contained in the LuNamePair field) of the
 message in the LU Pair Table.
@@ -9792,7 +9183,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.1.2 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE Message
+###### 3.3.5.1.2 Receiving a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE Message
 
 The Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST perform the
 following actions when it receives a TXUSER_DTCLURMCONFIGURE_MTAG_DELETE message:
@@ -9810,7 +9201,8 @@ Release: April 23, 2024
 
 126 / 199
 
-  Attempt to find the LU Pair object keyed by the first cbLength bytes of the rgbBlob field of
+
+  Attempt to find the LU Pair object keyed by the first cbLength bytes of the rgbBlob field of
 
 the DTCLU_VARLEN_BYTEARRAY structure (contained in the LuNamePair field) of the
 message in the LU Pair Table.
@@ -9864,14 +9256,14 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.2  CONNTYPE_TXUSER_DTCLURECOVERY as Acceptor
+##### 3.3.5.2 CONNTYPE_TXUSER_DTCLURECOVERY as Acceptor
 
 For all messages received in this connection type, the Transaction Manager Communicating with an LU
 6.2 Implementation Facet MUST process the message, as specified in section 3.1. The Transaction
 Manager Communicating with an LU 6.2 Implementation Facet MUST also follow the processing rules
 specified in the following sections.
 
-3.3.5.2.1 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH Message
+###### 3.3.5.2.1 Receiving a TXUSER_DTCLURMRECOVERY_MTAG_ATTACH Message
 
 A Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST perform the
 following actions to attempt to register the connection's MSDTC Connection Manager: OleTx
@@ -9892,7 +9284,8 @@ Release: April 23, 2024
 
 127 / 199
 
-  Attempt to find the LU Pair object keyed by the first cbLength bytes of the rgbBlob field of
+
+  Attempt to find the LU Pair object keyed by the first cbLength bytes of the rgbBlob field of
 
 the DTCLU_VARLEN_BYTEARRAY structure (contained in the LuNamePair field) of the
 message in the LU Pair Table.
@@ -9944,7 +9337,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.2.2 Connection Disconnected
+###### 3.3.5.2.2 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURECOVERY connection is disconnected, a Transaction Manager
 Communicating with an LU 6.2 Implementation Facet MUST perform the following actions:
@@ -9961,7 +9354,7 @@ Recovery Process Not Attached.
 
   Otherwise, the event MUST be processed as specified in [MS-DTCO] section 3.1.8.3
 
-3.3.5.3  CONNTYPE_TXUSER_DTCLURMENLISTMENT as Acceptor
+##### 3.3.5.3 CONNTYPE_TXUSER_DTCLURMENLISTMENT as Acceptor
 
 For all messages received in this connection type, the Transaction Manager Communicating with an
 LU 6.2 Implementation Facet MUST process the message as specified in section 3.1. The Transaction
@@ -9975,7 +9368,8 @@ Release: April 23, 2024
 
 128 / 199
 
-3.3.5.3.1 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_CREATE Message
+
+###### 3.3.5.3.1 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_CREATE Message
 
 When the Transaction Manager Communicating with an LU 6.2 Implementation Facet receives a
 TXUSER_DTCLURMENLISTMENT_MTAG_CREATE (section 2.2.3.3.1) message, it MUST perform the
@@ -10059,7 +9453,8 @@ Release: April 23, 2024
 
 129 / 199
 
-  Otherwise:
+
+  Otherwise:
 
   Attempt to find the Transaction object keyed by the value of the guidTx field of the
 
@@ -10140,7 +9535,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Add the new LUW object to the LUW List of the found LU Pair Object.
+
+  Add the new LUW object to the LUW List of the found LU Pair Object.
 
   Signal the Create Subordinate Enlistment event (as specified in [MS-DTCO]
 section 3.2.7.11) on the Core Transaction Manager Facet with the following
@@ -10160,7 +9556,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.3.2 Receiving a
+###### 3.3.5.3.2 Receiving a
 
 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT Message
 
@@ -10196,7 +9592,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.3.3 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT
+###### 3.3.5.3.3 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKOUT
 
 Message
 
@@ -10231,7 +9627,8 @@ Release: April 23, 2024
 
 131 / 199
 
-  Signal the Enlistment Phase One Complete event (as specified in [MS-DTCO] section 3.2.7.16)
+
+  Signal the Enlistment Phase One Complete event (as specified in [MS-DTCO] section 3.2.7.16)
 
 on the Core Transaction Manager Facet with the following arguments:
 
@@ -10255,7 +9652,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.3.4 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET
+###### 3.3.5.3.4 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_FORGET
 
 Message
 
@@ -10307,7 +9704,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.3.5 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT
+###### 3.3.5.3.5 Receiving a TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_BACKEDOUT
 
 Message
 
@@ -10322,7 +9719,8 @@ Release: April 23, 2024
 
 132 / 199
 
-
+
+
 
 If the connection state is Awaiting Abort Response:
 
@@ -10348,7 +9746,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.3.6 Receiving a
+###### 3.3.5.3.6 Receiving a
 
 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_CONVERSATIONLOST
 Message
@@ -10416,7 +9814,8 @@ Release: April 23, 2024
 
 133 / 199
 
-  Otherwise, if the connection state is Ended:
+
+  Otherwise, if the connection state is Ended:
 
 
 
@@ -10426,7 +9825,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.3.7 Connection Disconnected
+###### 3.3.5.3.7 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURMENLISTMENT connection is disconnected, the Transaction
 Manager Communicating with an LU 6.2 Implementation Facet MUST perform the following actions:
@@ -10491,7 +9890,7 @@ Ignore the event.
 
   Otherwise, the event MUST be processed as specified in [MS-DTCO] section 3.1.8.3.
 
-3.3.5.4  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Acceptor
+##### 3.3.5.4 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC as Acceptor
 
 For all messages received in this connection type, the transaction manager MUST process the
 message, as specified in 3.1. The transaction manager MUST additionally follow the processing rules
@@ -10504,7 +9903,8 @@ Release: April 23, 2024
 
 134 / 199
 
-3.3.5.4.1 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
+
+###### 3.3.5.4.1 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_GETWORK
 
 Message
 
@@ -10564,7 +9964,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.2 Receiving a
+###### 3.3.5.4.2 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NEW_RECOVERY_SEQ_
 NUM Message
@@ -10594,7 +9994,8 @@ Release: April 23, 2024
 
 135 / 199
 
-
+
+
 
 If the return value from the Received New Recovery Sequence Number event is TRUE:
 
@@ -10689,7 +10090,8 @@ Release: April 23, 2024
 
 136 / 199
 
-
+
+
 
 Ignore the message.
 
@@ -10697,7 +10099,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.3 Receiving a
+###### 3.3.5.4.3 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FROM_
 OUR_XLN Message
@@ -10783,7 +10185,8 @@ Release: April 23, 2024
 
 137 / 199
 
-
+
+
 
 The connection object
 
@@ -10863,7 +10266,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.4 Receiving a
+###### 3.3.5.4.4 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_XL
 N Message
@@ -10875,7 +10278,8 @@ Release: April 23, 2024
 
 138 / 199
 
-When the Transaction Manager Communicating with an LU 6.2 Implementation Facet receives a
+
+When the Transaction Manager Communicating with an LU 6.2 Implementation Facet receives a
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_XLN message, it MUST
 perform the following actions:
 
@@ -10968,11 +10372,12 @@ Release: April 23, 2024
 
 139 / 199
 
-  Otherwise, the message MUST be processed as an invalid message, as specified in [MS-DTCO],
+
+  Otherwise, the message MUST be processed as an invalid message, as specified in [MS-DTCO],
 
 section 3.1.6.
 
-3.3.5.4.5 Receiving a
+###### 3.3.5.4.5 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_XLN_RESPONSE
 Message
@@ -11060,7 +10465,8 @@ Release: April 23, 2024
 
 140 / 199
 
-  Send a
+
+  Send a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CONFIRMATION_FOR_THEIR_XLN
 message using the connection.
@@ -11157,7 +10563,8 @@ Release: April 23, 2024
 
 141 / 199
 
-  Signal the Local LU Initiated Recovery Worker Ended event with the following arguments:
+
+  Signal the Local LU Initiated Recovery Worker Ended event with the following arguments:
 
 
 
@@ -11259,7 +10666,8 @@ Release: April 23, 2024
 
 142 / 199
 
-  Otherwise:
+
+  Otherwise:
 
   Signal the Local LU Initiated Recovery Worker Ended event with the following
 
@@ -11315,7 +10723,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.6 Receiving a
+###### 3.3.5.4.6 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_CHECK_FOR_COMPARES
 TATES Message
@@ -11353,7 +10761,8 @@ Release: April 23, 2024
 
 143 / 199
 
-  Signal the Local LU Initiated Recovery Worker Ended event with the following arguments:
+
+  Signal the Local LU Initiated Recovery Worker Ended event with the following arguments:
 
 
 
@@ -11449,7 +10858,8 @@ Release: April 23, 2024
 
 144 / 199
 
-  Send a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NO_COMPARESTATES
+
+  Send a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NO_COMPARESTATES
 
 message using the connection.
 
@@ -11545,7 +10955,8 @@ Release: April 23, 2024
 
 145 / 199
 
-  Otherwise:
+
+  Otherwise:
 
   Set the LUW Recovery State field of the LUW object to Recovering.
 
@@ -11616,7 +11027,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.7 Receiving a
+###### 3.3.5.4.7 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_THEIR_COMPARESTATE
 S Message
@@ -11642,7 +11053,8 @@ Release: April 23, 2024
 
 146 / 199
 
-  Disconnect the connection on which the message was received.
+
+  Disconnect the connection on which the message was received.
 
   Set the connection state to Ended.
 
@@ -11734,7 +11146,8 @@ Release: April 23, 2024
 
 147 / 199
 
-  Set the LUW Recovery State field of the LUW object referenced by the LUW To
+
+  Set the LUW Recovery State field of the LUW object referenced by the LUW To
 
 Recover field of the connection to Recovery Not Needed.
 
@@ -11772,7 +11185,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.8 Receiving a
+###### 3.3.5.4.8 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_ERROR_FROM_OUR_CO
 MPARESTATES Message
@@ -11813,7 +11226,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.9 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS
+###### 3.3.5.4.9 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS
 
 Message
 
@@ -11824,7 +11237,8 @@ Release: April 23, 2024
 
 148 / 199
 
-When the Transaction Manager Communicating with an LU 6.2 Implementation Facet receives a
+
+When the Transaction Manager Communicating with an LU 6.2 Implementation Facet receives a
 TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_LUSTATUS message, it MUST perform the
 following actions:
 
@@ -11900,9 +11314,9 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.4.10
+###### 3.3.5.4.10 Connection Disconnected
 
-Connection Disconnected
+
 
 When a CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYDTC connection is disconnected, the
 Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST perform the
@@ -11920,7 +11334,8 @@ Release: April 23, 2024
 
 149 / 199
 
-  Signal the Local LU Initiated Recovery Worker Ended event with the following arguments:
+
+  Signal the Local LU Initiated Recovery Worker Ended event with the following arguments:
 
 
 
@@ -11963,14 +11378,14 @@ Ignore the event.
 
   Otherwise, the event MUST be processed as specified in [MS-DTCO] section 3.1.8.3.
 
-3.3.5.5  CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Acceptor
+##### 3.3.5.5 CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU as Acceptor
 
 For all messages received in this Connection Type, the Transaction Manager Communicating with an
 LU 6.2 Implementation Facet MUST process the message, as specified in section 3.1. The Transaction
 Manager Communicating with an LU 6.2 Implementation Facet MUST also follow the processing rules
 specified in the following sections.
 
-3.3.5.5.1 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN
+###### 3.3.5.5.1 Receiving a TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_XLN
 
 Message
 
@@ -12009,7 +11424,8 @@ Release: April 23, 2024
 
 150 / 199
 
-
+
+
 
 The connection object
 
@@ -12107,7 +11523,8 @@ Release: April 23, 2024
 
 151 / 199
 
-
+
+
 
 The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY
 structure (contained in the OurLogName field) MUST be set to the Local Log
@@ -12209,7 +11626,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The connection object
 
@@ -12309,7 +11727,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -12340,7 +11759,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.5.2 Receiving a
+###### 3.3.5.5.2 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
 _XLN Message
@@ -12400,7 +11819,8 @@ Release: April 23, 2024
 
 154 / 199
 
-
+
+
 
 The connection object
 
@@ -12468,7 +11888,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.5.3 Receiving a
+###### 3.3.5.5.3 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_THEIR_COMPARESTATES
 Message
@@ -12490,7 +11910,8 @@ Release: April 23, 2024
 
 155 / 199
 
-  Attempt to find the first LUW object in the LUW List of the LU Pair object referenced by this
+
+  Attempt to find the first LUW object in the LUW List of the LU Pair object referenced by this
 
 connection for which the following condition is TRUE:
 
@@ -12592,7 +12013,8 @@ Release: April 23, 2024
 
 156 / 199
 
-
+
+
 
 The transaction manager that communicates with an LU 6.2 Implementation MAY
 perform the following actions:
@@ -12690,7 +12112,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The Enlistment object of the LUW object referenced by this connection
 
@@ -12755,7 +12178,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.5.4 Receiving a
+###### 3.3.5.5.4 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_CONFIRMATION_OF_OUR
 _COMPARESTATES Message
@@ -12783,7 +12206,8 @@ Release: April 23, 2024
 
 158 / 199
 
-
+
+
 
 
 
@@ -12803,7 +12227,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.5.5 Receiving a
+###### 3.3.5.5.5 Receiving a
 
 TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_ERROR_OF_OUR_COMPA
 RESTATES Message
@@ -12844,7 +12268,7 @@ Ignore the message.
 
 section 3.1.6.
 
-3.3.5.5.6 Connection Disconnected
+###### 3.3.5.5.6 Connection Disconnected
 
 When a CONNTYPE_TXUSER_DTCLURECOVERYINITIATEDBYLU connection is disconnected, the
 Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST perform the
@@ -12875,7 +12299,8 @@ Release: April 23, 2024
 
 159 / 199
 
-
+
+
 
 The LU Pair object referenced by this connection
 
@@ -12903,9 +12328,9 @@ Ignore the message.
 
   Otherwise, the event MUST be processed as specified in [MS-DTCO] section 3.1.8.3.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
-3.3.6.1  LU Status Timer Tick
+##### 3.3.6.1 LU Status Timer Tick
 
 The LU Status Timer Tick event MUST be signaled with the following argument:
 
@@ -12924,12 +12349,12 @@ The provided LU Pair object
 
 The Recovery Work Ready Reason set to LU Status Timer
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 A Transaction Manager Communicating with an LU 6.2 Implementation Facet MUST be prepared to
 process the local events defined in the following sections.
 
-3.3.7.1  Create Subordinate Enlistment Success
+##### 3.3.7.1 Create Subordinate Enlistment Success
 
 The Create Subordinate Enlistment Success event MUST be signaled with the following argument:
 
@@ -12957,7 +12382,8 @@ Release: April 23, 2024
 
 160 / 199
 
-3.3.7.2  Create Subordinate Enlistment Failure
+
+##### 3.3.7.2 Create Subordinate Enlistment Failure
 
 The Create Subordinate Enlistment Failure event MUST be signaled with the following arguments:
 
@@ -13008,7 +12434,7 @@ connection of the provided Enlistment object.
 
   Otherwise, ignore the event.
 
-3.3.7.3  Begin Phase One
+##### 3.3.7.3 Begin Phase One
 
 The Begin Phase One event MUST be signaled with the following arguments:
 
@@ -13040,7 +12466,8 @@ Release: April 23, 2024
 
 161 / 199
 
-3.3.7.4  Begin Rollback
+
+##### 3.3.7.4 Begin Rollback
 
 The Begin Rollback event MUST be signaled with the following argument:
 
@@ -13118,7 +12545,7 @@ The provided Active Phase Enlistment object.
 
   Otherwise, ignore the event.
 
-3.3.7.5  Begin Commit
+##### 3.3.7.5 Begin Commit
 
 The Begin Commit event MUST be signaled with the following argument:
 
@@ -13131,7 +12558,8 @@ Release: April 23, 2024
 
 162 / 199
 
-If the Begin Commit event is signaled, the Transaction Manager Communicating with an LU 6.2
+
+If the Begin Commit event is signaled, the Transaction Manager Communicating with an LU 6.2
 Implementation Facet MUST perform the following actions:
 
 
@@ -13187,7 +12615,7 @@ connection of the provided Enlistment object.
 
   Otherwise, ignore the event.
 
-3.3.7.6  Local LU Initiated Recovery Obsolete XLN Exchange
+##### 3.3.7.6 Local LU Initiated Recovery Obsolete XLN Exchange
 
 The Local LU Initiated Recovery Obsolete XLN Exchange event MUST be signaled with the following
 argument:
@@ -13218,7 +12646,8 @@ Release: April 23, 2024
 
 163 / 199
 
-3.3.7.7  Send Cold XLN
+
+##### 3.3.7.7 Send Cold XLN
 
 The Send Cold XLN event MUST be signaled with the following argument:
 
@@ -13256,7 +12685,7 @@ connection.
 The cbLength field of the DTCLU_VARLEN_BYTEARRAY structure (contained in the
 RemoteLogName field) of the message MUST be set to 0.
 
-3.3.7.8  Send Warm XLN
+##### 3.3.7.8 Send Warm XLN
 
 The Send Warm XLN event MUST be signaled with the following argument:
 
@@ -13305,13 +12734,14 @@ Release: April 23, 2024
 
 164 / 199
 
-
+
+
 
 The first cbLength bytes of the rgbBlob field of the DTCLU_VARLEN_BYTEARRAY structure
 (contained in the RemoteLogName field) of the message MUST be set to the Remote Log
 Name field of the LU Pair object referenced by the connection.
 
-3.3.7.9  Send Check LU Status
+##### 3.3.7.9 Send Check LU Status
 
 The Send Check LU Status event MUST be signaled with the following argument:
 
@@ -13326,9 +12756,9 @@ If the Send Check LU Status event is signaled, the Transaction Manager Communica
 
 using the connection.
 
-3.3.7.10
+##### 3.3.7.10 Remote LU Initiated Recovery Obsolete XLN Exchange
 
-Remote LU Initiated Recovery Obsolete XLN Exchange
+
 
 The Remote LU Initiated Recovery Obsolete XLN Exchange event MUST be signaled with the following
 argument:
@@ -13344,9 +12774,9 @@ If the connection state is Awaiting XLN Confirmation:
 
   Set the connection state to Is Obsolete Awaiting XLN Confirmation.
 
-3.3.7.11
+##### 3.3.7.11 Recovery Work Ready
 
-Recovery Work Ready
+
 
 The Recovery Work Ready event MUST be signaled with the following arguments:
 
@@ -13389,7 +12819,8 @@ Release: April 23, 2024
 
 165 / 199
 
-
+
+
 
 
 
@@ -13485,7 +12916,8 @@ Release: April 23, 2024
 
 166 / 199
 
-  Signal the Send Warm XLN event on the previously found connection
+
+  Signal the Send Warm XLN event on the previously found connection
 
 object.
 
@@ -13577,15 +13009,16 @@ Release: April 23, 2024
 
 167 / 199
 
-  Otherwise:
+
+  Otherwise:
 
 
 
 Ignore the event.
 
-3.3.7.12
+##### 3.3.7.12 Received New Recovery Sequence Number
 
-Received New Recovery Sequence Number
+
 
 The Received New Recovery Sequence Number event MUST be signaled with the following arguments:
 
@@ -13638,9 +13071,9 @@ The Recovery Work Ready Reason set to Miscellaneous
 
   Set the return value to TRUE.
 
-3.3.7.13
+##### 3.3.7.13 Obsolete All XLN Exchanges
 
-Obsolete All XLN Exchanges
+
 
 The Obsolete All XLN Exchanges event MUST be signaled with the following argument:
 
@@ -13667,13 +13100,14 @@ Release: April 23, 2024
 
 168 / 199
 
-  Signal the Remote LU Initiated Recovery Obsolete XLN Exchange event on the connection
+
+  Signal the Remote LU Initiated Recovery Obsolete XLN Exchange event on the connection
 
 object.
 
-3.3.7.14
+##### 3.3.7.14 Received New Remote Log Name
 
-Received New Remote Log Name
+
 
 The Received New Remote Log Name event MUST be signaled with the following arguments:
 
@@ -13697,9 +13131,9 @@ name.
 
 Remote Name.
 
-3.3.7.15
+##### 3.3.7.15 Begin Remote LU Initiated Synchronization
 
-Begin Remote LU Initiated Synchronization
+
 
 The Begin Remote LU Initiated Synchronization event MUST be signaled with the following argument:
 
@@ -13727,9 +13161,9 @@ Have Remote Name.
 
 Remote Name.
 
-3.3.7.16
+##### 3.3.7.16 Begin Local LU Initiated Synchronization
 
-Begin Local LU Initiated Synchronization
+
 
 The Begin Local LU Initiated Synchronization event MUST be signaled with the following argument:
 
@@ -13754,7 +13188,8 @@ Release: April 23, 2024
 
 169 / 199
 
-  Set the LU Pair Recovery State field of the provided LU Pair object to Synchronizing
+
+  Set the LU Pair Recovery State field of the provided LU Pair object to Synchronizing
 
 Have Remote Name.
 
@@ -13764,9 +13199,9 @@ Have Remote Name.
 
 Remote Name.
 
-3.3.7.17
+##### 3.3.7.17 Synchronization Successful
 
-Synchronization Successful
+
 
 The Synchronization Successful event MUST be signaled with the following argument:
 
@@ -13809,9 +13244,9 @@ The provided LU Pair object
 
 The Recovery Work Ready Reason set to LUW Recovery
 
-3.3.7.18
+##### 3.3.7.18 Synchronization Inconsistent
 
-Synchronization Inconsistent
+
 
 The Synchronization Inconsistent event MUST be signaled with the following argument:
 
@@ -13842,13 +13277,14 @@ Release: April 23, 2024
 
 170 / 199
 
-
+
+
 
 The provided LU Pair object
 
-3.3.7.19
+##### 3.3.7.19 Received LU Status
 
-Received LU Status
+
 
 The Received LU Status event MUST be signaled with the following argument:
 
@@ -13891,9 +13327,9 @@ The Recovery Work Ready Reason set to LUW Recovery
 
   Start the LU Status Timer that is associated with the provided LU Pair object.
 
-3.3.7.20
+##### 3.3.7.20 Local LU Initiated Recovery Worker Ended
 
-Local LU Initiated Recovery Worker Ended
+
 
 The Local LU Initiated Recovery Worker Ended event MUST be signaled with the following arguments:
 
@@ -13935,13 +13371,14 @@ Release: April 23, 2024
 
 171 / 199
 
-
+
+
 
 Ignore the event.
 
-3.3.7.21
+##### 3.3.7.21 Synchronization Connection Down
 
-Synchronization Connection Down
+
 
 The Synchronization Connection Down event MUST be signaled with the following argument:
 
@@ -13990,9 +13427,9 @@ The Recovery Work Ready Reason set to Miscellaneous.
 
 Ignore the event.
 
-3.3.7.22
+##### 3.3.7.22 Remote LU Initiated Recovery Ended
 
-Remote LU Initiated Recovery Ended
+
 
 The Remote LU Initiated Recovery Ended event MUST be signaled with the following arguments:
 
@@ -14032,15 +13469,16 @@ Release: April 23, 2024
 
 172 / 199
 
-  Otherwise:
+
+  Otherwise:
 
 
 
 Ignore the event.
 
-3.3.7.23
+##### 3.3.7.23 Recovery Down
 
-Recovery Down
+
 
 The Recovery Down event MUST be signaled with the following argument:
 
@@ -14063,9 +13501,9 @@ If the Is Warm flag of the provided LU Pair object is FALSE:
 
 The provided LU Pair object
 
-3.3.7.24
+##### 3.3.7.24 LUW Conversation Lost
 
-LUW Conversation Lost
+
 
 The LUW Conversation Lost event MUST be signaled with the following arguments:
 
@@ -14095,7 +13533,8 @@ Release: April 23, 2024
 
 173 / 199
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following sections describe several examples of common scenarios to illustrate the function of the
 MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Extension. These
@@ -14107,14 +13546,14 @@ CMP]) that are in turn layered on top of the OleTx transports infrastructure (as
 CMPO]). In these examples, messages are sent from one participant to another by submitting a
 MESSAGE_PACKET to the underlying OleTx multiplexing layer, as specified in [MS-CMP] section 2.2.2.
 
-4.1  LU Name Pair Configuration Scenario
+### 4.1 LU Name Pair Configuration Scenario
 
 This scenario shows how an LU 6.2 implementation (section 3.2) adds an LU Name Pair to the set of
 LU Name Pairs LU Name Pairs held by a transaction manager and then deletes it. The scenario
 begins by the LU 6.2 implementation establishing a transport session with a transaction manager and
 negotiating its connection resources.
 
-4.1.1  Configuring an LU Name Pair
+#### 4.1.1 Configuring an LU Name Pair
 
 This packet sequence is initiated by starting a connection on a transport session between an LU 6.2
 Implementation and a transaction manager.
@@ -14196,7 +13635,8 @@ Release: April 23, 2024
 
 174 / 199
 
-Field
+
+Field
 
 Value
 
@@ -14291,7 +13731,7 @@ TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED response from the transaction
 manager, no more user messages can be sent on this connection, and the LU 6.2 Implementation
 initiates the disconnect sequence.
 
-4.1.2  Deleting an LU Name Pair
+#### 4.1.2 Deleting an LU Name Pair
 
 This packet sequence is initiated by starting a connection on a transport session between an LU 6.2
 implementation (section 3.2) and a transaction manager.
@@ -14306,7 +13746,8 @@ Release: April 23, 2024
 
 175 / 199
 
-Field
+
+Field
 
 Value
 
@@ -14428,7 +13869,8 @@ Release: April 23, 2024
 
 176 / 199
 
-Field
+
+Field
 
 Value
 
@@ -14469,7 +13911,7 @@ TXUSER_DTCLURMCONFIGURE_MTAG_REQUEST_COMPLETED response from its transaction man
 no more user messages can be sent on this connection, and the LU 6.2 implementation initiates the
 disconnect sequence.
 
-4.2  Registering as the Recovery Process for an LU Name Pair Scenario
+### 4.2 Registering as the Recovery Process for an LU Name Pair Scenario
 
 This scenario shows how an LU 6.2 implementation registers as the recovery process for an LU
 Name Pair with a transaction manager. The scenario begins by the LU 6.2 implementation
@@ -14477,7 +13919,7 @@ establishing a transport session with a transaction manager and negotiating its 
 resources. It assumes that the LU Name Pair for which the recovery process is being registered was
 configured with the transaction manager (section 4.1.1).
 
-4.2.1  Registering the Recovery Process
+#### 4.2.1 Registering the Recovery Process
 
 This packet sequence is initiated by starting a connection on a transport session between an LU 6.2
 implementation and a transaction manager.
@@ -14541,7 +13983,8 @@ Release: April 23, 2024
 
 177 / 199
 
-Field
+
+Field
 
 Value
 
@@ -14663,12 +14106,13 @@ Release: April 23, 2024
 
 178 / 199
 
-4.2.2  Unregistering the Recovery Process
+
+#### 4.2.2 Unregistering the Recovery Process
 
 To unregister from the recovery process, the LU 6.2 implementation initiates the disconnect
 sequence on the connection that it used to register as the recovery process.
 
-4.3  Performing Cold Recovery for an LU Name Pair Scenario
+### 4.3 Performing Cold Recovery for an LU Name Pair Scenario
 
 This scenario shows how an LU 6.2 implementation performs cold recovery for an LU Name Pair
 with a transaction manager. The scenario begins by the LU 6.2 implementation establishing a
@@ -14676,7 +14120,7 @@ transport session with a transaction manager and negotiating its connection reso
 that the LU 6.2 implementation has already registered a connection as the recovery process for the
 LU Name Pair(section 4.2.1) and is maintaining that connection.
 
-4.3.1  Performing Cold Recovery
+#### 4.3.1 Performing Cold Recovery
 
 This packet sequence is initiated by starting a connection on a transport session between an LU 6.2
 implementation and a transaction manager.
@@ -14776,7 +14220,8 @@ Release: April 23, 2024
 
 179 / 199
 
-Field
+
+Field
 
 Value
 
@@ -14906,7 +14351,8 @@ Release: April 23, 2024
 
 180 / 199
 
-Field
+
+Field
 
 Value
 
@@ -15056,7 +14502,8 @@ Release: April 23, 2024
 
 181 / 199
 
-Field
+
+Field
 
 Value
 
@@ -15161,7 +14608,7 @@ TXUSER_DTCLURECOVERYINITIATEDBYDTC_MTAG_NO_COMPARESTATES user message, no furthe
 messages are sent that use this connection and the LU 6.2 implementation initiates the disconnect
 sequence.
 
-4.4  Enlisting in an OleTx Transaction as an LU 6.2 Implementation Scenario
+### 4.4 Enlisting in an OleTx Transaction as an LU 6.2 Implementation Scenario
 
 This scenario shows how an LU 6.2 implementation enlists in an OleTx transaction, and then
 participates in the Two-Phase Commit protocol. The scenario begins by the LU 6.2 implementation
@@ -15173,7 +14620,8 @@ Release: April 23, 2024
 
 182 / 199
 
-establishing a transport session with a transaction manager and negotiating its connection
+
+establishing a transport session with a transaction manager and negotiating its connection
 resources. It assumes that an LU 6.2 implementation has already registered a connection as the
 recovery process for the LU Name Pair Registering the Recovery Process (section 4.2.1), is
 maintaining that connection, and has performed recovery Performing Cold Recovery for an LU Name
@@ -15181,7 +14629,7 @@ Pair Scenario (section 4.3). For this example, it is also assumed that a transac
 begun an OleTx transaction and that it will commit the transaction (for more information, see [MS-
 DTCO] section 4.1).
 
-4.4.1  Enlisting an LUW on an OleTx Transaction
+#### 4.4.1 Enlisting an LUW on an OleTx Transaction
 
 This packet sequence is initiated by starting a connection on a transport session between an LU 6.2
 implementation and a transaction manager.
@@ -15307,7 +14755,8 @@ Release: April 23, 2024
 
 183 / 199
 
-Field
+
+Field
 
 Value
 
@@ -15423,7 +14872,8 @@ Release: April 23, 2024
 
 184 / 199
 
-Name Pair and the LUW LuTransId. For this example, the enlistment is successful and the transaction
+
+Name Pair and the LUW LuTransId. For this example, the enlistment is successful and the transaction
 manager sends a TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED user message to the
 LU 6.2 implementation.
 
@@ -15467,7 +14917,7 @@ When the LU 6.2 implementation (section 3.2) receives the
 TXUSER_DTCLURMENLISTMENT_MTAG_REQUEST_COMPLETED user message, it maintains the
 connection and waits for Two-Phase Commit message processing.
 
-4.4.2  Participating in Two Phase Commit
+#### 4.4.2 Participating in Two Phase Commit
 
 When the OleTx transaction is committed, the transaction manager sends a
 TXUSER_DTCLURMENLISTMENT_MTAG_TO_LU_PREPARE user message to the LU 6.2 implementation.
@@ -15557,7 +15007,8 @@ Release: April 23, 2024
 
 185 / 199
 
-When the transaction manager receives the
+
+When the transaction manager receives the
 TXUSER_DTCLURMENLISTMENT_MTAG_TO_DTC_REQUESTCOMMIT user message, it notes that the
 logical unit of work is prepared and awaits entry to Phase Two. For this example, the transaction
 manager decides that the transaction outcome is a commit outcome, and sends a
@@ -15689,7 +15140,8 @@ Release: April 23, 2024
 
 186 / 199
 
-4.5  Performing Warm Recovery for an LU Name Pair Scenario
+
+### 4.5 Performing Warm Recovery for an LU Name Pair Scenario
 
 This scenario shows how an LU 6.2 implementation performs warm recovery with a transaction
 manager. In this scenario, the LU 6.2 implementation recovers a transaction in the failed-to-notify
@@ -15703,7 +15155,7 @@ manager and negotiating its connection resources. It assumes that the LU 6.2 imp
 already registered a connection as the recovery process for the LU Name Pair Registering the
 Recovery Process (section 4.2.1) and is maintaining that connection.
 
-4.5.1  Performing Warm Recovery
+#### 4.5.1 Performing Warm Recovery
 
 This packet sequence is initiated by starting a new connection on a transport session between an
 LU 6.2 implementation and a transaction manager.
@@ -15801,7 +15253,8 @@ Release: April 23, 2024
 
 187 / 199
 
-Field
+
+Field
 
 Value
 
@@ -15937,7 +15390,8 @@ Release: April 23, 2024
 
 188 / 199
 
-Field
+
+Field
 
 Value
 
@@ -16068,7 +15522,8 @@ Release: April 23, 2024
 
 189 / 199
 
-Field
+
+Field
 
 cbLength
 
@@ -16183,7 +15638,8 @@ Release: April 23, 2024
 
 190 / 199
 
-Field
+
+Field
 
 Value
 
@@ -16331,7 +15787,8 @@ Release: April 23, 2024
 
 191 / 199
 
-Field
+
+Field
 
 Value
 
@@ -16438,9 +15895,10 @@ Release: April 23, 2024
 
 192 / 199
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The transaction processing protocol that is defined by this specification is intended for use in an
 environment where all participants are trusted to collaborate in driving transactions toward a final
@@ -16474,7 +15932,8 @@ Release: April 23, 2024
 
 193 / 199
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -16540,7 +15999,8 @@ Release: April 23, 2024
 
 194 / 199
 
-<4> Section 3.2.1: The LU Transactions Enabled flag is not supported in Windows 2000, Windows
+
+<4> Section 3.2.1: The LU Transactions Enabled flag is not supported in Windows 2000, Windows
 XP, Windows Server 2003, Windows Vista, and Windows Server 2008. Otherwise, in Windows, the
 DTCLU extension protocol is enabled by default.
 
@@ -16576,7 +16036,8 @@ Release: April 23, 2024
 
 195 / 199
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -16620,7 +16081,8 @@ Release: April 23, 2024
 
 196 / 199
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -16787,7 +16249,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-M
+
+M
 
 Message processing
    LU 6.2 (section 3.1.6 61, section 3.2.5 92)
@@ -16970,7 +16433,8 @@ MSDTC Connection Manager: OleTx Transaction Protocol Logical Unit Mainframe Exte
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_C
+
+TXUSER_DTCLURECOVERYINITIATEDBYLU_MTAG_C
 ONFIRMATION_OF_OUR_COMPARESTATES
 packet 57
 

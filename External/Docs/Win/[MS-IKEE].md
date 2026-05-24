@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 102
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: September 16, 2024
 
 2 / 102
 
-Date
+
+Date
 
 Revision
 History
@@ -531,7 +533,8 @@ Release: September 16, 2024
 
 3 / 102
 
-Date
+
+Date
 
 Revision
 History
@@ -623,589 +626,223 @@ Release: September 16, 2024
 
 4 / 102
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-1.3.4
-1.3.5
-1.3.6
-1.3.7
-1.3.8
-1.3.9
-1.3.10
-1.3.11
-1.3.12
-1.3.13
-1.3.14
-
-1  Introduction .......................................................................................................... 10
-Glossary ......................................................................................................... 10
-References ...................................................................................................... 12
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 15
-Network Address Translation Traversal (NAT-T) .............................................. 15
-IKE Fragmentation ...................................................................................... 16
-Authentication Using a Cryptographically Generated Address ........................... 17
-Fast Failover .............................................................................................. 17
-Negotiation Discovery ................................................................................. 17
-Reliable Delete ........................................................................................... 18
-Denial of Service Protection ......................................................................... 18
-IKE/AuthIP Co-Existence ............................................................................. 18
-IKE SA Correlation (IKEv2) .......................................................................... 18
-IKE Server Internal Addresses Configuration Attributes (IKEv2) ....................... 18
-Xbox Multiplayer Gaming (IKEv2) ................................................................. 18
-IPsec Security Realm (IKEv2 transport mode) ................................................ 19
-IKEv2 Fragmentation .................................................................................. 19
-Extension to RFC Cross Reference ................................................................. 19
-Relationship to Other Protocols .......................................................................... 20
-Prerequisites/Preconditions ............................................................................... 20
-General Prerequisites/Preconditions .............................................................. 20
-CGA Authentication Prerequisites/Preconditions .............................................. 21
-Applicability Statement ..................................................................................... 21
-Versioning and Capability Negotiation ................................................................. 21
-Vendor-Extensible Fields ................................................................................... 22
-Standards Assignments ..................................................................................... 22
-
-1.6
-1.7
-1.8
-1.9
-
-1.5.1
-1.5.2
-
-1.4
-1.5
-
-2.1
-2.2
-
-2.2.3.1
-
-2.2.1
-2.2.2
-2.2.3
-
-2  Messages ............................................................................................................... 23
-Transport ........................................................................................................ 23
-Message Syntax ............................................................................................... 23
-NAT-T Payload Types .................................................................................. 23
-NAT-T UDP Encapsulation Modes .................................................................. 23
-IKE Message Fragment ................................................................................ 24
-Fragment Payload Packet ....................................................................... 24
-AUTH_CGA Authentication Method Packet ...................................................... 25
-ID_IPV6_CGA Identification Type Packet ....................................................... 25
-Notify Payload Packet .................................................................................. 26
-Notify Payload (IKEv2) Packet ...................................................................... 28
-Configuration Attribute (IKEv2) Packet .......................................................... 28
-Correlation Payload (IKEv2) Packet ............................................................... 29
-Security Realm Vendor ID Payload (IKEv2) .................................................... 30
-IKEv2 Fragment Message ............................................................................ 30
-2.2.11.1  Notify Payload ...................................................................................... 30
-Encrypted Fragment Payload .................................................................. 31
-2.2.11.2
-
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-
-3.1
-
-3  Protocol Details ..................................................................................................... 33
-Common Details .............................................................................................. 33
-Abstract Data Model .................................................................................... 33
-Timers ...................................................................................................... 34
-Initialization ............................................................................................... 34
-Higher-Layer Triggered Events ..................................................................... 34
-Message Processing Events and Sequencing Rules .......................................... 35
-Timer Events .............................................................................................. 36
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-
-[MS-IKEE] - v20240916
-Internet Key Exchange Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-5 / 102
-
-3.2.4.1
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2
-
-3.1.7
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.3
-
-3.2.6
-3.2.7
-
-3.3.1
-3.3.2
-3.3.3
-3.3.4
-
-3.3.5
-
-Other Local Events ...................................................................................... 36
-NAT Traversal Details ....................................................................................... 36
-Abstract Data Model .................................................................................... 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Start of an IKE MM SA Negotiation .......................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-Receiving Message #1 ........................................................................... 37
-Receiving Message #2 ........................................................................... 38
-Receiving Other Messages ...................................................................... 38
-Timer Events .............................................................................................. 38
-Other Local Events ...................................................................................... 38
-IKE Fragmentation Details ................................................................................. 38
-Abstract Data Model .................................................................................... 39
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Higher-Layer Triggered Events ..................................................................... 40
-Start of an IKE MM SA Negotiation .......................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-Receiving Message #1 ........................................................................... 40
-Receiving Message #2 ........................................................................... 41
-Receiving Other IKE Messages ................................................................ 41
-Timer Events .............................................................................................. 42
-Expiration of Fragmentation Timer .......................................................... 42
-Expiration of the Fragment Reassembly Timer .......................................... 42
-Other Local Events ...................................................................................... 42
-CGA Authentication Details ................................................................................ 42
-Abstract Data Model .................................................................................... 43
-Timers ...................................................................................................... 44
-Initialization ............................................................................................... 44
-Higher-Layer Triggered Events ..................................................................... 44
-Start of an IKE MM SA Negotiation .......................................................... 44
-Message Processing Events and Sequencing Rules .......................................... 45
-Receiving Message #1 ........................................................................... 45
-Receiving Message #2 ........................................................................... 45
-Receiving Message #3 ........................................................................... 45
-Receiving Message #4 ........................................................................... 45
-Receiving Message #5 ........................................................................... 45
-Receiving Message #6 ........................................................................... 46
-Timer Events .............................................................................................. 46
-Other Local Events ...................................................................................... 46
-Fast Failover Client Details ................................................................................ 46
-Abstract Data Model .................................................................................... 46
-Timers ...................................................................................................... 47
-Initialization ............................................................................................... 47
-Higher-Layer Triggered Events ..................................................................... 47
-Start of an IKE MM SA Negotiation .......................................................... 47
-Message Processing Events and Sequencing Rules .......................................... 47
-Receiving Message #1 ........................................................................... 47
-Receiving Message #2 ........................................................................... 47
-Timer Events .............................................................................................. 48
-Expiration of the QM SA Idle Timer .......................................................... 48
-Other Local Events ...................................................................................... 48
-Successful Negotiation of a QM SA .......................................................... 48
-Fast Failover Server Details ............................................................................... 48
-Abstract Data Model .................................................................................... 48
-Timers ...................................................................................................... 48
-
-3.3.4.1
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-
-3.3.6.1
-3.3.6.2
-
-3.3.6
-
-3.4
-
-3.3.7
-
-3.4.1
-3.4.2
-3.4.3
-3.4.4
-
-3.4.5
-
-3.4.4.1
-
-3.4.5.1
-3.4.5.2
-3.4.5.3
-3.4.5.4
-3.4.5.5
-3.4.5.6
-
-3.5
-
-3.4.6
-3.4.7
-
-3.5.1
-3.5.2
-3.5.3
-3.5.4
-
-3.5.4.1
-
-3.5.5
-
-3.5.5.1
-3.5.5.2
-
-3.5.6
-
-3.5.7
-
-3.5.6.1
-
-3.5.7.1
-
-3.6
-
-3.6.1
-3.6.2
-
-[MS-IKEE] - v20240916
-Internet Key Exchange Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-6 / 102
-
-3.7
-
-3.8
-
-3.9
-
-3.8.5
-
-3.7.5
-
-3.6.5
-
-3.8.4.1
-
-3.6.4.1
-
-3.6.3
-3.6.4
-
-3.7.6
-3.7.7
-
-3.6.6
-3.6.7
-
-3.7.4.1
-3.7.4.2
-
-3.6.5.1
-3.6.5.2
-
-3.8.1
-3.8.2
-3.8.3
-3.8.4
-
-3.7.1
-3.7.2
-3.7.3
-3.7.4
-
-3.7.5.1
-3.7.5.2
-3.7.5.3
-3.7.5.4
-
-Initialization ............................................................................................... 48
-Higher-Layer Triggered Events ..................................................................... 49
-Start of an IKE MM SA Negotiation .......................................................... 49
-Message Processing Events and Sequencing Rules .......................................... 49
-Receiving Message #1 ........................................................................... 49
-Receiving Message #2 ........................................................................... 49
-Timer Events .............................................................................................. 49
-Other Local Events ...................................................................................... 49
-Negotiation Discovery Details ............................................................................ 49
-Abstract Data Model .................................................................................... 53
-Timers ...................................................................................................... 54
-Initialization ............................................................................................... 54
-Higher-Layer Triggered Events ..................................................................... 54
-Outbound Packet .................................................................................. 54
-Inbound Packet ..................................................................................... 55
-Message Processing Events and Sequencing Rules .......................................... 56
-Receiving Message #1 ........................................................................... 56
-Receiving Message #2 ........................................................................... 56
-Receiving Message #5 ........................................................................... 56
-Receiving Message #6 ........................................................................... 57
-Timer Events .............................................................................................. 57
-Other Local Events ...................................................................................... 57
-Reliable Delete Details ...................................................................................... 57
-Abstract Data Model .................................................................................... 57
-Timers ...................................................................................................... 58
-Initialization ............................................................................................... 58
-Higher-Layer Triggered Events ..................................................................... 58
-SA Deletion/Invalidation ........................................................................ 58
-Message Processing Events and Sequencing Rules .......................................... 59
-Receiving Message #1 ........................................................................... 59
-Receiving Message #2 ........................................................................... 59
-Timer Events .............................................................................................. 59
-Expiration of the Delete Retransmission Timer .......................................... 59
-Other Local Events ...................................................................................... 60
-Shutdown ............................................................................................ 60
-MM SA Exhaustion................................................................................. 60
-Denial of Service Protection Details .................................................................... 60
-Abstract Data Model .................................................................................... 61
-Timers ...................................................................................................... 61
-Initialization ............................................................................................... 61
-Higher-Layer Triggered Events ..................................................................... 62
-Message Processing Events and Sequencing Rules .......................................... 62
-Receiving Message #1 ........................................................................... 62
-Receiving Message #2 ........................................................................... 62
-Receiving Message #3 ........................................................................... 62
-Timer Events .............................................................................................. 63
-Other Local Events ...................................................................................... 63
-IKE SA Correlation (IKEV2) Details ..................................................................... 63
-Abstract Data Model .................................................................................... 63
-3.10.1
-Timers ...................................................................................................... 63
-3.10.2
-3.10.3
-Initialization ............................................................................................... 63
-3.10.4  Higher-Layer Triggered Events ..................................................................... 64
-3.10.5  Message Processing Events and Sequencing Rules .......................................... 64
-Receiving Message #1 ........................................................................... 65
-Receiving Subsequent Messages ............................................................. 65
-Receiving the Error Notify ...................................................................... 65
-3.10.6
-Timer Events .............................................................................................. 65
-3.10.7  Other Local Events ...................................................................................... 65
-
-3.9.1
-3.9.2
-3.9.3
-3.9.4
-3.9.5
-
-3.10.5.1
-3.10.5.2
-3.10.5.3
-
-3.9.5.1
-3.9.5.2
-3.9.5.3
-
-3.8.5.1
-3.8.5.2
-
-3.8.7.1
-3.8.7.2
-
-3.9.6
-3.9.7
-
-3.8.6.1
-
-3.8.6
-
-3.8.7
-
-3.10
-
-[MS-IKEE] - v20240916
-Internet Key Exchange Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-7 / 102
-
-3.13
-
-3.11
-
-3.12.6
-
-3.12.7.1
-
-3.12.5.1
-
-3.12.6.1
-
-3.11.5.1
-3.11.5.2
-
-IKE Server Internal Addresses Configuration Attributes (IKEv2) Details .................. 65
-Abstract Data Model .................................................................................... 66
-3.11.1
-Timers ...................................................................................................... 66
-3.11.2
-3.11.3
-Initialization ............................................................................................... 66
-3.11.4  Higher-Layer Triggered Events ..................................................................... 66
-3.11.5  Message Processing Events and Sequencing Rules .......................................... 66
-Receiving Message #1 ........................................................................... 67
-Receiving Message #2 ........................................................................... 67
-3.11.6
-Timer Events .............................................................................................. 67
-3.11.7  Other Local Events ...................................................................................... 68
-3.12  Dead Peer Detection Details .............................................................................. 68
-Abstract Data Model .................................................................................... 68
-3.12.1
-Timers ...................................................................................................... 68
-3.12.2
-3.12.3
-Initialization ............................................................................................... 68
-3.12.4  Higher-Layer Triggered Events ..................................................................... 68
-3.12.4.1
-TCP Dead Peer Detection ....................................................................... 68
-3.12.4.2  UDP Dead Peer Detection ....................................................................... 68
-3.12.5  Message Processing Events and Sequencing Rules .......................................... 69
-Receiving a UDP Packet ......................................................................... 69
-Timer Events .............................................................................................. 69
-Expiration of the QM SA Idle Timer .......................................................... 69
-3.12.7  Other Local Events ...................................................................................... 69
-Successful Negotiation of a QM SA and MM SA .......................................... 69
-Xbox Multiplayer Gaming (IKEv2) Vendor IDs Details ........................................... 69
-Abstract Data Model .................................................................................... 69
-3.13.1
-Timers ...................................................................................................... 69
-3.13.2
-3.13.3
-Initialization ............................................................................................... 70
-3.13.4  Higher-Layer Triggered Events ..................................................................... 70
-3.13.5  Message Processing Events and Sequencing Rules .......................................... 70
-3.13.5.1  Microsoft Xbox One 2013 Vendor ID ........................................................ 70
-Xbox IKEv2 Negotiation Vendor ID .......................................................... 70
-3.13.5.2
-3.13.6
-Timer Events .............................................................................................. 70
-3.13.7  Other Local Events ...................................................................................... 71
-Security Realm ID (IKEv2) Vendor IDs Details ..................................................... 71
-Abstract Data Model .................................................................................... 71
-3.14.1
-Timers ...................................................................................................... 71
-3.14.2
-3.14.3
-Initialization ............................................................................................... 71
-3.14.4  Higher-Layer Triggered Events ..................................................................... 71
-3.14.5  Message Processing Events and Sequencing Rules .......................................... 71
-IKE_SA_INIT Messages .......................................................................... 72
-IKE_SA_AUTH and CREATE_CHILD_SA Messages ...................................... 73
-3.14.6
-Timer Events .............................................................................................. 73
-3.14.7  Other Local Events ...................................................................................... 73
-IKEv2 Fragmentation Details ............................................................................. 73
-Abstract Data Model .................................................................................... 74
-3.15.1
-Timers ...................................................................................................... 75
-3.15.2
-3.15.3
-Initialization ............................................................................................... 75
-3.15.4  Higher-Layer Triggered Events ..................................................................... 75
-3.15.5  Message Processing Events and Sequencing Rules .......................................... 75
-Receiving Message #1 ........................................................................... 75
-3.15.5.1
-3.15.5.2
-Receiving Message #2 ........................................................................... 75
-3.15.5.3  Other IKE Messages .............................................................................. 75
-Timer Events .............................................................................................. 76
-3.15.6
-3.15.7  Other Local Events ...................................................................................... 76
-IKEv2 Proxy-Call Session Control IP Addresses Configuration Attributes Details ....... 76
-Abstract Data Model .................................................................................... 76
-Timers ...................................................................................................... 76
-Initialization ............................................................................................... 76
-
-3.16.1
-3.16.2
-3.16.3
-
-3.14.5.1
-3.14.5.2
-
-3.16
-
-3.14
-
-3.15
-
-[MS-IKEE] - v20240916
-Internet Key Exchange Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-8 / 102
-
-3.16.4  Higher-Layer Triggered Events ..................................................................... 76
-3.16.5  Message Processing Events and Sequencing Rules .......................................... 76
-Timer Events .............................................................................................. 77
-3.16.6
-3.16.7  Other Local Events ...................................................................................... 77
-
-4  Protocol Examples ................................................................................................. 78
-Negotiation Discovery Examples......................................................................... 78
-
-4.1
-
-5.1
-
-5  Security ................................................................................................................. 80
-Security Considerations for Implementers ........................................................... 80
-Negotiation Discovery ................................................................................. 80
-Index of Security Parameters ............................................................................ 80
-
-5.1.1
-
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 81
-
-7  Change Tracking .................................................................................................... 98
-
-8  Index ..................................................................................................................... 99
-
-[MS-IKEE] - v20240916
-Internet Key Exchange Protocol Extensions
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-9 / 102
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Network Address Translation Traversal (NAT-T)](#131-network-address-translation-traversal-nat-t)
+    - [1.3.2 IKE Fragmentation](#132-ike-fragmentation)
+    - [1.3.3 Authentication Using a Cryptographically Generated Address](#133-authentication-using-a-cryptographically-generated-address)
+    - [1.3.4 Fast Failover](#134-fast-failover)
+    - [1.3.5 Negotiation Discovery](#135-negotiation-discovery)
+    - [1.3.6 Reliable Delete](#136-reliable-delete)
+    - [1.3.7 Denial of Service Protection](#137-denial-of-service-protection)
+    - [1.3.8 IKE/AuthIP Co-Existence](#138-ikeauthip-co-existence)
+    - [1.3.9 IKE SA Correlation (IKEv2)](#139-ike-sa-correlation-ikev2)
+    - [1.3.10 IKE Server Internal Addresses Configuration Attributes (IKEv2)](#1310-ike-server-internal-addresses-configuration-attributes-ikev2)
+    - [1.3.11 Xbox Multiplayer Gaming (IKEv2)](#1311-xbox-multiplayer-gaming-ikev2)
+    - [1.3.12 IPsec Security Realm (IKEv2 transport mode)](#1312-ipsec-security-realm-ikev2-transport-mode)
+    - [1.3.13 IKEv2 Fragmentation](#1313-ikev2-fragmentation)
+    - [1.3.14 Extension to RFC Cross Reference](#1314-extension-to-rfc-cross-reference)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+    - [1.5.1 General Prerequisites/Preconditions](#151-general-prerequisitespreconditions)
+    - [1.5.2 CGA Authentication Prerequisites/Preconditions](#152-cga-authentication-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 NAT-T Payload Types](#221-nat-t-payload-types)
+    - [2.2.2 NAT-T UDP Encapsulation Modes](#222-nat-t-udp-encapsulation-modes)
+    - [2.2.3 IKE Message Fragment](#223-ike-message-fragment)
+      - [2.2.3.1 Fragment Payload Packet](#2231-fragment-payload-packet)
+    - [2.2.4 AUTH_CGA Authentication Method Packet](#224-authcga-authentication-method-packet)
+    - [2.2.5 ID_IPV6_CGA Identification Type Packet](#225-idipv6cga-identification-type-packet)
+    - [2.2.6 Notify Payload Packet](#226-notify-payload-packet)
+    - [2.2.7 Notify Payload (IKEv2) Packet](#227-notify-payload-ikev2-packet)
+    - [2.2.8 Configuration Attribute (IKEv2) Packet](#228-configuration-attribute-ikev2-packet)
+    - [2.2.9 Correlation Payload (IKEv2) Packet](#229-correlation-payload-ikev2-packet)
+    - [2.2.10 Security Realm Vendor ID Payload (IKEv2)](#2210-security-realm-vendor-id-payload-ikev2)
+    - [2.2.11 IKEv2 Fragment Message](#2211-ikev2-fragment-message)
+      - [2.2.11.1 Notify Payload](#22111-notify-payload)
+      - [2.2.11.2 Encrypted Fragment Payload](#22112-encrypted-fragment-payload)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 NAT Traversal Details](#32-nat-traversal-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Start of an IKE MM SA Negotiation](#3241-start-of-an-ike-mm-sa-negotiation)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Receiving Message #1](#3251-receiving-message-1)
+      - [3.2.5.2 Receiving Message #2](#3252-receiving-message-2)
+      - [3.2.5.3 Receiving Other Messages](#3253-receiving-other-messages)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 IKE Fragmentation Details](#33-ike-fragmentation-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Start of an IKE MM SA Negotiation](#3341-start-of-an-ike-mm-sa-negotiation)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Receiving Message #1](#3351-receiving-message-1)
+      - [3.3.5.2 Receiving Message #2](#3352-receiving-message-2)
+      - [3.3.5.3 Receiving Other IKE Messages](#3353-receiving-other-ike-messages)
+    - [3.3.6 Timer Events](#336-timer-events)
+      - [3.3.6.1 Expiration of Fragmentation Timer](#3361-expiration-of-fragmentation-timer)
+      - [3.3.6.2 Expiration of the Fragment Reassembly Timer](#3362-expiration-of-the-fragment-reassembly-timer)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+  - [3.4 CGA Authentication Details](#34-cga-authentication-details)
+    - [3.4.1 Abstract Data Model](#341-abstract-data-model)
+    - [3.4.2 Timers](#342-timers)
+    - [3.4.3 Initialization](#343-initialization)
+    - [3.4.4 Higher-Layer Triggered Events](#344-higher-layer-triggered-events)
+      - [3.4.4.1 Start of an IKE MM SA Negotiation](#3441-start-of-an-ike-mm-sa-negotiation)
+    - [3.4.5 Message Processing Events and Sequencing Rules](#345-message-processing-events-and-sequencing-rules)
+      - [3.4.5.1 Receiving Message #1](#3451-receiving-message-1)
+      - [3.4.5.2 Receiving Message #2](#3452-receiving-message-2)
+      - [3.4.5.3 Receiving Message #3](#3453-receiving-message-3)
+      - [3.4.5.4 Receiving Message #4](#3454-receiving-message-4)
+      - [3.4.5.5 Receiving Message #5](#3455-receiving-message-5)
+      - [3.4.5.6 Receiving Message #6](#3456-receiving-message-6)
+    - [3.4.6 Timer Events](#346-timer-events)
+    - [3.4.7 Other Local Events](#347-other-local-events)
+  - [3.5 Fast Failover Client Details](#35-fast-failover-client-details)
+    - [3.5.1 Abstract Data Model](#351-abstract-data-model)
+    - [3.5.2 Timers](#352-timers)
+    - [3.5.3 Initialization](#353-initialization)
+    - [3.5.4 Higher-Layer Triggered Events](#354-higher-layer-triggered-events)
+      - [3.5.4.1 Start of an IKE MM SA Negotiation](#3541-start-of-an-ike-mm-sa-negotiation)
+    - [3.5.5 Message Processing Events and Sequencing Rules](#355-message-processing-events-and-sequencing-rules)
+      - [3.5.5.1 Receiving Message #1](#3551-receiving-message-1)
+      - [3.5.5.2 Receiving Message #2](#3552-receiving-message-2)
+    - [3.5.6 Timer Events](#356-timer-events)
+      - [3.5.6.1 Expiration of the QM SA Idle Timer](#3561-expiration-of-the-qm-sa-idle-timer)
+    - [3.5.7 Other Local Events](#357-other-local-events)
+      - [3.5.7.1 Successful Negotiation of a QM SA](#3571-successful-negotiation-of-a-qm-sa)
+  - [3.6 Fast Failover Server Details](#36-fast-failover-server-details)
+    - [3.6.1 Abstract Data Model](#361-abstract-data-model)
+    - [3.6.2 Timers](#362-timers)
+    - [3.6.3 Initialization](#363-initialization)
+    - [3.6.4 Higher-Layer Triggered Events](#364-higher-layer-triggered-events)
+      - [3.6.4.1 Start of an IKE MM SA Negotiation](#3641-start-of-an-ike-mm-sa-negotiation)
+    - [3.6.5 Message Processing Events and Sequencing Rules](#365-message-processing-events-and-sequencing-rules)
+      - [3.6.5.1 Receiving Message #1](#3651-receiving-message-1)
+      - [3.6.5.2 Receiving Message #2](#3652-receiving-message-2)
+    - [3.6.6 Timer Events](#366-timer-events)
+    - [3.6.7 Other Local Events](#367-other-local-events)
+  - [3.7 Negotiation Discovery Details](#37-negotiation-discovery-details)
+    - [3.7.1 Abstract Data Model](#371-abstract-data-model)
+    - [3.7.2 Timers](#372-timers)
+    - [3.7.3 Initialization](#373-initialization)
+    - [3.7.4 Higher-Layer Triggered Events](#374-higher-layer-triggered-events)
+      - [3.7.4.1 Outbound Packet](#3741-outbound-packet)
+      - [3.7.4.2 Inbound Packet](#3742-inbound-packet)
+    - [3.7.5 Message Processing Events and Sequencing Rules](#375-message-processing-events-and-sequencing-rules)
+      - [3.7.5.1 Receiving Message #1](#3751-receiving-message-1)
+      - [3.7.5.2 Receiving Message #2](#3752-receiving-message-2)
+      - [3.7.5.3 Receiving Message #5](#3753-receiving-message-5)
+      - [3.7.5.4 Receiving Message #6](#3754-receiving-message-6)
+    - [3.7.6 Timer Events](#376-timer-events)
+    - [3.7.7 Other Local Events](#377-other-local-events)
+  - [3.8 Reliable Delete Details](#38-reliable-delete-details)
+    - [3.8.1 Abstract Data Model](#381-abstract-data-model)
+    - [3.8.2 Timers](#382-timers)
+    - [3.8.3 Initialization](#383-initialization)
+    - [3.8.4 Higher-Layer Triggered Events](#384-higher-layer-triggered-events)
+      - [3.8.4.1 SA Deletion/Invalidation](#3841-sa-deletioninvalidation)
+    - [3.8.5 Message Processing Events and Sequencing Rules](#385-message-processing-events-and-sequencing-rules)
+      - [3.8.5.1 Receiving Message #1](#3851-receiving-message-1)
+  - [3.11 of [RFC2408].](#311-of-rfc2408)
+    - [3.11.1 Abstract Data Model](#3111-abstract-data-model)
+    - [3.11.2 Timers](#3112-timers)
+    - [3.11.3 Initialization](#3113-initialization)
+    - [3.11.4 Higher-Layer Triggered Events](#3114-higher-layer-triggered-events)
+    - [3.11.5 Message Processing Events and Sequencing Rules](#3115-message-processing-events-and-sequencing-rules)
+      - [3.11.5.1 Receiving Message #1](#31151-receiving-message-1)
+      - [3.11.5.2 Receiving Message #2](#31152-receiving-message-2)
+    - [3.11.6 Timer Events](#3116-timer-events)
+    - [3.11.7 Other Local Events](#3117-other-local-events)
+  - [3.12 Dead Peer Detection Details](#312-dead-peer-detection-details)
+    - [3.12.1 Abstract Data Model](#3121-abstract-data-model)
+    - [3.12.2 Timers](#3122-timers)
+    - [3.12.3 Initialization](#3123-initialization)
+    - [3.12.4 Higher-Layer Triggered Events](#3124-higher-layer-triggered-events)
+      - [3.12.4.1 TCP Dead Peer Detection](#31241-tcp-dead-peer-detection)
+      - [3.12.4.2 UDP Dead Peer Detection](#31242-udp-dead-peer-detection)
+    - [3.12.5 Message Processing Events and Sequencing Rules](#3125-message-processing-events-and-sequencing-rules)
+      - [3.12.5.1 Receiving a UDP Packet](#31251-receiving-a-udp-packet)
+    - [3.12.6 Timer Events](#3126-timer-events)
+      - [3.12.6.1 Expiration of the QM SA Idle Timer](#31261-expiration-of-the-qm-sa-idle-timer)
+    - [3.12.7 Other Local Events](#3127-other-local-events)
+      - [3.12.7.1 Successful Negotiation of a QM SA and MM SA](#31271-successful-negotiation-of-a-qm-sa-and-mm-sa)
+  - [3.13 Xbox Multiplayer Gaming (IKEv2) Vendor IDs Details](#313-xbox-multiplayer-gaming-ikev2-vendor-ids-details)
+    - [3.13.1 Abstract Data Model](#3131-abstract-data-model)
+    - [3.13.2 Timers](#3132-timers)
+    - [3.13.3 Initialization](#3133-initialization)
+    - [3.13.4 Higher-Layer Triggered Events](#3134-higher-layer-triggered-events)
+    - [3.13.5 Message Processing Events and Sequencing Rules](#3135-message-processing-events-and-sequencing-rules)
+      - [3.13.5.1 Microsoft Xbox One 2013 Vendor ID](#31351-microsoft-xbox-one-2013-vendor-id)
+      - [3.13.5.2 Xbox IKEv2 Negotiation Vendor ID](#31352-xbox-ikev2-negotiation-vendor-id)
+    - [3.13.6 Timer Events](#3136-timer-events)
+    - [3.13.7 Other Local Events](#3137-other-local-events)
+  - [3.14 Security Realm ID (IKEv2) Vendor IDs Details](#314-security-realm-id-ikev2-vendor-ids-details)
+    - [3.14.1 Abstract Data Model](#3141-abstract-data-model)
+    - [3.14.2 Timers](#3142-timers)
+    - [3.14.3 Initialization](#3143-initialization)
+    - [3.14.4 Higher-Layer Triggered Events](#3144-higher-layer-triggered-events)
+    - [3.14.5 Message Processing Events and Sequencing Rules](#3145-message-processing-events-and-sequencing-rules)
+      - [3.14.5.1 IKE_SA_INIT Messages](#31451-ikesainit-messages)
+      - [3.14.5.2 IKE_SA_AUTH and CREATE_CHILD_SA Messages](#31452-ikesaauth-and-createchildsa-messages)
+    - [3.14.6 Timer Events](#3146-timer-events)
+    - [3.14.7 Other Local Events](#3147-other-local-events)
+  - [3.15 IKEv2 Fragmentation Details](#315-ikev2-fragmentation-details)
+    - [3.15.1 Abstract Data Model](#3151-abstract-data-model)
+    - [3.15.2 Timers](#3152-timers)
+    - [3.15.3 Initialization](#3153-initialization)
+    - [3.15.4 Higher-Layer Triggered Events](#3154-higher-layer-triggered-events)
+    - [3.15.5 Message Processing Events and Sequencing Rules](#3155-message-processing-events-and-sequencing-rules)
+      - [3.15.5.1 Receiving Message #1](#31551-receiving-message-1)
+      - [3.15.5.2 Receiving Message #2](#31552-receiving-message-2)
+      - [3.15.5.3 Other IKE Messages](#31553-other-ike-messages)
+    - [3.15.6 Timer Events](#3156-timer-events)
+    - [3.15.7 Other Local Events](#3157-other-local-events)
+  - [3.16 IKEv2 Proxy-Call Session Control IP Addresses Configuration Attributes Details](#316-ikev2-proxy-call-session-control-ip-addresses-configuration-attributes-details)
+    - [3.16.1 Abstract Data Model](#3161-abstract-data-model)
+    - [3.16.2 Timers](#3162-timers)
+    - [3.16.3 Initialization](#3163-initialization)
+    - [3.16.4 Higher-Layer Triggered Events](#3164-higher-layer-triggered-events)
+    - [3.16.5 Message Processing Events and Sequencing Rules](#3165-message-processing-events-and-sequencing-rules)
+    - [3.16.6 Timer Events](#3166-timer-events)
+    - [3.16.7 Other Local Events](#3167-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Negotiation Discovery Examples](#41-negotiation-discovery-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+    - [5.1.1 Negotiation Discovery](#511-negotiation-discovery)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 Internet Key Exchange (IKE) Protocol Extensions applies to the IKE Protocol version 1 (IKEv1) and
 version 2 (IKEv2) based on several protocols and RFC specifications. These extensions provide
@@ -1220,7 +857,7 @@ addresses configuration attributes (IKEv2). See the Overview for more informatio
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1272,7 +909,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-quick mode security associations (SAs). Both Internet Key Exchange (IKE) and AuthIP
+
+quick mode security associations (SAs). Both Internet Key Exchange (IKE) and AuthIP
 fall under the IPsec DOI.
 
 Encapsulating Security Payload (ESP): An Internet Protocol security (IPsec) encapsulation
@@ -1348,7 +986,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-negotiation to time out, then sending traffic in the clear. With negotiation discovery, the host
+
+negotiation to time out, then sending traffic in the clear. With negotiation discovery, the host
 starts the IKE negotiation and sends clear text traffic in parallel. If the IKE negotiation
 succeeds and security associations (SAs) are established, further traffic is secured.
 
@@ -1428,14 +1067,15 @@ Release: September 16, 2024
 
 12 / 102
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1495,7 +1135,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[RFC4306] Kaufman, C., "Internet Key Exchange (IKEv2) Protocol", RFC 4306, December 2005,
+
+[RFC4306] Kaufman, C., "Internet Key Exchange (IKEv2) Protocol", RFC 4306, December 2005,
 https://www.rfc-editor.org/info/rfc4306
 
 [RFC4555] P. Eronen, Ed., "IKEv2 Mobility and Multihoming Protocol (MOBIKE)", RFC 4555, June
@@ -1523,7 +1164,7 @@ editor.org/info/rfc792
 [RFC8017] Moriarty, K., Ed., Kaliski, B., Jonsson, J., and Rusch, A., "PKCS #1: RSA Cryptography
 Specifications Version 2.2", November 2016, https://www.rfc-editor.org/info/rfc8017
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DRAFT-NATT] Kivinen, T., Huttunen, A., Swander, B., and Volpe, V., "Negotiation of NAT-Traversal in
 the IKE", June 2002, http://tools.ietf.org/id/draft-ietf-ipsec-nat-t-ike-03.txt
@@ -1562,7 +1203,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-[RFC4302] Kent, S., "IP Authentication Header", RFC 4302, December 2005, https://www.rfc-
+
+[RFC4302] Kent, S., "IP Authentication Header", RFC 4302, December 2005, https://www.rfc-
 editor.org/info/rfc4302
 
 [RFC4303] Kent, S., "IP Encapsulating Security Payload (ESP)", RFC 4303, December 2005,
@@ -1583,7 +1225,7 @@ September 1981, https://www.rfc-editor.org/info/rfc791
 [SHA256] National Institute of Standards and Technology, "FIPS 180-2, Secure Hash Standard
 (SHS)", August 2002, http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
 
-1.3  Overview
+### 1.3 Overview
 
 Internet Key Exchange (IKE) Protocol Extensions (IKEE) apply to the IKE Protocol versions 1 and 2, as
 specified in [RFC2407], [RFC2408], [RFC2409], [RFC3947], and [RFC4306]. These extensions provide
@@ -1613,7 +1255,7 @@ This document specifies the extensions to IKE. Each of these IKE extensions is i
 be implemented in isolation. There is no sequencing between the individual extensions. An
 implementation of this protocol can support any combination of these IKE extensions.<2>
 
-1.3.1  Network Address Translation Traversal (NAT-T)
+#### 1.3.1 Network Address Translation Traversal (NAT-T)
 
 In the original IPsec specifications, the interposition of network address translation (NAT) devices
 between IPsec peers prevents correct IPsec operation. For more information about the
@@ -1626,7 +1268,8 @@ Release: September 16, 2024
 
 15 / 102
 
-Two specifications have been defined to address these incompatibilities. For more information about
+
+Two specifications have been defined to address these incompatibilities. For more information about
 the User Datagram Protocol (UDP) encapsulation of ESP packets, see [RFC3948]. UDP-encapsulated
 ESP packets are correctly translated by NAT devices. [RFC3947] specifies an IKE extension to detect
 the presence of NAT devices between two IPsec peers and to negotiate the use of a UDP-encapsulated
@@ -1657,7 +1300,7 @@ hosts, preference is given to [RFC3947] over [DRAFT-NATT].
 
 For details, see section 3.2.
 
-1.3.2  IKE Fragmentation
+#### 1.3.2 IKE Fragmentation
 
 IKE uses UDP as a transport. IKE messages can be sufficiently large; so the underlying IP layer might
 fragment them, as described in [RFC791] section 2.3. This fragmentation typically happens with IKE
@@ -1694,7 +1337,8 @@ Release: September 16, 2024
 
 16 / 102
 
-1.3.3  Authentication Using a Cryptographically Generated Address
+
+#### 1.3.3 Authentication Using a Cryptographically Generated Address
 
 This extension specifies a new authentication method for IKE based on cryptographically
 generated addresses (CGAs), as specified in [RFC3972]. A CGA is an IPv6 address for which the
@@ -1714,7 +1358,7 @@ structure is transmitted by using a new CGA identification payload as part of th
 
 For details, see section 3.4.
 
-1.3.4  Fast Failover
+#### 1.3.4 Fast Failover
 
 This extension reduces the time required for a client to restore an IPsec security association (SA)
 to the virtual IP address for a cluster of hosts after a failure on one of the hosts that is sharing the
@@ -1730,7 +1374,7 @@ shorter quick mode idle timer. In this way, a new QM SA is renegotiated faster i
 For more information about clusters based on virtual IP addresses, see [MSFT-WLBS]. For
 specifications, see sections 3.5 and 3.6.
 
-1.3.5  Negotiation Discovery
+#### 1.3.5 Negotiation Discovery
 
 IKE Protocol Extensions enable a client to determine whether a remote peer supports IPsec-protected
 communications.
@@ -1757,7 +1401,8 @@ Release: September 16, 2024
 
 17 / 102
 
-1.3.6  Reliable Delete
+
+#### 1.3.6 Reliable Delete
 
 This extension enables a peer to reliably confirm the deletion of a security association that is
 established with another peer. The original IKE specification does not require the acknowledgment of
@@ -1774,7 +1419,7 @@ Delete message is retransmitted.
 
 For details, see section 3.8.
 
-1.3.7  Denial of Service Protection
+#### 1.3.7 Denial of Service Protection
 
 A responder (1) that implements the IKE protocol has to create states for all correctly formed initial
 requests, even if the initiator is flooding the responder (1) with packets from multiple incorrect IP
@@ -1789,26 +1434,26 @@ This extension enables a responder (1) to delay creating state until it has veri
 
 For details, see section 3.9.
 
-1.3.8  IKE/AuthIP Co-Existence
+#### 1.3.8 IKE/AuthIP Co-Existence
 
 This extension allows two peers that are both IKEv1 and authenticated IP (AuthIP)-capable to
 negotiate the use of AuthIP over IKEv1. This extension is specified in [MS-AIPS] section 1.7 and also
 applies to IKE.<3>
 
-1.3.9  IKE SA Correlation (IKEv2)
+#### 1.3.9 IKE SA Correlation (IKEv2)
 
 This extension allows two different IKEv2 IKE_SA to be correlated together. Assume that an IKE_SA
 has been established. This is called SAoriginal. At a later time, to ensure that the client credentials are
 still valid, but without tearing down the existing SA, a new IKE_SA (called SAcurrent) can be built to
 embed a new payload in this exchange that securely correlates this SA with the original SA.
 
-1.3.10 IKE Server Internal Addresses Configuration Attributes (IKEv2)
+#### 1.3.10 IKE Server Internal Addresses Configuration Attributes (IKEv2)
 
 This extension allows the IKEv2 client endpoint of an IPsec remote access client (IRAC), as specified
 in [RFC4306] section 2.19, to determine the internal IPv4 and IPv6 addresses of the IPsec remote
 access server (IRAS), as also specified in [RFC4306] section 2.19.
 
-1.3.11 Xbox Multiplayer Gaming (IKEv2)
+#### 1.3.11 Xbox Multiplayer Gaming (IKEv2)
 
 This extension is used by two IKEv2 peers negotiating SAs for Xbox multiplayer gaming scenarios.
 There are two vendor ID payloads used for this extension. The first vendor ID payload, "Microsoft
@@ -1822,11 +1467,12 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-identifier are used by negotiating peers to distinguish between various types of multiplayer gaming
+
+identifier are used by negotiating peers to distinguish between various types of multiplayer gaming
 secure connections and to do some throttling based on the type. Details of these extensions are
 specified in section 3.13.
 
-1.3.12 IPsec Security Realm (IKEv2 transport mode)
+#### 1.3.12 IPsec Security Realm (IKEv2 transport mode)
 
 An IPsec Security Realm defines per-application IPsec policies and the set of related applications
 whose network traffic is secured by these policies. The security realm refers to the common set of
@@ -1842,7 +1488,7 @@ If the message from the initiator for negotiating the child SA does not have an 
 Realm Id" vendor ID, but the parent IKE SA is associated with a security realm policy, then this
 message will be discarded by the responder and the child SA negotiation will be failed.
 
-1.3.13 IKEv2 Fragmentation
+#### 1.3.13 IKEv2 Fragmentation
 
 Similar to the IKE fragmentation case described in section 1.3.2, IKEv2 fragmentation is a new
 solution that improves security by avoiding IP-level fragmentation. For larger IKEv2 messages that
@@ -1850,7 +1496,7 @@ exceed the path maximum transmission unit (MTU) size, instead of taking the risk
 level fragmentation, IKEv2 itself performs fragmentation so that the resulting IP datagrams are small
 enough to avoid fragmentation taking place at the IP-level.
 
-1.3.14 Extension to RFC Cross Reference
+#### 1.3.14 Extension to RFC Cross Reference
 
 The following table summarizes how each IKE extension extends each of the applicable RFCs.
 
@@ -1959,7 +1605,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-1.  Adjunction of an encapsulation mode in the private range. Encapsulation mode is specified in
+
+1.  Adjunction of an encapsulation mode in the private range. Encapsulation mode is specified in
 
 [RFC2407] section 4.5.
 
@@ -2010,12 +1657,12 @@ this exchange that securely correlates this SA with the original SA.
 specified in [RFC4306], to determine the internal IPv4 and IPv6 addresses of the IPsec remote
 access server (IRAS), also as specified in [RFC4306].
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 IKE is used for the authentication and keying of IPsec SAs, as specified in [RFC4301] section 3. IKE
 relies on UDP as a transport, as specified in [RFC768].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The following sections describe the prerequisites and preconditions for using IKE protocol extensions:
 
@@ -2023,7 +1670,7 @@ The following sections describe the prerequisites and preconditions for using IK
 
   CGA Authentication Prerequisites/Preconditions (section 1.5.2)
 
-1.5.1  General Prerequisites/Preconditions
+#### 1.5.1 General Prerequisites/Preconditions
 
 IKE assumes that both the initiator and the responder (1) have an IP address and have UDP
 connectivity. IKE also assumes that the initiator knows the responder's (1) IP address (for example,
@@ -2036,19 +1683,20 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Successful establishment of a QM SA using IKEv1 requires that the initiator and the responder (1)
+
+Successful establishment of a QM SA using IKEv1 requires that the initiator and the responder (1)
 have at least one common authentication method and a common set of cryptographic parameters for
 the MM and the QM SAs. For authentication using certificates, each peer validates the remote peer
 certificate chain to a locally trusted root certificate, as specified in [RFC2409] section 5.1. For pre-
 shared key authentication, both peers are required to share the same pre-shared secret, as specified
 in [RFC2409] section 5.4.
 
-1.5.2  CGA Authentication Prerequisites/Preconditions
+#### 1.5.2 CGA Authentication Prerequisites/Preconditions
 
 For CGA authentication, as specified in [RFC3972] section 1, peers need to possess a CGA and the
 associated self-signed certificate.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
   NAT-T applies when NAT devices between the IPsec peers can otherwise prevent the
 
@@ -2096,7 +1744,7 @@ IKEv2 fragmentation applies when intermediary network devices do not allow IP fr
 through, which can impede IKEv2 communication and prevent peers from establishing an IPsec
 SA.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This section covers versioning issues in the following areas:
 
@@ -2116,7 +1764,8 @@ Release: September 16, 2024
 
 21 / 102
 
-the negotiation of the authentication method, the Diffie-Hellman group, and the hashing and
+
+the negotiation of the authentication method, the Diffie-Hellman group, and the hashing and
 authentication algorithm using [RFC2409], [GSS], or [RFC3972].<4>
 
   Cryptographic Parameters: Cryptographic parameters are negotiated in different phases of the
@@ -2128,13 +1777,13 @@ Details about algorithm and parameter numbers are specified in [IANAIPSEC] and
 
 specified in [RFC2408] section 3.16.<6>
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The IKE extensions specified in this document do not introduce any new vendor-extensible fields.
 These extensions inherit the extensibility features of ISAKMP (as specified in [RFC2408]) and IKE (as
 specified in [RFC2409]).
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 No standards assignments have been received for the IKE extensions described in this document. All
 values used in these extensions are in private ranges, as specified in [IANAIPSEC] and [IANAISAKMP].
@@ -2146,9 +1795,10 @@ Release: September 16, 2024
 
 22 / 102
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 IKE messages MUST be transported over ISAKMP, as specified in [RFC2408], which uses UDP port
 500 by default. IKE MUST run over ports 500 and 4500 if a NAT has been detected, as specified in
@@ -2156,9 +1806,9 @@ IKE messages MUST be transported over ISAKMP, as specified in [RFC2408], which u
 
 All fields are sent and encoded in network order unless otherwise specified.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  NAT-T Payload Types
+#### 2.2.1 NAT-T Payload Types
 
 Each ISAKMP message consists of a header and a variable number of payloads, each identified by a
 1-octet payload type value in its Next Payload field, as specified in [RFC2408] section 3.1. NAT-T adds
@@ -2190,7 +1840,7 @@ Supported NAT Original Address (NAT-OA) payload type   Revision
 
 [RFC3947]
 
-2.2.2  NAT-T UDP Encapsulation Modes
+#### 2.2.2 NAT-T UDP Encapsulation Modes
 
 The Encapsulation Mode field is located in the SA payload, as specified in [RFC2407] section 4.5.
 Specification [RFC3947] introduces new encapsulation mode values for this field. For more information
@@ -2217,7 +1867,8 @@ Release: September 16, 2024
 
 23 / 102
 
-UDP-Encapsulated-Transport  Revision
+
+UDP-Encapsulated-Transport  Revision
 
 0xF004
 
@@ -2227,7 +1878,7 @@ Release: September 16, 2024
 
 [RFC3947]
 
-2.2.3  IKE Message Fragment
+#### 2.2.3 IKE Message Fragment
 
 An IKE message fragment contains:
 
@@ -2235,7 +1886,7 @@ An IKE message fragment contains:
 
   A single, non-encrypted, Fragment payload.
 
-2.2.3.1  Fragment Payload Packet
+##### 2.2.3.1 Fragment Payload Packet
 
 The Fragment payload is an ISAKMP payload, as specified in [RFC2408] section 3.1. The payload
 type value for a Fragment payload is 0x84 from the private payload type range, as specified in
@@ -2303,7 +1954,8 @@ Release: September 16, 2024
 
 24 / 102
 
-Value
+
+Value
 
 Meaning
 
@@ -2321,7 +1973,7 @@ Fragment_Data (variable): This field MUST contain the fragment data. The size of
 Fragment_Data field MUST be computed by subtracting the size of the Fragment payload header
 (8 bytes) from the value of the Payload_Length field.
 
-2.2.4  AUTH_CGA Authentication Method Packet
+#### 2.2.4 AUTH_CGA Authentication Method Packet
 
 AUTH_CGA is an authentication method within an ISAKMP SA payload, as specified in [RFC2407]
 section 4.6.1. The format of the SA payload is the following, as specified in [RFC2408] section 3.4.
@@ -2369,7 +2021,7 @@ Attribute_Value (2 bytes): For the AUTH_CGA authentication method, this field MU
 value 0xFDED in network order. This value is from the private authentication method range, as
 specified in [RFC2409] Appendix A.
 
-2.2.5  ID_IPV6_CGA Identification Type Packet
+#### 2.2.5 ID_IPV6_CGA Identification Type Packet
 
 ID_IPV6_CGA is an identification type for an ISAKMP Identification payload, as specified in
 [RFC2407] section 4.6.2. The ID_IPV6_CGA Identification Type is 0xFA from the private Identification
@@ -2385,7 +2037,8 @@ Release: September 16, 2024
 
 25 / 102
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2451,7 +2104,7 @@ Collision_Count (1 byte): This field MUST be as specified in [RFC3972] section 3
 
 Extension_fields (variable): This field MUST be as specified in [RFC3972] section 3.
 
-2.2.6  Notify Payload Packet
+#### 2.2.6 Notify Payload Packet
 
 The Notify Payload packet is specified in [RFC2408] section 3.14. The format is as follows.
 
@@ -2487,7 +2140,8 @@ Release: September 16, 2024
 
 26 / 102
 
-Security_Parameter_Index (variable)
+
+Security_Parameter_Index (variable)
 
 ...
 
@@ -2566,7 +2220,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  NOTIFY_DOS_COOKIE (8 Bytes): MUST be the responder (1) cookie value.
+
+  NOTIFY_DOS_COOKIE (8 Bytes): MUST be the responder (1) cookie value.
 
 
 
@@ -2588,7 +2243,7 @@ IKE_EXCHANGE_INFO_GUARANTEE_ENCRYPTION
 
 This flag is used by the negotiation discovery extension.
 
-2.2.7  Notify Payload (IKEv2) Packet
+#### 2.2.7 Notify Payload (IKEv2) Packet
 
 The Notify Payload packet is specified in [RFC4306] section 3.10. The format is as follows.
 
@@ -2645,7 +2300,7 @@ MUST correspond to the notify message type as follows:
 
 as status codes are implementation specific.<9>
 
-2.2.8  Configuration Attribute (IKEv2) Packet
+#### 2.2.8 Configuration Attribute (IKEv2) Packet
 
 The Configuration Attribute packet is specified in [RFC4306] section 3.15.1. The format is as follows.
 
@@ -2656,7 +2311,8 @@ Release: September 16, 2024
 
 28 / 102
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -2710,7 +2366,7 @@ The internal IPv6 address of the server.
 
 0x5BA1
 
-2.2.9  Correlation Payload (IKEv2) Packet
+#### 2.2.9 Correlation Payload (IKEv2) Packet
 
 The Correlation Payload (IKEv2) packet format is as follows. There are two IKE_SAs here, SAcurrent
 and SAoriginal. This payload is sent under the protection of SACurrent. The payload type value for a
@@ -2753,7 +2409,8 @@ Release: September 16, 2024
 
 29 / 102
 
-Next_Payload (1 byte): This field MUST be as specified in [RFC2408] section 3.2.
+
+Next_Payload (1 byte): This field MUST be as specified in [RFC2408] section 3.2.
 
 RESERVED (1 byte): This field MUST be as specified in [RFC2408] section 3.2.
 
@@ -2776,14 +2433,14 @@ SAoriginal. See [RFC4306] section 2.14. The correlation hash is as follows.
 SAcurrent.InitiatorSpi|SAcurrent.ResponderSpi|SAoriginal.InitiatorSpi|SAoriginal.responde
 rSpi)
 
-2.2.10 Security Realm Vendor ID Payload (IKEv2)
+#### 2.2.10 Security Realm Vendor ID Payload (IKEv2)
 
 The "MSFT IPsec Security Realm Id" vendor ID payload SHOULD<10> be constructed as specified in
 [RFC5996] section 3.12. The vendor ID payload has a variable length field called Vendor ID or VID. In
 this extension, the first 16 bytes is an MD5 hash of the string "MSFT IPsec Security Realm Id". The
 subsequent bytes contain the actual Security Realm ID.<11>
 
-2.2.11 IKEv2 Fragment Message
+#### 2.2.11 IKEv2 Fragment Message
 
 IKEv2 fragmentation is applied only to messages that contain an encrypted payload. The original
 (unencrypted) content of the encrypted payload is split into chunks that are treated as the original
@@ -2791,9 +2448,9 @@ content of the Encrypted Fragment Payload, which are then encrypted and authenti
 cryptographic processing of the Encrypted Fragment Payload is identical to that described in section
 3.14 of [RFC7296].
 
-2.2.11.1
+##### 2.2.11.1 Notify Payload
 
-Notify Payload
+
 
 The Initiator role of the IKEv2 protocol can indicate its support of IKEv2 fragmentation and that it
 allows its use, by including a Notify payload of type IKEV2_FRAGMENTATION_SUPPORTED in the
@@ -2833,7 +2490,8 @@ Release: September 16, 2024
 
 30 / 102
 
-Next_Payload (1 byte): An identifier for the payload type of the next payload in the message. This
+
+Next_Payload (1 byte): An identifier for the payload type of the next payload in the message. This
 
 field MUST be identical to the corresponding IKE field.
 
@@ -2857,9 +2515,9 @@ Notify_Message_Type (2 bytes): This field must be set to 16430, which is the val
 
 the IKEV2_FRAGMENTATION_SUPPORTED notification, per [RFC7383].
 
-2.2.11.2
+##### 2.2.11.2 Encrypted Fragment Payload
 
-Encrypted Fragment Payload
+
 
 The Encrypted Fragment payload is specified in section 2.5 of [RFC7383]. If the Encrypted Fragment
 payload is present in a message, it MUST be the last payload in the message and its payload type is
@@ -2920,7 +2578,8 @@ Release: September 16, 2024
 
 31 / 102
 
-Total_Fragments (2 bytes): The number of Fragment messages into which the original message
+
+Total_Fragments (2 bytes): The number of Fragment messages into which the original message
 was divided. This field MUST NOT be zero. With path maximum transmission unit discovery
 (PMTUD), this field plays an additional role, as described in section 2.5.2 of [RFC7383].
 
@@ -2935,7 +2594,8 @@ Release: September 16, 2024
 
 32 / 102
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify protocol details, including abstract data models and message processing
 rules, that are common and that are specific to NAT-T, IKE fragmentation, CGAs, the fast-failover
@@ -2943,7 +2603,7 @@ client, the fast-failover server, negotiation discovery, reliable delete, denial
 IKE SA correlation (IKEv2), IKE Server Internal Addresses Configuration Attributes (IKEv2), dead-peer
 detection, Xbox multiplayer gaming (IKEv2) vendor IDs, and security realm ID (IKEv2) vendor IDs.
 
-3.1  Common Details
+### 3.1 Common Details
 
 This section documents deviations from "The Internet IP Security Domain of Interpretation for
 ISAKMP", as specified in [RFC2407]; "Internet Security Association and Key Management Protocol
@@ -2960,7 +2620,7 @@ and only if the flag is set to FALSE. Assuming no other flag masks/values for th
 0x00 and 0x01 are valid values for this single-byte flag field: the former corresponding to the flag
 being unset, and the latter to the flag being set.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol in addition to what is specified in [RFC2407], [RFC2408],
@@ -3005,7 +2665,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The PAD MUST be looked up by using tuples that are composed of local and remote IP addresses.
+
+The PAD MUST be looked up by using tuples that are composed of local and remote IP addresses.
 
   Security policy database (SPD): The SPD and its management operations are specified in
 
@@ -3059,15 +2720,15 @@ IKEv1 only.
 Note  The preceding conceptual data can be implemented by using a variety of techniques. Any data
 structure that stores the preceding conceptual data can be used in the implementation.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None beyond what is specified in [RFC2407], [RFC2408], [RFC2409], [RFC3947], or [RFC4306].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None beyond what is specified in [RFC2407], [RFC2408], [RFC2409], [RFC3947], or [RFC4306] .
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None except what is specified in [RFC2407], [RFC2408], [RFC2409], [RFC3947], or [RFC4306].
 
@@ -3078,7 +2739,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.1.5  Message Processing Events and Sequencing Rules
+
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 [RFC2407]: Message processing MUST be as specified in [RFC2407] with the following exceptions:
 
@@ -3162,7 +2824,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-IKEE].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -3186,15 +2849,15 @@ a Vendor ID payload to announce the ability to implement the extension in the In
 The IKE variant specified by this document does not define a Vendor ID to announce the
 implementation of CFG attributes described in section 3.11.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None beyond what is specified in [RFC2407], [RFC2408] , [RFC2409], [RFC3947], or [RFC4306].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None beyond what is specified in [RFC2407], [RFC2408], [RFC2409], [RFC3947], or [RFC4306].
 
-3.2  NAT Traversal Details
+### 3.2 NAT Traversal Details
 
 Using the notation specified in [RFC2409] section 3.2, the generalized form of an IKE phase 1
 exchange that uses NAT-T is as shown in the following figure and as specified in [RFC3947] section
@@ -3209,7 +2872,8 @@ Release: September 16, 2024
 
 36 / 102
 
-The description in this section uses the message numbers from the protocol sequence diagram.
+
+The description in this section uses the message numbers from the protocol sequence diagram.
 
 The IKE NAT Traversal Protocol extension exists in two revisions. The [RFC3947] revision is specified
 in [RFC3947]. The [DRAFT-NATT] revision is identical to the [RFC3947] revision, except that the
@@ -3217,7 +2881,7 @@ values used for the types defined in sections 2.2.1 and 2.2.2 are those that are
 NATT], instead of those that are specified in [RFC3947]. Both revisions include the negotiation of a
 choice of revision supported by both peers.<13> For more information, see [DRAFT-NATT].
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 1 as specified in [RFC2409].
@@ -3229,17 +2893,17 @@ following specific data element for NAT-T:
 specified in [RFC3947]) has been selected for this MM SA. For more information, see [DRAFT-
 NATT].
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The NAT-T keep-alive timer (per MM SA) is as specified in [RFC3948] section 4.<14>
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Start of an IKE MM SA Negotiation
+##### 3.2.4.1 Start of an IKE MM SA Negotiation
 
 As part of the construction of message #1 for a new MM SA negotiation (as specified in [RFC2409]
 section 5), a NAT-T supporting host MUST include with its first IKE message extra vendor ID
@@ -3250,9 +2914,9 @@ include only the vendor ID "RFC 3947" within message #1. If it supports both [DR
 [RFC3947], it MUST include both vendor IDs "draft-ietf-ipsec-nat-t-ike-02\n" and "RFC 3947" within
 message #1.<15>
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Receiving Message #1
+##### 3.2.5.1 Receiving Message #1
 
 On receipt of message #1, a NAT-T supporting host MUST check for the presence of the NAT-T
 vendor ID payloads that are specified in section 3.2.4.1. If NAT-T vendor ID payloads are present in
@@ -3276,7 +2940,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 If the hosts do not share a common revision, the host MUST ignore the payload.
 
@@ -3284,12 +2949,12 @@ Then, the host MUST construct message #2 (as specified in [RFC2409] section 5) a
 payloads that advertise its NAT-T capabilities, setting the values of those payloads exactly as it would
 if it were constructing IKE message #1. For details, see section 3.2.4.
 
-3.2.5.2  Receiving Message #2
+##### 3.2.5.2 Receiving Message #2
 
 On receipt of message #2, the host MUST check for the presence of NAT-T vendor ID payloads and
 set the Selected Revision as specified in section 3.2.5.1.
 
-3.2.5.3  Receiving Other Messages
+##### 3.2.5.3 Receiving Other Messages
 
 As specified in [RFC3947] section 5.2, NAT-OA payloads can be sent within the first two quick mode
 messages. On receipt of the first or second quick mode message, the host MUST use the Selected
@@ -3301,15 +2966,15 @@ section 5.1. On receipt of an IKE message that might contain an SA payload, the 
 Selected Revision flag of the SA's corresponding entry in the MMSAD to interpret the Encapsulation
 Type, as defined in section 2.2.2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.3  IKE Fragmentation Details
+### 3.3 IKE Fragmentation Details
 
 Using the notation as specified in [RFC2409] section 3.2, the generalized form of an IKE phase 1
 exchange that is authenticated with signatures is as shown in the following figure, as a fragmentation
@@ -3322,7 +2987,8 @@ Release: September 16, 2024
 
 38 / 102
 
-<!-- Extracted images from page 39 -->
+
+<!-- Extracted images from page 39 -->
 ![Extracted image 1 from page 39]([MS-IKEE].images/page039-img01.png)
 <!-- /Extracted images from page 39 -->
 
@@ -3330,7 +2996,7 @@ Figure 2: IKE phase 1 exchange
 
 The description in this section uses the message numbers from the protocol sequence diagram.
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 1 as specified in [RFC2409].
@@ -3361,7 +3027,8 @@ Release: September 16, 2024
 
 39 / 102
 
-
+
+
 
 Fragment queue: A queue holding the fragments that correspond to incomplete IKE messages,
 indexed by the Fragment ID. Each entry in the queue MUST contain:
@@ -3389,7 +3056,7 @@ Flow state table: The following information MUST be maintained.
 Fragment ID counter: MUST be maintained and MUST be a 16 bit number. A Fragment ID counter
 SHOULD be implemented as a global counter.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 IKE fragmentation uses the following timers:
 
@@ -3410,22 +3077,22 @@ when a Fragment payload is received and the timer has not been started for the c
 Fragment ID value. When the fragment reassembly timer fires, the delay MUST NOT exceed 90
 seconds.<17>
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 The Fragment ID counter ADM element MUST be set to zero.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Start of an IKE MM SA Negotiation
+##### 3.3.4.1 Start of an IKE MM SA Negotiation
 
 As part of the construction of message #1 for a new MM SA negotiation (as specified in [RFC2409]
 section 5), an IKE fragmentation-supporting host MUST include a "FRAGMENTATION" vendor ID
 payload (that is, a vendor ID payload that is generated by using the Vendor ID string
 "FRAGMENTATION", as specified in [RFC2408] section 3.16) to advertise its fragmentation capability.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
-3.3.5.1  Receiving Message #1
+##### 3.3.5.1 Receiving Message #1
 
 On receipt of message #1, the host MUST check for the presence of a "FRAGMENTATION" vendor ID
 payload. If a "FRAGMENTATION" vendor ID payload is present in the message, the host MUST set the
@@ -3441,12 +3108,13 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.3.5.2  Receiving Message #2
+
+##### 3.3.5.2 Receiving Message #2
 
 On receipt of message #2, the host MUST check for the presence of a "FRAGMENTATION" vendor ID
 payload and set the Fragmentation supported flag, as specified in section 3.3.5.1.
 
-3.3.5.3  Receiving Other IKE Messages
+##### 3.3.5.3 Receiving Other IKE Messages
 
 On receipt of an IKE message, the host MUST check if the message contains a Fragment payload. If a
 Fragment payload is present, and the payload is not the only payload in the message, the host MUST
@@ -3512,9 +3180,10 @@ Release: September 16, 2024
 
 41 / 102
 
-3.3.6  Timer Events
 
-3.3.6.1  Expiration of Fragmentation Timer
+#### 3.3.6 Timer Events
+
+##### 3.3.6.1 Expiration of Fragmentation Timer
 
 When the fragmentation timer expires, the host starts fragmenting the message that caused the timer
 to start. Note that the host does not need to buffer every message for fragmentation purposes
@@ -3569,17 +3238,17 @@ The fragments MUST be sent back-to-back to the peer.
 The only messages that IKE fragments are those that contain the Identification payload, as specified
 in [RFC2408] section 3.8.
 
-3.3.6.2  Expiration of the Fragment Reassembly Timer
+##### 3.3.6.2 Expiration of the Fragment Reassembly Timer
 
 When the fragment reassembly timer expires, the host MUST silently discard all the fragments
 currently queued under the Fragment ID of the Fragment payload whose receipt caused the timer to
 start.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
-3.4  CGA Authentication Details
+### 3.4 CGA Authentication Details
 
 Using the notation as specified in [RFC2409] section 3.2, the generalized form of an IKE phase 1
 exchange using certificates is as shown in the following figure. For more information, see
@@ -3592,7 +3261,8 @@ Release: September 16, 2024
 
 42 / 102
 
-<!-- Extracted images from page 43 -->
+
+<!-- Extracted images from page 43 -->
 ![Extracted image 1 from page 43]([MS-IKEE].images/page043-img01.png)
 <!-- /Extracted images from page 43 -->
 
@@ -3613,7 +3283,7 @@ prefix length is 64 bits.
 
 the prefix length from the CGA address in the packet from the peer.
 
-3.4.1  Abstract Data Model
+#### 3.4.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 1 as specified in [RFC2409].
@@ -3634,7 +3304,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-  A new valid value AUTH_CGA that identifies the CGA authentication method, added to the locally-
+
+  A new valid value AUTH_CGA that identifies the CGA authentication method, added to the locally-
 
 configurable list of acceptable authentication methods.
 
@@ -3662,11 +3333,11 @@ This data structure is used during:
 
   Verification of its association with a public key (see section 3.4.5.5).
 
-3.4.2  Timers
+#### 3.4.2 Timers
 
 None.
 
-3.4.3  Initialization
+#### 3.4.3 Initialization
 
 Each host configured to use CGA authentication MUST generate an Rivest-Shamir-Adleman (RSA)
 public/private key pair (see [RFC8017] and 3 and [RFC3972] section 3). The host MUST then generate
@@ -3676,9 +3347,9 @@ section 5.1).
 The CGA itself MUST be created as described in [RFC3972] section 4. This IP address is used to send
 and receive the IKE packets described in section 3.4.5.
 
-3.4.4  Higher-Layer Triggered Events
+#### 3.4.4 Higher-Layer Triggered Events
 
-3.4.4.1  Start of an IKE MM SA Negotiation
+##### 3.4.4.1 Start of an IKE MM SA Negotiation
 
 As part of the construction of message #1, a CGA authentication-supporting host MUST include an
 "IKE CGA version 1" vendor ID payload (that is, a vendor ID payload generated by using the vendor
@@ -3697,9 +3368,10 @@ Release: September 16, 2024
 
 44 / 102
 
-3.4.5  Message Processing Events and Sequencing Rules
 
-3.4.5.1  Receiving Message #1
+#### 3.4.5 Message Processing Events and Sequencing Rules
+
+##### 3.4.5.1 Receiving Message #1
 
 On receipt of message #1, a CGA authentication-supporting host MUST check for the presence of the
 "IKE CGA version 1" vendor ID payload. If an "IKE CGA version 1" vendor ID payload is present in
@@ -3714,17 +3386,17 @@ vendor ID payload to advertise its CGA authentication capability.
 
 The host MUST also use its CGA to communicate with the peer for this negotiation.
 
-3.4.5.2  Receiving Message #2
+##### 3.4.5.2 Receiving Message #2
 
 On receipt of message #2, the host MUST check whether the proposal that the peer selected contains
 the AUTH_CGA authentication method defined in section 3.4.1. The host then MUST construct
 message #3, as specified in [RFC2409] section 5.1.
 
-3.4.5.3  Receiving Message #3
+##### 3.4.5.3 Receiving Message #3
 
 Processing MUST be identical to that specified in [RFC2409] section 5.1.
 
-3.4.5.4  Receiving Message #4
+##### 3.4.5.4 Receiving Message #4
 
 Processing MUST be identical to that specified in [RFC2409] section 5.1.
 
@@ -3741,7 +3413,7 @@ CGA fields are read from the CGA ID (see section 3.4.1).
 
 The CERT payload MUST contain the self-signed certificate that corresponds to the CGA.
 
-3.4.5.5  Receiving Message #5
+##### 3.4.5.5 Receiving Message #5
 
 On receipt of message #5, the host MUST validate the message in the following ways:
 
@@ -3768,27 +3440,28 @@ Release: September 16, 2024
 
 45 / 102
 
-<!-- Extracted images from page 46 -->
+
+<!-- Extracted images from page 46 -->
 ![Extracted image 1 from page 46]([MS-IKEE].images/page046-img01.png)
 <!-- /Extracted images from page 46 -->
 
 Then, the host MUST construct message #6 by using the procedure for constructing message #5, as
 specified in section 3.4.5.4.
 
-3.4.5.6  Receiving Message #6
+##### 3.4.5.6 Receiving Message #6
 
 On receipt of message #6, the host MUST validate the message using the procedure specified for
 validating message #5 in section 3.4.5.5.
 
-3.4.6  Timer Events
+#### 3.4.6 Timer Events
 
 None.
 
-3.4.7  Other Local Events
+#### 3.4.7 Other Local Events
 
 None.
 
-3.5  Fast Failover Client Details
+### 3.5 Fast Failover Client Details
 
 Using the notation as specified in [RFC2409] section 3.2, the generalized form of an IKE phase 1
 exchange is as shown in the following figure. For more information, see [RFC2409] section 5.
@@ -3797,7 +3470,7 @@ Figure 4: IKE phase 1 exchange
 
 The description in this section uses the message numbers from the protocol sequence diagram.
 
-3.5.1  Abstract Data Model
+#### 3.5.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 1 as specified in [RFC2409].
@@ -3809,14 +3482,15 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Main mode security association database (MMSAD): The entry for each MM SA contains the
+
+Main mode security association database (MMSAD): The entry for each MM SA contains the
 following fast-failover client-specific data elements:
 
   Fast Failover: A flag that indicates that the "NLBS_PRESENT" vendor ID was received from the
 
 peer for this MM SA. For more details, see section 3.6.4.1.
 
-3.5.2  Timers
+#### 3.5.2 Timers
 
 QM SA idle timer (for each QM SA): This timer controls the inactivity time before the QM SA can be
 deleted (as specified in section 3.5.7.1). This timer MUST be set when the QM SA has been
@@ -3824,13 +3498,13 @@ negotiated. The QM SA idle timer is 1 minute if the peer has sent an "NLBS_PRESE
 payload during the negotiation of the MM SA under which this QM SA was negotiated (as specified
 in section 3.6.4.1). Otherwise, the QM SA idle timer is 5 minutes.
 
-3.5.3  Initialization
+#### 3.5.3 Initialization
 
 None.
 
-3.5.4  Higher-Layer Triggered Events
+#### 3.5.4 Higher-Layer Triggered Events
 
-3.5.4.1  Start of an IKE MM SA Negotiation
+##### 3.5.4.1 Start of an IKE MM SA Negotiation
 
 As part of the construction of message #1 for a new MM SA negotiation (as specified in [RFC2409]
 section 5), a fast failover-supporting host MUST include a "Vid-Initial-Contact" vendor ID payload
@@ -3842,9 +3516,9 @@ In addition, the host MAY also add the "Vid-Initial-Contact" vendor ID payload t
 no open TCP connections to the peer and if new connection attempts cause the retransmission of SYN
 packets.<20>
 
-3.5.5  Message Processing Events and Sequencing Rules
+#### 3.5.5 Message Processing Events and Sequencing Rules
 
-3.5.5.1  Receiving Message #1
+##### 3.5.5.1 Receiving Message #1
 
 On receipt of message #1, a fast failover-supporting host MUST check for the presence of the
 "NLBS_PRESENT" vendor ID (as specified in section 3.6.4.1). If the "NLBS_PRESENT" vendor ID
@@ -3855,7 +3529,7 @@ If no errors are found, the host MUST construct message #2 in response. The host
 Initial-Contact" vendor ID payload to message #2 under the conditions that are specified in section
 3.5.4.1. Otherwise, the host MUST silently ignore the packet.
 
-3.5.5.2  Receiving Message #2
+##### 3.5.5.2 Receiving Message #2
 
 On receipt of message #2, the host MUST check for the presence of the "NLBS_PRESENT" vendor ID
 (for details, see section 3.6.4.1). If the "NLBS_PRESENT" vendor ID payload is present in the
@@ -3868,27 +3542,28 @@ Release: September 16, 2024
 
 47 / 102
 
-3.5.6  Timer Events
 
-3.5.6.1  Expiration of the QM SA Idle Timer
+#### 3.5.6 Timer Events
+
+##### 3.5.6.1 Expiration of the QM SA Idle Timer
 
 Upon expiration of the QM SA idle timer, the host MUST delete all states for the corresponding QM SA
 in the SAD.
 
-3.5.7  Other Local Events
+#### 3.5.7 Other Local Events
 
-3.5.7.1  Successful Negotiation of a QM SA
+##### 3.5.7.1 Successful Negotiation of a QM SA
 
 QM SAs MUST be negotiated as specified in [RFC2409] section 5.5. Upon successful negotiation of a
 QM SA, the host MAY set the QM SA idle timer to a lower value than the default value if the Fast
 Failover flag is set on the corresponding MM SA.<21>
 
-3.6  Fast Failover Server Details
+### 3.6 Fast Failover Server Details
 
 The description in this section uses the message numbers from the protocol sequence diagram in
 section 3.5.
 
-3.6.1  Abstract Data Model
+#### 3.6.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
@@ -3919,11 +3594,11 @@ responder (1) cookies found in the ISAKMP header (as specified in [RFC2408]).
 Note  The preceding conceptual data can be implemented by using a variety of techniques. An
 implementation is at liberty to implement such data in any way it pleases.
 
-3.6.2  Timers
+#### 3.6.2 Timers
 
 None.
 
-3.6.3  Initialization
+#### 3.6.3 Initialization
 
 None.
 
@@ -3934,17 +3609,18 @@ Release: September 16, 2024
 
 48 / 102
 
-3.6.4  Higher-Layer Triggered Events
 
-3.6.4.1  Start of an IKE MM SA Negotiation
+#### 3.6.4 Higher-Layer Triggered Events
+
+##### 3.6.4.1 Start of an IKE MM SA Negotiation
 
 As part of the construction of message #1, a fast failover-supporting host MUST include an
 "NLBS_PRESENT" vendor ID payload (that is, a vendor ID payload generated by using the vendor ID
 string "NLBS_PRESENT", as specified in [RFC2408] section 3.16).
 
-3.6.5  Message Processing Events and Sequencing Rules
+#### 3.6.5 Message Processing Events and Sequencing Rules
 
-3.6.5.1  Receiving Message #1
+##### 3.6.5.1 Receiving Message #1
 
 On receipt of message #1, the host MUST check for the presence of the "Vid-Initial-Contact" vendor
 ID (as specified in section 3.5.4.1). If the "Vid-Initial-Contact" vendor ID payload is present in the
@@ -3953,19 +3629,19 @@ message, the host MUST set the Initial Contact flag for the corresponding MMSAD 
 If the host is part of a cluster, it MAY use this information to rebalance the MM SA to a different host
 within the cluster.<22>
 
-3.6.5.2  Receiving Message #2
+##### 3.6.5.2 Receiving Message #2
 
 Message #2 has the same processing as message #1.
 
-3.6.6  Timer Events
+#### 3.6.6 Timer Events
 
 None.
 
-3.6.7  Other Local Events
+#### 3.6.7 Other Local Events
 
 None.
 
-3.7  Negotiation Discovery Details
+### 3.7 Negotiation Discovery Details
 
 Using the notation as specified in [RFC2409] section 3.2, the generalized form of an IKE phase 1
 (MM) exchange is as shown in the following figure. For more information, see [RFC2409] section 5.
@@ -3977,7 +3653,8 @@ Release: September 16, 2024
 
 49 / 102
 
-<!-- Extracted images from page 50 -->
+
+<!-- Extracted images from page 50 -->
 ![Extracted image 1 from page 50]([MS-IKEE].images/page050-img01.png)
 <!-- /Extracted images from page 50 -->
 
@@ -3996,7 +3673,8 @@ Release: September 16, 2024
 
 50 / 102
 
-<!-- Extracted images from page 51 -->
+
+<!-- Extracted images from page 51 -->
 ![Extracted image 1 from page 51]([MS-IKEE].images/page051-img01.png)
 <!-- /Extracted images from page 51 -->
 
@@ -4012,7 +3690,8 @@ Release: September 16, 2024
 
 51 / 102
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-IKEE].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
@@ -4031,7 +3710,8 @@ Release: September 16, 2024
 
 52 / 102
 
-<!-- Extracted images from page 53 -->
+
+<!-- Extracted images from page 53 -->
 ![Extracted image 1 from page 53]([MS-IKEE].images/page053-img01.png)
 <!-- /Extracted images from page 53 -->
 
@@ -4048,7 +3728,7 @@ If the responder (1) responds to the IKE negotiation, IKE fails because the resp
 have, by definition, a valid credential (it is non-IPsec-capable). However, the IKE failure does not
 affect the TCP stream, and the TCP connection continues in the clear.
 
-3.7.1  Abstract Data Model
+#### 3.7.1 Abstract Data Model
 
 When this extension is implemented, the following additional states are maintained. This is an
 extension to IKE Protocol version 1 as specified in [RFC2409].
@@ -4073,7 +3753,8 @@ Release: September 16, 2024
 
 53 / 102
 
-  A Boundary policy flag for negotiation discovery inbound rules that MUST be set if plaintext is
+
+  A Boundary policy flag for negotiation discovery inbound rules that MUST be set if plaintext is
 
 accepted for this rule.
 
@@ -4102,17 +3783,17 @@ SA.
 flow. This flag prevents triggering of an Acquire for each packet over a connection that stays in
 plaintext.
 
-3.7.2  Timers
+#### 3.7.2 Timers
 
 None.
 
-3.7.3  Initialization
+#### 3.7.3 Initialization
 
 None.
 
-3.7.4  Higher-Layer Triggered Events
+#### 3.7.4 Higher-Layer Triggered Events
 
-3.7.4.1  Outbound Packet
+##### 3.7.4.1 Outbound Packet
 
 An outbound packet MUST be matched against the SPD to determine if and how it needs to be
 protected, as specified in [RFC4301] section 5.
@@ -4152,7 +3833,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -4212,7 +3894,7 @@ If the packet matches a Guaranteed Encryption rule in the SPD, the host MUST set
 Encryption flag on the corresponding flow. This rule MUST apply regardless of whether a matching QM
 SA is found or not.
 
-3.7.4.2  Inbound Packet
+##### 3.7.4.2 Inbound Packet
 
 An inbound packet is matched against the SPD after IPsec decapsulation to determine if and how it
 needs to be treated, as specified in [RFC4301] section 5. The following rules MUST be applied to the
@@ -4240,7 +3922,8 @@ Release: September 16, 2024
 
 55 / 102
 
-If the Secure flag is not set on the flow, the host MUST accept the packet. Otherwise, the host
+
+If the Secure flag is not set on the flow, the host MUST accept the packet. Otherwise, the host
 MUST silently discard the packet.
 
 
@@ -4254,9 +3937,9 @@ Regardless of whether the packet is in plaintext, if there is an SA that matches
 Guaranteed Encryption flag is set, the host MUST set the Guaranteed Encryption flag on the
 corresponding flow.
 
-3.7.5  Message Processing Events and Sequencing Rules
+#### 3.7.5 Message Processing Events and Sequencing Rules
 
-3.7.5.1  Receiving Message #1
+##### 3.7.5.1 Receiving Message #1
 
 On receipt of message #1, the host MUST check for the presence of the "MS-Negotiation Discovery
 Capable" vendor ID payload (as specified in section 3.7.4.1). If the "MS-Negotiation Discovery
@@ -4266,7 +3949,7 @@ Supported flag for the corresponding MMSAD entry.
 Then, the host MUST construct message #2, as specified in [RFC2409] section 5, and add the "MS-
 Negotiation Discovery Capable" vendor ID payload to advertise its negotiation discovery capability.
 
-3.7.5.2  Receiving Message #2
+##### 3.7.5.2 Receiving Message #2
 
 On receipt of message #2, the host MUST check for the presence of the "MS-Negotiation Discovery
 Capable" vendor ID payload (for details, see section 3.7.4.1) and set the Negotiation Discovery
@@ -4274,7 +3957,7 @@ Supported flag for the corresponding MMSAD entry.
 
 Messages #3 and #4 MUST be constructed and processed as specified in [RFC2409] section 5.
 
-3.7.5.3  Receiving Message #5
+##### 3.7.5.3 Receiving Message #5
 
 On receipt of message #5, the host MUST check for the presence of flags within a notification payload
 of type EXCHANGE_INFO.
@@ -4315,7 +3998,8 @@ Release: September 16, 2024
 
 56 / 102
 
-<!-- Extracted images from page 57 -->
+
+<!-- Extracted images from page 57 -->
 ![Extracted image 1 from page 57]([MS-IKEE].images/page057-img01.png)
 <!-- /Extracted images from page 57 -->
 
@@ -4324,7 +4008,7 @@ in the SPD has the Boundary flag set.
 
 This notification payload MUST be constructed as specified in section 2.2.6.
 
-3.7.5.4  Receiving Message #6
+##### 3.7.5.4 Receiving Message #6
 
 On receipt of message #6, the host MUST check for the presence of flags within a notification payload
 of type EXCHANGE_INFO:
@@ -4336,15 +4020,15 @@ the QM SA. For more details see section 2.2.6.
 
 Messages #7 and #8 are constructed and processed as specified in [RFC2408] section 3.1.
 
-3.7.6  Timer Events
+#### 3.7.6 Timer Events
 
 None.
 
-3.7.7  Other Local Events
+#### 3.7.7 Other Local Events
 
 None.
 
-3.8  Reliable Delete Details
+### 3.8 Reliable Delete Details
 
 Using the notation as specified in [RFC2408] section 4.1.1, the generalized form of an IKE Delete
 exchange using the Reliable Delete extension is as shown in the following figure. For more
@@ -4354,7 +4038,7 @@ Figure 9: IKE Delete exchange
 
 The description in this section uses the message numbers from the protocol sequence diagram.
 
-3.8.1  Abstract Data Model
+#### 3.8.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 1 as specified in [RFC2409].
@@ -4368,23 +4052,24 @@ Release: September 16, 2024
 
 57 / 102
 
-  Ni payload: The exact Ni payload that is sent with the delete message#1 is preserved as part of
+
+  Ni payload: The exact Ni payload that is sent with the delete message#1 is preserved as part of
 the IKE MM SA state in order to validate the acknowledgment response. The Ni payload is a
 Nonce payload and MUST be constructed as specified in [RFC2408] section 3.13.
 
-3.8.2  Timers
+#### 3.8.2 Timers
 
 The delete retransmission timer (for each MM and QM SA): This triggers a Delete payload
 retransmission. The start and duration of the timer MUST be as specified in sections 3.8.4.1, 3.8.6.1,
 and 3.8.7.1.
 
-3.8.3  Initialization
+#### 3.8.3 Initialization
 
 None.
 
-3.8.4  Higher-Layer Triggered Events
+#### 3.8.4 Higher-Layer Triggered Events
 
-3.8.4.1  SA Deletion/Invalidation
+##### 3.8.4.1 SA Deletion/Invalidation
 
 The higher layer application can cause SAs to be deleted by changing the underlying security policy,
 or by triggering a local state cleanup (see section 3.8.7). In such cases, the host SHOULD delete the
@@ -4436,9 +4121,10 @@ Release: September 16, 2024
 
 58 / 102
 
-3.8.5  Message Processing Events and Sequencing Rules
 
-3.8.5.1  Receiving Message #1
+#### 3.8.5 Message Processing Events and Sequencing Rules
+
+##### 3.8.5.1 Receiving Message #1
 
 On receipt of message #1, the host MUST validate the message, as specified in [RFC2408] section 5.
 If message #1 is correctly validated, the host MUST delete the corresponding SA and MUST construct
@@ -4462,7 +4148,7 @@ The Hash payload MUST be constructed in the following manner:
  HASH(2) = prf(SKEYID_a, Ni | M-ID | Nr | Delete)
 
 Once computed as above, this hash value MUST be sent on the wire format specified in section
-3.11 of [RFC2408].
+### 3.11 of [RFC2408].
 
 
 
@@ -4513,7 +4199,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-3.8.7  Other Local Events
+
+3.8.7  Other Local Events
 
 An administrator can trigger local SA state deletion via a local-only interface to delete all active SAs.
 
@@ -4549,7 +4236,8 @@ Release: September 16, 2024
 
 60 / 102
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-IKEE].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -4590,7 +4278,8 @@ Release: September 16, 2024
 
 61 / 102
 
-3.9.4  Higher-Layer Triggered Events
+
+3.9.4  Higher-Layer Triggered Events
 
 None.
 
@@ -4662,7 +4351,8 @@ Release: September 16, 2024
 
 62 / 102
 
-Subsequent messages received for SAs for which no state exists in the SAD MUST be processed in the
+
+Subsequent messages received for SAs for which no state exists in the SAD MUST be processed in the
 same way as message #1.
 
 3.9.6  Timer Events
@@ -4726,7 +4416,8 @@ Release: September 16, 2024
 
 63 / 102
 
-<!-- Extracted images from page 64 -->
+
+<!-- Extracted images from page 64 -->
 ![Extracted image 1 from page 64]([MS-IKEE].images/page064-img01.png)
 ![Extracted image 2 from page 64]([MS-IKEE].images/page064-img02.png)
 <!-- /Extracted images from page 64 -->
@@ -4749,7 +4440,8 @@ Release: September 16, 2024
 
 64 / 102
 
-Figure 12: IKEv2 EAP exchange
+
+Figure 12: IKEv2 EAP exchange
 
 3.10.5.1
 
@@ -4821,13 +4513,14 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-<!-- Extracted images from page 66 -->
+
+<!-- Extracted images from page 66 -->
 ![Extracted image 1 from page 66]([MS-IKEE].images/page066-img01.png)
 <!-- /Extracted images from page 66 -->
 
 HDR, SK {IDr, [CERT,] AUTH, CP(CFG_REPLY), SAr2, TSi, TSr}
 
-3.11.1 Abstract Data Model
+#### 3.11.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 2 as specified in [RFC4306].
@@ -4844,19 +4537,19 @@ The internal IPv6 address of the server.
 
 The initiator SHOULD request this attribute for each IP version it supports.
 
-3.11.2 Timers
+#### 3.11.2 Timers
 
 None.
 
-3.11.3 Initialization
+#### 3.11.3 Initialization
 
 None.
 
-3.11.4 Higher-Layer Triggered Events
+#### 3.11.4 Higher-Layer Triggered Events
 
 None.
 
-3.11.5 Message Processing Events and Sequencing Rules
+#### 3.11.5 Message Processing Events and Sequencing Rules
 
 The following figure shows the exchange sequence for IKEv2 Non-EAP embedded quick mode
 negotiation with Configuration payloads.
@@ -4874,15 +4567,16 @@ Release: September 16, 2024
 
 66 / 102
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-IKEE].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
 Figure 14: IKEv2 Configuration payload exchange with EAP
 
-3.11.5.1
+##### 3.11.5.1 Receiving Message #1
 
-Receiving Message #1
+
 
 When the host receives the CFG_REQUEST (as specified in [RFC4306] section 3.15) for the
 INTERNAL_IP4_SERVER or INTERNAL_IP6_SERVER attribute, it MUST validate the message as also
@@ -4896,9 +4590,9 @@ If either or both are present, add these attributes in CFG_REPLY.
 
 Any failures in this exchange MUST NOT affect the state of the IKE_SA.
 
-3.11.5.2
+##### 3.11.5.2 Receiving Message #2
 
-Receiving Message #2
+
 
 When the host receives the CFG_REPLY (as specified in [RFC4306] section 3.15) for the
 INTERNAL_IP4_SERVER or INTERNAL_IP6_SERVER attribute, it MUST validate the message (as also
@@ -4913,7 +4607,7 @@ addresses to send packets to the internal address of IRAS.
 
 Any failures in this exchange MUST NOT affect the state of the IKE_SA.
 
-3.11.6 Timer Events
+#### 3.11.6 Timer Events
 
 None.
 
@@ -4924,13 +4618,14 @@ Release: September 16, 2024
 
 67 / 102
 
-3.11.7 Other Local Events
+
+#### 3.11.7 Other Local Events
 
 None.
 
-3.12  Dead Peer Detection Details
+### 3.12 Dead Peer Detection Details
 
-3.12.1 Abstract Data Model
+#### 3.12.1 Abstract Data Model
 
 When this extension is implemented, the following additional state SHOULD<33> be maintained. This
 is an extension to IKE Protocol version 1 as specified in [RFC2409].
@@ -4947,21 +4642,21 @@ the SA has the Fast Failover flag set as described in section 3.5.1.
 
 mode.
 
-3.12.2 Timers
+#### 3.12.2 Timers
 
 QM SA idle timer (for each QM SA): This timer controls the inactivity time before the QM SA can be
 deleted (as specified in section 3.5.7.1). This timer MUST be set when the QM SA has been negotiated
 as described in section 3.5.2.
 
-3.12.3 Initialization
+#### 3.12.3 Initialization
 
 None.
 
-3.12.4 Higher-Layer Triggered Events
+#### 3.12.4 Higher-Layer Triggered Events
 
-3.12.4.1
+##### 3.12.4.1 TCP Dead Peer Detection
 
-TCP Dead Peer Detection
+
 
 The stack sends a TCP packet and makes a lookup of the corresponding connection state in the state
 table defined in section 3.1.1. It determines whether the packet is a TCP retransmission. If it is a
@@ -4982,9 +4677,9 @@ MM SA (as described in [RFC2409] section 5.4) with a maximum of two retransmissi
 If MM rekey fails, the peer is deemed dead and a new MM SA negotiation ([RFC2409] section
 5.4) can be attempted.
 
-3.12.4.2
+##### 3.12.4.2 UDP Dead Peer Detection
 
-UDP Dead Peer Detection
+
 
 The stack sends a UDP packet and makes a lookup of the corresponding connection state in the state
 table defined in section 3.1.1. It determines whether the corresponding SA has seen a packet in the
@@ -4999,7 +4694,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 The host implementing this feature MUST attempt to rekey the QM SA (as described in [RFC2409]
 section 5.5).
@@ -5013,29 +4709,29 @@ MM SA (as described in [RFC2409] section 5.4) with a maximum of two retransmissi
 If the MM rekey fails, the peer is deemed dead and a new MM SA negotiation ([RFC2409] section
 5.4) can be attempted.
 
-3.12.5 Message Processing Events and Sequencing Rules
+#### 3.12.5 Message Processing Events and Sequencing Rules
 
-3.12.5.1
+##### 3.12.5.1 Receiving a UDP Packet
 
-Receiving a UDP Packet
+
 
 The stack receives an inbound UDP packet and determines the corresponding connection state in the
 state table defined in section 3.1.1, and then it sets the InboundPacketTimeStamp to the current time.
 
-3.12.6 Timer Events
+#### 3.12.6 Timer Events
 
-3.12.6.1
+##### 3.12.6.1 Expiration of the QM SA Idle Timer
 
-Expiration of the QM SA Idle Timer
+
 
 Upon expiration of the QM SA idle timer, the host MUST delete all states for the corresponding QM SA
 in the SAD.
 
-3.12.7 Other Local Events
+#### 3.12.7 Other Local Events
 
-3.12.7.1
+##### 3.12.7.1 Successful Negotiation of a QM SA and MM SA
 
-Successful Negotiation of a QM SA and MM SA
+
 
 QM SAs MUST be negotiated as specified in [RFC2409] section 5.5. Upon successful negotiation of a
 QM SA, the host MUST set the DeadPeerDetection to FALSE, and the host MAY set the QM SA idle
@@ -5045,9 +4741,9 @@ SA.<34>
 MM SAs MUST be negotiated as specified in [RFC2409] section 5.4. Upon successful negotiation of a
 MM SA, the host MUST set the DeadPeerDetection to FALSE.
 
-3.13  Xbox Multiplayer Gaming (IKEv2) Vendor IDs Details
+### 3.13 Xbox Multiplayer Gaming (IKEv2) Vendor IDs Details
 
-3.13.1 Abstract Data Model
+#### 3.13.1 Abstract Data Model
 
 When this extension is implemented,<35> the following additional state is maintained. This is an
 extension to IKE Protocol version 2 as specified in [RFC4306].
@@ -5060,7 +4756,7 @@ following Xbox multiplayer gaming–specific data element:
 of Xbox multiplayer identifier associated with the "Xbox IKEv2 Negotiation" vendor ID
 payload.<36>
 
-3.13.2 Timers
+#### 3.13.2 Timers
 
 None.
 
@@ -5071,11 +4767,12 @@ Release: September 16, 2024
 
 69 / 102
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-IKEE].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
-3.13.3 Initialization
+#### 3.13.3 Initialization
 
 For Xbox multiplayer gaming, secure connections can be of various types. This type information is
 stored in the XBox IKEv2 Negotiation Type ADM element discussed in section 3.13.1. The significance
@@ -5084,11 +4781,11 @@ document. However, a limit can be imposed on the number of simultaneous IKE nego
 available for each type of Xbox multiplayer gaming secure connection. Absence of such a configuration
 would mean that there is no limit to the number of simultaneous ongoing negotiations.
 
-3.13.4 Higher-Layer Triggered Events
+#### 3.13.4 Higher-Layer Triggered Events
 
 None.
 
-3.13.5 Message Processing Events and Sequencing Rules
+#### 3.13.5 Message Processing Events and Sequencing Rules
 
 Figure 15: IKE_SA_INIT message exchange for Xbox multiplayer gaming secure-connection
 establishment
@@ -5097,16 +4794,16 @@ IKE initiators that are participating in Xbox multiplayer gaming scenarios and e
 connection with a remote peer can send the "Microsoft XBox One 2013" vendor ID and the "Xbox
 IKEv2 Negotiation" vendor ID payloads in the IKE_SA_INIT message.
 
-3.13.5.1
+##### 3.13.5.1 Microsoft Xbox One 2013 Vendor ID
 
-Microsoft Xbox One 2013 Vendor ID
+
 
 The "Microsoft Xbox One 2013" vendor ID simply indicates that the IKEv2 message exchange is for
 negotiation of an IKE SA for Xbox multiplayer gaming secure connections.
 
-3.13.5.2
+##### 3.13.5.2 Xbox IKEv2 Negotiation Vendor ID
 
-Xbox IKEv2 Negotiation Vendor ID
+
 
 The "Xbox IKEv2 Negotiation" vendor ID can be looked up by the responder and stored in the XBox
 IKEv2 Negotiation Type ADM element discussed in section 3.13.1. For the associated negotiation type,
@@ -5114,7 +4811,7 @@ the host MUST increment the number of ongoing IKE negotiations. If the number of
 negotiations exceeds the configured limit for the given Xbox secure connection, the negotiation is
 failed.
 
-3.13.6 Timer Events
+#### 3.13.6 Timer Events
 
 If an IKE SA is associated with an Xbox negotiation type, then IKE_SA_INIT messages for those SAs
 are not retransmitted if no response is received from the peer after the first timeout period
@@ -5127,17 +4824,18 @@ Release: September 16, 2024
 
 70 / 102
 
-<!-- Extracted images from page 71 -->
+
+<!-- Extracted images from page 71 -->
 ![Extracted image 1 from page 71]([MS-IKEE].images/page071-img01.png)
 <!-- /Extracted images from page 71 -->
 
-3.13.7 Other Local Events
+#### 3.13.7 Other Local Events
 
 None.
 
-3.14  Security Realm ID (IKEv2) Vendor IDs Details
+### 3.14 Security Realm ID (IKEv2) Vendor IDs Details
 
-3.14.1 Abstract Data Model
+#### 3.14.1 Abstract Data Model
 
 When this extension is implemented, the following additional state SHOULD<37> be maintained. This
 is an extension to IKE Protocol version 2 as specified in [RFC5996].
@@ -5148,19 +4846,19 @@ IPsec policy:
   Security Realm ID: A variable length array of bytes stored as an HMAC-MD5 hash of the string
 that identifies the security realm IPsec policy. For more information, see section 1.3.12.<38>
 
-3.14.2 Timers
+#### 3.14.2 Timers
 
 None.
 
-3.14.3 Initialization
+#### 3.14.3 Initialization
 
 None.
 
-3.14.4 Higher-Layer Triggered Events
+#### 3.14.4 Higher-Layer Triggered Events
 
 None.
 
-3.14.5 Message Processing Events and Sequencing Rules
+#### 3.14.5 Message Processing Events and Sequencing Rules
 
 [MS-IKEE] - v20240916
 Internet Key Exchange Protocol Extensions
@@ -5169,7 +4867,8 @@ Release: September 16, 2024
 
 71 / 102
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-IKEE].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -5185,9 +4884,9 @@ Figure 17: Sending Security Realm ID Vendor ID payload in CREATE_CHILD_SA messag
 The security realm vendor ID payload (section 2.2.10) is sent in CREATE_CHILD_SA messages if the
 parent SA is associated with a security realm-based policy.
 
-3.14.5.1
+##### 3.14.5.1 IKE_SA_INIT Messages
 
-IKE_SA_INIT Messages
+
 
 Initiator: If the initiator chooses a security realm-based IPsec policy to trigger an SA negotiation, it
 reads the Security Realm ID ADM element defined in section 3.14.1, and includes it in the "MSFT
@@ -5211,9 +4910,10 @@ Release: September 16, 2024
 
 72 / 102
 
-3.14.5.2
 
-IKE_SA_AUTH and CREATE_CHILD_SA Messages
+##### 3.14.5.2 IKE_SA_AUTH and CREATE_CHILD_SA Messages
+
+
 
 Initiator: If the initiator chooses a security realm-based IPsec policy to trigger an SA negotiation, it
 takes the security realm ID in the policy and includes it in the "MSFT IPsec Security Realm Id" vendor
@@ -5234,15 +4934,15 @@ discarded by the responder and the child SA negotiation will fail.
 Note that for rekeying IKE and child IPsec SAs, CREATE_CHILD_SA messages are used, and the
 security realm vendor ID is used in a manner that is similar to that in the preceding paragraphs.
 
-3.14.6 Timer Events
+#### 3.14.6 Timer Events
 
 None.
 
-3.14.7 Other Local Events
+#### 3.14.7 Other Local Events
 
 None.
 
-3.15  IKEv2 Fragmentation Details
+### 3.15 IKEv2 Fragmentation Details
 
 The message numbers in the following protocol sequence diagram are used in the descriptions of this
 section.
@@ -5254,13 +4954,14 @@ Release: September 16, 2024
 
 73 / 102
 
-<!-- Extracted images from page 74 -->
+
+<!-- Extracted images from page 74 -->
 ![Extracted image 1 from page 74]([MS-IKEE].images/page074-img01.png)
 <!-- /Extracted images from page 74 -->
 
 Figure 18: IKEv2 fragmentation sequence
 
-3.15.1 Abstract Data Model
+#### 3.15.1 Abstract Data Model
 
 When this extension is implemented, the following additional state is maintained. This is an extension
 to IKE Protocol version 2, as specified in [RFC7296].
@@ -5290,7 +4991,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-both sides, the chosen MTU SHOULD be the minimum MTU for the IP protocol, which is 576 bytes
+
+both sides, the chosen MTU SHOULD be the minimum MTU for the IP protocol, which is 576 bytes
 for IPv4 and 1280 bytes for IPv6.
 
 
@@ -5326,26 +5028,26 @@ fragments of MAX limit.
 
 Total fragment size of the re-assembled packet MUST NOT exceed the MAX limit.
 
-3.15.2 Timers
+#### 3.15.2 Timers
 
 As specified in section 3.3.2.
 
-3.15.3 Initialization
+#### 3.15.3 Initialization
 
 For each fragmented packet, the first Fragment Number starts at 1.
 
 The Next Payload ID for the first fragment is set to the actual Next Payload ID, and the remainder of
 the fragments have the Next Payload ID set to zero.
 
-3.15.4 Higher-Layer Triggered Events
+#### 3.15.4 Higher-Layer Triggered Events
 
 None.
 
-3.15.5 Message Processing Events and Sequencing Rules
+#### 3.15.5 Message Processing Events and Sequencing Rules
 
-3.15.5.1
+##### 3.15.5.1 Receiving Message #1
 
-Receiving Message #1
+
 
 When the Responder receives an IKE_SA_INIT request packet from the Initiator that includes a Notify
 Payload of type IKEV2_FRAGMENTATION_SUPPORTED (section 2.2.11.1), it acknowledges that the
@@ -5353,17 +5055,17 @@ Initiator supports IKEv2 fragmentation and has allowed its use. However, in orde
 fragmentation to occur, the Responder MUST also support it and allow its use. See section 2.3 and 2.4
 of [RFC7383] for further information.
 
-3.15.5.2
+##### 3.15.5.2 Receiving Message #2
 
-Receiving Message #2
+
 
 After the Initiator receives an IKE_SA_INIT response package from the Responder with a Notify
 Payload of type IKEV2_FRAGMENTATION_SUPPORTED, the IKEv2 fragmentation negotiation phase is
 complete and the Initiator can then decide to send fragmented messages at any point thereafter.
 
-3.15.5.3
+##### 3.15.5.3 Other IKE Messages
 
-Other IKE Messages
+
 
 After the previous negotiation is completed, any message that is larger than 576 bytes and contains
 an Encrypted payload can be fragmented.
@@ -5375,21 +5077,22 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-The original content (unencrypted) is treated as a binary blob and is split into chunks regardless of the
+
+The original content (unencrypted) is treated as a binary blob and is split into chunks regardless of the
 boundaries of inner payloads. Each of the chunks is then encrypted and authenticated.
 
 The IKE header prepended to the IKE Fragment messages is taken from the original message, except
 for the Length and Next Payload fields.
 
-3.15.6 Timer Events
+#### 3.15.6 Timer Events
 
 As specified in section 3.3.6.
 
-3.15.7 Other Local Events
+#### 3.15.7 Other Local Events
 
 None.
 
-3.16  IKEv2 Proxy-Call Session Control IP Addresses Configuration Attributes Details
+### 3.16 IKEv2 Proxy-Call Session Control IP Addresses Configuration Attributes Details
 
 As defined in [RFC7651], the P_CSCF_IP4_ADDRESS and the P_CSCF_IP6_ADDRESS configuration
 attributes are required for carrying the IPv4 and IPv6 addresses of the Proxy-Call Session Control
@@ -5409,7 +5112,7 @@ P_CSCF_IP4_ADDRESS – value 20
 
 P_CSCF_IP6_ADDRESS – value 21
 
-3.16.1 Abstract Data Model
+#### 3.16.1 Abstract Data Model
 
 This is an extension to IKE Protocol version 2, as specified in [RFC7296].
 
@@ -5423,19 +5126,19 @@ The IPv4 address of the P-CSCF server.
 
 The IPv6 address of the P-CSCF server.
 
-3.16.2 Timers
+#### 3.16.2 Timers
 
 None.
 
-3.16.3 Initialization
+#### 3.16.3 Initialization
 
 None.
 
-3.16.4 Higher-Layer Triggered Events
+#### 3.16.4 Higher-Layer Triggered Events
 
 None.
 
-3.16.5 Message Processing Events and Sequencing Rules
+#### 3.16.5 Message Processing Events and Sequencing Rules
 
 None.
 
@@ -5446,11 +5149,12 @@ Release: September 16, 2024
 
 76 / 102
 
-3.16.6 Timer Events
+
+#### 3.16.6 Timer Events
 
 None.
 
-3.16.7 Other Local Events
+#### 3.16.7 Other Local Events
 
 None.
 
@@ -5461,13 +5165,14 @@ Release: September 16, 2024
 
 77 / 102
 
-<!-- Extracted images from page 78 -->
+
+<!-- Extracted images from page 78 -->
 ![Extracted image 1 from page 78]([MS-IKEE].images/page078-img01.png)
 <!-- /Extracted images from page 78 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Negotiation Discovery Examples
+### 4.1 Negotiation Discovery Examples
 
 The following protocol sequence diagram depicts communication between a client with a negotiation
 discovery policy and a server with negotiation discovery in boundary mode.
@@ -5485,7 +5190,8 @@ Release: September 16, 2024
 
 78 / 102
 
-<!-- Extracted images from page 79 -->
+
+<!-- Extracted images from page 79 -->
 ![Extracted image 1 from page 79]([MS-IKEE].images/page079-img01.png)
 <!-- /Extracted images from page 79 -->
 
@@ -5505,16 +5211,17 @@ Release: September 16, 2024
 
 79 / 102
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
 
-5.1.1  Negotiation Discovery
+### 5.1 Security Considerations for Implementers
+
+#### 5.1.1 Negotiation Discovery
 
 Negotiation discovery allows Cleartext outbound and inbound connections if the peer is not IPsec–
 capable. Connections that are Cleartext should be considered when designing the policy.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -5539,7 +5246,8 @@ Release: September 16, 2024
 
 80 / 102
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -5687,7 +5395,8 @@ Release: September 16, 2024
 
 81 / 102
 
-also applies to subsequent updates unless otherwise specified. If a product edition appears with the
+
+also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
 
 Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
@@ -5813,7 +5522,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-RFC Requirement
+
+RFC Requirement
 
 RFC
 4306
@@ -5949,7 +5659,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-RFC Requirement
+
+RFC Requirement
 
 payload describing the problem."
 
@@ -6095,7 +5806,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-RFC Requirement
+
+RFC Requirement
 
 "In order to maximize IKE throughput, an IKE
 endpoint MAY issue multiple requests before getting
@@ -6256,7 +5968,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-RFC Requirement
+
+RFC Requirement
 
 RFC
 4306
@@ -6391,7 +6104,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-IKE extension
+
+IKE extension
 
 Windows NT 4.0
 operating system
@@ -6589,7 +6303,8 @@ X
 
 87 / 102
 
-Windows
+
+Windows
 XP
 operatin
 g system
@@ -6724,7 +6439,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-Diffie-Hellman group
+
+Diffie-Hellman group
 
 Windows 2000 and
 Windows XP
@@ -6870,7 +6586,8 @@ Release: September 16, 2024
 
 89 / 102
 
-<6> Section 1.7: The Microsoft implementation of IKE supports the following vendor IDs.
+
+<6> Section 1.7: The Microsoft implementation of IKE supports the following vendor IDs.
 
 The Microsoft implementation vendor ID (for example, in rows of the second table that follows, where
 the Common name starts with "Microsoft implementation"), is constructed by appending a 32-bit (4-
@@ -6987,7 +6704,8 @@ Windows Server 2003
 
 90 / 102
 
-Common name
+
+Common name
 
 String representation
 
@@ -7172,7 +6890,8 @@ Product Behavior Appendix
 
 91 / 102
 
-Common name
+
+Common name
 
 String representation
 
@@ -7346,7 +7065,8 @@ Release: September 16, 2024
 
 92 / 102
 
-Common name
+
+Common name
 
 String representation
 
@@ -7503,7 +7223,8 @@ Release: September 16, 2024
 
 93 / 102
 
-DH Group
+
+DH Group
 
 IKEEXT_DH_GROUP_MAX
 
@@ -7581,7 +7302,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 In Windows Vista and later and in Windows Server 2008 and later, the timer is started from the
 first main mode packet of the exchange. Although 3 seconds is the norm, there is variance in the
@@ -7652,7 +7374,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
- Set COOKIE_KEY_TIME to 150 seconds
+
+ Set COOKIE_KEY_TIME to 150 seconds
  If LocalIPaddr and PeerIPaddr are IPv4 addresses then
  Compute localAddr as 01 00 02 00 concatenated with LocalPort concatenated with LocalIPAddr
      concatenated with 26 bytes of 0
@@ -7720,7 +7443,8 @@ Internet Key Exchange Protocol Extensions
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-SYSTEM\\CurrentControlSet\\Services\\PolicyAgent\\Oakley\EnableDOSProtect (DWORD).
+
+SYSTEM\\CurrentControlSet\\Services\\PolicyAgent\\Oakley\EnableDOSProtect (DWORD).
 
 Stop and restart the PolicyAgent service for this setting to take effect.
 
@@ -7766,7 +7490,8 @@ Release: September 16, 2024
 
 97 / 102
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -7778,7 +7503,8 @@ Release: September 16, 2024
 
 98 / 102
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -7942,7 +7668,8 @@ Fast failover server
 
 99 / 102
 
-   receiving message #1 49
+
+   receiving message #1 49
    receiving message #2 49
    sequencing rules 49
    timer events 49
@@ -8093,7 +7820,8 @@ N
 
 100 / 102
 
-NAT traversal
+
+NAT traversal
    abstract data model (section 3.1.1 33, section
 
 3.2.1 37)
@@ -8241,7 +7969,8 @@ Syntax
 
 101 / 102
 
-   IKE message fragment 24
+
+   IKE message fragment 24
    messages 23
    NAT-T payload types 23
    NAT-T UDP encapsulation modes 23

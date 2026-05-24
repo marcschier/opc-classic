@@ -63,7 +63,8 @@ Release: September 16, 2024
 
 1 / 10
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -143,81 +144,50 @@ Release: September 16, 2024
 
 2 / 10
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1  Introduction ............................................................................................................ 4
-Glossary ........................................................................................................... 4
-References ........................................................................................................ 4
-Normative References ................................................................................... 4
-Informative References ................................................................................. 4
-Microsoft Implementations .................................................................................. 4
-Standards Support Requirements ......................................................................... 5
-Notation ............................................................................................................ 5
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Microsoft Implementations](#13-microsoft-implementations)
+  - [1.4 Standards Support Requirements](#14-standards-support-requirements)
+  - [1.5 Notation](#15-notation)
+- [2 Standards Support Statements](#2-standards-support-statements)
+  - [2.1 Normative Variations](#21-normative-variations)
+  - [2.2 Clarifications](#22-clarifications)
+    - [2.2.1 [MS-SMB2] Server Message Block (SMB) Protocols Version 2 and 3](#221-ms-smb2-server-message-block-smb-protocols-version-2-and-3)
+    - [2.2.2 [MS-FSA] File System Algorithms](#222-ms-fsa-file-system-algorithms)
+    - [2.2.3 [MS-RSVD] Remote Shared Virtual Disk Protocol](#223-ms-rsvd-remote-shared-virtual-disk-protocol)
+    - [2.2.4 [MS-SQOS] Storage Quality of Service Protocol](#224-ms-sqos-storage-quality-of-service-protocol)
+    - [2.2.5 [MS-FSRVP] File Server Remote VSS Protocol](#225-ms-fsrvp-file-server-remote-vss-protocol)
+  - [2.3 Error Handling](#23-error-handling)
+  - [2.4 Security](#24-security)
+- [3 Change Tracking](#3-change-tracking)
+- [4 Index](#4-index)
 
-1.2.1
-1.2.2
-
-1.3
-1.4
-1.5
-
-2.1
-2.2
-
-2  Standards Support Statements ................................................................................ 6
-Normative Variations .......................................................................................... 6
-Clarifications ..................................................................................................... 6
-[MS-SMB2] Server Message Block (SMB) Protocols Version 2 and 3 .................... 6
-[MS-FSA] File System Algorithms ................................................................... 6
-[MS-RSVD] Remote Shared Virtual Disk Protocol .............................................. 7
-[MS-SQOS] Storage Quality of Service Protocol ................................................ 8
-[MS-FSRVP] File Server Remote VSS Protocol .................................................. 8
-Error Handling ................................................................................................... 8
-Security ............................................................................................................ 8
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-
-2.3
-2.4
-
-3  Change Tracking ...................................................................................................... 9
-
-4  Index ..................................................................................................................... 10
-
-[MS-HVRS] - v20240916
-Hyper-V Remote Storage Profile
-Copyright © 2024 Microsoft Corporation
-Release: September 16, 2024
-
-3 / 10
-
-1  Introduction
+## 1 Introduction
 
 Microsoft Hyper-V supports virtual machines whose associated files are hosted on Server Message
 Block (SMB) Version 3 shares. These files can include virtual machine configuration files, virtual
 machine saved-state files, and virtual hard-disk files. The Hyper-V Remote Storage Profile clarifies the
 level of support that Hyper-V requires from SMB Version 3 servers that host these types of files.
 
-1.1  Glossary
+### 1.1 Glossary
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -238,11 +208,11 @@ assist you in finding the relevant information.
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 None.
 
-1.3  Microsoft Implementations
+### 1.3 Microsoft Implementations
 
   Windows 8 operating system
 
@@ -263,7 +233,8 @@ Release: September 16, 2024
 
 4 / 10
 
-  Windows Server 2019 operating system
+
+  Windows Server 2019 operating system
 
   Windows Server 2022 operating system
 
@@ -271,13 +242,13 @@ Release: September 16, 2024
 
   Windows Server 2025 operating system
 
-1.4  Standards Support Requirements
+### 1.4 Standards Support Requirements
 
 The conformance requirements for [MS-SMB2], [MS-FSA], [MS-RSVD], [MS-SQOS], and [MS-FSRVP]
 are that all required portions of the specifications are implemented according to the specification, and
 any optional portions that are included are implemented according to the specification.
 
-1.5  Notation
+### 1.5 Notation
 
 The following notations are used to identify clarifications in section 2.2:
 
@@ -298,18 +269,19 @@ Release: September 16, 2024
 
 5 / 10
 
-2  Standards Support Statements
 
-2.1  Normative Variations
+## 2 Standards Support Statements
+
+### 2.1 Normative Variations
 
 None.
 
-2.2  Clarifications
+### 2.2 Clarifications
 
 The following subsections identify clarifications relative to [MS-SMB2], [MS-FSA], [MS-RSVD], [MS-
 SQOS] and [MS-FSRVP].
 
-2.2.1  [MS-SMB2] Server Message Block (SMB) Protocols Version 2 and 3
+#### 2.2.1 [MS-SMB2] Server Message Block (SMB) Protocols Version 2 and 3
 
 C0001:
 
@@ -335,7 +307,7 @@ Windows 8 operating system, Windows Server 2012 operating system, Windows 8.1, W
 
 The server MUST support the FSCTL_LMR_REQUEST_RESILIENCY command.
 
-2.2.2  [MS-FSA] File System Algorithms
+#### 2.2.2 [MS-FSA] File System Algorithms
 
 C0004:
 
@@ -362,7 +334,8 @@ Release: September 16, 2024
 
 6 / 10
 
-If the server supports the FSCTL_SET_ZERO_DATA command, as specified in [MS-FSA] section
+
+If the server supports the FSCTL_SET_ZERO_DATA command, as specified in [MS-FSA] section
 2.1.5.10.39, then Hyper-V can issue this command to optimize the performance of virtual-disk-
 creation operations.
 
@@ -422,7 +395,7 @@ If the server advertises the FILE_SUPPORTS_SPARSE_VDL flag for a given Open (as 
 FSCC] section 2.5.1), Hyper-V will support virtual disk files with the FILE_ATTRIBUTE_SPARSE_FILE
 flag set, as specified in [MS-FSCC] section 2.6.
 
-2.2.3  [MS-RSVD] Remote Shared Virtual Disk Protocol
+#### 2.2.3 [MS-RSVD] Remote Shared Virtual Disk Protocol
 
 C0010:
 
@@ -438,7 +411,8 @@ Hyper-V Remote Storage Profile
 Copyright © 2024 Microsoft Corporation
 Release: September 16, 2024
 
-
+
+
 
 
 
@@ -461,7 +435,7 @@ The replica operation of a remote shared virtual disk fails.
 
   Resizing a remote shared virtual disk fails.
 
-2.2.4  [MS-SQOS] Storage Quality of Service Protocol
+#### 2.2.4 [MS-SQOS] Storage Quality of Service Protocol
 
 C0011:
 
@@ -472,7 +446,7 @@ If the server doesn't support the Storage Quality of Service Protocol [MS-SQOS],
 Quality of Service policies associated with the virtual disks of a Hyper-V virtual machine are ignored
 and never enforced. However, this doesn't prevent the virtual machine from successfully starting.
 
-2.2.5  [MS-FSRVP] File Server Remote VSS Protocol
+#### 2.2.5 [MS-FSRVP] File Server Remote VSS Protocol
 
 C0012:
 
@@ -486,11 +460,11 @@ If the server doesn't support the File Server Remote VSS Protocol [MS-FSRVP]:
 The operation of a Hyper-V host–initiated backup of a virtual machine attached to a remote shared
 virtual disk fails.
 
-2.3  Error Handling
+### 2.3 Error Handling
 
 None.
 
-2.4  Security
+### 2.4 Security
 
 None.
 
@@ -501,7 +475,8 @@ Release: September 16, 2024
 
 8 / 10
 
-3  Change Tracking
+
+## 3 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -513,7 +488,8 @@ Release: September 16, 2024
 
 9 / 10
 
-4  Index
+
+## 4 Index
 C
 
 Change tracking 9

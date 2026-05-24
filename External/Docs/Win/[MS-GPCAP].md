@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 26
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -220,160 +221,67 @@ Release: April 23, 2024
 
 2 / 26
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Central Access Policies Protocol Extension Overview](#132-central-access-policies-protocol-extension-overview)
+      - [1.3.2.1 Central Access Policy Administration](#1321-central-access-policy-administration)
+      - [1.3.2.2 Central Access Policy Configuration Process](#1322-central-access-policy-configuration-process)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Namespaces](#221-namespaces)
+    - [2.2.2 Central Access Policy File Message Format](#222-central-access-policy-file-message-format)
+    - [2.2.3 Central Access Policy ID Setting](#223-central-access-policy-id-setting)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Central Access Policies Protocol Administrative-Side Extension Details](#31-central-access-policies-protocol-administrative-side-extension-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Load Policy](#3151-load-policy)
+      - [3.1.5.2 Update Policy](#3152-update-policy)
+      - [3.1.5.3 Delete Setting Value](#3153-delete-setting-value)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Central Access Policy Configuration Client-Side Extension Details](#32-central-access-policy-configuration-client-side-extension-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Policy Setting State](#3211-policy-setting-state)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Client-Side Extension Invocation](#3251-client-side-extension-invocation)
+      - [3.2.5.2 Client-Side Extension Sequences](#3252-client-side-extension-sequences)
+      - [3.2.5.3 Policy State Configuration](#3253-policy-state-configuration)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Example of a CAP.inf File](#41-example-of-a-capinf-file)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Background ................................................................................................. 9
-Central Access Policies Protocol Extension Overview ........................................ 10
-Central Access Policy Administration ........................................................ 10
-Central Access Policy Configuration Process .............................................. 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.2.1
-1.3.2.2
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Message Syntax ............................................................................................... 14
-Namespaces .............................................................................................. 14
-Central Access Policy File Message Format ..................................................... 14
-Central Access Policy ID Setting ................................................................... 15
-Directory Service Schema Elements ................................................................... 15
-
-2.2.1
-2.2.2
-2.2.3
-
-2.3
-
-3.1
-
-3.1.6
-3.1.7
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 16
-Central Access Policies Protocol Administrative-Side Extension Details .................... 16
-Abstract Data Model .................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Load Policy ........................................................................................... 17
-Update Policy ....................................................................................... 17
-Delete Setting Value .............................................................................. 18
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Central Access Policy Configuration Client-Side Extension Details ........................... 18
-Abstract Data Model .................................................................................... 18
-Policy Setting State ............................................................................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Higher Layer Triggered Events ..................................................................... 19
-Process Group Policy ............................................................................. 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Client-Side Extension Invocation ............................................................. 20
-Client-Side Extension Sequences ............................................................ 20
-Policy State Configuration ...................................................................... 20
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2.1.1
-
-3.2.5
-
-3.2.1
-
-3.2
-
-4  Protocol Examples ................................................................................................. 22
-Example of a CAP.inf File .................................................................................. 22
-
-4.1
-
-5  Security ................................................................................................................. 23
-Security Considerations for Implementers ........................................................... 23
-
-5.1
-
-3 / 26
-
-[MS-GPCAP] - v20240423
-Group Policy: Central Access Policies Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5.2
-
-Index of Security Parameters ............................................................................ 23
-
-6  Appendix A: Product Behavior ............................................................................... 24
-
-7  Change Tracking .................................................................................................... 25
-
-8  Index ..................................................................................................................... 26
-
-[MS-GPCAP] - v20240423
-Group Policy: Central Access Policies Protocol Extension
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 26
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: Central Access Policies Extension allows the configuring of central access policies
 (CAPs) on Group Policy client computers.
@@ -385,7 +293,7 @@ Group Policy data store.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -442,7 +350,8 @@ Release: April 23, 2024
 
 5 / 26
 
-central access policy (CAP) object: An object stored in an LDAP directory service, such as
+
+central access policy (CAP) object: An object stored in an LDAP directory service, such as
 
 Active Directory, that contains one or more central access rules (CARs), which specify the details
 of an authorization policy.
@@ -517,7 +426,8 @@ Group Policy: Central Access Policies Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Specifically, the use of this term does not imply or require that the algorithms described in
+
+Specifically, the use of this term does not imply or require that the algorithms described in
 [RFC4122] or [C706] have to be used for generating the GUID. See also universally unique
 identifier (UUID).
 
@@ -588,7 +498,8 @@ Release: April 23, 2024
 
 7 / 26
 
-policy target: A user or computer account for which policy settings can be obtained from a server
+
+policy target: A user or computer account for which policy settings can be obtained from a server
 in the same domain, as specified in [MS-GPOL]. For user policy mode, the policy target is a user
 account. For computer policy mode, the policy target is a computer account.
 
@@ -620,14 +531,14 @@ Unless specified otherwise, this term refers to the UTF-8 encoding form specifie
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -656,16 +567,17 @@ Release: April 23, 2024
 
 8 / 26
 
-[RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
+
+[RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-FASOD] Microsoft Corporation, "File Access Services Protocols Overview".
 
 [MS-GPOD] Microsoft Corporation, "Group Policy Protocols Overview".
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Central Access Policies Extension is a Group Policy extension that enhances the
 functionality of Group Policy. It enables Group Policy administrators to specify CAPs on Group Policy
@@ -692,7 +604,7 @@ Administrative tool when the Group Policy administrator creates, modifies, or de
 policies. The client side, sometimes referred to as a client plug-in, is invoked to initiate the application
 of client access policies on a target computer, such as a Group Policy client.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol specified in [MS-GPOL] allows Group Policy clients to discover and
 retrieve the policy settings of Group Policy extensions that are configured by Group Policy
@@ -721,7 +633,8 @@ Group Policy: Central Access Policies Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the core Group Policy engine, to invoke a CSE (such as the Group Policy: Central Access Policies
+
+the core Group Policy engine, to invoke a CSE (such as the Group Policy: Central Access Policies
 Extension defined in this specification) to facilitate the configuration of policy settings for that
 extension. The Administrative tool extension GUID is used by the Administrative tool to invoke the
 administrative side of an extension protocol during the policy administration process.
@@ -740,7 +653,7 @@ settings to configure policy settings on Group Policy client computers.
 For additional background information about Group Policy, refer to the Group Policy Protocols
 Overview document [MS-GPOD].
 
-1.3.2  Central Access Policies Protocol Extension Overview
+#### 1.3.2 Central Access Policies Protocol Extension Overview
 
 CAP settings identify authorization polices that are defined in Active Directory. More specifically, CAP
 settings contain the identifiers of authorization policies that are to be configured on Group Policy
@@ -773,7 +686,7 @@ Enforce CAP authorization rules on Group Policy client computers.
 When a user attempts to access resources that have a CAP that was applied via access to client-side
 ADM values, the CAP authorization rules are enforced.
 
-1.3.2.1  Central Access Policy Administration
+##### 1.3.2.1 Central Access Policy Administration
 
 Policy administration is driven by an Active Directory administrator and a Group Policy
 administrator. The administration of central access policies involves creating a CAP object and
@@ -793,7 +706,8 @@ Release: April 23, 2024
 
 10 / 26
 
-  Using an Administrative tool to create or edit GPOs in Active Directory.
+
+  Using an Administrative tool to create or edit GPOs in Active Directory.
 
   Associating computer accounts with one or more GPOs.
 
@@ -812,7 +726,7 @@ then be modified as required.  After the Group Policy administrator creates or m
 the changes are propagated back into the logical component of the GPO and to the policy file on the
 Group Policy file share, via LDAP and a file access protocol, respectively.<1>
 
-1.3.2.2  Central Access Policy Configuration Process
+##### 1.3.2.2 Central Access Policy Configuration Process
 
 Group Policy clients are notified of changes in Group Policy when Group Policy fires the Process
 Group Policy event (section 3.2.4.1).
@@ -865,11 +779,12 @@ Release: April 23, 2024
 
 11 / 26
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-GPCAP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Group Policy: Central Access Policies Extension depends on the Group Policy: Core Protocol
 specified in [MS-GPOL], to provide a list, via LDAP, of GPOs that apply to policy target accounts. This
@@ -883,7 +798,7 @@ The following diagram illustrates the protocol relationships.
 
 Figure 1: Group Policy: Central Access Policies Extension protocol relationships
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for the Group Policy: Central Access Policies Extension are identical to those
 specified in [MS-GPOL] section 1.5, in addition to the following:
@@ -906,7 +821,7 @@ server and can connect with Active Directory, as defined in [MS-GPOL] section 3.
 
 
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: Central Access Policies Extension is only applicable within Group Policy.
 
@@ -917,15 +832,16 @@ Release: April 23, 2024
 
 12 / 26
 
-1.7  Versioning and Capability Negotiation
+
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Standard assignments for the Group Policy: Central Access Policies Extension consist of a CSE GUID
 and an Administrative tool extension GUID, as specified in [MS-GPOL] section 1.8. The following
@@ -948,9 +864,10 @@ Release: April 23, 2024
 
 13 / 26
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Central Access Policies Extension requires remote access to policy files, as specified
 in [MS-GPOL] section 2. All messages specified in section 2.2 of this specification MUST be exchanged
@@ -962,17 +879,17 @@ The core Group Policy engine MUST use this protocol's CSE GUID and Administrativ
 extension GUID values to invoke the client or administrative side of this protocol, respectively, which
 in turn invoke LDAP to access GPOs that require processing by this protocol.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 Messages exchanged in Group Policy: Central Access Policies Extension processes carry CAP policy file
 data that is transferred via file access sequences. This protocol is driven through the exchange of
 these messages, as specified in section 3.
 
-2.2.1  Namespaces
+#### 2.2.1 Namespaces
 
 None.
 
-2.2.2  Central Access Policy File Message Format
+#### 2.2.2 Central Access Policy File Message Format
 
 All CAP policy files processed by the Group Policy: Central Access Policies Extension are UTF-8
 encoded and are based on the following file syntax.
@@ -1012,7 +929,8 @@ Group Policy: Central Access Policies Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.3  Central Access Policy ID Setting
+
+#### 2.2.3 Central Access Policy ID Setting
 
 This section defines settings that Group Policy administrators use to configure CAP identifiers. These
 settings identify the central access policies that are used by the Group Policy client extension for the
@@ -1035,7 +953,7 @@ Each Value string MUST be a valid LDAP distinguished name, as defined in [MS-ADT
 The Group Policy: Central Access Policies Extension uses the distinguished name to look up the CAP
 object in Active Directory and configure its settings in the Group Policy client computer ADM.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Group Policy: Central Access Policies Extension accesses the directory service schema  class and
 attributes listed in the following table.
@@ -1069,24 +987,25 @@ Release: April 23, 2024
 
 15 / 26
 
-3  Protocol Details
 
-3.1  Central Access Policies Protocol Administrative-Side Extension Details
+## 3 Protocol Details
+
+### 3.1 Central Access Policies Protocol Administrative-Side Extension Details
 
 The administrative side of the Group Policy: Central Access Policies Extension participates in authoring
 CAP settings via GPO configuration, as specified in section 1.3.2.1. A central access policy (CAP)
 MUST be stored as a text file in ".inf" file format, as specified in section 2.2. The CAP file MUST be
 stored in a location that is accessible via RFA sequences.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the administrative-side extension of this protocol is invoked, it MUST obtain a computer-
 scoped Group Policy Object path from the gPCFileSysPath attribute of a GPO via the core Group
@@ -1097,7 +1016,7 @@ Note  The administrative-side extension of this protocol does not maintain any l
 therefore does not require local state variables nor any subsequent variable initialization. The
 administrative-side extension loads all the settings specified in section 2.2 into memory.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The following higher-layer triggered events occur in response to the indicated trigger conditions:
 
@@ -1121,7 +1040,7 @@ Setting Value
 The Group Policy administrator deletes any policy setting value (section 3.1.5.3) for the Group
 Policy: Central Access Policies Extension.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The administrative-side extension of this protocol invokes a file access protocol to read extension-
 specific data from the CAP.inf policy file that is stored in the Group Policy file share and then passes
@@ -1141,14 +1060,15 @@ Group Policy: Central Access Policies Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  File names and paths are regarded as case-insensitive. If the File Open or File Write operations
+
+Note  File names and paths are regarded as case-insensitive. If the File Open or File Write operations
 fail, the Administrative tool extension MUST provide an error indication to the Group Policy
 administrator that the operation failed.
 
 Note  Each time a policy file is created, modified, or deleted, the administrative-side extension MUST
 invoke the Group Policy Extension Update event, as specified in [MS-GPOL] section 3.3.4.4.
 
-3.1.5.1  Load Policy
+##### 3.1.5.1 Load Policy
 
 The Load Policy event occurs when the Group Policy administrator invokes the administrative-side
 extension of this protocol and its dynamic linked library (DLL) is loaded into the Administrative tool.
@@ -1171,7 +1091,7 @@ At this point, the file access protocol MUST perform the file read and parse ope
 section 3.2.5.2. If the attempt to read the CAP.inf file fails, an error MUST be logged and processing
 MUST be stopped.
 
-3.1.5.2  Update Policy
+##### 3.1.5.2 Update Policy
 
 The Update Policy event occurs when the Group Policy administrator updates the policy settings
 in the file system component of a GPO by using the Administrative tool. When policy settings are
@@ -1209,7 +1129,8 @@ Release: April 23, 2024
 
 17 / 26
 
-3.  File access File Close:
+
+3.  File access File Close:
 
 The Administrative tool extension MUST then issue a File Close operation.
 
@@ -1217,34 +1138,34 @@ The Administrative tool extension MUST then issue a File Close operation.
 
 Policy Extension Update event ([MS-GPOL] section 3.3.4.4).
 
-3.1.5.3  Delete Setting Value
+##### 3.1.5.3 Delete Setting Value
 
 The Delete Setting Value event occurs when the Group Policy administrator deletes a policy
 setting value. When a policy setting value is deleted, the setting is removed from memory and the
 processing described in section 3.1.5.2 MUST be performed.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Central Access Policy Configuration Client-Side Extension Details
+### 3.2 Central Access Policy Configuration Client-Side Extension Details
 
 The CSE of the Group Policy: Central Access Policies Extension interacts with Group Policy as specified
 in [MS-GPOL] section 3.2. The CSE MUST retrieve the central access policy (CAP) (section 3.2.5)
 and modify the appropriate part of the ADM for each element in the policy, as specified in this section.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section defines a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to explain how the
 protocol behaves. This document does not mandate that implementations adhere to this model as long
 as their external behavior is consistent with what is described in this document.
 
-3.2.1.1  Policy Setting State
+##### 3.2.1.1 Policy Setting State
 
 The persistent state configured by the CSE of this protocol is specified herein. The location for storing
 this state is implementation-specific.
@@ -1282,7 +1203,8 @@ Group Policy: Central Access Policies Protocol Extension
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CentralAccessPolicyRule: A structure data type that contains the following fields.
+
+CentralAccessPolicyRule: A structure data type that contains the following fields.
 
 Field name
 
@@ -1314,11 +1236,11 @@ AccessCondition
 A security descriptor value ([MS-DTYP] section 2.4.6) that contains the access condition
 for the CentralAccessPolicyEntry data element.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 When the CSE of the Group Policy: Central Access Policies Extension protocol is invoked by Group
 Policy, and a list of one or more applicable GPOs is provided for updates, the CSE MUST do the
@@ -1338,7 +1260,7 @@ section 4.5) to query GPOs in Active Directory.
 
 Note  The policy files MUST be copied and read by using file access sequences.
 
-3.2.4  Higher Layer Triggered Events
+#### 3.2.4 Higher Layer Triggered Events
 
 The CSE of this protocol receives the following higher-layer triggered event:
 
@@ -1351,7 +1273,8 @@ Release: April 23, 2024
 
 19 / 26
 
-3.2.4.1  Process Group Policy
+
+##### 3.2.4.1 Process Group Policy
 
 The CSE of Group Policy: Central Access Policies Extension protocol implements the Process Group
 Policy abstract event interface, as specified in [MS-GPOL] section 3.2.4.1. The CSE does not make
@@ -1359,9 +1282,9 @@ use of the Deleted GPO list, SessionFlags, or the SecurityToken logical paramete
 rather, it only requires the New or Changed GPO list parameter. When the event is triggered, the CSE
 MUST perform the actions specified in section 3.2.5.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Client-Side Extension Invocation
+##### 3.2.5.1 Client-Side Extension Invocation
 
 The CSE of the Group Policy: Central Access Policies Extension protocol MUST be invoked by the
 Process Group Policy event specified in [MS-GPOL] section 3.2.5.1.10 whenever applicable GPOs
@@ -1369,7 +1292,7 @@ require processing on the Group Policy client, as determined by the policy appli
 specified in [MS-GPOL] section 3.2.5.1. When this occurs, the CSE of this protocol MUST perform the
 actions specified in sections 3.2.5.2 and 3.2.5.3.
 
-3.2.5.2  Client-Side Extension Sequences
+##### 3.2.5.2 Client-Side Extension Sequences
 
 When invoked by the Process Group Policy event, the CSE attempts to retrieve the list of applicable
 GPOs from the New or changed GPOs logical parameter of the event. The CSE MUST then iterate
@@ -1404,7 +1327,7 @@ to the specified format, the entire operation for that file MUST be ignored. If 
 the specified format, each distinguished name Value specified in Settings in the CAP.inf file (section
 2.2.2) MUST be added to the CentralAccessPolicyDNList ADM element described in section 3.2.1.1.
 
-3.2.5.3  Policy State Configuration
+##### 3.2.5.3 Policy State Configuration
 
 After all the distinguished name values are retrieved, the CSE MUST perform the following steps for
 each entry in the CentralAccessPolicyDNList ADM element. If any LDAP operations fail, the
@@ -1421,7 +1344,8 @@ Release: April 23, 2024
 
 20 / 26
 
-2.  Create a new CentralAccessPolicy ADM element and add it to the CentralAccessPoliciesList
+
+2.  Create a new CentralAccessPolicy ADM element and add it to the CentralAccessPoliciesList
 
 ADM element. Populate the fields of this element as follows:
 
@@ -1483,11 +1407,11 @@ CentralAccessPolicyRulesList ADM structure created in step 2 bullet 3.
 
 CentralAccessPolicy ADM structure created in step 2.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1498,9 +1422,10 @@ Release: April 23, 2024
 
 21 / 26
 
-4  Protocol Examples
 
-4.1  Example of a CAP.inf File
+## 4 Protocol Examples
+
+### 4.1 Example of a CAP.inf File
 
 [Version]
 
@@ -1523,9 +1448,10 @@ Release: April 23, 2024
 
 22 / 26
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 A central access policy defines an authorization policy that controls access to resources. Write
 permissions on central access policies enable a user to modify the authorization policy. Central access
@@ -1533,7 +1459,7 @@ control policies are designed to be managed centrally and not be edited on clien
 Therefore, it is important to store central access control policies on client computers in secure
 locations to which only system processes have access.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1544,7 +1470,8 @@ Release: April 23, 2024
 
 23 / 26
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1586,7 +1513,8 @@ Release: April 23, 2024
 
 24 / 26
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1630,7 +1558,8 @@ Release: April 23, 2024
 
 25 / 26
 
-R
+
+R
 
 References 8
    informative 9
@@ -1655,7 +1584,7 @@ V
 Vendor-extensible fields 13
 Versioning 13
 
-8  Index
+## 8 Index
 A
 
 Applicability 12

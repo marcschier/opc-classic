@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -296,7 +297,8 @@ Release: April 23, 2024
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -444,189 +446,82 @@ Release: April 23, 2024
 
 3 / 32
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 L2TP AV pairs](#221-l2tp-av-pairs)
+      - [2.2.1.1 L2TP AV Pair: Microsoft Vendor-specific Correlation ID Type (0x01)](#2211-l2tp-av-pair-microsoft-vendor-specific-correlation-id-type-0x01)
+    - [2.2.2 L2TP Congestion Control (Reset)](#222-l2tp-congestion-control-reset)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common (LAC/LNS) Details](#31-common-laclns-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+      - [3.1.3.1 Securing L2TP with IPsec](#3131-securing-l2tp-with-ipsec)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Header Format](#3151-header-format)
+      - [3.1.5.2 Control Message AV Pairs](#3152-control-message-av-pairs)
+      - [3.1.5.3 Start-Control-Connection-Request (SCCRQ)](#3153-start-control-connection-request-sccrq)
+      - [3.1.5.4 Start-Control-Connection-Reply (SCCRP)](#3154-start-control-connection-reply-sccrp)
+      - [3.1.5.5 Start-Control-Connection-Connected (SCCCN)](#3155-start-control-connection-connected-scccn)
+      - [3.1.5.6 Stop-Control-Connection-Notification (StopCCN)](#3156-stop-control-connection-notification-stopccn)
+      - [3.1.5.7 Hello (HELLO)](#3157-hello-hello)
+      - [3.1.5.8 Call-Disconnect-Notify (CDN)](#3158-call-disconnect-notify-cdn)
+      - [3.1.5.9 Set-Link-Info (SLI)](#3159-set-link-info-sli)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 LAC/Client Details](#32-lacclient-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Incoming-Call-Request (ICRQ)](#3251-incoming-call-request-icrq)
+      - [3.2.5.2 Incoming-Call-Connected (ICCN)](#3252-incoming-call-connected-iccn)
+      - [3.2.5.3 Outgoing-Call-Reply (OCRP)](#3253-outgoing-call-reply-ocrp)
+      - [3.2.5.4 Outgoing-Call-Connected (OCCN)](#3254-outgoing-call-connected-occn)
+      - [3.2.5.5 WAN-Error-Notify (WEN)](#3255-wan-error-notify-wen)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+  - [3.3 LNS/Server Details](#33-lnsserver-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 Incoming-Call-Reply (ICRP)](#3351-incoming-call-reply-icrp)
+      - [3.3.5.2 Incoming-Call-Connected (ICCN)](#3352-incoming-call-connected-iccn)
+      - [3.3.5.3 Outgoing-Call-Request (OCRQ)](#3353-outgoing-call-request-ocrq)
+      - [3.3.5.4 Outgoing-Call-Reply (OCRP)](#3354-outgoing-call-reply-ocrp)
+      - [3.3.5.5 Outgoing-Call-Connected (OCCN)](#3355-outgoing-call-connected-occn)
+      - [3.3.5.6 WAN-Error-Notify (WEN)](#3356-wan-error-notify-wen)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 6
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Relationship to Other Protocols ............................................................................ 7
-Prerequisites/Preconditions ................................................................................. 8
-Applicability Statement ....................................................................................... 8
-Versioning and Capability Negotiation ................................................................... 8
-Vendor-Extensible Fields ..................................................................................... 8
-Standards Assignments ....................................................................................... 8
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ................................................................................................................. 9
-Transport .......................................................................................................... 9
-Message Syntax ................................................................................................. 9
-L2TP AV pairs ............................................................................................... 9
-L2TP AV Pair: Microsoft Vendor-specific Correlation ID Type (0x01) .............. 9
-L2TP Congestion Control (Reset) .................................................................. 10
-
-2.2.1.1
-
-2.2.1
-
-2.2.2
-
-3.1
-
-3.1.3.1
-
-3.1.4
-3.1.5
-
-3.1.1
-3.1.2
-3.1.3
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-3.1.5.5
-3.1.5.6
-3.1.5.7
-3.1.5.8
-3.1.5.9
-
-3  Protocol Details ..................................................................................................... 11
-Common (LAC/LNS) Details ............................................................................... 11
-Abstract Data Model .................................................................................... 11
-Timers ...................................................................................................... 11
-Initialization ............................................................................................... 11
-Securing L2TP with IPsec ....................................................................... 11
-Higher-Layer Triggered Events ..................................................................... 11
-Message Processing Events and Sequencing Rules .......................................... 11
-Header Format ..................................................................................... 11
-Control Message AV Pairs ....................................................................... 12
-Start-Control-Connection-Request (SCCRQ) ............................................. 13
-Start-Control-Connection-Reply (SCCRP) ................................................. 13
-Start-Control-Connection-Connected (SCCCN) .......................................... 13
-Stop-Control-Connection-Notification (StopCCN) ....................................... 13
-Hello (HELLO) ....................................................................................... 13
-Call-Disconnect-Notify (CDN) .................................................................. 13
-Set-Link-Info (SLI) ................................................................................ 13
-Timer Events .............................................................................................. 14
-Other Local Events ...................................................................................... 14
-LAC/Client Details ............................................................................................ 14
-Abstract Data Model .................................................................................... 14
-Timers ...................................................................................................... 14
-Initialization ............................................................................................... 14
-Higher-Layer Triggered Events ..................................................................... 14
-Message Processing Events and Sequencing Rules .......................................... 14
-Incoming-Call-Request (ICRQ) ................................................................ 14
-Incoming-Call-Connected (ICCN) ............................................................ 14
-Outgoing-Call-Reply (OCRP) ................................................................... 14
-Outgoing-Call-Connected (OCCN) ............................................................ 15
-WAN-Error-Notify (WEN) ........................................................................ 15
-Timer Events .............................................................................................. 15
-Other Local Events ...................................................................................... 15
-LNS/Server Details ........................................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-
-3.2.5.1
-3.2.5.2
-3.2.5.3
-3.2.5.4
-3.2.5.5
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.3.1
-3.3.2
-
-3.2.6
-3.2.7
-
-3.1.6
-3.1.7
-
-3.3
-
-3.2
-
-[MS-L2TPIE] - v20240423
-Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 32
-
-3.3.3
-3.3.4
-3.3.5
-
-3.3.5.1
-3.3.5.2
-3.3.5.3
-3.3.5.4
-3.3.5.5
-3.3.5.6
-
-3.3.6
-3.3.7
-
-Initialization ............................................................................................... 15
-Higher-Layer Triggered Events ..................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-Incoming-Call-Reply (ICRP) .................................................................... 15
-Incoming-Call-Connected (ICCN) ............................................................ 16
-Outgoing-Call-Request (OCRQ) ............................................................... 16
-Outgoing-Call-Reply (OCRP) ................................................................... 16
-Outgoing-Call-Connected (OCCN) ............................................................ 16
-WAN-Error-Notify (WEN) ........................................................................ 16
-Timer Events .............................................................................................. 16
-Other Local Events ...................................................................................... 16
-
-4  Protocol Examples ................................................................................................. 17
-
-5  Security ................................................................................................................. 24
-Security Considerations for Implementers ........................................................... 24
-Index of Security Parameters ............................................................................ 24
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 25
-
-7  Change Tracking .................................................................................................... 29
-
-8  Index ..................................................................................................................... 30
-
-[MS-L2TPIE] - v20240423
-Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 32
-
-1  Introduction
+## 1 Introduction
 
 The Layer 2 Tunneling Protocol (L2TP) is an Internet Engineering Task Force (IETF) standard protocol
 that allows IP, IPX, or NetBEUI traffic to be encrypted, and then sent over any medium that supports
@@ -641,7 +536,7 @@ Network Server (LNS) and server are used interchangeably.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -682,7 +577,7 @@ tunnel: The encapsulation of one network protocol within another.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -696,7 +591,8 @@ Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.2.1  Normative References
+
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -720,7 +616,7 @@ https://tools.ietf.org/id/draft-ietf-pppext-l2tp-mpls-02.txt
 [RFC3193] Patel, B., Aboba, B., Zorn, G., and Booth, S., "Securing L2TP using IPsec", RFC 3193,
 November 2001, https://www.rfc-editor.org/info/rfc3193
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [RFC1661] Simpson, W., Ed., "The Point-to-Point Protocol (PPP)", STD 51, RFC 1661, July 1994,
 https://www.rfc-editor.org/info/rfc1661
@@ -731,7 +627,7 @@ November 1998, https://tools.ietf.org/html/rfc2401
 [RFC768] Postel, J., "User Datagram Protocol", STD 6, RFC 768, August 1980, https://www.rfc-
 editor.org/info/rfc768
 
-1.3  Overview
+### 1.3 Overview
 
 Layer 2 Tunneling Protocol (L2TP) Internet Protocol security (IPsec) Extensions (L2TPIE) provides
 extensions to the Layer 2 Tunneling Protocol (L2TP) specification [RFC2661] and to securing L2TP
@@ -749,7 +645,7 @@ See [RFC2661] section 1 for an introduction to L2TP. [RFC3193] specifies an Inte
 Task Force (IETF) standard protocol designed to use IPsec [RFC2401] to provide for tunnel
 authentication, privacy protection, and integrity checking and replay protection of L2TP.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) is based on L2TP [RFC2661], [L2TP-
 draft], and securing L2TP with IPsec [RFC3193] protocols. L2TPIE supports only IPsec transport
@@ -761,7 +657,8 @@ Release: April 23, 2024
 
 7 / 32
 
-<!-- Extracted images from page 8 -->
+
+<!-- Extracted images from page 8 -->
 ![Extracted image 1 from page 8]([MS-L2TPIE].images/page008-img01.png)
 <!-- /Extracted images from page 8 -->
 
@@ -770,27 +667,27 @@ an IPsec transport mode.
 
 Figure 1: L2TP network stack
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None beyond those specified in [RFC2661], [L2TP-draft], and [RFC3193].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) is applicable when the implementation
 uses L2TP [RFC2661] and secures L2TP with IPsec [RFC3193].
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) is based on version 2 of the L2TP
 protocol, as specified in section 3.1 of [RFC2661].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The vendor-extensible fields comply with section 4.1 of [RFC2661], which specifies how vendor-
 specific AV pairs are passed. The vendor ID for Microsoft vendor-specific AV pairs is 0x137. The
 vendor-extensible options used by L2TP are specified in section 2.2.1.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The only standards assignment required for this protocol is Private Enterprise Number. The required
 value for this parameter is 311 (see [IANA-ENT] for details).
@@ -810,21 +707,22 @@ Release: April 23, 2024
 
 8 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 All Layer 2 Tunneling Protocol (L2TP) attributes are transported within L2TP, which is transported over
 UDP [RFC768] as specified in section 8.1 of [RFC2661] and IPsec, as specified in [RFC3193]. L2TP
 Network Server (LNS) listens for L2TP messages on the UDP port.<1>
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 These Layer 2 Tunneling Protocol (L2TP) IPsec extensions use the message format for vendor-specific
 options, as specified in [RFC2661] section 4.1. All option fields and values described in this document
 are sent in network-byte order unless indicated otherwise.
 
-2.2.1  L2TP AV pairs
+#### 2.2.1 L2TP AV pairs
 
 Layer 2 Tunneling Protocol (L2TP) AV pairs have Vendor ID fields. The value 0, corresponding to the
 IETF adopted attribute values, is used for all AV pairs defined in [RFC2661]. This specification defines
@@ -839,7 +737,7 @@ Field Name
 
 Attribute Type  0x01 (ATTR_VEN_MS_CorrID_Type)  Microsoft vendor-specific correlation ID type (2.2.1.1)
 
-2.2.1.1  L2TP AV Pair: Microsoft Vendor-specific Correlation ID Type (0x01)
+##### 2.2.1.1 L2TP AV Pair: Microsoft Vendor-specific Correlation ID Type (0x01)
 
 The Microsoft vendor-specific correlation ID type option is sent in Incoming-Call-Request (ICRQ)
 control messages so that any tracing application is able to correlate the messages pertaining to a
@@ -888,7 +786,8 @@ Release: April 23, 2024
 
 9 / 32
 
-rsvd (4 bits): Reserved bits. MUST be set to 0.
+
+rsvd (4 bits): Reserved bits. MUST be set to 0.
 
 Length (10 bits): MUST be set to 22.
 
@@ -900,7 +799,7 @@ Attribute Value (16 bytes): MUST be a 16-byte GUID, as specified in [MS-DTYP] se
 
 This SHOULD be unique for every ICRQ request on a LAC/LNS combination.
 
-2.2.2  L2TP Congestion Control (Reset)
+#### 2.2.2 L2TP Congestion Control (Reset)
 
 Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) implement the flow control for data
 packets, as defined in section 4.3 of [L2TP-draft]. (Flow control was removed from [RFC2661].)
@@ -912,27 +811,28 @@ Release: April 23, 2024
 
 10 / 32
 
-3  Protocol Details
 
-3.1  Common (LAC/LNS) Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Common (LAC/LNS) Details
+
+#### 3.1.1 Abstract Data Model
 
 The Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) state machine MUST conform to the
 state machine specified in section 7 of [RFC2661].
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 Layer 2 Tunneling Protocol (L2TP) IPsec Extensions do not define any timers beyond those described
 in [RFC2661] and [RFC3193].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Layer 2 Tunneling Protocol (L2TP) IPsec Extensions do not define any initialization beyond that
 specified in [RFC2661] and [RFC3193]. The configuration values of various configurable parameters
 are read from the registry.<3>
 
-3.1.3.1  Securing L2TP with IPsec
+##### 3.1.3.1 Securing L2TP with IPsec
 
 The L2TP per-packet security check is specified in section 3.3 of [RFC3193]. The LAC/LNS MAY verify
 the UDP port value in the packet that is received with the socket information that is used to set up the
@@ -951,7 +851,7 @@ Section 4.2.2 of [RFC3193] specifies filters for protecting L2TP.
 
 Section 5.1.4 of [RFC3193] specifies usage of pre-shared keys.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The higher layer can initiate a request to disconnect an established call session. When the higher
 layer requests to disconnect an established call session, the LAC/LNS MUST initiate the session
@@ -959,7 +859,7 @@ teardown, as specified in section 5.6 of [RFC2661]. After the session teardown i
 call sessions exist between LAC and LNS, the control connection between LAC and LNS SHOULD be
 disconnected by initiating the control connection teardown, as specified in section 5.7 of [RFC2661].
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
@@ -970,7 +870,8 @@ Release: April 23, 2024
 
 11 / 32
 
-3.1.5.1  Header Format
+
+##### 3.1.5.1 Header Format
 
 All reserved bits MUST be set to 0 on outgoing messages and ignored on incoming messages (section
 3.1 of [RFC2661]). If the L2TP header of a received packet has any bits set other than T, L, and S (the
@@ -979,7 +880,7 @@ LNS will stop the session setup attempt and will not resend the Outgoing-Call-Re
 
 Section 5.8 of [RFC2661] specifies the sequence number in the Header.<5>
 
-3.1.5.2  Control Message AV Pairs
+##### 3.1.5.2 Control Message AV Pairs
 
 Section 4 of [RFC2661] specifies control message AV pairs.
 
@@ -1074,7 +975,8 @@ Release: April 23, 2024
 
 12 / 32
 
-
+
+
 
 Proxy Authen Response
 
@@ -1106,33 +1008,33 @@ None of the AV pairs sent by LAC/LNS have the H bit set to 1.
 
 Section 4.4 of [RFC2661] provides a list of all L2TP AV pairs, some of which are hidden.
 
-3.1.5.3  Start-Control-Connection-Request (SCCRQ)
+##### 3.1.5.3 Start-Control-Connection-Request (SCCRQ)
 
 Section 6.1 of [RFC2661] specifies the AV pairs for the Start-Control-Connection-Request (SCCRQ)
 message.<6>
 
-3.1.5.4  Start-Control-Connection-Reply (SCCRP)
+##### 3.1.5.4 Start-Control-Connection-Reply (SCCRP)
 
 Start-Control-Connection-Reply (SCCRP) is the control message sent in response to SCCRQ. Section
 6.2 of [RFC2661] specifies the AV pairs used with SCCRP.<7>
 
-3.1.5.5  Start-Control-Connection-Connected (SCCCN)
+##### 3.1.5.5 Start-Control-Connection-Connected (SCCCN)
 
 Start-Control-Connection-Connected (SCCCN) is the control message sent in response to SCCRP.
 Section 6.3 of [RFC2661] specifies the AV pairs used with SCCCN.<8>
 
-3.1.5.6  Stop-Control-Connection-Notification (StopCCN)
+##### 3.1.5.6 Stop-Control-Connection-Notification (StopCCN)
 
 Stop-Control-Connection-Notification (StopCCN) is the control message sent to inform the peer that
 the tunnel is being shut down and the control connection closed. Section 6.4 of [RFC2661] specifies
 the AV pairs used by StopCCN.<9>
 
-3.1.5.7  Hello (HELLO)
+##### 3.1.5.7 Hello (HELLO)
 
 Hello (HELLO) is the control message used as a "keepalive" for the tunnel; see section 6.5 of
 [RFC2661] for details.<10>
 
-3.1.5.8  Call-Disconnect-Notify (CDN)
+##### 3.1.5.8 Call-Disconnect-Notify (CDN)
 
 Call-Disconnect-Notify (CDN) is the control message sent by a LAC or LNS to request disconnection of
 a specified call within a tunnel, as specified in section 6.2 of [RFC2661].<11>
@@ -1144,36 +1046,37 @@ Release: April 23, 2024
 
 13 / 32
 
-3.1.5.9  Set-Link-Info (SLI)
+
+##### 3.1.5.9 Set-Link-Info (SLI)
 
 The Set-Link-Info (SLI) message is an L2TP control message sent by the LNS to the LAC to set PPP-
 negotiated options, as specified in section 6.14 of [RFC2661]. The LAC MUST ignore this message and
 it SHOULD NOT be sent by the LNS.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  LAC/Client Details
+### 3.2 LAC/Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) state machine MUST conform to the
 state machine specified in [RFC2661] section 7.<12>
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No timers are defined beyond those described in [RFC2661] and [RFC3193].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Apart from the disconnect event specified in section 3.1.4, a LAC can receive a request to establish an
 L2TP call session from the higher layer. To establish an L2TP call session, the LAC MUST establish a
@@ -1182,11 +1085,11 @@ the control connection is available, LAC MUST send the Incoming-Call-Request (IC
 (section 6.6 of [RFC2661]), as specified in section 5.2.1 of [RFC2661], to establish the L2TP call
 session with LNS.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.2.5.1  Incoming-Call-Request (ICRQ)
+##### 3.2.5.1 Incoming-Call-Request (ICRQ)
 
 Incoming-Call-Request (ICRQ) specifies the control message sent by the LAC to a LNS when an
 incoming call is detected (see section 6.6 of [RFC2661]).<13>
@@ -1201,33 +1104,34 @@ Release: April 23, 2024
 
 14 / 32
 
-3.2.5.2  Incoming-Call-Connected (ICCN)
+
+##### 3.2.5.2 Incoming-Call-Connected (ICCN)
 
 Incoming-Call-Connected (ICCN) is the control message sent by the LAC to LNS in response to a
 received Incoming-Call-Reply (ICRP) message (see section 6.8 of [RFC2661]). The LAC MAY send a
 Receive Window Size AV pair in the ICCN message.<14>
 
-3.2.5.3  Outgoing-Call-Reply (OCRP)
+##### 3.2.5.3 Outgoing-Call-Reply (OCRP)
 
 Outgoing-Call-Reply (OCRP) is the control message sent by the LAC to a LNS in response to an OCRQ
 (see section 6.10 of [RFC2661]). <15>
 
-3.2.5.4  Outgoing-Call-Connected (OCCN)
+##### 3.2.5.4 Outgoing-Call-Connected (OCCN)
 
 Outgoing-Call-Connected (OCCN) is the control message sent by LAC to LNS following the OCRP, and
 after the outgoing call has been completed (see section 6.11 of [RFC2661]). The LAC MAY send a
 Receive Window Size AV pair and Sequencing Required AV pair in the OCCN message.<16>
 
-3.2.5.5  WAN-Error-Notify (WEN)
+##### 3.2.5.5 WAN-Error-Notify (WEN)
 
 WAN-Error-Notify (WEN) specifies the control message sent by LAC to LNS to indicate a WAN error
 condition (see section 6.13 of [RFC2661]).<17>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 Tracing or debugging logs on the LAC/client SHOULD include the ATTR_VEN_MS_CorrID_Type
 specified in section 2.2.1. Debugging connection setup issues on the LAC/client is made easy by
@@ -1235,22 +1139,22 @@ looking for the corresponding log on the LNS/server. Because ATTR_VEN_MS_CorrID_
 for every connection a tracing/debugging application will be able to correlate the events specific to a
 connection on the LNS/server.
 
-3.3  LNS/Server Details
+### 3.3 LNS/Server Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The Layer 2 Tunneling Protocol (L2TP) IPsec Extensions (L2TPIE) state machine MUST conform to the
 state machine specified in section 7 of [RFC2661].
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None beyond than those required for implementation as specified in section 5.8 of [RFC2661].
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
 None beyond the specification in section 3.1.4.
 
@@ -1261,48 +1165,49 @@ Release: April 23, 2024
 
 15 / 32
 
-3.3.5  Message Processing Events and Sequencing Rules
+
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.3.5.1  Incoming-Call-Reply (ICRP)
+##### 3.3.5.1 Incoming-Call-Reply (ICRP)
 
 Incoming-Call-Reply (ICRP) specifies the control message sent by the LNS to a LAC in response to
 ICRQ (see section 6.7 of [RFC2661]).<18>
 
-3.3.5.2  Incoming-Call-Connected (ICCN)
+##### 3.3.5.2 Incoming-Call-Connected (ICCN)
 
 Incoming-Call-Connected (ICCN) is the control message sent by the LAC to LNS in response to a
 received ICRP message (see section 6.8 of [RFC2661]). The LAC MAY send the Receive Window Size
 AV pair. The LNS MAY close the call if the received Framing Type AV pair has a value other than
 synchronous framing in the ICCN message.<19>
 
-3.3.5.3  Outgoing-Call-Request (OCRQ)
+##### 3.3.5.3 Outgoing-Call-Request (OCRQ)
 
 Outgoing-Call-Request (OCRQ) is the control message sent by the LNS to the LAC to indicate that an
 outbound call from the LAC is to be established (see section 6.6 of [L2TP-draft]).<20> The LNS
 SHOULD NOT send the Called Number AV pair in the OCRQ message.
 
-3.3.5.4  Outgoing-Call-Reply (OCRP)
+##### 3.3.5.4 Outgoing-Call-Reply (OCRP)
 
 Outgoing-Call-Reply (OCRP) specifies the control message sent by the LAC to the LNS in response to
 OCRQ (see section 6.10 of [RFC2661]). <21>
 
-3.3.5.5  Outgoing-Call-Connected (OCCN)
+##### 3.3.5.5 Outgoing-Call-Connected (OCCN)
 
 Outgoing-Call-Connected (OCCN) specifies the control message sent by a LAC to a LNS following the
 OCRP and after the outgoing call has been completed (see section 6.11 of [RFC2661]).<22>
 
-3.3.5.6  WAN-Error-Notify (WEN)
+##### 3.3.5.6 WAN-Error-Notify (WEN)
 
 WAN-Error-Notify (WEN) specifies the control message sent by a LAC to a LNS to indicate a WAN
 error condition (see section 6.13 of [RFC2661]).<23>
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None beyond those specified in [RFC2661] and [RFC3193].
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 Tracing or debugging logs on the LNS/server SHOULD include the ATTR_VEN_MS_CorrID_Type
 specified in 2.2.1.1. Debugging connection setup issues on the LAC/client is made easy by looking for
@@ -1317,7 +1222,8 @@ Release: April 23, 2024
 
 16 / 32
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The following example shows the sequence of messages exchanged when a machine running Windows
 Vista operating system with Service Pack 1 (SP1) (name: "testclient.contoso.com") with IP address
@@ -1376,7 +1282,8 @@ Release: April 23, 2024
 
 17 / 32
 
-Process
+
+Process
 
  Start-Control-Connection-Request (SCCRQ) is a control message used to
  initialize a tunnel between a LNS and a LAC. LAC initiates the tunnel
@@ -1448,7 +1355,8 @@ Release: April 23, 2024
 
 18 / 32
 
-         Flags:  M is set to 0x1, length is set to 0x8, all other flags are 0x0
+
+         Flags:  M is set to 0x1, length is set to 0x8, all other flags are 0x0
          VendorId is set to 0x0 (IETF)
          Attribute Type is set to 0x9 (Assigned Tunnel)
          Assigned tunnelID is set to 0xD (just a sample)
@@ -1524,7 +1432,8 @@ Release: April 23, 2024
 
 19 / 32
 
-     Receive Window
+
+     Receive Window
          Flags:  M is set to 0x1, length is set to 0x8, all other flags are 0x0
          VendorId is set to 0x0 (IETF)
          Attribute Type is set to 0xA (Receive Window)
@@ -1601,7 +1510,8 @@ Release: April 23, 2024
 
 20 / 32
 
-         Flags: length is set to 0x2D, all other flags are 0x0
+
+         Flags: length is set to 0x2D, all other flags are 0x0
          VendorId is set to 0x137 (Microsoft)
          Attribute Type is set to 0x1 (Correlation Id)
          Attribute value in this example is the following 16 bit value:
@@ -1678,7 +1588,8 @@ Release: April 23, 2024
 
 21 / 32
 
-         Attribute Type is set to 0xE (Tx Connection Speed)
+
+         Attribute Type is set to 0xE (Tx Connection Speed)
          Tx Connection Speed field is set to 0x5F5E100 (100 mbps)
 
      Framing type:
@@ -1754,7 +1665,8 @@ Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         VendorId is set to 0x0 (IETF)
+
+         VendorId is set to 0x0 (IETF)
          Attribute Type is set to 0x0 (Message type)
          Message Type in Attribute Value is set to 0x0004 (StopCCN)
          Length is set to 0x8
@@ -1781,14 +1693,15 @@ Release: April 23, 2024
 
 23 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 All of the security considerations that are applicable to L2TP [RFC2661] and securing L2TP with IPsec
 [RFC3193] also apply to the Layer 2 Tunneling Protocol (L2TP) IPsec Extensions.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1799,7 +1712,8 @@ Release: April 23, 2024
 
 24 / 32
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1868,7 +1782,8 @@ Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-numbered subkeys in the {4D36E972-E325-11CE-BFC1-08002BE10318} subkey. The particular
+
+numbered subkeys in the {4D36E972-E325-11CE-BFC1-08002BE10318} subkey. The particular
 subkey differs between computers. To determine which of the numbered subkeys stores L2TP driver
 data on your computer, look for the value "Wan Miniport (L2TP)" (without quotes), in the DriverDesc
 entry in each numbered subkey.
@@ -1941,7 +1856,8 @@ Release: April 23, 2024
 
 26 / 32
 
-  Challenge Response
+
+  Challenge Response
 
 The SCCRP message received at LAC/LNS does not check for the presence of the Host Name AV pairs.
 
@@ -2014,7 +1930,8 @@ Layer 2 Tunneling Protocol (L2TP) IPsec Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<15> Section 3.2.5.3: LAC sends the Physical Channel ID AV pair in the OCRP message. If the LNS
+
+<15> Section 3.2.5.3: LAC sends the Physical Channel ID AV pair in the OCRP message. If the LNS
 does not receive a Physical Channel ID it assumes a value of 0xFFFFFFFF.
 
 <16> Section 3.2.5.4: The LAC sends a Receive Window Size AV pair in the OCCN message. The AV
@@ -2085,7 +2002,8 @@ Release: April 23, 2024
 
 28 / 32
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2129,7 +2047,8 @@ Release: April 23, 2024
 
 29 / 32
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2263,7 +2182,8 @@ LAC/LNS
 
 30 / 32
 
-      Start-Control-Connection-Reply (SCCRP) 13
+
+      Start-Control-Connection-Reply (SCCRP) 13
       Start-Control-Connection-Request (SCCRQ) 13
       Stop-Control-Connection-Notification (StopCCN)
 
@@ -2406,7 +2326,8 @@ Sequencing rules
 
 31 / 32
 
-      header format 11
+
+      header format 11
       Hello (HELLO) 13
       overview 11
       Set-Link-Info (SLI) 13

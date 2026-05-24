@@ -64,7 +64,8 @@ Release: May 1, 2024
 
 1 / 83
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -536,7 +538,8 @@ Release: May 1, 2024
 
 3 / 83
 
-Date
+
+Date
 
 Revision
 History
@@ -577,205 +580,93 @@ Release: May 1, 2024
 
 4 / 83
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 LSAPR_HANDLE](#221-lsaprhandle)
+    - [2.2.2 STRING](#222-string)
+    - [2.2.3 LSAPR_ACL](#223-lsapracl)
+    - [2.2.4 SECURITY_DESCRIPTOR_CONTROL](#224-securitydescriptorcontrol)
+    - [2.2.5 LSAPR_SECURITY_DESCRIPTOR](#225-lsaprsecuritydescriptor)
+    - [2.2.6 SECURITY_IMPERSONATION_LEVEL](#226-securityimpersonationlevel)
+    - [2.2.7 SECURITY_CONTEXT_TRACKING_MODE](#227-securitycontexttrackingmode)
+    - [2.2.8 SECURITY_QUALITY_OF_SERVICE](#228-securityqualityofservice)
+    - [2.2.9 LSAPR_OBJECT_ATTRIBUTES](#229-lsaprobjectattributes)
+    - [2.2.10 ACCESS_MASK](#2210-accessmask)
+    - [2.2.11 LSAPR_TRUST_INFORMATION](#2211-lsaprtrustinformation)
+    - [2.2.12 LSAPR_REFERENCED_DOMAIN_LIST](#2212-lsaprreferenceddomainlist)
+    - [2.2.13 SID_NAME_USE](#2213-sidnameuse)
+    - [2.2.14 LSA_TRANSLATED_SID](#2214-lsatranslatedsid)
+    - [2.2.15 LSAPR_TRANSLATED_SIDS](#2215-lsaprtranslatedsids)
+    - [2.2.16 LSAP_LOOKUP_LEVEL](#2216-lsaplookuplevel)
+    - [2.2.17 LSAPR_SID_INFORMATION](#2217-lsaprsidinformation)
+    - [2.2.18 LSAPR_SID_ENUM_BUFFER](#2218-lsaprsidenumbuffer)
+    - [2.2.19 LSAPR_TRANSLATED_NAME](#2219-lsaprtranslatedname)
+    - [2.2.20 LSAPR_TRANSLATED_NAMES](#2220-lsaprtranslatednames)
+    - [2.2.21 LSAPR_TRANSLATED_NAME_EX](#2221-lsaprtranslatednameex)
+    - [2.2.22 LSAPR_TRANSLATED_NAMES_EX](#2222-lsaprtranslatednamesex)
+    - [2.2.23 LSAPR_TRANSLATED_SID_EX](#2223-lsaprtranslatedsidex)
+    - [2.2.24 LSAPR_TRANSLATED_SIDS_EX](#2224-lsaprtranslatedsidsex)
+    - [2.2.25 LSAPR_TRANSLATED_SID_EX2](#2225-lsaprtranslatedsidex2)
+    - [2.2.26 LSAPR_TRANSLATED_SIDS_EX2](#2226-lsaprtranslatedsidsex2)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Database Views](#3111-database-views)
+        - [3.1.1.1.1 Predefined Translation Database and Corresponding View](#31111-predefined-translation-database-and-corresponding-view)
+        - [3.1.1.1.2 Configurable Translation Database and Corresponding View](#31112-configurable-translation-database-and-corresponding-view)
+        - [3.1.1.1.3 Builtin Domain Principal View](#31113-builtin-domain-principal-view)
+        - [3.1.1.1.4 Account Domain Principal View](#31114-account-domain-principal-view)
+        - [3.1.1.1.5 Account Domain Information View](#31115-account-domain-information-view)
+        - [3.1.1.1.6 Account Domain View](#31116-account-domain-view)
+        - [3.1.1.1.7 Forest Principal View](#31117-forest-principal-view)
+        - [3.1.1.1.8 Forest Information View](#31118-forest-information-view)
+        - [3.1.1.1.9 Forest View](#31119-forest-view)
+      - [3.1.1.2 Domain Database Information](#3112-domain-database-information)
+      - [3.1.1.3 Trusted Domains and Forests Information](#3113-trusted-domains-and-forests-information)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 LsarOpenPolicy2 (Opnum 44)](#3141-lsaropenpolicy2-opnum-44)
+      - [3.1.4.2 LsarOpenPolicy (Opnum 6)](#3142-lsaropenpolicy-opnum-6)
+      - [3.1.4.3 LsarClose (Opnum 0)](#3143-lsarclose-opnum-0)
+      - [3.1.4.4 LsarGetUserName (Opnum 45)](#3144-lsargetusername-opnum-45)
+      - [3.1.4.5 LsarLookupNames4 (Opnum 77)](#3145-lsarlookupnames4-opnum-77)
+      - [3.1.4.6 LsarLookupNames3 (Opnum 68)](#3146-lsarlookupnames3-opnum-68)
+      - [3.1.4.7 LsarLookupNames2 (Opnum 58)](#3147-lsarlookupnames2-opnum-58)
+      - [3.1.4.8 LsarLookupNames (Opnum 14)](#3148-lsarlookupnames-opnum-14)
+      - [3.1.4.9 LsarLookupSids3 (Opnum 76)](#3149-lsarlookupsids3-opnum-76)
+      - [3.1.4.10 LsarLookupSids2 (Opnum 57)](#31410-lsarlookupsids2-opnum-57)
+      - [3.1.4.11 LsarLookupSids (Opnum 15)](#31411-lsarlookupsids-opnum-15)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+- [4 Protocol Example](#4-protocol-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 11
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Common Data Types ........................................................................................ 14
-LSAPR_HANDLE .......................................................................................... 16
-STRING ..................................................................................................... 16
-LSAPR_ACL ................................................................................................ 16
-SECURITY_DESCRIPTOR_CONTROL .............................................................. 16
-LSAPR_SECURITY_DESCRIPTOR ................................................................... 16
-SECURITY_IMPERSONATION_LEVEL .............................................................. 17
-SECURITY_CONTEXT_TRACKING_MODE ........................................................ 17
-SECURITY_QUALITY_OF_SERVICE ................................................................ 17
-LSAPR_OBJECT_ATTRIBUTES ....................................................................... 18
-ACCESS_MASK ........................................................................................... 18
-LSAPR_TRUST_INFORMATION ...................................................................... 18
-LSAPR_REFERENCED_DOMAIN_LIST ............................................................. 19
-SID_NAME_USE ......................................................................................... 19
-LSA_TRANSLATED_SID ............................................................................... 19
-LSAPR_TRANSLATED_SIDS .......................................................................... 20
-LSAP_LOOKUP_LEVEL ................................................................................. 20
-LSAPR_SID_INFORMATION .......................................................................... 21
-LSAPR_SID_ENUM_BUFFER ......................................................................... 22
-LSAPR_TRANSLATED_NAME ......................................................................... 22
-LSAPR_TRANSLATED_NAMES ....................................................................... 22
-LSAPR_TRANSLATED_NAME_EX ................................................................... 23
-LSAPR_TRANSLATED_NAMES_EX.................................................................. 23
-LSAPR_TRANSLATED_SID_EX ...................................................................... 24
-LSAPR_TRANSLATED_SIDS_EX .................................................................... 24
-LSAPR_TRANSLATED_SID_EX2..................................................................... 25
-LSAPR_TRANSLATED_SIDS_EX2 ................................................................... 25
-Directory Service Schema Elements ................................................................... 26
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-2.2.13
-2.2.14
-2.2.15
-2.2.16
-2.2.17
-2.2.18
-2.2.19
-2.2.20
-2.2.21
-2.2.22
-2.2.23
-2.2.24
-2.2.25
-2.2.26
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3  Protocol Details ..................................................................................................... 27
-Server Details .................................................................................................. 27
-Abstract Data Model .................................................................................... 27
-Database Views .................................................................................... 27
-Predefined Translation Database and Corresponding View .................... 28
-Configurable Translation Database and Corresponding View .................. 31
-Builtin Domain Principal View ............................................................ 32
-Account Domain Principal View .......................................................... 33
-Account Domain Information View ..................................................... 35
-Account Domain View ...................................................................... 36
-Forest Principal View ........................................................................ 37
-
-3.1.1.1.1
-3.1.1.1.2
-3.1.1.1.3
-3.1.1.1.4
-3.1.1.1.5
-3.1.1.1.6
-3.1.1.1.7
-
-[MS-LSAT] - v20240501
-Local Security Authority (Translation Methods) Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: May 1, 2024
-
-5 / 83
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.1.2
-3.1.1.3
-
-3.1.1.1.8
-3.1.1.1.9
-
-Forest Information View ................................................................... 38
-Forest View..................................................................................... 38
-Domain Database Information ................................................................ 38
-Trusted Domains and Forests Information ................................................ 39
-Timers ...................................................................................................... 40
-Initialization ............................................................................................... 40
-Message Processing Events and Sequencing Rules .......................................... 40
-LsarOpenPolicy2 (Opnum 44) ................................................................. 43
-LsarOpenPolicy (Opnum 6) ..................................................................... 43
-LsarClose (Opnum 0) ............................................................................. 44
-LsarGetUserName (Opnum 45) ............................................................... 44
-LsarLookupNames4 (Opnum 77) ............................................................. 45
-LsarLookupNames3 (Opnum 68) ............................................................. 49
-LsarLookupNames2 (Opnum 58) ............................................................. 50
-LsarLookupNames (Opnum 14) ............................................................... 52
-LsarLookupSids3 (Opnum 76) ................................................................. 53
-LsarLookupSids2 (Opnum 57) ................................................................. 56
-LsarLookupSids (Opnum 15) .................................................................. 57
-Timer Events .............................................................................................. 58
-Other Local Events ...................................................................................... 58
-Client Details ................................................................................................... 58
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-
-3.1.5
-3.1.6
-
-3.2
-
-4  Protocol Example................................................................................................... 60
-
-5  Security ................................................................................................................. 63
-Security Considerations for Implementers ........................................................... 63
-Index of Security Parameters ............................................................................ 63
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 64
-
-7  Appendix B: Product Behavior ............................................................................... 73
-
-8  Change Tracking .................................................................................................... 81
-
-9  Index ..................................................................................................................... 82
-
-[MS-LSAT] - v20240501
-Local Security Authority (Translation Methods) Remote Protocol
-Copyright © 2024 Microsoft Corporation
-Release: May 1, 2024
-
-6 / 83
-
-1  Introduction
+## 1 Introduction
 
 The Local Security Authority (Translation Methods) Remote Protocol is implemented in Windows
 products to translate identifiers for security principals between human-readable and machine-
@@ -785,7 +676,7 @@ access.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -845,7 +736,8 @@ Release: May 1, 2024
 
 7 / 83
 
-that is not a DC, this database is a local database, manageable through the Security Accounts
+
+that is not a DC, this database is a local database, manageable through the Security Accounts
 Manager Remote Protocol, as specified in [MS-SAMR].
 
 domain member (member machine): A machine that is joined to a domain by sharing a secret
@@ -924,7 +816,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-example, for the NCACN_IP_TCP RPC protocol sequence an RPC endpoint might be TCP port
+
+example, for the NCACN_IP_TCP RPC protocol sequence an RPC endpoint might be TCP port
 1025. For more information, see [C706].
 
 RPC protocol sequence: A character string that represents a valid combination of a remote
@@ -1002,20 +895,21 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-someone@example.com (in the form of an email address). In Active Directory, the
+
+someone@example.com (in the form of an email address). In Active Directory, the
 userPrincipalName attribute of the account object, as described in [MS-ADTS].
 
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1067,10 +961,11 @@ Release: May 1, 2024
 
 10 / 83
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-ADOD] Microsoft Corporation, "Active Directory Protocols Overview".
 
@@ -1082,7 +977,7 @@ http://msdn.microsoft.com/en-us/library/aa378865.aspx
 [MSFT-LSA-IDL] Microsoft Corporation, "Local Security Authority Merged IDL File", March 2018,
 https://www.microsoft.com/en-us/download/details.aspx?id=3367
 
-1.3  Overview
+### 1.3 Overview
 
 The purpose of this protocol is to translate human-readable names to security identifiers (SIDs), as
 specified in [MS-DTYP] section 2.4.2, and vice versa. The syntax of human-readable names is
@@ -1111,11 +1006,12 @@ Release: May 1, 2024
 
 11 / 83
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-LSAT].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Figure 1: The relationships among the LSAT, LSAD, RPC, and SMB protocols
 
@@ -1145,7 +1041,7 @@ exposes similar functionality for security principals that are local to a server
 The Active Directory Technical Specification [MS-ADTS] discusses Active Directory, which is used by
 this protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol has prerequisites, specified in [MS-RPCE], that are common to protocols that depend on
 RPC.
@@ -1157,7 +1053,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-As previously noted, some messages in this protocol depend on the Netlogon Remote Protocol, as
+
+As previously noted, some messages in this protocol depend on the Netlogon Remote Protocol, as
 specified in [MS-NRPC], having successfully negotiated security parameters to be used. For more
 information on the messages that have this requirement, see section 3.1.4.
 
@@ -1165,7 +1062,7 @@ It is assumed that the RPC server has access to the distributed abstract databas
 section 3.1.1 that are required to perform the translations requested using this protocol. It is also
 assumed that the RPC server has created the required views, as specified in section 3.1.1.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol is applicable whenever there is a need to translate the human-readable names of
 security principals, with syntaxes described in section 3.1.4.5, to security principal SIDs, or vice
@@ -1175,7 +1072,7 @@ displays and controls who can access such resources as files.
 To understand the conditions under which this protocol is preferred over other protocols, see section
 1.4.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1199,13 +1096,13 @@ specified in sections 3.1.4.5, 3.1.4.6, 3.1.4.7, 3.1.4.9, and 3.1.4.10.
 The RPC server takes actions according to the capabilities parameter of an RPC message, if
 present, as specified in the previous paragraph.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses NTSTATUS values as specified in [MS-ERREF] section 2.3. Vendors are free to
 choose their own values for this field, provided that the C bit (0x20000000) is set, which indicates that
 it is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol has no standards assignments. It uses private allocations for the RPC interface
 universally unique identifier (UUID) (12345778-1234-ABCD-EF00-0123456789AB) and the RPC
@@ -1218,9 +1115,10 @@ Release: May 1, 2024
 
 13 / 83
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses the following RPC protocol sequences:
 
@@ -1254,7 +1152,7 @@ Security settings used in this protocol vary depending on the role of the RPC cl
 the method being used, and the specific parameters being used. Therefore, security settings are
 discussed in the message processing sections for each message.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data
 types are defined in this specification.
@@ -1284,7 +1182,8 @@ Release: May 1, 2024
 
 14 / 83
 
-Type (section)
+
+Type (section)
 
 Summary
 
@@ -1410,7 +1309,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-2.2.1  LSAPR_HANDLE
+
+#### 2.2.1 LSAPR_HANDLE
 
 The LSAPR_HANDLE type defines a context handle, as specified in [MS-LSAD] section 2.2.2.1.
 
@@ -1418,7 +1318,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* LSAPR_HANDLE;
 
-2.2.2  STRING
+#### 2.2.2 STRING
 
 The STRING structure defines a string along with the number of characters in the string, as specified
 in [MS-LSAD] section 2.2.3.1.
@@ -1433,7 +1333,7 @@ in [MS-LSAD] section 2.2.3.1.
 
 Individual member semantics are specified in [MS-LSAD] section 2.2.3.1.
 
-2.2.3  LSAPR_ACL
+#### 2.2.3 LSAPR_ACL
 
 The LSAPR_ACL structure defines the header of an access control list (ACL) as specified in [MS-
 LSAD] section 2.2.3.2.
@@ -1448,7 +1348,7 @@ LSAD] section 2.2.3.2.
 
 Individual member semantics are specified in [MS-LSAD] section 2.2.3.2.
 
-2.2.4  SECURITY_DESCRIPTOR_CONTROL
+#### 2.2.4 SECURITY_DESCRIPTOR_CONTROL
 
 The SECURITY_DESCRIPTOR_CONTROL type contains a set of bit flags as specified in [MS-LSAD]
 section 2.2.3.3.
@@ -1457,7 +1357,7 @@ This type is declared as follows:
 
  typedef unsigned short SECURITY_DESCRIPTOR_CONTROL, *PSECURITY_DESCRIPTOR_CONTROL;
 
-2.2.5  LSAPR_SECURITY_DESCRIPTOR
+#### 2.2.5 LSAPR_SECURITY_DESCRIPTOR
 
 The LSAPR_SECURITY_DESCRIPTOR structure defines an object's security descriptor as specified in
 [MS-LSAD] section 2.2.3.4.
@@ -1472,7 +1372,8 @@ Release: May 1, 2024
 
 16 / 83
 
-   unsigned char Sbz1;
+
+   unsigned char Sbz1;
    SECURITY_DESCRIPTOR_CONTROL Control;
    PRPC_SID Owner;
    PRPC_SID Group;
@@ -1483,7 +1384,7 @@ Release: May 1, 2024
 
 Individual member semantics are specified in [MS-LSAD] section 2.2.3.4.
 
-2.2.6  SECURITY_IMPERSONATION_LEVEL
+#### 2.2.6 SECURITY_IMPERSONATION_LEVEL
 
 The SECURITY_IMPERSONATION_LEVEL enumeration defines a set of values that specify security
 impersonation levels as specified in [MS-LSAD] section 2.2.3.5.
@@ -1499,7 +1400,7 @@ impersonation levels as specified in [MS-LSAD] section 2.2.3.5.
 
 Individual value semantics are specified in [MS-LSAD] section 2.2.3.5.
 
-2.2.7  SECURITY_CONTEXT_TRACKING_MODE
+#### 2.2.7 SECURITY_CONTEXT_TRACKING_MODE
 
 The SECURITY_CONTEXT_TRACKING_MODE type specifies how the server tracks the client's security
 context as specified in [MS-LSAD] section 2.2.3.6.
@@ -1510,7 +1411,7 @@ This type is declared as follows:
 
 Possible values are specified in [MS-LSAD] section 2.2.3.6.
 
-2.2.8  SECURITY_QUALITY_OF_SERVICE
+#### 2.2.8 SECURITY_QUALITY_OF_SERVICE
 
 The SECURITY_QUALITY_OF_SERVICE structure defines information used to support client
 impersonation as specified in [MS-LSAD] section 2.2.3.7.
@@ -1532,7 +1433,8 @@ Release: May 1, 2024
 
 17 / 83
 
-2.2.9  LSAPR_OBJECT_ATTRIBUTES
+
+#### 2.2.9 LSAPR_OBJECT_ATTRIBUTES
 
 The LSAPR_OBJECT_ATTRIBUTES structure specifies an object and its properties as specified in [MS-
 LSAD] section 2.2.2.4.
@@ -1549,7 +1451,7 @@ LSAD] section 2.2.2.4.
 
 Individual member semantics are specified in [MS-LSAD] section 2.2.2.4.
 
-2.2.10 ACCESS_MASK
+#### 2.2.10 ACCESS_MASK
 
 The ACCESS_MASK data type is a bitmask that defines the access rights to grant an object. Access
 types are reconciled with the discretionary access control list (DACL) of the object to determine
@@ -1575,7 +1477,7 @@ Access to translate names and SIDs.
 
 0x00000800
 
-2.2.11 LSAPR_TRUST_INFORMATION
+#### 2.2.11 LSAPR_TRUST_INFORMATION
 
 The LSAPR_TRUST_INFORMATION structure contains information about a domain.
 
@@ -1594,7 +1496,8 @@ Release: May 1, 2024
 
 18 / 83
 
-2.2.12 LSAPR_REFERENCED_DOMAIN_LIST
+
+#### 2.2.12 LSAPR_REFERENCED_DOMAIN_LIST
 
 The LSAPR_REFERENCED_DOMAIN_LIST structure contains information about the domains
 referenced in a lookup operation.
@@ -1616,7 +1519,7 @@ MaxEntries:  This field MUST be ignored. The content is unspecified, and no requ
 
 on its value since it is never used.
 
-2.2.13 SID_NAME_USE
+#### 2.2.13 SID_NAME_USE
 
 The SID_NAME_USE enumeration contains values that specify the type of an account.<6>
 
@@ -1638,7 +1541,7 @@ The SID_NAME_USE enumeration contains values that specify the type of an account
 The SidTypeInvalid and SidTypeComputer enumeration values are not used in this protocol. Usage
 information on the remaining enumeration values is specified in section 3.1.1.
 
-2.2.14 LSA_TRANSLATED_SID
+#### 2.2.14 LSA_TRANSLATED_SID
 
 The LSA_TRANSLATED_SID structure contains information about a security principal after
 translation from a name to a SID. This structure MUST always be accompanied by an
@@ -1660,7 +1563,8 @@ Release: May 1, 2024
 
 19 / 83
 
-RelativeId:  Contains the relative identifier (RID) of the security principal with respect to its
+
+RelativeId:  Contains the relative identifier (RID) of the security principal with respect to its
 
 domain.
 
@@ -1669,7 +1573,7 @@ DomainIndex:  Contains the index into an LSAPR_REFERENCED_DOMAIN_LIST structure 
 specifies the domain that the security principal is in. A DomainIndex value of -1 MUST be used to
 specify that there are no corresponding domains. Other negative values MUST NOT be returned.
 
-2.2.15 LSAPR_TRANSLATED_SIDS
+#### 2.2.15 LSAPR_TRANSLATED_SIDS
 
 The LSAPR_TRANSLATED_SIDS structure defines a set of translated SIDs.
 
@@ -1685,7 +1589,7 @@ Sids:  Contains a set of structures that contain translated SIDs. If the Entries
 
 not 0, this field MUST be non-NULL. If Entries is 0, this field MUST be NULL.
 
-2.2.16 LSAP_LOOKUP_LEVEL
+#### 2.2.16 LSAP_LOOKUP_LEVEL
 
 The LSAP_LOOKUP_LEVEL enumeration defines different scopes for searches during translation.<8>
 
@@ -1739,7 +1643,8 @@ Release: May 1, 2024
 
 20 / 83
 
-
+
+
 
 Forest Views of trusted forests for the forest of the domain to which this machine is joined,
 unless ClientRevision is 0x00000001 and the machine is joined to a mixed mode domain, as
@@ -1815,7 +1720,7 @@ SID and Security Principal SID History columns in the following view:
 
 Forest View of the forest of the domain to which this machine is joined.
 
-2.2.17 LSAPR_SID_INFORMATION
+#### 2.2.17 LSAPR_SID_INFORMATION
 
 The LSAPR_SID_INFORMATION structure contains a PRPC_SID value.
 
@@ -1830,13 +1735,14 @@ Release: May 1, 2024
 
 21 / 83
 
-  *PLSAPR_SID_INFORMATION;
+
+  *PLSAPR_SID_INFORMATION;
 
 Sid:  Contains the PRPC_SID value, as specified in [MS-DTYP] section 2.4.2.3. This field MUST be non-
 
 NULL.
 
-2.2.18 LSAPR_SID_ENUM_BUFFER
+#### 2.2.18 LSAPR_SID_ENUM_BUFFER
 
 The LSAPR_SID_ENUM_BUFFER structure defines a set of SIDs. This structure is used during a
 translation request for a batch of SIDs to names.
@@ -1853,7 +1759,7 @@ SidInfo:  Contains a set of structures that contain SIDs, as specified in sectio
 field in this structure is not 0, this field MUST be non-NULL. If Entries is 0, this field MUST be
 ignored.
 
-2.2.19 LSAPR_TRANSLATED_NAME
+#### 2.2.19 LSAPR_TRANSLATED_NAME
 
 The LSAPR_TRANSLATED_NAME structure contains information about a security principal, along
 with the human-readable identifier for that security principal. This structure MUST always be
@@ -1879,7 +1785,7 @@ structure that specifies the domain that the security principal is in. A DomainI
 MUST be used to specify that there are no corresponding domains. Other negative values MUST
 NOT be used.
 
-2.2.20 LSAPR_TRANSLATED_NAMES
+#### 2.2.20 LSAPR_TRANSLATED_NAMES
 
 The LSAPR_TRANSLATED_NAMES structure defines a set of translated names. This is used in the
 response to a translation request from SIDs to names.
@@ -1896,7 +1802,8 @@ Release: May 1, 2024
 
 22 / 83
 
-  *PLSAPR_TRANSLATED_NAMES;
+
+  *PLSAPR_TRANSLATED_NAMES;
 
 Entries:  Contains the number of translated names.<10>
 
@@ -1904,7 +1811,7 @@ Names:  Contains a set of translated names, as specified in section 2.2.19. If t
 
 structure is not 0, this field MUST be non-NULL. If Entries is 0, this field MUST be ignored.
 
-2.2.21 LSAPR_TRANSLATED_NAME_EX
+#### 2.2.21 LSAPR_TRANSLATED_NAME_EX
 
 The LSAPR_TRANSLATED_NAME_EX structure contains information about a security principal along
 with the human-readable identifier for that security principal. This structure MUST always be
@@ -1947,7 +1854,7 @@ Meaning
 
 All other bits MUST be 0 and ignored on receipt.<11>
 
-2.2.22 LSAPR_TRANSLATED_NAMES_EX
+#### 2.2.22 LSAPR_TRANSLATED_NAMES_EX
 
 The LSAPR_TRANSLATED_NAMES_EX structure contains a set of translated names.
 
@@ -1964,13 +1871,14 @@ Release: May 1, 2024
 
 23 / 83
 
-Entries:  Contains the number of translated names.<12>
+
+Entries:  Contains the number of translated names.<12>
 
 Names:  Contains a set of structures that contain translated names, as specified in section 2.2.21. If
 the Entries field in this structure is not 0, this field MUST be non-NULL. If Entries is 0, this field
 MUST be ignored.
 
-2.2.23 LSAPR_TRANSLATED_SID_EX
+#### 2.2.23 LSAPR_TRANSLATED_SID_EX
 
 The LSAPR_TRANSLATED_SID_EX structure contains information about a security principal after it
 has been translated into a SID. This structure MUST always be accompanied by an
@@ -2018,7 +1926,7 @@ Meaning
 
 All other bits MUST be 0 and ignored on receipt.<13>
 
-2.2.24 LSAPR_TRANSLATED_SIDS_EX
+#### 2.2.24 LSAPR_TRANSLATED_SIDS_EX
 
 The LSAPR_TRANSLATED_SIDS_EX structure contains a set of translated SIDs.
 
@@ -2035,13 +1943,14 @@ Release: May 1, 2024
 
 24 / 83
 
-Entries:  Contains the number of translated SIDs.<14>
+
+Entries:  Contains the number of translated SIDs.<14>
 
 Sids:  Contains a set of structures that contain translated SIDs, as specified in section 2.2.23. If the
 Entries field in this structure is not 0, this field MUST be non-NULL. If Entries is 0, this field
 MUST be NULL.
 
-2.2.25 LSAPR_TRANSLATED_SID_EX2
+#### 2.2.25 LSAPR_TRANSLATED_SID_EX2
 
 The LSAPR_TRANSLATED_SID_EX2 structure contains information about a security principal after it
 has been translated into a SID. This structure MUST always be accompanied by an
@@ -2086,7 +1995,7 @@ Meaning
 
 All other bits MUST be 0 and ignored on receipt.<15>
 
-2.2.26 LSAPR_TRANSLATED_SIDS_EX2
+#### 2.2.26 LSAPR_TRANSLATED_SIDS_EX2
 
 The LSAPR_TRANSLATED_SIDS_EX2 structure contains a set of translated SIDs.
 
@@ -2105,11 +2014,12 @@ Release: May 1, 2024
 
 25 / 83
 
-Sids:  Contains a set of structures that define translated SIDs, as specified in section 2.2.25. If the
+
+Sids:  Contains a set of structures that define translated SIDs, as specified in section 2.2.25. If the
 Entries field in this structure is not 0, this field MUST be non-NULL. If Entries is 0, this field
 MUST be NULL.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol is part of the Active Directory core family of protocols. In order to be fully compliant
 with Active Directory, an implementation of this protocol must be used in conjunction with the full
@@ -2123,7 +2033,8 @@ Release: May 1, 2024
 
 26 / 83
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This protocol determines whether it is running on a domain controller by querying the current server
 configuration. This is accomplished by calling the abstract interface ServerGetInfo, specified in [MS-
@@ -2132,9 +2043,9 @@ structure, as specified in [MS-DTYP] section 2.3.12. The determination is TRUE i
 sv101_version_type contains SV_TYPE_DOMAIN_CTRL or SV_TYPE_DOMAIN_BAKCTRL. If
 sv101_version_type does not contain either of these values, the determination is FALSE.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a possible data organization that an implementation might maintain to
 participate in this protocol. The described organization is provided to help explain how the protocol
@@ -2176,7 +2087,7 @@ which describe the server processing of RPC messages.
 In this section, Active Directory schema names are referenced when describing attributes stored in the
 domain database. For more information, see [MS-ADSC], [MS-ADA1], [MS-ADA2], and [MS-ADA3].
 
-3.1.1.1  Database Views
+##### 3.1.1.1 Database Views
 
 The following names represent the columns of the views that are specified in this section:
 
@@ -2195,7 +2106,8 @@ Release: May 1, 2024
 
 27 / 83
 
-  Additional Security Principal Name
+
+  Additional Security Principal Name
 
   Default User Principal Names
 
@@ -2247,7 +2159,7 @@ Security Principal Name and Domain DNS Name pair forms a unique key for each row
 These assumptions MUST be held true by the database implementations from which these views are
 created.<17>
 
-3.1.1.1.1 Predefined Translation Database and Corresponding View
+###### 3.1.1.1.1 Predefined Translation Database and Corresponding View
 
 The Predefined Translation View MUST be constructed using the following non-customizable Predefined
 Translation Tables. There is a one-to-one mapping between the rows in the view and the rows in the
@@ -2269,7 +2181,8 @@ Release: May 1, 2024
 
 28 / 83
 
-Security Principal Name
+
+Security Principal Name
 
 Security Principal SID
 
@@ -2380,7 +2293,8 @@ Release: May 1, 2024
 
 29 / 83
 
-Security Principal Name
+
+Security Principal Name
 
 Security Principal SID
 
@@ -2541,7 +2455,8 @@ Release: May 1, 2024
 
 30 / 83
 
-Domain NetBIOS Name: NT Authority
+
+Domain NetBIOS Name: NT Authority
 
 Domain SID: S-1-5-64
 
@@ -2626,7 +2541,7 @@ SidTypeLabel
 
 For Windows behavior on the preceding entries, see the following citation.<20>
 
-3.1.1.1.2 Configurable Translation Database and Corresponding View
+###### 3.1.1.1.2 Configurable Translation Database and Corresponding View
 
 The Configurable Translation Database is a general purpose database for translation between security
 principal names and their corresponding SIDs. The Configurable Translation Database columns are
@@ -2655,7 +2570,8 @@ Release: May 1, 2024
 
 31 / 83
 
-  Security Principal Type is SidTypeDomain
+
+  Security Principal Type is SidTypeDomain
 
 
 
@@ -2707,7 +2623,7 @@ S-1-5-80-2387347252-3645287876-
 
 SidTypeWellKnownGroup
 
-3.1.1.1.3 Builtin Domain Principal View
+###### 3.1.1.1.3 Builtin Domain Principal View
 
 To construct the Builtin Domain Principal View, the following columns from the associated domain
 database MUST be used:
@@ -2742,7 +2658,8 @@ Release: May 1, 2024
 
 32 / 83
 
-  Domain DNS Name, Additional Security Principal Name, User Principal Name, Default User
+
+  Domain DNS Name, Additional Security Principal Name, User Principal Name, Default User
 
 Principal Names, and Security Principal SID History columns are left empty.
 
@@ -2830,7 +2747,7 @@ Security Principal Type
 
 SidTypeAlias
 
-3.1.1.1.4 Account Domain Principal View
+###### 3.1.1.1.4 Account Domain Principal View
 
 [MS-LSAT] - v20240501
 Local Security Authority (Translation Methods) Remote Protocol
@@ -2839,7 +2756,8 @@ Release: May 1, 2024
 
 33 / 83
 
-To construct the Account Domain Principal View, the following columns from the associated domain
+
+To construct the Account Domain Principal View, the following columns from the associated domain
 database MUST be used:
 
 
@@ -2942,7 +2860,8 @@ Release: May 1, 2024
 
 34 / 83
 
-
+
+
 
 The view created for the administrator object.
 
@@ -2986,7 +2905,7 @@ Security Principal Type
 
 SidTypeUser
 
-3.1.1.1.5 Account Domain Information View
+###### 3.1.1.1.5 Account Domain Information View
 
 The Account Domain Information View of a domain database contains one row. This view MUST be
 constructed using the Domain Database Information (section 3.1.1.2) of that domain database, and
@@ -3041,7 +2960,8 @@ Release: May 1, 2024
 
 35 / 83
 
-Column
+
+Column
 
 Value
 
@@ -3133,7 +3053,7 @@ Security Principal Type
 
 SidTypeDomain
 
-3.1.1.1.6 Account Domain View
+###### 3.1.1.1.6 Account Domain View
 
 [MS-LSAT] - v20240501
 Local Security Authority (Translation Methods) Remote Protocol
@@ -3142,10 +3062,11 @@ Release: May 1, 2024
 
 36 / 83
 
-This view for a given domain database is a union of Account Domain Information View and Account
+
+This view for a given domain database is a union of Account Domain Information View and Account
 Domain Principal View of that account database.
 
-3.1.1.1.7 Forest Principal View
+###### 3.1.1.1.7 Forest Principal View
 
 To construct the Forest Principal View for a given forest, the following columns from a union of all
 domain naming contexts (NCs) in the forest MUST be used.
@@ -3247,7 +3168,8 @@ Release: May 1, 2024
 
 37 / 83
 
-Column
+
+Column
 
 Value
 
@@ -3321,17 +3243,17 @@ Security Principal Type
 
 SidTypeUser
 
-3.1.1.1.8 Forest Information View
+###### 3.1.1.1.8 Forest Information View
 
 The Forest Information View of a forest is a union of Account Domain Information Views of all
 domains in that forest.
 
-3.1.1.1.9 Forest View
+###### 3.1.1.1.9 Forest View
 
 This view for a given forest is a union of Forest Information View and Forest Principal View for that
 forest.
 
-3.1.1.2  Domain Database Information
+##### 3.1.1.2 Domain Database Information
 
 Domain database information MUST consist of the following conceptual fields:
 
@@ -3344,7 +3266,8 @@ Release: May 1, 2024
 
 38 / 83
 
-  Domain NetBIOS Name: A Unicode string that contains the NetBIOS name of the domain
+
+  Domain NetBIOS Name: A Unicode string that contains the NetBIOS name of the domain
 
 database.
 
@@ -3356,7 +3279,7 @@ populated from DNS Domain Information, as specified in [MS-LSAD] section 3.1.1.1
 Otherwise, this information MUST be populated from the Account Domain Information, as specified in
 [MS-LSAD] section 3.1.1.1. In this case, Domain DNS Name MUST be set to empty.
 
-3.1.1.3  Trusted Domains and Forests Information
+##### 3.1.1.3 Trusted Domains and Forests Information
 
 The Local Security Authority (LSA) Domain Policy database, as specified in [MS-LSAD], contains trust
 information for a given domain and forest. Of all the information that it manages for trusts, only the
@@ -3421,20 +3344,21 @@ Release: May 1, 2024
 
 39 / 83
 
-names, including UPN suffixes for user principal names, as specified in [MS-ADTS] section 6.1.6 and
+
+names, including UPN suffixes for user principal names, as specified in [MS-ADTS] section 6.1.6 and
 [MS-LSAD] section 3.1.1.5.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 No protocol timers are required other than the internal ones used in RPC to implement resiliency to
 network outages, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST start listening on the well-known named pipe for the RPC interface, as specified in
 section 2.1. The server SHOULD register the RPC interface to listen over TCP/IP.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 This section specifies the methods for this protocol, in addition to their processing rules.<21><22>
 
@@ -3524,7 +3448,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-Method
+
+Method
 
 Description
 
@@ -3656,7 +3581,8 @@ Release: May 1, 2024
 
 41 / 83
 
-Method
+
+Method
 
 Description
 
@@ -3762,7 +3688,8 @@ Release: May 1, 2024
 
 42 / 83
 
-Method
+
+Method
 
 Description
 
@@ -3816,7 +3743,7 @@ The RPC methods shown in the following sections are organized in the following o
 
   Methods that translate SIDs to names.
 
-3.1.4.1  LsarOpenPolicy2 (Opnum 44)
+##### 3.1.4.1 LsarOpenPolicy2 (Opnum 44)
 
 The LsarOpenPolicy2 method opens a context handle to the RPC server.
 
@@ -3829,7 +3756,7 @@ The LsarOpenPolicy2 method opens a context handle to the RPC server.
 
 Processing rules for this message are defined in [MS-LSAD] section 3.1.4.4.1.
 
-3.1.4.2  LsarOpenPolicy (Opnum 6)
+##### 3.1.4.2 LsarOpenPolicy (Opnum 6)
 
 The LsarOpenPolicy method is exactly the same as LsarOpenPolicy2, except that the SystemName
 parameter in this method contains only one character instead of a full string. This is because its
@@ -3841,7 +3768,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-syntactical definition lacks the [string] RPC annotation present in LsarOpenPolicy2, as specified in
+
+syntactical definition lacks the [string] RPC annotation present in LsarOpenPolicy2, as specified in
 [C706]. RPC data types are specified in [MS-RPCE] section 2.2.4.1.
 
 The SystemName parameter has no effect on message processing in any environment. It MUST be
@@ -3856,7 +3784,7 @@ ignored.
 
 Processing rules for this message are defined in [MS-LSAD] section 3.1.4.4.2.
 
-3.1.4.3  LsarClose (Opnum 0)
+##### 3.1.4.3 LsarClose (Opnum 0)
 
 The LsarClose method frees the resources held by a context handle that was opened earlier. After
 response, the context handle is no longer usable, and any subsequent uses of this handle MUST fail.
@@ -3867,7 +3795,7 @@ response, the context handle is no longer usable, and any subsequent uses of thi
 
 Processing rules for this message are defined in [MS-LSAD] section 3.1.4.9.4.
 
-3.1.4.4  LsarGetUserName (Opnum 45)
+##### 3.1.4.4 LsarGetUserName (Opnum 45)
 
 The LsarGetUserName method returns the name and the domain name of the security principal
 that is invoking the method.
@@ -3915,7 +3843,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -3968,7 +3897,7 @@ UserName parameter and MUST return the domain NetBIOS name in the DomainName par
 DomainName is not NULL. The return value MUST be set to STATUS_SUCCESS in this case. In other
 cases, an implementation-specific negative value MUST be returned.
 
-3.1.4.5  LsarLookupNames4 (Opnum 77)
+##### 3.1.4.5 LsarLookupNames4 (Opnum 77)
 
 The LsarLookupNames4 method translates a batch of security principal names to their SID form. It
 also returns the domains of which these security principals are a part.
@@ -3997,7 +3926,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-Count: Number of security principal names to look up.<24>
+
+Count: Number of security principal names to look up.<24>
 
 Names: Contains the security principal names to translate. The RPC_UNICODE_STRING structure is
 
@@ -4083,7 +4013,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4173,7 +4104,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-0x00000001 and the machine is joined to a mixed mode domain, as specified in [MS-ADTS]
+
+0x00000001 and the machine is joined to a mixed mode domain, as specified in [MS-ADTS]
 section 6.1.4.1.
 
 
@@ -4264,7 +4196,8 @@ Release: May 1, 2024
 
 48 / 83
 
-3.  If a match cannot be found for a composite name, but the domain name within the composite
+
+3.  If a match cannot be found for a composite name, but the domain name within the composite
 
 name is found, the corresponding TranslatedSids entry MUST be updated with:
 
@@ -4304,7 +4237,7 @@ If LookupLevel is LsapLookupWksta, and the return code can be identified as an e
 less than 0) other than STATUS_NONE_MAPPED, ReferencedDomains and the Sids field in the
 TranslatedSids structure MUST NOT be returned.
 
-3.1.4.6  LsarLookupNames3 (Opnum 68)
+##### 3.1.4.6 LsarLookupNames3 (Opnum 68)
 
 The LsarLookupNames3 method translates a batch of security principal names to their SID form. It
 also returns the domains that these names are a part of.<29>
@@ -4338,7 +4271,8 @@ Release: May 1, 2024
 
 49 / 83
 
-TranslatedSids: On successful return, contains the corresponding SID forms for security principal
+
+TranslatedSids: On successful return, contains the corresponding SID forms for security principal
 
 names in the Names parameter. It MUST be ignored on input.
 
@@ -4411,7 +4345,7 @@ RPCE] section 2.2.1.1.8) were used in this RPC message.
 
 2.  The PolicyHandle was granted POLICY_LOOKUP_NAMES access.
 
-3.1.4.7  LsarLookupNames2 (Opnum 58)
+##### 3.1.4.7 LsarLookupNames2 (Opnum 58)
 
 The LsarLookupNames2 method translates a batch of security principal names to their SID form. It
 also returns the domains that these names are a part of.<31>
@@ -4431,7 +4365,8 @@ Release: May 1, 2024
 
 50 / 83
 
-   [in, out] unsigned long* MappedCount,
+
+   [in, out] unsigned long* MappedCount,
    [in] unsigned long LookupOptions,
    [in] unsigned long ClientRevision
  );
@@ -4521,7 +4456,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-
+
+
 
 The LookupOptions and ClientRevision parameters MUST be ignored. Message processing MUST
 happen as if LookupOptions is set to 0x00000000 and ClientRevision is set to 0x00000002.
@@ -4536,7 +4472,7 @@ RPCE] section 2.2.1.1.8) were used in this RPC message.
 
 2.  The PolicyHandle was granted POLICY_LOOKUP_NAMES access.
 
-3.1.4.8  LsarLookupNames (Opnum 14)
+##### 3.1.4.8 LsarLookupNames (Opnum 14)
 
 The LsarLookupNames method translates a batch of security principal names to their SID form. It
 also returns the domains that these names are a part of.
@@ -4604,7 +4540,8 @@ Release: May 1, 2024
 
 52 / 83
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4641,7 +4578,7 @@ RPCE] section 2.2.1.1.8) were used in this RPC message.
 
 2.  The PolicyHandle was granted POLICY_LOOKUP_NAMES access.
 
-3.1.4.9  LsarLookupSids3 (Opnum 76)
+##### 3.1.4.9 LsarLookupSids3 (Opnum 76)
 
 The LsarLookupSids3 method translates a batch of security principal SIDs to their name forms. It
 also returns the domains that these names are a part of.
@@ -4685,7 +4622,8 @@ Release: May 1, 2024
 
 53 / 83
 
-MappedCount: On successful return, contains the number of names that are translated completely to
+
+MappedCount: On successful return, contains the number of names that are translated completely to
 
 their name forms. It MUST be ignored on input.
 
@@ -4777,7 +4715,8 @@ Release: May 1, 2024
 
 54 / 83
 
-Output parameters MUST be updated using the following information:
+
+Output parameters MUST be updated using the following information:
 
 1.  When a SID is found in the database, the ReferencedDomains parameter MUST be searched for an
 
@@ -4863,7 +4802,8 @@ Release: May 1, 2024
 
 55 / 83
 
-The return value MUST be set to STATUS_SUCCESS if all SIDs are translated correctly.
+
+The return value MUST be set to STATUS_SUCCESS if all SIDs are translated correctly.
 
 If some SIDs are translated correctly but some are not, the return value MUST be set to
 STATUS_SOME_NOT_MAPPED.
@@ -4874,9 +4814,9 @@ If LookupLevel is LsapLookupWksta, and the return code can be identified as an e
 STATUS_NONE_MAPPED, ReferencedDomains and the Names fields in the TranslatedNames structure
 MUST NOT be returned.
 
-3.1.4.10
+##### 3.1.4.10 LsarLookupSids2 (Opnum 57)
 
-LsarLookupSids2 (Opnum 57)
+
 
 The LsarLookupSids2 method translates a batch of security principal SIDs to their name forms. It
 also returns the domains that these names are a part of.
@@ -4945,7 +4885,8 @@ Release: May 1, 2024
 
 56 / 83
 
-Return value/code
+
+Return value/code
 
 Description
 
@@ -4991,9 +4932,9 @@ RPCE] section 2.2.1.1.8) were used in this RPC message.
 
 2.  The PolicyHandle was granted POLICY_LOOKUP_NAMES access.
 
-3.1.4.11
+##### 3.1.4.11 LsarLookupSids (Opnum 15)
 
-LsarLookupSids (Opnum 15)
+
 
 The LsarLookupSids method translates a batch of security principal SIDs to their name forms. It
 also returns the domains that these names are a part of.
@@ -5034,7 +4975,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-Return Values: The following table contains a summary of the return values that an implementation
+
+Return Values: The following table contains a summary of the return values that an implementation
 
 MUST return, as specified by the message processing shown after the table.
 
@@ -5093,17 +5035,17 @@ RPCE] section 2.2.1.1.8) were used in this RPC message.
 
 2.  The PolicyHandle was granted POLICY_LOOKUP_NAMES access.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the RPC server other than the timers required in the
 underlying RPC transport.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 No additional local events are used on the RPC server other than the events maintained in the
 underlying RPC transport.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client side of this protocol is simply a pass-through between the transport and the higher-layer
 protocol or application. There are no additional timers or other state required on the client side. Calls
@@ -5123,7 +5065,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-  Only a domain controller can process an LsarLookupNames4 message.
+
+  Only a domain controller can process an LsarLookupNames4 message.
 
 
 
@@ -5170,7 +5113,8 @@ Release: May 1, 2024
 
 59 / 83
 
-4  Protocol Example
+
+## 4 Protocol Example
 
 In this scenario, the client wants to translate a group of SIDs to their corresponding names. The client
 starts the communication by sending an LsarOpenPolicy2 request with the following parameters:
@@ -5234,7 +5178,8 @@ Release: May 1, 2024
 
 60 / 83
 
- typedef struct _LSAPR_SID_ENUM_BUFFER {
+
+ typedef struct _LSAPR_SID_ENUM_BUFFER {
      unsigned long Entries = {3};
      [size_is(Entries)] PLSAPR_SID_INFORMATION SidInfo;
  } LSAPR_SID_ENUM_BUFFER, *PLSAPR_SID_ENUM_BUFFER;
@@ -5300,7 +5245,8 @@ Release: May 1, 2024
 
 61 / 83
 
- } LSAPR_TRUST_INFORMATION, *PLSAPR_TRUST_INFORMATION;
+
+ } LSAPR_TRUST_INFORMATION, *PLSAPR_TRUST_INFORMATION;
 
 TranslatedNames might appear as follows:
 
@@ -5359,9 +5305,10 @@ Release: May 1, 2024
 
 62 / 83
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 This protocol provides query functionality into databases that might have other access control
 mechanisms. This protocol should obey those mechanisms; otherwise, it might become a source of
@@ -5374,7 +5321,7 @@ information.
 
 The RPC client has to authenticate the server if the results are used to make policy decisions.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -5401,7 +5348,8 @@ Release: May 1, 2024
 
 63 / 83
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL specified in
 [MS-DTYP] Appendix A.
@@ -5474,7 +5422,8 @@ Release: May 1, 2024
 
 64 / 83
 
-     SecurityImpersonation = 2,
+
+     SecurityImpersonation = 2,
      SecurityDelegation = 3
  } SECURITY_IMPERSONATION_LEVEL, * PSECURITY_IMPERSONATION_LEVEL;
 
@@ -5550,7 +5499,8 @@ Release: May 1, 2024
 
 65 / 83
 
- typedef struct _LSAPR_SID_INFORMATION {
+
+ typedef struct _LSAPR_SID_INFORMATION {
      PRPC_SID Sid;
  } LSAPR_SID_INFORMATION, *PLSAPR_SID_INFORMATION;
 
@@ -5625,7 +5575,8 @@ Release: May 1, 2024
 
 66 / 83
 
- //   This notation indicates that the method is defined in this
+
+ //   This notation indicates that the method is defined in this
  //   interface but is described in the
  //   Local Security Authority (Domain Policy) protocol
  //   specification.
@@ -5701,7 +5652,8 @@ Release: May 1, 2024
 
 67 / 83
 
- // Opnum 13
+
+ // Opnum 13
  void
  Lsar_LSA_DP_13( void );
 
@@ -5777,7 +5729,8 @@ Release: May 1, 2024
 
 68 / 83
 
- // Opnum 27
+
+ // Opnum 27
  void
  Lsar_LSA_DP_27( void );
 
@@ -5854,7 +5807,8 @@ Release: May 1, 2024
 
 69 / 83
 
- NTSTATUS
+
+ NTSTATUS
  LsarOpenPolicy2(
      [in,unique,string] wchar_t *SystemName,
      [in] PLSAPR_OBJECT_ATTRIBUTES ObjectAttributes,
@@ -5931,7 +5885,8 @@ Release: May 1, 2024
 
 70 / 83
 
-     );
+
+     );
 
  // Opnum 58
  NTSTATUS
@@ -6008,7 +5963,8 @@ Release: May 1, 2024
 
 71 / 83
 
- // Opnum 73
+
+ // Opnum 73
  void
  Lsar_LSA_DP_73( void );
 
@@ -6055,7 +6011,8 @@ Release: May 1, 2024
 
 72 / 83
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6218,7 +6175,8 @@ Release: May 1, 2024
 
 73 / 83
 
-Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
+
+Exceptions, if any, are noted in this section. If an update version, service pack or Knowledge Base
 (KB) number appears with a product name, the behavior changed in that update. The new behavior
 also applies to subsequent updates unless otherwise specified. If a product edition appears with the
 product version, behavior is different in that product edition.
@@ -6309,7 +6267,8 @@ Release: May 1, 2024
 
 74 / 83
 
-Data type name
+
+Data type name
 
 Windows version
 
@@ -6444,7 +6403,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-<8> Section 2.2.16: The following table contains a timeline of when particular enumeration values
+
+<8> Section 2.2.16: The following table contains a timeline of when particular enumeration values
 were introduced.
 
 Enumeration value  Enumeration name
@@ -6533,7 +6493,8 @@ Release: May 1, 2024
 
 76 / 83
 
-<14> Section 2.2.24: The Windows RPC server and RPC client limit the Entries field of this structure
+
+<14> Section 2.2.24: The Windows RPC server and RPC client limit the Entries field of this structure
 to 1,000 (using the range primitive defined in [MS-RPCE]) in Windows XP SP2 and later and Windows
 Server 2003 and later. Windows NT 3.1, Windows NT 3.5, Windows NT 3.51, Windows NT 4.0,
 Windows 2000, and Windows XP do not enforce this restriction.
@@ -6614,7 +6575,8 @@ Release: May 1, 2024
 
 77 / 83
 
-Opnum  Friendly name
+
+Opnum  Friendly name
 
 Product
 
@@ -6747,7 +6709,8 @@ Release: May 1, 2024
 
 78 / 83
 
-Opnum  Description
+
+Opnum  Description
 
 72
 
@@ -6823,7 +6786,8 @@ Local Security Authority (Translation Methods) Remote Protocol
 Copyright © 2024 Microsoft Corporation
 Release: May 1, 2024
 
-<34> Section 3.1.4.9:  Applies to Windows 11, version 24H2 and later, and to Windows Server 2025
+
+<34> Section 3.1.4.9:  Applies to Windows 11, version 24H2 and later, and to Windows Server 2025
 and later.
 
 <35> Section 3.1.4.10: The Windows RPC client sets LookupOptions to 0.
@@ -6845,7 +6809,8 @@ Release: May 1, 2024
 
 80 / 83
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6907,7 +6872,8 @@ Release: May 1, 2024
 
 81 / 83
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -7037,7 +7003,8 @@ Release: May 1, 2024
 
 82 / 83
 
-   local events 58
+
+   local events 58
    LsarClose (Opnum 0) method 44
    LsarGetUserName (Opnum 45) method 44
    LsarLookupNames (Opnum 14) method 52

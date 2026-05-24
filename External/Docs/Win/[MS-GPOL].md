@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 85
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 85
 
-Date
+
+Date
 
 Revision
 History
@@ -551,7 +553,8 @@ Release: April 23, 2024
 
 3 / 85
 
-Date
+
+Date
 
 Revision
 History
@@ -576,407 +579,177 @@ Release: April 23, 2024
 
 4 / 85
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 User and Computer Policy Settings](#131-user-and-computer-policy-settings)
+    - [1.3.2 Protocol Operational Modes](#132-protocol-operational-modes)
+    - [1.3.3 Policy Application](#133-policy-application)
+      - [1.3.3.1 Server Discovery and Group Policy Object Association](#1331-server-discovery-and-group-policy-object-association)
+      - [1.3.3.2 GPO Retrieval](#1332-gpo-retrieval)
+      - [1.3.3.3 Group Policy Extension Settings Retrieval](#1333-group-policy-extension-settings-retrieval)
+    - [1.3.4 Policy Administration](#134-policy-administration)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 DN Discovery](#221-dn-discovery)
+    - [2.2.2 Domain SOM Search](#222-domain-som-search)
+    - [2.2.3 Site Search](#223-site-search)
+    - [2.2.4 GPO Search](#224-gpo-search)
+    - [2.2.5 WMI Filter Search](#225-wmi-filter-search)
+    - [2.2.6 Link Speed Determination](#226-link-speed-determination)
+    - [2.2.7 GPO Read Administration](#227-gpo-read-administration)
+    - [2.2.8 GPO Write Administration](#228-gpo-write-administration)
+      - [2.2.8.1 GPO Creation Message](#2281-gpo-creation-message)
+        - [2.2.8.1.1 GPO Container SearchRequest](#22811-gpo-container-searchrequest)
+        - [2.2.8.1.2 GPO User Container SearchRequest](#22812-gpo-user-container-searchrequest)
+        - [2.2.8.1.3 Machine Container SearchRequest](#22813-machine-container-searchrequest)
+        - [2.2.8.1.4 Policies Container AddRequest](#22814-policies-container-addrequest)
+        - [2.2.8.1.5 GPO AddRequest](#22815-gpo-addrequest)
+        - [2.2.8.1.6 GPO User Subcontainer AddRequest](#22816-gpo-user-subcontainer-addrequest)
+        - [2.2.8.1.7 GPO Machine Subcontainer AddRequest](#22817-gpo-machine-subcontainer-addrequest)
+        - [2.2.8.1.8 GPO Security Descriptor SearchRequest](#22818-gpo-security-descriptor-searchrequest)
+      - [2.2.8.2 GPO Extension Update Message](#2282-gpo-extension-update-message)
+      - [2.2.8.3 GPO Property Update Message](#2283-gpo-property-update-message)
+      - [2.2.8.4 SOM Property Update Message](#2284-som-property-update-message)
+      - [2.2.8.5 GPO Deletion Message](#2285-gpo-deletion-message)
+      - [2.2.8.6 Organizational Unit Creation Message](#2286-organizational-unit-creation-message)
+      - [2.2.8.7 Organizational Unit Deletion Message](#2287-organizational-unit-deletion-message)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Server Abstract Data Model](#311-server-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Client Abstract Data Model](#321-client-abstract-data-model)
+      - [3.2.1.1 Cache of GPO Versions](#3211-cache-of-gpo-versions)
+      - [3.2.1.2 Default Policy Source Mode](#3212-default-policy-source-mode)
+      - [3.2.1.3 Policy Source Mode](#3213-policy-source-mode)
+      - [3.2.1.4 GPO List](#3214-gpo-list)
+      - [3.2.1.5 Filtered GPO List](#3215-filtered-gpo-list)
+      - [3.2.1.6 SOM List](#3216-som-list)
+      - [3.2.1.7 SOM GPLink List](#3217-som-gplink-list)
+      - [3.2.1.8 Enforced GPLink List](#3218-enforced-gplink-list)
+      - [3.2.1.9 Non-enforced GPLink List](#3219-non-enforced-gplink-list)
+      - [3.2.1.10 GPLink List](#32110-gplink-list)
+      - [3.2.1.11 Allow-Enforced-GPOs-Only](#32111-allow-enforced-gpos-only)
+      - [3.2.1.12 Policy Application Mode](#32112-policy-application-mode)
+      - [3.2.1.13 Group Policy Server](#32113-group-policy-server)
+      - [3.2.1.14 Configured Computer Base Frequency](#32114-configured-computer-base-frequency)
+      - [3.2.1.15 Configured Computer Random Offset](#32115-configured-computer-random-offset)
+      - [3.2.1.16 Policy Target Domain Name](#32116-policy-target-domain-name)
+      - [3.2.1.17 Computer Policy Refresh Interval](#32117-computer-policy-refresh-interval)
+      - [3.2.1.18 Configured User Base Frequency](#32118-configured-user-base-frequency)
+      - [3.2.1.19 Configured User Random Offset](#32119-configured-user-random-offset)
+      - [3.2.1.20 User Policy Refresh Interval](#32120-user-policy-refresh-interval)
+      - [3.2.1.21 Configured Disable Periodic Refresh](#32121-configured-disable-periodic-refresh)
+      - [3.2.1.22 Disable Periodic Refresh](#32122-disable-periodic-refresh)
+      - [3.2.1.23 Group Policy Client AD Connection Handle](#32123-group-policy-client-ad-connection-handle)
+      - [3.2.1.24 Extension List](#32124-extension-list)
+      - [3.2.1.25 Cache of Link Speed](#32125-cache-of-link-speed)
+      - [3.2.1.26 Cache of Logging State](#32126-cache-of-logging-state)
+      - [3.2.1.27 Policy Target User Name](#32127-policy-target-user-name)
+      - [3.2.1.28 Machine Role](#32128-machine-role)
+      - [3.2.1.29 Policy Target Security Token](#32129-policy-target-security-token)
+      - [3.2.1.30 Policy Target Domain DN](#32130-policy-target-domain-dn)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Policy Application](#3251-policy-application)
+        - [3.2.5.1.1 DC Discovery and AD Connection Establishment](#32511-dc-discovery-and-ad-connection-establishment)
+        - [3.2.5.1.2 DN Discovery](#32512-dn-discovery)
+        - [3.2.5.1.3 Domain SOM Search](#32513-domain-som-search)
+        - [3.2.5.1.4 Site Search](#32514-site-search)
+        - [3.2.5.1.5 GPO Search](#32515-gpo-search)
+        - [3.2.5.1.6 GPO Filter Evaluation](#32516-gpo-filter-evaluation)
+        - [3.2.5.1.7 WMI Filter Evaluation](#32517-wmi-filter-evaluation)
+        - [3.2.5.1.8 AD Connection Termination](#32518-ad-connection-termination)
+        - [3.2.5.1.9 Link Speed Discovery](#32519-link-speed-discovery)
+        - [3.2.5.1.10 Extension Protocol Sequences](#325110-extension-protocol-sequences)
+        - [3.2.5.1.11 Policy Application Notification](#325111-policy-application-notification)
+      - [3.2.5.2 GPO Processing Order](#3252-gpo-processing-order)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Policy Application Mode Initialization](#3271-policy-application-mode-initialization)
+      - [3.2.7.2 Refresh Timer Initialization](#3272-refresh-timer-initialization)
+      - [3.2.7.3 Policy Application Event](#3273-policy-application-event)
+  - [3.3 Administrative Tool Details](#33-administrative-tool-details)
+    - [3.3.1 Abstract Data Model](#331-abstract-data-model)
+      - [3.3.1.1 Group Policy Protocol Administrative Tool](#3311-group-policy-protocol-administrative-tool)
+      - [3.3.1.2 Group Policy Extension Administrative Plug-In](#3312-group-policy-extension-administrative-plug-in)
+      - [3.3.1.3 Administered GPO (Public)](#3313-administered-gpo-public)
+      - [3.3.1.4 Group Policy Server](#3314-group-policy-server)
+      - [3.3.1.5 Administrative Tool AD Connection Handle](#3315-administrative-tool-ad-connection-handle)
+    - [3.3.2 Timers](#332-timers)
+    - [3.3.3 Initialization](#333-initialization)
+    - [3.3.4 Higher-Layer Triggered Events](#334-higher-layer-triggered-events)
+      - [3.3.4.1 Group Policy Creation](#3341-group-policy-creation)
+      - [3.3.4.2 Group Policy Property Update](#3342-group-policy-property-update)
+      - [3.3.4.3 SOM Property Update](#3343-som-property-update)
+      - [3.3.4.4 Group Policy Extension Update](#3344-group-policy-extension-update)
+      - [3.3.4.5 Version Number Update](#3345-version-number-update)
+      - [3.3.4.6 Group Policy Deletion](#3346-group-policy-deletion)
+      - [3.3.4.7 Invoke Group Policy Extension Administrative Plug-In](#3347-invoke-group-policy-extension-administrative-plug-in)
+    - [3.3.5 Message Processing Events and Sequencing Rules](#335-message-processing-events-and-sequencing-rules)
+      - [3.3.5.1 GPO Creation](#3351-gpo-creation)
+      - [3.3.5.2 GPO Extension Update](#3352-gpo-extension-update)
+      - [3.3.5.3 GPO Property Update](#3353-gpo-property-update)
+      - [3.3.5.4 GPO File System Version Update](#3354-gpo-file-system-version-update)
+      - [3.3.5.5 SOM Property Update](#3355-som-property-update)
+      - [3.3.5.6 GPO Deletion](#3356-gpo-deletion)
+      - [3.3.5.7 GPO Link Creation and Update](#3357-gpo-link-creation-and-update)
+      - [3.3.5.8 GPO Link Deletion](#3358-gpo-link-deletion)
+      - [3.3.5.9 Organizational Unit Creation](#3359-organizational-unit-creation)
+      - [3.3.5.10 Organizational Unit Deletion](#33510-organizational-unit-deletion)
+    - [3.3.6 Timer Events](#336-timer-events)
+    - [3.3.7 Other Local Events](#337-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Domain SOM Search and Reply Messages](#41-domain-som-search-and-reply-messages)
+    - [4.1.1 Domain SOM Search Message](#411-domain-som-search-message)
+    - [4.1.2 Domain SOM Reply Message](#412-domain-som-reply-message)
+  - [4.2 Site Search Messages](#42-site-search-messages)
+    - [4.2.1 Site Search configurationNamingContext Request Message](#421-site-search-configurationnamingcontext-request-message)
+    - [4.2.2 Site Search configurationNamingContext Reply Message](#422-site-search-configurationnamingcontext-reply-message)
+    - [4.2.3 Site Search SOM Request Message](#423-site-search-som-request-message)
+  - [4.3 GPO Search Message and Reply](#43-gpo-search-message-and-reply)
+    - [4.3.1 GPO Search Message](#431-gpo-search-message)
+    - [4.3.2 GPO Search Reply Message](#432-gpo-search-reply-message)
+  - [4.4 WMI Filter Search and Reply Messages](#44-wmi-filter-search-and-reply-messages)
+    - [4.4.1 WMI Filter Search Message](#441-wmi-filter-search-message)
+    - [4.4.2 WMI Filter Search Response Message](#442-wmi-filter-search-response-message)
+  - [4.5 GPO Read Administration Request and Reply Messages](#45-gpo-read-administration-request-and-reply-messages)
+  - [4.6 GPO Creation Message](#46-gpo-creation-message)
+  - [4.7 GPO Extension Update Message](#47-gpo-extension-update-message)
+  - [4.8 GPO Property Update Message](#48-gpo-property-update-message)
+  - [4.9 SOM Property Update Message](#49-som-property-update-message)
+  - [4.10 Sample gpt.ini File](#410-sample-gptini-file)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1.3.1
-1.3.2
-1.3.3
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 13
-Normative References ................................................................................. 13
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 15
-User and Computer Policy Settings ............................................................... 15
-Protocol Operational Modes .......................................................................... 15
-Policy Application ........................................................................................ 16
-Server Discovery and Group Policy Object Association ............................... 16
-GPO Retrieval ....................................................................................... 16
-Group Policy Extension Settings Retrieval ................................................. 17
-Policy Administration ................................................................................... 17
-Relationship to Other Protocols .......................................................................... 17
-Prerequisites/Preconditions ............................................................................... 18
-Applicability Statement ..................................................................................... 18
-Versioning and Capability Negotiation ................................................................. 19
-Vendor-Extensible Fields ................................................................................... 19
-Standards Assignments ..................................................................................... 19
-
-1.3.3.1
-1.3.3.2
-1.3.3.3
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.4
-
-2.1
-2.2
-
-2.2.8.1
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-
-2  Messages ............................................................................................................... 20
-Transport ........................................................................................................ 20
-Message Syntax ............................................................................................... 20
-DN Discovery ............................................................................................. 21
-Domain SOM Search ................................................................................... 22
-Site Search ................................................................................................ 23
-GPO Search ............................................................................................... 24
-WMI Filter Search ....................................................................................... 27
-Link Speed Determination ............................................................................ 28
-GPO Read Administration ............................................................................. 28
-GPO Write Administration ............................................................................ 29
-GPO Creation Message ........................................................................... 29
-GPO Container SearchRequest .......................................................... 29
-GPO User Container SearchRequest ................................................... 29
-Machine Container SearchRequest ..................................................... 29
-Policies Container AddRequest .......................................................... 30
-GPO AddRequest ............................................................................. 30
-GPO User Subcontainer AddRequest .................................................. 31
-GPO Machine Subcontainer AddRequest ............................................. 31
-GPO Security Descriptor SearchRequest ............................................. 31
-GPO Extension Update Message .............................................................. 32
-GPO Property Update Message ................................................................ 32
-SOM Property Update Message ............................................................... 33
-GPO Deletion Message ........................................................................... 33
-Organizational Unit Creation Message ...................................................... 33
-Organizational Unit Deletion Message ...................................................... 34
-Directory Service Schema Elements ................................................................... 34
-
-2.2.8.1.1
-2.2.8.1.2
-2.2.8.1.3
-2.2.8.1.4
-2.2.8.1.5
-2.2.8.1.6
-2.2.8.1.7
-2.2.8.1.8
-
-2.2.8.2
-2.2.8.3
-2.2.8.4
-2.2.8.5
-2.2.8.6
-2.2.8.7
-
-2.3
-
-3.1
-
-3  Protocol Details ..................................................................................................... 36
-Server Details .................................................................................................. 36
-Server Abstract Data Model ......................................................................... 36
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Higher-Layer Triggered Events ..................................................................... 37
-Message Processing Events and Sequencing Rules .......................................... 37
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-[MS-GPOL] - v20240423
-Group Policy: Core Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 85
-
-3.1.6
-3.1.7
-
-3.2.1
-
-3.2
-
-Timer Events .............................................................................................. 37
-Other Local Events ...................................................................................... 37
-Client Details ................................................................................................... 38
-Client Abstract Data Model ........................................................................... 38
-Cache of GPO Versions .......................................................................... 38
-3.2.1.1
-Default Policy Source Mode .................................................................... 38
-3.2.1.2
-Policy Source Mode ............................................................................... 38
-3.2.1.3
-GPO List .............................................................................................. 39
-3.2.1.4
-Filtered GPO List ................................................................................... 39
-3.2.1.5
-SOM List .............................................................................................. 39
-3.2.1.6
-SOM GPLink List.................................................................................... 40
-3.2.1.7
-Enforced GPLink List .............................................................................. 40
-3.2.1.8
-3.2.1.9
-Non-enforced GPLink List ....................................................................... 40
-3.2.1.10  GPLink List ........................................................................................... 40
-Allow-Enforced-GPOs-Only ..................................................................... 40
-3.2.1.11
-3.2.1.12
-Policy Application Mode .......................................................................... 40
-3.2.1.13  Group Policy Server ............................................................................... 40
-Configured Computer Base Frequency ..................................................... 40
-3.2.1.14
-Configured Computer Random Offset ....................................................... 40
-3.2.1.15
-Policy Target Domain Name.................................................................... 40
-3.2.1.16
-Computer Policy Refresh Interval ............................................................ 41
-3.2.1.17
-Configured User Base Frequency ............................................................. 41
-3.2.1.18
-3.2.1.19
-Configured User Random Offset .............................................................. 41
-3.2.1.20  User Policy Refresh Interval.................................................................... 41
-3.2.1.21
-Configured Disable Periodic Refresh ........................................................ 41
-3.2.1.22  Disable Periodic Refresh ......................................................................... 41
-3.2.1.23  Group Policy Client AD Connection Handle ................................................ 41
-Extension List ....................................................................................... 42
-3.2.1.24
-Cache of Link Speed .............................................................................. 42
-3.2.1.25
-Cache of Logging State .......................................................................... 42
-3.2.1.26
-3.2.1.27
-Policy Target User Name ........................................................................ 42
-3.2.1.28  Machine Role ........................................................................................ 42
-Policy Target Security Token .................................................................. 42
-3.2.1.29
-Policy Target Domain DN ....................................................................... 42
-3.2.1.30
-Timers ...................................................................................................... 42
-Initialization ............................................................................................... 43
-Higher-Layer Triggered Events ..................................................................... 43
-Process Group Policy ............................................................................. 43
-Message Processing Events and Sequencing Rules .......................................... 44
-Policy Application .................................................................................. 44
-DC Discovery and AD Connection Establishment .................................. 46
-DN Discovery .................................................................................. 48
-Domain SOM Search ........................................................................ 48
-Site Search ..................................................................................... 49
-GPO Search .................................................................................... 50
-GPO Filter Evaluation ....................................................................... 52
-WMI Filter Evaluation ....................................................................... 52
-AD Connection Termination .............................................................. 53
-Link Speed Discovery ....................................................................... 53
-Extension Protocol Sequences ........................................................... 53
-Policy Application Notification ............................................................ 54
-GPO Processing Order ............................................................................ 54
-Timer Events .............................................................................................. 55
-Other Local Events ...................................................................................... 55
-Policy Application Mode Initialization........................................................ 55
-Refresh Timer Initialization ..................................................................... 55
-Policy Application Event ......................................................................... 55
-Administrative Tool Details ................................................................................ 55
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-3.2.5.1.5
-3.2.5.1.6
-3.2.5.1.7
-3.2.5.1.8
-3.2.5.1.9
-3.2.5.1.10
-3.2.5.1.11
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-
-3.2.5.2
-
-3.2.5.1
-
-3.2.4.1
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.6
-3.2.7
-
-3.3
-
-[MS-GPOL] - v20240423
-Group Policy: Core Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 85
-
-3.3.1
-
-3.3.2
-3.3.3
-3.3.4
-
-3.3.1.1
-3.3.1.2
-3.3.1.3
-3.3.1.4
-3.3.1.5
-
-3.3.4.1
-3.3.4.2
-3.3.4.3
-3.3.4.4
-3.3.4.5
-3.3.4.6
-3.3.4.7
-
-Abstract Data Model .................................................................................... 55
-Group Policy Protocol Administrative Tool ................................................. 56
-Group Policy Extension Administrative Plug-In .......................................... 56
-Administered GPO (Public) ..................................................................... 56
-Group Policy Server ............................................................................... 56
-Administrative Tool AD Connection Handle ............................................... 56
-Timers ...................................................................................................... 56
-Initialization ............................................................................................... 56
-Higher-Layer Triggered Events ..................................................................... 57
-Group Policy Creation ............................................................................ 57
-Group Policy Property Update ................................................................. 57
-SOM Property Update ............................................................................ 57
-Group Policy Extension Update ............................................................... 58
-Version Number Update ......................................................................... 58
-Group Policy Deletion ............................................................................ 58
-Invoke Group Policy Extension Administrative Plug-In................................ 58
-Message Processing Events and Sequencing Rules .......................................... 59
-3.3.5.1
-GPO Creation ........................................................................................ 59
-3.3.5.2
-GPO Extension Update ........................................................................... 60
-3.3.5.3
-GPO Property Update ............................................................................. 60
-3.3.5.4
-GPO File System Version Update ............................................................. 60
-3.3.5.5
-SOM Property Update ............................................................................ 61
-3.3.5.6
-GPO Deletion ........................................................................................ 61
-3.3.5.7
-GPO Link Creation and Update ................................................................ 63
-3.3.5.8
-GPO Link Deletion ................................................................................. 63
-Organizational Unit Creation ................................................................... 64
-3.3.5.9
-3.3.5.10  Organizational Unit Deletion ................................................................... 64
-Timer Events .............................................................................................. 64
-Other Local Events ...................................................................................... 64
-
-3.3.6
-3.3.7
-
-3.3.5
-
-4.3
-
-4.2
-
-4.1
-
-4.1.1
-4.1.2
-
-4.2.1
-4.2.2
-4.2.3
-
-4  Protocol Examples ................................................................................................. 65
-Domain SOM Search and Reply Messages............................................................ 65
-Domain SOM Search Message ...................................................................... 65
-Domain SOM Reply Message ........................................................................ 65
-Site Search Messages ....................................................................................... 66
-Site Search configurationNamingContext Request Message .............................. 66
-Site Search configurationNamingContext Reply Message.................................. 67
-Site Search SOM Request Message ............................................................... 67
-GPO Search Message and Reply ......................................................................... 67
-GPO Search Message .................................................................................. 68
-GPO Search Reply Message .......................................................................... 68
-WMI Filter Search and Reply Messages ............................................................... 69
-WMI Filter Search Message .......................................................................... 69
-WMI Filter Search Response Message ............................................................ 69
-GPO Read Administration Request and Reply Messages ......................................... 70
-GPO Creation Message ...................................................................................... 70
-GPO Extension Update Message ......................................................................... 72
-GPO Property Update Message ........................................................................... 72
-SOM Property Update Message .......................................................................... 73
-Sample gpt.ini File ........................................................................................... 73
-
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-
-4.4.1
-4.4.2
-
-4.3.1
-4.3.2
-
-4.4
-
-5  Security ................................................................................................................. 74
-Security Considerations for Implementers ........................................................... 74
-Index of Security Parameters ............................................................................ 74
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 75
-
-7  Change Tracking .................................................................................................... 80
-
-8  Index ..................................................................................................................... 81
-
-7 / 85
-
-[MS-GPOL] - v20240423
-Group Policy: Core Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-[MS-GPOL] - v20240423
-Group Policy: Core Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 85
-
-1  Introduction
+## 1 Introduction
 
 The Group Policy: Core Protocol communicates administrator-defined policies between a domain
 member and a Group Policy server.
@@ -984,7 +757,7 @@ member and a Group Policy server.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1049,7 +822,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-discretionary access control list (DACL): An access control list (ACL) that is controlled by the
+
+discretionary access control list (DACL): An access control list (ACL) that is controlled by the
 owner of an object and that specifies the access particular users or groups can have to the
 object.
 
@@ -1121,7 +895,8 @@ Release: April 23, 2024
 
 10 / 85
 
-fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
+
+fully qualified domain name (FQDN): An unambiguous domain name that gives an absolute
 
 location in the Domain Name System's (DNS) hierarchy tree, as defined in [RFC1035] section
 3.1 and [RFC2181] section 11.
@@ -1193,7 +968,8 @@ Release: April 23, 2024
 
 11 / 85
 
-Group Policy Object (GPO) precedence: An ordering between the GPOs that are associated
+
+Group Policy Object (GPO) precedence: An ordering between the GPOs that are associated
 with a policy target. A policy setting defined in a GPO that has a lower precedence can be
 overridden by a policy setting defined in a GPO that has a higher precedence.
 
@@ -1269,7 +1045,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-scoped Group Policy Object (GPO) path: A Group Policy Object (GPO) path appended with
+
+scoped Group Policy Object (GPO) path: A Group Policy Object (GPO) path appended with
 "\User" for the user policy mode of policy application, and "\Machine" for the computer
 policy mode.
 
@@ -1346,7 +1123,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-is the standard usage for logging on to a Windows domain. The format is:
+
+is the standard usage for logging on to a Windows domain. The format is:
 someone@example.com (in the form of an email address). In Active Directory, the
 userPrincipalName attribute of the account object, as described in [MS-ADTS].
 
@@ -1372,14 +1150,14 @@ rather than tables and returns CIM classes or instances rather than rows.  WQL i
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1415,7 +1193,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[MS-DTYP] Microsoft Corporation, "Windows Data Types".
+
+[MS-DTYP] Microsoft Corporation, "Windows Data Types".
 
 [MS-GPFR] Microsoft Corporation, "Group Policy: Folder Redirection Protocol Extension".
 
@@ -1459,7 +1238,7 @@ https://www.rfc-editor.org/info/rfc2254
 [RFC792] Postel, J., "Internet Control Message Protocol", RFC 792, September 1981, https://www.rfc-
 editor.org/info/rfc792
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-AUTHSOD] Microsoft Corporation, "Authentication Services Protocols Overview".
 
@@ -1481,7 +1260,8 @@ Release: April 23, 2024
 
 15 / 85
 
-[MSDN-InitializeSecurityContext] Microsoft Corporation, "InitializeSecurityContext (General) function",
+
+[MSDN-InitializeSecurityContext] Microsoft Corporation, "InitializeSecurityContext (General) function",
 http://msdn.microsoft.com/en-us/library/aa375506(VS.85).aspx
 
 [MSDN-NLA] Microsoft Corporation, "Network Location Awareness Service Provider (NLA)",
@@ -1493,7 +1273,7 @@ http://msdn.microsoft.com/en-us/library/aa379296(VS.85).aspx
 [MSDN-SetNamedSecurityInfo] Microsoft Corporation, "SetNamedSecurityInfo function",
 http://msdn.microsoft.com/en-us/library/aa379579(VS.85).aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Group Policy: Core Protocol is a client/server protocol that allows Group Policy clients to discover
 and retrieve policy settings that administrators of a domain create. Policy settings are
@@ -1502,7 +1282,7 @@ an administrator might want to configure every computer in a certain group of co
 specific port in their firewall. That administrator can use Group Policy to state that directive, and it will
 eventually be communicated to the clients through the Group Policy: Core Protocol.
 
-1.3.1  User and Computer Policy Settings
+#### 1.3.1 User and Computer Policy Settings
 
 The behavior of the clients fall into two categories: user policy settings, and computer policy
 settings.
@@ -1526,7 +1306,7 @@ definition of new settings.
 An overview of when user and computer policies are applied to a client is described in [MS-GPOD]
 section 2.5.2.
 
-1.3.2  Protocol Operational Modes
+#### 1.3.2 Protocol Operational Modes
 
 The Group Policy: Core Protocol has two primary modes of operation: policy application and policy
 administration.
@@ -1549,7 +1329,8 @@ Release: April 23, 2024
 
 16 / 85
 
-1.3.3  Policy Application
+
+#### 1.3.3 Policy Application
 
 The client’s interaction with the Group Policy server in policy application follows a pull model in
 which the client polls a Group Policy server to check for new behavioral specifications from
@@ -1563,7 +1344,7 @@ target. For computer policy mode, the policy target is always the client compute
 for user policy mode, the policy target is the account of a domain user who is interactively logged on
 to the client.
 
-1.3.3.1  Server Discovery and Group Policy Object Association
+##### 1.3.3.1 Server Discovery and Group Policy Object Association
 
 Policy application starts with a discovery step that is based on locating a domain controller (DC)
 as specified in section 3.2.5.1.1 in order to identify a DC. The client initiates this step. After a domain
@@ -1582,7 +1363,7 @@ a set of GPOs, and this association means that the set of GPOs applies to all ac
 container. Thus, the first set of queries performs a search on the hierarchy of the policy target account
 in order to identify the associated set of GPOs.
 
-1.3.3.2  GPO Retrieval
+##### 1.3.3.2 GPO Retrieval
 
 The second set of queries assembles the logical GPO from its component parts that include its Active
 Directory portion and its file system-based portion. This second set of queries is also performed
@@ -1622,10 +1403,11 @@ Release: April 23, 2024
 
 17 / 85
 
-the GPOs have certain classes of settings that require protocol activity in the next and final step of
+
+the GPOs have certain classes of settings that require protocol activity in the next and final step of
 policy application.
 
-1.3.3.3  Group Policy Extension Settings Retrieval
+##### 1.3.3.3 Group Policy Extension Settings Retrieval
 
 The last step of policy application is the actual retrieval of settings. In this step, the client uses its
 computed list of GPOs that contain different classes of settings to invoke a protocol sequence that is
@@ -1643,7 +1425,7 @@ Group Policy server or by reading or writing the file system portion of the GPO 
 server, or both. After the settings are retrieved, the Group Policy extension plug-in on the client can
 interpret the settings and enforce the behaviors they specify.
 
-1.3.4  Policy Administration
+#### 1.3.4 Policy Administration
 
 In policy administration mode, an administrative tool locates the Group Policy server, as
 described in section 1.3.3.1, and operates on the same Active Directory objects as policy
@@ -1659,7 +1441,7 @@ tools to identify a plug-in that is capable of administering the settings. Such 
 (for example, as specified in [MS-GPREG]) typically use LDAP to store settings in Active Directory, or
 they store settings in files.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 Note that the Group Policy: Core Protocol by itself is not capable of communicating policy settings
 directly. The Group Policy: Core Protocol only does so by being extended by one or more Group
@@ -1687,7 +1469,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-GPOL].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1709,7 +1492,7 @@ Figure 1: Group Policy: Core Protocol relationship diagram
 The Internet Control Message Protocol (ICMP), as specified in [RFC792], can be used for Link Speed
 Determination.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 Preconditions for Group Policy: Core Protocol communications between a Group Policy client and
 Group Policy server are the following:
@@ -1731,7 +1514,7 @@ bidirectional domain trust.
 
 section 4.2.2.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Group Policy: Core Protocol is only applicable for communicating administrative directives to
 clients. Because the Group Policy: Core Protocol itself is not encrypted, it is not recommended to be
@@ -1745,13 +1528,14 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Group Policy: Core Protocol is not applicable if an administrator requires explicit acknowledgment
+
+The Group Policy: Core Protocol is not applicable if an administrator requires explicit acknowledgment
 that the policy settings have been retrieved or enforced by the client computers.
 
 The Group Policy: Core Protocol is not applicable if different settings need to be applied to each client.
 This protocol is intended for applying the same settings to large groups of clients.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1768,7 +1552,7 @@ participate in this protocol, as specified in section 3.2.5.1.5.
 authentication methods: NT LAN Manager protocol (NTLM) and Kerberos. The authentication
 method in use is negotiated using the mechanisms specified in [MS-SPNG].
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Group Policy: Core Protocol allows vendors to define Group Policy extensions to the protocol.
 These Group Policy extensions enable vendors to store vendor-specific data in a GPO on the Group
@@ -1791,7 +1575,7 @@ assignment to the gPCMachineExtensionNames and gPCUserExtensionNames attributes 
 MUST be declared in the Group Policy extension documentation that is associated with the CSE GUID
 and tool extension GUID.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments for the Group Policy: Core Protocol.
 
@@ -1802,9 +1586,10 @@ Release: April 23, 2024
 
 20 / 85
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Core Protocol is a sequence of protocol conversations using different transports. The
 initial protocol conversation locates the Group Policy server specified in section 3.2.5.1.1.
@@ -1824,7 +1609,7 @@ Protocol.
 
 The structure of the files and Active Directory objects are defined in section 2.2.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 The Group Policy: Core Protocol is an amalgam of protocol conversations. For the purposes of this
 document, different phases of this conversation are described as messages. These messages are
@@ -1868,7 +1653,8 @@ Release: April 23, 2024
 
 21 / 85
 
-Note  All usage of file access and LDAP in the following message syntaxes include SPNEGO messages
+
+Note  All usage of file access and LDAP in the following message syntaxes include SPNEGO messages
 in the appropriate part of the protocol sequences. For computer policy mode, they MUST include
 Kerberos authentication.
 
@@ -1889,7 +1675,7 @@ document (for example, [MS-GPREG] and [MS-GPSCR]). Note that the Group Policy: C
 does not require any of these Group Policy extensions; for example, vendors can use this protocol with
 only their own Group Policy extensions.
 
-2.2.1  DN Discovery
+#### 2.2.1 DN Discovery
 
 DN Discovery uses the DRS Remote Protocol, as specified in [MS-DRSR]. The message syntax of the
 traffic the query generates is specified in [MS-DRSR] section 4.1.4 for the remote procedure call
@@ -1945,7 +1731,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Field
+
+ Field
 
  Value
 
@@ -1963,7 +1750,7 @@ Protocol details of this RPC method are specified in [MS-DRSR] section 4.1.4.
 Note  The DSR Remote Protocol, as specified in [MS-DRSR], itself supports caching the results of this
 message, so this message might not always appear in the protocol sequence for policy application.
 
-2.2.2  Domain SOM Search
+#### 2.2.2 Domain SOM Search
 
 The Domain SOM Search message uses LDAP as a transport. The purpose of this message is to allow
 the client to query the Group Policy server for SOMs that are associated with the policy target
@@ -2035,7 +1822,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-where "[", "]" and ";" are to be taken literally, <GPO DN*> are GPO DNs, and <GPLinkOptions> is a
+
+where "[", "]" and ";" are to be taken literally, <GPO DN*> are GPO DNs, and <GPLinkOptions> is a
 bit field with the following flags (any bitwise combination of the flag values is valid) defining the state
 of the association of the GPO referenced by the GPO DN with this and only this SOM:
 
@@ -2068,7 +1856,7 @@ ignored. GPO links to the SOM object in which this attribute is set to "1" are n
 "0" means that GPOs in this SOM's container hierarchy in the Active Directory MUST be honored. The
 default value is "0".
 
-2.2.3  Site Search
+#### 2.2.3 Site Search
 
 The purpose of this message is to allow the Group Policy client to query the Group Policy server
 for SOMs that are associated with the site that is associated with the client computer's account,
@@ -2123,7 +1911,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-searchResultEntries which contain an attributes field with the values nTSecurityDescriptor, as
+
+searchResultEntries which contain an attributes field with the values nTSecurityDescriptor, as
 specified in [MS-DTYP] section 2.4.6, and configurationNamingContext, from the rootDSE DN as
 defined in [MS-ADTS] section 1.1. The type of this value is a distinguishedName. From this value and
 the SiteName value, the site distinguished name (DN) can be computed. This computation is
@@ -2170,7 +1959,7 @@ gpLink and gpOptions attributes.
 The searchResponse received MUST meet the same requirements as those specified in the Domain
 Scope of Management Search (section 2.2.2).
 
-2.2.4  GPO Search
+#### 2.2.4 GPO Search
 
 The GPO Search message uses file access and LDAP as transports. The purpose of this message is to
 allow the Group Policy client to query the GPOs that are associated with SOMs.
@@ -2226,7 +2015,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Param
+
+Param
 eter
 
  Value
@@ -2325,7 +2115,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Attribute
+
+ Attribute
 
  Format
 
@@ -2406,7 +2197,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.5  WMI Filter Search
+
+#### 2.2.5 WMI Filter Search
 
 The WMI Filter Search message uses LDAP as a transport. The message allows the client to query the
 Group Policy server for filters using a WQL Query (as specified in [MS-WMI] section 2.2.1) that
@@ -2508,14 +2300,15 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.6  Link Speed Determination
+
+#### 2.2.6 Link Speed Determination
 
 The client SHOULD<7> use the Network Location Awareness Service Provider (NLA) to estimate the
 link speed of the network between the client and the domain controller. The Link Speed Determination
 message MAY use Internet Control Message Protocol (ICMP) (as specified in [RFC792]) as a transport,
 supporting at least 2048-byte packets, as an implementation-specific means.
 
-2.2.7  GPO Read Administration
+#### 2.2.7 GPO Read Administration
 
 This operation is similar to the sequences for policy application, but it is targeted only at a single
 GPO. This part of the protocol allows users to view the settings and state of an individual GPO.
@@ -2591,11 +2384,12 @@ Release: April 23, 2024
 
 29 / 85
 
-2.2.8  GPO Write Administration
+
+#### 2.2.8 GPO Write Administration
 
 Administrative tools use the following messages to create or update a GPO.
 
-2.2.8.1  GPO Creation Message
+##### 2.2.8.1 GPO Creation Message
 
 An administrative tool MUST generate the GUID portion of the new GPO DN by using the GUID-
 generation algorithm, as specified in [C706] Appendix A "Universal Unique Identifier", to ensure that
@@ -2604,7 +2398,7 @@ the DN is unique in the domain.
 Containers and GPO existence MUST be checked by sending the following LDAP SearchRequest
 messages to the Group Policy server prior to the applicable LDAP addRequest.
 
-2.2.8.1.1 GPO Container SearchRequest
+###### 2.2.8.1.1 GPO Container SearchRequest
 
 An LDAP SearchRequest to search for GPO container MUST be sent to the Group Policy server with
 the following parameters:
@@ -2627,7 +2421,7 @@ attributes
 
 objectClass
 
-2.2.8.1.2 GPO User Container SearchRequest
+###### 2.2.8.1.2 GPO User Container SearchRequest
 
 An LDAP SearchRequest to search for user container MUST be sent to the Group Policy server with
 the following parameters:
@@ -2650,7 +2444,7 @@ attributes
 
 objectClass
 
-2.2.8.1.3 Machine Container SearchRequest
+###### 2.2.8.1.3 Machine Container SearchRequest
 
 An LDAP SearchRequest to search for machine container MUST be sent to the Group Policy server
 with the following parameters:
@@ -2666,7 +2460,8 @@ Release: April 23, 2024
 
 30 / 85
 
-Parameter  Value
+
+Parameter  Value
 
 scope
 
@@ -2682,7 +2477,7 @@ attributes
 
 objectClass
 
-2.2.8.1.4 Policies Container AddRequest
+###### 2.2.8.1.4 Policies Container AddRequest
 
 The creation of Policies container MUST be accomplished through an LDAP addRequest message with
 the following parameters:
@@ -2721,7 +2516,7 @@ MUST be the directory string value
 
 Name of the Active Directory container.
 
-2.2.8.1.5 GPO AddRequest
+###### 2.2.8.1.5 GPO AddRequest
 
 The creation of the Active Directory portion of the new GPO MUST be accomplished through an
 LDAP addRequest message with the following parameters:
@@ -2769,10 +2564,11 @@ Release: April 23, 2024
 
 31 / 85
 
-Similar addRequest messages MUST be made to create subcontainers of the groupPolicyContainer
+
+Similar addRequest messages MUST be made to create subcontainers of the groupPolicyContainer
 object. The addRequest messages MUST have the following parameters and attributes.
 
-2.2.8.1.6 GPO User Subcontainer AddRequest
+###### 2.2.8.1.6 GPO User Subcontainer AddRequest
 
 A user subcontainer has the following parameters:
 
@@ -2810,7 +2606,7 @@ MUST be the directory string value
 
 Name of the Active Directory GPO subcontainer.
 
-2.2.8.1.7 GPO Machine Subcontainer AddRequest
+###### 2.2.8.1.7 GPO Machine Subcontainer AddRequest
 
 A machine subcontainer has the following parameters:
 
@@ -2848,7 +2644,7 @@ MUST be the directory string value
 
 Name of the Active Directory GPO subcontainer.
 
-2.2.8.1.8 GPO Security Descriptor SearchRequest
+###### 2.2.8.1.8 GPO Security Descriptor SearchRequest
 
 An LDAP SearchRequest MUST be sent to the Group Policy server with the following parameters:
 
@@ -2869,7 +2665,8 @@ Release: April 23, 2024
 
 32 / 85
 
-Parameter  Value
+
+Parameter  Value
 
 derefAliases  MUST be set to 0 (neverDerefAliases).
 
@@ -2896,7 +2693,7 @@ attributes
 nTSecurityDescriptor: A security descriptor whose format is specified in [MS-DTYP] section
 2.4.6.
 
-2.2.8.2  GPO Extension Update Message
+##### 2.2.8.2 GPO Extension Update Message
 
 The GPO Extension Update message MUST be an LDAP modifyRequest with the following parameters.
 The result of modifyRequest is a modifyResponse message in reply, as defined in [RFC2251] section
@@ -2925,7 +2722,7 @@ extension is removing all settings managed by this tool extension, gPCUserExtens
 gPCMachineExtensionNames MUST be updated to remove the extension GUID and tool
 extension GUID from the directory string.
 
-2.2.8.3  GPO Property Update Message
+##### 2.2.8.3 GPO Property Update Message
 
 The GPO Property Update message MUST be an LDAP modifyRequest with the following parameters.
 The result of modifyRequest is a modifyResponse message in reply, as defined in [RFC2251] section
@@ -2953,7 +2750,8 @@ Release: April 23, 2024
 
 33 / 85
 
-2.2.8.4  SOM Property Update Message
+
+##### 2.2.8.4 SOM Property Update Message
 
 The SOM Property Update message MUST be an LDAP modifyRequest with the following parameters.
 The result of modifyRequest is a modifyResponse message in reply, as defined in [RFC2251] section
@@ -2984,7 +2782,7 @@ gpOptions: An LDAP INTEGER specifying properties of the SOM.
 The syntax of these attributes is defined in section 2.2.2. The operation for each attribute specified
 MUST be "replace" as specified in [RFC2251].
 
-2.2.8.5  GPO Deletion Message
+##### 2.2.8.5 GPO Deletion Message
 
 The deletion of the Active Directory portion of the GPO MUST be accomplished through a series of
 LDAP delRequest messages with the following parameters.
@@ -2995,7 +2793,7 @@ entry
 
 GPO DN or GPO subcontainer DN
 
-2.2.8.6  Organizational Unit Creation Message
+##### 2.2.8.6 Organizational Unit Creation Message
 
 The creation of an Organizational Unit MUST be accomplished through an LDAP addRequest message
 with the following parameters. The result of addRequest is an addResponse message in reply, as
@@ -3013,7 +2811,7 @@ attributes
 
 objectClass=organizationalUnit
 
-2.2.8.7  Organizational Unit Deletion Message
+##### 2.2.8.7 Organizational Unit Deletion Message
 
 The deletion of an organizational unit (ou) MUST be accomplished through an LDAP delRequest
 message with the following parameter. The result of delRequest is a delResponse message in reply, as
@@ -3027,14 +2825,15 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter  Value
+
+Parameter  Value
 
 entry
 
 ou={name of OU being deleted},ou={name of any existing OU},...,<DN of domain naming
 context>
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 The Group Policy: Core Protocol accesses the following Directory Service schema classes and
 attributes listed in the following table. For the syntactic specifications of the following <Class> or
@@ -3101,7 +2900,8 @@ Release: April 23, 2024
 
 35 / 85
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization helps explain how the protocol
@@ -3111,9 +2911,9 @@ external behaviors are consistent with what is described in this document.
 The following sections describe the state maintained on the Group Policy client and server that
 implement the Group Policy: Core Protocol.
 
-3.1  Server Details
+### 3.1 Server Details
 
-3.1.1  Server Abstract Data Model
+#### 3.1.1 Server Abstract Data Model
 
 The Group Policy server has no knowledge of the Group Policy: Core Protocol. It is merely an LDAP
 and file server that stores generic objects. The Group Policy server primarily stores information on
@@ -3174,7 +2974,8 @@ Release: April 23, 2024
 
 36 / 85
 
-  GPO Active Directory storage: For each GPO to be communicated through the protocol, the
+
+  GPO Active Directory storage: For each GPO to be communicated through the protocol, the
 
 following objects and attributes MUST be accessible under the LDAP path
 CN=Policies,CN=System,<DN for root of the domain> via LDAP. The "Policies" object is of the
@@ -3205,27 +3006,27 @@ system.
 path) MUST exist; this subdirectory contains all computer policy information that MUST be
 stored in the file system.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -3236,14 +3037,15 @@ Release: April 23, 2024
 
 37 / 85
 
-3.2  Client Details
 
-3.2.1  Client Abstract Data Model
+### 3.2 Client Details
+
+#### 3.2.1 Client Abstract Data Model
 
 The following sections describe the data that is stored on the Group Policy client for applying policy
 for a policy target.
 
-3.2.1.1  Cache of GPO Versions
+##### 3.2.1.1 Cache of GPO Versions
 
 A table of the following information is present on the client, indexed by GPO GUID, as part of the
 efficient implementation of the protocol:
@@ -3266,12 +3068,12 @@ Thus, as an optimization, the client can choose not to include some of the Group
 sequences for some extensions to Group Policy to avoid unnecessary network usage and client or
 server processing.
 
-3.2.1.2  Default Policy Source Mode
+##### 3.2.1.2 Default Policy Source Mode
 
 The Default Policy Source Mode is used by the client to compute the Policy Source Mode. If specified,
 it MUST be one of the values specified in section 3.2.1.3.<9>
 
-3.2.1.3  Policy Source Mode
+##### 3.2.1.3 Policy Source Mode
 
 Policy Source Mode determines the policy sources used by the client to compute the Filtered GPO
 list (section 3.2.1.5), computed on the client by searching on the policy source's hierarchy in Active
@@ -3303,7 +3105,8 @@ Release: April 23, 2024
 
 38 / 85
 
-3.2.1.4  GPO List
+
+##### 3.2.1.4 GPO List
 
 A GPO list is a list of Group Policy Objects that are associated with a specified policy target. The
 list is ordered by GPO precedence in descending order of priority. The following information MUST be
@@ -3343,7 +3146,7 @@ SecurityDescriptor: The security descriptor, as specified in [MS-DTYP] section 2
 
 WMI Filter: A Unicode string that stores the WMI filter that is associated with the GPO.
 
-3.2.1.5  Filtered GPO List
+##### 3.2.1.5 Filtered GPO List
 
 The Filtered GPO list contains only those GPOs that pass all the criteria specified in sections 3.2.5.1.1
 through 3.2.5.1.9. A subset of the Filtered GPO list is computed separately for each Group Policy
@@ -3351,7 +3154,7 @@ extension at policy application time (as specified in section 3.2.5.1.10) and is
 specific Group Policy extension. GPOs represented in this list have passed access checking and are a
 subset of those in abstract data element GPO List.
 
-3.2.1.6  SOM List
+##### 3.2.1.6 SOM List
 
 A prioritized list of SOMs to which the specified policy target belongs. An SOM MUST be prioritized
 higher in the list compared to its parent SOMs. The following information MUST be maintained for each
@@ -3372,13 +3175,14 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  GPLinkOrganizationalUnit: SOM represents an organizational unit.
+
+  GPLinkOrganizationalUnit: SOM represents an organizational unit.
 
   GPLinkDomain: SOM represents a domain.
 
   GPLinkSite: SOM represents a site.
 
-3.2.1.7  SOM GPLink List
+##### 3.2.1.7 SOM GPLink List
 
 A prioritized list of GPO DNs that is associated with a given SOM. The following information MUST be
 maintained for each object in the list:
@@ -3389,57 +3193,57 @@ maintained for each object in the list:
 
 Enforced: A Boolean to indicate whether the GPO DN is enforced.
 
-3.2.1.8  Enforced GPLink List
+##### 3.2.1.8 Enforced GPLink List
 
 A prioritized list of enforced GPO DNs.
 
-3.2.1.9  Non-enforced GPLink List
+##### 3.2.1.9 Non-enforced GPLink List
 
 A prioritized list of non-enforced GPO DNs.
 
-3.2.1.10
+##### 3.2.1.10 GPLink List
 
-GPLink List
+
 
 A prioritized list of GPO DNs.
 
-3.2.1.11
+##### 3.2.1.11 Allow-Enforced-GPOs-Only
 
-Allow-Enforced-GPOs-Only
+
 
 For each SOM, a Boolean value to indicate whether only enforced GPOs are allowed.
 
-3.2.1.12
+##### 3.2.1.12 Policy Application Mode
 
-Policy Application Mode
+
 
 Determines whether the policy application is for the logged-on User or the Computer.
 
-3.2.1.13
+##### 3.2.1.13 Group Policy Server
 
-Group Policy Server
+
 
 This is the FQDN of the domain controller (DC) prefixed by 2 backslashes (\\).
 
-3.2.1.14
+##### 3.2.1.14 Configured Computer Base Frequency
 
-Configured Computer Base Frequency
+
 
 If configured, this value along with the Configured Computer Random Offset determines the frequency
 of policy application for the computer. The minimum value is 7 seconds and the maximum value is
 45 days.<10>
 
-3.2.1.15
+##### 3.2.1.15 Configured Computer Random Offset
 
-Configured Computer Random Offset
+
 
 If specified, this value along with Configured Computer Base Frequency determines the frequency of
 policy application for the computer. The minimum value is 0 minutes and the maximum value is
 1440 minutes.<11>
 
-3.2.1.16
+##### 3.2.1.16 Policy Target Domain Name
 
-Policy Target Domain Name
+
 
 This is the FQDN of policy target.
 
@@ -3450,9 +3254,10 @@ Release: April 23, 2024
 
 40 / 85
 
-3.2.1.17
 
-Computer Policy Refresh Interval
+##### 3.2.1.17 Computer Policy Refresh Interval
+
+
 
 This is the frequency of policy application for the computer.
 
@@ -3464,25 +3269,25 @@ specified, this value is 5 minutes for clients that are domain controllers. For 
 domain controllers, this value is determined by adding 90 minutes to an offset value in the range of 0
 to 30 minutes.
 
-3.2.1.18
+##### 3.2.1.18 Configured User Base Frequency
 
-Configured User Base Frequency
+
 
 If specified, this value along with Configured User Random Offset determines the frequency of policy
 application for an interactively logged-on user. The minimum value is 7 seconds and maximum value
 is 45 days.<12>
 
-3.2.1.19
+##### 3.2.1.19 Configured User Random Offset
 
-Configured User Random Offset
+
 
 If specified, this value along with Configured User Base Frequency determines the frequency of policy
 application for an interactively logged-on user. The minimum value is 0 minutes and the maximum
 value is 1440 minutes.<13>
 
-3.2.1.20
+##### 3.2.1.20 User Policy Refresh Interval
 
-User Policy Refresh Interval
+
 
 This is the frequency of policy application for interactively logged-on users.
 
@@ -3492,17 +3297,17 @@ determine this value.
 If Configured User Base Frequency and Configured User Random Offset are not specified, this
 value is determined by adding 90 minutes to an offset value in the range of 0 to 30 minutes.
 
-3.2.1.21
+##### 3.2.1.21 Configured Disable Periodic Refresh
 
-Configured Disable Periodic Refresh
+
 
 If specified, a Boolean value of TRUE indicates that periodic refresh is disabled for the computer and
 all interactively logged-on users, and FALSE indicates that periodic refresh is enabled for the computer
 and all interactively logged-on users.<14>
 
-3.2.1.22
+##### 3.2.1.22 Disable Periodic Refresh
 
-Disable Periodic Refresh
+
 
 A Boolean value of TRUE indicates that periodic refresh is disabled for the computer and all
 interactively logged-on users and FALSE indicates that periodic refresh is enabled for the computer
@@ -3513,9 +3318,9 @@ Disable Periodic Refresh.
 
 If Configured Disable Periodic Refresh is not specified, this value MUST be FALSE.
 
-3.2.1.23
+##### 3.2.1.23 Group Policy Client AD Connection Handle
 
-Group Policy Client AD Connection Handle
+
 
 This is an ADConnection handle as defined in [MS-ADTS] section 7.3. This element is used each time a
 Group Policy client communicates with a Group Policy server over an Active Directory connection.
@@ -3527,9 +3332,10 @@ Release: April 23, 2024
 
 41 / 85
 
-3.2.1.24
 
-Extension List
+##### 3.2.1.24 Extension List
+
+
 
 The list of Group Policy client-side extensions present in the local machine. The Extension List is in
 ascending order by CSE GUID. The following information MUST be maintained for each extension:
@@ -3545,50 +3351,50 @@ reification of the CSE GUID.
 
 number of minutes to skip the extension when the policy has not changed.
 
-3.2.1.25
+##### 3.2.1.25 Cache of Link Speed
 
-Cache of Link Speed
+
 
 A cached Link Speed value can be present on the client. The client maintains this value (even across
 system restarts) after every Group Policy application. As part of any future policy application
 protocol sequence, a change in Link Speed between Group Policy applications is available during
 Group Policy application.
 
-3.2.1.26
+##### 3.2.1.26 Cache of Logging State
 
-Cache of Logging State
+
 
 A cached Logging State value can be present on the client. The client maintains this value (even
 across system restarts) after every Group Policy application. As part of any future policy application
 protocol sequence, a change in Logging State between Group Policy applications is available during
 Group Policy application.
 
-3.2.1.27
+##### 3.2.1.27 Policy Target User Name
 
-Policy Target User Name
+
 
 A list of user principal names (UPNs) of logged-on users.
 
-3.2.1.28
+##### 3.2.1.28 Machine Role
 
-Machine Role
+
 
 Specifies the current role of the computer (as documented in [MS-DSSP] section 2.2.2).
 
-3.2.1.29
+##### 3.2.1.29 Policy Target Security Token
 
-Policy Target Security Token
+
 
 The security token that allows the Group Policy: Core Protocol to access secure resources on behalf of
 the policy target.
 
-3.2.1.30
+##### 3.2.1.30 Policy Target Domain DN
 
-Policy Target Domain DN
+
 
 This is the domain name of policy target in DN format.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 Unless periodic refresh is disabled by Disable Periodic Refresh, the Group Policy client has the
 following timers:
@@ -3608,20 +3414,21 @@ Release: April 23, 2024
 
 42 / 85
 
-interactively logged on user. The frequency of this timer is determined by the User Policy Refresh
+
+interactively logged on user. The frequency of this timer is determined by the User Policy Refresh
 Interval.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 Each Group Policy extension MUST request and retrieve its settings during the policy application
 sequence. The request and retrieval are specific to each Group Policy extension and are not specified
 in this document.
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 All Group Policy extension messages can be considered to have an abstract interface with the
 following logical input parameters. (An individual Group Policy extension sequence can use every part
@@ -3678,7 +3485,8 @@ Release: April 23, 2024
 
 43 / 85
 
-The GPO DN list (New or Changed GPOs) passed to each Group Policy extension's specific protocol
+
+The GPO DN list (New or Changed GPOs) passed to each Group Policy extension's specific protocol
 sequence only contains those GPOs that are marked as containing those Extension Protocol
 Sequences (section 3.2.5.1.10)). The GPO list does not contain GPOs that are noted by the client as
 denied (section 3.2.5.1.6), or GPOs for which the WMI query returns no results and are considered
@@ -3686,9 +3494,9 @@ denied (section 3.2.5.1.7). The GPO DN list (Deleted GPOs) passed to each Group 
 specific protocol sequence contains only those GPOs that no longer apply but applied during the
 previous policy application session.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Policy Application
+##### 3.2.5.1 Policy Application
 
 Policy application is composed of the following parts:
 
@@ -3754,7 +3562,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-4.  The directory server verifies the credentials, as described in [MS-AUTHSOD] section 2.5.3.1.1, and
+
+4.  The directory server verifies the credentials, as described in [MS-AUTHSOD] section 2.5.3.1.1, and
 sends an LDAP bind response, as specified in [RFC2251] section 4.2.3, Bind Response, to the
 client application.
 
@@ -3836,7 +3645,8 @@ Release: April 23, 2024
 
 45 / 85
 
-The Machine Role ADM element is initialized to the value of the MachineRole field in the returned
+
+The Machine Role ADM element is initialized to the value of the MachineRole field in the returned
 DomainInfo structure (as defined in [MS-DSSP] section 2.2.1). For User Policy Application Mode, if
 Machine Role is not equal to DsRole_RoleStandaloneWorkstation or DsRole_RoleStandaloneServer,
 and the DomainGuid field of the returned DomainInfo structure is not null, then loopback replace and
@@ -3885,7 +3695,7 @@ from the first bind.
 
 4.  For any other Policy Source Mode, assign an empty list to Filtered GPO list.
 
-3.2.5.1.1 DC Discovery and AD Connection Establishment
+###### 3.2.5.1.1 DC Discovery and AD Connection Establishment
 
 The client performs the following steps to discover and establish Active Directory connection with
 the DC. Steps 2-7 are performed while impersonating the policy target as specified in [MS-
@@ -3907,7 +3717,8 @@ Release: April 23, 2024
 
 46 / 85
 
-  0 for AllowableAccountControlBits.
+
+  0 for AllowableAccountControlBits.
 
 
 
@@ -3996,7 +3807,8 @@ Release: April 23, 2024
 
 47 / 85
 
-
+
+
 
 TaskInputADConnection: Value of the Group Policy Client AD Connection Handle ADM
 element
@@ -4063,7 +3875,7 @@ If the TaskReturnStatus returned is not 0 and it is the first iteration, repeat 
 Otherwise, policy application MUST be terminated and an event logged using an implementation-
 specific mechanism as defined in step 2.
 
-3.2.5.1.2 DN Discovery
+###### 3.2.5.1.2 DN Discovery
 
 The client attempts to discover the policy target DN to be used to query for the GPOs, as specified
 in section 2.2.1. The DN for the root of the domain is extracted from the fully qualified distinguished
@@ -4076,7 +3888,7 @@ DS_NT4_ACCOUNT_NAME format. If this message is invalid, as specified in section 
 application MUST be terminated and an event logged using an implementation-specific mechanism,
 as defined in section 3.2.5.1.
 
-3.2.5.1.3 Domain SOM Search
+###### 3.2.5.1.3 Domain SOM Search
 
 This procedure uses the domain controller name and the policy target DN that were retrieved in
 sections 3.2.5.1.1 and 3.2.5.1.2 for the Domain Scope of Management search. The policy target DN
@@ -4088,7 +3900,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-retrieved MUST be parsed to form the prioritized list of SOMs. The prioritized SOM list MUST store the
+
+retrieved MUST be parsed to form the prioritized list of SOMs. The prioritized SOM list MUST store the
 SOM Object type (GPLinkOrganizationalUnit or GPLinkDomain) and the DN, and is populated as
 follows:
 
@@ -4121,7 +3934,7 @@ If there are no SOMs to search for, the protocol sequence continues at section 3
 If Domain SOM Search fails, the entire protocol sequence MUST be terminated and an event logged
 using an implementation-specific mechanism, as defined in section 3.2.5.1.
 
-3.2.5.1.4 Site Search
+###### 3.2.5.1.4 Site Search
 
 This procedure is skipped if Machine Role is equal to DsRole_RoleStandaloneWorkstation or
 DsRole_RoleStandaloneServer.
@@ -4159,13 +3972,14 @@ Release: April 23, 2024
 
 49 / 85
 
-If this message is invalid in any way, as specified in section 2.2.3, the entire Group Policy: Core
+
+If this message is invalid in any way, as specified in section 2.2.3, the entire Group Policy: Core
 Protocol policy application sequence MUST be terminated and an event logged using an
 implementation-specific mechanism, as defined in section 3.2.5.1.
 
 The site DN and Object type (GPLinkSite) MUST be appended to the end of the SOM list.
 
-3.2.5.1.5 GPO Search
+###### 3.2.5.1.5 GPO Search
 
 This message requires the success of all previous messages that have retrieved a scope of
 management and a gpLink that are associated with each of the SOMs, and have stored them in the
@@ -4234,7 +4048,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-5.  The list of GPO DNs MUST be grouped on the basis of domain. In each domain, all of the GPO DNs
+
+5.  The list of GPO DNs MUST be grouped on the basis of domain. In each domain, all of the GPO DNs
 
 in that domain MUST be placed as a logical OR in the LDAP Filter. Initialize "invalid" flag to False.
 While "invalid" flag is False, the next group of GPO DNs MUST be queried as follows:
@@ -4318,7 +4133,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-8.  The SecurityDescriptor field MUST be set to the value of the ntSecurityDescriptor
+
+8.  The SecurityDescriptor field MUST be set to the value of the ntSecurityDescriptor
 
 attribute in the LDAP searchResponse.
 
@@ -4356,7 +4172,7 @@ list.
 If there are any errors in processing the previous messages, policy application MUST be terminated
 and an event logged using an implementation-specific mechanism, as defined in section 3.2.5.1.
 
-3.2.5.1.6 GPO Filter Evaluation
+###### 3.2.5.1.6 GPO Filter Evaluation
 
 In this procedure, the client MUST process the GPO as follows:
 
@@ -4392,7 +4208,7 @@ allowed.
 container version and GPO file system version are both 0. The GPO attribute versionNumber
 stores the 32-bit container version in Active Directory.
 
-3.2.5.1.7 WMI Filter Evaluation
+###### 3.2.5.1.7 WMI Filter Evaluation
 
 [MS-GPOL] - v20240423
 Group Policy: Core Protocol
@@ -4401,7 +4217,8 @@ Release: April 23, 2024
 
 52 / 85
 
-The client MUST process the GPO to evaluate the WMI filter as follows:
+
+The client MUST process the GPO to evaluate the WMI filter as follows:
 
 1.  The client parses the gPCWQLFilter attribute in the GPO structure and extract the WMI filter ID
 
@@ -4442,7 +4259,7 @@ in section 3.2.5.1.
 
 considered allowed.
 
-3.2.5.1.8 AD Connection Termination
+###### 3.2.5.1.8 AD Connection Termination
 
 The client performs the termination of the Active Directory connection with the Group Policy
 server by invoking the "Performing an LDAP Unbind on an ADConnection" task defined in [MS-ADTS]
@@ -4453,15 +4270,15 @@ section 7.6.1.5, with the following parameter:
 TaskInputADConnection: Value of the Group Policy Client AD Connection Handle ADM
 element.
 
-3.2.5.1.9 Link Speed Discovery
+###### 3.2.5.1.9 Link Speed Discovery
 
 The client attempts to estimate the speed of the link between the client and the domain controller
 (DC), as specified in section 2.2.6. The domain controller used MUST be the domain controller
 discovered in section 3.2.5.1.1.
 
-3.2.5.1.10
+###### 3.2.5.1.10 Extension Protocol Sequences
 
-Extension Protocol Sequences
+
 
 The Extension List abstract element is initialized by implementation-specific means.
 
@@ -4477,7 +4294,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The Group Policy client MUST evaluate the subset of the abstract element Filtered GPO list
+
+The Group Policy client MUST evaluate the subset of the abstract element Filtered GPO list
 separately for each Group Policy extension by including in the subset only those GPOs whose
 gPCUserExtensionNames (for user policy mode) or gPCMachineExtensionNames (for computer
 policy mode) attributes contain CSE GUID that correspond to the Group Policy extension. If the CSE
@@ -4517,13 +4335,13 @@ to applicable GPOs.
 An implementation-specific means SHOULD be provided to allow for the addition of Group Policy
 extensions.
 
-3.2.5.1.11
+###### 3.2.5.1.11 Policy Application Notification
 
-Policy Application Notification
+
 
 The client MUST raise the Policy Application Event for the current Group Policy session.
 
-3.2.5.2  GPO Processing Order
+##### 3.2.5.2 GPO Processing Order
 
 Non-enforced GPOs in abstract element Filtered GPO list are processed in the following order:
 
@@ -4547,7 +4365,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 Computer Periodic Refresh timer: When the Computer Periodic Refresh timer expires, the client
 
@@ -4558,9 +4377,9 @@ User Periodic Refresh timer: When the User Periodic Refresh timer expires, the c
 Policy Application Mode to User and attempts to apply the policy for that user as specified in
 section 3.2.5.1. The client also attempts to restart the timer.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Policy Application Mode Initialization
+##### 3.2.7.1 Policy Application Mode Initialization
 
 The Policy Application Mode is initialized to the Computer at the time the computer boots, or to the
 User at the time a user logs on. Policy application SHOULD be invoked at the following times:
@@ -4581,21 +4400,21 @@ policy settings that are stored in GPOs on the server.
 5.  When a computer regains network connectivity to a Group Policy server after a prior policy
 application failure due to the lack of network connectivity to a Group Policy server.<23>
 
-3.2.7.2  Refresh Timer Initialization
+##### 3.2.7.2 Refresh Timer Initialization
 
 If the Computer Periodic Refresh timer (specified in section 3.2.2) is present, it is started at the time
 the computer boots. If the User Periodic Refresh timer (specified in section 3.2.2) is present, it is
 started at the time a user logs in.
 
-3.2.7.3  Policy Application Event
+##### 3.2.7.3 Policy Application Event
 
 A local event that indicates that policy application completed successfully. This event signals only a
 successful policy application. A new Policy Application Notification event MUST be defined for each
 unique user during logon and for the machine session.
 
-3.3  Administrative Tool Details
+### 3.3 Administrative Tool Details
 
-3.3.1  Abstract Data Model
+#### 3.3.1 Abstract Data Model
 
 The administrative tool abstract data model contains the Group Policy server model defined in
 section 3.1.1. It also contains the following concepts:
@@ -4615,15 +4434,16 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Administrative Tool AD Connection Handle (section 3.3.1.5)
 
-3.3.1.1  Group Policy Protocol Administrative Tool
+  Administrative Tool AD Connection Handle (section 3.3.1.5)
+
+##### 3.3.1.1 Group Policy Protocol Administrative Tool
 
 The Group Policy: Core Protocol Administrative Tool is an entity that determines the abstract data
 model for GPOs, except for the abstract data models of the Group Policy extensions of the GPO. It
 operates on a particular GPO, the Administered GPO.
 
-3.3.1.2  Group Policy Extension Administrative Plug-In
+##### 3.3.1.2 Group Policy Extension Administrative Plug-In
 
 The Group Policy extension Administrative Plug-In is an entity that determines a specific Group
 Policy extension for updating and reading that Group Policy extension's settings to and from a GPO,
@@ -4631,25 +4451,25 @@ but it does not understand how to alter a GPO. However, it is capable of invokin
 Core Protocol's Group Policy extension update sequence. In common usage, the Group Policy Protocol
 administrative tool invokes the plug-in as specified in section 3.3.4.7.
 
-3.3.1.3  Administered GPO (Public)
+##### 3.3.1.3 Administered GPO (Public)
 
 The Administered GPO ADM element is the Group Policy Object administered by the Administrative
 Tool.
 
-3.3.1.4  Group Policy Server
+##### 3.3.1.4 Group Policy Server
 
 This is the FQDN of the domain controller prefixed by 2 backslashes (\\).
 
-3.3.1.5  Administrative Tool AD Connection Handle
+##### 3.3.1.5 Administrative Tool AD Connection Handle
 
 An ADConnection handle as defined in [MS-ADTS] section 7.3. This element is used each time the
 administrative tool communicates with a Group Policy server over an Active Directory connection.
 
-3.3.2  Timers
+#### 3.3.2 Timers
 
 None.
 
-3.3.3  Initialization
+#### 3.3.3 Initialization
 
 When the Group Policy administrative tool starts, it is provided with a Group Policy server name.
 That name is stored in the Group Policy Server ADM element (section 3.3.1.4).
@@ -4684,7 +4504,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-computer Group Policy extension lists to determine the Group Policy extension administrative tool
+
+computer Group Policy extension lists to determine the Group Policy extension administrative tool
 plug-ins that are needed to read or write settings in the GPO. It does this by using a GPO Read
 Administration (section 2.2.7) message. The administrative tool checks for write access to the GPO by
 retrieving the allowedAttributesEffective attribute and ensuring that it contains versionNumber.
@@ -4693,9 +4514,9 @@ After this action, the Group Policy administrative tool can invoke the correct G
 depending on user input, that directs the tool to show some (or all) of the settings, or to allow those
 settings to be changed.
 
-3.3.4  Higher-Layer Triggered Events
+#### 3.3.4 Higher-Layer Triggered Events
 
-3.3.4.1  Group Policy Creation
+##### 3.3.4.1 Group Policy Creation
 
 The Group Policy Creation occurs whenever an administrator uses a Group Policy Administration tool
 to create a GPO. This triggers a GPO Creation (section 2.2.8.1) message.
@@ -4712,13 +4533,13 @@ context
 The distinguished name (DN) for the domain where the new Group Policy Object
 will be created.
 
-3.3.4.2  Group Policy Property Update
+##### 3.3.4.2 Group Policy Property Update
 
 The Group Policy property update occurs whenever an administrator uses a Group Policy
 extension'sPolicy Administration protocol to change properties on a GPO. This triggers a GPO
 Property Update (section 2.2.8.3) message.
 
-3.3.4.3  SOM Property Update
+##### 3.3.4.3 SOM Property Update
 
 The scope of management (SOM) property update occurs whenever an administrator uses a Group
 Policy extension's Policy Administration protocol to change Group Policy properties on an SOM. This
@@ -4754,7 +4575,8 @@ Release: April 23, 2024
 
 57 / 85
 
-3.3.4.4  Group Policy Extension Update
+
+##### 3.3.4.4 Group Policy Extension Update
 
 The Group Policy extension settings update occurs whenever an administrator uses a Group Policy
 extension's Policy Administration protocol to change a Group Policy extension's settings in a GPO. This
@@ -4784,7 +4606,7 @@ TOOL GUID
 
 The Administrative extension plug-in's GUID.
 
-3.3.4.5  Version Number Update
+##### 3.3.4.5 Version Number Update
 
 GPO container version: The user GPO version part of GPO container version MUST be incremented
 if the user policy settings are being modified. The machine GPO version part of GPO container
@@ -4807,13 +4629,13 @@ versionNumber attribute set to the value of the GPO container version in the mod
 of the GPO Property Update event. The GPO Property Update event itself issues a GPO File System
 Version Update (section 3.3.5.4) that MUST specify the GPO file system version.
 
-3.3.4.6  Group Policy Deletion
+##### 3.3.4.6 Group Policy Deletion
 
 The Group Policy Deletion occurs whenever an administrator uses a Group Policy Administration tool to
 delete a GPO. This triggers a GPO Deletion Message (section 2.2.8.5). The parameter to the Group
 Policy Deletion event is a DN of the GPO to be deleted.
 
-3.3.4.7  Invoke Group Policy Extension Administrative Plug-In
+##### 3.3.4.7 Invoke Group Policy Extension Administrative Plug-In
 
 The Group Policy Administrative Tool invokes a Group Policy Extension Administrative Plug-
 In (section 3.3.1.2) whenever an administrator launches the plug-in to edit a GPO. The Group Policy
@@ -4829,7 +4651,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter
+
+Parameter
 
 Description
 
@@ -4843,11 +4666,11 @@ Policy
 A Boolean value to indicate that this update is for user policy mode. If FALSE, this update is for
 computer policy mode.
 
-3.3.5  Message Processing Events and Sequencing Rules
+#### 3.3.5 Message Processing Events and Sequencing Rules
 
 None.
 
-3.3.5.1  GPO Creation
+##### 3.3.5.1 GPO Creation
 
 Creation of a GPO requires the creation of a groupPolicyContainer Active Directory object on the
 Group Policy server and a corresponding directory on the Group Policy server SYSVOL share. The
@@ -4905,7 +4728,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-1.  File Status request for the directory GPO Path. If the GPO Path exists, the sequence MUST be
+
+1.  File Status request for the directory GPO Path. If the GPO Path exists, the sequence MUST be
 
 terminated.
 
@@ -4928,7 +4752,7 @@ method.<24>
 Any failures from the file operations mean that the overall GPO Creation Message (section 2.2.8.1) is
 invalid, and the sequence previously mentioned MUST be terminated.
 
-3.3.5.2  GPO Extension Update
+##### 3.3.5.2 GPO Extension Update
 
 Whenever an administrative tool invokes a Group Policy extension for the abstract element
 Administered GPO and that extension modifies the GPO, the administrative tool invokes the GPO
@@ -4943,7 +4767,7 @@ resultCode value indicates a failure.
 The GPO File System Version Update (section 3.3.5.4) file access messages make up the remainder of
 the GPO Extension Update message.
 
-3.3.5.3  GPO Property Update
+##### 3.3.5.3 GPO Property Update
 
 Whenever an administrative tool modifies the properties of the abstract element Administered
 GPO, it produces the LDAP modifyRequest message (as defined in the specification of the GPO
@@ -4961,7 +4785,7 @@ attribute using an implementation-specific method.<25>
 The GPO File System Version Update (section 3.3.5.4) file access messages make up the remainder of
 the GPO Property Update message.
 
-3.3.5.4  GPO File System Version Update
+##### 3.3.5.4 GPO File System Version Update
 
 The following file access messages make up the GPO file system version update sequence:
 
@@ -4974,7 +4798,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.  Read the contents of the Value corresponding to Key "Version".
+
+2.  Read the contents of the Value corresponding to Key "Version".
 
 3.  Increment the GPO file system version.
 
@@ -4986,7 +4811,7 @@ Release: April 23, 2024
 
 5.  Close the file.
 
-3.3.5.5  SOM Property Update
+##### 3.3.5.5 SOM Property Update
 
 Whenever an administrative tool modifies the properties of the SOM, it produces the LDAP
 modifyRequest message (as specified in section 2.2.8.4) from the client to the server.
@@ -4994,7 +4819,7 @@ modifyRequest message (as specified in section 2.2.8.4) from the client to the s
 If the value of the modifyResponse message's resultCode is integer 0, it indicates success. Any other
 resultCode value indicates a failure.
 
-3.3.5.6  GPO Deletion
+##### 3.3.5.6 GPO Deletion
 
 Deletion of the abstract element Administered GPO requires the deletion of its Active Directory
 object on the Group Policy server and a corresponding directory on the Group Policy server's
@@ -5048,7 +4873,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Parameter  Value
+
+Parameter  Value
 
 Scope
 
@@ -5140,7 +4966,8 @@ Release: April 23, 2024
 
 62 / 85
 
-3.3.5.7  GPO Link Creation and Update
+
+##### 3.3.5.7 GPO Link Creation and Update
 
 Whenever an administrative tool creates a link from a GPO to a SOM, the "gpLink" attribute on the
 SOM is updated, which produces an LDAP modifyRequest message from the client to the server (as
@@ -5189,7 +5016,7 @@ in the "SOM Property Update Message", defined in section 2.2.8.4.
 The link order for a GPO can be updated by combining a GPO Link Deletion and a GPO Link Creation
 at the desired GPO Link position.
 
-3.3.5.8  GPO Link Deletion
+##### 3.3.5.8 GPO Link Deletion
 
 Whenever an administrative tool deletes a link from a GPO to a SOM, the "gpLink" attribute on the
 SOM is updated, which produces an LDAP modifyRequest message from the client to the server (as
@@ -5227,13 +5054,14 @@ Release: April 23, 2024
 
 63 / 85
 
-The GPO DN specified MUST be located by comparing the GPO DN parameter against the GPO DN in
+
+The GPO DN specified MUST be located by comparing the GPO DN parameter against the GPO DN in
 each GPO Link in the GPO Link list. If the GPO DN is located in the list, it MUST be removed from the
 GPO Link list. A directory string as defined in the "gpLink" description in section 2.2.2 MUST be
 created by enumerating the GPO Link list elements in order. The directory string is used as the
 attribute value in the SOM Property Update Message, defined in section 2.2.8.4.
 
-3.3.5.9  Organizational Unit Creation
+##### 3.3.5.9 Organizational Unit Creation
 
 Whenever an administrative tool creates an Organizational Unit, it produces the LDAP addRequest
 message (as specified in section 2.2.8.6) from the client to the server.
@@ -5242,9 +5070,9 @@ If the value of the addResponse message's resultCode is integer 0, it indicates 
 resultCode value indicates a failure and this protocol sequence MUST proceed to an LDAP
 UnBindRequest.
 
-3.3.5.10
+##### 3.3.5.10 Organizational Unit Deletion
 
-Organizational Unit Deletion
+
 
 Whenever an administrative tool deletes an organizational unit, it produces the LDAP delRequest
 message (as specified in section 2.2.8.7) from the client to the server.
@@ -5253,11 +5081,11 @@ If the value of the delResponse message's resultCode is integer 0, it indicates 
 resultCode value indicates a failure and this protocol sequence MUST proceed to an LDAP
 UnBindRequest.
 
-3.3.6  Timer Events
+#### 3.3.6 Timer Events
 
 None.
 
-3.3.7  Other Local Events
+#### 3.3.7 Other Local Events
 
 None.
 
@@ -5268,12 +5096,13 @@ Release: April 23, 2024
 
 64 / 85
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section provides examples of how to use Group Policy to perform a representative subset of
 functions.
 
-4.1  Domain SOM Search and Reply Messages
+### 4.1 Domain SOM Search and Reply Messages
 
 The following sections describe the message exchange with a Group Policy server that is used to
 obtain the SOMs for a computer account.
@@ -5281,7 +5110,7 @@ obtain the SOMs for a computer account.
 In this example, the process is initiated with a search message query sent to the Group Policy server
 and ends with receipt of two SOMs for the specified account.
 
-4.1.1  Domain SOM Search Message
+#### 4.1.1 Domain SOM Search Message
 
 This section describes the initial Search message sent to the Group Policy server to obtain the SOM
 for a computer account.
@@ -5333,7 +5162,7 @@ s
 
  gpLink, gpOptions
 
-4.1.2  Domain SOM Reply Message
+#### 4.1.2 Domain SOM Reply Message
 
 This section describes the message received from the Group Policy server in response to the query
 message sent in section 4.1.1 of this example. This response contains the SOMs for a computer
@@ -5346,7 +5175,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The computer policy target account's Computer-Scoped GPO DN is
+
+The computer policy target account's Computer-Scoped GPO DN is
 "CN=LABSERVER,OU=ComputersOU,DC=test,DC=contoso,DC=com". The reply contains two SOMs. In
 the first, searchResultEntry has the value "1" for the OU,
 "OU=ComputersOU,DC=test,DC=contoso,DC=com". In the second, searchResultEntry has the value
@@ -5398,7 +5228,7 @@ gPOptions
 
 gPOptions
 
-4.2  Site Search Messages
+### 4.2 Site Search Messages
 
 The following sections describe the message exchange with a Group Policy server in which a Group
 Policy client requests and receives the site where a computer account is located.
@@ -5408,7 +5238,7 @@ The server replies with the configurationNamingContext. This configurationNaming
 second Site Search message. The process ends with receipt of the scope of management for the site
 to which the computer account belongs.
 
-4.2.1  Site Search configurationNamingContext Request Message
+#### 4.2.1 Site Search configurationNamingContext Request Message
 
 This section describes the initial query message sent to the Group Policy server to obtain the
 configurationNamingContext for the computer policy target account
@@ -5451,7 +5281,8 @@ Release: April 23, 2024
 
 66 / 85
 
- Parameter
+
+ Parameter
 
  Value
 
@@ -5459,13 +5290,13 @@ Release: April 23, 2024
 
  configurationNamingContext
 
-4.2.2  Site Search configurationNamingContext Reply Message
+#### 4.2.2 Site Search configurationNamingContext Reply Message
 
 This section describes the response to the Site Search message sent in section 4.2.1. In this case, the
 configurationNamingContext attribute returned from the Group Policy server is
 "CN=Configuration,DC=test,DC=contoso,DC=com".
 
-4.2.3  Site Search SOM Request Message
+#### 4.2.3 Site Search SOM Request Message
 
 This section describes the second Site Search message sent to the Group Policy server. This
 message requests the scope of management of the site in which the computer account is located.
@@ -5515,7 +5346,7 @@ section 2.2.3.
 The response to the preceding message is identical to the response for the Domain SOM Search
 message as described in the example in section 4.1.2.
 
-4.3  GPO Search Message and Reply
+### 4.3 GPO Search Message and Reply
 
 The following sections describe the message exchange with a Group Policy server in which a client
 queries the GPOs that are associated with SOMs, as defined in section 2.2.4.
@@ -5532,7 +5363,8 @@ Release: April 23, 2024
 
 67 / 85
 
-4.3.1  GPO Search Message
+
+#### 4.3.1 GPO Search Message
 
 The following table lists the values of attributes that are sent to the Group Policy server in the GPO
 Search message (section 2.2.4). The query is sent requesting all the GPOs matching under the
@@ -5580,7 +5412,7 @@ CF6262607BB6},cn=policies,cn=system,DC=test,DC=contoso,DC=com))
 gPCMachineExtensionNames, gPCUserExtensionNames, gPCFunctionalityVersion, flags, and
 gPCWQLFilter.
 
-4.3.2  GPO Search Reply Message
+#### 4.3.2 GPO Search Reply Message
 
 The following table lists the values of attributes that are returned from an LDAP search ([RFC2251])
 that was part of a GPO Search (section 2.2.4). In this example, the GPO that is returned is named
@@ -5627,7 +5459,8 @@ Release: April 23, 2024
 
 68 / 85
 
- Attribute
+
+ Attribute
 
  Value
 
@@ -5648,9 +5481,9 @@ gPCWQLFilter
 
 Not set
 
-4.4  WMI Filter Search and Reply Messages
+### 4.4 WMI Filter Search and Reply Messages
 
-4.4.1  WMI Filter Search Message
+#### 4.4.1 WMI Filter Search Message
 
 The following table lists the values of attributes that are sent to the Group Policy server for WMI
 Filter Search message (section 2.2.5). The WMI filter is obtained from the value of attribute
@@ -5695,7 +5528,7 @@ derefAliases
  msWMI-ID, msWMI-Name, msWMI-Parm1, msWMI-Author, msWMI-ChangeDate, msWMI-
 CreationDate, and msWMI-Parm2.
 
-4.4.2  WMI Filter Search Response Message
+#### 4.4.2 WMI Filter Search Response Message
 
 The following table lists the values of attributes that are received from the Group Policy server as a
 response for WMI Filter Search message, as specified in section 2.2.5.
@@ -5727,7 +5560,8 @@ Release: April 23, 2024
 
 69 / 85
 
- Attribute
+
+ Attribute
 
  Value
 
@@ -5743,7 +5577,7 @@ Release: April 23, 2024
 
  1;3;10;18;WQL;root\CIMv2;Select * from Win32_Printer;
 
-4.5  GPO Read Administration Request and Reply Messages
+### 4.5 GPO Read Administration Request and Reply Messages
 
 The following section describes the message exchange with a Group Policy server in order to obtain
 settings and state of an individual GPO.
@@ -5790,7 +5624,7 @@ gPCWQLFilter
 
 The response for the preceding message is identical to the reply described in section 4.3.2.
 
-4.6  GPO Creation Message
+### 4.6 GPO Creation Message
 
 In this example, a GPO with the DN of "CN={1FE2ABF4-613E-4980-BA93-
 74F7B206A6C1},CN=Policies,CN=System,DC=test,DC=contoso,DC=com" is created, and the new
@@ -5822,7 +5656,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-User container: (the attributes field contains one attribute: objectClass).
+
+User container: (the attributes field contains one attribute: objectClass).
 
 Parameter  Value
 
@@ -5915,7 +5750,8 @@ Release: April 23, 2024
 
 71 / 85
 
-  Create Directory request for directory: \\GPSvr1.test.contoso.com
+
+  Create Directory request for directory: \\GPSvr1.test.contoso.com
 
 \sysvol\test.contoso.com\Policies\{1FE2ABF4-613E-4980-BA93-74F7B206A6C1}\User
 
@@ -5923,7 +5759,7 @@ Release: April 23, 2024
 
 \sysvol\test.contoso.com\Policies\{1FE2ABF4-613E-4980-BA93-74F7B206A6C1}\Machine
 
-4.7  GPO Extension Update Message
+### 4.7 GPO Extension Update Message
 
 In this example, user policy settings are being updated for the GPO with the DN of " CN={31B2F340-
 016D-11D2-945F-00C04FB984F9},CN=Policies,CN=System ,DC=test,DC=contoso,DC=com".
@@ -5957,7 +5793,7 @@ The following operations are involved:
 
   Close for the opened file.
 
-4.8  GPO Property Update Message
+### 4.8 GPO Property Update Message
 
 In this example the displayName attribute of the GPO with DN of "CN={31B2F340-016D-11D2-945F-
 00C04FB984F9},CN=Policies,CN=System,DC=test,DC=contoso,DC=com" is being updated.
@@ -5991,7 +5827,8 @@ Release: April 23, 2024
 
 72 / 85
 
-4.9  SOM Property Update Message
+
+### 4.9 SOM Property Update Message
 
 In this example, the GPO with the DN of "CN={31B2F340-016D-11D2-945F-
 00C04FB984F9},CN=Policies,CN=System,DC=test,DC=contoso,DC=com" associated with the SOM of
@@ -6011,7 +5848,7 @@ Attribute name and value for this message:
  gpLink: [LDAP://CN={31B2F340-016D-11D2-945F-
 00C04FB984F9},CN=Policies,CN=System,DC=test,DC=contoso,DC=com;2]
 
-4.10  Sample gpt.ini File
+### 4.10 Sample gpt.ini File
 
 The content of a sample gpt.ini file is as follows:
 
@@ -6025,9 +5862,10 @@ Release: April 23, 2024
 
 73 / 85
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 It is important for implementers to note that the server might (and often does) have nearly the same
 policy application sequence with multiple clients, which means that the protocol is not suitable for
@@ -6050,7 +5888,7 @@ Group Policy server - a domain controller (as specified in section 3.2.1.13) by 
 DsrGetDcNameEx2 method ([MS-NRPC] section 3.5.4.3.1. A domain controller, by definition, is a
 trusted third party for the domain.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 Security parameter
 
@@ -6073,7 +5911,8 @@ Release: April 23, 2024
 
 74 / 85
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -6140,7 +5979,8 @@ Release: April 23, 2024
 
 75 / 85
 
-<3> Section 2.2.3: The timeLimit option is 0 (infinite) in Windows XP, Windows 2000, and Windows
+
+<3> Section 2.2.3: The timeLimit option is 0 (infinite) in Windows XP, Windows 2000, and Windows
 Server 2003.
 
 <4> Section 2.2.3: The timeLimit option is 0 (infinite) in Windows XP, Windows 2000, and Windows
@@ -6216,7 +6056,8 @@ Release: April 23, 2024
 
 76 / 85
 
-Data: A number in the range 0 – 64800 (decimal).
+
+Data: A number in the range 0 – 64800 (decimal).
 
 <11> Section 3.2.1.15: In Windows, an administrator can configure Configured Computer Random
 Offset by setting the offset value (in minutes) in the computer-specific Registry Policy file in the
@@ -6286,7 +6127,8 @@ Release: April 23, 2024
 
 77 / 85
 
-
+
+
 
 Enable periodic refresh: 0x0
 
@@ -6361,7 +6203,8 @@ Group Policy: Core Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<25> Section 3.3.5.3: Windows uses the SetNamedSecurityInfo Win32 API described in [MSDN-
+
+<25> Section 3.3.5.3: Windows uses the SetNamedSecurityInfo Win32 API described in [MSDN-
 SetNamedSecurityInfo].
 
 [MS-GPOL] - v20240423
@@ -6371,7 +6214,8 @@ Release: April 23, 2024
 
 79 / 85
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -6415,7 +6259,8 @@ Release: April 23, 2024
 
 80 / 85
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -6547,7 +6392,8 @@ Client
 
 81 / 85
 
-      enforced GPLink list 40
+
+      enforced GPLink list 40
       extension list 42
       filtered GPO list 39
       GPLink list 40
@@ -6686,7 +6532,8 @@ Examples
 
 82 / 85
 
-   SOM property update message 73
+
+   SOM property update message 73
    WMI filter search
       message 69
       response message 69
@@ -6825,7 +6672,8 @@ Operational modes 15
 
 83 / 85
 
-Organizational unit
+
+Organizational unit
    creation message 33
    deletion message 34
 Other local events
@@ -6963,7 +6811,8 @@ V
 
 84 / 85
 
-Vendor-extensible fields 19
+
+Vendor-extensible fields 19
 Versioning 19
 
 W

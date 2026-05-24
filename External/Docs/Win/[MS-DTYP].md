@@ -63,7 +63,8 @@ Release: November 19, 2024
 
 1 / 155
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -317,7 +318,8 @@ technical content.
 
 2 / 155
 
-Date
+
+Date
 
 Revision
 History
@@ -507,465 +509,217 @@ Release: November 19, 2024
 
 3 / 155
 
-Table of Contents
 
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Protocols and Other Structures .................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Localization ............................................................................... 13
-Vendor-Extensible Fields ................................................................................... 13
-
-1.3
-1.4
-1.5
-1.6
-1.7
-
-2.2
-
-2.1
-
-2.1.5
-2.1.6
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-
-2.1.4.1
-2.1.4.2
-2.1.4.3
-2.1.4.4
-2.1.4.5
-
-2  Data Types ............................................................................................................ 14
-Common Base Types ........................................................................................ 14
-bit ............................................................................................................ 14
-byte .......................................................................................................... 14
-handle_t .................................................................................................... 15
-Integer Types ............................................................................................. 15
-__int8 ................................................................................................. 15
-__int16 ................................................................................................ 15
-__int32 ................................................................................................ 15
-__int64 ................................................................................................ 15
-hyper .................................................................................................. 15
-octet ......................................................................................................... 15
-wchar_t ..................................................................................................... 16
-Common Data Types ........................................................................................ 16
-__int3264 .................................................................................................. 16
-2.2.1
-ADCONNECTION_HANDLE............................................................................ 16
-2.2.2
-BOOL ........................................................................................................ 16
-2.2.3
-BOOLEAN .................................................................................................. 16
-2.2.4
-BSTR......................................................................................................... 17
-2.2.5
-BYTE ......................................................................................................... 17
-2.2.6
-CHAR ........................................................................................................ 17
-2.2.7
-DOUBLE .................................................................................................... 17
-2.2.8
-2.2.9
-DWORD ..................................................................................................... 17
-2.2.10  DWORD_PTR .............................................................................................. 18
-2.2.11  DWORD32 ................................................................................................. 18
-2.2.12  DWORD64 ................................................................................................. 18
-2.2.13  DWORDLONG ............................................................................................. 18
-error_status_t ............................................................................................ 18
-2.2.14
-2.2.15
-FLOAT ....................................................................................................... 18
-2.2.16  HANDLE .................................................................................................... 19
-2.2.17  HCALL ....................................................................................................... 19
-2.2.18  HRESULT ................................................................................................... 19
-INT ........................................................................................................... 19
-2.2.19
-INT8 ......................................................................................................... 19
-2.2.20
-INT16 ....................................................................................................... 20
-2.2.21
-INT32 ....................................................................................................... 20
-2.2.22
-INT64 ....................................................................................................... 20
-2.2.23
-LDAP_UDP_HANDLE .................................................................................... 20
-2.2.24
-LMCSTR ..................................................................................................... 20
-2.2.25
-LMSTR....................................................................................................... 20
-2.2.26
-LONG ........................................................................................................ 21
-2.2.27
-LONGLONG ................................................................................................ 21
-2.2.28
-LONG_PTR ................................................................................................. 21
-2.2.29
-LONG32 .................................................................................................... 21
-2.2.30
-
-[MS-DTYP] - v20241119
-Windows Data Types
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-4 / 155
-
-LONG64 .................................................................................................... 21
-2.2.31
-LPCSTR ..................................................................................................... 22
-2.2.32
-LPCVOID ................................................................................................... 22
-2.2.33
-LPCWSTR................................................................................................... 22
-2.2.34
-LPSTR ....................................................................................................... 22
-2.2.35
-2.2.36
-LPWSTR .................................................................................................... 22
-2.2.37  NET_API_STATUS ....................................................................................... 23
-2.2.38  NTSTATUS ................................................................................................. 23
-2.2.39
-PCONTEXT_HANDLE .................................................................................... 23
-2.2.40  QWORD ..................................................................................................... 23
-RPC_BINDING_HANDLE ............................................................................... 24
-2.2.41
-SHORT ...................................................................................................... 24
-2.2.42
-SIZE_T ...................................................................................................... 24
-2.2.43
-2.2.44
-STRING ..................................................................................................... 24
-2.2.45  UCHAR ...................................................................................................... 25
-2.2.46  UINT ......................................................................................................... 25
-2.2.47  UINT8 ....................................................................................................... 25
-2.2.48  UINT16 ..................................................................................................... 25
-2.2.49  UINT32 ..................................................................................................... 25
-2.2.50  UINT64 ..................................................................................................... 25
-2.2.51  ULONG ...................................................................................................... 26
-2.2.52  ULONG_PTR ............................................................................................... 26
-2.2.53  ULONG32 .................................................................................................. 26
-2.2.54  ULONG64 .................................................................................................. 26
-2.2.55  ULONGLONG .............................................................................................. 26
-2.2.56  UNICODE ................................................................................................... 26
-2.2.57  UNC .......................................................................................................... 27
-2.2.58  USHORT .................................................................................................... 28
-2.2.59
-VOID ......................................................................................................... 28
-2.2.60  WCHAR ..................................................................................................... 28
-2.2.61  WORD ....................................................................................................... 28
-Common Data Structures .................................................................................. 28
-EVENT_DESCRIPTOR ................................................................................... 29
-EVENT_HEADER ......................................................................................... 29
-FILETIME ................................................................................................... 31
-GUID and UUID .......................................................................................... 31
-GUID--RPC IDL representation ................................................................ 31
-GUID--Packet Representation ................................................................. 32
-GUID--Curly Braced String Representation ............................................... 32
-LARGE_INTEGER ........................................................................................ 33
-2.3.5
-LCID ......................................................................................................... 33
-2.3.6
-LUID ......................................................................................................... 33
-2.3.7
-MULTI_SZ .................................................................................................. 33
-2.3.8
-OBJECT_TYPE_LIST .................................................................................... 34
-2.3.9
-RPC_UNICODE_STRING ............................................................................... 34
-2.3.10
-SERVER_INFO_100 ..................................................................................... 35
-2.3.11
-SERVER_INFO_101 ..................................................................................... 35
-2.3.12
-2.3.13
-SYSTEMTIME .............................................................................................. 38
-2.3.14  UINT128 .................................................................................................... 38
-2.3.15  ULARGE_INTEGER ...................................................................................... 38
-Constructed Security Types ............................................................................... 39
-SID_IDENTIFIER_AUTHORITY ...................................................................... 39
-RPC_SID_IDENTIFIER_AUTHORITY ......................................................... 40
-SID ........................................................................................................... 40
-SID String Format Syntax ...................................................................... 40
-SID--Packet Representation ................................................................... 41
-RPC_SID .............................................................................................. 41
-Well-Known SID Structures .................................................................... 42
-
-2.4.2.1
-2.4.2.2
-2.4.2.3
-2.4.2.4
-
-2.3.4.1
-2.3.4.2
-2.3.4.3
-
-2.3.1
-2.3.2
-2.3.3
-2.3.4
-
-2.4.1.1
-
-2.4.1
-
-2.4.2
-
-2.3
-
-2.4
-
-[MS-DTYP] - v20241119
-Windows Data Types
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-5 / 155
-
-2.4.4.13.1
-
-2.4.3
-2.4.4
-
-2.4.4.1
-
-2.4.4.1.1
-
-2.4.4.2
-2.4.4.3
-2.4.4.4
-2.4.4.5
-2.4.4.6
-2.4.4.7
-2.4.4.8
-2.4.4.9
-2.4.4.10
-2.4.4.11
-2.4.4.12
-2.4.4.13
-
-2.4.4.14
-2.4.4.15
-2.4.4.16
-2.4.4.17
-
-2.4.4.17.1
-2.4.4.17.2
-2.4.4.17.3
-2.4.4.17.4
-2.4.4.17.5
-2.4.4.17.6
-2.4.4.17.7
-2.4.4.17.8
-2.4.4.17.9
-
-ACCESS_MASK ........................................................................................... 52
-ACE .......................................................................................................... 54
-ACE_HEADER ....................................................................................... 54
-ACE_HEADER--RPC representation .................................................... 57
-ACCESS_ALLOWED_ACE ........................................................................ 57
-ACCESS_ALLOWED_OBJECT_ACE ........................................................... 57
-ACCESS_DENIED_ACE ........................................................................... 59
-ACCESS_DENIED_OBJECT_ACE .............................................................. 59
-ACCESS_ALLOWED_CALLBACK_ACE ........................................................ 61
-ACCESS_DENIED_CALLBACK_ACE .......................................................... 62
-ACCESS_ALLOWED_CALLBACK_OBJECT_ACE ........................................... 62
-ACCESS_DENIED_CALLBACK_OBJECT_ACE .............................................. 64
-SYSTEM_AUDIT_ACE ............................................................................. 65
-SYSTEM_AUDIT_OBJECT_ACE ................................................................ 66
-SYSTEM_AUDIT_CALLBACK_ACE............................................................. 68
-SYSTEM_MANDATORY_LABEL_ACE .......................................................... 68
-SYSTEM_MANDATORY_LABEL_ACE--RPC Representation ...................... 69
-SYSTEM_AUDIT_CALLBACK_OBJECT_ACE ................................................ 70
-SYSTEM_RESOURCE_ATTRIBUTE_ACE ..................................................... 71
-SYSTEM_SCOPED_POLICY_ID_ACE ......................................................... 72
-Conditional ACEs ................................................................................... 72
-Conditional ACE Expressions ............................................................. 73
-Security Attributes ........................................................................... 73
-Conditional ACE Applicability ............................................................. 73
-Conditional ACE Binary Formats ........................................................ 74
-Literal Tokens ................................................................................. 74
-Relational Operator Tokens ............................................................... 76
-Logical Operator Tokens ................................................................... 78
-Attribute Tokens .............................................................................. 79
-Examples: Conditional Expression Binary Representation ..................... 80
-ACL ........................................................................................................... 82
-ACL--RPC Representation ....................................................................... 84
-SECURITY_DESCRIPTOR .............................................................................. 84
-SECURITY_DESCRIPTOR--RPC Representation .......................................... 87
-SECURITY_INFORMATION ............................................................................ 88
-TOKEN_MANDATORY_POLICY ....................................................................... 89
-MANDATORY_INFORMATION ........................................................................ 89
-CLAIM_SECURITY_ATTRIBUTE ...................................................................... 90
-CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 ........................................... 90
-CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_RELATIVE ......................... 91
-Additional Information for Security Types ............................................................ 92
-Security Descriptor Description Language ...................................................... 92
-Syntax ................................................................................................. 92
-Security Attribute Names ....................................................................... 99
-Simple Attribute Name Form ............................................................. 99
-@Prefixed Attribute Name Form ........................................................ 99
-Parentheses and Order of Precedence ...................................................... 99
-SDDL String to Binary Security Descriptor Examples ................................ 100
-Token/Authorization Context ....................................................................... 103
-Token/Authorization Context Algorithms ................................................. 104
-GatherGroupMembershipForSystem .................................................. 104
-AddPrivilegesToToken ..................................................................... 105
-Security Descriptor Algorithms .................................................................... 106
-Support Functions ................................................................................ 106
-SidInToken .................................................................................... 106
-SidDominates ................................................................................ 107
-GetScopedPolicySid ........................................................................ 107
-GetCentralizedAccessPolicy .............................................................. 108
-
-2.5.1.1
-2.5.1.2
-
-2.5.1.2.1
-2.5.1.2.2
-
-2.5.1.3
-2.5.1.4
-
-2.5.2
-
-2.5.2.1
-
-2.5.2.1.1
-2.5.2.1.2
-
-2.5.3
-
-2.5.3.1
-
-2.5.3.1.1
-2.5.3.1.2
-2.5.3.1.3
-2.5.3.1.4
-
-2.4.5
-
-2.4.6
-
-2.4.5.1
-
-2.4.6.1
-
-2.4.7
-2.4.8
-2.4.9
-2.4.10
-
-2.4.10.1
-2.4.10.2
-
-2.5
-
-2.5.1
-
-[MS-DTYP] - v20241119
-Windows Data Types
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-6 / 155
-
-2.5.3.2
-2.5.3.3
-
-2.5.3.4
-
-2.5.3.3.1
-
-2.5.3.1.5
-2.5.3.1.6
-2.5.3.1.7
-2.5.3.1.8
-2.5.3.1.9
-2.5.3.1.10
-
-EvaluateAceCondition ...................................................................... 108
-LookupAttributeInToken .................................................................. 112
-LookupAttributeInSacl ..................................................................... 112
-PushStackOperand ......................................................................... 113
-PushStackResult ............................................................................. 113
-PopStack ....................................................................................... 113
-Access Check Algorithm Pseudocode ....................................................... 114
-MandatoryIntegrityCheck Algorithm Pseudocode ...................................... 120
-FindAceByType ............................................................................... 122
-Algorithm for Creating a Security Descriptor ............................................ 122
-CreateSecurityDescriptor ................................................................. 123
-ComputeACL .................................................................................. 125
-ContainsInheritableACEs ................................................................. 128
-ComputeInheritedACLfromParent ..................................................... 129
-ComputeInheritedACLfromCreator .................................................... 131
-PreProcessACLfromCreator .............................................................. 132
-PostProcessACL .............................................................................. 132
-Setting the INHERITED_ACE Flag ........................................................... 134
-ServerGetInfo Abstract Interface ....................................................................... 134
-Impersonation Abstract Interfaces..................................................................... 135
-StartImpersonation .................................................................................... 135
-EndImpersonation ..................................................................................... 136
-GetAccessToken ........................................................................................ 136
-
-2.5.3.4.1
-2.5.3.4.2
-2.5.3.4.3
-2.5.3.4.4
-2.5.3.4.5
-2.5.3.4.6
-2.5.3.4.7
-
-2.5.3.5
-
-2.6
-2.7
-
-2.7.1
-2.7.2
-2.7.3
-
-3  Structure Examples ............................................................................................. 137
-
-4  Security Considerations ....................................................................................... 138
-
-5  Appendix A: Full MS-DTYP IDL ............................................................................. 139
-
-6  Appendix B: Product Behavior ............................................................................. 144
-
-7  Change Tracking .................................................................................................. 151
-
-8  Index ................................................................................................................... 153
-
-[MS-DTYP] - v20241119
-Windows Data Types
-Copyright © 2024 Microsoft Corporation
-Release: November 19, 2024
-
-7 / 155
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Data Types](#2-data-types)
+  - [2.1 Common Base Types](#21-common-base-types)
+    - [2.1.1 bit](#211-bit)
+    - [2.1.2 byte](#212-byte)
+    - [2.1.3 handle_t](#213-handlet)
+    - [2.1.4 Integer Types](#214-integer-types)
+      - [2.1.4.1 __int8](#2141-int8)
+      - [2.1.4.2 __int16](#2142-int16)
+      - [2.1.4.3 __int32](#2143-int32)
+      - [2.1.4.4 __int64](#2144-int64)
+      - [2.1.4.5 hyper](#2145-hyper)
+    - [2.1.5 octet](#215-octet)
+    - [2.1.6 wchar_t](#216-wchart)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 __int3264](#221-int3264)
+    - [2.2.2 ADCONNECTION_HANDLE](#222-adconnectionhandle)
+    - [2.2.3 BOOL](#223-bool)
+    - [2.2.4 BOOLEAN](#224-boolean)
+    - [2.2.5 BSTR](#225-bstr)
+    - [2.2.6 BYTE](#226-byte)
+    - [2.2.7 CHAR](#227-char)
+    - [2.2.8 DOUBLE](#228-double)
+    - [2.2.9 DWORD](#229-dword)
+    - [2.2.10 DWORD_PTR](#2210-dwordptr)
+    - [2.2.11 DWORD32](#2211-dword32)
+    - [2.2.12 DWORD64](#2212-dword64)
+    - [2.2.13 DWORDLONG](#2213-dwordlong)
+    - [2.2.14 error_status_t](#2214-errorstatust)
+    - [2.2.15 FLOAT](#2215-float)
+    - [2.2.16 HANDLE](#2216-handle)
+    - [2.2.17 HCALL](#2217-hcall)
+    - [2.2.18 HRESULT](#2218-hresult)
+    - [2.2.19 INT](#2219-int)
+    - [2.2.20 INT8](#2220-int8)
+    - [2.2.21 INT16](#2221-int16)
+    - [2.2.22 INT32](#2222-int32)
+    - [2.2.23 INT64](#2223-int64)
+    - [2.2.24 LDAP_UDP_HANDLE](#2224-ldapudphandle)
+    - [2.2.25 LMCSTR](#2225-lmcstr)
+    - [2.2.26 LMSTR](#2226-lmstr)
+    - [2.2.27 LONG](#2227-long)
+    - [2.2.28 LONGLONG](#2228-longlong)
+    - [2.2.29 LONG_PTR](#2229-longptr)
+    - [2.2.30 LONG32](#2230-long32)
+    - [2.2.31 LONG64](#2231-long64)
+    - [2.2.32 LPCSTR](#2232-lpcstr)
+    - [2.2.33 LPCVOID](#2233-lpcvoid)
+    - [2.2.34 LPCWSTR](#2234-lpcwstr)
+    - [2.2.35 LPSTR](#2235-lpstr)
+    - [2.2.36 LPWSTR](#2236-lpwstr)
+    - [2.2.37 NET_API_STATUS](#2237-netapistatus)
+    - [2.2.38 NTSTATUS](#2238-ntstatus)
+    - [2.2.39 PCONTEXT_HANDLE](#2239-pcontexthandle)
+    - [2.2.40 QWORD](#2240-qword)
+    - [2.2.41 RPC_BINDING_HANDLE](#2241-rpcbindinghandle)
+    - [2.2.42 SHORT](#2242-short)
+    - [2.2.43 SIZE_T](#2243-sizet)
+    - [2.2.44 STRING](#2244-string)
+    - [2.2.45 UCHAR](#2245-uchar)
+    - [2.2.46 UINT](#2246-uint)
+    - [2.2.47 UINT8](#2247-uint8)
+    - [2.2.48 UINT16](#2248-uint16)
+    - [2.2.49 UINT32](#2249-uint32)
+    - [2.2.50 UINT64](#2250-uint64)
+    - [2.2.51 ULONG](#2251-ulong)
+    - [2.2.52 ULONG_PTR](#2252-ulongptr)
+    - [2.2.53 ULONG32](#2253-ulong32)
+    - [2.2.54 ULONG64](#2254-ulong64)
+    - [2.2.55 ULONGLONG](#2255-ulonglong)
+    - [2.2.56 UNICODE](#2256-unicode)
+    - [2.2.57 UNC](#2257-unc)
+    - [2.2.58 USHORT](#2258-ushort)
+    - [2.2.59 VOID](#2259-void)
+    - [2.2.60 WCHAR](#2260-wchar)
+    - [2.2.61 WORD](#2261-word)
+  - [2.3 Common Data Structures](#23-common-data-structures)
+    - [2.3.1 EVENT_DESCRIPTOR](#231-eventdescriptor)
+    - [2.3.2 EVENT_HEADER](#232-eventheader)
+    - [2.3.3 FILETIME](#233-filetime)
+    - [2.3.4 GUID and UUID](#234-guid-and-uuid)
+      - [2.3.4.1 GUID--RPC IDL representation](#2341-guid-rpc-idl-representation)
+      - [2.3.4.2 GUID--Packet Representation](#2342-guid-packet-representation)
+      - [2.3.4.3 GUID--Curly Braced String Representation](#2343-guid-curly-braced-string-representation)
+    - [2.3.5 LARGE_INTEGER](#235-largeinteger)
+    - [2.3.6 LCID](#236-lcid)
+    - [2.3.7 LUID](#237-luid)
+    - [2.3.8 MULTI_SZ](#238-multisz)
+    - [2.3.9 OBJECT_TYPE_LIST](#239-objecttypelist)
+    - [2.3.10 RPC_UNICODE_STRING](#2310-rpcunicodestring)
+    - [2.3.11 SERVER_INFO_100](#2311-serverinfo100)
+    - [2.3.12 SERVER_INFO_101](#2312-serverinfo101)
+    - [2.3.13 SYSTEMTIME](#2313-systemtime)
+    - [2.3.14 UINT128](#2314-uint128)
+    - [2.3.15 ULARGE_INTEGER](#2315-ulargeinteger)
+  - [2.4 Constructed Security Types](#24-constructed-security-types)
+    - [2.4.1 SID_IDENTIFIER_AUTHORITY](#241-sididentifierauthority)
+      - [2.4.1.1 RPC_SID_IDENTIFIER_AUTHORITY](#2411-rpcsididentifierauthority)
+    - [2.4.2 SID](#242-sid)
+      - [2.4.2.1 SID String Format Syntax](#2421-sid-string-format-syntax)
+      - [2.4.2.2 SID--Packet Representation](#2422-sid-packet-representation)
+      - [2.4.2.3 RPC_SID](#2423-rpcsid)
+      - [2.4.2.4 Well-Known SID Structures](#2424-well-known-sid-structures)
+    - [2.4.3 ACCESS_MASK](#243-accessmask)
+    - [2.4.4 ACE](#244-ace)
+      - [2.4.4.1 ACE_HEADER](#2441-aceheader)
+        - [2.4.4.1.1 ACE_HEADER--RPC representation](#24411-aceheader-rpc-representation)
+      - [2.4.4.2 ACCESS_ALLOWED_ACE](#2442-accessallowedace)
+      - [2.4.4.3 ACCESS_ALLOWED_OBJECT_ACE](#2443-accessallowedobjectace)
+      - [2.4.4.4 ACCESS_DENIED_ACE](#2444-accessdeniedace)
+      - [2.4.4.5 ACCESS_DENIED_OBJECT_ACE](#2445-accessdeniedobjectace)
+      - [2.4.4.6 ACCESS_ALLOWED_CALLBACK_ACE](#2446-accessallowedcallbackace)
+      - [2.4.4.7 ACCESS_DENIED_CALLBACK_ACE](#2447-accessdeniedcallbackace)
+      - [2.4.4.8 ACCESS_ALLOWED_CALLBACK_OBJECT_ACE](#2448-accessallowedcallbackobjectace)
+      - [2.4.4.9 ACCESS_DENIED_CALLBACK_OBJECT_ACE](#2449-accessdeniedcallbackobjectace)
+      - [2.4.4.10 SYSTEM_AUDIT_ACE](#24410-systemauditace)
+      - [2.4.4.11 SYSTEM_AUDIT_OBJECT_ACE](#24411-systemauditobjectace)
+      - [2.4.4.12 SYSTEM_AUDIT_CALLBACK_ACE](#24412-systemauditcallbackace)
+      - [2.4.4.13 SYSTEM_MANDATORY_LABEL_ACE](#24413-systemmandatorylabelace)
+        - [2.4.4.13.1 SYSTEM_MANDATORY_LABEL_ACE--RPC Representation](#244131-systemmandatorylabelace-rpc-representation)
+      - [2.4.4.14 SYSTEM_AUDIT_CALLBACK_OBJECT_ACE](#24414-systemauditcallbackobjectace)
+      - [2.4.4.15 SYSTEM_RESOURCE_ATTRIBUTE_ACE](#24415-systemresourceattributeace)
+      - [2.4.4.16 SYSTEM_SCOPED_POLICY_ID_ACE](#24416-systemscopedpolicyidace)
+      - [2.4.4.17 Conditional ACEs](#24417-conditional-aces)
+        - [2.4.4.17.1 Conditional ACE Expressions](#244171-conditional-ace-expressions)
+        - [2.4.4.17.2 Security Attributes](#244172-security-attributes)
+        - [2.4.4.17.3 Conditional ACE Applicability](#244173-conditional-ace-applicability)
+        - [2.4.4.17.4 Conditional ACE Binary Formats](#244174-conditional-ace-binary-formats)
+        - [2.4.4.17.5 Literal Tokens](#244175-literal-tokens)
+        - [2.4.4.17.6 Relational Operator Tokens](#244176-relational-operator-tokens)
+        - [2.4.4.17.7 Logical Operator Tokens](#244177-logical-operator-tokens)
+        - [2.4.4.17.8 Attribute Tokens](#244178-attribute-tokens)
+        - [2.4.4.17.9 Examples: Conditional Expression Binary Representation](#244179-examples-conditional-expression-binary-representation)
+    - [2.4.5 ACL](#245-acl)
+      - [2.4.5.1 ACL--RPC Representation](#2451-acl-rpc-representation)
+    - [2.4.6 SECURITY_DESCRIPTOR](#246-securitydescriptor)
+      - [2.4.6.1 SECURITY_DESCRIPTOR--RPC Representation](#2461-securitydescriptor-rpc-representation)
+    - [2.4.7 SECURITY_INFORMATION](#247-securityinformation)
+    - [2.4.8 TOKEN_MANDATORY_POLICY](#248-tokenmandatorypolicy)
+    - [2.4.9 MANDATORY_INFORMATION](#249-mandatoryinformation)
+    - [2.4.10 CLAIM_SECURITY_ATTRIBUTE](#2410-claimsecurityattribute)
+      - [2.4.10.1 CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1](#24101-claimsecurityattributerelativev1)
+      - [2.4.10.2 CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_RELATIVE](#24102-claimsecurityattributeoctetstringrelative)
+  - [2.5 Additional Information for Security Types](#25-additional-information-for-security-types)
+    - [2.5.1 Security Descriptor Description Language](#251-security-descriptor-description-language)
+      - [2.5.1.1 Syntax](#2511-syntax)
+      - [2.5.1.2 Security Attribute Names](#2512-security-attribute-names)
+        - [2.5.1.2.1 Simple Attribute Name Form](#25121-simple-attribute-name-form)
+        - [2.5.1.2.2 @Prefixed Attribute Name Form](#25122-prefixed-attribute-name-form)
+      - [2.5.1.3 Parentheses and Order of Precedence](#2513-parentheses-and-order-of-precedence)
+      - [2.5.1.4 SDDL String to Binary Security Descriptor Examples](#2514-sddl-string-to-binary-security-descriptor-examples)
+    - [2.5.2 Token/Authorization Context](#252-tokenauthorization-context)
+      - [2.5.2.1 Token/Authorization Context Algorithms](#2521-tokenauthorization-context-algorithms)
+        - [2.5.2.1.1 GatherGroupMembershipForSystem](#25211-gathergroupmembershipforsystem)
+        - [2.5.2.1.2 AddPrivilegesToToken](#25212-addprivilegestotoken)
+    - [2.5.3 Security Descriptor Algorithms](#253-security-descriptor-algorithms)
+      - [2.5.3.1 Support Functions](#2531-support-functions)
+        - [2.5.3.1.1 SidInToken](#25311-sidintoken)
+        - [2.5.3.1.2 SidDominates](#25312-siddominates)
+        - [2.5.3.1.3 GetScopedPolicySid](#25313-getscopedpolicysid)
+        - [2.5.3.1.4 GetCentralizedAccessPolicy](#25314-getcentralizedaccesspolicy)
+        - [2.5.3.1.5 EvaluateAceCondition](#25315-evaluateacecondition)
+        - [2.5.3.1.6 LookupAttributeInToken](#25316-lookupattributeintoken)
+        - [2.5.3.1.7 LookupAttributeInSacl](#25317-lookupattributeinsacl)
+        - [2.5.3.1.8 PushStackOperand](#25318-pushstackoperand)
+        - [2.5.3.1.9 PushStackResult](#25319-pushstackresult)
+        - [2.5.3.1.10 PopStack](#253110-popstack)
+      - [2.5.3.2 Access Check Algorithm Pseudocode](#2532-access-check-algorithm-pseudocode)
+      - [2.5.3.3 MandatoryIntegrityCheck Algorithm Pseudocode](#2533-mandatoryintegritycheck-algorithm-pseudocode)
+        - [2.5.3.3.1 FindAceByType](#25331-findacebytype)
+      - [2.5.3.4 Algorithm for Creating a Security Descriptor](#2534-algorithm-for-creating-a-security-descriptor)
+        - [2.5.3.4.1 CreateSecurityDescriptor](#25341-createsecuritydescriptor)
+        - [2.5.3.4.2 ComputeACL](#25342-computeacl)
+        - [2.5.3.4.3 ContainsInheritableACEs](#25343-containsinheritableaces)
+        - [2.5.3.4.4 ComputeInheritedACLfromParent](#25344-computeinheritedaclfromparent)
+        - [2.5.3.4.5 ComputeInheritedACLfromCreator](#25345-computeinheritedaclfromcreator)
+        - [2.5.3.4.6 PreProcessACLfromCreator](#25346-preprocessaclfromcreator)
+        - [2.5.3.4.7 PostProcessACL](#25347-postprocessacl)
+      - [2.5.3.5 Setting the INHERITED_ACE Flag](#2535-setting-the-inheritedace-flag)
+  - [2.6 ServerGetInfo Abstract Interface](#26-servergetinfo-abstract-interface)
+  - [2.7 Impersonation Abstract Interfaces](#27-impersonation-abstract-interfaces)
+    - [2.7.1 StartImpersonation](#271-startimpersonation)
+    - [2.7.2 EndImpersonation](#272-endimpersonation)
+    - [2.7.3 GetAccessToken](#273-getaccesstoken)
+- [3 Structure Examples](#3-structure-examples)
+- [4 Security Considerations](#4-security-considerations)
+- [5 Appendix A: Full MS-DTYP IDL](#5-appendix-a-full-ms-dtyp-idl)
+- [6 Appendix B: Product Behavior](#6-appendix-b-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
+
+## 1 Introduction
 
 This document provides a collection of commonly used data types, which are categorized into two
 basic types: common base types and common data types. The common base types are those types
 that Microsoft compilers natively support. The common data types are data types that are frequently
 used by many protocols. These data types are user-defined types.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1027,7 +781,8 @@ Release: November 19, 2024
 
 8 / 155
 
-domain: A set of users and computers sharing a common namespace and management
+
+domain: A set of users and computers sharing a common namespace and management
 
 infrastructure. At least one computer member of the set has to act as a domain controller (DC)
 and host a member list that identifies all members of the domain, as well as optionally hosting
@@ -1106,7 +861,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-security identifier (SID): An identifier for security principals that is used to identify an account
+
+security identifier (SID): An identifier for security principals that is used to identify an account
 or a group. Conceptually, the SID is composed of an account authority portion (typically a
 domain) and a smaller integer representing an identity relative to the account authority,
 termed the relative identifier (RID). The SID format is specified in [MS-DTYP] section 2.4.2; a
@@ -1175,14 +931,15 @@ Release: November 19, 2024
 
 10 / 155
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1241,7 +998,8 @@ Release: November 19, 2024
 
 11 / 155
 
-[MS-TLSP] Microsoft Corporation, "Transport Layer Security (TLS) Profile".
+
+[MS-TLSP] Microsoft Corporation, "Transport Layer Security (TLS) Profile".
 
 [RFC1035] Mockapetris, P., "Domain Names - Implementation and Specification", STD 13, RFC 1035,
 November 1987, https://www.rfc-editor.org/info/rfc1035
@@ -1261,7 +1019,7 @@ Namespace", RFC 4122, July 2005, https://www.rfc-editor.org/info/rfc4122
 [RFC5234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", STD
 68, RFC 5234, January 2008, https://www.rfc-editor.org/info/rfc5234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [DALB] Dalbey, J., "Pseudocode Standard", May 2008,
 http://users.csc.calpoly.edu/~jdalbey/SWE/pdl_std.html
@@ -1288,7 +1046,7 @@ http://www.ietf.org/rfc/rfc3530.txt
 [Tanenbaum] Tanenbaum, A.S., "Modern Operating Systems", Prentice Hall, 2001, ISBN 0-13-
 092641-8.
 
-1.3  Overview
+### 1.3 Overview
 
 Two types of data structures are specified in this document: data structures that are specified in terms
 of the wire format and data structures that are RPC-marshaled as specified in [MS-RPCE]. The latter
@@ -1306,22 +1064,23 @@ Release: November 19, 2024
 
 12 / 155
 
-structure. Any other use implies the use of the wire format version unless otherwise specified by the
+
+structure. Any other use implies the use of the wire format version unless otherwise specified by the
 protocol that uses the data structure.
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 The data structures in this document are generic data structures that are used by many protocols.
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 Not applicable.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 Not applicable.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 HRESULT: Vendors can choose their own values, as long as the C bit (0x20000000) is set, indicating it
 is a customer code.
@@ -1338,11 +1097,12 @@ Release: November 19, 2024
 
 13 / 155
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-DTYP].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-2  Data Types
+## 2 Data Types
 
 The following sections describe data types that include common base types, data types, and data
 structures.
@@ -1357,7 +1117,7 @@ specification specifies the actual practice.
 Integer names often have an alias, which is interchangeable with the integer name; there is no
 difference in using either the name or its alias.
 
-2.1  Common Base Types
+### 2.1 Common Base Types
 
 This section contains commonly used primitive data types.
 
@@ -1381,11 +1141,11 @@ represented a 32-bit integer, then Byte 1 would be its high-order byte and Byte 
 Certain protocols use little-endian order, as specified in the corresponding technical documents; for
 example, [MS-SMB2].
 
-2.1.1  bit
+#### 2.1.1 bit
 
 A bit is a single binary digit, which is the smallest primitive element of any data structure.
 
-2.1.2  byte
+#### 2.1.2 byte
 
 The byte type specifies an 8-bit data item.
 
@@ -1399,7 +1159,8 @@ Release: November 19, 2024
 
 14 / 155
 
-2.1.3  handle_t
+
+#### 2.1.3 handle_t
 
 The handle_t data type is used to represent an explicit RPC binding handle, as specified in [C706]
 and [MS-RPCE] section 2. This data type is a predefined type of the IDL and does not require an
@@ -1409,7 +1170,7 @@ A primitive binding handle is a data object that can be used by the application 
 binding. It can appear as a type specifier in typedef declarations, general declarations, and function
 declarations (as a function-return-type specifier and a parameter-type specifier).
 
-2.1.4  Integer Types
+#### 2.1.4 Integer Types
 
 Microsoft C/C++ supports different sizes of integer types. An 8-bit, 16-bit, 32-bit, or 64-bit integer
 variable can be declared by using the __intn type specifier, where n is 8, 16, 32, or 64.
@@ -1418,20 +1179,20 @@ The types __int8, __int16, and __int32 are synonyms for the ANSI/ISO C types (as
 [ISO/IEC-9899]) that have the same size. They are useful for writing portable code that behaves
 identically across multiple platforms.
 
-2.1.4.1  __int8
+##### 2.1.4.1 __int8
 
 An 8-bit signed integer (range: –128 to 127 decimal). The first bit, the most significant bit (MSB), is
 the signing bit. This type can be specified as unsigned by using the unsigned data-type modifier. As an
 unsigned __int8, the range is from 0 to 255 decimal.
 
-2.1.4.2  __int16
+##### 2.1.4.2 __int16
 
 A 16-bit signed integer (range: –32768 to 32767 decimal). The first bit (MSB) is the signing bit.
 
 This type can be specified as unsigned by using the unsigned data-type modifier. As an unsigned
 __int16, the range is from 0 to 65535 decimal.
 
-2.1.4.3  __int32
+##### 2.1.4.3 __int32
 
 A 32-bit signed integer (range: –2147483648 to 2147483647 decimal). The first bit (MSB) is the
 signing bit.
@@ -1439,7 +1200,7 @@ signing bit.
 This type can be specified as unsigned by using the unsigned data-type modifier. As an unsigned
 __int32, the range is from 0 to 4294967295 decimal.
 
-2.1.4.4  __int64
+##### 2.1.4.4 __int64
 
 A 64-bit signed integer (range: –9223372036854775808 to 9223372036854775807 decimal). The
 first bit (MSB) is the signing bit.
@@ -1447,11 +1208,11 @@ first bit (MSB) is the signing bit.
 This type can be specified as unsigned by using the unsigned data-type modifier. As an unsigned
 __int64, the range is from 0 to 18446744073709551615 decimal.
 
-2.1.4.5  hyper
+##### 2.1.4.5 hyper
 
 The keyword hyper indicates a 64-bit integer that can be declared as either signed or unsigned.
 
-2.1.5  octet
+#### 2.1.5 octet
 
 The octet type specifies an 8-bit data item.
 
@@ -1462,9 +1223,10 @@ Release: November 19, 2024
 
 15 / 155
 
-An octet is an 8-bit data type as specified in [C706] section 14.2.
 
-2.1.6  wchar_t
+An octet is an 8-bit data type as specified in [C706] section 14.2.
+
+#### 2.1.6 wchar_t
 
 A Unicode character for use with the Microsoft Interface Definition Language (MIDL) compiler.
 
@@ -1472,12 +1234,12 @@ This type is declared as follows:
 
  typedef unsigned short wchar_t;
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This section contains simple data types that are defined by either a C/C++ typedef or #define
 statement. The data types in this section are essentially aliases for C/C++ primitive data types.
 
-2.2.1  __int3264
+#### 2.2.1 __int3264
 
 An alias that is resolved to either:
 
@@ -1488,7 +1250,7 @@ bit on the wire. The higher 4 bytes MUST be truncated on the sender side during 
 MUST be extended appropriately (signed or unsigned), as specified in [C706] section 14.2.5, on
 the receiving side during unmarshaling.
 
-2.2.2  ADCONNECTION_HANDLE
+#### 2.2.2 ADCONNECTION_HANDLE
 
 A handle to an ADConnection object that is used to manage the TCP connections that are used for
 communication between a client and Active Directory servers.
@@ -1497,7 +1259,7 @@ This type is declared as follows:
 
  typedef void* ADCONNECTION_HANDLE;
 
-2.2.3  BOOL
+#### 2.2.3 BOOL
 
 A BOOL is a 32-bit field that is set to 1 to indicate TRUE, or 0 to indicate FALSE.
 
@@ -1505,7 +1267,7 @@ This type is declared as follows:
 
  typedef int BOOL, *PBOOL, *LPBOOL;
 
-2.2.4  BOOLEAN
+#### 2.2.4 BOOLEAN
 
 A BOOLEAN is an 8-bit field that is set to 1 to indicate TRUE, or 0 to indicate FALSE.
 
@@ -1520,7 +1282,8 @@ Release: November 19, 2024
 
 16 / 155
 
-2.2.5  BSTR
+
+#### 2.2.5 BSTR
 
 A BSTR is a pointer to a null-terminated character string in which the string length is stored with the
 string. This type is declared as follows:
@@ -1533,7 +1296,7 @@ For example:
  [4 bytes (length prefix)],
  wchar_t[length], [\0]
 
-2.2.6  BYTE
+#### 2.2.6 BYTE
 
 A BYTE is an 8-bit unsigned value that corresponds to a single octet in a network protocol.
 
@@ -1541,7 +1304,7 @@ This type is declared as follows:
 
  typedef unsigned char BYTE, *PBYTE, *LPBYTE;
 
-2.2.7  CHAR
+#### 2.2.7 CHAR
 
 A CHAR is an 8-bit block of data that typically contains an ANSI character, as specified in [ISO/IEC-
 8859-1]. For information on the char keyword, see [C706] section 4.2.9.3.
@@ -1550,7 +1313,7 @@ This type is declared as follows:
 
  typedef char CHAR, *PCHAR;
 
-2.2.8  DOUBLE
+#### 2.2.8 DOUBLE
 
 A DOUBLE is an 8-byte, double-precision, floating-point number that represents a double-precision,
 64-bit [IEEE754] value with the approximate range: +/–5.0 x 10-324 through +/–1.7 x 10308.
@@ -1562,7 +1325,7 @@ This type is declared as follows:
 
  typedef double DOUBLE;
 
-2.2.9  DWORD
+#### 2.2.9 DWORD
 
 A DWORD is a 32-bit unsigned integer (range: 0 through 4294967295 decimal). Because a DWORD is
 unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -1578,7 +1341,8 @@ Release: November 19, 2024
 
 17 / 155
 
-2.2.10 DWORD_PTR
+
+#### 2.2.10 DWORD_PTR
 
 A DWORD_PTR is an unsigned long type used for pointer precision. It is used when casting a pointer
 to an unsigned long type to perform pointer arithmetic. DWORD_PTR is also commonly used for
@@ -1589,7 +1353,7 @@ This type is declared as follows:
 
  typedef ULONG_PTR DWORD_PTR;
 
-2.2.11 DWORD32
+#### 2.2.11 DWORD32
 
 A DWORD32 is a 32-bit unsigned integer.
 
@@ -1597,7 +1361,7 @@ This type is declared as follows:
 
  typedef unsigned int DWORD32;
 
-2.2.12 DWORD64
+#### 2.2.12 DWORD64
 
 A DWORD64 is a 64-bit unsigned integer.
 
@@ -1605,7 +1369,7 @@ This type is declared as follows:
 
  typedef unsigned __int64 DWORD64, *PDWORD64;
 
-2.2.13 DWORDLONG
+#### 2.2.13 DWORDLONG
 
 A DWORDLONG is a 64-bit unsigned integer (range: 0 through 18446744073709551615 decimal).
 
@@ -1613,7 +1377,7 @@ This type is declared as follows:
 
  typedef ULONGLONG DWORDLONG, *PDWORDLONG;
 
-2.2.14 error_status_t
+#### 2.2.14 error_status_t
 
 The error_status_t return type is used for all methods. This is a Win32 error code.
 
@@ -1621,7 +1385,7 @@ This type is declared as follows:
 
  typedef unsigned long error_status_t;
 
-2.2.15 FLOAT
+#### 2.2.15 FLOAT
 
 A float is a base type that is specified the IEEE Format section of [C706].section 14.2.
 
@@ -1636,7 +1400,8 @@ Release: November 19, 2024
 
 18 / 155
 
-2.2.16 HANDLE
+
+#### 2.2.16 HANDLE
 
 A Handle to an object
 
@@ -1644,7 +1409,7 @@ This type is declared as follows:
 
  typedef void* HANDLE;
 
-2.2.17 HCALL
+#### 2.2.17 HCALL
 
 An HCALL is an alias for a DWORD used to specify a handle to a call, typically used in telephony-
 related applications.
@@ -1655,7 +1420,7 @@ This type is declared as follows:
 
  typedef DWORD HCALL;
 
-2.2.18 HRESULT
+#### 2.2.18 HRESULT
 
 An HRESULT is a 32-bit value that is used to describe an error or warning and contains the following
 fields:
@@ -1674,7 +1439,7 @@ This type is declared as follows:
 
  typedef LONG HRESULT;
 
-2.2.19 INT
+#### 2.2.19 INT
 
 An INT is a 32-bit signed integer (range: –2147483648 through 2147483647 decimal).
 
@@ -1682,7 +1447,7 @@ This type is declared as follows:
 
  typedef int INT, *LPINT;
 
-2.2.20 INT8
+#### 2.2.20 INT8
 
 An INT8 is an 8-bit signed integer (range: –128 through 127 decimal). The first bit (Most Significant
 Bit (MSB)) is the signing bit.
@@ -1696,9 +1461,10 @@ Release: November 19, 2024
 
 19 / 155
 
- typedef signed char INT8;
 
-2.2.21 INT16
+ typedef signed char INT8;
+
+#### 2.2.21 INT16
 
 An INT16 is a 16-bit signed integer (range: –32768 through 32767 decimal). The first bit (Most
 Significant Bit (MSB)) is the signing bit.
@@ -1707,7 +1473,7 @@ This type is declared as follows:
 
  typedef signed short INT16;
 
-2.2.22 INT32
+#### 2.2.22 INT32
 
 An INT32 is a 32-bit signed integer (range: –2147483648 through 2147483647 decimal). The first bit
 (Most Significant Bit (MSB)) is the signing bit.
@@ -1716,7 +1482,7 @@ This type is declared as follows:
 
  typedef signed int INT32;
 
-2.2.23 INT64
+#### 2.2.23 INT64
 
 An INT64 is a 64-bit signed integer (range: –9223372036854775808 through 9223372036854775807
 decimal). The first bit (Most Significant Bit (MSB)) is the signing bit.
@@ -1725,7 +1491,7 @@ This type is declared as follows:
 
  typedef signed __int64 INT64;
 
-2.2.24 LDAP_UDP_HANDLE
+#### 2.2.24 LDAP_UDP_HANDLE
 
 A handle to an ADUDPHandle object that is used to represent the parameters used for
 communication between a client and Active Directory servers.
@@ -1734,7 +1500,7 @@ This type is declared as follows:
 
  typedef void* LDAP_UDP_HANDLE;
 
-2.2.25 LMCSTR
+#### 2.2.25 LMCSTR
 
 A LMCSTR is a 32-bit pointer to a constant null-terminated string of 16-bit Unicode characters.
 
@@ -1742,7 +1508,7 @@ This type is declared as follows:
 
  typedef const wchar_t* LMCSTR;
 
-2.2.26 LMSTR
+#### 2.2.26 LMSTR
 
 A LMSTR is a 32-bit pointer to a null-terminated string of 16-bit Unicode characters.
 
@@ -1753,11 +1519,12 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-This type is declared as follows:
+
+This type is declared as follows:
 
  typedef WCHAR* LMSTR;
 
-2.2.27 LONG
+#### 2.2.27 LONG
 
 A LONG is a 32-bit signed integer, in twos-complement format (range: –2147483648 through
 2147483647 decimal). The first bit (Most Significant Bit (MSB)) is the signing bit.
@@ -1766,7 +1533,7 @@ This type is declared as follows:
 
  typedef long LONG, *PLONG, *LPLONG;
 
-2.2.28 LONGLONG
+#### 2.2.28 LONGLONG
 
 A LONGLONG is a 64-bit signed integer (range: –9223372036854775808 through
 9223372036854775807 decimal).
@@ -1775,7 +1542,7 @@ This type is declared as follows:
 
  typedef signed __int64 LONGLONG;
 
-2.2.29 LONG_PTR
+#### 2.2.29 LONG_PTR
 
 A LONG_PTR is a long type used for pointer precision. It is used when casting a pointer to a long type
 to perform pointer arithmetic.
@@ -1784,7 +1551,7 @@ This type is declared as follows:
 
  typedef __int3264 LONG_PTR;
 
-2.2.30 LONG32
+#### 2.2.30 LONG32
 
 A LONG32 is a 32-bit signed integer.
 
@@ -1792,7 +1559,7 @@ This type is declared as follows:
 
  typedef signed int LONG32;
 
-2.2.31 LONG64
+#### 2.2.31 LONG64
 
 A LONG64 is a 64-bit signed integer.
 
@@ -1807,7 +1574,8 @@ Release: November 19, 2024
 
 21 / 155
 
-2.2.32 LPCSTR
+
+#### 2.2.32 LPCSTR
 
 An LPCSTR is a 32-bit pointer to a constant null-terminated string of 8-bit Windows (ANSI)
 characters.
@@ -1816,7 +1584,7 @@ This type is declared as follows:
 
  typedef const char* LPCSTR;
 
-2.2.33 LPCVOID
+#### 2.2.33 LPCVOID
 
 An LPCVOID is a 32-bit pointer to a constant of any type.
 
@@ -1824,7 +1592,7 @@ This type is declared as follows:
 
  typedef const void* LPCVOID;
 
-2.2.34 LPCWSTR
+#### 2.2.34 LPCWSTR
 
 An LPCWSTR is a 32-bit pointer to a constant string of 16-bit Unicode characters, which MAY be
 null-terminated.
@@ -1833,7 +1601,7 @@ This type is declared as follows:
 
  typedef const wchar_t* LPCWSTR;
 
-2.2.35 LPSTR
+#### 2.2.35 LPSTR
 
 The LPSTR type and its alias PSTR specify a pointer to an array of 8-bit characters, which MAY be
 terminated by a null character.
@@ -1852,7 +1620,7 @@ This type is declared as follows:
 
  typedef char* PSTR, *LPSTR;
 
-2.2.36 LPWSTR
+#### 2.2.36 LPWSTR
 
 The LPWSTR type is a 32-bit pointer to a string of 16-bit Unicode characters, which MAY be null-
 terminated. The LPWSTR type specifies a pointer to a sequence of Unicode characters, which MAY be
@@ -1869,14 +1637,15 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-string semantics, or MUST be accompanied by an explicit length specifier, as specified in the
+
+string semantics, or MUST be accompanied by an explicit length specifier, as specified in the
 RPC_UNICODE_STRING (section 2.3.10) structure.
 
 This type is declared as follows:
 
  typedef wchar_t* LPWSTR, *PWSTR;
 
-2.2.37 NET_API_STATUS
+#### 2.2.37 NET_API_STATUS
 
 The NET_API_STATUS type is commonly used as the return value of RPC methods in Microsoft
 network protocols. See the Win32 error codes as specified in [MS-ERREF] for details.
@@ -1885,7 +1654,7 @@ This type is declared as follows:
 
  typedef DWORD NET_API_STATUS;
 
-2.2.38 NTSTATUS
+#### 2.2.38 NTSTATUS
 
 NTSTATUS is a standard 32-bit datatype for system-supplied status code values.
 
@@ -1896,7 +1665,7 @@ This type is declared as follows:
 
  typedef long NTSTATUS;
 
-2.2.39 PCONTEXT_HANDLE
+#### 2.2.39 PCONTEXT_HANDLE
 
 The PCONTEXT_HANDLE type keeps state information associated with a given client on a server. The
 state information is called the server's context. Clients can obtain a context handle to identify the
@@ -1914,7 +1683,7 @@ predefined types of the interface definition language (IDL), which is used to cr
  typedef [context_handle] void* PCONTEXT_HANDLE;
  typedef [ref] PCONTEXT_HANDLE* PPCONTEXT_HANDLE;
 
-2.2.40 QWORD
+#### 2.2.40 QWORD
 
 A QWORD is a 64-bit unsigned integer.
 
@@ -1929,7 +1698,8 @@ Release: November 19, 2024
 
 23 / 155
 
-2.2.41 RPC_BINDING_HANDLE
+
+#### 2.2.41 RPC_BINDING_HANDLE
 
 An RPC_BINDING_HANDLE is an untyped 32-bit pointer containing information that the RPC run-time
 library uses to access binding information. It is directly equivalent to the type rpc_binding_handle_t
@@ -1955,7 +1725,7 @@ This type is declared as follows:
 
  typedef void* RPC_BINDING_HANDLE;
 
-2.2.42 SHORT
+#### 2.2.42 SHORT
 
 A SHORT is a 16-bit signed integer(range: –32768 through 32767 decimal). The first bit (Most
 Significant Bit (MSB)) is the signing bit.
@@ -1964,7 +1734,7 @@ This type is declared as follows:
 
  typedef short SHORT;
 
-2.2.43 SIZE_T
+#### 2.2.43 SIZE_T
 
 SIZE_T is a ULONG_PTR representing the maximum number of bytes to which a pointer can point.
 
@@ -1972,7 +1742,7 @@ This type is declared as follows:
 
  typedef ULONG_PTR SIZE_T;
 
-2.2.44 STRING
+#### 2.2.44 STRING
 
 Unless otherwise noted, a STRING is a UCHAR buffer that represents a null-terminated string of 8-bit
 characters.
@@ -1988,7 +1758,8 @@ Release: November 19, 2024
 
 24 / 155
 
-2.2.45 UCHAR
+
+#### 2.2.45 UCHAR
 
 A UCHAR is an 8-bit integer with the range: 0 through 255 decimal. Because a UCHAR is unsigned, its
 first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -1997,7 +1768,7 @@ This type is declared as follows:
 
  typedef unsigned char UCHAR, *PUCHAR;
 
-2.2.46 UINT
+#### 2.2.46 UINT
 
 A UINT is a 32-bit unsigned integer (range: 0 through 4294967295 decimal). Because a UINT is
 unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2006,7 +1777,7 @@ This type is declared as follows:
 
  typedef unsigned int UINT;
 
-2.2.47 UINT8
+#### 2.2.47 UINT8
 
 A UINT8 is an 8-bit unsigned integer (range: 0 through 255 decimal). Because a UINT8 is unsigned,
 its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2015,7 +1786,7 @@ This type is declared as follows:
 
  typedef unsigned char UINT8;
 
-2.2.48 UINT16
+#### 2.2.48 UINT16
 
 A UINT16 is a 16-bit unsigned integer (range: 0 through 65535 decimal). Because a UINT16 is
 unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2024,7 +1795,7 @@ This type is declared as follows:
 
  typedef unsigned short UINT16;
 
-2.2.49 UINT32
+#### 2.2.49 UINT32
 
 A UINT32 is a 32-bit unsigned integer (range: 0 through 4294967295 decimal). Because a UINT32 is
 unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2033,7 +1804,7 @@ This type is declared as follows:
 
  typedef unsigned int UINT32;
 
-2.2.50 UINT64
+#### 2.2.50 UINT64
 
 A UINT64 is a 64-bit unsigned integer (range: 0 through 18446744073709551615 decimal). Because
 a UINT64 is unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2047,9 +1818,10 @@ Release: November 19, 2024
 
 25 / 155
 
- typedef unsigned __int64 UINT64;
 
-2.2.51 ULONG
+ typedef unsigned __int64 UINT64;
+
+#### 2.2.51 ULONG
 
 A ULONG is a 32-bit unsigned integer (range: 0 through 4294967295 decimal). Because a ULONG is
 unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2058,7 +1830,7 @@ This type is declared as follows:
 
  typedef unsigned long ULONG, *PULONG;
 
-2.2.52 ULONG_PTR
+#### 2.2.52 ULONG_PTR
 
 A ULONG_PTR is an unsigned long type used for pointer precision. It is used when casting a pointer to
 a long type to perform pointer arithmetic.
@@ -2067,7 +1839,7 @@ This type is declared as follows:
 
  typedef unsigned __int3264 ULONG_PTR;
 
-2.2.53 ULONG32
+#### 2.2.53 ULONG32
 
 A ULONG32 is an unsigned LONG32.
 
@@ -2075,7 +1847,7 @@ This type is declared as follows:
 
  typedef unsigned int ULONG32;
 
-2.2.54 ULONG64
+#### 2.2.54 ULONG64
 
 A ULONG64 is a 64-bit unsigned integer (range: 0 through 18446744073709551615 decimal).
 Because a ULONG64 is unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2084,7 +1856,7 @@ This type is declared as follows:
 
  typedef unsigned __int64 ULONG64;
 
-2.2.55 ULONGLONG
+#### 2.2.55 ULONGLONG
 
 A ULONGLONG is a 64-bit unsigned integer (range: 0 through 18446744073709551615 decimal).
 Because a ULONGLONG is unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for
@@ -2094,7 +1866,7 @@ This type is declared as follows:
 
  typedef unsigned __int64 ULONGLONG;
 
-2.2.56 UNICODE
+#### 2.2.56 UNICODE
 
 A single Unicode character.
 
@@ -2105,11 +1877,12 @@ Release: November 19, 2024
 
 26 / 155
 
-This type is declared as follows:
+
+This type is declared as follows:
 
  typedef wchar_t UNICODE;
 
-2.2.57 UNC
+#### 2.2.57 UNC
 
 A Universal Naming Convention (UNC) string is used to specify the location of resources such as
 shared files or devices.
@@ -2172,7 +1945,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-component of the path is also referred to as the "leaf component". The protocol that is used to
+
+component of the path is also referred to as the "leaf component". The protocol that is used to
 access the resource, and the type of resource that is being accessed, define the size and valid
 characters for a path component. The only limitations that a Distributed File System (DFS)
 places on path components are that they MUST be at least one character in length and MUST NOT
@@ -2188,7 +1962,7 @@ stream-name , optionally followed by a ":" colon character and a stream type. Th
 name, if specified, MAY be zero-length only if stream-type is also specified; otherwise, it MUST
 be at least one character. The stream-type, if specified, MUST be at least one character.
 
-2.2.58 USHORT
+#### 2.2.58 USHORT
 
 A USHORT is a 16-bit unsigned integer (range: 0 through 65535 decimal). Because a USHORT is
 unsigned, its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2197,7 +1971,7 @@ This type is declared as follows:
 
  typedef unsigned short USHORT;
 
-2.2.59 VOID
+#### 2.2.59 VOID
 
 VOID is an alias for void.
 
@@ -2205,7 +1979,7 @@ This type is declared as follows:
 
  typedef void VOID, *PVOID, *LPVOID;
 
-2.2.60 WCHAR
+#### 2.2.60 WCHAR
 
 A WCHAR is a 16-bit Unicode character.
 
@@ -2213,7 +1987,7 @@ This type is declared as follows:
 
  typedef wchar_t WCHAR, *PWCHAR;
 
-2.2.61 WORD
+#### 2.2.61 WORD
 
 A WORD is a 16-bit unsigned integer (range: 0 through 65535 decimal). Because a WORD is unsigned,
 its first bit (Most Significant Bit (MSB)) is not reserved for signing.
@@ -2222,7 +1996,7 @@ This type is declared as follows:
 
  typedef unsigned short WORD, *PWORD, *LPWORD;
 
-2.3  Common Data Structures
+### 2.3 Common Data Structures
 
 This section contains common data structures that are defined in either C, C++, or ABNF.
 
@@ -2233,7 +2007,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-2.3.1  EVENT_DESCRIPTOR
+
+#### 2.3.1 EVENT_DESCRIPTOR
 
 The EVENT_DESCRIPTOR structure specifies the metadata that defines an event.
 
@@ -2274,7 +2049,7 @@ provider-defined keywords, standard keywords, or both.
 This structure represents an event defined in a manifest and is included in the EVENT_HEADER
 structure.
 
-2.3.2  EVENT_HEADER
+#### 2.3.2 EVENT_HEADER
 
 The EVENT_HEADER structure defines the main parameters of an event.
 
@@ -2305,7 +2080,8 @@ Release: November 19, 2024
 
 29 / 155
 
-  *PEVENT_HEADER;
+
+  *PEVENT_HEADER;
 
 Size:  Size of the event record, in bytes.
 
@@ -2405,7 +2181,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-TimeStamp:  Contains the time that the event occurred. The resolution is system time unless the
+
+TimeStamp:  Contains the time that the event occurred. The resolution is system time unless the
 
 ProcessTraceMode member of EVENT_TRACE_LOGFILE contains the
 PROCESS_TRACE_MODE_RAW_TIMESTAMP flag, in which case the resolution depends on the
@@ -2436,7 +2213,7 @@ example, if Event A and Event B are consecutively logged by the same thread and 
 usage numbers 150 and 175, then the activity that was performed by that thread between events A
 and B cost 25 CPU time units (175 – 150).
 
-2.3.3  FILETIME
+#### 2.3.3 FILETIME
 
 The FILETIME structure is a 64-bit value that represents the number of 100-nanosecond intervals that
 have elapsed since January 1, 1601, Coordinated Universal Time (UTC).
@@ -2452,12 +2229,12 @@ dwLowDateTime:  A 32-bit unsigned integer that contains the low-order bits of th
 
 dwHighDateTime:  A 32-bit unsigned integer that contains the high-order bits of the file time.
 
-2.3.4  GUID and UUID
+#### 2.3.4 GUID and UUID
 
 A GUID, also known as a UUID, is a 16-byte structure, intended to serve as a unique identifier for an
 object. There are three representations of a GUID, as described in the following sections.
 
-2.3.4.1  GUID--RPC IDL representation
+##### 2.3.4.1 GUID--RPC IDL representation
 
 The following structure is an IDL representation of GUID equivalent to and compatible with a DCE
 UUID ([C706] section A.1) according to the following mappings.
@@ -2475,7 +2252,8 @@ Release: November 19, 2024
 
 31 / 155
 
- } GUID,
+
+ } GUID,
    UUID,
   *PGUID;
 
@@ -2496,7 +2274,7 @@ Data4:  This array is generally treated as a sequence of opaque values. This mem
 the following sequence of fields of a DCE UUID ([C706] section A.1) in this order:
 clock_seq_hi_and_reserved, clock_seq_low, and the sequence of bytes in the node field.
 
-2.3.4.2  GUID--Packet Representation
+##### 2.3.4.2 GUID--Packet Representation
 
 The packet version is used within block protocols. The following diagram represents a GUID as an
 opaque sequence of bytes.
@@ -2530,7 +2308,7 @@ Data3 (2 bytes): The value of the Data3 member (section 2.3.4), in little-endian
 
 Data4 (8 bytes): The value of the Data4 member (section 2.3.4), in little-endian byte order.
 
-2.3.4.3  GUID--Curly Braced String Representation
+##### 2.3.4.3 GUID--Curly Braced String Representation
 
 The curly braced GUID string representation is a format commonly used for a string representation of
 the GUID type (as specified in section 2.3.4.1) is described by the following ABNF syntax, as specified
@@ -2552,9 +2330,10 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- {f81d4fae-7dec-11d0-a765-00a0c91e6bf6}
 
-2.3.5  LARGE_INTEGER
+ {f81d4fae-7dec-11d0-a765-00a0c91e6bf6}
+
+#### 2.3.5 LARGE_INTEGER
 
 The LARGE_INTEGER structure is used to represent a 64-bit signed integer value.
 
@@ -2563,7 +2342,7 @@ The LARGE_INTEGER structure is used to represent a 64-bit signed integer value.
  } LARGE_INTEGER,
   *PLARGE_INTEGER;
 
-2.3.6  LCID
+#### 2.3.6 LCID
 
 A language code identifier structure is stored as a DWORD. The lower word contains the language
 identifier, and the upper word contains both the sorting identifier (ID) and a reserved value. For
@@ -2573,7 +2352,7 @@ This type is declared as follows:
 
  typedef DWORD LCID;
 
-2.3.7  LUID
+#### 2.3.7 LUID
 
 The LUID structure is 64-bit value guaranteed to be unique only on the system on which it was
 generated. The uniqueness of a locally unique identifier (LUID) is guaranteed only until the system is
@@ -2589,7 +2368,7 @@ LowPart:  The low-order bits of the structure.
 
 HighPart:  The high-order bits of the structure.
 
-2.3.8  MULTI_SZ
+#### 2.3.8 MULTI_SZ
 
 The MULTI_SZ structure defines an implementation-specific<4> type that contains a sequence of null-
 terminated strings, terminated by an empty string (\0) so that the last two characters are both null
@@ -2611,7 +2390,8 @@ Release: November 19, 2024
 
 33 / 155
 
-2.3.9  OBJECT_TYPE_LIST
+
+#### 2.3.9 OBJECT_TYPE_LIST
 
 The OBJECT_TYPE_LIST structure identifies an object type element in a hierarchy of object types. The
 Access Check Algorithm Pseudocode functions (section 2.5.3.2) use an array of OBJECT_TYPE_LIST
@@ -2664,7 +2444,7 @@ in section 2.5.3.2.
 
 ObjectType:  A pointer to the GUID for the object or sub-object.
 
-2.3.10 RPC_UNICODE_STRING
+#### 2.3.10 RPC_UNICODE_STRING
 
 The RPC_UNICODE_STRING structure specifies a Unicode string. This structure is defined in IDL as
 follows:
@@ -2692,11 +2472,12 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Buffer:  A pointer to a string buffer. The string pointed to by the buffer member MUST NOT include a
+
+Buffer:  A pointer to a string buffer. The string pointed to by the buffer member MUST NOT include a
 
 terminating null character.
 
-2.3.11 SERVER_INFO_100
+#### 2.3.11 SERVER_INFO_100
 
 The SERVER_INFO_100 structure contains information about the specified server, including the name
 and platform.
@@ -2732,7 +2513,7 @@ sv100_name:  A pointer to a null-terminated Unicode UTF-16 Internet host name or
 
 host name of a server.
 
-2.3.12 SERVER_INFO_101
+#### 2.3.12 SERVER_INFO_101
 
 The SERVER_INFO_101 structure contains information about the specified server, including the name,
 platform, type of server, and associated software.
@@ -2769,7 +2550,8 @@ Release: November 19, 2024
 
 35 / 155
 
-Name
+
+Name
 
 Value
 
@@ -2878,7 +2660,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Constant/Value
+
+Constant/Value
 
 Description
 
@@ -3006,7 +2789,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Constant/Value
+
+Constant/Value
 
 Description
 
@@ -3044,7 +2828,7 @@ sv101_comment:  A pointer to a null-terminated Unicode UTF-16 string that specif
 
 that describes the server.
 
-2.3.13 SYSTEMTIME
+#### 2.3.13 SYSTEMTIME
 
  The SYSTEMTIME structure is a date and time, in Coordinated Universal Time (UTC), represented by
 using individual WORD-sized structure members for the month, day, year, day of week, hour, minute,
@@ -3062,7 +2846,7 @@ second, and millisecond.
  } SYSTEMTIME,
   *PSYSTEMTIME;
 
-2.3.14 UINT128
+#### 2.3.14 UINT128
 
 The UINT128 structure is intended to hold 128-bit unsigned integers, such as an IPv6 destination
 address.
@@ -3073,7 +2857,7 @@ address.
  } UINT128,
   *PUINT128;
 
-2.3.15 ULARGE_INTEGER
+#### 2.3.15 ULARGE_INTEGER
 
 The ULARGE_INTEGER structure is used to represent a 64-bit unsigned integer value.
 
@@ -3088,13 +2872,14 @@ Release: November 19, 2024
 
 38 / 155
 
-  *PULARGE_INTEGER;
 
-2.4  Constructed Security Types
+  *PULARGE_INTEGER;
+
+### 2.4 Constructed Security Types
 
 The following types are used to specify structures that are specific to the Windows security model.
 
-2.4.1  SID_IDENTIFIER_AUTHORITY
+#### 2.4.1 SID_IDENTIFIER_AUTHORITY
 
 The SID_IDENTIFIER_AUTHORITY structure represents the top-level authority of a security identifier
 (SID).
@@ -3198,7 +2983,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Identifier Authority
+
+Identifier Authority
 
 Meaning
 
@@ -3210,7 +2996,7 @@ Specifies the authentication authority asserting the client’s
 identity. It defines only the following well-known SIDs: S-1-
 18-1, and S-1-18-2.<6>
 
-2.4.1.1  RPC_SID_IDENTIFIER_AUTHORITY
+##### 2.4.1.1 RPC_SID_IDENTIFIER_AUTHORITY
 
 The RPC_SID_IDENTIFIER_AUTHORITY structure is a representation of a security identifier (SID)
 authority, as specified by the SID_IDENTIFIER_AUTHORITY structure. This structure is defined in IDL
@@ -3222,7 +3008,7 @@ as follows.
 
 For individual member semantics of the SID_IDENTIFIER_AUTHORITY structure, see section 2.4.1.
 
-2.4.2  SID
+#### 2.4.2 SID
 
 A security identifier (SID) uniquely identifies a security principal. Each security principal has a unique
 SID that is issued by a security agent. The agent can be a Windows local system or domain. The agent
@@ -3253,7 +3039,7 @@ The packet representation of the SID structure used by block protocols is define
 
 The RPC marshaled version of the SID structure is defined in section 2.4.2.3.
 
-2.4.2.1  SID String Format Syntax
+##### 2.4.2.1 SID String Format Syntax
 
 The SID string format syntax, a format commonly used for a string representation of the SID type (as
 specified in section 2.4.2), is described by the following ABNF syntax, as specified in [RFC5234].
@@ -3265,7 +3051,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- SID= "S-1-" IdentifierAuthority 1*SubAuthority
+
+ SID= "S-1-" IdentifierAuthority 1*SubAuthority
  IdentifierAuthority= IdentifierAuthorityDec / IdentifierAuthorityHex
    ; If the identifier authority is < 2^32, the
    ; identifier authority is represented as a decimal
@@ -3286,7 +3073,7 @@ Release: November 19, 2024
    ; All hexadecimal digits must be output in string format,
    ; pre-pended by "0x"
 
-2.4.2.2  SID--Packet Representation
+##### 2.4.2.2 SID--Packet Representation
 
 This is a packet representation of the SID type (as specified in section 2.4.2) for use by block
 protocols. Multiple-byte fields are transmitted on the wire with an endianness specified by the protocol
@@ -3331,7 +3118,7 @@ Authority value {0,0,0,0,0,5} denotes SIDs created by the NT SID authority.
 SubAuthority (variable): A variable length array of unsigned 32-bit integers that uniquely identifies
 a principal relative to the IdentifierAuthority. Its length is determined by SubAuthorityCount.
 
-2.4.2.3  RPC_SID
+##### 2.4.2.3 RPC_SID
 
 The RPC_SID structure is an IDL representation of the SID type (as specified in  section 2.4.2) for use
 by RPC-based protocols.
@@ -3345,7 +3132,8 @@ Release: November 19, 2024
 
 41 / 155
 
-   unsigned char Revision;
+
+   unsigned char Revision;
    unsigned char SubAuthorityCount;
    RPC_SID_IDENTIFIER_AUTHORITY IdentifierAuthority;
    [size_is(SubAuthorityCount)] unsigned long SubAuthority[];
@@ -3369,7 +3157,7 @@ SubAuthority:  A variable length array of unsigned 32-bit integers that uniquely
 
 relative to the IdentifierAuthority. Its length is determined by SubAuthorityCount.
 
-2.4.2.4  Well-Known SID Structures
+##### 2.4.2.4 Well-Known SID Structures
 
 Well-known SID structures are a group of SIDs that identify generic users or generic groups. Their
 values remain constant across all operating systems.
@@ -3422,7 +3210,8 @@ unknown.
 
 42 / 155
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3553,7 +3342,8 @@ are recycled when the operating system is
 
 43 / 155
 
-Constant/value
+
+Constant/value
 
 SERVICE
 
@@ -3675,7 +3465,8 @@ A local service account.
 
 44 / 155
 
-Constant/value
+
+Constant/value
 
 NETWORK_SERVICE
 
@@ -3801,7 +3592,8 @@ changes in Active Directory.
 
 45 / 155
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -3918,7 +3710,8 @@ Administrators group also is added to the
 
 46 / 155
 
-Constant/value
+
+Constant/value
 
 BUILTIN_USERS
 
@@ -4039,7 +3832,8 @@ printers and document queues.
 
 47 / 155
 
-Constant/value
+
+Constant/value
 
 BACKUP_OPERATORS
 
@@ -4175,7 +3969,8 @@ desktops access to these resources. This
 
 48 / 155
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -4299,7 +4094,8 @@ system.
 
 49 / 155
 
-Constant/value
+
+Constant/value
 
 NT_SERVICE\DPS
 
@@ -4403,7 +4199,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Constant/value
+
+Constant/value
 
 S-1-5-114
 
@@ -4531,11 +4328,12 @@ attestation property.<44>
 
 51 / 155
 
-<!-- Extracted images from page 52 -->
+
+<!-- Extracted images from page 52 -->
 ![Extracted image 1 from page 52]([MS-DTYP].images/page052-img01.png)
 <!-- /Extracted images from page 52 -->
 
-2.4.3  ACCESS_MASK
+#### 2.4.3 ACCESS_MASK
 
 An ACCESS_MASK is a 32-bit set of flags that are used to encode the user rights to an object. An
 access mask is used both to encode the rights to an object assigned to a principal and to encode the
@@ -4603,7 +4401,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 Description
 
@@ -4698,7 +4497,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 Description
 
@@ -4768,13 +4568,13 @@ DELETE
 
 0x00010000L
 
-2.4.4  ACE
+#### 2.4.4 ACE
 
 An access control entry (ACE) is used to encode the user rights afforded to a principal, either a user or
 group. This is generally done by combining an ACCESS_MASK and the SID of the principal. There are
 some variations to accommodate other groupings, which are specified in the following sections.
 
-2.4.4.1  ACE_HEADER
+##### 2.4.4.1 ACE_HEADER
 
 The ACE_HEADER structure defines the type and size of an access control entry (ACE).
 
@@ -4806,7 +4606,8 @@ Release: November 19, 2024
 
 54 / 155
 
-Value
+
+Value
 
 Meaning
 
@@ -4940,7 +4741,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 0x10
 
@@ -5044,7 +4846,7 @@ ensure alignment on a DWORD boundary. In cases where the AceSize field encompass
 additional data for the callback ACEs types, that data is implementation-specific. Otherwise, this
 additional data is not interpreted and MUST be ignored.
 
-2.4.4.1.1 ACE_HEADER--RPC representation
+###### 2.4.4.1.1 ACE_HEADER--RPC representation
 
 The RPC representation of the ACE_HEADER defines the type and size of an ACE. The members and
 values are as specified in section 2.4.4.1.
@@ -5056,14 +4858,15 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- typedef struct _ACE_HEADER {
+
+ typedef struct _ACE_HEADER {
    UCHAR AceType;
    UCHAR AceFlags;
    USHORT AceSize;
  } ACE_HEADER,
   *PACE_HEADER;
 
-2.4.4.2  ACCESS_ALLOWED_ACE
+##### 2.4.4.2 ACCESS_ALLOWED_ACE
 
 The ACCESS_ALLOWED_ACE structure defines an ACE for the discretionary access control list (DACL)
 that controls access to an object. An access-allowed ACE allows access to an object for a specific
@@ -5096,7 +4899,7 @@ Mask (4 bytes): An ACCESS_MASK that specifies the user rights allowed by this AC
 
 Sid (variable): The SID of a trustee. The length of the SID MUST be a multiple of 4.
 
-2.4.4.3  ACCESS_ALLOWED_OBJECT_ACE
+##### 2.4.4.3 ACCESS_ALLOWED_OBJECT_ACE
 
 The ACCESS_ALLOWED_OBJECT_ACE structure defines an ACE that controls allowed access to an
 object, a property set, or property. The ACE contains a set of access rights, a GUID that identifies the
@@ -5133,7 +4936,8 @@ Release: November 19, 2024
 
 57 / 155
 
-InheritedObjectType (16 bytes)
+
+InheritedObjectType (16 bytes)
 
 ...
 
@@ -5234,7 +5038,8 @@ Release: November 19, 2024
 
 58 / 155
 
-access rights to the corresponding GUID value that identifies each right, see [MS-ADTS] sections
+
+access rights to the corresponding GUID value that identifies each right, see [MS-ADTS] sections
 5.1.3.2 and 5.1.3.2.1.
 
 ACCESS_MASK bits are not mutually exclusive. Therefore, the ObjectType field can be set in an ACE
@@ -5250,7 +5055,7 @@ InheritedObjectType field is ignored.
 
 Sid (variable): The SID of a trustee. The length of the SID MUST be a multiple of 4.
 
-2.4.4.4  ACCESS_DENIED_ACE
+##### 2.4.4.4 ACCESS_DENIED_ACE
 
 The ACCESS_DENIED_ACE structure defines an ACE for the DACL that controls access to an object. An
 access-denied ACE denies access to an object for a specific trustee identified by a SID.
@@ -5282,7 +5087,7 @@ Mask (4 bytes): An ACCESS_MASK that specifies the user rights denied by this ACE
 
 Sid (variable): The SID of a trustee. The length of the SID MUST be a multiple of 4.
 
-2.4.4.5  ACCESS_DENIED_OBJECT_ACE
+##### 2.4.4.5 ACCESS_DENIED_OBJECT_ACE
 
 The ACCESS_DENIED_OBJECT_ACE structure defines an ACE that controls denied access to an object,
 a property set, or a property. The ACE contains a set of access rights, a GUID that identifies the type
@@ -5313,7 +5118,8 @@ Release: November 19, 2024
 
 59 / 155
 
-ObjectType (16 bytes)
+
+ObjectType (16 bytes)
 
 ...
 
@@ -5412,7 +5218,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 0x00000002
 
@@ -5438,7 +5245,7 @@ InheritedObjectType field is ignored.
 
 Sid (variable): The SID of a trustee. The length of the SID MUST be a multiple of 4.
 
-2.4.4.6  ACCESS_ALLOWED_CALLBACK_ACE
+##### 2.4.4.6 ACCESS_ALLOWED_CALLBACK_ACE
 
 The ACCESS_ALLOWED_CALLBACK_ACE structure defines an ACE for the DACL that controls access to
 an object. An access-allowed ACE allows access to an object for a specific trustee identified by a SID.
@@ -5485,7 +5292,8 @@ Release: November 19, 2024
 
 61 / 155
 
-2.4.4.7  ACCESS_DENIED_CALLBACK_ACE
+
+##### 2.4.4.7 ACCESS_DENIED_CALLBACK_ACE
 
 The ACCESS_DENIED_CALLBACK_ACE structure defines an ACE for the DACL that controls access to
 an object. An access-denied ACE denies access to an object for a specific trustee identified by a SID.
@@ -5525,7 +5333,7 @@ ApplicationData (variable): Optional application data. The size of the applicati
 
 by the AceSize field of the ACE_HEADER.
 
-2.4.4.8  ACCESS_ALLOWED_CALLBACK_OBJECT_ACE
+##### 2.4.4.8 ACCESS_ALLOWED_CALLBACK_OBJECT_ACE
 
 The ACCESS_ALLOWED_CALLBACK_OBJECT_ACE structure defines an ACE that controls allowed
 access to an object, property set, or property. The ACE contains a set of user rights, a GUID that
@@ -5563,7 +5371,8 @@ Release: November 19, 2024
 
 62 / 155
 
-InheritedObjectType (16 bytes)
+
+InheritedObjectType (16 bytes)
 
 ...
 
@@ -5660,7 +5469,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-InheritedObjectType (16 bytes): A GUID that identifies the type of child object that can inherit the
+
+InheritedObjectType (16 bytes): A GUID that identifies the type of child object that can inherit the
 ACE. Inheritance is also controlled by the inheritance flags in the ACE_HEADER, as well as by any
 protection against inheritance placed on the child objects. This field is present only if the
 ACE_INHERITED_OBJECT_TYPE_PRESENT bit is set in the Flags member. Otherwise, the
@@ -5672,7 +5482,7 @@ ApplicationData (variable): Optional application data. The size of the applicati
 
 by the AceSize field of the ACE_HEADER.
 
-2.4.4.9  ACCESS_DENIED_CALLBACK_OBJECT_ACE
+##### 2.4.4.9 ACCESS_DENIED_CALLBACK_OBJECT_ACE
 
 The ACCESS_DENIED_CALLBACK_OBJECT_ACE structure defines an ACE that controls denied access
 to an object, a property set, or property. The ACE contains a set of user rights, a GUID that identifies
@@ -5729,7 +5539,8 @@ Release: November 19, 2024
 
 64 / 155
 
-Value
+
+Value
 
 Meaning
 
@@ -5811,9 +5622,9 @@ ApplicationData (variable): Optional application data. The size of the applicati
 
 by the AceSize field of the ACE_HEADER.
 
-2.4.4.10
+##### 2.4.4.10 SYSTEM_AUDIT_ACE
 
-SYSTEM_AUDIT_ACE
+
 
 The SYSTEM_AUDIT_ACE structure defines an access ACE for the system access control list (SACL)
 that specifies what types of access cause system-level notifications. A system-audit ACE causes an
@@ -5827,7 +5638,8 @@ Release: November 19, 2024
 
 65 / 155
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5860,9 +5672,9 @@ attempt of a kind specified by the Mask field by any trustee whose SID matches t
 causes the system to generate an audit message. If an application does not specify a SID for this
 field, audit messages are generated for the specified access rights for all trustees.
 
-2.4.4.11
+##### 2.4.4.11 SYSTEM_AUDIT_OBJECT_ACE
 
-SYSTEM_AUDIT_OBJECT_ACE
+
 
 The SYSTEM_AUDIT_OBJECT_ACE structure defines an ACE for a SACL. The ACE can audit access to
 an object or subobjects, such as property sets or properties. The ACE contains a set of user rights, a
@@ -5908,7 +5720,8 @@ Release: November 19, 2024
 
 66 / 155
 
-...
+
+...
 
 ApplicationData (variable)
 
@@ -6006,13 +5819,14 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-ApplicationData (variable): Optional application data. The size of the application data is determined
+
+ApplicationData (variable): Optional application data. The size of the application data is determined
 
 by the AceSize field of the ACE_HEADER.
 
-2.4.4.12
+##### 2.4.4.12 SYSTEM_AUDIT_CALLBACK_ACE
 
-SYSTEM_AUDIT_CALLBACK_ACE
+
 
 The SYSTEM_AUDIT_CALLBACK_ACE structure defines an ACE for the SACL that specifies what types
 of access cause system-level notifications. A system-audit ACE causes an audit message to be logged
@@ -6059,9 +5873,9 @@ ApplicationData (variable): Optional application data. The size of the applicati
 
 by the AceSize field of the ACE_HEADER.
 
-2.4.4.13
+##### 2.4.4.13 SYSTEM_MANDATORY_LABEL_ACE
 
-SYSTEM_MANDATORY_LABEL_ACE
+
 
 The SYSTEM_MANDATORY_LABEL_ACE structure defines an ACE for the SACL that specifies the
 mandatory access level and policy for a securable object.<55>
@@ -6092,7 +5906,8 @@ Release: November 19, 2024
 
 68 / 155
 
-Header (4 bytes): An ACE_HEADER structure that specifies the size and type of ACE. It also contains
+
+Header (4 bytes): An ACE_HEADER structure that specifies the size and type of ACE. It also contains
 
 flags that control inheritance of the ACE by child objects.
 
@@ -6146,9 +5961,9 @@ Meaning
 
 0x00005000  Protected process integrity level.
 
-2.4.4.13.1
+###### 2.4.4.13.1 SYSTEM_MANDATORY_LABEL_ACE--RPC Representation
 
-SYSTEM_MANDATORY_LABEL_ACE--RPC Representation
+
 
 The RPC representation of the SYSTEM_MANDATORY_LABEL_ACE type defines an access control entry
 (ACE) for the system access control list (SACL) that specifies the mandatory access level and
@@ -6177,9 +5992,10 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-2.4.4.14
 
-SYSTEM_AUDIT_CALLBACK_OBJECT_ACE
+##### 2.4.4.14 SYSTEM_AUDIT_CALLBACK_OBJECT_ACE
+
+
 
 The SYSTEM_AUDIT_CALLBACK_OBJECT_ACE structure defines an ACE for a SACL. The ACE can audit
 access to an object or subobjects, such as property sets or properties. The ACE contains a set of user
@@ -6264,7 +6080,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -6325,9 +6142,9 @@ ApplicationData (variable): Optional application data. The size of the applicati
 
 by the AceSize field of the ACE_HEADER.
 
-2.4.4.15
+##### 2.4.4.15 SYSTEM_RESOURCE_ATTRIBUTE_ACE
 
-SYSTEM_RESOURCE_ATTRIBUTE_ACE
+
 
 The SYSTEM_RESOURCE_ATTRIBUTE_ACE structure defines an ACE for the specification of a resource
 attribute associated with an object. A SYSTEM_RESOURCE_ATTRIBUTE_ACE is used in conditional
@@ -6359,7 +6176,8 @@ Release: November 19, 2024
 
 71 / 155
 
-Attribute Data (variable)
+
+Attribute Data (variable)
 
 ...
 
@@ -6375,9 +6193,9 @@ Attribute Data (variable): Data describing a resource attribute type, name, and 
 MUST be encoded in CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 format as described in section
 2.4.10.1
 
-2.4.4.16
+##### 2.4.4.16 SYSTEM_SCOPED_POLICY_ID_ACE
 
-SYSTEM_SCOPED_POLICY_ID_ACE
+
 
 The SYSTEM_SCOPED_POLICY_ID_ACE structure defines an ACE for the purpose of applying a central
 access policy to the resource.
@@ -6412,9 +6230,9 @@ to be applicable on a resource, this SID MUST match a CAPID of a CentralAccessPo
 in the CentralAccessPoliciesList (as specified in [MS-GPCAP] section 3.2.1.1) of the machine on
 which the access evaluation will be performed.
 
-2.4.4.17
+##### 2.4.4.17 Conditional ACEs
 
-Conditional ACEs
+
 
 Conditional ACEs are a form of CALLBACK ACEs with a special format of the application data. A
 Conditional ACE allows a conditional expression to be evaluated when an access check (as specified in
@@ -6437,7 +6255,8 @@ Release: November 19, 2024
 
 72 / 155
 
-  SYSTEM_AUDIT_CALLBACK_ACE
+
+  SYSTEM_AUDIT_CALLBACK_ACE
 
   SYSTEM_AUDIT_CALLBACK_OBJECT_ACE
 
@@ -6449,9 +6268,9 @@ expression language constructs and binary representation are defined in this sec
 The security descriptor definition language (SDDL) (section 2.5.1) provides syntax for defining
 conditional ACEs in a string format in section 2.5.1.1.
 
-2.4.4.17.1
+###### 2.4.4.17.1 Conditional ACE Expressions
 
-Conditional ACE Expressions
+
 
 This section defines the semantics and format of the ApplicationData field of a callback ACE holding a
 conditional expression.
@@ -6466,9 +6285,9 @@ evaluated, the expression will produce TRUE, FALSE, or UNKNOWN. Conditional expr
 operands to the AND, OR, or NOT logical operators. (Logical operators are defined in section
 2.4.4.17.7.)
 
-2.4.4.17.2
+###### 2.4.4.17.2 Security Attributes
 
-Security Attributes
+
 
 Conditional expression terms contain references to security attributes (also known as claims) of an
 authenticated principal or a resource. Security attributes that are associated with authenticated user
@@ -6481,9 +6300,9 @@ defined as a CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 (section 2.4.10.1) structure w
 SYSTEM_RESOURCE_ATTRIBUTE_ACE contained in the Security Descriptor SACL associated with a
 resource.
 
-2.4.4.17.3
+###### 2.4.4.17.3 Conditional ACE Applicability
 
-Conditional ACE Applicability
+
 
 If the result evaluation of the conditional expression is FALSE, then the corresponding conditional ACE
 does not apply in the access check evaluation.
@@ -6510,7 +6329,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-If the result of the evaluation of the conditional expression is UNKNOWN and the conditional ACE is an
+
+If the result of the evaluation of the conditional expression is UNKNOWN and the conditional ACE is an
 ACCESS_ALLOWED_CALLBACK_OBJECT_ACE type, then the permissions in the Mask member variable
 SHOULD NOT be granted by this ACE in the access check evaluation.
 
@@ -6518,9 +6338,9 @@ If the result of the evaluation of the conditional expression is UNKNOWN and the
 ACCESS_DENIED_CALLBACK_OBJECT_ACE, then the permissions in the Mask member variable
 SHOULD be denied in the access check evaluation.
 
-2.4.4.17.4
+###### 2.4.4.17.4 Conditional ACE Binary Formats
 
-Conditional ACE Binary Formats
+
 
 Conditional expressions are stored in the ApplicationData member of certain CALLBACK ACE types
 (section 2.4.4.17) where each operator ID and operand is persisted in postfix notation.
@@ -6556,9 +6376,9 @@ alignment MUST be set to 0x00.
 For tokens representing literal values, the base and sign MUST be specified from the possible values
 specified in the following tables.
 
-2.4.4.17.5
+###### 2.4.4.17.5 Literal Tokens
 
-Literal Tokens
+
 
 Token Type
 
@@ -6604,7 +6424,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Token Type
+
+Token Type
 
 Byte-
 Code
@@ -6714,12 +6535,13 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-The sign byte is handled similarly though with one important difference. If the sign byte indicates no
+
+The sign byte is handled similarly though with one important difference. If the sign byte indicates no
 sign, the value is treated as a positive number when displayed but appears with no explicit sign.
 However, when the value is used with a relational operator, the sign byte overrides the 2's
 complement sign.
 
-2.4.4.17.6  Relational Operator Tokens
+###### 2.4.4.17.6 Relational Operator Tokens
 
 Each relational operator examines one or more attribute values and evaluates to TRUE, FALSE or
 UNKNOWN, according to the defined behavior of the operator in the following table. In addition to the
@@ -6823,7 +6645,8 @@ Release: November 19, 2024
 
 76 / 155
 
-Binary relational operators compare left-hand-side (LHS) and right-hand-side (RHS) operands. The
+
+Binary relational operators compare left-hand-side (LHS) and right-hand-side (RHS) operands. The
 LHS MUST contain an attribute name in simple or @Prefixed form.<64> The RHS MUST contain an
 attribute in @Prefixed form or literals representing values of the same value type as the attribute
 variable on the LHS. If the LHS and RHS operands are of different types, then the entire conditional
@@ -6937,7 +6760,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Token Type
+
+Token Type
 
 Byte-
 Code
@@ -6962,9 +6786,9 @@ Form: LHS Not_Any_of RHS
 
 Logical inverse of Any_of.
 
-2.4.4.17.7
+###### 2.4.4.17.7 Logical Operator Tokens
 
-Logical Operator Tokens
+
 
 Logical operators test the logical value of operands and produce TRUE, FALSE, or UNKNOWN according
 to the defined behavior of the operator. The operands of logical operators must be conditional
@@ -7036,7 +6860,8 @@ Release: November 19, 2024
 
 78 / 155
 
-Token Type
+
+Token Type
 
 Byte-Code  Processing
 
@@ -7086,7 +6911,7 @@ UNKNOWN
    Return UNKNOWN
  Else Return FALSE
 
-2.4.4.17.8  Attribute Tokens
+###### 2.4.4.17.8 Attribute Tokens
 
 Attributes can be associated with local environments, users, resources, or devices.
 
@@ -7131,13 +6956,14 @@ Release: November 19, 2024
 
 79 / 155
 
-<!-- Extracted images from page 80 -->
+
+<!-- Extracted images from page 80 -->
 ![Extracted image 1 from page 80]([MS-DTYP].images/page080-img01.png)
 <!-- /Extracted images from page 80 -->
 
-2.4.4.17.9
+###### 2.4.4.17.9 Examples: Conditional Expression Binary Representation
 
-Examples: Conditional Expression Binary Representation
+
 
 Example 1: Attributes in Simple Form
 
@@ -7210,7 +7036,8 @@ Release: November 19, 2024
 
 80 / 155
 
-<!-- Extracted images from page 81 -->
+
+<!-- Extracted images from page 81 -->
 ![Extracted image 1 from page 81]([MS-DTYP].images/page081-img01.png)
 <!-- /Extracted images from page 81 -->
 
@@ -7229,7 +7056,8 @@ Release: November 19, 2024
 
 81 / 155
 
-<!-- Extracted images from page 82 -->
+
+<!-- Extracted images from page 82 -->
 ![Extracted image 1 from page 82]([MS-DTYP].images/page082-img01.png)
 <!-- /Extracted images from page 82 -->
 
@@ -7249,7 +7077,7 @@ memory.
 Figure 5: Postfix to memory mapping for (@User.clearanceLevel >=
 @Resource.requiredClearance) || (Member_of {SID(BA)})
 
-2.4.5  ACL
+#### 2.4.5 ACL
 
 The access control list (ACL) packet is used to specify a list of individual access control entries (ACEs).
 An ACL packet and an array of ACEs comprise a complete access control list.
@@ -7267,7 +7095,8 @@ Release: November 19, 2024
 
 82 / 155
 
-ACL to identify each ACE_HEADER, which in turn contains the information needed to obtain the
+
+ACL to identify each ACE_HEADER, which in turn contains the information needed to obtain the
 specific ACEs.
 
 An ACL is said to be in canonical form if:
@@ -7357,7 +7186,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Value
+
+Value
 
 0x04
 
@@ -7378,7 +7208,7 @@ records in the ACL.
 
 Sbz2 (2 bytes): An unsigned 16-bit integer. This field is reserved and MUST be set to zero.
 
-2.4.5.1  ACL--RPC Representation
+##### 2.4.5.1 ACL--RPC Representation
 
 The RPC representation of the ACL data type specifies the elements needed to access a complete
 access control list, including both the ACL header structure and the array of ACEs. The individual
@@ -7400,7 +7230,7 @@ specific ACEs.
  } ACL,
   *PACL;
 
-2.4.6  SECURITY_DESCRIPTOR
+#### 2.4.6 SECURITY_DESCRIPTOR
 
 The SECURITY_DESCRIPTOR structure defines the security attributes of an object. These attributes
 specify who owns the object; who can access the object and what they can do with it; what level of
@@ -7430,7 +7260,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-When a self-relative security descriptor is transmitted over a wire, it is sent in little-endian format
+
+When a self-relative security descriptor is transmitted over a wire, it is sent in little-endian format
 and requires no padding.
 
 0  1  2  3  4  5  6  7  8  9
@@ -7594,7 +7425,8 @@ Release: November 19, 2024
 
 85 / 155
 
-Value
+
+Value
 
 SR
 
@@ -7717,7 +7549,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-valid offset if the GD flag is not set. If this field is set to zero, the GroupSid field MUST not be
+
+valid offset if the GD flag is not set. If this field is set to zero, the GroupSid field MUST not be
 present.
 
 OffsetSacl (4 bytes): An unsigned 32-bit integer that specifies the offset to the ACL that contains
@@ -7749,7 +7582,7 @@ Dacl (variable): The DACL of the object. The length of the SID MUST be a multipl
 
 MUST be present if the DP flag is set.
 
-2.4.6.1  SECURITY_DESCRIPTOR--RPC Representation
+##### 2.4.6.1 SECURITY_DESCRIPTOR--RPC Representation
 
 The RPC representation of the SECURITY_DESCRIPTOR structure defines the in-memory
 representation of the SECURITY_DESCRIPTOR message. The individual member semantics for the
@@ -7789,7 +7622,8 @@ Release: November 19, 2024
 
 87 / 155
 
-2.4.7  SECURITY_INFORMATION
+
+#### 2.4.7 SECURITY_INFORMATION
 
 The SECURITY_INFORMATION data type identifies the object-related security information being set or
 queried. This security information includes:
@@ -7909,9 +7743,10 @@ Release: November 19, 2024
 
 88 / 155
 
- typedef DWORD SECURITY_INFORMATION, *PSECURITY_INFORMATION;
 
-2.4.8  TOKEN_MANDATORY_POLICY
+ typedef DWORD SECURITY_INFORMATION, *PSECURITY_INFORMATION;
+
+#### 2.4.8 TOKEN_MANDATORY_POLICY
 
 The TOKEN_MANDATORY_POLICY structure specifies the mandatory integrity policy for a token.
 
@@ -7950,7 +7785,7 @@ A process created with the token has an integrity level
 that is the lesser of the parent-process integrity level
 and the executable-file integrity level.
 
-2.4.9  MANDATORY_INFORMATION
+#### 2.4.9 MANDATORY_INFORMATION
 
 The MANDATORY_INFORMATION structure defines mandatory security information for a securable
 object.
@@ -7983,14 +7818,15 @@ Release: November 19, 2024
 
 89 / 155
 
-2.4.10 CLAIM_SECURITY_ATTRIBUTE
+
+#### 2.4.10 CLAIM_SECURITY_ATTRIBUTE
 
 The CLAIM_SECURITY_ATTRIBUTE type specifies a security attribute (also called a security claim) in
 various formats.
 
-2.4.10.1
+##### 2.4.10.1 CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1
 
-CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1
+
 
 The CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 structure defines a resource attribute that is defined
 in contiguous memory for persistence within a serialized Security Descriptor.
@@ -8079,7 +7915,8 @@ Release: November 19, 2024
 
 90 / 155
 
-Reserved:  Reserved. This member MUST be set to zero when sent and MUST be ignored when
+
+Reserved:  Reserved. This member MUST be set to zero when sent and MUST be ignored when
 
 received.
 
@@ -8157,9 +7994,9 @@ Values:  An array of offsets from the beginning of the CLAIM_SECURITY_ATTRIBUTE_
 structure. Each offset indicates the location of a claim security attribute value of type specified in
 the ValueType member.
 
-2.4.10.2
+##### 2.4.10.2 CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_RELATIVE
 
-CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_RELATIVE
+
 
 The CLAIM_SECURITY_ATTRIBUTE_OCTET_STRING_RELATIVE structure specifies an octet
 string.<78>
@@ -8179,13 +8016,14 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-OctetString:  An array of bytes containing the octet string value. The length of the value is specified
+
+OctetString:  An array of bytes containing the octet string value. The length of the value is specified
 
 by the Length field.
 
-2.5  Additional Information for Security Types
+### 2.5 Additional Information for Security Types
 
-2.5.1  Security Descriptor Description Language
+#### 2.5.1 Security Descriptor Description Language
 
 The SECURITY_DESCRIPTOR structure is a compact binary representation of the security associated
 with an object in a directory or on a file system, or in other stores. It is not, however, convenient for
@@ -8195,7 +8033,7 @@ format is the Security Descriptor Description Language (SDDL).<79>
 
 For more information on SDDL for Device Objects, see [MSDN-SDDLforDevObj].
 
-2.5.1.1  Syntax
+##### 2.5.1.1 Syntax
 
 An SDDL string is a single sequence of characters. The format can be ANSI or Unicode; the actual
 protocol MUST specify the character set that is used. Regardless of the character set used, the
@@ -8251,7 +8089,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- ace-rights = (*text-rights-string) / ("0x" 1*8HEXDIG) / ("0" 1*%x30-37) / (1*DIGIT )
+
+ ace-rights = (*text-rights-string) / ("0x" 1*8HEXDIG) / ("0" 1*%x30-37) / (1*DIGIT )
    ; numeric values must fit within 64 bits
  text-rights-string = generic-rights-string / standard-rights-string / object-specific-rights-
 string
@@ -8327,7 +8166,8 @@ Release: November 19, 2024
 
 93 / 155
 
-SDDL alias  Well-Known SID name
+
+SDDL alias  Well-Known SID name
 
 "DG"
 
@@ -8464,7 +8304,8 @@ Release: November 19, 2024
 
 94 / 155
 
-SDDL alias  Well-Known SID name
+
+SDDL alias  Well-Known SID name
 
 "PA"
 
@@ -8593,7 +8434,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-String  ACE type
+
+String  ACE type
 
 "A"
 
@@ -8711,7 +8553,8 @@ Release: November 19, 2024
 
 96 / 155
 
-sys-attr-flags: A two-byte integer that MAY be zero or any combination of the hexadecimal flag
+
+sys-attr-flags: A two-byte integer that MAY be zero or any combination of the hexadecimal flag
 values of the CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1 structure (section 2.4.10.1)
 
 ace-flag-string: A set of ACE flags that define the behavior of the ACE. The strings correlate exactly
@@ -8875,7 +8718,8 @@ Release: November 19, 2024
 
 97 / 155
 
-String  Object type
+
+String  Object type
 
 Access right  Hex value
 
@@ -8968,7 +8812,8 @@ Release: November 19, 2024
 
 98 / 155
 
-1.  The following characters: "!", "&", "(", ")", ">", "<", "=", "|", "%", SP (space) and DQUOTE (as
+
+1.  The following characters: "!", "&", "(", ")", ">", "<", "=", "|", "%", SP (space) and DQUOTE (as
 
 specified in [RFC5234]) MUST be encoded in the preceding five-character sequence.
 
@@ -8981,12 +8826,12 @@ value-array: A string specifying an array of values. A value-array can be a sing
 one or more comma-delineated values where the entire set of values is enclosed between the "{"
 and "}" symbols.
 
-2.5.1.2  Security Attribute Names
+##### 2.5.1.2 Security Attribute Names
 
 Attribute names are specially formatted strings used within conditional expressions to reference the
 attributes of a user, device, or resource. Attribute Names can be in simple or "@Prefixed" form.
 
-2.5.1.2.1 Simple Attribute Name Form
+###### 2.5.1.2.1 Simple Attribute Name Form
 
 An attribute name in simple form is limited to referencing an attribute in the LocalClaims[] array
 (section 2.5.2) of the same name in simple form. An attribute name in simple form is case-insensitive
@@ -8995,7 +8840,7 @@ characters:  ":", ".", ", "_". An attribute name in simple form MAY also contain
 any position other than the first character of the attribute name. See attr-char1 in section 2.5.1.1 for
 encoding requirements.
 
-2.5.1.2.2 @Prefixed Attribute Name Form
+###### 2.5.1.2.2 @Prefixed Attribute Name Form
 
 The @Prefixed Attribute name form allows an attribute name to identify an attribute as being of type
 "User", "Device" or "Resource" and MUST follow the pattern:
@@ -9027,7 +8872,7 @@ An attribute name in @Prefixed form is case-insensitive and valid characters inc
 Unicode characters of the range 0x0-0xFFFF. See attr-char2 in section 2.5.1.1 for encoding
 requirements.
 
-2.5.1.3  Parentheses and Order of Precedence
+##### 2.5.1.3 Parentheses and Order of Precedence
 
 SDDL expressions MUST be interpreted in the following order of precedence, with operations of equal
 precedence being evaluated from left to right. In addition, any term or conditional expression within a
@@ -9043,7 +8888,8 @@ Release: November 19, 2024
 
 99 / 155
 
-<!-- Extracted images from page 100 -->
+
+<!-- Extracted images from page 100 -->
 ![Extracted image 1 from page 100]([MS-DTYP].images/page100-img01.png)
 <!-- /Extracted images from page 100 -->
 
@@ -9057,7 +8903,7 @@ Not_Contains, Any_of, Not_Any_of, ==, !=, <, <=, >, >=
 
 5.  ||
 
-2.5.1.4  SDDL String to Binary Security Descriptor Examples
+##### 2.5.1.4 SDDL String to Binary Security Descriptor Examples
 
 The following SDDL string:
 "O:BAG:BAD:P(A;CIOI;GRGX;;;BU)(A;CIOI;GA;;;BA)(A;CIOI;GA;;;SY)(A;CIOI;GA;;;CO)S:P(AU;FA;G
@@ -9100,7 +8946,8 @@ Release: November 19, 2024
 
 100 / 155
 
-This control flag value maps to the meaning that is shown in the following table.
+
+This control flag value maps to the meaning that is shown in the following table.
 
 BIT  Meaning
 
@@ -9189,7 +9036,8 @@ Release: November 19, 2024
 
 101 / 155
 
-<!-- Extracted images from page 102 -->
+
+<!-- Extracted images from page 102 -->
 ![Extracted image 1 from page 102]([MS-DTYP].images/page102-img01.png)
 ![Extracted image 2 from page 102]([MS-DTYP].images/page102-img02.png)
 <!-- /Extracted images from page 102 -->
@@ -9235,7 +9083,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<!-- Extracted images from page 103 -->
+
+<!-- Extracted images from page 103 -->
 ![Extracted image 1 from page 103]([MS-DTYP].images/page103-img01.png)
 ![Extracted image 2 from page 103]([MS-DTYP].images/page103-img02.png)
 <!-- /Extracted images from page 103 -->
@@ -9248,7 +9097,7 @@ The group begins at offset 0xA0. In this example, group is set to "BA" (Built-in
 
 Figure 10: ACE group field offsets example
 
-2.5.2  Token/Authorization Context
+#### 2.5.2 Token/Authorization Context
 
 For a server implementation of an authenticated protocol, the result of the authentication produces a
 variety of data. Some of the data is related to the authentication protocol, such as keys for encrypted
@@ -9300,7 +9149,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-present, it always contains at least the SID of the computer account. The order of the SIDs is
+
+present, it always contains at least the SID of the computer account. The order of the SIDs is
 neither specified nor required. For the purposes of this document, the SIDs can be considered
 instances of the RPC_SID structure.
 
@@ -9347,9 +9197,9 @@ TOKEN_MANDATORY_POLICY (section 2.4.8).
 
 Note  For more information about tokens in Windows, see [MSDN-ACCTOKENS].
 
-2.5.2.1  Token/Authorization Context Algorithms
+##### 2.5.2.1 Token/Authorization Context Algorithms
 
-2.5.2.1.1 GatherGroupMembershipForSystem
+###### 2.5.2.1.1 GatherGroupMembershipForSystem
 
 The GatherGroupMembershipForSystem function accepts an array of SIDs and invokes
 GatherLocalGroupMembership, which in turn invokes GatherLocalGroupMembershipFromLocalDomain
@@ -9373,7 +9223,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- END_SUBROUTINE
+
+ END_SUBROUTINE
 
 The InitialMembership and FinalMembership parameters are arrays of SIDs. This method is called by
 authentication protocols during the process of authentication (see [MS-KILE] section 3.4.5.3 and [MS-
@@ -9427,7 +9278,7 @@ APDS] section 3.1.5.
          InitialMembership and AdditionalMembership
  END_SUBROUTINE
 
-2.5.2.1.2 AddPrivilegesToToken
+###### 2.5.2.1.2 AddPrivilegesToToken
 
 The AddPrivilegesToToken function returns a token with privileges based on the local PrivilegeMapping
 array using the SID in the token passed to the function, as shown in the following pseudocode.
@@ -9442,7 +9293,8 @@ Release: November 19, 2024
 
 105 / 155
 
-     --    Token is an authorization context containing all sids that represent the security
+
+     --    Token is an authorization context containing all sids that represent the security
 principal
 
      FOR EACH SID s in Token DO
@@ -9454,7 +9306,7 @@ principal
      END FOR
  END-SUBROUTINE
 
-2.5.3  Security Descriptor Algorithms
+#### 2.5.3 Security Descriptor Algorithms
 
 The security descriptor is the basis for specifying the security associated with an object. The client
 makes a request to the server that indicates a particular requested access, and the server that "owns"
@@ -9470,12 +9322,12 @@ Note  For more information about tokens in Windows, see [MSDN-ACCTOKENS].
 When creating new objects, the security descriptor from the parent container of the new object is used
 as the template for the security descriptor of the new object.
 
-2.5.3.1  Support Functions
+##### 2.5.3.1 Support Functions
 
 The following pseudo-functions are used in the main access check and new security descriptor
 algorithms below.
 
-2.5.3.1.1 SidInToken
+###### 2.5.3.1.1 SidInToken
 
 A support function, SidInToken, takes the authorization context, a SID (referenced below as the
 SidToTest parameter), and an optional PrincipalSelfSubstitute parameter, and returns TRUE if the
@@ -9509,7 +9361,8 @@ Release: November 19, 2024
 
 106 / 155
 
-     FOR EACH SID s in Token.Sids[] DO
+
+     FOR EACH SID s in Token.Sids[] DO
          IF s equals SidToTest THEN
              return TRUE
          END IF
@@ -9519,7 +9372,7 @@ Release: November 19, 2024
 
  END-SUBROUTINE
 
-2.5.3.1.2 SidDominates
+###### 2.5.3.1.2 SidDominates
 
 A support function, SidDominates, compares the mandatory integrity levels expressed in two SIDs.
 The function returns TRUE if the first SID dominates the second SID or is equal to the second SID, or
@@ -9559,7 +9412,7 @@ pseudocode syntax as specified in [DALB].
 
  Return FALSE
 
-2.5.3.1.3 GetScopedPolicySid
+###### 2.5.3.1.3 GetScopedPolicySid
 
 A support function, GetScopedPolicySid, locates the first non-inherit-only scoped policy ACE in the
 ACL passed in, if one is present, and returns the SID it contains. If one is not present, then NULL is
@@ -9576,7 +9429,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- SID
+
+ SID
  GetScopedPolicySid(
      ACL Sacl)
      --
@@ -9595,7 +9449,7 @@ Release: November 19, 2024
 
  END-SUBROUTINE
 
-2.5.3.1.4 GetCentralizedAccessPolicy
+###### 2.5.3.1.4 GetCentralizedAccessPolicy
 
 A support function, GetCentralizedAccessPolicy, determines if there is a central access policy and, if
 so, returns it based on the policy SID in the SACL. If no policy matches the policy SID, the function
@@ -9635,7 +9489,7 @@ returns an implementation-specific local recovery policy.<94>
 
  END-SUBROUTINE
 
-2.5.3.1.5 EvaluateAceCondition
+###### 2.5.3.1.5 EvaluateAceCondition
 
 A support function, EvaluateAceCondition, evaluates the ACE ApplicationData field utilizing the
 authorization information passed in as parameters. The ApplicationData is stored in binary format in
@@ -9647,7 +9501,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Postfix notation. In this notation, every operator follows all of its required operands and the notion of
+
+Postfix notation. In this notation, every operator follows all of its required operands and the notion of
 parenthesis is built into the construction of this data.
 
 The evaluation takes place by scanning the ApplicationData from left to right. Operands are pushed
@@ -9721,7 +9576,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-             IF TokenType equals 0xfa THEN
+
+             IF TokenType equals 0xfa THEN
                  -- Resource attributes
                  CALL LookupAttributeInSacl(AttributeName, Sacl)
              ELSE
@@ -9794,7 +9650,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-             -- Push the result onto the stack
+
+             -- Push the result onto the stack
              CALL PushStackResult(ResultStack, StackPos, TempResult)
 
              -- Bytes consumed for these operators is 1
@@ -9866,7 +9723,8 @@ Release: November 19, 2024
 
 111 / 155
 
-2.5.3.1.6 LookupAttributeInToken
+
+###### 2.5.3.1.6 LookupAttributeInToken
 
 A support function, LookupAttributeInToken, locates an attribute in the token based on the
 AttributeName passed in, if one is present. If one is not present then NULL is returned.
@@ -9907,7 +9765,7 @@ AttributeName passed in, if one is present. If one is not present then NULL is r
 
  END-SUBROUTINE
 
-2.5.3.1.7 LookupAttributeInSacl
+###### 2.5.3.1.7 LookupAttributeInSacl
 
 A support function, LookupAttributeInSacl, locates an attribute in the Sacl based on the
 AttributeName passed in, if one is present. If one is not present then NULL is returned.
@@ -9938,14 +9796,15 @@ Release: November 19, 2024
 
 112 / 155
 
-             END IF
+
+             END IF
          END IF
      END FOR
 
      Return NULL
  END-SUBROUTINE
 
-2.5.3.1.8 PushStackOperand
+###### 2.5.3.1.8 PushStackOperand
 
 A support function, PushStackOperand, pushes the input Operand on the stack.
 
@@ -9967,7 +9826,7 @@ A support function, PushStackOperand, pushes the input Operand on the stack.
      Increment StackPos by 1
  END-SUBROUTINE
 
-2.5.3.1.9 PushStackResult
+###### 2.5.3.1.9 PushStackResult
 
 A support function, PushStackResult, pushes the input Result on the stack.
 
@@ -9987,9 +9846,9 @@ A support function, PushStackResult, pushes the input Result on the stack.
      Increment StackPos by 1
  END-SUBROUTINE
 
-2.5.3.1.10
+###### 2.5.3.1.10 PopStack
 
-PopStack
+
 
 A support function, PopStack, pops the topmost operand from the stack.
 
@@ -10008,7 +9867,8 @@ Release: November 19, 2024
 
 113 / 155
 
-     --    ResultStack is the stack.
+
+     --    ResultStack is the stack.
      --    StackPos is the stack position
 
      IF StackPos equals 0 THEN
@@ -10019,7 +9879,7 @@ Release: November 19, 2024
      Return ResultStack[StackPos]
  END-SUBROUTINE
 
-2.5.3.2  Access Check Algorithm Pseudocode
+##### 2.5.3.2 Access Check Algorithm Pseudocode
 
 In overview, the Access Check algorithm takes an access request and a security descriptor. It iterates
 through the DACL of the security descriptor, processing each ACE. If the ACE contains a SID that is
@@ -10081,7 +9941,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- STATUS_CODE
+
+ STATUS_CODE
  EvaluateTokenAgainstDescriptor(
      TOKEN Token,
      SECURITY_DESCRIPTOR SecurityDescriptor,
@@ -10157,7 +10018,8 @@ Release: November 19, 2024
 
 115 / 155
 
-             CASE ACE.Type OF
+
+             CASE ACE.Type OF
 
                  CASE Allow Access:
 
@@ -10234,7 +10096,8 @@ Release: November 19, 2024
 
 116 / 155
 
-                         END IF
+
+                         END IF
                      END IF
 
                  CASE Object Deny Access:
@@ -10311,7 +10174,8 @@ Release: November 19, 2024
 
 117 / 155
 
-         ElSE
+
+         ElSE
              Return access_denied
 
  END IF
@@ -10388,7 +10252,8 @@ Release: November 19, 2024
 
 118 / 155
 
-             END IF
+
+             END IF
 
              Copy SecurityDescriptor to CaprSecurityDescriptor
              Set CaprSecurityDescriptor.DACL to
@@ -10464,7 +10329,8 @@ Release: November 19, 2024
 
 119 / 155
 
-         -- The not operator below is a bit-wise operator
+
+         -- The not operator below is a bit-wise operator
          Set GrantedAccess to AllowedAccesses and (not DeniedAccesses)
 
          IF GrantedAccess is 0 THEN
@@ -10485,7 +10351,7 @@ Release: November 19, 2024
 
  END-SUBROUTINE
 
-2.5.3.3  MandatoryIntegrityCheck Algorithm Pseudocode
+##### 2.5.3.3 MandatoryIntegrityCheck Algorithm Pseudocode
 
 The Windows integrity mechanism extends the security architecture by defining a new ACE type to
 represent an integrity level in an object's security descriptor.<95> The new ACE represents the object
@@ -10533,7 +10399,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
- Set ObjectIntegrityACE = MandatoryACE
+
+ Set ObjectIntegrityACE = MandatoryACE
 
  Dim ACCESS_MASK ObjectIntegrityAceMask
  --Set ObjectIntegrityAceMask to the Access Mask field of the
@@ -10608,7 +10475,8 @@ Release: November 19, 2024
 
 121 / 155
 
- IF Token.Privileges contains SeRelabelPrivilege THEN
+
+ IF Token.Privileges contains SeRelabelPrivilege THEN
      Add WRITE_OWNER to MandatoryInformation.AllowedAccess
  END IF
 
@@ -10630,7 +10498,7 @@ Release: November 19, 2024
  -- Return TRUE if Sid1 equals Sid2
  return(!memcmp( Sid1, Sid2, SidLength))
 
-2.5.3.3.1 FindAceByType
+###### 2.5.3.3.1 FindAceByType
 
 The FindAceByType support function finds an ACE based on the given ACE type and index and returns
 it along with the index of its location.
@@ -10670,7 +10538,7 @@ FoundIndex: The index of FoundAce or -1 if no such ACE exists.
      RETURN NULL, -1
  // END FindAceByType
 
-2.5.3.4  Algorithm for Creating a Security Descriptor
+##### 2.5.3.4 Algorithm for Creating a Security Descriptor
 
 An important element of the overall security model is the manner in which security descriptors are
 created for new objects. In the trivial case, the creator of a new object simply supplies a new security
@@ -10683,7 +10551,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<!-- Extracted images from page 123 -->
+
+<!-- Extracted images from page 123 -->
 ![Extracted image 1 from page 123]([MS-DTYP].images/page123-img01.png)
 <!-- /Extracted images from page 123 -->
 
@@ -10726,7 +10595,7 @@ Note  An explicitly specified ACL, whether a default ACL or not, can be empty or
 The remainder of this section documents the details of the algorithm outlined above as a set of nested
 subprocedures.
 
-2.5.3.4.1 CreateSecurityDescriptor
+###### 2.5.3.4.1 CreateSecurityDescriptor
 
 This is the top-level routine that assembles the contributions from the parent security descriptor and
 the creator descriptor and possibly the default DACL from the token.  This is fairly high-level, and
@@ -10746,7 +10615,8 @@ Release: November 19, 2024
 
 123 / 155
 
-  CreatorDescriptor: Security descriptor for the new object provided by the creator of the object.
+
+  CreatorDescriptor: Security descriptor for the new object provided by the creator of the object.
 
 Caller can pass null.
 
@@ -10828,7 +10698,8 @@ Release: November 19, 2024
 
 124 / 155
 
-     ELSE
+
+     ELSE
          Set NewDescriptor.Group to Token.SIDs[Token.PrimaryGroup]
      ENDIF
 
@@ -10880,7 +10751,7 @@ Release: November 19, 2024
  RETURN NewDescriptor
  // END CreateSecurityDescriptor
 
-2.5.3.4.2 ComputeACL
+###### 2.5.3.4.2 ComputeACL
 
 The ComputeACL subroutine determines the new ACL based on supplied Parent ACL, Creator ACL, and
 possibly the Token's DefaultDACL, depending on the supplied parameters and policy. This function is
@@ -10903,7 +10774,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-  AutoInheritFlags: as specified in section 2.5.3.4.1. Note that it is possible to have the
+
+  AutoInheritFlags: as specified in section 2.5.3.4.1. Note that it is possible to have the
 
 DACL_AUTO_INHERIT flag set when ComputeType is set to COMPUTE_SACL (or vice-versa).
 
@@ -10984,7 +10856,8 @@ Release: November 19, 2024
 
 126 / 155
 
-         Set ComputedACL to FinalACL
+
+         Set ComputedACL to FinalACL
          RETURN
      ENDIF
 
@@ -11059,7 +10932,8 @@ Release: November 19, 2024
 
 127 / 155
 
-         ENDIF  // SACL-Specific behavior
+
+         ENDIF  // SACL-Specific behavior
 
          CALL PostProcessACL WITH
            ACL set to TmpACL,
@@ -11103,7 +10977,7 @@ Release: November 19, 2024
  ENDIF
  // END ComputeACL
 
-2.5.3.4.3 ContainsInheritableACEs
+###### 2.5.3.4.3 ContainsInheritableACEs
 
 Parameters
 
@@ -11129,7 +11003,8 @@ Release: November 19, 2024
 
 128 / 155
 
-     IF(ACE.AceFlags contains CONTAINER_INHERIT_ACE) OR
+
+     IF(ACE.AceFlags contains CONTAINER_INHERIT_ACE) OR
        (ACE.AceFlags contains OBJECT_INHERIT_ACE)
      THEN
          RETURN TRUE
@@ -11139,7 +11014,7 @@ Release: November 19, 2024
  RETURN FALSE
  // END ContainsInheritableACEs
 
-2.5.3.4.4 ComputeInheritedACLfromParent
+###### 2.5.3.4.4 ComputeInheritedACLfromParent
 
 This subroutine copies the ACEs from an ACL that are marked as inheritable. These ACEs are
 assembled into a new ACL that is returned.
@@ -11205,7 +11080,8 @@ Release: November 19, 2024
 
 129 / 155
 
-         ENDCASE
+
+         ENDCASE
      ENDIF
  END FOR
 
@@ -11306,12 +11182,13 @@ Release: November 19, 2024
 
 130 / 155
 
-For the cases in which a container inherits an ACE that is both effective on the container and
+
+For the cases in which a container inherits an ACE that is both effective on the container and
 inheritable by its descendents, the container can inherit two ACEs. This occurs when an inheritable
 ACE contains generic  information. The container inherits an ACE with an additional IO flag with
 generic information and an effective-only ACE in which the generic information has been mapped.
 
-2.5.3.4.5 ComputeInheritedACLfromCreator
+###### 2.5.3.4.5 ComputeInheritedACLfromCreator
 
 Parameters
 
@@ -11384,10 +11261,11 @@ Release: November 19, 2024
 
 131 / 155
 
- RETURN concatenation of ExplicitACL and InheritableACL
+
+ RETURN concatenation of ExplicitACL and InheritableACL
  // END ComputeInheritedACLFromCreator
 
-2.5.3.4.6 PreProcessACLfromCreator
+###### 2.5.3.4.6 PreProcessACLfromCreator
 
 This subroutine processes an input ACL, removing all ACEs that were inherited previously, yielding an
 ACL with only explicit ACEs.
@@ -11413,7 +11291,7 @@ Processed ACL.
  RETURN NewACL
  // END PreProcessACLFromCreator
 
-2.5.3.4.7 PostProcessACL
+###### 2.5.3.4.7 PostProcessACL
 
 The purpose of this subroutine is to process the ACL and make it concrete by replacing certain macro
 SIDs with the actual SIDs for the principals involved, and to translate from generic access bit flags to
@@ -11455,7 +11333,8 @@ Release: November 19, 2024
 
 132 / 155
 
-     // Determine if this ACE passes the filter to be copied to the new ACL
+
+     // Determine if this ACE passes the filter to be copied to the new ACL
 
      SET CopyThisAce = FALSE
 
@@ -11522,7 +11401,8 @@ Release: November 19, 2024
 
 133 / 155
 
-2.5.3.5  Setting the INHERITED_ACE Flag
+
+##### 2.5.3.5 Setting the INHERITED_ACE Flag
 
 ACEs are usually contained in ACLs (see section 2.4.5) with the INHERITED_ACE flag in an ACE set as
 part of comparing the ACEs in a parent ACL and a child ACL. If an ACE is present in both the parent
@@ -11581,7 +11461,7 @@ equal.
 
 If the parent and child ACE access masks are not equal, the ACEs are not equal.
 
-2.6  ServerGetInfo Abstract Interface
+### 2.6 ServerGetInfo Abstract Interface
 
 The ServerGetInfo abstract interface retrieves current configuration information for the local machine.
 
@@ -11611,7 +11491,8 @@ Release: November 19, 2024
 
 134 / 155
 
-bufptr: Pointer to the buffer that receives the data. The format of this data depends on the value of
+
+bufptr: Pointer to the buffer that receives the data. The format of this data depends on the value of
 
 the level parameter.
 
@@ -11660,9 +11541,9 @@ Sufficient memory is not available.
 
 ERROR_NOT_ENOUGH_MEMORY
 
-2.7  Impersonation Abstract Interfaces
+### 2.7 Impersonation Abstract Interfaces
 
-2.7.1  StartImpersonation
+#### 2.7.1 StartImpersonation
 
 The StartImpersonation abstract interface causes the underlying security infrastructure for a server
 role to use the supplied ImpersonationAccessToken for access checks on secured objects until
@@ -11688,11 +11569,12 @@ Release: November 19, 2024
 
 135 / 155
 
-ImpersonationAccessToken: An authorization context token as specified in section 2.5.2.
+
+ImpersonationAccessToken: An authorization context token as specified in section 2.5.2.
 
 This method has no return values.
 
-2.7.2  EndImpersonation
+#### 2.7.2 EndImpersonation
 
 The EndImpersonation abstract interface causes the underlying security infrastructure for a server role
 to revert to using the primary access token (see [MSDN-ACCTOKENS]) for access checks on secured
@@ -11704,7 +11586,7 @@ objects.
 
 This method has no return values.
 
-2.7.3  GetAccessToken
+#### 2.7.3 GetAccessToken
 
 The GetAccessToken abstract interface causes the underlying security infrastructure for the server role
 to return the Token/Authorization Context, as specified in section 2.5.2, of the current execution
@@ -11731,7 +11613,8 @@ Release: November 19, 2024
 
 136 / 155
 
-3  Structure Examples
+
+## 3 Structure Examples
 
  There are no structure examples.
 
@@ -11742,7 +11625,8 @@ Release: November 19, 2024
 
 137 / 155
 
-4  Security Considerations
+
+## 4 Security Considerations
 
 There are no security considerations.
 
@@ -11753,7 +11637,8 @@ Release: November 19, 2024
 
 138 / 155
 
-5  Appendix A: Full MS-DTYP IDL
+
+## 5 Appendix A: Full MS-DTYP IDL
 
 For ease of implementation and to allow re-use of the common data types and structure in other
 protocols, a full IDL is provided.
@@ -11828,7 +11713,8 @@ Release: November 19, 2024
 
 139 / 155
 
- typedef unsigned int ULONG32;
+
+ typedef unsigned int ULONG32;
  typedef unsigned __int64 ULONG64;
  typedef wchar_t UNICODE;
  typedef unsigned short USHORT;
@@ -11905,7 +11791,8 @@ Release: November 19, 2024
 
 140 / 155
 
-   wchar_t* Value;
+
+   wchar_t* Value;
    DWORD nChar;
  } MULTI_SZ;
 
@@ -11982,7 +11869,8 @@ Release: November 19, 2024
 
 141 / 155
 
-   USHORT AceSize;
+
+   USHORT AceSize;
  } ACE_HEADER,
   *PACE_HEADER;
 
@@ -12058,7 +11946,8 @@ Release: November 19, 2024
 
 142 / 155
 
-   UCHAR Sbz1;
+
+   UCHAR Sbz1;
    USHORT Control;
    PSID Owner;
    PSID Group;
@@ -12074,7 +11963,8 @@ Release: November 19, 2024
 
 143 / 155
 
-6  Appendix B: Product Behavior
+
+## 6 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -12144,7 +12034,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<1> Section 2.1: Windows is implemented on little-endian systems.
+
+<1> Section 2.1: Windows is implemented on little-endian systems.
 
 <2> Section 2.3.2: Not supported in Windows versions earlier than the Windows 10 v1709 operating
 system client or the Windows Server v1709 operating system server releases. The control GUID will
@@ -12212,7 +12103,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<19> Section 2.4.2.4: The DENIED_RODC_PASSWORD_REPLICATION_GROUP SID is not supported in
+
+<19> Section 2.4.2.4: The DENIED_RODC_PASSWORD_REPLICATION_GROUP SID is not supported in
 Windows Vista and earlier client releases or Windows Server 2003 and earlier server releases.
 
 <20> Section 2.4.2.4: A built-in group that is created when a domain controller is added to the
@@ -12283,7 +12175,8 @@ Release: November 19, 2024
 
 146 / 155
 
-<36> Section 2.4.2.4: The ML_SECURE_PROCESS SID is not supported in Windows NT, Windows
+
+<36> Section 2.4.2.4: The ML_SECURE_PROCESS SID is not supported in Windows NT, Windows
 2000, Windows XP, or Windows Server 2003.
 
 <37> Section 2.4.2.4: The AUTHENTICATION_AUTHORITY_ASSERTED_IDENTITY SID is not supported
@@ -12353,7 +12246,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<59> Section 2.4.4.17.6: The Device_Member_of_Any token is not supported in Windows 7 and
+
+<59> Section 2.4.4.17.6: The Device_Member_of_Any token is not supported in Windows 7 and
 earlier client releases or Windows Server 2008 R2 and earlier server releases.
 
 <60> Section 2.4.4.17.6: The Not_Member_of token is not supported in Windows 7 and earlier client
@@ -12422,7 +12316,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-<80> Section 2.5.1.1: GUIDs are not supported on Windows 7 and earlier client releases or Windows
+
+<80> Section 2.5.1.1: GUIDs are not supported on Windows 7 and earlier client releases or Windows
 Server 2008 R2 and earlier server releases.
 
 <81> Section 2.5.1.1: For the domain built-in ADMINISTRATOR (S-1-5-21-<domain>-500), Windows
@@ -12489,7 +12384,8 @@ Release: November 19, 2024
 
 149 / 155
 
-<96> Section 2.5.3.4: Assigning the owner and group fields in the security descriptor uses the
+
+<96> Section 2.5.3.4: Assigning the owner and group fields in the security descriptor uses the
 following logic:
 
 1.  If the security descriptor that is supplied for the object by the caller includes an owner, it is
@@ -12512,7 +12408,8 @@ Release: November 19, 2024
 
 150 / 155
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -12617,7 +12514,8 @@ Windows Data Types
 Copyright © 2024 Microsoft Corporation
 Release: November 19, 2024
 
-Section
+
+Section
 
 Description
 
@@ -12636,7 +12534,8 @@ Release: November 19, 2024
 
 152 / 155
 
-8  Index
+
+## 8 Index
 A
 
 ACCESS_ALLOWED_ACE packet 57
@@ -12780,7 +12679,8 @@ LOCAL_SERVICE 42
 
 153 / 155
 
-LOCAL_SYSTEM 42
+
+LOCAL_SYSTEM 42
 Localization 13
 LOGON_ID 42
 LPFILETIME 31
@@ -12923,7 +12823,8 @@ TOKEN_MANDATORY_POLICY structure 89
 
 154 / 155
 
-Tracking changes 151
+
+Tracking changes 151
 
 U
 

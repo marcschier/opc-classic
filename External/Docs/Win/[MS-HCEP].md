@@ -63,7 +63,8 @@ Release: June 1, 2017
 
 1 / 42
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: June 1, 2017
 
 2 / 42
 
-Date
+
+Date
 
 Revision
 History
@@ -536,174 +538,76 @@ Release: June 1, 2017
 
 3 / 42
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 HCEP Request](#221-hcep-request)
+      - [2.2.1.1 Standard HTTP Message Header Fields](#2211-standard-http-message-header-fields)
+      - [2.2.1.2 HTTP Message Header Fields Introduced by HCEP](#2212-http-message-header-fields-introduced-by-hcep)
+      - [2.2.1.3 HTTP Message Body Used in an HCEP Request](#2213-http-message-body-used-in-an-hcep-request)
+      - [2.2.1.4 Health Certificate Request](#2214-health-certificate-request)
+    - [2.2.2 HCEP Response](#222-hcep-response)
+      - [2.2.2.1 Standard HTTP Message Header Fields](#2221-standard-http-message-header-fields)
+      - [2.2.2.2 HTTP Message Header Fields Introduced by HCEP](#2222-http-message-header-fields-introduced-by-hcep)
+      - [2.2.2.3 HTTP Message Body Used in an HCEP Response (HTTP OK Response)](#2223-http-message-body-used-in-an-hcep-response-http-ok-response)
+      - [2.2.2.4 Health Certificate Response](#2224-health-certificate-response)
+    - [2.2.3 Certificate Request OIDs](#223-certificate-request-oids)
+      - [2.2.3.1 napPolicyInformationCompliantOid](#2231-nappolicyinformationcompliantoid)
+      - [2.2.3.2 napPolicyInformationNotCompliantOid](#2232-nappolicyinformationnotcompliantoid)
+      - [2.2.3.3 napPolicyInformationIsolationStateOid](#2233-nappolicyinformationisolationstateoid)
+      - [2.2.3.4 napPolicyInformationExtendedStateOid](#2234-nappolicyinformationextendedstateoid)
+      - [2.2.3.5 napHealthyOid](#2235-naphealthyoid)
+      - [2.2.3.6 napUnhealthyOid](#2236-napunhealthyoid)
+      - [2.2.3.7 napSoHOid](#2237-napsohoid)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+      - [3.1.5.1 Sending an HCEP Request](#3151-sending-an-hcep-request)
+      - [3.1.5.2 Processing an HCEP Response](#3152-processing-an-hcep-response)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+    - [3.1.8 Client-Side Error Handling](#318-client-side-error-handling)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+      - [3.2.5.1 Validating an HCEP Request](#3251-validating-an-hcep-request)
+      - [3.2.5.2 Processing an HCEP Request](#3252-processing-an-hcep-request)
+      - [3.2.5.3 Creating and Sending an HCEP Response](#3253-creating-and-sending-an-hcep-response)
+      - [3.2.5.4 Creating Health Certificate Request by HRA](#3254-creating-health-certificate-request-by-hra)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+    - [3.2.8 Error Handling](#328-error-handling)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview ........................................................................................................ 10
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.2
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Message Syntax ............................................................................................... 15
-HCEP Request ............................................................................................ 15
-Standard HTTP Message Header Fields ..................................................... 15
-HTTP Message Header Fields Introduced by HCEP ..................................... 15
-HTTP Message Body Used in an HCEP Request .......................................... 16
-Health Certificate Request ...................................................................... 16
-HCEP Response .......................................................................................... 17
-Standard HTTP Message Header Fields ..................................................... 17
-HTTP Message Header Fields Introduced by HCEP ..................................... 17
-HTTP Message Body Used in an HCEP Response (HTTP OK Response) .......... 18
-Health Certificate Response .................................................................... 18
-Certificate Request OIDs .............................................................................. 18
-napPolicyInformationCompliantOid .......................................................... 18
-napPolicyInformationNotCompliantOid ..................................................... 18
-napPolicyInformationIsolationStateOid ..................................................... 18
-napPolicyInformationExtendedStateOid .................................................... 19
-napHealthyOid ...................................................................................... 19
-napUnhealthyOid .................................................................................. 19
-napSoHOid ........................................................................................... 19
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-
-2.2.3
-
-3.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-
-3  Protocol Details ..................................................................................................... 20
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Sending an HCEP Request ...................................................................... 21
-Processing an HCEP Response ................................................................ 22
-Timer Events .............................................................................................. 22
-Other Local Events ...................................................................................... 22
-Client-Side Error Handling ........................................................................... 23
-Server Details .................................................................................................. 23
-Abstract Data Model .................................................................................... 23
-Timers ...................................................................................................... 24
-Initialization ............................................................................................... 24
-Higher-Layer Triggered Events ..................................................................... 24
-Message Processing Events and Sequencing Rules .......................................... 24
-Validating an HCEP Request ................................................................... 24
-Processing an HCEP Request .................................................................. 25
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-
-3.1.6
-3.1.7
-3.1.8
-
-3.2.5.1
-3.2.5.2
-
-3.2
-
-[MS-HCEP] - v20170601
-Health Certificate Enrollment Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-4 / 42
-
-3.2.5.3
-3.2.5.4
-
-3.2.6
-3.2.7
-3.2.8
-
-Creating and Sending an HCEP Response ................................................. 26
-Creating Health Certificate Request by HRA .............................................. 27
-Timer Events .............................................................................................. 29
-Other Local Events ...................................................................................... 29
-Error Handling ............................................................................................ 29
-
-4  Protocol Examples ................................................................................................. 30
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 32
-
-7  Change Tracking .................................................................................................... 39
-
-8  Index ..................................................................................................................... 40
-
-[MS-HCEP] - v20170601
-Health Certificate Enrollment Protocol
-Copyright © 2017 Microsoft Corporation
-Release: June 1, 2017
-
-5 / 42
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Health Certificate Enrollment Protocol. The Health Certificate Enrollment
 Protocol is a remote procedure call (RPC) interface that allows a network endpoint to obtain digital
@@ -713,7 +617,7 @@ security policy defined for the network.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -778,7 +682,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-enroll: To request and acquire a digital certificate from a certificate authority (CA). This is
+
+enroll: To request and acquire a digital certificate from a certificate authority (CA). This is
 
 typically accomplished through a certificate enrollment process.
 
@@ -859,7 +764,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-prefers to authenticate connection requests from endpoints and a shared server that performs
+
+prefers to authenticate connection requests from endpoints and a shared server that performs
 authentication, authorization, and accounting.
 
 Rivest-Shamir-Adleman (RSA): A system for public key cryptography. RSA is specified in
@@ -888,14 +794,14 @@ user agent: An HTTP user agent, as specified in [RFC2616].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -930,7 +836,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-[RFC2409] Harkins, D. and Carrel, D., "The Internet Key Exchange (IKE)", RFC 2409, November 1998,
+
+[RFC2409] Harkins, D. and Carrel, D., "The Internet Key Exchange (IKE)", RFC 2409, November 1998,
 https://www.rfc-editor.org/info/rfc2409
 
 [RFC2616] Fielding, R., Gettys, J., Mogul, J., et al., "Hypertext Transfer Protocol -- HTTP/1.1", RFC
@@ -968,7 +875,7 @@ https://trustedcomputinggroup.org/tnc-if-tnccs-protocol-bindings-soh/
 and Attribute Certificate Frameworks", Recommendation X.509, August 2005,
 http://www.itu.int/rec/T-REC-X.509/en
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [IANA-ENT] Internet Assigned Numbers Authority, "Private Enterprise Numbers", January 2007,
 http://www.iana.org/assignments/enterprise-numbers
@@ -995,7 +902,8 @@ Release: June 1, 2017
 
 9 / 42
 
-[MSFT-HRA] Microsoft Corporation, "Windows Server 2008  Network Access Protection Deployment
+
+[MSFT-HRA] Microsoft Corporation, "Windows Server 2008  Network Access Protection Deployment
 Guide", Configure HRA Automatic Discovery, November 2008,
 https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fdownload.microsoft.com%2Fdo
 wnload%2F8%2F6%2F7%2F867C6515-48CE-4E27-A5D4-
@@ -1014,7 +922,7 @@ editor.org/info/rfc3447
 [TPM] Trusted Computing Group, "TPM Work Group",
 https://www.trustedcomputinggroup.org/groups/tpm/
 
-1.3  Overview
+### 1.3 Overview
 
 Many network administrators maintaining a secure network require that clients accessing their
 networks comply with policies established for the network. For example, an administrator might
@@ -1051,7 +959,8 @@ Release: June 1, 2017
 
 10 / 42
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-HCEP].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1094,7 +1003,8 @@ Release: June 1, 2017
 
 11 / 42
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-HCEP].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -1110,7 +1020,7 @@ can contain a PKCS #7 message containing the certificate.
 
 in the PersistedComputerCertificates ADM element specified in section 3.1.1.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Health Certificate Enrollment Protocol uses HTTP (as specified in [RFC2616]) or HTTP over TLS
 (as specified in [RFC2818]) as the transport for its messages. The payload of an HCEP request
@@ -1137,7 +1047,8 @@ Release: June 1, 2017
 
 12 / 42
 
-1.5  Prerequisites/Preconditions
+
+### 1.5 Prerequisites/Preconditions
 
 For Health Certificate Enrollment Protocol communication to begin, the prerequisite configuration for
 HCEA is as follows:
@@ -1182,7 +1093,7 @@ If the HRA is configured to authenticate the client, the handling of the authent
 layer as specified in [RFC4559] is a precondition for processing the HCEP request. The failure of the
 authentication has to be processed by HTTP in accordance with [RFC4559].
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Health Certificate Enrollment Protocol allows a client machine to obtain an X.509 certificate, as
 specified in [RFC3280], that represents its compliance to policy. Because the Health Certificate
@@ -1199,7 +1110,7 @@ network. For example, administrators can configure IPsec policies to require a c
 health certificate to the resource (as an indication of the client compliance with network security
 policies) before the client can have access to the resource.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 The Health Certificate Enrollment Protocol does not perform any version detection or capability
 negotiation by itself since this is the first version.
@@ -1211,18 +1122,19 @@ Release: June 1, 2017
 
 13 / 42
 
-Although this version of the Health Certificate Enrollment Protocol does not support the concept of
+
+Although this version of the Health Certificate Enrollment Protocol does not support the concept of
 versioning, there is a version number field in Health Certificate Enrollment Protocol messages. This
 field is intended for future use. In the current version of the Health Certificate Enrollment Protocol,
 implementations are required to set the version field value to "1.0". The fixed value version field (see
 sections 2.2.1.2 and 2.2.2.2) is intended to enable future versions of the protocol to negotiate a
 version that is commonly supported by both HCEA and HRA.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor-extensible fields for this protocol.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 Microsoft has been assigned the object identifier (OID) 1.3.6.1.4.1.311 by the Internet Assigned
 Numbers Authority (IANA), as the Microsoft private enterprise IANA code. (For more information, see
@@ -1239,9 +1151,10 @@ Release: June 1, 2017
 
 14 / 42
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 Health Certificate Enrollment Protocol messages MUST be transmitted over HTTP, as specified in
 [RFC2616], or HTTP over TLS, as specified in [RFC2818]. HCEP MUST be encapsulated within these
@@ -1256,12 +1169,12 @@ retransmissions or other requirements on those transports. The choice of the tra
 entirely on the URL present at the HCEA. For more information about the configuration of the HCEA,
 see section 1.5.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 All strings that follow are ASCII strings, as specified in [RFC20], and MUST conform to the general
 HTTP rules on string values in headers, as specified in [RFC2616] section 4.2.
 
-2.2.1  HCEP Request
+#### 2.2.1 HCEP Request
 
 The HCEP request is an HTTP POST request that is made to a provisioned URL.
 
@@ -1270,7 +1183,7 @@ header. Some of them are standard fields (as specified in [RFC2616] sections 4.5
 must take on specific values; however, others are new fields that are defined by the Health Certificate
 Enrollment Protocol. These fields MUST follow the rules as specified in [RFC2616] section 4.2.
 
-2.2.1.1  Standard HTTP Message Header Fields
+##### 2.2.1.1 Standard HTTP Message Header Fields
 
 The HTTP message headers in the HCEP request MUST include the following fields with these specified
 values.
@@ -1291,7 +1204,7 @@ is the User-Agent field, as specified in [RFC2616] section 14.43:
 
   User Agent: "NAP IPSec Enforcement v1.0".
 
-2.2.1.2  HTTP Message Header Fields Introduced by HCEP
+##### 2.2.1.2 HTTP Message Header Fields Introduced by HCEP
 
 The HTTP message headers in the HCEP request MUST include the following fields.
 
@@ -1302,7 +1215,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-Tokens
+
+Tokens
 
 HCEP-Version: MUST be a string with value "1.0".
 
@@ -1312,14 +1226,14 @@ HCEP-Correlation-Id: This MUST be a Correlation Id that is base64-encoded (as sp
 originating from the HCEA. It SHOULD<8> be the same as the Correlation Id that is present in
 SoH, as specified in [TNC-IF-TNCCSPBSoH] section 3.8.
 
-2.2.1.3  HTTP Message Body Used in an HCEP Request
+##### 2.2.1.3 HTTP Message Body Used in an HCEP Request
 
 The HCEP request MUST contain an HTTP message body, which follows the rules specified in
 [RFC2616] section 4.3. The value of this message body MUST be an ASN.1 DER–encoded health
 certificate request. The format of the health certificate request MUST be as specified in section
 2.2.1.4.
 
-2.2.1.4  Health Certificate Request
+##### 2.2.1.4 Health Certificate Request
 
 The health certificate request MUST be in PKCS #10 format (as specified in [RFC2986]) and be
 encoded in ASN.1 Distinguished Encoding Rules (DER), as specified in [ITUX680]. This MUST be
@@ -1371,14 +1285,15 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-to generate the key pair on the HCEA. The extension and the OID value MUST be as specified in
+
+to generate the key pair on the HCEA. The extension and the OID value MUST be as specified in
 [MS-WCCE] section 2.2.2.7 that defines the certificate request attributes.<12>
 
 The certificate request MUST be signed to prevent tampering by using one of the preconfigured
 signature algorithms specified in section 1.5. The signature over the certificate request MUST be
 included in the PKCS #10 message, as specified in [RFC2986].
 
-2.2.2  HCEP Response
+#### 2.2.2 HCEP Response
 
 The HCEP response MUST be an HTTP OK response (status-code 200), indicating that there are no
 errors. Other HTTP response status codes, as specified in [RFC2616] section 6.1.1, MUST be returned
@@ -1390,7 +1305,7 @@ header. Some are standard fields (as specified in [RFC2616] sections 4.5, 6.2, a
 take on specific values; however, others are new fields that are defined by the Health Certificate
 Enrollment Protocol. These fields MUST follow the rules as specified in [RFC2616] section 4.2.
 
-2.2.2.1  Standard HTTP Message Header Fields
+##### 2.2.2.1 Standard HTTP Message Header Fields
 
 The HTTP message headers in the HCEP response MUST include the following fields.
 
@@ -1404,7 +1319,7 @@ as specified in [RFC2616] section 7.1.
 
 Content-Length: MUST be the size of ASN.1 DER–encoded health certificate response.
 
-2.2.2.2  HTTP Message Header Fields Introduced by HCEP
+##### 2.2.2.2 HTTP Message Header Fields Introduced by HCEP
 
 The HTTP message headers in the HCEP response MUST include the following Tokens.
 
@@ -1437,7 +1352,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-
+
+
 
 
 
@@ -1457,7 +1373,7 @@ the health certificate on the client.<14>
 The header MAY<15> contain other fields besides those listed here. All other fields SHOULD be
 ignored by the Health Certificate Enrollment Protocol client.
 
-2.2.2.3  HTTP Message Body Used in an HCEP Response (HTTP OK Response)
+##### 2.2.2.3 HTTP Message Body Used in an HCEP Response (HTTP OK Response)
 
 The health certificate response MUST be present if the client is deemed to be compliant with policy
 as the HTTP message body, which follows the rules as specified in [RFC2616] section 4.3.<16> If the
@@ -1465,7 +1381,7 @@ message body is present, the value of this message body MUST be an ASN.1 DER–e
 certificate response. The format of the health certificate response MUST be as specified in section
 2.2.2.4.
 
-2.2.2.4  Health Certificate Response
+##### 2.2.2.4 Health Certificate Response
 
 The health certificate response MUST be in PKCS #7 format (as specified in [RFC2315]) and be
 encoded in ASN.1 DER, and contain the issued X.509 certificate (as specified in [RFC3280]) in a
@@ -1476,12 +1392,12 @@ The health certificate response MUST be present if the client is deemed to be co
 The health certificate response MAY be present if the client is deemed to be noncompliant with
 policy.<17>
 
-2.2.3  Certificate Request OIDs
+#### 2.2.3 Certificate Request OIDs
 
 This section defines the symbolic names of OIDs used in the "Creating Health Certificate Request by
 HRA" section 3.2.5.4.
 
-2.2.3.1  napPolicyInformationCompliantOid
+##### 2.2.3.1 napPolicyInformationCompliantOid
 
 OID = 1.3.6.1.4.1.311.47.1.10
 
@@ -1489,7 +1405,7 @@ Description: Used to indicate that the client is compliant with health policy.
 
 Format: Specified in [RFC3280] section 4.2.1.5.
 
-2.2.3.2  napPolicyInformationNotCompliantOid
+##### 2.2.3.2 napPolicyInformationNotCompliantOid
 
 OID = 1.3.6.1.4.1.311.47.1.11
 
@@ -1504,7 +1420,8 @@ Release: June 1, 2017
 
 18 / 42
 
-2.2.3.3  napPolicyInformationIsolationStateOid
+
+##### 2.2.3.3 napPolicyInformationIsolationStateOid
 
 OID = 1.3.6.1.4.1.311.47.1.12
 
@@ -1522,7 +1439,7 @@ The isolation state is one of the following values:
 
 Format: Specified in [RFC3280] section 4.2.1.5.
 
-2.2.3.4  napPolicyInformationExtendedStateOid
+##### 2.2.3.4 napPolicyInformationExtendedStateOid
 
 OID = 1.3.6.1.4.1.311.47.1.13
 
@@ -1545,21 +1462,21 @@ Infected data.
 
 Format: Specified in [RFC3280] section 4.2.1.5.
 
-2.2.3.5  napHealthyOid
+##### 2.2.3.5 napHealthyOid
 
 OID = 1.3.6.1.4.1.311.47.1.1
 
 Description: When used as an extended key usage ([RFC3280] section 4.2.1.13) or Application Policy
 ([MS-WCCE] section 2.2.2.7.7.3), this OID indicates that the client is healthy.
 
-2.2.3.6  napUnhealthyOid
+##### 2.2.3.6 napUnhealthyOid
 
 OID = 1.3.6.1.4.1.311.47.1.3
 
 Description: When used as an extended key usage ([RFC3280] section 4.2.1.13) or Application Policy
 ([MS-WCCE] section 2.2.2.7.7.3), this OID indicates that the client is unhealthy.
 
-2.2.3.7  napSoHOid
+##### 2.2.3.7 napSoHOid
 
 OID = 1.3.6.1.4.1.311.47.1.1
 
@@ -1575,7 +1492,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
- SoHExtension ::= OCTET STRING
+
+ SoHExtension ::= OCTET STRING
 
 [MS-HCEP] - v20170601
 Health Certificate Enrollment Protocol
@@ -1584,11 +1502,12 @@ Release: June 1, 2017
 
 20 / 42
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-HCEP].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-3  Protocol Details
+## 3 Protocol Details
 
 The Health Certificate Enrollment Protocol is a simple request-response protocol. The Health Certificate
 Enrollment Protocol allows a network endpoint to obtain digital certificates. These certificates are
@@ -1604,9 +1523,9 @@ diagram.
 
 Figure 3: Health Certificate Enrollment Protocol single request and response
 
-3.1  Client Details
+### 3.1 Client Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1633,18 +1552,19 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-3.1.2  Timers
+
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The HCEA constructs and sends an HCEP request, as specified in section 2.2.1.1. If the transport that
 the provisioned URL specifies is HTTP over TLS (as specified in [RFC2818]), before communication
 begins, the client MUST be set up to trust the certificate authority that is issuing the server
 certificate.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 The following higher-layer events affect a Health Certificate Enrollment Protocol client's operation:
 
@@ -1659,9 +1579,9 @@ to re-enroll for a health certificate from the configured HRA.<22>
 The higher layer SHOULD use the INapEnforcementClientCallback::NotifySoHChange call, which
 is part of the NAP EC API, to trigger the HCEP to start a new enrollment.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
-3.1.5.1  Sending an HCEP Request
+##### 3.1.5.1 Sending an HCEP Request
 
 HCEA MUST create an HCEP request as follows:
 
@@ -1707,7 +1627,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-specified in section 1.5, the authentication will be handled by the transport as specified by
+
+specified in section 1.5, the authentication will be handled by the transport as specified by
 [RFC4559].
 
 5.  If the transport returns an error in either transmitting or receiving the response, HCEA MUST
@@ -1722,7 +1643,7 @@ specified in section 3.1.5.2
 
 handle the condition as specified in section 3.1.8.
 
-3.1.5.2  Processing an HCEP Response
+##### 3.1.5.2 Processing an HCEP Response
 
 If the HCEA receives an HTTP response other than HTTP OK, it MUST perform the error handling as
 specified in section 3.1.8. On receiving an HTTP OK response, HCEA MUST perform the validation as
@@ -1760,11 +1681,11 @@ with the certificate. The certificate is shared with the intended consumers (see
 means of the PersistedComputerCertificates ADM element. The intended consumers SHOULD
 use the specific implementation of ADM in order to retrieve the certificate. <26>
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 If the IP address of the client machine changes, a new network might be reachable. The client
 MAY<27> choose to send an HCEP request to a server with which a previous request was
@@ -1777,7 +1698,8 @@ Release: June 1, 2017
 
 23 / 42
 
-3.1.8  Client-Side Error Handling
+
+#### 3.1.8 Client-Side Error Handling
 
 After creating an HCEP request, if the HCEA encounters any errors (including HTTP errors as specified
 in [RFC2616] section 10), either during transmission of the HCEP request or while waiting for an HCEP
@@ -1787,9 +1709,9 @@ retransmission of the original HCEP-Correlation-Id value.
 
 Any subsequent requests by the client MUST have a new HCEP-Correlation-Id value.
 
-3.2  Server Details
+### 3.2 Server Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 HRA MUST store the HCEP-Correlation-Id that it receives in an HCEP request. It MUST use the same
 HCEP-Correlation-Id in the HCEP response that it generates.
@@ -1851,7 +1773,8 @@ Release: June 1, 2017
 
 24 / 42
 
-3.2.2  Timers
+
+#### 3.2.2 Timers
 
 The HRA server uses the CAConnectionDuration timer to ensure the response time from the CA
 does not exceed the duration set in the CAResponseTimeOut ADM element defined in section 3.2.1.
@@ -1864,7 +1787,7 @@ exceed the duration set in the EvaluationTimeOut ADM element defined in section 
 SoHEvaluationEuration timer is specified per HCEP request connection and is used in the steps for
 processing an HCEP request as specified in section 3.2.5.2.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The remote CA name List ADM is initialized during HRA server startup. The remote CA name List
 contains the CAs HRA will attempt to obtain health certificates from. It is configured by the IT admin
@@ -1876,7 +1799,7 @@ The CAResponseTimeOut ADM is initialized during HRA server startup. It is config
 admin and stored in persistent storage. If the value is not set by the IT admin the
 CAResponseTimeOut ADM will be set to 20 seconds.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 SetSoHR Abstract Interface: An abstract interface used by the Policy Engine to send the SoHR to
 the HRA. The interface is implemented by the HRA and is defined as follows:
@@ -1889,9 +1812,9 @@ The SoHR is defined in [TNC-IF-TNCCSPBSoH] section 3.6.
 The received SoHR is used for both the Enforce NAP policy task (specified in [MS-HCEP] section
 3.2.5.4) and for Proxy SoHR task (specified in [MS-HCEP] section 3.2.5.2).
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
-3.2.5.1  Validating an HCEP Request
+##### 3.2.5.1 Validating an HCEP Request
 
 When an HCEP request arrives from the client on the HRA, the HRA MUST perform correctness checks
 on the request.
@@ -1914,7 +1837,8 @@ Release: June 1, 2017
 
 25 / 42
 
-3.  If the HRA is configured to not authenticate the client (as specified in section 1.5), it MUST
+
+3.  If the HRA is configured to not authenticate the client (as specified in section 1.5), it MUST
 
 validate that the Subject Alternative Name (specified in section 2.2.1.4) is empty.
 
@@ -1956,7 +1880,7 @@ the subject as specified in section 2.2.1.4.
 If any of the previous checks fail, the HRA MUST respond with an HTTP Internal Server Error, as
 specified in [RFC2616] section 6.1.1.
 
-3.2.5.2  Processing an HCEP Request
+##### 3.2.5.2 Processing an HCEP Request
 
 After the validation checks are complete, the HRA MUST process the HCEP request as follows:
 
@@ -1996,9 +1920,10 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-7.  The HCEP response MUST then be created and sent as specified in section 3.2.5.3.
 
-3.2.5.3  Creating and Sending an HCEP Response
+7.  The HCEP response MUST then be created and sent as specified in section 3.2.5.3.
+
+##### 3.2.5.3 Creating and Sending an HCEP Response
 
 1.  The HCEP response MUST be created as follows. (The logical values of the headers are specified.
 
@@ -2074,7 +1999,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-5.  If all of the CAs in the remote CA name List cannot be contacted or return an error
+
+5.  If all of the CAs in the remote CA name List cannot be contacted or return an error
 
 (nonzero value), the HCEP Request processing must be aborted and HRA must respond
 with an error as specified in section 3.2.8.
@@ -2103,7 +2029,7 @@ Leave the HTTP message body of the HCEP Response empty.
 
 2.  The HCEP response MUST then be sent to the client.
 
-3.2.5.4  Creating Health Certificate Request by HRA
+##### 3.2.5.4 Creating Health Certificate Request by HRA
 
 Create the Certificate Request using PKCS10 format
 
@@ -2164,7 +2090,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-of the PolicyQualifierInfo of type UserNotice, where explicitText is set to one of the
+
+of the PolicyQualifierInfo of type UserNotice, where explicitText is set to one of the
 following values:
 
   Compliant.
@@ -2256,7 +2183,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  Add the Extended Key Usage extension as specified in [RFC3280] section 4.2.1.13:
+
+  Add the Extended Key Usage extension as specified in [RFC3280] section 4.2.1.13:
 
   When the client is compliant, add "1.3.6.1.4.1.311.47.1.1"
 
@@ -2289,7 +2217,7 @@ The 1.3.6.1.4.1.311.13.2.3 (szOID_OS_VERSION) attribute as specified in [MS-WCCE
 The 1.3.6.1.4.1.311.21.20 (szOID_REQUEST_CLIENT_INFO) attribute as specified in [MS-
 WCCE] section 2.2.2.7.4.<47>
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 The server uses the following timer events:
 
@@ -2303,11 +2231,11 @@ with an error as specified in section 3.2.8.
 
 processing MUST be aborted and HRA MUST respond with an error as specified in section 3.2.8.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
-3.2.8  Error Handling
+#### 3.2.8 Error Handling
 
 Error cases and typical error handling on the server MUST be as follows:
 
@@ -2329,7 +2257,8 @@ Release: June 1, 2017
 
 30 / 42
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 The client determines through implementation-specific procedures that a health certificate is
 required. In a common scenario, the client is connected to a network, but the client does not have a
@@ -2401,9 +2330,10 @@ Release: June 1, 2017
 
 31 / 42
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The Health Certificate Enrollment Protocol does not ensure the authenticity of the statement of
 health (SoH) that is sent to the HRA. The implementation needs to use secure algorithms and
@@ -2421,7 +2351,7 @@ recommended that HRA not impersonate the client and HRA only identify the client
 authentication method. Otherwise, if the HRA is compromised, it can potentially allow attackers to
 impersonate clients.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -2448,7 +2378,8 @@ Release: June 1, 2017
 
 32 / 42
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2514,7 +2445,8 @@ Release: June 1, 2017
 
 33 / 42
 
-<6> Section 2.2.1.1: The Windows implementation of the HCEA specifies the value of the User-
+
+<6> Section 2.2.1.1: The Windows implementation of the HCEA specifies the value of the User-
 Agent field as "NAP IPSec Enforcement v1.0".
 
 <7> Section 2.2.1.1: The Windows implementation of the HRA ignores the user-agent field by default,
@@ -2589,7 +2521,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-  1: Compliant.
+
+  1: Compliant.
 
   2: Network connectivity is not being restricted but might be at a later time.
 
@@ -2660,7 +2593,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<30> Section 3.2.1:  By default, the Windows implementation has an empty list. Only OIDs are
+
+<30> Section 3.2.1:  By default, the Windows implementation has an empty list. Only OIDs are
 configured in the list. The name is provided in the following table for ease of readability.
 
 Name
@@ -2783,7 +2717,8 @@ Release: June 1, 2017
 
 36 / 42
 
-Name
+
+Name
 
 OID
 
@@ -2888,7 +2823,8 @@ Release: June 1, 2017
 
 37 / 42
 
-  Microsoft Strong Cryptographic Provider
+
+  Microsoft Strong Cryptographic Provider
 
 <33> Section 3.2.1:  By default, the Windows implementation restricts the maximum size to 64 KB.
 
@@ -2963,7 +2899,8 @@ Health Certificate Enrollment Protocol
 Copyright © 2017 Microsoft Corporation
 Release: June 1, 2017
 
-<44> Section 3.2.5.4: The attribute is added to the CMC request in the Server SKU implementation
+
+<44> Section 3.2.5.4: The attribute is added to the CMC request in the Server SKU implementation
 where HRA is installed.
 
 <45> Section 3.2.5.4: This behavior was first released in Windows Server 2008 R2 SKU.
@@ -2981,7 +2918,8 @@ Release: June 1, 2017
 
 39 / 42
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -2993,7 +2931,8 @@ Release: June 1, 2017
 
 40 / 42
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -3131,7 +3070,8 @@ request OID 19
 
 41 / 42
 
-napPolicyInformationIsolationStateOid certificate
+
+napPolicyInformationIsolationStateOid certificate
 
 request OID 18
 

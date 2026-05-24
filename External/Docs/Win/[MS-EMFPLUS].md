@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 262
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -309,7 +310,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Date
+
+Date
 
 Revision
 History
@@ -529,7 +531,8 @@ Release: April 23, 2024
 
 3 / 262
 
-Date
+
+Date
 
 Revision
 History
@@ -586,699 +589,273 @@ Release: April 23, 2024
 
 4 / 262
 
-Table of Contents
 
-1.3
-
-1.1
-1.2
-
-1.2.1
-1.2.2
-
-1  Introduction .......................................................................................................... 11
-Glossary ......................................................................................................... 11
-References ...................................................................................................... 18
-Normative References ................................................................................. 18
-Informative References ............................................................................... 19
-Overview ........................................................................................................ 19
-Metafile Structure ....................................................................................... 19
-Byte Ordering ............................................................................................ 21
-Relationship to Protocols and Other Structures .................................................... 22
-Applicability Statement ..................................................................................... 22
-Versioning and Localization ............................................................................... 22
-Vendor-Extensible Fields ................................................................................... 23
-
-1.4
-1.5
-1.6
-1.7
-
-1.3.1
-1.3.2
-
-2.1
-
-2.1.1
-
-2  Structures ............................................................................................................. 24
-EMF+ Constants ............................................................................................... 24
-Enumeration Constant Types ........................................................................ 24
-RecordType Enumeration ....................................................................... 26
-2.1.1.1
-BitmapDataType Enumeration ................................................................ 29
-2.1.1.2
-BrushType Enumeration ......................................................................... 29
-2.1.1.3
-CombineMode Enumeration .................................................................... 30
-2.1.1.4
-CompositingMode Enumeration ............................................................... 31
-2.1.1.5
-CompositingQuality Enumeration ............................................................ 31
-2.1.1.6
-CurveAdjustments Enumeration .............................................................. 32
-2.1.1.7
-CurveChannel Enumeration .................................................................... 33
-2.1.1.8
-2.1.1.9
-CustomLineCapDataType Enumeration..................................................... 33
-2.1.1.10  DashedLineCapType Enumeration ........................................................... 33
-FilterType Enumeration .......................................................................... 34
-2.1.1.11
-2.1.1.12  GraphicsVersion Enumeration ................................................................. 34
-2.1.1.13  HatchStyle Enumeration ........................................................................ 35
-2.1.1.14  HotkeyPrefix Enumeration ...................................................................... 38
-ImageDataType Enumeration ................................................................. 39
-2.1.1.15
-InterpolationMode Enumeration .............................................................. 39
-2.1.1.16
-LineCapType Enumeration ...................................................................... 40
-2.1.1.17
-LineJoinType Enumeration ...................................................................... 41
-2.1.1.18
-2.1.1.19
-LineStyle Enumeration ........................................................................... 41
-2.1.1.20  MetafileDataType Enumeration ............................................................... 42
-2.1.1.21  ObjectType Enumeration ........................................................................ 42
-PathPointType Enumeration .................................................................... 43
-2.1.1.22
-PenAlignment Enumeration .................................................................... 43
-2.1.1.23
-PixelFormat Enumeration ....................................................................... 44
-2.1.1.24
-PixelOffsetMode Enumeration ................................................................. 45
-2.1.1.25
-RegionNodeDataType Enumeration .......................................................... 46
-2.1.1.26
-SmoothingMode Enumeration ................................................................. 47
-2.1.1.27
-StringAlignment Enumeration ................................................................. 47
-2.1.1.28
-StringDigitSubstitution Enumeration ........................................................ 48
-2.1.1.29
-StringTrimming Enumeration .................................................................. 48
-2.1.1.30
-2.1.1.31
-TextRenderingHint Enumeration .............................................................. 49
-2.1.1.32  UnitType Enumeration ........................................................................... 49
-2.1.1.33  WrapMode Enumeration ......................................................................... 50
-Bit Flag Constant Types ............................................................................... 50
-BrushData Flags ................................................................................... 51
-CustomLineCapData Flags ...................................................................... 52
-DriverStringOptions Flags ...................................................................... 52
-FontStyle Flags ..................................................................................... 52
-PaletteStyle Flags ................................................................................. 53
-
-2.1.2.1
-2.1.2.2
-2.1.2.3
-2.1.2.4
-2.1.2.5
-
-2.1.2
-
-[MS-EMFPLUS] - v20240423
-Enhanced Metafile Format Plus Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 262
-
-2.1.3
-
-2.2
-
-2.2.1
-
-2.2.2
-
-2.1.3.1
-
-2.1.2.6
-2.1.2.7
-2.1.2.8
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-2.2.1.6
-2.2.1.7
-2.2.1.8
-2.2.1.9
-
-PathPointType Flags .............................................................................. 53
-PenData Flags ...................................................................................... 54
-StringFormat Flags ................................................................................ 54
-Standard Identifier Constant Types ............................................................... 56
-ImageEffects Identifiers ......................................................................... 56
-EMF+ Objects .................................................................................................. 57
-Graphics Object Types ................................................................................. 57
-EmfPlusBrush Object ............................................................................. 57
-EmfPlusCustomLineCap Object ............................................................... 58
-EmfPlusFont Object ............................................................................... 59
-EmfPlusImage Object ............................................................................ 60
-EmfPlusImageAttributes Object............................................................... 60
-EmfPlusPath Object ............................................................................... 61
-EmfPlusPen Object ................................................................................ 62
-EmfPlusRegion Object ............................................................................ 63
-EmfPlusStringFormat Object ................................................................... 63
-Structure Object Types ................................................................................ 65
-EmfPlusARGB Object ............................................................................. 67
-EmfPlusBitmap Object ........................................................................... 67
-EmfPlusBitmapData Object ..................................................................... 69
-EmfPlusBlendColors Object ..................................................................... 70
-EmfPlusBlendFactors Object ................................................................... 71
-EmfPlusBoundaryPathData Object ........................................................... 72
-EmfPlusBoundaryPointData Object .......................................................... 72
-EmfPlusCharacterRange Object ............................................................... 72
-EmfPlusCompoundLineData Object .......................................................... 73
-EmfPlusCompressedImage Object ........................................................... 73
-EmfPlusCustomEndCapData Object ......................................................... 74
-EmfPlusCustomLineCapArrowData Object ................................................. 75
-EmfPlusCustomLineCapData Object ......................................................... 76
-EmfPlusCustomLineCapOptionalData Object ............................................. 77
-EmfPlusCustomStartCapData Object ........................................................ 78
-EmfPlusDashedLineData Object .............................................................. 79
-EmfPlusFillPath Object ........................................................................... 79
-EmfPlusFocusScaleData Object ............................................................... 79
-EmfPlusGraphicsVersion Object ............................................................... 80
-EmfPlusHatchBrushData Object .............................................................. 81
-EmfPlusInteger7 Object ......................................................................... 81
-EmfPlusInteger15 Object ....................................................................... 81
-EmfPlusLanguageIdentifier Object ........................................................... 82
-EmfPlusLinearGradientBrushData Object .................................................. 82
-EmfPlusLinearGradientBrushOptionalData Object ...................................... 84
-EmfPlusLinePath Object ......................................................................... 85
-EmfPlusMetafile Object .......................................................................... 85
-EmfPlusPalette Object ............................................................................ 86
-EmfPlusPathGradientBrushData Object .................................................... 86
-EmfPlusPathGradientBrushOptionalData Object ......................................... 88
-EmfPlusPathPointType Object ................................................................. 89
-EmfPlusPathPointTypeRLE Object ............................................................ 89
-EmfPlusPenData Object.......................................................................... 90
-EmfPlusPenOptionalData Object .............................................................. 90
-EmfPlusPoint Object .............................................................................. 93
-EmfPlusPointF Object ............................................................................. 93
-EmfPlusPointR Object ............................................................................ 93
-EmfPlusRect Object ............................................................................... 94
-EmfPlusRectF Object ............................................................................. 94
-EmfPlusRegionNode Object .................................................................... 95
-EmfPlusRegionNodeChildNodes Object ..................................................... 95
-
-2.2.2.1
-2.2.2.2
-2.2.2.3
-2.2.2.4
-2.2.2.5
-2.2.2.6
-2.2.2.7
-2.2.2.8
-2.2.2.9
-2.2.2.10
-2.2.2.11
-2.2.2.12
-2.2.2.13
-2.2.2.14
-2.2.2.15
-2.2.2.16
-2.2.2.17
-2.2.2.18
-2.2.2.19
-2.2.2.20
-2.2.2.21
-2.2.2.22
-2.2.2.23
-2.2.2.24
-2.2.2.25
-2.2.2.26
-2.2.2.27
-2.2.2.28
-2.2.2.29
-2.2.2.30
-2.2.2.31
-2.2.2.32
-2.2.2.33
-2.2.2.34
-2.2.2.35
-2.2.2.36
-2.2.2.37
-2.2.2.38
-2.2.2.39
-2.2.2.40
-2.2.2.41
-
-[MS-EMFPLUS] - v20240423
-Enhanced Metafile Format Plus Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 262
-
-2.3
-
-2.3.1
-
-2.3.1.1
-2.3.1.2
-2.3.1.3
-2.3.1.4
-2.3.1.5
-
-2.3.2
-
-2.3.3
-
-2.3.2.1
-
-2.3.3.1
-2.3.3.2
-2.3.3.3
-
-2.3.4
-
-2.2.3
-
-2.2.2.42
-2.2.2.43
-2.2.2.44
-2.2.2.45
-2.2.2.46
-2.2.2.47
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-2.2.3.6
-2.2.3.7
-2.2.3.8
-2.2.3.9
-2.2.3.10
-2.2.3.11
-
-EmfPlusRegionNodePath Object .............................................................. 96
-EmfPlusSolidBrushData Object ................................................................ 96
-EmfPlusStringFormatData Object ............................................................ 97
-EmfPlusTextureBrushData Object ............................................................ 97
-EmfPlusTextureBrushOptionalData Object ................................................ 98
-EmfPlusTransformMatrix Object .............................................................. 99
-Image Effects Object Types ......................................................................... 99
-BlurEffect Object .................................................................................. 100
-BrightnessContrastEffect Object ............................................................. 101
-ColorBalanceEffect Object ..................................................................... 101
-ColorCurveEffect Object ........................................................................ 102
-ColorLookupTableEffect Object............................................................... 104
-ColorMatrixEffect Object ....................................................................... 105
-HueSaturationLightnessEffect Object ...................................................... 108
-LevelsEffect Object ............................................................................... 109
-RedEyeCorrectionEffect Object ............................................................... 110
-SharpenEffect Object ............................................................................ 111
-TintEffect Object .................................................................................. 111
-EMF+ Records ................................................................................................ 112
-Clipping Record Types ................................................................................ 112
-EmfPlusOffsetClip Record ...................................................................... 113
-EmfPlusResetClip Record ....................................................................... 114
-EmfPlusSetClipPath Record .................................................................... 115
-EmfPlusSetClipRect Record .................................................................... 115
-EmfPlusSetClipRegion Record ................................................................ 116
-Comment Record Types .............................................................................. 117
-EmfPlusComment Record ...................................................................... 117
-Control Record Types ................................................................................. 118
-EmfPlusEndOfFile Record ...................................................................... 119
-EmfPlusGetDC Record ........................................................................... 120
-EmfPlusHeader Record .......................................................................... 120
-Drawing Record Types ................................................................................ 121
-EmfPlusClear Record ............................................................................ 124
-EmfPlusDrawArc Record ........................................................................ 124
-EmfPlusDrawBeziers Record .................................................................. 126
-EmfPlusDrawClosedCurve Record ........................................................... 128
-EmfPlusDrawCurve Record .................................................................... 130
-EmfPlusDrawDriverString Record ........................................................... 132
-EmfPlusDrawEllipse Record ................................................................... 134
-EmfPlusDrawImage Record ................................................................... 135
-EmfPlusDrawImagePoints Record ........................................................... 137
-EmfPlusDrawLines Record ..................................................................... 139
-EmfPlusDrawPath Record ...................................................................... 141
-EmfPlusDrawPie Record ........................................................................ 142
-EmfPlusDrawRects Record ..................................................................... 143
-EmfPlusDrawString Record .................................................................... 145
-EmfPlusFillClosedCurve Record .............................................................. 147
-EmfPlusFillEllipse Record ....................................................................... 149
-EmfPlusFillPath Record.......................................................................... 151
-EmfPlusFillPie Record ............................................................................ 151
-EmfPlusFillPolygon Record ..................................................................... 153
-EmfPlusFillRects Record ........................................................................ 155
-EmfPlusFillRegion Record ...................................................................... 157
-Object Record Types .................................................................................. 158
-EmfPlusObject Record........................................................................... 159
-EmfPlusSerializableObject Record ........................................................... 160
-Property Record Types ............................................................................... 161
-EmfPlusSetAntiAliasMode Record ........................................................... 162
-
-2.3.4.1
-2.3.4.2
-2.3.4.3
-2.3.4.4
-2.3.4.5
-2.3.4.6
-2.3.4.7
-2.3.4.8
-2.3.4.9
-2.3.4.10
-2.3.4.11
-2.3.4.12
-2.3.4.13
-2.3.4.14
-2.3.4.15
-2.3.4.16
-2.3.4.17
-2.3.4.18
-2.3.4.19
-2.3.4.20
-2.3.4.21
-
-2.3.5
-
-2.3.5.1
-2.3.5.2
-
-2.3.6
-
-2.3.6.1
-
-[MS-EMFPLUS] - v20240423
-Enhanced Metafile Format Plus Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 262
-
-2.3.7
-
-2.3.6.2
-2.3.6.3
-2.3.6.4
-2.3.6.5
-2.3.6.6
-2.3.6.7
-2.3.6.8
-
-2.3.7.1
-2.3.7.2
-2.3.7.3
-2.3.7.4
-2.3.7.5
-
-2.3.8.1
-2.3.8.2
-
-2.3.9.1
-2.3.9.2
-2.3.9.3
-2.3.9.4
-2.3.9.5
-2.3.9.6
-2.3.9.7
-
-EmfPlusSetCompositingMode Record ...................................................... 163
-EmfPlusSetCompositingQuality Record .................................................... 164
-EmfPlusSetInterpolationMode Record...................................................... 164
-EmfPlusSetPixelOffsetMode Record ......................................................... 165
-EmfPlusSetRenderingOrigin Record ........................................................ 166
-EmfPlusSetTextContrast Record ............................................................. 166
-EmfPlusSetTextRenderingHint Record ..................................................... 167
-State Record Types .................................................................................... 168
-EmfPlusBeginContainer Record .............................................................. 169
-EmfPlusBeginContainerNoParams Record ................................................ 170
-EmfPlusEndContainer Record ................................................................. 171
-EmfPlusRestore Record ......................................................................... 171
-EmfPlusSave Record ............................................................................. 172
-Terminal Server Record Types ..................................................................... 173
-EmfPlusSetTSClip Record ...................................................................... 174
-EmfPlusSetTSGraphics Record ............................................................... 175
-Transform Record Types ............................................................................. 177
-EmfPlusMultiplyWorldTransform Record .................................................. 178
-EmfPlusResetWorldTransform Record ..................................................... 179
-EmfPlusRotateWorldTransform Record .................................................... 179
-EmfPlusScaleWorldTransform Record ...................................................... 180
-EmfPlusSetPageTransform Record .......................................................... 181
-EmfPlusSetWorldTransform Record......................................................... 182
-EmfPlusTranslateWorldTransform Record ................................................ 183
-
-2.3.8
-
-2.3.9
-
-3.2
-
-3.1
-
-3.2.2.1
-
-3.2.1
-3.2.2
-
-3.1.1
-3.1.2
-
-3  Structure Examples ............................................................................................. 185
-Metafile Design ............................................................................................... 185
-Byte Ordering Example ............................................................................... 185
-Managing Graphics Objects ......................................................................... 185
-EMF+ Metafile Example .................................................................................... 186
-EMR_HEADER Example ............................................................................... 189
-EMR_COMMENT_EMFPLUS Example 1 ........................................................... 191
-EmfPlusHeader Example ....................................................................... 192
-EMR_SAVEDC Example 1 ............................................................................ 193
-EMR_SETICMMODE Example 1 .................................................................... 193
-EMR_SAVEDC Example 2 ............................................................................ 194
-EMR_SETICMMODE Example 2 .................................................................... 194
-EMR_SAVEDC Example 3 ............................................................................ 194
-EMR_SETLAYOUT Example 1 ....................................................................... 195
-EMR_SETMETARGN Example 1 .................................................................... 195
-EMR_SELECTOBJECT Example 1 .................................................................. 195
-EMR_SELECTOBJECT Example 2 .................................................................. 196
-EMR_SELECTOBJECT Example 3 .................................................................. 196
-EMR_SELECTPALETTE Example 1 ................................................................. 197
-EMR_SETBKCOLOR Example 1 ..................................................................... 197
-EMR_SETTEXTCOLOR Example 1 ................................................................. 198
-EMR_SETBKMODE Example 1 ...................................................................... 198
-EMR_SETPOLYFILLMODE Example 1 ............................................................. 199
-EMR_SETROP2 Example 1 ........................................................................... 199
-EMR_SETSTRETCHBLTMODE Example 1 ........................................................ 199
-EMR_SETTEXTALIGN Example 1 .................................................................. 200
-EMR_SETBRUSHORGEX Example 1 .............................................................. 200
-EMR_SETMITERLIMIT Example 1 ................................................................. 201
-EMR_MOVETOEX Example 1 ........................................................................ 201
-EMR_SETWORLDTRANSFORM Example 1 ...................................................... 202
-EMR_MODIFYWORLDTRANSFORM Example 1 ................................................ 203
-EMR_SETLAYOUT Example 2 ....................................................................... 203
-EMR_SETBRUSHORGEX Example 2 .............................................................. 204
-
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-3.2.8
-3.2.9
-3.2.10
-3.2.11
-3.2.12
-3.2.13
-3.2.14
-3.2.15
-3.2.16
-3.2.17
-3.2.18
-3.2.19
-3.2.20
-3.2.21
-3.2.22
-3.2.23
-3.2.24
-3.2.25
-3.2.26
-3.2.27
-
-[MS-EMFPLUS] - v20240423
-Enhanced Metafile Format Plus Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8 / 262
-
-3.2.33
-
-3.2.28
-3.2.29
-3.2.30
-3.2.31
-3.2.32
-
-EMR_EXTCREATEFONTINDIRECTW Example .................................................. 204
-EMR_SELECTOBJECT Example 4 .................................................................. 207
-EMR_SELECTOBJECT Example 5 .................................................................. 208
-EMR_DELETEOBJECT Example ..................................................................... 208
-EMR_COMMENT_EMFPLUS Example 2 ........................................................... 209
-EmfPlusSetAntiAliasMode Example 1 ...................................................... 209
-3.2.32.1
-EmfPlusSetCompositingQuality Example 1 ............................................... 210
-3.2.32.2
-EmfPlusSetInterpolationMode Example 1 ................................................ 210
-3.2.32.3
-EmfPlusSetPixelOffsetMode Example 1 .................................................... 211
-3.2.32.4
-EmfPlusSetTextRenderingHint Example 1 ................................................ 211
-3.2.32.5
-EmfPlusMultiplyWorldTransform Example 1 ............................................. 212
-3.2.32.6
-EmfPlusSave Example .......................................................................... 212
-3.2.32.7
-EmfPlusMultiplyWorldTransform Example 2 ............................................. 213
-3.2.32.8
-3.2.32.9
-EmfPlusSetWorldTransform Example 1.................................................... 214
-3.2.32.10  EmfPlusBeginContainerNoParams Example .............................................. 214
-3.2.32.11  EmfPlusSetAntiAliasMode Example 2 ...................................................... 215
-3.2.32.12  EmfPlusSetCompositingQuality Example 2 ............................................... 215
-3.2.32.13  EmfPlusSetInterpolationMode Example 2 ................................................ 216
-3.2.32.14  EmfPlusSetPixelOffsetMode Example 2 .................................................... 216
-3.2.32.15  EmfPlusSetTextRenderingHint Example 2 ................................................ 217
-3.2.32.16  EmfPlusSetPageTransform Example ........................................................ 217
-3.2.32.17  EmfPlusSetWorldTransform Example 2.................................................... 218
-3.2.32.18  EmfPlusSetWorldTransform Example 3.................................................... 219
-3.2.32.19  EmfPlusSetWorldTransform Example 4.................................................... 219
-3.2.32.20  EmfPlusSetWorldTransform Example 5.................................................... 220
-3.2.32.21  EmfPlusObject Example ........................................................................ 221
-3.2.32.22  EmfPlusFillPath Example ....................................................................... 223
-EMR_COMMENT_EMFPLUS Example 3 ........................................................... 223
-EmfPlusObject Example ........................................................................ 224
-EmfPlusDrawPath Example .................................................................... 226
-EMR_RESTOREDC Example 1 ...................................................................... 226
-EMR_RESTOREDC Example 2 ...................................................................... 227
-EMR_SELECTOBJECT Example 6 .................................................................. 227
-EMR_RESTOREDC Example 3 ...................................................................... 227
-EMR_SAVEDC Example 4 ............................................................................ 228
-EMR_SETLAYOUT Example 3 ....................................................................... 228
-EMR_SETMETARGN Example 2 .................................................................... 229
-EMR_SELECTOBJECT Example 7 .................................................................. 229
-EMR_SELECTOBJECT Example 8 .................................................................. 229
-EMR_SELECTOBJECT Example 9 .................................................................. 230
-EMR_SELECTPALETTE Example 2 ................................................................. 230
-EMR_SETBKCOLOR Example 2 ..................................................................... 231
-EMR_SETTEXTCOLOR Example 2 ................................................................. 231
-EMR_SETBKMODE Example 2 ...................................................................... 232
-EMR_SETPOLYFILLMODE Example 2 ............................................................. 232
-EMR_SETROP2 Example 2 ........................................................................... 232
-EMR_SETSTRETCHBLTMODE Example 2 ........................................................ 233
-EMR_SETTEXTALIGN Example 2 .................................................................. 233
-EMR_SETBRUSHORGEX Example 3 .............................................................. 234
-EMR_SETMITERLIMIT Example 2 ................................................................. 234
-EMR_MOVETOEX Example 2 ........................................................................ 235
-EMR_SETWORLDTRANSFORM Example 2 ...................................................... 235
-EMR_MODIFYWORLDTRANSFORM Example 2 ................................................ 236
-EMR_SETLAYOUT Example 4 ....................................................................... 237
-EMR_COMMENT_BEGINGROUP Example ....................................................... 237
-EMR_SETWORLDTRANSFORM Example 3 ...................................................... 239
-EMR_MODIFYWORLDTRANSFORM Example 3 ................................................ 239
-EMR_MODIFYWORLDTRANSFORM Example 4 ................................................ 240
-
-3.2.34
-3.2.35
-3.2.36
-3.2.37
-3.2.38
-3.2.39
-3.2.40
-3.2.41
-3.2.42
-3.2.43
-3.2.44
-3.2.45
-3.2.46
-3.2.47
-3.2.48
-3.2.49
-3.2.50
-3.2.51
-3.2.52
-3.2.53
-3.2.54
-3.2.55
-3.2.56
-3.2.57
-3.2.58
-3.2.59
-3.2.60
-3.2.61
-
-3.2.33.1
-3.2.33.2
-
-[MS-EMFPLUS] - v20240423
-Enhanced Metafile Format Plus Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-9 / 262
-
-3.2.62
-3.2.63
-3.2.64
-3.2.65
-3.2.66
-3.2.67
-
-EMR_MODIFYWORLDTRANSFORM Example 5 ................................................ 241
-EMR_SELECTOBJECT Example 10 ................................................................ 242
-EMR_ROUNDRECT Example ......................................................................... 242
-EMR_COMMENT_ENDGROUP Example .......................................................... 243
-EMR_RESTOREDC Example 4 ...................................................................... 243
-EMR_COMMENT_EMFPLUS Example 4 ........................................................... 244
-EmfPlusEndContainer Example ............................................................... 244
-EmfPlusRestore Example ....................................................................... 245
-EmfPlusSetWorldTransform Example ...................................................... 246
-EMR_BITBLT Example ................................................................................ 246
-EMR_RESTOREDC Example 5 ...................................................................... 248
-EMR_COMMENT_EMFPLUS Example 5 ........................................................... 249
-EmfPlusEndOfFile Example .................................................................... 249
-EMR_EOF Example ..................................................................................... 250
-EMF+ String Drawing Example .......................................................................... 251
-
-3.2.67.1
-3.2.67.2
-3.2.67.3
-
-3.2.68
-3.2.69
-3.2.70
-
-3.2.70.1
-
-3.2.71
-
-3.3
-
-4  Security ............................................................................................................... 253
-
-5  Appendix A: Product Behavior ............................................................................. 254
-
-6  Change Tracking .................................................................................................. 257
-
-7  Index ................................................................................................................... 258
-
-[MS-EMFPLUS] - v20240423
-Enhanced Metafile Format Plus Extensions
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-10 / 262
-
-1  Introduction
+## Table of Contents
+
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Metafile Structure](#131-metafile-structure)
+    - [1.3.2 Byte Ordering](#132-byte-ordering)
+  - [1.4 Relationship to Protocols and Other Structures](#14-relationship-to-protocols-and-other-structures)
+  - [1.5 Applicability Statement](#15-applicability-statement)
+  - [1.6 Versioning and Localization](#16-versioning-and-localization)
+  - [1.7 Vendor-Extensible Fields](#17-vendor-extensible-fields)
+- [2 Structures](#2-structures)
+  - [2.1 EMF+ Constants](#21-emf-constants)
+    - [2.1.1 Enumeration Constant Types](#211-enumeration-constant-types)
+      - [2.1.1.5 Modes for combining source colors with background colors. The](#2115-modes-for-combining-source-colors-with-background-colors-the)
+      - [2.1.1.8 Color channels that can be affected by a color curve effect adjustment to](#2118-color-channels-that-can-be-affected-by-a-color-curve-effect-adjustment-to)
+      - [2.1.1.10 Types of line caps to use at the ends of dashed lines that are drawn with](#21110-types-of-line-caps-to-use-at-the-ends-of-dashed-lines-that-are-drawn-with)
+      - [2.1.1.11 Types of filtering algorithms that can be used for text and graphics quality](#21111-types-of-filtering-algorithms-that-can-be-used-for-text-and-graphics-quality)
+      - [2.1.1.12 Versions of operating system graphics that are used to create EMF+](#21112-versions-of-operating-system-graphics-that-are-used-to-create-emf)
+      - [2.1.1.13 Hatch patterns used by graphics brushes. A hatch pattern consists of a](#21113-hatch-patterns-used-by-graphics-brushes-a-hatch-pattern-consists-of-a)
+      - [2.1.1.14 Output options for hotkey prefixes in graphics text.](#21114-output-options-for-hotkey-prefixes-in-graphics-text)
+      - [2.1.1.15 Types of image data formats.](#21115-types-of-image-data-formats)
+      - [2.1.1.16 Ways to perform scaling, including stretching and shrinking.](#21116-ways-to-perform-scaling-including-stretching-and-shrinking)
+      - [2.1.1.17 Types of line caps to use at the ends of lines that are drawn with graphics](#21117-types-of-line-caps-to-use-at-the-ends-of-lines-that-are-drawn-with-graphics)
+      - [2.1.1.18 Ways to join two lines that are drawn by the same graphics pen and whose](#21118-ways-to-join-two-lines-that-are-drawn-by-the-same-graphics-pen-and-whose)
+      - [2.1.1.19 Styles of lines that are drawn with graphics pens.](#21119-styles-of-lines-that-are-drawn-with-graphics-pens)
+      - [2.1.1.20 Types of metafiles data that can be embedded in an EMF+ metafile.](#21120-types-of-metafiles-data-that-can-be-embedded-in-an-emf-metafile)
+      - [2.1.1.21 Types of graphics objects that can be created and used in graphics](#21121-types-of-graphics-objects-that-can-be-created-and-used-in-graphics)
+      - [2.1.1.22 Types of points on a graphics path.](#21122-types-of-points-on-a-graphics-path)
+      - [2.1.1.23 The distribution of the width of the pen with respect to the line being](#21123-the-distribution-of-the-width-of-the-pen-with-respect-to-the-line-being)
+      - [2.1.1.24 Pixel formats that are supported in EMF+ bitmaps.](#21124-pixel-formats-that-are-supported-in-emf-bitmaps)
+      - [2.1.1.25 How pixels are offset, which specifies the trade-off between rendering](#21125-how-pixels-are-offset-which-specifies-the-trade-off-between-rendering)
+      - [2.1.1.26 Types of region node data.](#21126-types-of-region-node-data)
+      - [2.1.1.27 Types of smoothing to apply to lines, curves and the edges of filled areas](#21127-types-of-smoothing-to-apply-to-lines-curves-and-the-edges-of-filled-areas)
+      - [2.1.1.28 Ways to align strings with respect to a text layout rectangle.](#21128-ways-to-align-strings-with-respect-to-a-text-layout-rectangle)
+      - [2.1.1.29 Ways to substitute digits in a string according to a user's locale or](#21129-ways-to-substitute-digits-in-a-string-according-to-a-users-locale-or)
+      - [2.1.1.30 How to trim characters from a string that is too large for the text layout](#21130-how-to-trim-characters-from-a-string-that-is-too-large-for-the-text-layout)
+      - [2.1.1.31 Types of text hinting and anti-aliasing, which affects the quality of text](#21131-types-of-text-hinting-and-anti-aliasing-which-affects-the-quality-of-text)
+      - [2.1.1.32 Units of measurement in different coordinate systems.](#21132-units-of-measurement-in-different-coordinate-systems)
+      - [2.1.1.33 How the pattern from a texture or gradient brush is tiled across a shape or](#21133-how-the-pattern-from-a-texture-or-gradient-brush-is-tiled-across-a-shape-or)
+    - [2.1.2 Bit Flag Constant Types](#212-bit-flag-constant-types)
+      - [2.1.2.1 BrushData Flags](#2121-brushdata-flags)
+      - [2.1.2.2 CustomLineCapData Flags](#2122-customlinecapdata-flags)
+      - [2.1.2.3 DriverStringOptions Flags](#2123-driverstringoptions-flags)
+      - [2.1.2.4 FontStyle Flags](#2124-fontstyle-flags)
+      - [2.1.2.5 PaletteStyle Flags](#2125-palettestyle-flags)
+      - [2.1.2.6 PathPointType Flags](#2126-pathpointtype-flags)
+      - [2.1.2.7 PenData Flags](#2127-pendata-flags)
+      - [2.1.2.8 StringFormat Flags](#2128-stringformat-flags)
+    - [2.1.3 Standard Identifier Constant Types](#213-standard-identifier-constant-types)
+      - [2.1.3.1 ImageEffects Identifiers](#2131-imageeffects-identifiers)
+  - [2.2 EMF+ Objects](#22-emf-objects)
+    - [2.2.1 Graphics Object Types](#221-graphics-object-types)
+      - [2.2.1.1 EmfPlusBrush Object](#2211-emfplusbrush-object)
+      - [2.2.1.2 EmfPlusCustomLineCap Object](#2212-emfpluscustomlinecap-object)
+      - [2.2.1.3 EmfPlusFont Object](#2213-emfplusfont-object)
+      - [2.2.1.4 EmfPlusImage Object](#2214-emfplusimage-object)
+      - [2.2.1.5 EmfPlusImageAttributes Object](#2215-emfplusimageattributes-object)
+      - [2.2.1.6 EmfPlusPath Object](#2216-emfpluspath-object)
+      - [2.2.1.7 EmfPlusPen Object](#2217-emfpluspen-object)
+      - [2.2.1.8 EmfPlusRegion Object](#2218-emfplusregion-object)
+      - [2.2.1.9 EmfPlusStringFormat Object](#2219-emfplusstringformat-object)
+    - [2.2.2 Structure Object Types](#222-structure-object-types)
+      - [2.2.2.10 An image with compressed data.](#22210-an-image-with-compressed-data)
+      - [2.2.2.11 A custom line cap for the end of a line.](#22211-a-custom-line-cap-for-the-end-of-a-line)
+      - [2.2.2.12 Adjustable arrow data for a custom line cap.](#22212-adjustable-arrow-data-for-a-custom-line-cap)
+      - [2.2.2.13 Default data for a custom line cap.](#22213-default-data-for-a-custom-line-cap)
+      - [2.2.2.14 Optional fill and outline data for a custom line cap.](#22214-optional-fill-and-outline-data-for-a-custom-line-cap)
+      - [2.2.2.15 A custom line cap for the start of a line.](#22215-a-custom-line-cap-for-the-start-of-a-line)
+      - [2.2.2.16 Properties of a dashed line for a graphics pen.](#22216-properties-of-a-dashed-line-for-a-graphics-pen)
+      - [2.2.2.17 A graphics path for filling a custom line cap.](#22217-a-graphics-path-for-filling-a-custom-line-cap)
+      - [2.2.2.18 Focus scales for the blend pattern of a path gradient](#22218-focus-scales-for-the-blend-pattern-of-a-path-gradient)
+      - [2.2.2.19 The version of operating system graphics that is used to](#22219-the-version-of-operating-system-graphics-that-is-used-to)
+      - [2.2.2.20 A hatch pattern for a graphics brush.](#22220-a-hatch-pattern-for-a-graphics-brush)
+      - [2.2.2.21 A 7-bit signed integer in an 8-bit field.](#22221-a-7-bit-signed-integer-in-an-8-bit-field)
+      - [2.2.2.22 A 15-bit signed integer in a 16-bit field.](#22222-a-15-bit-signed-integer-in-a-16-bit-field)
+      - [2.2.2.23 Language identifiers that correspond to natural languages](#22223-language-identifiers-that-correspond-to-natural-languages)
+      - [2.2.2.24 A linear gradient for a graphics brush.](#22224-a-linear-gradient-for-a-graphics-brush)
+      - [2.2.2.26 A graphics path for outlining a custom line cap.](#22226-a-graphics-path-for-outlining-a-custom-line-cap)
+      - [2.2.2.27 A metafile that contains a graphics image.](#22227-a-metafile-that-contains-a-graphics-image)
+      - [2.2.2.28 The colors that make up a palette.](#22228-the-colors-that-make-up-a-palette)
+      - [2.2.2.29 A path gradient for a graphics brush.](#22229-a-path-gradient-for-a-graphics-brush)
+      - [2.2.2.30 Optional data for a path gradient brush.](#22230-optional-data-for-a-path-gradient-brush)
+      - [2.2.2.31 A type value associated with a point on a graphics path.](#22231-a-type-value-associated-with-a-point-on-a-graphics-path)
+      - [2.2.2.32 Type values associated with points on a graphics path](#22232-type-values-associated-with-points-on-a-graphics-path)
+      - [2.2.2.33 Properties of a graphics pen.](#22233-properties-of-a-graphics-pen)
+      - [2.2.2.34 Optional data for a graphics pen.](#22234-optional-data-for-a-graphics-pen)
+      - [2.2.2.35 An ordered pair of integer (X,Y) values that defines an](#22235-an-ordered-pair-of-integer-xy-values-that-defines-an)
+      - [2.2.2.36 An ordered pair of floating-point (X,Y) values that defines](#22236-an-ordered-pair-of-floating-point-xy-values-that-defines)
+      - [2.2.2.37 An ordered pair of integer (X,Y) values that defines a](#22237-an-ordered-pair-of-integer-xy-values-that-defines-a)
+      - [2.2.2.38 A rectangle origin, height, and width as integers.](#22238-a-rectangle-origin-height-and-width-as-integers)
+      - [2.2.2.39 A rectangle origin, height, and width as floating-point](#22239-a-rectangle-origin-height-and-width-as-floating-point)
+      - [2.2.2.40 A node of a graphics region.](#22240-a-node-of-a-graphics-region)
+      - [2.2.2.41 The child nodes of a graphics region.](#22241-the-child-nodes-of-a-graphics-region)
+      - [2.2.2.42 A graphics path for drawing the boundary of a region](#22242-a-graphics-path-for-drawing-the-boundary-of-a-region)
+      - [2.2.2.43 A solid color for a graphics brush.](#22243-a-solid-color-for-a-graphics-brush)
+      - [2.2.2.44 Tab stops and character positions for a graphics string.](#22244-tab-stops-and-character-positions-for-a-graphics-string)
+      - [2.2.2.45 A texture image for a graphics brush.](#22245-a-texture-image-for-a-graphics-brush)
+      - [2.2.2.46 Optional data for a texture brush.](#22246-optional-data-for-a-texture-brush)
+      - [2.2.2.47 A world space to device space transform.](#22247-a-world-space-to-device-space-transform)
+    - [2.2.3 Image Effects Object Types](#223-image-effects-object-types)
+      - [2.2.3.10 An increase in the difference in intensity between pixels in an image.](#22310-an-increase-in-the-difference-in-intensity-between-pixels-in-an-image)
+      - [2.2.3.11 An addition of black or white to a specified hue in an image.](#22311-an-addition-of-black-or-white-to-a-specified-hue-in-an-image)
+  - [2.3 EMF+ Records](#23-emf-records)
+    - [2.3.1 Clipping Record Types](#231-clipping-record-types)
+      - [2.3.1.1 EmfPlusOffsetClip Record](#2311-emfplusoffsetclip-record)
+      - [2.3.1.2 EmfPlusResetClip Record](#2312-emfplusresetclip-record)
+      - [2.3.1.3 EmfPlusSetClipPath Record](#2313-emfplussetclippath-record)
+      - [2.3.1.4 EmfPlusSetClipRect Record](#2314-emfplussetcliprect-record)
+      - [2.3.1.5 EmfPlusSetClipRegion Record](#2315-emfplussetclipregion-record)
+    - [2.3.2 Comment Record Types](#232-comment-record-types)
+      - [2.3.2.1 EmfPlusComment Record](#2321-emfpluscomment-record)
+    - [2.3.3 Control Record Types](#233-control-record-types)
+      - [2.3.3.1 EmfPlusEndOfFile Record](#2331-emfplusendoffile-record)
+      - [2.3.3.2 EmfPlusGetDC Record](#2332-emfplusgetdc-record)
+      - [2.3.3.3 EmfPlusHeader Record](#2333-emfplusheader-record)
+    - [2.3.4 Drawing Record Types](#234-drawing-record-types)
+      - [2.3.4.10 Draws a series of connected lines.](#23410-draws-a-series-of-connected-lines)
+      - [2.3.4.11 Draws a graphics path.](#23411-draws-a-graphics-path)
+      - [2.3.4.12 Draws a section of the interior of an ellipse.](#23412-draws-a-section-of-the-interior-of-an-ellipse)
+      - [2.3.4.13 Draws a series of rectangles.](#23413-draws-a-series-of-rectangles)
+      - [2.3.4.14 Outputs text with string formatting.](#23414-outputs-text-with-string-formatting)
+      - [2.3.4.15 Draws the interior of a closed cardinal spline.](#23415-draws-the-interior-of-a-closed-cardinal-spline)
+      - [2.3.4.16 Draws the interior of an ellipse.](#23416-draws-the-interior-of-an-ellipse)
+      - [2.3.4.17 Draws the interior of a graphics path.](#23417-draws-the-interior-of-a-graphics-path)
+      - [2.3.4.18 Draws a section of the interior of an ellipse.](#23418-draws-a-section-of-the-interior-of-an-ellipse)
+      - [2.3.4.19 Draws the interior of a polygon.](#23419-draws-the-interior-of-a-polygon)
+      - [2.3.4.20 Draws the interiors of a series of rectangles.](#23420-draws-the-interiors-of-a-series-of-rectangles)
+      - [2.3.4.21 Draws the interior of a graphics region.](#23421-draws-the-interior-of-a-graphics-region)
+    - [2.3.5 Object Record Types](#235-object-record-types)
+      - [2.3.5.1 EmfPlusObject Record](#2351-emfplusobject-record)
+      - [2.3.5.2 EmfPlusSerializableObject Record](#2352-emfplusserializableobject-record)
+    - [2.3.6 Property Record Types](#236-property-record-types)
+      - [2.3.6.5 Sets how pixels are centered with respect to the coordinates of the](#2365-sets-how-pixels-are-centered-with-respect-to-the-coordinates-of-the)
+      - [2.3.6.6 EmfPlusSetRenderingOrigin Record](#2366-emfplussetrenderingorigin-record)
+      - [2.3.6.7 EmfPlusSetTextContrast Record](#2367-emfplussettextcontrast-record)
+      - [2.3.6.8 EmfPlusSetTextRenderingHint Record](#2368-emfplussettextrenderinghint-record)
+    - [2.3.7 State Record Types](#237-state-record-types)
+      - [2.3.7.1 EmfPlusBeginContainer Record](#2371-emfplusbegincontainer-record)
+      - [2.3.7.2 EmfPlusBeginContainerNoParams Record](#2372-emfplusbegincontainernoparams-record)
+      - [2.3.7.3 EmfPlusEndContainer Record](#2373-emfplusendcontainer-record)
+      - [2.3.7.4 EmfPlusRestore Record](#2374-emfplusrestore-record)
+      - [2.3.7.5 EmfPlusSave Record](#2375-emfplussave-record)
+    - [2.3.8 Terminal Server Record Types](#238-terminal-server-record-types)
+      - [2.3.8.1 EmfPlusSetTSClip Record](#2381-emfplussettsclip-record)
+      - [2.3.8.2 EmfPlusSetTSGraphics Record](#2382-emfplussettsgraphics-record)
+    - [2.3.9 Transform Record Types](#239-transform-record-types)
+      - [2.3.9.1 Multiplies the current world space transform by a specified](#2391-multiplies-the-current-world-space-transform-by-a-specified)
+      - [2.3.9.5 Specifies scaling factors and units for converting page space](#2395-specifies-scaling-factors-and-units-for-converting-page-space)
+      - [2.3.9.6 Specifies the current world space transform according to the](#2396-specifies-the-current-world-space-transform-according-to-the)
+      - [2.3.9.7 EmfPlusTranslateWorldTransform Record](#2397-emfplustranslateworldtransform-record)
+- [3 Structure Examples](#3-structure-examples)
+  - [3.1 Metafile Design](#31-metafile-design)
+    - [3.1.1 Byte Ordering Example](#311-byte-ordering-example)
+    - [3.1.2 Managing Graphics Objects](#312-managing-graphics-objects)
+  - [3.2 EMF+ Metafile Example](#32-emf-metafile-example)
+    - [3.2.1 EMR_HEADER Example](#321-emrheader-example)
+    - [3.2.2 EMR_COMMENT_EMFPLUS Example 1](#322-emrcommentemfplus-example-1)
+      - [3.2.2.1 EmfPlusHeader Example](#3221-emfplusheader-example)
+    - [3.2.3 EMR_SAVEDC Example 1](#323-emrsavedc-example-1)
+    - [3.2.4 EMR_SETICMMODE Example 1](#324-emrseticmmode-example-1)
+    - [3.2.5 EMR_SAVEDC Example 2](#325-emrsavedc-example-2)
+    - [3.2.6 EMR_SETICMMODE Example 2](#326-emrseticmmode-example-2)
+    - [3.2.7 EMR_SAVEDC Example 3](#327-emrsavedc-example-3)
+    - [3.2.8 EMR_SETLAYOUT Example 1](#328-emrsetlayout-example-1)
+    - [3.2.9 EMR_SETMETARGN Example 1](#329-emrsetmetargn-example-1)
+    - [3.2.10 EMR_SELECTOBJECT Example 1](#3210-emrselectobject-example-1)
+    - [3.2.11 EMR_SELECTOBJECT Example 2](#3211-emrselectobject-example-2)
+    - [3.2.12 EMR_SELECTOBJECT Example 3](#3212-emrselectobject-example-3)
+    - [3.2.13 EMR_SELECTPALETTE Example 1](#3213-emrselectpalette-example-1)
+    - [3.2.14 EMR_SETBKCOLOR Example 1](#3214-emrsetbkcolor-example-1)
+    - [3.2.15 EMR_SETTEXTCOLOR Example 1](#3215-emrsettextcolor-example-1)
+    - [3.2.16 EMR_SETBKMODE Example 1](#3216-emrsetbkmode-example-1)
+    - [3.2.17 EMR_SETPOLYFILLMODE Example 1](#3217-emrsetpolyfillmode-example-1)
+    - [3.2.18 EMR_SETROP2 Example 1](#3218-emrsetrop2-example-1)
+    - [3.2.19 EMR_SETSTRETCHBLTMODE Example 1](#3219-emrsetstretchbltmode-example-1)
+    - [3.2.20 EMR_SETTEXTALIGN Example 1](#3220-emrsettextalign-example-1)
+    - [3.2.21 EMR_SETBRUSHORGEX Example 1](#3221-emrsetbrushorgex-example-1)
+    - [3.2.22 EMR_SETMITERLIMIT Example 1](#3222-emrsetmiterlimit-example-1)
+    - [3.2.23 EMR_MOVETOEX Example 1](#3223-emrmovetoex-example-1)
+    - [3.2.24 EMR_SETWORLDTRANSFORM Example 1](#3224-emrsetworldtransform-example-1)
+    - [3.2.25 EMR_MODIFYWORLDTRANSFORM Example 1](#3225-emrmodifyworldtransform-example-1)
+    - [3.2.26 EMR_SETLAYOUT Example 2](#3226-emrsetlayout-example-2)
+    - [3.2.27 EMR_SETBRUSHORGEX Example 2](#3227-emrsetbrushorgex-example-2)
+    - [3.2.28 EMR_EXTCREATEFONTINDIRECTW Example](#3228-emrextcreatefontindirectw-example)
+    - [3.2.29 EMR_SELECTOBJECT Example 4](#3229-emrselectobject-example-4)
+    - [3.2.30 EMR_SELECTOBJECT Example 5](#3230-emrselectobject-example-5)
+    - [3.2.31 EMR_DELETEOBJECT Example](#3231-emrdeleteobject-example)
+    - [3.2.32 EMR_COMMENT_EMFPLUS Example 2](#3232-emrcommentemfplus-example-2)
+      - [3.2.32.1 EmfPlusSetAntiAliasMode Example 1](#32321-emfplussetantialiasmode-example-1)
+      - [3.2.32.2 EmfPlusSetCompositingQuality Example 1](#32322-emfplussetcompositingquality-example-1)
+      - [3.2.32.3 EmfPlusSetInterpolationMode Example 1](#32323-emfplussetinterpolationmode-example-1)
+      - [3.2.32.4 EmfPlusSetPixelOffsetMode Example 1](#32324-emfplussetpixeloffsetmode-example-1)
+      - [3.2.32.5 EmfPlusSetTextRenderingHint Example 1](#32325-emfplussettextrenderinghint-example-1)
+      - [3.2.32.6 EmfPlusMultiplyWorldTransform Example 1](#32326-emfplusmultiplyworldtransform-example-1)
+      - [3.2.32.7 EmfPlusSave Example](#32327-emfplussave-example)
+      - [3.2.32.8 EmfPlusMultiplyWorldTransform Example 2](#32328-emfplusmultiplyworldtransform-example-2)
+      - [3.2.32.9 EmfPlusSetWorldTransform Example 1](#32329-emfplussetworldtransform-example-1)
+      - [3.2.32.10 EmfPlusBeginContainerNoParams Example](#323210-emfplusbegincontainernoparams-example)
+      - [3.2.32.11 EmfPlusSetAntiAliasMode Example 2](#323211-emfplussetantialiasmode-example-2)
+      - [3.2.32.12 EmfPlusSetCompositingQuality Example 2](#323212-emfplussetcompositingquality-example-2)
+      - [3.2.32.13 EmfPlusSetInterpolationMode Example 2](#323213-emfplussetinterpolationmode-example-2)
+      - [3.2.32.14 EmfPlusSetPixelOffsetMode Example 2](#323214-emfplussetpixeloffsetmode-example-2)
+      - [3.2.32.15 EmfPlusSetTextRenderingHint Example 2](#323215-emfplussettextrenderinghint-example-2)
+      - [3.2.32.16 EmfPlusSetPageTransform Example](#323216-emfplussetpagetransform-example)
+      - [3.2.32.17 EmfPlusSetWorldTransform Example 2](#323217-emfplussetworldtransform-example-2)
+      - [3.2.32.18 EmfPlusSetWorldTransform Example 3](#323218-emfplussetworldtransform-example-3)
+      - [3.2.32.19 EmfPlusSetWorldTransform Example 4](#323219-emfplussetworldtransform-example-4)
+      - [3.2.32.20 EmfPlusSetWorldTransform Example 5](#323220-emfplussetworldtransform-example-5)
+      - [3.2.32.21 EmfPlusObject Example](#323221-emfplusobject-example)
+      - [3.2.32.22 EmfPlusFillPath Example](#323222-emfplusfillpath-example)
+    - [3.2.33 EMR_COMMENT_EMFPLUS Example 3](#3233-emrcommentemfplus-example-3)
+      - [3.2.33.1 EmfPlusObject Example](#32331-emfplusobject-example)
+      - [3.2.33.2 EmfPlusDrawPath Example](#32332-emfplusdrawpath-example)
+    - [3.2.34 EMR_RESTOREDC Example 1](#3234-emrrestoredc-example-1)
+    - [3.2.35 EMR_RESTOREDC Example 2](#3235-emrrestoredc-example-2)
+    - [3.2.36 EMR_SELECTOBJECT Example 6](#3236-emrselectobject-example-6)
+    - [3.2.37 EMR_RESTOREDC Example 3](#3237-emrrestoredc-example-3)
+    - [3.2.38 EMR_SAVEDC Example 4](#3238-emrsavedc-example-4)
+    - [3.2.39 EMR_SETLAYOUT Example 3](#3239-emrsetlayout-example-3)
+    - [3.2.40 EMR_SETMETARGN Example 2](#3240-emrsetmetargn-example-2)
+    - [3.2.41 EMR_SELECTOBJECT Example 7](#3241-emrselectobject-example-7)
+    - [3.2.42 EMR_SELECTOBJECT Example 8](#3242-emrselectobject-example-8)
+    - [3.2.43 EMR_SELECTOBJECT Example 9](#3243-emrselectobject-example-9)
+    - [3.2.44 EMR_SELECTPALETTE Example 2](#3244-emrselectpalette-example-2)
+    - [3.2.45 EMR_SETBKCOLOR Example 2](#3245-emrsetbkcolor-example-2)
+    - [3.2.46 EMR_SETTEXTCOLOR Example 2](#3246-emrsettextcolor-example-2)
+    - [3.2.47 EMR_SETBKMODE Example 2](#3247-emrsetbkmode-example-2)
+    - [3.2.48 EMR_SETPOLYFILLMODE Example 2](#3248-emrsetpolyfillmode-example-2)
+    - [3.2.49 EMR_SETROP2 Example 2](#3249-emrsetrop2-example-2)
+    - [3.2.50 EMR_SETSTRETCHBLTMODE Example 2](#3250-emrsetstretchbltmode-example-2)
+    - [3.2.51 EMR_SETTEXTALIGN Example 2](#3251-emrsettextalign-example-2)
+    - [3.2.52 EMR_SETBRUSHORGEX Example 3](#3252-emrsetbrushorgex-example-3)
+    - [3.2.53 EMR_SETMITERLIMIT Example 2](#3253-emrsetmiterlimit-example-2)
+    - [3.2.54 EMR_MOVETOEX Example 2](#3254-emrmovetoex-example-2)
+    - [3.2.55 EMR_SETWORLDTRANSFORM Example 2](#3255-emrsetworldtransform-example-2)
+    - [3.2.56 EMR_MODIFYWORLDTRANSFORM Example 2](#3256-emrmodifyworldtransform-example-2)
+    - [3.2.57 EMR_SETLAYOUT Example 4](#3257-emrsetlayout-example-4)
+    - [3.2.58 EMR_COMMENT_BEGINGROUP Example](#3258-emrcommentbegingroup-example)
+    - [3.2.59 EMR_SETWORLDTRANSFORM Example 3](#3259-emrsetworldtransform-example-3)
+    - [3.2.60 EMR_MODIFYWORLDTRANSFORM Example 3](#3260-emrmodifyworldtransform-example-3)
+    - [3.2.61 EMR_MODIFYWORLDTRANSFORM Example 4](#3261-emrmodifyworldtransform-example-4)
+    - [3.2.62 EMR_MODIFYWORLDTRANSFORM Example 5](#3262-emrmodifyworldtransform-example-5)
+    - [3.2.63 EMR_SELECTOBJECT Example 10](#3263-emrselectobject-example-10)
+    - [3.2.64 EMR_ROUNDRECT Example](#3264-emrroundrect-example)
+    - [3.2.65 EMR_COMMENT_ENDGROUP Example](#3265-emrcommentendgroup-example)
+    - [3.2.66 EMR_RESTOREDC Example 4](#3266-emrrestoredc-example-4)
+    - [3.2.67 EMR_COMMENT_EMFPLUS Example 4](#3267-emrcommentemfplus-example-4)
+      - [3.2.67.1 EmfPlusEndContainer Example](#32671-emfplusendcontainer-example)
+      - [3.2.67.2 EmfPlusRestore Example](#32672-emfplusrestore-example)
+      - [3.2.67.3 EmfPlusSetWorldTransform Example](#32673-emfplussetworldtransform-example)
+    - [3.2.68 EMR_BITBLT Example](#3268-emrbitblt-example)
+    - [3.2.69 EMR_RESTOREDC Example 5](#3269-emrrestoredc-example-5)
+    - [3.2.70 EMR_COMMENT_EMFPLUS Example 5](#3270-emrcommentemfplus-example-5)
+      - [3.2.70.1 EmfPlusEndOfFile Example](#32701-emfplusendoffile-example)
+    - [3.2.71 EMR_EOF Example](#3271-emreof-example)
+  - [3.3 EMF+ String Drawing Example](#33-emf-string-drawing-example)
+- [4 Security](#4-security)
+- [5 Appendix A: Product Behavior](#5-appendix-a-product-behavior)
+- [6 Change Tracking](#6-change-tracking)
+- [7 Index](#7-index)
+
+## 1 Introduction
 
 The Enhanced Metafile Format Plus Extensions (EMF+) file structure specifies a metafile format that
 can store a picture in a device-independent form. The stored picture can be rendered by parsing and
@@ -1295,7 +872,7 @@ plotters, and desktops, or in the client areas of applications.
 Sections 1.7 and 2 of this specification are normative. All other sections and examples in this
 specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1346,7 +923,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ASCII character or an array of 8-bit ASCII characters with the high bit of each character set to
+
+ASCII character or an array of 8-bit ASCII characters with the high bit of each character set to
 zero.
 
 baseline: The imaginary line to which the bottom of the lowercase "x" character in a font
@@ -1424,7 +1002,8 @@ Release: April 23, 2024
 
 12 / 262
 
-color curve effect: An image effect that is used to apply one of eight adjustments to the color
+
+color curve effect: An image effect that is used to apply one of eight adjustments to the color
 curve of an image: exposure, density, contrast, highlight, shadow, midtone, white
 saturation, and black saturation.
 
@@ -1496,7 +1075,8 @@ Release: April 23, 2024
 
 13 / 262
 
-device-independent bitmap (DIB): A container for bitmapped graphics, which specifies
+
+device-independent bitmap (DIB): A container for bitmapped graphics, which specifies
 
 characteristics of the bitmap such that it can be created using one application and loaded and
 displayed in another application, while retaining an identical appearance.
@@ -1569,7 +1149,8 @@ Release: April 23, 2024
 
 14 / 262
 
-Graphics Device Interface (GDI): An API supported on 16-bit and 32-bit versions of the
+
+Graphics Device Interface (GDI): An API supported on 16-bit and 32-bit versions of the
 operating system which supports graphics operations and image manipulation on logical
 graphics objects.
 
@@ -1643,7 +1224,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-levels effect: An image effect that is used to apply highlight, midtone, or shadow
+
+levels effect: An image effect that is used to apply highlight, midtone, or shadow
 
 adjustments to an image. Highlights are the light parts of an image, shadows are the dark
 parts, and midtones are the colors that occupy the middle of the tonal range between the
@@ -1720,7 +1302,8 @@ Release: April 23, 2024
 
 16 / 262
 
-reflection transform: A transform that is used to create a mirror image of an object with
+
+reflection transform: A transform that is used to create a mirror image of an object with
 
 respect to either the horizontal or vertical axis.
 
@@ -1798,7 +1381,8 @@ Release: April 23, 2024
 
 17 / 262
 
-translation transform: A transform that is used to shift each point in an object vertically,
+
+translation transform: A transform that is used to shift each point in an object vertically,
 
 horizontally, or both, by a specified amount.
 
@@ -1835,14 +1419,14 @@ scaling, translation, rotation, shearing, and reflection.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1870,7 +1454,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note There is a charge to download the specification.
+
+Note There is a charge to download the specification.
 
 [JFIF] Hamilton, E., "JPEG File Interchange Format, Version 1.02", September 1992,
 http://www.w3.org/Graphics/JPEG/jfif.txt
@@ -1898,7 +1483,7 @@ https://www.itu.int/itudoc/itu-t/com16/tiff-fx/docs/tiff6.pdf
 [W3C-PNG] World Wide Web Consortium, "Portable Network Graphics (PNG) Specification, Second
 Edition", November 2003, http://www.w3.org/TR/PNG
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-EMFSPOOL] Microsoft Corporation, "Enhanced Metafile Spool Format".
 
@@ -1914,9 +1499,9 @@ us/windows/desktop/gdiplus/-gdiplus-gdi-start
 [SPLINE77] Smith, A., "Spline Tutorial Notes - Technical Memo No. 77", SIGGRAPH '83 Tutorial Notes:
 Introduction to Computer Animation, pp. 64-75, July, 1983.
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Metafile Structure
+#### 1.3.1 Metafile Structure
 
 EMF+ defines a set of graphical images and text using commands, objects, and properties similar to
 Windows GDI+ [MSDN-GDI+]. EMF+ metafiles are portable, device-independent containers for
@@ -1936,7 +1521,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 20 -->
+
+<!-- Extracted images from page 20 -->
 ![Extracted image 1 from page 20]([MS-EMFPLUS].images/page020-img01.png)
 <!-- /Extracted images from page 20 -->
 
@@ -1959,7 +1545,8 @@ Release: April 23, 2024
 
 20 / 262
 
-Figure 1: EMF+ metafiles
+
+Figure 1: EMF+ metafiles
 
 In the EMF metafile in this figure, Case I shows a group of EMF+ records, followed by some EMF
 records, followed by another group of EMF+ records; and Case II shows a group of EMF+ records
@@ -2013,7 +1600,7 @@ Note: EMF+ is not considered an extension to the EMF feature set; that is, EMF+ 
 EMF records. EMF+ is semantically a completely separate, independent format. EMF+ records define
 graphical images and text using commands, objects, and properties of GDI+.
 
-1.3.2  Byte Ordering
+#### 1.3.2 Byte Ordering
 
 Data in the EMF+ metafile records are stored in little-endian format.
 
@@ -2032,7 +1619,8 @@ Release: April 23, 2024
 
 21 / 262
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-EMFPLUS].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -2058,7 +1646,7 @@ Little-endian
 
 0x12
 
-1.4  Relationship to Protocols and Other Structures
+### 1.4 Relationship to Protocols and Other Structures
 
 Several related metafile formats can be used together for device-independent printing. Their
 relationships are as follows:
@@ -2079,13 +1667,13 @@ This is illustrated qualitatively in the following figure:
 
 Figure 2: Relationships of metafile record types
 
-1.5  Applicability Statement
+### 1.5 Applicability Statement
 
 Structures that are compliant with the EMF+ can be used as portable, system-independent containers
 for images. The graphics supported in EMF+ metafiles are applicable to document content
 representation, including printing and plotting.
 
-1.6  Versioning and Localization
+### 1.6 Versioning and Localization
 
 This specification covers versioning issues in the following areas:
 
@@ -2096,7 +1684,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Structure Versions: Multiple versions of the EMF+ metafiles exist. For more information, see the
+
+Structure Versions: Multiple versions of the EMF+ metafiles exist. For more information, see the
 
 GraphicsVersion enumeration.
 
@@ -2111,7 +1700,7 @@ geographical regions, and administrative districts. For details, see [MS-LCID] s
 
 language. For more information, see the StringDigitSubstitute enumeration.
 
-1.7  Vendor-Extensible Fields
+### 1.7 Vendor-Extensible Fields
 
 The EMF+ metafile format includes the following vendor-extensible fields:
 
@@ -2134,7 +1723,8 @@ Release: April 23, 2024
 
 23 / 262
 
-2  Structures
+
+## 2 Structures
 
 This section specifies the EMF+ structures and how they are serialized in a metafile. EMF+ structures
 are grouped into the following categories:
@@ -2163,7 +1753,7 @@ the playback device context.
 
 This protocol references commonly used data types as defined in [MS-DTYP].
 
-2.1  EMF+ Constants
+### 2.1 EMF+ Constants
 
 This section specifies the EMF+ Constants, which are grouped into the following categories:
 
@@ -2187,7 +1777,7 @@ Standard Identifier constant types  2.1.3
 
 Specify GUIDs for EMF+ objects and records.
 
-2.1.1  Enumeration Constant Types
+#### 2.1.1 Enumeration Constant Types
 
 The EMF+ Enumeration Constants specify numeric constants that are used in EMF+ objects and
 records.
@@ -2224,9 +1814,9 @@ Modes for combining two graphics regions.
 
 CompositingMode
 
-2.1.1.5
+##### 2.1.1.5 Modes for combining source colors with background colors. The
 
-Modes for combining source colors with background colors. The
+
 compositing mode represents the enable state of alpha blending.
 
 CompositingQuality
@@ -2243,9 +1833,9 @@ Color curve effects that can be applied to an image.
 
 CurveChannel
 
-2.1.1.8
+##### 2.1.1.8 Color channels that can be affected by a color curve effect adjustment to
 
-Color channels that can be affected by a color curve effect adjustment to
+
 an image.
 
 CustomLineCapDataType  2.1.1.9
@@ -2259,7 +1849,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section  Description
 
@@ -2267,124 +1858,124 @@ ends of graphics lines.
 
 DashedLineCapType
 
-2.1.1.10  Types of line caps to use at the ends of dashed lines that are drawn with
+##### 2.1.1.10 Types of line caps to use at the ends of dashed lines that are drawn with
 
 graphics pens.
 
 FilterType
 
-2.1.1.11  Types of filtering algorithms that can be used for text and graphics quality
+##### 2.1.1.11 Types of filtering algorithms that can be used for text and graphics quality
 
 enhancement and image rendering.
 
 GraphicsVersion
 
-2.1.1.12  Versions of operating system graphics that are used to create EMF+
+##### 2.1.1.12 Versions of operating system graphics that are used to create EMF+
 
 metafiles.
 
 HatchStyle
 
-2.1.1.13  Hatch patterns used by graphics brushes. A hatch pattern consists of a
+##### 2.1.1.13 Hatch patterns used by graphics brushes. A hatch pattern consists of a
 solid background color and lines drawn over the background.
 
 HotkeyPrefix
 
-2.1.1.14  Output options for hotkey prefixes in graphics text.
+##### 2.1.1.14 Output options for hotkey prefixes in graphics text.
 
 ImageDataType
 
-2.1.1.15  Types of image data formats.
+##### 2.1.1.15 Types of image data formats.
 
 InterpolationMode
 
-2.1.1.16  Ways to perform scaling, including stretching and shrinking.
+##### 2.1.1.16 Ways to perform scaling, including stretching and shrinking.
 
 LineCapType
 
-2.1.1.17  Types of line caps to use at the ends of lines that are drawn with graphics
+##### 2.1.1.17 Types of line caps to use at the ends of lines that are drawn with graphics
 
 pens.
 
 LineJoinType
 
-2.1.1.18  Ways to join two lines that are drawn by the same graphics pen and whose
+##### 2.1.1.18 Ways to join two lines that are drawn by the same graphics pen and whose
 
 ends meet.
 
 LineStyle
 
-2.1.1.19  Styles of lines that are drawn with graphics pens.
+##### 2.1.1.19 Styles of lines that are drawn with graphics pens.
 
 MetafileDataType
 
-2.1.1.20  Types of metafiles data that can be embedded in an EMF+ metafile.
+##### 2.1.1.20 Types of metafiles data that can be embedded in an EMF+ metafile.
 
 ObjectType
 
-2.1.1.21  Types of graphics objects that can be created and used in graphics
+##### 2.1.1.21 Types of graphics objects that can be created and used in graphics
 
 operations.
 
 PathPointType
 
-2.1.1.22  Types of points on a graphics path.
+##### 2.1.1.22 Types of points on a graphics path.
 
 PenAlignment
 
-2.1.1.23  The distribution of the width of the pen with respect to the line being
+##### 2.1.1.23 The distribution of the width of the pen with respect to the line being
 
 drawn.
 
 PixelFormat
 
-2.1.1.24  Pixel formats that are supported in EMF+ bitmaps.
+##### 2.1.1.24 Pixel formats that are supported in EMF+ bitmaps.
 
 PixelOffsetMode
 
-2.1.1.25  How pixels are offset, which specifies the trade-off between rendering
+##### 2.1.1.25 How pixels are offset, which specifies the trade-off between rendering
 
 speed and quality.
 
 RegionNodeDataType
 
-2.1.1.26  Types of region node data.
+##### 2.1.1.26 Types of region node data.
 
 SmoothingMode
 
-2.1.1.27  Types of smoothing to apply to lines, curves and the edges of filled areas
+##### 2.1.1.27 Types of smoothing to apply to lines, curves and the edges of filled areas
 
 to make them appear more continuous or sharply defined.
 
 StringAlignment
 
-2.1.1.28  Ways to align strings with respect to a text layout rectangle.
+##### 2.1.1.28 Ways to align strings with respect to a text layout rectangle.
 
 StringDigitSubstitution
 
-2.1.1.29  Ways to substitute digits in a string according to a user's locale or
+##### 2.1.1.29 Ways to substitute digits in a string according to a user's locale or
 
 language.
 
 StringTrimming
 
-2.1.1.30  How to trim characters from a string that is too large for the text layout
+##### 2.1.1.30 How to trim characters from a string that is too large for the text layout
 
 rectangle.
 
 TextRenderingHint
 
-2.1.1.31  Types of text hinting and anti-aliasing, which affects the quality of text
+##### 2.1.1.31 Types of text hinting and anti-aliasing, which affects the quality of text
 
 rendering.
 
 UnitType
 
-2.1.1.32  Units of measurement in different coordinate systems.
+##### 2.1.1.32 Units of measurement in different coordinate systems.
 
 WrapMode
 
-2.1.1.33  How the pattern from a texture or gradient brush is tiled across a shape or
+##### 2.1.1.33 How the pattern from a texture or gradient brush is tiled across a shape or
 
 at shape boundaries.
 
@@ -2395,7 +1986,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.1.1.1  RecordType Enumeration
+
+2.1.1.1  RecordType Enumeration
 
 The RecordType enumeration defines record types used in EMF+ metafiles.
 
@@ -2468,7 +2060,8 @@ Release: April 23, 2024
 
 26 / 262
 
-EmfPlusHeader:  This record specifies the start of EMF+ data in the metafile. It MUST be embedded
+
+EmfPlusHeader:  This record specifies the start of EMF+ data in the metafile. It MUST be embedded
 
 in the first EMF record after the EMF Header record.
 
@@ -2546,7 +2139,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EmfPlusDrawImage:  This record defines a scaled EmfPlusImage object. An image can consist of
+
+EmfPlusDrawImage:  This record defines a scaled EmfPlusImage object. An image can consist of
 
 either bitmap or metafile data.
 
@@ -2629,7 +2223,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EmfPlusScaleWorldTransform:  This record applies a scaling transform to the current world space
+
+EmfPlusScaleWorldTransform:  This record applies a scaling transform to the current world space
 
 by specified horizontal and vertical scale factors.
 
@@ -2704,7 +2299,8 @@ Release: April 23, 2024
 
 29 / 262
 
- {
+
+ {
    BrushTypeSolidColor = 0x00000000,
    BrushTypeHatchFill = 0x00000001,
    BrushTypeTextureFill = 0x00000002,
@@ -2772,7 +2368,8 @@ Release: April 23, 2024
 
 30 / 262
 
-2.1.1.5  CompositingMode Enumeration
+
+2.1.1.5  CompositingMode Enumeration
 
 The CompositingMode enumeration defines modes for combining source colors with background
 colors. The compositing mode represents the enable state of alpha blending.
@@ -2845,7 +2442,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.1.1 for the specification of additional enumerations.
+
+See section 2.1.1 for the specification of additional enumerations.
 
 2.1.1.7  CurveAdjustments Enumeration
 
@@ -2913,7 +2511,8 @@ Release: April 23, 2024
 
 32 / 262
 
-2.1.1.8  CurveChannel Enumeration
+
+2.1.1.8  CurveChannel Enumeration
 
 The CurveChannel enumeration defines color channels that can be affected by a color curve effect
 adjustment to an image.
@@ -2980,7 +2579,8 @@ Release: April 23, 2024
 
 33 / 262
 
-DashedLineCapTypeRound:  A round dashed line cap.
+
+DashedLineCapTypeRound:  A round dashed line cap.
 
 DashedLineCapTypeTriangle:  A triangular dashed line cap.
 
@@ -3055,7 +2655,8 @@ Release: April 23, 2024
 
 34 / 262
 
-GraphicsVersion1_1:  GDI+ version 1.1.<4>
+
+GraphicsVersion1_1:  GDI+ version 1.1.<4>
 
 Graphics versions are specified in EmfPlusGraphicsVersion objects.
 
@@ -3131,7 +2732,8 @@ Release: April 23, 2024
 
 35 / 262
 
- } HatchStyle;
+
+ } HatchStyle;
 
 HatchStyleHorizontal:  Equally spaced horizontal lines.
 
@@ -3212,7 +2814,8 @@ Release: April 23, 2024
 
 36 / 262
 
-HatchStyleDarkDownwardDiagonal:  Diagonal lines that slant to the right from top to bottom
+
+HatchStyleDarkDownwardDiagonal:  Diagonal lines that slant to the right from top to bottom
 
 points with no anti-aliasing. They are spaced 50 percent closer and are twice the width of lines in
 the HatchStyleForwardDiagonal pattern.
@@ -3294,7 +2897,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-HatchStyleWeave:  A pattern of lines that has the appearance of a woven material.
+
+HatchStyleWeave:  A pattern of lines that has the appearance of a woven material.
 
 HatchStylePlaid:  A pattern of lines that has the appearance of a plaid material.
 
@@ -3367,7 +2971,8 @@ Release: April 23, 2024
 
 38 / 262
 
-2.1.1.15
+
+2.1.1.15
 
 ImageDataType Enumeration
 
@@ -3440,7 +3045,8 @@ Release: April 23, 2024
 
 39 / 262
 
-InterpolationModeNearestNeighbor:  Nearest-neighbor interpolation, which uses only the value of
+
+InterpolationModeNearestNeighbor:  Nearest-neighbor interpolation, which uses only the value of
 
 the pixel that is closest to the interpolated pixel. This mode simply duplicates or removes pixels,
 producing the lowest-quality result among these options.
@@ -3517,7 +3123,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-LineCapTypeArrowAnchor:  The line end is anchored with an arrowhead shape. The arrowhead
+
+LineCapTypeArrowAnchor:  The line end is anchored with an arrowhead shape. The arrowhead
 
 point MUST be located at the last point in the line. The arrowhead SHOULD be wider than the line.
 
@@ -3588,7 +3195,8 @@ Release: April 23, 2024
 
 41 / 262
 
-LineStyleDashDotDot:  An alternating dash-dot-dot line.
+
+LineStyleDashDotDot:  An alternating dash-dot-dot line.
 
 LineStyleCustom:  A user-defined, custom dashed line.
 
@@ -3664,7 +3272,8 @@ Release: April 23, 2024
 
 42 / 262
 
-ObjectTypeInvalid:  The object is not a valid object.
+
+ObjectTypeInvalid:  The object is not a valid object.
 
 ObjectTypeBrush:  An EmfPlusBrush object. Brush objects fill graphics regions.
 
@@ -3738,7 +3347,8 @@ Release: April 23, 2024
 
 43 / 262
 
-   PenAlignmentCenter = 0x00000000,
+
+   PenAlignmentCenter = 0x00000000,
    PenAlignmentInset = 0x00000001,
    PenAlignmentLeft = 0x00000002,
    PenAlignmentOutset = 0x00000003,
@@ -3811,7 +3421,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PixelFormat16bppARGB1555:  The format is 16 bits per pixel; 1 bit is used for the alpha
+
+PixelFormat16bppARGB1555:  The format is 16 bits per pixel; 1 bit is used for the alpha
 
 component, and 5 bits each are used for the red, green, and blue components.
 
@@ -3887,7 +3498,8 @@ Release: April 23, 2024
 
 45 / 262
 
-PixelOffsetModeDefault:  Pixels are centered on integer coordinates, specifying speed over quality.
+
+PixelOffsetModeDefault:  Pixels are centered on integer coordinates, specifying speed over quality.
 
 PixelOffsetModeHighSpeed:  Pixels are centered on integer coordinates, as with
 PixelOffsetModeNone. Higher speed at the expense of quality is specified.
@@ -3965,7 +3577,8 @@ Release: April 23, 2024
 
 46 / 262
 
-RegionNodeDataTypeInfinite:  A region node with no child nodes, and its bounds are not defined.
+
+RegionNodeDataTypeInfinite:  A region node with no child nodes, and its bounds are not defined.
 
 Region node data is specified by EmfPlusRegionNode objects.
 
@@ -4035,7 +3648,8 @@ Release: April 23, 2024
 
 47 / 262
 
-2.1.1.29
+
+2.1.1.29
 
 StringDigitSubstitution Enumeration
 
@@ -4112,7 +3726,8 @@ Release: April 23, 2024
 
 48 / 262
 
-2.1.1.31
+
+2.1.1.31
 
 TextRenderingHint Enumeration
 
@@ -4187,7 +3802,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-UnitTypePoint:  A unit of 1 printer's point, or 1/72 inch.
+
+UnitTypePoint:  A unit of 1 printer's point, or 1/72 inch.
 
 UnitTypeInch:  A unit of 1 inch.
 
@@ -4231,7 +3847,7 @@ WrapModeClamp:  Fixes the texture or gradient to the object boundary.
 
 See section 2.1.1 for the specification of additional enumerations.
 
-2.1.2  Bit Flag Constant Types
+#### 2.1.2 Bit Flag Constant Types
 
 The Bit Flag constants specify properties and options for EMF+ objects and records. In general, bit
 flags can be combined with Boolean OR operations.
@@ -4283,7 +3899,8 @@ Release: April 23, 2024
 
 50 / 262
 
-Name
+
+Name
 
 Section  Description
 
@@ -4299,7 +3916,7 @@ StringFormat
 
 Options for graphics text layout.
 
-2.1.2.1  BrushData Flags
+##### 2.1.2.1 BrushData Flags
 
 The BrushData flags specify properties of graphics brushes, including the presence of optional data
 fields. These flags can be combined to specify multiple options.
@@ -4400,7 +4017,8 @@ Release: April 23, 2024
 
 51 / 262
 
-2.1.2.2  CustomLineCapData Flags
+
+##### 2.1.2.2 CustomLineCapData Flags
 
 The CustomLineCapData flags specify data for custom line caps. These flags can be combined to
 specify multiple options.
@@ -4427,7 +4045,7 @@ Custom graphics line caps are specified by EmfPlusCustomLineCap objects.
 
 See section 2.1.2 for the specification of additional bit flags.
 
-2.1.2.3  DriverStringOptions Flags
+##### 2.1.2.3 DriverStringOptions Flags
 
 The DriverStringOptions flags specify properties of graphics text positioning and rendering. These flags
 can be combined to specify multiple options.
@@ -4478,7 +4096,7 @@ Graphics text output is specified in EmfPlusDrawDriverString records.
 
 See section 2.1.2 for the specification of additional bit flags.
 
-2.1.2.4  FontStyle Flags
+##### 2.1.2.4 FontStyle Flags
 
 The FontStyle flags specify styles of graphics font typefaces. These flags can be combined to specify
 multiple options.
@@ -4507,7 +4125,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -4537,7 +4156,7 @@ Graphics font typefaces are specified by EmfPlusFont objects.
 
 See section 2.1.2 for the specification of additional bit flags.
 
-2.1.2.5  PaletteStyle Flags
+##### 2.1.2.5 PaletteStyle Flags
 
 The PaletteStyle flags specify properties of graphics palettes. These flags can be combined to specify
 multiple options.
@@ -4568,7 +4187,7 @@ Graphics palettes are specified by EmfPlusPalette objects.
 
 See section 2.1.2 for the specification of additional bit flags.
 
-2.1.2.6  PathPointType Flags
+##### 2.1.2.6 PathPointType Flags
 
 The PathPointType flags specify type properties of points on graphics paths. These flags can be
 combined to specify multiple options.
@@ -4606,7 +4225,8 @@ Release: April 23, 2024
 
 53 / 262
 
-2.1.2.7  PenData Flags
+
+##### 2.1.2.7 PenData Flags
 
 The PenData flags specify properties of graphics pens, including the presence of optional data fields.
 These flags can be combined to specify multiple options.
@@ -4710,7 +4330,7 @@ Graphics pens are specified by EmfPlusPen objects.
 
 See section 2.1.2 for the specification of additional bit flags.
 
-2.1.2.8  StringFormat Flags
+##### 2.1.2.8 StringFormat Flags
 
 The StringFormat flags specify options for graphics text layout, including direction, clipping and font
 handling. These flags can be combined to specify multiple options.
@@ -4730,7 +4350,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Constant/value
+
+Constant/value
 
 Description
 
@@ -4837,7 +4458,7 @@ Graphics text layout is specified by EmfPlusStringFormat objects.
 
 See section 2.1.2 for the specification of additional bit flags.
 
-2.1.3  Standard Identifier Constant Types
+#### 2.1.3 Standard Identifier Constant Types
 
 The Standard Identifier Constants specify values used in EMF+ objects and records.
 
@@ -4848,7 +4469,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The following types of standard identifiers are defined:
+
+The following types of standard identifiers are defined:
 
 Name
 
@@ -4861,7 +4483,7 @@ Identifiers
 
 GUIDs that identify image effects capabilities supported by graphics devices.
 
-2.1.3.1  ImageEffects Identifiers
+##### 2.1.3.1 ImageEffects Identifiers
 
 The ImageEffects identifiers define standard GUIDs for specifying graphics image effects. These
 identifiers are used by device drivers to publish their levels of support for these effects. The identifier
@@ -4940,7 +4562,7 @@ The tint effect.
 Image effects identifiers and Image Effects Parameter Blocks are specified by
 EmfPlusSerializableObject records for EmfPlusDrawImagePoints records.
 
-2.2  EMF+ Objects
+### 2.2 EMF+ Objects
 
 This section specifies EMF+ objects, which are grouped into the following categories:
 
@@ -4951,7 +4573,8 @@ Release: April 23, 2024
 
 56 / 262
 
-Name
+
+Name
 
 Section  Description
 
@@ -4980,7 +4603,7 @@ object types
 Specify parameters for graphics image effects, which can be applied to bitmap
 images.
 
-2.2.1  Graphics Object Types
+#### 2.2.1 Graphics Object Types
 
 The Graphics Objects specify parameters for graphics output. They are part of the playback device
 context and are persistent during the playback of an EMF+ metafile.
@@ -5049,7 +4672,7 @@ used in any number of graphics operations. An implementation is responsible for 
 graphics objects during playback of the metafile. A conceptual model for managing EMF+ graphics
 objects is described in Managing Graphics Objects (section 3.1.2).
 
-2.2.1.1  EmfPlusBrush Object
+##### 2.2.1.1 EmfPlusBrush Object
 
 The EmfPlusBrush object specifies a graphics brush for filling regions.
 
@@ -5075,7 +4698,8 @@ Release: April 23, 2024
 
 57 / 262
 
-BrushData (variable)
+
+BrushData (variable)
 
 ...
 
@@ -5115,7 +4739,7 @@ EmfPlusTextureBrushData object (section 2.2.2.45)
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.2  EmfPlusCustomLineCap Object
+##### 2.2.1.2 EmfPlusCustomLineCap Object
 
 The EmfPlusCustomLineCap object specifies the shape to use at the ends of a line drawn by a
 graphics pen.
@@ -5161,13 +4785,14 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  An EmfPlusCustomLineCapArrowData object (section 2.2.2.12); and
+
+  An EmfPlusCustomLineCapArrowData object (section 2.2.2.12); and
 
   An EmfPlusCustomLineCapData object (section 2.2.2.13).
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.3  EmfPlusFont Object
+##### 2.2.1.3 EmfPlusFont Object
 
 The EmfPlusFont object specifies properties that determine the appearance of text, including
 typeface, size, and style.
@@ -5236,7 +4861,8 @@ Release: April 23, 2024
 
 59 / 262
 
-2.2.1.4  EmfPlusImage Object
+
+##### 2.2.1.4 EmfPlusImage Object
 
 The EmfPlusImage object specifies a graphics image in the form of a bitmap or metafile.
 
@@ -5279,7 +4905,7 @@ This object is generic and is used to specify different types of image data, inc
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.5  EmfPlusImageAttributes Object
+##### 2.2.1.5 EmfPlusImageAttributes Object
 
 The EmfPlusImageAttributes object specifies how bitmap image colors are manipulated during
 rendering.
@@ -5318,7 +4944,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Reserved1 (4 bytes): A field that is not used and MUST be ignored.
+
+Reserved1 (4 bytes): A field that is not used and MUST be ignored.
 
 WrapMode (4 bytes): An unsigned integer that specifies how to handle edge conditions with a value
 
@@ -5354,7 +4981,7 @@ Reserved2 (4 bytes): A value that SHOULD be set to zero and MUST be ignored upon
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.6  EmfPlusPath Object
+##### 2.2.1.6 EmfPlusPath Object
 
 The EmfPlusPath object specifies a series of line and curve segments that form a graphics path. The
 order for Bezier data points is the start point, control point 1, control point 2, and end point. For more
@@ -5400,7 +5027,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PathPointCount (4 bytes): An unsigned integer that specifies the number of points and associated
+
+PathPointCount (4 bytes): An unsigned integer that specifies the number of points and associated
 
 point types that are defined by this object.
 
@@ -5469,7 +5097,7 @@ total size is a multiple of 4 bytes. This field MUST be ignored.
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.7  EmfPlusPen Object
+##### 2.2.1.7 EmfPlusPen Object
 
 The EmfPlusPen object specifies a graphics pen for the drawing of lines.
 
@@ -5495,7 +5123,8 @@ Release: April 23, 2024
 
 62 / 262
 
-PenData (variable)
+
+PenData (variable)
 
 ...
 
@@ -5519,7 +5148,7 @@ associated with the pen.
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.8  EmfPlusRegion Object
+##### 2.2.1.8 EmfPlusRegion Object
 
 The EmfPlusRegion object specifies line and curve segments that define a nonrectilinear shape.
 
@@ -5557,7 +5186,7 @@ a terminal node or specify one or two child nodes. RegionNode MUST contain at le
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.1.9  EmfPlusStringFormat Object
+##### 2.2.1.9 EmfPlusStringFormat Object
 
 The EmfPlusStringFormat object specifies text layout, display manipulations, and language
 identification.
@@ -5569,7 +5198,8 @@ Release: April 23, 2024
 
 63 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -5640,7 +5270,8 @@ Release: April 23, 2024
 
 64 / 262
 
-DigitSubstitution (4 bytes): An unsigned integer that specifies how to substitute numeric digits in
+
+DigitSubstitution (4 bytes): An unsigned integer that specifies how to substitute numeric digits in
 
 the string according to a locale or language. This value is defined in the StringDigitSubstitution
 enumeration (section 2.1.1.29).
@@ -5688,7 +5319,7 @@ optional text layout data.
 
 See section 2.2.1 for the specification of additional graphics objects.
 
-2.2.2  Structure Object Types
+#### 2.2.2 Structure Object Types
 
 The Structure Objects specify containers for data structures that are embedded in EMF+ metafile
 records. Structure objects, unlike graphics objects, are not explicitly created; they are components
@@ -5732,7 +5363,8 @@ Release: April 23, 2024
 
 65 / 262
 
-Name
+
+Name
 
 Section  Description
 
@@ -5769,69 +5401,69 @@ Line and space data for a compound line.
 
 EmfPlusCompressedImage
 
-2.2.2.10  An image with compressed data.
+##### 2.2.2.10 An image with compressed data.
 
 EmfPlusCustomEndCapData
 
-2.2.2.11  A custom line cap for the end of a line.
+##### 2.2.2.11 A custom line cap for the end of a line.
 
 EmfPlusCustomLineCapArrowData
 
-2.2.2.12  Adjustable arrow data for a custom line cap.
+##### 2.2.2.12 Adjustable arrow data for a custom line cap.
 
 EmfPlusCustomLineCapData
 
-2.2.2.13  Default data for a custom line cap.
+##### 2.2.2.13 Default data for a custom line cap.
 
 EmfPlusCustomLineCapOptionalData
 
-2.2.2.14  Optional fill and outline data for a custom line cap.
+##### 2.2.2.14 Optional fill and outline data for a custom line cap.
 
 EmfPlusCustomStartCapData
 
-2.2.2.15  A custom line cap for the start of a line.
+##### 2.2.2.15 A custom line cap for the start of a line.
 
 EmfPlusDashedLineData
 
-2.2.2.16  Properties of a dashed line for a graphics pen.
+##### 2.2.2.16 Properties of a dashed line for a graphics pen.
 
 EmfPlusFillPath
 
-2.2.2.17  A graphics path for filling a custom line cap.
+##### 2.2.2.17 A graphics path for filling a custom line cap.
 
 EmfPlusFocusScaleData
 
-2.2.2.18  Focus scales for the blend pattern of a path gradient
+##### 2.2.2.18 Focus scales for the blend pattern of a path gradient
 
 brush.
 
 EmfPlusGraphicsVersion
 
-2.2.2.19  The version of operating system graphics that is used to
+##### 2.2.2.19 The version of operating system graphics that is used to
 
 create an EMF+ metafile.
 
 EmfPlusHatchBrushData
 
-2.2.2.20  A hatch pattern for a graphics brush.
+##### 2.2.2.20 A hatch pattern for a graphics brush.
 
 EmfPlusInteger7
 
-2.2.2.21  A 7-bit signed integer in an 8-bit field.
+##### 2.2.2.21 A 7-bit signed integer in an 8-bit field.
 
 EmfPlusInteger15
 
-2.2.2.22  A 15-bit signed integer in a 16-bit field.
+##### 2.2.2.22 A 15-bit signed integer in a 16-bit field.
 
 EmfPlusLanguageIdentifier
 
-2.2.2.23  Language identifiers that correspond to natural languages
+##### 2.2.2.23 Language identifiers that correspond to natural languages
 
 in a locale.
 
 EmfPlusLinearGradientBrushData
 
-2.2.2.24  A linear gradient for a graphics brush.
+##### 2.2.2.24 A linear gradient for a graphics brush.
 
 EmfPlusLinearGradientBrushOptionalData  2.2.2.25  Optional data for a linear gradient brush.
 
@@ -5841,33 +5473,33 @@ EmfPlusMetafile
 
 EmfPlusPalette
 
-2.2.2.26  A graphics path for outlining a custom line cap.
+##### 2.2.2.26 A graphics path for outlining a custom line cap.
 
-2.2.2.27  A metafile that contains a graphics image.
+##### 2.2.2.27 A metafile that contains a graphics image.
 
-2.2.2.28  The colors that make up a palette.
+##### 2.2.2.28 The colors that make up a palette.
 
 EmfPlusPathGradientBrushData
 
-2.2.2.29  A path gradient for a graphics brush.
+##### 2.2.2.29 A path gradient for a graphics brush.
 
 EmfPlusPathGradientBrushOptionalData
 
-2.2.2.30  Optional data for a path gradient brush.
+##### 2.2.2.30 Optional data for a path gradient brush.
 
 EmfPlusPathPointType
 
-2.2.2.31  A type value associated with a point on a graphics path.
+##### 2.2.2.31 A type value associated with a point on a graphics path.
 
 EmfPlusPathPointTypeRLE
 
-2.2.2.32  Type values associated with points on a graphics path
+##### 2.2.2.32 Type values associated with points on a graphics path
 
 using RLE compression ([MS-WMF] section 3.1.6).
 
 EmfPlusPenData
 
-2.2.2.33  Properties of a graphics pen.
+##### 2.2.2.33 Properties of a graphics pen.
 
 [MS-EMFPLUS] - v20240423
 Enhanced Metafile Format Plus Extensions
@@ -5876,28 +5508,29 @@ Release: April 23, 2024
 
 66 / 262
 
-Name
+
+Name
 
 Section  Description
 
 EmfPlusPenOptionalData
 
-2.2.2.34  Optional data for a graphics pen.
+##### 2.2.2.34 Optional data for a graphics pen.
 
 EmfPlusPoint
 
-2.2.2.35  An ordered pair of integer (X,Y) values that defines an
+##### 2.2.2.35 An ordered pair of integer (X,Y) values that defines an
 absolute location in a coordinate space.
 
 EmfPlusPointF
 
-2.2.2.36  An ordered pair of floating-point (X,Y) values that defines
+##### 2.2.2.36 An ordered pair of floating-point (X,Y) values that defines
 
 an absolute location in a coordinate space.
 
 EmfPlusPointR
 
-2.2.2.37  An ordered pair of integer (X,Y) values that defines a
+##### 2.2.2.37 An ordered pair of integer (X,Y) values that defines a
 
 relative location in a coordinate space.
 
@@ -5905,45 +5538,45 @@ EmfPlusRect
 
 EmfPlusRectF
 
-2.2.2.38  A rectangle origin, height, and width as integers.
+##### 2.2.2.38 A rectangle origin, height, and width as integers.
 
-2.2.2.39  A rectangle origin, height, and width as floating-point
+##### 2.2.2.39 A rectangle origin, height, and width as floating-point
 
 values.
 
 EmfPlusRegionNode
 
-2.2.2.40  A node of a graphics region.
+##### 2.2.2.40 A node of a graphics region.
 
 EmfPlusRegionNodeChildNodes
 
-2.2.2.41  The child nodes of a graphics region.
+##### 2.2.2.41 The child nodes of a graphics region.
 
 EmfPlusRegionNodePath
 
-2.2.2.42  A graphics path for drawing the boundary of a region
+##### 2.2.2.42 A graphics path for drawing the boundary of a region
 
 node.
 
 EmfPlusSolidBrushData
 
-2.2.2.43  A solid color for a graphics brush.
+##### 2.2.2.43 A solid color for a graphics brush.
 
 EmfPlusStringFormatData
 
-2.2.2.44  Tab stops and character positions for a graphics string.
+##### 2.2.2.44 Tab stops and character positions for a graphics string.
 
 EmfPlusTextureBrushData
 
-2.2.2.45  A texture image for a graphics brush.
+##### 2.2.2.45 A texture image for a graphics brush.
 
 EmfPlusTextureBrushOptionalData
 
-2.2.2.46  Optional data for a texture brush.
+##### 2.2.2.46 Optional data for a texture brush.
 
 EmfPlusTransformMatrix
 
-2.2.2.47  A world space to device space transform.
+##### 2.2.2.47 A world space to device space transform.
 
 2.2.2.1  EmfPlusARGB Object
 
@@ -5991,7 +5624,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6078,7 +5712,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-E (1 bit): If set, the pixel format supports extended colors in 16 bits per channel.
+
+E (1 bit): If set, the pixel format supports extended colors in 16 bits per channel.
 
 If clear, extended colors are not supported.
 
@@ -6155,7 +5790,8 @@ Release: April 23, 2024
 
 69 / 262
 
-Colors (variable): An optional EmfPlusPalette object (section 2.2.2.28), which specifies the palette
+
+Colors (variable): An optional EmfPlusPalette object (section 2.2.2.28), which specifies the palette
 of colors used in the pixel data. This field MUST be present if the I flag is set in the PixelFormat
 field of the EmfPlusBitmap object (section 2.2.2.2).
 
@@ -6231,7 +5867,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-See section 2.2.2 for the specification of additional structure objects.
+
+See section 2.2.2 for the specification of additional structure objects.
 
 2.2.2.5  EmfPlusBlendFactors Object
 
@@ -6306,7 +5943,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.6  EmfPlusBoundaryPathData Object
+
+2.2.2.6  EmfPlusBoundaryPathData Object
 
 The EmfPlusBoundaryPathData object specifies a graphics path boundary for a gradient brush.
 
@@ -6386,7 +6024,8 @@ Release: April 23, 2024
 
 72 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6464,7 +6103,8 @@ Release: April 23, 2024
 
 73 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -6548,7 +6188,8 @@ Release: April 23, 2024
 
 74 / 262
 
-2.2.2.12
+
+2.2.2.12
 
 EmfPlusCustomLineCapArrowData Object
 
@@ -6621,7 +6262,8 @@ Release: April 23, 2024
 
 75 / 262
 
-LineStartCap (4 bytes): An unsigned integer that specifies the value in the LineCapType
+
+LineStartCap (4 bytes): An unsigned integer that specifies the value in the LineCapType
 
 enumeration (section 2.1.1.17) that indicates the line cap to be used at the start of the line to be
 drawn.
@@ -6701,7 +6343,8 @@ Release: April 23, 2024
 
 76 / 262
 
-StrokeHotSpot
+
+StrokeHotSpot
 
 ...
 
@@ -6778,7 +6421,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-their relative order in the object. The implementer is responsible for determining which fields are
+
+their relative order in the object. The implementer is responsible for determining which fields are
 actually present in a given metafile record, and for unmarshaling the data for individual fields
 separately and appropriately.
 
@@ -6861,7 +6505,8 @@ Release: April 23, 2024
 
 78 / 262
 
-2.2.2.16
+
+2.2.2.16
 
 EmfPlusDashedLineData Object
 
@@ -6945,7 +6590,8 @@ Release: April 23, 2024
 
 79 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -7032,7 +6678,8 @@ Release: April 23, 2024
 
 80 / 262
 
-2.2.2.20
+
+2.2.2.20
 
 EmfPlusHatchBrushData Object
 
@@ -7133,7 +6780,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EmfPlusInteger15 objects are used to specify point coordinates in EmfPlusPointR objects (section
+
+EmfPlusInteger15 objects are used to specify point coordinates in EmfPlusPointR objects (section
 2.2.2.37).
 
 See section 2.2.2 for the specification of additional structure objects.
@@ -7218,7 +6866,8 @@ Release: April 23, 2024
 
 82 / 262
 
-Reserved1
+
+Reserved1
 
 Reserved2
 
@@ -7298,7 +6947,8 @@ Release: April 23, 2024
 
 83 / 262
 
-2.2.2.25
+
+2.2.2.25
 
 EmfPlusLinearGradientBrushOptionalData Object
 
@@ -7405,7 +7055,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.26
+
+2.2.2.26
 
 EmfPlusLinePath Object
 
@@ -7491,7 +7142,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  A WMF metafile which can be placed;
+
+  A WMF metafile which can be placed;
 
   An EMF metafile [MS-EMF];
 
@@ -7576,7 +7228,8 @@ Release: April 23, 2024
 
 86 / 262
 
-SurroundingColorCount
+
+SurroundingColorCount
 
 SurroundingColor (variable)
 
@@ -7658,7 +7311,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OptionalData (variable): An optional EmfPlusPathGradientBrushOptionalData object (section
+
+OptionalData (variable): An optional EmfPlusPathGradientBrushOptionalData object (section
 
 2.2.2.30) that specifies additional data for the path gradient brush. The specific contents of this
 field are determined by the value of the BrushDataFlags field.
@@ -7731,7 +7385,8 @@ Release: April 23, 2024
 
 88 / 262
 
-BlendPattern (variable): An optional blend pattern for the path gradient brush. If this field is
+
+BlendPattern (variable): An optional blend pattern for the path gradient brush. If this field is
 
 present, it MUST contain either an EmfPlusBlendColors object (section 2.2.2.4), or an
 EmfPlusBlendFactors object (section 2.2.2.5), but it MUST NOT contain both. The table below
@@ -7837,7 +7492,8 @@ Release: April 23, 2024
 
 89 / 262
 
-RunCount (6 bits): The run count, which is the number of path points to be associated with the type
+
+RunCount (6 bits): The run count, which is the number of path points to be associated with the type
 
 in the PointType field.
 
@@ -7920,7 +7576,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-responsible for determining which fields are actually present in a given metafile record, and for
+
+responsible for determining which fields are actually present in a given metafile record, and for
 unmarshaling the data for individual fields separately and appropriately.
 
 0  1  2  3  4  5  6  7  8  9
@@ -7988,7 +7645,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-PenDataFlags field of the EmfPlusPenData object, and the value is defined in the LineCapType
+
+PenDataFlags field of the EmfPlusPenData object, and the value is defined in the LineCapType
 enumeration (section 2.1.1.17).
 
 EndCap (4 bytes): An optional signed integer that specifies the shape for the end of a line in the
@@ -8060,7 +7718,8 @@ Release: April 23, 2024
 
 92 / 262
 
-CustomEndCapData (variable): An optional EmfPlusCustomEndCapData object (section 2.2.2.11)
+
+CustomEndCapData (variable): An optional EmfPlusCustomEndCapData object (section 2.2.2.11)
 that defines the custom end-cap shape, which is the shape to use at the end of a line drawn with
 this pen. It can be any of various shapes, such as a square, circle, or diamond. This field MUST be
 present if the PenDataCustomEndCap flag is set in the PenDataFlags field of the
@@ -8155,7 +7814,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Y (variable)
+
+Y (variable)
 
 ...
 
@@ -8243,7 +7903,8 @@ Release: April 23, 2024
 
 94 / 262
 
-X (4 bytes): A floating-point value that specifies the horizontal coordinate of the upper-left corner of
+
+X (4 bytes): A floating-point value that specifies the horizontal coordinate of the upper-left corner of
 
 the rectangle.
 
@@ -8330,7 +7991,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Right (variable)
+
+Right (variable)
 
 ...
 
@@ -8416,7 +8078,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2.44
+
+2.2.2.44
 
 EmfPlusStringFormatData Object
 
@@ -8499,7 +8162,8 @@ Release: April 23, 2024
 
 97 / 262
 
-Name
+
+Name
 
 Value
 
@@ -8581,7 +8245,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-present if the BrushDataTransform flag is set in the BrushDataFlags field of the
+
+present if the BrushDataTransform flag is set in the BrushDataFlags field of the
 EmfPlusTextureBrushData object.
 
 ImageObject (variable): An optional EmfPlusImage object (section 2.2.1.4) that specifies the brush
@@ -8649,7 +8314,7 @@ matrix.
 
 See section 2.2.2 for the specification of additional structure objects.
 
-2.2.3  Image Effects Object Types
+#### 2.2.3 Image Effects Object Types
 
 The Image Effects Objects specify parameters for graphics image effects, which can be applied to
 bitmap images.<17>
@@ -8663,7 +8328,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 BlurEffect
 
@@ -8725,11 +8391,11 @@ Areas of an image to which a red-eye correction effect is applied.
 
 SharpenEffect
 
-2.2.3.10  An increase in the difference in intensity between pixels in an image.
+##### 2.2.3.10 An increase in the difference in intensity between pixels in an image.
 
 TintEffect
 
-2.2.3.11  An addition of black or white to a specified hue in an image.
+##### 2.2.3.11 An addition of black or white to a specified hue in an image.
 
 2.2.3.1  BlurEffect Object
 
@@ -8787,7 +8453,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Bitmap images are specified by EmfPlusBitmap objects (section 2.2.2.2).
+
+Bitmap images are specified by EmfPlusBitmap objects (section 2.2.2.2).
 
 See section 2.2.3 for the specification of additional image effects parameter objects.
 
@@ -8880,7 +8547,8 @@ Release: April 23, 2024
 
 101 / 262
 
-CyanRed (4 bytes): A signed integer that specifies a change in the amount of red in the image. This
+
+CyanRed (4 bytes): A signed integer that specifies a change in the amount of red in the image. This
 
 value MUST be in the range -100 through 100, with effects as follows:
 
@@ -8981,7 +8649,8 @@ Release: April 23, 2024
 
 102 / 262
 
-CurveAdjustment (4 bytes): An unsigned integer that specifies the curve adjustment to apply to
+
+CurveAdjustment (4 bytes): An unsigned integer that specifies the curve adjustment to apply to
 the colors in bitmap. This value is defined in the CurveAdjustments enumeration (section
 2.1.1.7).
 
@@ -9080,7 +8749,8 @@ Release: April 23, 2024
 
 103 / 262
 
-Value
+
+Value
 
 Meaning
 
@@ -9164,7 +8834,8 @@ Release: April 23, 2024
 
 104 / 262
 
-...
+
+...
 
 ...
 
@@ -9236,7 +8907,8 @@ Release: April 23, 2024
 
 105 / 262
 
-Matrix_N_2 (20 bytes)
+
+Matrix_N_2 (20 bytes)
 
 ...
 
@@ -9302,7 +8974,8 @@ Release: April 23, 2024
 
 106 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9388,7 +9061,8 @@ Release: April 23, 2024
 
 107 / 262
 
-Matrix_1_3
+
+Matrix_1_3
 
 Matrix_2_3
 
@@ -9460,7 +9134,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -9558,7 +9233,8 @@ Release: April 23, 2024
 
 109 / 262
 
-Highlight (4 bytes): How much to lighten the highlights of an image. The color channel values at
+
+Highlight (4 bytes): How much to lighten the highlights of an image. The color channel values at
 
 the high end of the intensity range are altered more than values near the middle or low ends,
 which means an image can be lightened without losing the contrast between the darker portions of
@@ -9648,7 +9324,8 @@ Release: April 23, 2024
 
 110 / 262
 
-Areas (variable): An array of NumberOfAreas WMF RectL objects ([MS-WMF] section 2.2.2.19).
+
+Areas (variable): An array of NumberOfAreas WMF RectL objects ([MS-WMF] section 2.2.2.19).
 Each rectangle specifies an area of the bitmap image to which the red-eye correction effect
 SHOULD be applied.
 
@@ -9740,7 +9417,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -9777,7 +9455,7 @@ Bitmap images are specified by EmfPlusBitmap objects (section 2.2.2.2).
 
 See section 2.2.3 for the specification of additional image effects parameter objects.
 
-2.3  EMF+ Records
+### 2.3 EMF+ Records
 
 This section specifies the Records, which are grouped into the following categories:
 
@@ -9837,7 +9515,7 @@ Transform record types
 
 Specify properties and transforms on coordinate spaces.
 
-2.3.1  Clipping Record Types
+#### 2.3.1 Clipping Record Types
 
 The Clipping Record types specify clipping regions and operations. The following are EMF+ clipping
 record types:
@@ -9866,7 +9544,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Section  Description
 
@@ -9952,7 +9631,7 @@ RecordData (variable): An optional, variable-length array of bytes that, if pres
 specific to individual records. For specifications of the additional information, if any, contained
 within this field, see individual record definitions.
 
-2.3.1.1  EmfPlusOffsetClip Record
+##### 2.3.1.1 EmfPlusOffsetClip Record
 
 The EmfPlusOffsetClip record applies a translation transform on the current clipping region for the
 world space.
@@ -9964,7 +9643,8 @@ Release: April 23, 2024
 
 113 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10009,7 +9689,7 @@ The new current clipping region is set to the result of the translation transfor
 
 See section 2.3.1 for the specification of additional clipping record types.
 
-2.3.1.2  EmfPlusResetClip Record
+##### 2.3.1.2 EmfPlusResetClip Record
 
 The EmfPlusResetClip record resets the current clipping region for the world space to infinity.
 
@@ -10049,13 +9729,14 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of data in
+
+DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of data in
 the record-specific data that follows. This number does not include the size of the invariant part of
 this record. For this record type, the value MUST be 0x00000000.
 
 See section 2.3.1 for the specification of additional clipping record types.
 
-2.3.1.3  EmfPlusSetClipPath Record
+##### 2.3.1.3 EmfPlusSetClipPath Record
 
 The EmfPlusSetClipPath record combines the current clipping region with a graphics path.
 
@@ -10125,7 +9806,7 @@ The new current clipping region is set to the result of the CombineMode operatio
 
 See section 2.3.1 for the specification of additional clipping record types.
 
-2.3.1.4  EmfPlusSetClipRect Record
+##### 2.3.1.4 EmfPlusSetClipRect Record
 
 The EmfPlusSetClipRect record combines the current clipping region with a rectangle.
 
@@ -10136,7 +9817,8 @@ Release: April 23, 2024
 
 115 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10210,7 +9892,7 @@ The new current clipping region is set to the result of the CombineMode operatio
 
 See section 2.3.1 for the specification of additional clipping record types.
 
-2.3.1.5  EmfPlusSetClipRegion Record
+##### 2.3.1.5 EmfPlusSetClipRegion Record
 
 The EmfPlusSetClipRegion record combines the current clipping region with another graphics region.
 
@@ -10221,7 +9903,8 @@ Release: April 23, 2024
 
 116 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10288,7 +9971,7 @@ previous current clipping region and the specified EmfPlusRegion object.
 
 See section 2.3.1 for the specification of additional clipping record types.
 
-2.3.2  Comment Record Types
+#### 2.3.2 Comment Record Types
 
 The Comment record type defines a format for specifying arbitrary private data.
 
@@ -10300,7 +9983,7 @@ EmfPlusComment  2.3.2.1
 
 Specifies arbitrary private data.
 
-2.3.2.1  EmfPlusComment Record
+##### 2.3.2.1 EmfPlusComment Record
 
 The EmfPlusComment record specifies arbitrary private data.
 
@@ -10311,7 +9994,8 @@ Release: April 23, 2024
 
 117 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -10355,7 +10039,7 @@ specific data that follows.
 
 PrivateData (variable): A DataSize-length byte array of private data.
 
-2.3.3  Control Record Types
+#### 2.3.3 Control Record Types
 
 The control record types specify global parameters for EMF+ metafile processing. The following are
 EMF+ control record types:
@@ -10409,7 +10093,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RecordData (variable)
+
+RecordData (variable)
 
 ...
 
@@ -10446,7 +10131,7 @@ RecordData (variable): An optional, variable-length array of bytes that, if pres
 specific to individual records. For specifications of the additional information, if any, which is
 contained within this field, see individual record definitions.
 
-2.3.3.1  EmfPlusEndOfFile Record
+##### 2.3.3.1 EmfPlusEndOfFile Record
 
 The EmfPlusEndOfFile record specifies the end of EMF+ data in the metafile.
 
@@ -10495,7 +10180,8 @@ Release: April 23, 2024
 
 119 / 262
 
-2.3.3.2  EmfPlusGetDC Record
+
+##### 2.3.3.2 EmfPlusGetDC Record
 
 The EmfPlusGetDC record specifies that subsequent EMF records ([MS-EMF] section 2.3) encountered
 in the metafile SHOULD be processed.
@@ -10540,7 +10226,7 @@ EMF records cease being processed when the next EMF+ record is encountered.
 
 See section 2.3.3 for the specification of additional control record types.
 
-2.3.3.3  EmfPlusHeader Record
+##### 2.3.3.3 EmfPlusHeader Record
 
 The EmfPlusHeader record specifies the start of EMF+ data in the metafile.
 
@@ -10582,7 +10268,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flags (2 bytes): An unsigned integer that provides information about the structure of the metafile.
+
+Flags (2 bytes): An unsigned integer that provides information about the structure of the metafile.
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -10655,7 +10342,7 @@ MUST be the record immediately following the EMF header in the metafile.
 
 See section 2.3.3 for the specification of additional control record types.
 
-2.3.4  Drawing Record Types
+#### 2.3.4 Drawing Record Types
 
 The drawing record types specify graphics output. The following are EMF+ drawing record types:
 
@@ -10666,7 +10353,8 @@ Release: April 23, 2024
 
 121 / 262
 
-Name
+
+Name
 
 Section  Description
 
@@ -10721,51 +10409,51 @@ Draws a scaled image inside a parallelogram.
 
 EmfPlusDrawLines
 
-2.3.4.10  Draws a series of connected lines.
+##### 2.3.4.10 Draws a series of connected lines.
 
 EmfPlusDrawPath
 
-2.3.4.11  Draws a graphics path.
+##### 2.3.4.11 Draws a graphics path.
 
 EmfPlusDrawPie
 
-2.3.4.12  Draws a section of the interior of an ellipse.
+##### 2.3.4.12 Draws a section of the interior of an ellipse.
 
 EmfPlusDrawRects
 
-2.3.4.13  Draws a series of rectangles.
+##### 2.3.4.13 Draws a series of rectangles.
 
 EmfPlusDrawString
 
-2.3.4.14  Outputs text with string formatting.
+##### 2.3.4.14 Outputs text with string formatting.
 
 EmfPlusFillClosedCurve
 
-2.3.4.15  Draws the interior of a closed cardinal spline.
+##### 2.3.4.15 Draws the interior of a closed cardinal spline.
 
 EmfPlusFillEllipse
 
-2.3.4.16  Draws the interior of an ellipse.
+##### 2.3.4.16 Draws the interior of an ellipse.
 
 EmfPlusFillPath
 
-2.3.4.17  Draws the interior of a graphics path.
+##### 2.3.4.17 Draws the interior of a graphics path.
 
 EmfPlusFillPie
 
-2.3.4.18  Draws a section of the interior of an ellipse.
+##### 2.3.4.18 Draws a section of the interior of an ellipse.
 
 EmfPlusFillPolygon
 
-2.3.4.19  Draws the interior of a polygon.
+##### 2.3.4.19 Draws the interior of a polygon.
 
 EmfPlusFillRects
 
-2.3.4.20  Draws the interiors of a series of rectangles.
+##### 2.3.4.20 Draws the interiors of a series of rectangles.
 
 EmfPlusFillRegion
 
-2.3.4.21  Draws the interior of a graphics region.
+##### 2.3.4.21 Draws the interior of a graphics region.
 
 The generic structure of EMF+ drawing records is specified as follows:
 
@@ -10799,7 +10487,8 @@ Release: April 23, 2024
 
 122 / 262
 
-Type (2 bytes): An unsigned integer that identifies the record type. The drawing record types are
+
+Type (2 bytes): An unsigned integer that identifies the record type. The drawing record types are
 
 listed below. See the table above for descriptions of these records.
 
@@ -10907,7 +10596,8 @@ Release: April 23, 2024
 
 123 / 262
 
-2.3.4.1  EmfPlusClear Record
+
+2.3.4.1  EmfPlusClear Record
 
 The EmfPlusClear record clears the output coordinate space and initializes it with a background color
 and transparency.
@@ -10994,7 +10684,8 @@ Release: April 23, 2024
 
 124 / 262
 
-Type (2 bytes): An unsigned integer that identifies this record type as EmfPlusDrawArc from the
+
+Type (2 bytes): An unsigned integer that identifies this record type as EmfPlusDrawArc from the
 
 RecordType enumeration. The value MUST be 0x4012.
 
@@ -11086,7 +10777,8 @@ Release: April 23, 2024
 
 125 / 262
 
-2.3.4.3  EmfPlusDrawBeziers Record
+
+2.3.4.3  EmfPlusDrawBeziers Record
 
 The EmfPlusDrawBeziers record specifies drawing a sequence of connected Bezier curves. The order
 for Bezier data points is the start point, control point 1, control point 2 and end point. For more
@@ -11174,7 +10866,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -11260,7 +10953,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-A Bezier curve does not pass through its control points. The control points act as magnets, pulling
+
+A Bezier curve does not pass through its control points. The control points act as magnets, pulling
 the curve in certain directions to influence the way the lines bend.
 
 See section 2.3.4 for the specification of additional drawing record types.
@@ -11345,7 +11039,8 @@ Release: April 23, 2024
 
 128 / 262
 
-ObjectID (1 byte): The index of an EmfPlusPen object in the EMF+ Object Table to draw the
+
+ObjectID (1 byte): The index of an EmfPlusPen object in the EMF+ Object Table to draw the
 
 closed curve. The value MUST be zero to 63, inclusive.
 
@@ -11422,7 +11117,8 @@ Release: April 23, 2024
 
 129 / 262
 
-PointData (variable): An array of Count points that specify the endpoints of the lines that define
+
+PointData (variable): An array of Count points that specify the endpoints of the lines that define
 
 the spline. In a closed cardinal spline, the curve continues through the last point in the PointData
 array and connects with the first point in the array.
@@ -11516,7 +11212,8 @@ Release: April 23, 2024
 
 130 / 262
 
-C (1 bit): This bit indicates whether the data in the PointData field is compressed.
+
+C (1 bit): This bit indicates whether the data in the PointData field is compressed.
 
 If set, PointData contains an array of EmfPlusPoint objects. If clear, PointData contains an array
 of EmfPlusPointF objects.
@@ -11595,7 +11292,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Count (4 bytes): An unsigned integer that specifies the number of points in the PointData array.
+
+Count (4 bytes): An unsigned integer that specifies the number of points in the PointData array.
 
 The minimum number of points for drawing a curve is 2—the starting and ending points.
 
@@ -11667,7 +11365,8 @@ Release: April 23, 2024
 
 132 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -11750,7 +11449,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -11839,7 +11539,8 @@ Release: April 23, 2024
 
 134 / 262
 
-X (1 bit): Reserved and MUST be ignored.
+
+X (1 bit): Reserved and MUST be ignored.
 
 C (1 bit): This bit indicates whether the data in the RectData field is compressed.
 
@@ -11927,7 +11628,8 @@ Release: April 23, 2024
 
 135 / 262
 
-...
+
+...
 
 ...
 
@@ -12017,7 +11719,8 @@ Release: April 23, 2024
 
 136 / 262
 
-SrcRect (16 bytes): An EmfPlusRectF object that specifies a portion of the image to be rendered.
+
+SrcRect (16 bytes): An EmfPlusRectF object that specifies a portion of the image to be rendered.
 The portion of the image specified by this rectangle is scaled to fit the destination rectangle
 specified by the RectData field.
 
@@ -12087,7 +11790,8 @@ Release: April 23, 2024
 
 137 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12185,7 +11889,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SrcRect (16 bytes): An EmfPlusRectF object that defines a portion of the image to be rendered.
+
+SrcRect (16 bytes): An EmfPlusRectF object that defines a portion of the image to be rendered.
 
 Count (4 bytes): An unsigned integer that specifies the number of points in the PointData array.
 
@@ -12271,7 +11976,8 @@ Release: April 23, 2024
 
 139 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12359,7 +12065,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -12447,7 +12154,8 @@ Release: April 23, 2024
 
 141 / 262
 
-Flags (2 bytes): An unsigned integer that provides information about how the operation is to be
+
+Flags (2 bytes): An unsigned integer that provides information about how the operation is to be
 
 performed, and about the structure of the record.
 
@@ -12535,7 +12243,8 @@ Release: April 23, 2024
 
 142 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12625,7 +12334,8 @@ Release: April 23, 2024
 
 143 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -12717,7 +12427,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-At least 1 RectData array element MUST be specified in this record.
+
+At least 1 RectData array element MUST be specified in this record.
 
 Value
 
@@ -12795,7 +12506,8 @@ Release: April 23, 2024
 
 145 / 262
 
-AlignmentPadding (variable)
+
+AlignmentPadding (variable)
 
 ...
 
@@ -12873,7 +12585,8 @@ Release: April 23, 2024
 
 146 / 262
 
-FormatID (4 bytes): An unsigned integer that specifies the index of an optional
+
+FormatID (4 bytes): An unsigned integer that specifies the index of an optional
 
 EmfPlusStringFormat object in the EMF+ Object Table. This object specifies text layout information
 and display manipulations to be applied to a string.
@@ -12962,7 +12675,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If set, PointData specifies absolute locations in the coordinate space with 16-bit signed
+
+If set, PointData specifies absolute locations in the coordinate space with 16-bit signed
 integer coordinates. If clear, PointData specifies absolute locations in the coordinate space
 with 32-bit floating-point coordinates.
 
@@ -13039,7 +12753,8 @@ Release: April 23, 2024
 
 148 / 262
 
-Value
+
+Value
 
 Meaning
 
@@ -13132,7 +12847,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size
+
+Size
 
 DataSize
 
@@ -13219,7 +12935,8 @@ Release: April 23, 2024
 
 150 / 262
 
-RectData (variable): Either an EmfPlusRect or EmfPlusRectF object that defines the bounding box of
+
+RectData (variable): Either an EmfPlusRect or EmfPlusRectF object that defines the bounding box of
 
 the ellipse.
 
@@ -13314,7 +13031,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13404,7 +13122,8 @@ Release: April 23, 2024
 
 152 / 262
 
-Value
+
+Value
 
 Meaning
 
@@ -13486,7 +13205,8 @@ Release: April 23, 2024
 
 153 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -13570,7 +13290,8 @@ Release: April 23, 2024
 
 154 / 262
 
-Value
+
+Value
 
 Meaning
 
@@ -13658,7 +13379,8 @@ Release: April 23, 2024
 
 155 / 262
 
-BrushId
+
+BrushId
 
 Count
 
@@ -13734,7 +13456,8 @@ Release: April 23, 2024
 
 156 / 262
 
-Value
+
+Value
 
 Meaning
 
@@ -13826,7 +13549,8 @@ Release: April 23, 2024
 
 157 / 262
 
-ObjectId (1 byte): The index of the EmfPlusRegion object to fill, in the EMF+ Object Table. The
+
+ObjectId (1 byte): The index of the EmfPlusRegion object to fill, in the EMF+ Object Table. The
 
 value MUST be zero to 63, inclusive.
 
@@ -13844,7 +13568,7 @@ by the S bit in the Flags field.
 
 See section 2.3.4 for the specification of additional drawing record types.
 
-2.3.5  Object Record Types
+#### 2.3.5 Object Record Types
 
 The Object Record Types define reusable graphics objects. The following are EMF+ object record
 types:
@@ -13917,14 +13641,15 @@ Release: April 23, 2024
 
 158 / 262
 
-DataSize (4 bytes): An unsigned integer that defines the 32-bit-aligned number of bytes of data in
+
+DataSize (4 bytes): An unsigned integer that defines the 32-bit-aligned number of bytes of data in
 the RecordData field that follows. This number does not include the 12-byte record header.
 
 RecordData (variable): An optional, variable-length array of bytes that, if present, defines the data
 specific to individual records. For specifications of the additional information, if any, which is
 contained within this field, see individual record definitions.
 
-2.3.5.1  EmfPlusObject Record
+##### 2.3.5.1 EmfPlusObject Record
 
 The EmfPlusObject record specifies an object for use in graphics operations. The object definition can
 span multiple records, which is indicated by the value of the Flags field.
@@ -14009,7 +13734,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of data in
+
+DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of data in
 the record-specific data that follows. This number does not include the size of the invariant part of
 this record. For this record type, the value varies based on the size of object.
 
@@ -14023,7 +13749,7 @@ graphics objects is described in Managing Graphics Objects.
 
 See section 2.3.5 for the specification of additional object record types.
 
-2.3.5.2  EmfPlusSerializableObject Record
+##### 2.3.5.2 EmfPlusSerializableObject Record
 
 The EmfPlusSerializableObject record defines an image effects parameter block that has been
 serialized into a data buffer.<26>
@@ -14083,7 +13809,8 @@ Release: April 23, 2024
 
 160 / 262
 
-DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of record-
+
+DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of record-
 
 specific data that follows. For this record type, the value MUST be computed as follows:
 
@@ -14103,7 +13830,7 @@ Effects objects.
 
 See section 2.3.5 for the specification of additional object record types.
 
-2.3.6  Property Record Types
+#### 2.3.6 Property Record Types
 
 Property Record Types specify properties of the playback device context. The following are
 EMF+ property record types:
@@ -14138,9 +13865,9 @@ performed.
 
 EmfPlusSetPixelOffsetMode
 
-2.3.6.5
+##### 2.3.6.5 Sets how pixels are centered with respect to the coordinates of the
 
-Sets how pixels are centered with respect to the coordinates of the
+
 drawing surface.
 
 EmfPlusSetRenderingOrigin
@@ -14193,7 +13920,8 @@ Release: April 23, 2024
 
 161 / 262
 
-Type (2 bytes): An unsigned integer that identifies the record type. The property record types are
+
+Type (2 bytes): An unsigned integer that identifies the record type. The property record types are
 
 listed below. See the table above for descriptions of these records.
 
@@ -14301,7 +14029,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-X (1 bit): Reserved and MUST be ignored.
+
+X (1 bit): Reserved and MUST be ignored.
 
 SmoothingMode (7 bits): The smoothing mode value, from the SmoothingMode
 
@@ -14393,7 +14122,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.3.6.3  EmfPlusSetCompositingQuality Record
+
+2.3.6.3  EmfPlusSetCompositingQuality Record
 
 The EmfPlusSetCompositingQuality record specifies the desired level of quality for creating
 composite images from multiple objects.
@@ -14492,7 +14222,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flags (2 bytes): An unsigned integer that provides information about how the operation is to be
+
+Flags (2 bytes): An unsigned integer that provides information about how the operation is to be
 
 performed, and about the structure of the record.
 
@@ -14591,13 +14322,14 @@ Release: April 23, 2024
 
 165 / 262
 
-DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of record-
+
+DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of record-
 
 specific data that follows. For this record type, the value MUST be 0x00000000.
 
 See section 2.3.6 for the specification of additional property record types.
 
-2.3.6.6  EmfPlusSetRenderingOrigin Record
+##### 2.3.6.6 EmfPlusSetRenderingOrigin Record
 
 The EmfPlusSetRenderingOrigin record specifies the rendering origin for graphics output.
 
@@ -14647,7 +14379,7 @@ y (4 bytes): A signed integer that defines the vertical coordinate value of the 
 
 See section 2.3.6 for the specification of additional property record types.
 
-2.3.6.7  EmfPlusSetTextContrast Record
+##### 2.3.6.7 EmfPlusSetTextContrast Record
 
 The EmfPlusSetTextContrast record specifies text contrast according to the gamma correction
 value.
@@ -14678,7 +14410,8 @@ Release: April 23, 2024
 
 166 / 262
 
-Type (2 bytes): An unsigned integer that identifies this record type as EmfPlusSetTextContrast from
+
+Type (2 bytes): An unsigned integer that identifies this record type as EmfPlusSetTextContrast from
 
 the RecordType enumeration. The value MUST be 0x4020.
 
@@ -14719,7 +14452,7 @@ specific data that follows. For this record type, the value MUST be 0x00000000.
 
 See section 2.3.6 for the specification of additional property record types.
 
-2.3.6.8  EmfPlusSetTextRenderingHint Record
+##### 2.3.6.8 EmfPlusSetTextRenderingHint Record
 
 The EmfPlusSetTextRenderingHint record specifies the quality of text rendering, including the type
 of anti-aliasing.
@@ -14779,7 +14512,8 @@ Release: April 23, 2024
 
 167 / 262
 
-Size (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes in the entire
+
+Size (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes in the entire
 
 record, including the 12-byte record header and record-specific data. For this record type, the
 value MUST be 0x0000000C.
@@ -14790,7 +14524,7 @@ specific data that follows. For this record type, the value MUST be 0x00000000.
 
 See section 2.3.6 for the specification of additional property record types.
 
-2.3.7  State Record Types
+#### 2.3.7 State Record Types
 
 The State Record Types specify operations on the state of the playback device context. The
 following are EMF+ state record types:
@@ -14886,7 +14620,8 @@ Release: April 23, 2024
 
 168 / 262
 
-Flags (2 bytes): An unsigned integer that contains information for some records on how the
+
+Flags (2 bytes): An unsigned integer that contains information for some records on how the
 
 operation is to be performed and on the structure of the record.
 
@@ -14901,7 +14636,7 @@ RecordData (variable): An optional, variable-length array of bytes that, if pres
 specific to individual records. For specifications of the additional information, if any, which is
 contained within this field, see individual record definitions.
 
-2.3.7.1  EmfPlusBeginContainer Record
+##### 2.3.7.1 EmfPlusBeginContainer Record
 
 The EmfPlusBeginContainer record opens a new graphics state container and specifies a transform
 for it.
@@ -14958,7 +14693,8 @@ Release: April 23, 2024
 
 169 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15004,7 +14740,7 @@ implementation.
 
 See section 2.3.7 for the specification of additional state record types.
 
-2.3.7.2  EmfPlusBeginContainerNoParams Record
+##### 2.3.7.2 EmfPlusBeginContainerNoParams Record
 
 The EmfPlusBeginContainerNoParams record opens a new graphics state container.
 
@@ -15049,7 +14785,8 @@ Release: April 23, 2024
 
 170 / 262
 
-DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of record-
+
+DataSize (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes of record-
 
 specific data that follows. For this record type, the value MUST be 0x00000004.
 
@@ -15064,7 +14801,7 @@ implementation.
 
 See section 2.3.7 for the specification of additional state record types.
 
-2.3.7.3  EmfPlusEndContainer Record
+##### 2.3.7.3 EmfPlusEndContainer Record
 
 The EmfPlusEndContainer record closes a graphics state container that was previously opened by a
 begin container operation.
@@ -15118,7 +14855,7 @@ implementation.
 
 See section 2.3.7 for the specification of additional state record types.
 
-2.3.7.4  EmfPlusRestore Record
+##### 2.3.7.4 EmfPlusRestore Record
 
 The EmfPlusRestore record restores the graphics state, identified by a specified index, from a stack of
 saved graphics states.
@@ -15130,7 +14867,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -15177,7 +14915,7 @@ implementation.
 
 See section 2.3.7 for the specification of additional state record types.
 
-2.3.7.5  EmfPlusSave Record
+##### 2.3.7.5 EmfPlusSave Record
 
 The EmfPlusSave record saves the graphics state, identified by a specified index, on a stack of saved
 graphics states.
@@ -15218,7 +14956,8 @@ Release: April 23, 2024
 
 172 / 262
 
-Size (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of records in the entire
+
+Size (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of records in the entire
 record, including the 12-byte record header and record-specific data. For this record type, the
 value MUST be 0x00000010.
 
@@ -15235,7 +14974,7 @@ implementation.
 
 See section 2.3.7 for the specification of additional state record types.
 
-2.3.8  Terminal Server Record Types
+#### 2.3.8 Terminal Server Record Types
 
 The Terminal Server Record Types specify graphics processing on a terminal server. The following
 are EMF+ terminal server record types.
@@ -15309,14 +15048,15 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-DataSize (4 bytes): An unsigned integer that defines the 32-bit-aligned number of bytes of data in
+
+DataSize (4 bytes): An unsigned integer that defines the 32-bit-aligned number of bytes of data in
 the RecordData field that follows. This number does not include the 12-byte record header.
 
 RecordData (variable): An optional, variable-length array of bytes that, if present, defines the data
 specific to individual records. For specifications of the additional information, if any, which is
 contained within this field, see individual record definitions.
 
-2.3.8.1  EmfPlusSetTSClip Record
+##### 2.3.8.1 EmfPlusSetTSClip Record
 
 The EmfPlusSetTSClip record specifies clipping areas in the graphics device context for a terminal
 server.<31>
@@ -15401,7 +15141,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-C bit
+
+C bit
 value
 
 Meaning
@@ -15447,7 +15188,7 @@ coordinate and the top coordinate on the current rectangle.
 
 See section 2.3.8 for the specification of additional terminal server record types.
 
-2.3.8.2  EmfPlusSetTSGraphics Record
+##### 2.3.8.2 EmfPlusSetTSGraphics Record
 
 The EmfPlusSetTSGraphics record specifies the state of a graphics device context for a terminal
 server. <32>
@@ -15486,7 +15227,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RenderOriginX
+
+RenderOriginX
 
 RenderOriginY
 
@@ -15571,7 +15313,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-RenderOriginY (2 bytes): A signed integer, which is the vertical coordinate of the origin for
+
+RenderOriginY (2 bytes): A signed integer, which is the vertical coordinate of the origin for
 
 rendering halftoning and dithering matrixes.
 
@@ -15595,7 +15338,7 @@ Palette (variable): An optional EmfPlusPalette object.
 
 See section 2.3.8 for the specification of additional terminal server record types.
 
-2.3.9  Transform Record Types
+#### 2.3.9 Transform Record Types
 
 The Transform Record Types specify properties and transforms on coordinate spaces. The following
 are EMF+ transform record types:
@@ -15606,7 +15349,7 @@ Section  Description
 
 EmfPlusMultiplyWorldTransform
 
-2.3.9.1  Multiplies the current world space transform by a specified
+##### 2.3.9.1 Multiplies the current world space transform by a specified
 
 transform matrix.
 
@@ -15630,16 +15373,16 @@ Performs a scaling on the current world space transform.
 
 EmfPlusSetPageTransform
 
-2.3.9.5
+##### 2.3.9.5 Specifies scaling factors and units for converting page space
 
-Specifies scaling factors and units for converting page space
+
 coordinates to device space coordinates.
 
 EmfPlusSetWorldTransform
 
-2.3.9.6
+##### 2.3.9.6 Specifies the current world space transform according to the
 
-Specifies the current world space transform according to the
+
 values in a specified transform matrix.
 
 EmfPlusTranslateWorldTransform  2.3.9.7
@@ -15678,7 +15421,8 @@ Release: April 23, 2024
 
 177 / 262
 
-Type (2 bytes): An unsigned integer that identifies the record type. The transform record types are
+
+Type (2 bytes): An unsigned integer that identifies the record type. The transform record types are
 
 listed below. See the table above for descriptions of these records.
 
@@ -15770,7 +15514,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flags (2 bytes): An unsigned integer that provides information about how the operation is to be
+
+Flags (2 bytes): An unsigned integer that provides information about how the operation is to be
 
 performed, and about the structure of the record.
 
@@ -15859,7 +15604,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 180 -->
+
+<!-- Extracted images from page 180 -->
 ![Extracted image 1 from page 180]([MS-EMFPLUS].images/page180-img01.png)
 <!-- /Extracted images from page 180 -->
 
@@ -15940,7 +15686,8 @@ Release: April 23, 2024
 
 180 / 262
 
-<!-- Extracted images from page 181 -->
+
+<!-- Extracted images from page 181 -->
 ![Extracted image 1 from page 181]([MS-EMFPLUS].images/page181-img01.png)
 <!-- /Extracted images from page 181 -->
 
@@ -16024,7 +15771,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -16122,7 +15870,8 @@ Release: April 23, 2024
 
 182 / 262
 
-...
+
+...
 
 ...
 
@@ -16149,7 +15898,7 @@ transform.
 
 See section 2.3.9 for the specification of additional transform record types.
 
-2.3.9.7  EmfPlusTranslateWorldTransform Record
+##### 2.3.9.7 EmfPlusTranslateWorldTransform Record
 
 The EmfPlusTranslateWorldTransform record performs a translation on the current world space
 transform.
@@ -16209,7 +15958,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes in the entire
+
+Size (4 bytes): An unsigned integer that specifies the 32-bit-aligned number of bytes in the entire
 
 record, including the 12-byte record header and record-specific data. For this record type, the
 value MUST be 0x00000014.
@@ -16233,13 +15983,14 @@ Release: April 23, 2024
 
 184 / 262
 
-3  Structure Examples
+
+## 3 Structure Examples
 
 The following sections present examples that illustrate the function of EMF+ Extensions structures.
 
-3.1  Metafile Design
+### 3.1 Metafile Design
 
-3.1.1  Byte Ordering Example
+#### 3.1.1 Byte Ordering Example
 
 The following code snippet illustrates how the use of the big-endian and little-endian methods can
 affect the compatibility of applications.
@@ -16279,7 +16030,7 @@ can read integers from a file based on the endian method that the output compute
 Because metafiles were developed and written with little-endian computers, machines that are big-
 endian based will have to perform this necessary compensation.
 
-3.1.2  Managing Graphics Objects
+#### 3.1.2 Managing Graphics Objects
 
 This section describes a conceptual model for managing graphics objects that an EMF+
 implementation can maintain during metafile playback. The described organization is provided to
@@ -16294,7 +16045,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 186 -->
+
+<!-- Extracted images from page 186 -->
 ![Extracted image 1 from page 186]([MS-EMFPLUS].images/page186-img01.png)
 <!-- /Extracted images from page 186 -->
 
@@ -16321,7 +16073,7 @@ into the hash table to retrieve the object.
 
 table entry of the existing object with one for the new object.
 
-3.2  EMF+ Metafile Example
+### 3.2 EMF+ Metafile Example
 
 This section provides an example of a metafile, which when processed renders the following image:
 
@@ -16357,7 +16109,8 @@ Release: April 23, 2024
 
 186 / 262
 
- 00000110: 0F 00 00 80 19 00 00 00 0C 00 00 00 FF FF FF 00  ..€ .......ÿÿÿ.
+
+ 00000110: 0F 00 00 80 19 00 00 00 0C 00 00 00 FF FF FF 00  ..€ .......ÿÿÿ.
  00000120: 18 00 00 00 0C 00 00 00 00 00 00 00 12 00 00 00  ........... ...
  00000130: 0C 00 00 00 02 00 00 00 13 00 00 00 0C 00 00 00 .... ... .......
  00000140: 01 00 00 00 14 00 00 00 0C 00 00 00 0D 00 00 00  ... ...........
@@ -16434,7 +16187,8 @@ Release: April 23, 2024
 
 187 / 262
 
- 00000560: 1E 01 00 C0 FE BF 13 44 EB 15 2B 42 FF BF 13 44   .Àþ¿ Dë +Bÿ¿ D
+
+ 00000560: 1E 01 00 C0 FE BF 13 44 EB 15 2B 42 FF BF 13 44   .Àþ¿ Dë +Bÿ¿ D
  00000570: FC FF C3 42 FF BF 13 44 FE FF C3 42 FF BF 13 44 üÿÃBÿ¿ DþÿÃBÿ¿ D
  00000580: 01 00 C4 42 FF BF 13 44 03 00 C4 42 FF BF 13 44  .ÄBÿ¿ D .ÄBÿ¿ D
  00000590: FF FF F5 43 FF BF 13 44 9F CE 08 44 9F 8E 08 44 ÿÿõCÿ¿ DŸÎ DŸŽ D
@@ -16511,7 +16265,8 @@ Release: April 23, 2024
 
 188 / 262
 
- 000009B0: 00 00 80 3F 00 00 00 00 00 00 00 00 4C 00 00 00 ..€?........L...
+
+ 000009B0: 00 00 80 3F 00 00 00 00 00 00 00 00 4C 00 00 00 ..€?........L...
  000009C0: 64 00 00 00 FF FF FF FF FF FF FF FF 64 00 00 00 d...ÿÿÿÿÿÿÿÿd...
  000009D0: 6B 00 00 00 FF FF FF FF FF FF FF FF 66 00 00 00 k...ÿÿÿÿÿÿÿÿf...
  000009E0: 6D 00 00 00 29 00 AA 00 00 00 00 00 00 00 00 00 m...).ª.........
@@ -16529,7 +16284,7 @@ and the records have been interpreted for the convenience of the reader; however
 order of records in the metafile, some record types appear more than once, and, in some cases, the
 repeated instances can be identical.
 
-3.2.1  EMR_HEADER Example
+#### 3.2.1 EMR_HEADER Example
 
 This section provides an example of the EMF EMR_HEADER record with Extension 2 ([MS-EMF] section
 2.3.4.2.3).
@@ -16580,7 +16335,8 @@ Release: April 23, 2024
 
 189 / 262
 
-Type (4 bytes): 0x00000001 identifies the record type as EMR_HEADER.
+
+Type (4 bytes): 0x00000001 identifies the record type as EMR_HEADER.
 
 Size (4 bytes): 0x0000006C specifies the record size in bytes, 108.
 
@@ -16658,7 +16414,8 @@ Release: April 23, 2024
 
 190 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -16713,7 +16470,7 @@ MicrometersY (4 bytes): 0x0003A900 specifies the vertical size of the reference 
 
 micrometers.
 
-3.2.2  EMR_COMMENT_EMFPLUS Example 1
+#### 3.2.2 EMR_COMMENT_EMFPLUS Example 1
 
 This section provides an example of the EMF EMR_COMMENT_EMFPLUS record ([MS-EMF] section
 2.3.3.2).
@@ -16741,7 +16498,8 @@ Release: April 23, 2024
 
 191 / 262
 
-Size (0x0000002C)
+
+Size (0x0000002C)
 
 DataSize (0x00000020)
 
@@ -16761,7 +16519,7 @@ EMR_COMMENT_EMFPLUS.
 
 The embedded EMF+ records are presented in the sections that follow.
 
-3.2.2.1  EmfPlusHeader Example
+##### 3.2.2.1 EmfPlusHeader Example
 
 This section provides an example of the EmfPlusHeader record (section 2.3.3.3).
 
@@ -16815,7 +16573,8 @@ Release: April 23, 2024
 
 192 / 262
 
-Version (4 bytes): 0xDBC01002 specifies the version of operating systems graphics that was used to
+
+Version (4 bytes): 0xDBC01002 specifies the version of operating systems graphics that was used to
 
 create the metafile (EmfPlusGraphicsVersion object).
 
@@ -16831,7 +16590,7 @@ LogicalDpiY (4 bytes): 0x0000006C specifies the dots per inch (DPI) in the verti
 
 drawing surface for which the metafile was created.
 
-3.2.3  EMR_SAVEDC Example 1
+#### 3.2.3 EMR_SAVEDC Example 1
 
 This section provides an example of the EMF EMR_SAVEDC record ([MS-EMF] section 2.3.11).
 
@@ -16856,7 +16615,7 @@ Type (4 bytes): 0x00000021 identifies the record type as EMR_SAVEDC.
 
 Size (4 bytes): 0x00000008 specifies the size of this record in bytes.
 
-3.2.4  EMR_SETICMMODE Example 1
+#### 3.2.4 EMR_SETICMMODE Example 1
 
 This section provides an example of the EMF EMR_SETICMMODE record ([MS-EMF] section
 2.3.11.14).
@@ -16895,7 +16654,8 @@ Release: April 23, 2024
 
 193 / 262
 
-3.2.5  EMR_SAVEDC Example 2
+
+#### 3.2.5 EMR_SAVEDC Example 2
 
 This section provides an example of the EMF EMR_SAVEDC record ([MS-EMF] section 2.3.11).
 
@@ -16921,7 +16681,7 @@ Type (4 bytes): 0x00000021 identifies the record type as EMR_SAVEDC.
 
 Size (4 bytes): 0x00000008 specifies the size of this record in bytes.
 
-3.2.6  EMR_SETICMMODE Example 2
+#### 3.2.6 EMR_SETICMMODE Example 2
 
 This section provides an example of the EMF EMR_SETICMMODE record ([MS-EMF] section
 2.3.11.14).
@@ -16953,7 +16713,7 @@ ICMMode (4 bytes): 0x00000001 specifies turning off Image Color Management (ICM)
 
 value is defined in the EMF ICMMode enumeration.
 
-3.2.7  EMR_SAVEDC Example 3
+#### 3.2.7 EMR_SAVEDC Example 3
 
 This section provides an example of the EMF EMR_SAVEDC record ([MS-EMF] section 2.3.11).
 
@@ -16979,13 +16739,14 @@ Release: April 23, 2024
 
 194 / 262
 
-Size (0x00000008)
+
+Size (0x00000008)
 
 Type (4 bytes): 0x00000021 identifies the record type as EMR_SAVEDC.
 
 Size (4 bytes): 0x00000008 specifies the size of this record in bytes.
 
-3.2.8  EMR_SETLAYOUT Example 1
+#### 3.2.8 EMR_SETLAYOUT Example 1
 
 This section provides an example of the EMF EMR_SETLAYOUT record ([MS-EMF] section 2.3.11.17).
 
@@ -17014,7 +16775,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 LayoutMode (4 bytes): 0x00000000 specifies left-to-right horizontal layout.
 
-3.2.9  EMR_SETMETARGN Example 1
+#### 3.2.9 EMR_SETMETARGN Example 1
 
 This section provides an example of the EMF EMR_SETMETARGN record ([MS-EMF] section 2.3.2).
 
@@ -17040,7 +16801,7 @@ Type (4 bytes): 0x0000001C identifies the record type as EMR_SETMETARGN.
 
 Size (4 bytes): 0x00000008 specifies the size of this record.
 
-3.2.10 EMR_SELECTOBJECT Example 1
+#### 3.2.10 EMR_SELECTOBJECT Example 1
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -17053,7 +16814,8 @@ Release: April 23, 2024
 
 195 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17078,7 +16840,7 @@ ihObject (4 bytes): 0x80000000 specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.11 EMR_SELECTOBJECT Example 2
+#### 3.2.11 EMR_SELECTOBJECT Example 2
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -17109,7 +16871,7 @@ ihObject (4 bytes): 0x80000007 specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.12 EMR_SELECTOBJECT Example 3
+#### 3.2.12 EMR_SELECTOBJECT Example 3
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -17138,7 +16900,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ihObject (0x8000000E=DEVICE_DEFAULT_FONT)
+
+ihObject (0x8000000E=DEVICE_DEFAULT_FONT)
 
 Type (4 bytes): 0x00000025 identifies the record type as EMR_SELECTOBJECT.
 
@@ -17148,7 +16911,7 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.13 EMR_SELECTPALETTE Example 1
+#### 3.2.13 EMR_SELECTPALETTE Example 1
 
 This section provides an example of the EMF EMR_SELECTPALETTE record ([MS-EMF] section 2.3.8.6).
 
@@ -17180,7 +16943,7 @@ ihPal (4 bytes): 0x8000000F specifies the palette index. The palette can be sele
 
 mode only.
 
-3.2.14 EMR_SETBKCOLOR Example 1
+#### 3.2.14 EMR_SETBKCOLOR Example 1
 
 This section provides an example of the EMF EMR_SETBKCOLOR record ([MS-EMF] section 2.3.11.10).
 
@@ -17214,11 +16977,12 @@ Release: April 23, 2024
 
 197 / 262
 
-Color (4 bytes): 0x00FFFFFF specifies the background color value with the WMF ColorRef object
+
+Color (4 bytes): 0x00FFFFFF specifies the background color value with the WMF ColorRef object
 
 ([MS-WMF] section 2.2.2.8).
 
-3.2.15 EMR_SETTEXTCOLOR Example 1
+#### 3.2.15 EMR_SETTEXTCOLOR Example 1
 
 This section provides an example of the EMF EMR_SETTEXTCOLOR record ([MS-EMF] section
 2.3.11.26).
@@ -17250,7 +17014,7 @@ Color (4 bytes): 0x00000000 specifies the text color value in the form specified
 
 ColorRef object ([MS-WMF] section 2.2.2.8).
 
-3.2.16 EMR_SETBKMODE Example 1
+#### 3.2.16 EMR_SETBKMODE Example 1
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -17289,7 +17053,8 @@ Release: April 23, 2024
 
 198 / 262
 
-3.2.17 EMR_SETPOLYFILLMODE Example 1
+
+#### 3.2.17 EMR_SETPOLYFILLMODE Example 1
 
 This section provides an example of the EMF EMR_SETPOLYFILLMODE record ([MS-EMF] section
 2.3.11.22).
@@ -17322,7 +17087,7 @@ PolygonFillMode (4 bytes): 0x00000001 specifies ALTERNATE polygon fill mode. Thi
 
 defined in the EMF PolygonFillMode enumeration.
 
-3.2.18 EMR_SETROP2 Example 1
+#### 3.2.18 EMR_SETROP2 Example 1
 
 This section provides an example of the EMF EMR_SETROP2 record ([MS-EMF] section 2.3.11.23).
 
@@ -17353,7 +17118,7 @@ ROP2Mode (4 bytes): 0x0000000D specifies the R2_COPYPEN raster operation mode. T
 
 defined in the WMF BinaryRasterOperation enumeration ([MS-WMF] section 2.1.1.2).
 
-3.2.19 EMR_SETSTRETCHBLTMODE Example 1
+#### 3.2.19 EMR_SETSTRETCHBLTMODE Example 1
 
 This section provides an example of the EMF EMR_SETSTRETCHBLTMODE record ([MS-EMF] section
 2.3.11.24).
@@ -17367,7 +17132,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17392,7 +17158,7 @@ StretchMode (4 bytes): 0x00000001 specifies a Boolean AND operation using the co
 
 the eliminated and existing pixels, from the EMF StretchMode enumeration.
 
-3.2.20 EMR_SETTEXTALIGN Example 1
+#### 3.2.20 EMR_SETTEXTALIGN Example 1
 
 This section provides an example of the EMF EMR_SETTEXTALIGN record ([MS-EMF] section
 2.3.11.25).
@@ -17427,7 +17193,7 @@ TextAlignmentMode or VerticalTextAlignmentMode flags ([MS-WMF] sections 2.1.2.3 
 Only one flag can be chosen from those that affect horizontal and vertical alignment. In addition,
 only one of the two flags that alter the current position can be chosen.
 
-3.2.21 EMR_SETBRUSHORGEX Example 1
+#### 3.2.21 EMR_SETBRUSHORGEX Example 1
 
 This section provides an example of the EMF EMR_SETBRUSHORGEX record ([MS-EMF] section
 2.3.11.12).
@@ -17442,7 +17208,8 @@ Release: April 23, 2024
 
 200 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17469,7 +17236,7 @@ Origin (8 bytes): (0x00000000, 0x00000000) specifies the brush horizontal and ve
 
 device units.
 
-3.2.22 EMR_SETMITERLIMIT Example 1
+#### 3.2.22 EMR_SETMITERLIMIT Example 1
 
 This section provides an example of the EMF EMR_SETMITERLIMIT record ([MS-EMF] section
 2.3.11.21).
@@ -17500,7 +17267,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 MiterLimit (4 bytes): 0x0000000A specifies a miter length limit of 10 logical units.
 
-3.2.23 EMR_MOVETOEX Example 1
+#### 3.2.23 EMR_MOVETOEX Example 1
 
 This section provides an example of the EMF EMR_MOVETOEX record ([MS-EMF] section 2.3.11.4).
 
@@ -17527,7 +17294,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size (0x00000010)
+
+Size (0x00000010)
 
 Offset (0x00000000)
 
@@ -17541,7 +17309,7 @@ Offset (8 bytes): (0x00000000, 0x00000000) specifies coordinates of the new curr
 
 logical units.
 
-3.2.24 EMR_SETWORLDTRANSFORM Example 1
+#### 3.2.24 EMR_SETWORLDTRANSFORM Example 1
 
 This section provides an example of the EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section
 2.3.12.2).
@@ -17593,7 +17361,8 @@ Release: April 23, 2024
 
 202 / 262
 
-3.2.25 EMR_MODIFYWORLDTRANSFORM Example 1
+
+#### 3.2.25 EMR_MODIFYWORLDTRANSFORM Example 1
 
 This section provides an example of the EMF EMR_MODIFYWORLDTRANSFORM record ([MS-EMF]
 section 2.3.12.1).
@@ -17645,7 +17414,7 @@ ModifyWorldTransformMode (4 bytes): 0x00000004 specifies that this record perfor
 function of an EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section 2.3.12.2). This value is
 defined in the EMF ModifyWorldTransformMode enumeration ([MS-EMF] section 2.1.24).
 
-3.2.26 EMR_SETLAYOUT Example 2
+#### 3.2.26 EMR_SETLAYOUT Example 2
 
 This section provides an example of the EMF EMR_SETLAYOUT record ([MS-EMF] section 2.3.11.17).
 
@@ -17659,7 +17428,8 @@ Release: April 23, 2024
 
 203 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -17682,7 +17452,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 LayoutMode (4 bytes): 0x00000000 specifies left-to-right horizontal layout.
 
-3.2.27 EMR_SETBRUSHORGEX Example 2
+#### 3.2.27 EMR_SETBRUSHORGEX Example 2
 
 This section provides an example of the EMF EMR_SETBRUSHORGEX record ([MS-EMF] section
 2.3.11.12).
@@ -17717,7 +17487,7 @@ Origin (8 bytes): (0x00000000, 0x00000000) specifies the brush horizontal and ve
 
 device units.
 
-3.2.28 EMR_EXTCREATEFONTINDIRECTW Example
+#### 3.2.28 EMR_EXTCREATEFONTINDIRECTW Example
 
 This section provides an example of the EMF EMR_EXTCREATEFONTINDIRECTW record ([MS-EMF]
 section 2.3.7.8).
@@ -17739,7 +17509,8 @@ Release: April 23, 2024
 
 204 / 262
 
- 00000280: 00 00 00 00 F4 F4 12 00 34 B8 F9 77 68 26 F4 77
+
+ 00000280: 00 00 00 00 F4 F4 12 00 34 B8 F9 77 68 26 F4 77
  00000290: FF FF FF FF AD 97 F7 77 7F 99 F7 77 70 E1 12 00
  000002A0: 21 00 00 00 01 00 00 00 FC 8B CE 02 38 A6 17 00
  000002B0: 7F 99 F7 77 B0 DA 4F 00 63 DE 5D 00 3E 08 5A 00
@@ -17818,7 +17589,8 @@ Release: April 23, 2024
 
 205 / 262
 
-Italic (0x00)
+
+Italic (0x00)
 
 Underline (0x00)
 
@@ -17908,7 +17680,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-...
+
+...
 
 ...
 
@@ -17946,7 +17719,7 @@ NumAxes (4 bytes): 0x00000000 specifies the number of font axes described in the
 
 object.
 
-3.2.29 EMR_SELECTOBJECT Example 4
+#### 3.2.29 EMR_SELECTOBJECT Example 4
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -17976,7 +17749,8 @@ Release: April 23, 2024
 
 207 / 262
 
-Type (4 bytes): 0x00000025 identifies the record type as EMR_SELECTOBJECT.
+
+Type (4 bytes): 0x00000025 identifies the record type as EMR_SELECTOBJECT.
 
 Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
@@ -17984,7 +17758,7 @@ ihObject (4 bytes): 0x00000001 specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.30 EMR_SELECTOBJECT Example 5
+#### 3.2.30 EMR_SELECTOBJECT Example 5
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -18015,7 +17789,7 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.31 EMR_DELETEOBJECT Example
+#### 3.2.31 EMR_DELETEOBJECT Example
 
 This section provides an example of the EMF EMR_DELETEOBJECT record ([MS-EMF] section 2.3.8.3).
 
@@ -18054,7 +17828,8 @@ Release: April 23, 2024
 
 208 / 262
 
-3.2.32 EMR_COMMENT_EMFPLUS Example 2
+
+#### 3.2.32 EMR_COMMENT_EMFPLUS Example 2
 
 This section provides an example of the EMF EMR_COMMENT_EMFPLUS record ([MS-EMF] section
 2.3.3.2).
@@ -18095,9 +17870,9 @@ EMR_COMMENT_EMFPLUS.
 
 The embedded EMF+ records are presented in the sections that follow.
 
-3.2.32.1
+##### 3.2.32.1 EmfPlusSetAntiAliasMode Example 1
 
-EmfPlusSetAntiAliasMode Example 1
+
 
 This section provides an example of the EmfPlusSetAntiAliasMode record (section 2.3.6.1).
 
@@ -18136,13 +17911,14 @@ Release: April 23, 2024
 
 209 / 262
 
-DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific data in this record, and
+
+DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific data in this record, and
 
 in this case, there is none.
 
-3.2.32.2
+##### 3.2.32.2 EmfPlusSetCompositingQuality Example 1
 
-EmfPlusSetCompositingQuality Example 1
+
 
 This section provides an example of the EmfPlusSetCompositingQuality record (section 2.3.6.3).
 
@@ -18179,9 +17955,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case there is none.
 
-3.2.32.3
+##### 3.2.32.3 EmfPlusSetInterpolationMode Example 1
 
-EmfPlusSetInterpolationMode Example 1
+
 
 This section provides an example of the EmfPlusSetInterpolationMode record (section 2.3.6.4).
 
@@ -18225,9 +18001,10 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.32.4
 
-EmfPlusSetPixelOffsetMode Example 1
+##### 3.2.32.4 EmfPlusSetPixelOffsetMode Example 1
+
+
 
 This section provides an example of the EmfPlusSetPixelOffsetMode record (section 2.3.6.5).
 
@@ -18263,9 +18040,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case there is none.
 
-3.2.32.5
+##### 3.2.32.5 EmfPlusSetTextRenderingHint Example 1
 
-EmfPlusSetTextRenderingHint Example 1
+
 
 This section provides an example of the EmfPlusSetTextRenderingHint record (section 2.3.6.8).
 
@@ -18310,9 +18087,10 @@ Release: April 23, 2024
 
 211 / 262
 
-3.2.32.6
 
-EmfPlusMultiplyWorldTransform Example 1
+##### 3.2.32.6 EmfPlusMultiplyWorldTransform Example 1
+
+
 
 This section provides an example of the EmfPlusMultiplyWorldTransform record (section 2.3.9.1).
 
@@ -18363,9 +18141,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 multiplication matrix.
 
-3.2.32.7
+##### 3.2.32.7 EmfPlusSave Example
 
-EmfPlusSave Example
+
 
 This section provides an example of the EmfPlusSave record (section 2.3.7.5).
 
@@ -18394,7 +18172,8 @@ Release: April 23, 2024
 
 212 / 262
 
-Size (0x00000010)
+
+Size (0x00000010)
 
 DataSize (0x00000004)
 
@@ -18418,9 +18197,9 @@ StackIndex (4 bytes): 0x00000000 specifies the identifier used by the correspond
 EmfPlusRestore operation (section 2.3.7.4) to retrieve the graphics state from the correct save
 level on the graphics state stack.
 
-3.2.32.8
+##### 3.2.32.8 EmfPlusMultiplyWorldTransform Example 2
 
-EmfPlusMultiplyWorldTransform Example 2
+
 
 This section provides an example of the EmfPlusMultiplyWorldTransform record (section 2.3.9.1).
 
@@ -18470,7 +18249,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Size (4 bytes): 0x00000024 specifies the size in bytes of the entire record.
+
+Size (4 bytes): 0x00000024 specifies the size in bytes of the entire record.
 
 DataSize (4 bytes): 0x00000018 specifies the size in bytes of the record-specific data that follows.
 
@@ -18478,9 +18258,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 multiplication matrix.
 
-3.2.32.9
+##### 3.2.32.9 EmfPlusSetWorldTransform Example 1
 
-EmfPlusSetWorldTransform Example 1
+
 
 This section provides an example of the EmfPlusSetWorldTransform record (section 2.3.9.6).
 
@@ -18531,9 +18311,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47), whic
 
 world transform.
 
-3.2.32.10
+##### 3.2.32.10 EmfPlusBeginContainerNoParams Example
 
-EmfPlusBeginContainerNoParams Example
+
 
 This section provides an example of the EmfPlusBeginContainerNoParams record (section 2.3.7.2).
 
@@ -18546,7 +18326,8 @@ Release: April 23, 2024
 
 214 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -18579,9 +18360,9 @@ StackIndex (4 bytes): 0x00000001 specifies the identifier used to reference the 
 records. It will match a StackIndex value in a subsequent EmfPlusEndContainer record (section
 2.3.7.3) that will end the container.
 
-3.2.32.11
+##### 3.2.32.11 EmfPlusSetAntiAliasMode Example 2
 
-EmfPlusSetAntiAliasMode Example 2
+
 
 This section provides an example of the EmfPlusSetAntiAliasMode record (section 2.3.6.1).
 
@@ -18616,9 +18397,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case there is none.
 
-3.2.32.12
+##### 3.2.32.12 EmfPlusSetCompositingQuality Example 2
 
-EmfPlusSetCompositingQuality Example 2
+
 
 This section provides an example of the EmfPlusSetCompositingQuality record (section 2.3.6.3).
 
@@ -18631,7 +18412,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000470: 0C 00 00 00 00 00 00 00
+
+ 00000470: 0C 00 00 00 00 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -18664,9 +18446,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case there is none.
 
-3.2.32.13
+##### 3.2.32.13 EmfPlusSetInterpolationMode Example 2
 
-EmfPlusSetInterpolationMode Example 2
+
 
 This section provides an example of the EmfPlusSetInterpolationMode record (section 2.3.6.4).
 
@@ -18704,9 +18486,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case there is none.
 
-3.2.32.14
+##### 3.2.32.14 EmfPlusSetPixelOffsetMode Example 2
 
-EmfPlusSetPixelOffsetMode Example 2
+
 
 This section provides an example of the EmfPlusSetPixelOffsetMode record (section 2.3.6.5).
 
@@ -18719,7 +18501,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -18750,9 +18533,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case there is none.
 
-3.2.32.15
+##### 3.2.32.15 EmfPlusSetTextRenderingHint Example 2
 
-EmfPlusSetTextRenderingHint Example 2
+
 
 This section provides an example of the EmfPlusSetTextRenderingHint record (section 2.3.6.8).
 
@@ -18789,9 +18572,9 @@ DataSize (4 bytes): 0x00000000 specifies the size in bytes of record-specific da
 
 in this case, there is none.
 
-3.2.32.16
+##### 3.2.32.16 EmfPlusSetPageTransform Example
 
-EmfPlusSetPageTransform Example
+
 
 This section provides an example of the EmfPlusSetPageTransform record (section 2.3.9.5).
 
@@ -18805,7 +18588,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -18838,9 +18622,9 @@ PageScale (4 bytes): 0x3F800000 specifies the floating-point scale factor for co
 
 space coordinates to device space coordinates.
 
-3.2.32.17
+##### 3.2.32.17 EmfPlusSetWorldTransform Example 2
 
-EmfPlusSetWorldTransform Example 2
+
 
 This section provides an example of the EmfPlusSetWorldTransform record (section 2.3.9.6).
 
@@ -18888,7 +18672,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Flags (2 bytes): 0x0000 is undefined for this record type.
+
+Flags (2 bytes): 0x0000 is undefined for this record type.
 
 Size (4 bytes): 0x00000024 specifies the size in bytes of the entire record.
 
@@ -18898,9 +18683,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 world-space transform.
 
-3.2.32.18
+##### 3.2.32.18 EmfPlusSetWorldTransform Example 3
 
-EmfPlusSetWorldTransform Example 3
+
 
 This section provides an example of the EmfPlusSetWorldTransform record (section 2.3.9.6).
 
@@ -18951,9 +18736,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 world-space transform.
 
-3.2.32.19
+##### 3.2.32.19 EmfPlusSetWorldTransform Example 4
 
-EmfPlusSetWorldTransform Example 4
+
 
 This section provides an example of the EmfPlusSetWorldTransform record (section 2.3.9.6).
 
@@ -18966,7 +18751,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000500: 0D 74 DA 3A 00 00 00 00 00 00 00 00 0D 74 DA 3A
+
+ 00000500: 0D 74 DA 3A 00 00 00 00 00 00 00 00 0D 74 DA 3A
  00000510: 00 00 00 80 00 00 00 80
 
 0  1  2  3  4  5  6  7  8  9
@@ -19012,9 +18798,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 world-space transform.
 
-3.2.32.20
+##### 3.2.32.20 EmfPlusSetWorldTransform Example 5
 
-EmfPlusSetWorldTransform Example 5
+
 
 This section provides an example of the EmfPlusSetWorldTransform record (section 2.3.9.6).
 
@@ -19048,7 +18834,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MatrixData (0x3E2C5F92) (24 bytes)
+
+MatrixData (0x3E2C5F92) (24 bytes)
 
 ... (0x00000000)
 
@@ -19072,9 +18859,9 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 world-space transform.
 
-3.2.32.21
+##### 3.2.32.21 EmfPlusObject Example
 
-EmfPlusObject Example
+
 
 This section provides an example of the EmfPlusObject record (section 2.3.5.1).
 
@@ -19122,7 +18909,8 @@ Release: April 23, 2024
 
 221 / 262
 
-Flags (2 bytes): 0x0300 specifies an EmfPlusPath object (section 2.2.1.6) from the ObjectType
+
+Flags (2 bytes): 0x0300 specifies an EmfPlusPath object (section 2.2.1.6) from the ObjectType
 
 enumeration (section 2.1.1.21), and index 0x00 for the graphics object in the EMF+ Object Table
 (section 3.1.2).
@@ -19199,7 +18987,8 @@ Release: April 23, 2024
 
 222 / 262
 
-PathPoints (variable): An array of PathPointCount EmfPlusPointF objects (section 2.2.2.36) that
+
+PathPoints (variable): An array of PathPointCount EmfPlusPointF objects (section 2.2.2.36) that
 specify the endpoints and control points of the lines and Bezier curves that define the path.
 
 PathPointTypes (variable): An array of PathPointCount bytes that specify the point types and
@@ -19211,9 +19000,9 @@ AlignmentPadding (4 bytes): An extra byte that makes the total size of this reco
 
 bytes. The value of this field is indeterminate and is ignored.
 
-3.2.32.22
+##### 3.2.32.22 EmfPlusFillPath Example
 
-EmfPlusFillPath Example
+
 
 This section provides an example of the EmfPlusFillPath record (section 2.3.4.17).
 
@@ -19250,7 +19039,7 @@ DataSize (4 bytes): 0x00000004 specifies the size in bytes of the BrushID field 
 
 BrushId (4 bytes): 0x00FFFFFF specifies the fill color, which is white.
 
-3.2.33 EMR_COMMENT_EMFPLUS Example 3
+#### 3.2.33 EMR_COMMENT_EMFPLUS Example 3
 
 This section provides an example of the EMF EMR_COMMENT_EMFPLUS record ([MS-EMF] section
 2.3.3.2).
@@ -19281,7 +19070,8 @@ Release: April 23, 2024
 
 223 / 262
 
-EMFPlusSignature ("EMF+")
+
+EMFPlusSignature ("EMF+")
 
 Type (2 bytes): 0x00000046 identifies the record type as an EMF comment record.
 
@@ -19297,9 +19087,9 @@ EMR_COMMENT_EMFPLUS.
 
 The embedded EMF+ records are presented in the sections that follow.
 
-3.2.33.1
+##### 3.2.33.1 EmfPlusObject Example
 
-EmfPlusObject Example
+
 
 This section provides an example of the EmfPlusObject record (section 2.3.5.1).
 
@@ -19367,7 +19157,8 @@ Release: April 23, 2024
 
 224 / 262
 
-...
+
+...
 
 BrushObject (variable)
 
@@ -19450,9 +19241,10 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.33.2
 
-EmfPlusDrawPath Example
+##### 3.2.33.2 EmfPlusDrawPath Example
+
+
 
 This section provides an example of the EmfPlusDrawPath record (section 2.3.4.11).
 
@@ -19496,7 +19288,7 @@ PenId (4 bytes): 0x00000001 specifies the index into the EMF+ Object Table (sect
 
 EmfPlusPen object (section 2.2.1.7) to use.
 
-3.2.34 EMR_RESTOREDC Example 1
+#### 3.2.34 EMR_RESTOREDC Example 1
 
 This section provides an example of the EMF EMR_RESTOREDC record ([MS-EMF] section 2.3.11.6).
 
@@ -19532,7 +19324,8 @@ Release: April 23, 2024
 
 226 / 262
 
-3.2.35 EMR_RESTOREDC Example 2
+
+#### 3.2.35 EMR_RESTOREDC Example 2
 
 This section provides an example of the EMF EMR_RESTOREDC record ([MS-EMF] section 2.3.11.6).
 
@@ -19562,7 +19355,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 SavedDC (4 bytes): 0xFFFFFFFF specifies the most recently saved state.
 
-3.2.36 EMR_SELECTOBJECT Example 6
+#### 3.2.36 EMR_SELECTOBJECT Example 6
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -19594,7 +19387,7 @@ ihObject (4 bytes): 0x8000000D specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.37 EMR_RESTOREDC Example 3
+#### 3.2.37 EMR_RESTOREDC Example 3
 
 This section provides an example of the EMF EMR_RESTOREDC record ([MS-EMF] section 2.3.11.6).
 
@@ -19607,7 +19400,8 @@ Release: April 23, 2024
 
 227 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -19630,7 +19424,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 SavedDC (4 bytes): 0xFFFFFFFF specifies the most recently saved state.
 
-3.2.38 EMR_SAVEDC Example 4
+#### 3.2.38 EMR_SAVEDC Example 4
 
 This section provides an example of the EMF EMR_SAVEDC record ([MS-EMF] section 2.3.11).
 
@@ -19655,7 +19449,7 @@ Type (4 bytes): 0x00000021 identifies the record type as EMR_SAVEDC.
 
 Size (4 bytes): 0x00000008 specifies the size of this record in bytes.
 
-3.2.39 EMR_SETLAYOUT Example 3
+#### 3.2.39 EMR_SETLAYOUT Example 3
 
 This section provides an example of the EMF EMR_SETLAYOUT record ([MS-EMF] section 2.3.11.17).
 
@@ -19690,9 +19484,10 @@ Release: April 23, 2024
 
 228 / 262
 
-LayoutMode (4 bytes): 0x00000000 specifies left-to-right horizontal layout.
 
-3.2.40 EMR_SETMETARGN Example 2
+LayoutMode (4 bytes): 0x00000000 specifies left-to-right horizontal layout.
+
+#### 3.2.40 EMR_SETMETARGN Example 2
 
 This section provides an example of the EMF EMR_SETMETARGN record ([MS-EMF] section 2.3.2).
 
@@ -19717,7 +19512,7 @@ Type (4 bytes): 0x0000001C identifies the record type as EMR_SETMETARGN.
 
 Size (4 bytes): 0x00000008 specifies the size of this record.
 
-3.2.41 EMR_SELECTOBJECT Example 7
+#### 3.2.41 EMR_SELECTOBJECT Example 7
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -19749,7 +19544,7 @@ ihObject (4 bytes): 0x80000000 specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.42 EMR_SELECTOBJECT Example 8
+#### 3.2.42 EMR_SELECTOBJECT Example 8
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -19763,7 +19558,8 @@ Release: April 23, 2024
 
 229 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -19788,7 +19584,7 @@ ihObject (4 bytes): 0x80000007 specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.43 EMR_SELECTOBJECT Example 9
+#### 3.2.43 EMR_SELECTOBJECT Example 9
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -19819,7 +19615,7 @@ ihObject (4 bytes): 0x8000000E specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.44 EMR_SELECTPALETTE Example 2
+#### 3.2.44 EMR_SELECTPALETTE Example 2
 
 This section provides an example of the EMF EMR_SELECTPALETTE record ([MS-EMF] section 2.3.8.6).
 
@@ -19847,7 +19643,8 @@ Release: April 23, 2024
 
 230 / 262
 
-ihPal (0x8000000F)
+
+ihPal (0x8000000F)
 
 Type (4 bytes): 0x00000030 identifies the record type as EMR_SELECTPALETTE.
 
@@ -19857,7 +19654,7 @@ ihPal (4 bytes): 0x8000000F specifies the palette index. The palette can be sele
 
 mode only.
 
-3.2.45 EMR_SETBKCOLOR Example 2
+#### 3.2.45 EMR_SETBKCOLOR Example 2
 
 This section provides an example of the EMF EMR_SETBKCOLOR record ([MS-EMF] section 2.3.11.10).
 
@@ -19889,7 +19686,7 @@ Color (4 bytes): 0x00FFFFFF specifies the background color value of the WMF Colo
 
 WMF] section 2.2.2.8).
 
-3.2.46 EMR_SETTEXTCOLOR Example 2
+#### 3.2.46 EMR_SETTEXTCOLOR Example 2
 
 This section provides an example of the EMF EMR_SETTEXTCOLOR record ([MS-EMF] section
 2.3.11.26).
@@ -19924,9 +19721,10 @@ Release: April 23, 2024
 
 231 / 262
 
-Color (4 bytes): 0x00000000 specifies the text color value.
 
-3.2.47 EMR_SETBKMODE Example 2
+Color (4 bytes): 0x00000000 specifies the text color value.
+
+#### 3.2.47 EMR_SETBKMODE Example 2
 
 This section provides an example of the EMF EMR_SETBKMODE record ([MS-EMF] section 2.3.11.11).
 
@@ -19957,7 +19755,7 @@ BackgroundMode (4 bytes): 0x00000002 specifies OPAQUE background mode. This valu
 
 defined in the EMF BackgroundMode enumeration ([MS-EMF] section 2.1.4).
 
-3.2.48 EMR_SETPOLYFILLMODE Example 2
+#### 3.2.48 EMR_SETPOLYFILLMODE Example 2
 
 This section provides an example of the EMF EMR_SETPOLYFILLMODE record ([MS-EMF] section
 2.3.11.22).
@@ -19989,7 +19787,7 @@ PolygonFillMode (4 bytes): 0x00000001 specifies ALTERNATE polygon fill mode. Thi
 
 defined in the EMF PolygonFillMode enumeration ([MS-EMF] section 2.1.27).
 
-3.2.49 EMR_SETROP2 Example 2
+#### 3.2.49 EMR_SETROP2 Example 2
 
 This section provides an example of the EMF EMR_SETROP2 record ([MS-EMF] section 2.3.11.23).
 
@@ -20002,7 +19800,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000710: 0C 00 00 00 0D 00 00 00
+
+ 00000710: 0C 00 00 00 0D 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -20029,7 +19828,7 @@ ROP2Mode (4 bytes): 0x0000000D specifies the R2_COPYPEN raster operation mode. T
 
 defined in the WMF BinaryRasterOperation enumeration ([MS-WMF] section 2.1.1.2).
 
-3.2.50 EMR_SETSTRETCHBLTMODE Example 2
+#### 3.2.50 EMR_SETSTRETCHBLTMODE Example 2
 
 This section provides an example of the EMF EMR_SETSTRETCHBLTMODE record ([MS-EMF] section
 2.3.11.24).
@@ -20063,7 +19862,7 @@ StretchMode (4 bytes): 0x00000001 specifies a Boolean AND operation using the co
 the eliminated and existing pixels, from the EMF StretchMode enumeration ([MS-EMF] section
 2.1.32).
 
-3.2.51 EMR_SETTEXTALIGN Example 2
+#### 3.2.51 EMR_SETTEXTALIGN Example 2
 
 This section provides an example of the EMF EMR_SETTEXTALIGN record ([MS-EMF] section
 2.3.11.25).
@@ -20077,7 +19876,8 @@ Release: April 23, 2024
 
 233 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20104,7 +19904,7 @@ TextAlignmentMode flags or VerticalTextAlignmentMode flags ([MS-WMF] sections 2.
 2.1.2.4). Only one flag can be chosen from those that affect horizontal and vertical alignment. In
 addition, only one of the two flags that alter the current position can be chosen.
 
-3.2.52 EMR_SETBRUSHORGEX Example 3
+#### 3.2.52 EMR_SETBRUSHORGEX Example 3
 
 This section provides an example of the EMF EMR_SETBRUSHORGEX record ([MS-EMF] section
 2.3.11.12).
@@ -20138,7 +19938,7 @@ Origin (8 bytes): (0x00000000, 0x00000000) specifies the brush horizontal and ve
 
 device units.
 
-3.2.53 EMR_SETMITERLIMIT Example 2
+#### 3.2.53 EMR_SETMITERLIMIT Example 2
 
 This section provides an example of the EMF EMR_SETMITERLIMIT record ([MS-EMF] section
 2.3.11.21).
@@ -20152,7 +19952,8 @@ Release: April 23, 2024
 
 234 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20175,7 +19976,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 MiterLimit (4 bytes): 0x0000000A specifies a miter length limit of 10 logical units.
 
-3.2.54 EMR_MOVETOEX Example 2
+#### 3.2.54 EMR_MOVETOEX Example 2
 
 This section provides an example of the EMF EMR_MOVETOEX record ([MS-EMF] section 2.3.11.4).
 
@@ -20208,7 +20009,7 @@ Size (4 bytes): 0x00000010 specifies the size of this record in bytes.
 Offset (8 bytes): (0x00000000, 0x00000000) specifies coordinates of the new current position in
 logical units.
 
-3.2.55 EMR_SETWORLDTRANSFORM Example 2
+#### 3.2.55 EMR_SETWORLDTRANSFORM Example 2
 
 This section provides an example of the EMF EMR_SETWORLDTRANSFORM ([MS-EMF] section
 2.3.12.2).
@@ -20224,7 +20025,8 @@ Release: April 23, 2024
 
 235 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20260,7 +20062,7 @@ Xform (24 bytes): (1.005782, 0.000000, 0.000000, 1.013780, 0.000000, 0.000000) a
 object ([MS-EMF] section 2.2.28), which specifies the world space to page space
 transformation.
 
-3.2.56 EMR_MODIFYWORLDTRANSFORM Example 2
+#### 3.2.56 EMR_MODIFYWORLDTRANSFORM Example 2
 
 This section provides an example of the EMF EMR_MODIFYWORLDTRANSFORM record ([MS-EMF]
 section 2.3.12.1).
@@ -20300,7 +20102,8 @@ Release: April 23, 2024
 
 236 / 262
 
-... (0x80000000)
+
+... (0x80000000)
 
 ModifyWorldTransformMode (0x00000004)
 
@@ -20318,7 +20121,7 @@ ModifyWorldTransformMode (4 bytes): 0x00000004 specifies that this record perfor
 function of an EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section 2.3.12.2). This value is
 defined in the EMF ModifyWorldTransformMode enumeration ([MS-EMF] section 2.1.24).
 
-3.2.57 EMR_SETLAYOUT Example 4
+#### 3.2.57 EMR_SETLAYOUT Example 4
 
 This section provides an example of the EMF EMR_SETLAYOUT record ([MS-EMF] section 2.3.11.17).
 
@@ -20347,7 +20150,7 @@ Size: 0x0000000C specifies the size of this record in bytes.
 
 LayoutMode: 0x00000000 specifies left-to-right horizontal layout.
 
-3.2.58 EMR_COMMENT_BEGINGROUP Example
+#### 3.2.58 EMR_COMMENT_BEGINGROUP Example
 
 This section provides an example of the EMF EMR_COMMENT_BEGINGROUP record ([MS-EMF] section
 2.3.3.4.1).
@@ -20367,7 +20170,8 @@ Release: April 23, 2024
 
 237 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20438,7 +20242,8 @@ Release: April 23, 2024
 
 238 / 262
 
-3.2.59 EMR_SETWORLDTRANSFORM Example 3
+
+#### 3.2.59 EMR_SETWORLDTRANSFORM Example 3
 
 This section provides an example of the EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section
 2.3.12.2).
@@ -20483,7 +20288,7 @@ Xform (24 bytes): (1.000000, 0.000000, 0.000000, 1.000000, 0.000000, 0.000000) a
 object ([MS-EMF] section 2.2.28), which specifies the world space to page space
 transformation.
 
-3.2.60 EMR_MODIFYWORLDTRANSFORM Example 3
+#### 3.2.60 EMR_MODIFYWORLDTRANSFORM Example 3
 
 This section provides an example of the EMF EMR_MODIFYWORLDTRANSFORM record ([MS-EMF]
 section 2.3.12.1).
@@ -20514,7 +20319,8 @@ Release: April 23, 2024
 
 239 / 262
 
-Xform (0x3F7FFFFF) (24 bytes)
+
+Xform (0x3F7FFFFF) (24 bytes)
 
 ... (0x00000000)
 
@@ -20542,7 +20348,7 @@ ModifyWorldTransformMode (4 bytes): 0x00000004 specifies that this record perfor
 function of an EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section 2.3.12.2). This value is
 defined in the EMF ModifyWorldTransformMode enumeration ([MS-EMF] section 2.1.24).
 
-3.2.61 EMR_MODIFYWORLDTRANSFORM Example 4
+#### 3.2.61 EMR_MODIFYWORLDTRANSFORM Example 4
 
 This section provides an example of the EMF EMR_MODIFYWORLDTRANSFORM record ([MS-EMF]
 section 2.3.12.1).
@@ -20583,7 +20389,8 @@ Release: April 23, 2024
 
 240 / 262
 
-... (0x00000000)
+
+... (0x00000000)
 
 ModifyWorldTransformMode (0x00000004)
 
@@ -20601,7 +20408,7 @@ ModifyWorldTransformMode (4 bytes): 0x00000004 specifies that this record perfor
 function of an EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section 2.3.12.2). This value is
 defined in the EMF ModifyWorldTransformMode enumeration ([MS-EMF] section 2.1.24).
 
-3.2.62 EMR_MODIFYWORLDTRANSFORM Example 5
+#### 3.2.62 EMR_MODIFYWORLDTRANSFORM Example 5
 
 This section provides an example of the EMF EMR_MODIFYWORLDTRANSFORM record ([MS-EMF]
 section 2.3.12.1).
@@ -20655,12 +20462,13 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ModifyWorldTransformMode (4 bytes): 0x00000004 specifies that this record performs the
+
+ModifyWorldTransformMode (4 bytes): 0x00000004 specifies that this record performs the
 
 function of an EMF EMR_SETWORLDTRANSFORM record ([MS-EMF] section 2.3.12.2). This value is
 defined in the EMF ModifyWorldTransformMode enumeration ([MS-EMF] section 2.1.24).
 
-3.2.63 EMR_SELECTOBJECT Example 10
+#### 3.2.63 EMR_SELECTOBJECT Example 10
 
 This section provides an example of the EMF EMR_SELECTOBJECT record ([MS-EMF] section 2.3.8.5).
 
@@ -20692,7 +20500,7 @@ ihObject (4 bytes): 0x80000005 specifies the index of an object in the EMF+ Obje
 
 3.1.2).
 
-3.2.64 EMR_ROUNDRECT Example
+#### 3.2.64 EMR_ROUNDRECT Example
 
 This section provides an example of the EMF EMR_ROUNDRECT record ([MS-EMF] section 2.3.5.35).
 
@@ -20732,7 +20540,8 @@ Release: April 23, 2024
 
 242 / 262
 
-... (0x000000C8)
+
+... (0x000000C8)
 
 Type (4 bytes): 0x0000002C identifies the record type as EMR_ROUNDRECT.
 
@@ -20746,7 +20555,7 @@ Corner (8 bytes): (0x000000C8, 0x000000C8) specifies the width and height, in lo
 
 of the ellipse used to draw the rounded corners.
 
-3.2.65 EMR_COMMENT_ENDGROUP Example
+#### 3.2.65 EMR_COMMENT_ENDGROUP Example
 
 This section provides an example of the EMF EMR_COMMENT_ENDGROUP record ([MS-EMF] section
 2.3.3.4.2).
@@ -20789,7 +20598,7 @@ CommentType (4 bytes): 0x00000003 identifies the type of EMR_COMMENT_PUBLIC reco
 
 EMR_COMMENT_ENDGROUP, from the EMF EmrComment enumeration ([MS-EMF] section 2.1.10).
 
-3.2.66 EMR_RESTOREDC Example 4
+#### 3.2.66 EMR_RESTOREDC Example 4
 
 This section provides an example of the EMF EMR_RESTOREDC record ([MS-EMF] section 2.3.11.6).
 
@@ -20803,7 +20612,8 @@ Release: April 23, 2024
 
 243 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20826,7 +20636,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 SavedDC (4 bytes): 0xFFFFFFFF specifies the most recently saved state.
 
-3.2.67 EMR_COMMENT_EMFPLUS Example 4
+#### 3.2.67 EMR_COMMENT_EMFPLUS Example 4
 
 This section provides an example of the EMF EMR_COMMENT_EMFPLUS record ([MS-EMF] section
 2.3.3.2).
@@ -20867,9 +20677,9 @@ EMR_COMMENT_EMFPLUS.
 
 The embedded EMF+ records are presented in the sections that follow.
 
-3.2.67.1
+##### 3.2.67.1 EmfPlusEndContainer Example
 
-EmfPlusEndContainer Example
+
 
 This section provides an example of the EmfPlusEndContainer record (section 2.3.7.3).
 
@@ -20883,7 +20693,8 @@ Release: April 23, 2024
 
 244 / 262
 
-0  1  2  3  4  5  6  7  8  9
+
+0  1  2  3  4  5  6  7  8  9
 
 1
 0  1  2  3  4  5  6  7  8  9
@@ -20921,9 +20732,9 @@ StackIndex (4 bytes): 0x00000001 specifies the identifier used to reference the 
 
 records.
 
-3.2.67.2
+##### 3.2.67.2 EmfPlusRestore Example
 
-EmfPlusRestore Example
+
 
 This section provides an example of the EmfPlusRestore record (section 2.3.7.4).
 
@@ -20970,13 +20781,14 @@ Release: April 23, 2024
 
 245 / 262
 
-StackIndex (4 bytes): 0x00000000 specifies the identifier used to retrieve the graphics state from
+
+StackIndex (4 bytes): 0x00000000 specifies the identifier used to retrieve the graphics state from
 
 the correct save level on the graphics state stack.
 
-3.2.67.3
+##### 3.2.67.3 EmfPlusSetWorldTransform Example
 
-EmfPlusSetWorldTransform Example
+
 
 This section provides an example of the EmfPlusSetWorldTransform record (section 2.3.9.6).
 
@@ -21027,7 +20839,7 @@ MatrixData (24 bytes): An EmfPlusTransformMatrix object (section 2.2.2.47) that 
 
 world space transform.
 
-3.2.68 EMR_BITBLT Example
+#### 3.2.68 EMR_BITBLT Example
 
 This section provides an example of the EMF EMR_BITBLT record ([MS-EMF] section 2.3.1.2).
 
@@ -21045,7 +20857,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000A10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+ 00000A10: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -21109,7 +20922,8 @@ Release: April 23, 2024
 
 247 / 262
 
-Bounds (16 bytes): (0xFFFFFFFF, 0xFFFFFFFF, 0x00000064, 0x0000006B) defines the bounding
+
+Bounds (16 bytes): (0xFFFFFFFF, 0xFFFFFFFF, 0x00000064, 0x0000006B) defines the bounding
 
 rectangle in device units.
 
@@ -21180,7 +20994,7 @@ offBitsSrc (4 bytes): 0x00000000 specifies the offset to the source bitmap bits.
 
 cbBitsSrc (4 bytes): 0x00000000 specifies the size of the source bitmap bits.
 
-3.2.69 EMR_RESTOREDC Example 5
+#### 3.2.69 EMR_RESTOREDC Example 5
 
 This section provides an example of the EMF EMR_RESTOREDC record ([MS-EMF] section 2.3.11.6).
 
@@ -21191,7 +21005,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- 00000A20: 22 00 00 00 0C 00 00 00 FF FF FF FF
+
+ 00000A20: 22 00 00 00 0C 00 00 00 FF FF FF FF
 
 0  1  2  3  4  5  6  7  8  9
 
@@ -21216,7 +21031,7 @@ Size (4 bytes): 0x0000000C specifies the size of this record in bytes.
 
 SavedDC (4 bytes): 0xFFFFFFFF specifies the most recently saved state.
 
-3.2.70 EMR_COMMENT_EMFPLUS Example 5
+#### 3.2.70 EMR_COMMENT_EMFPLUS Example 5
 
 This section provides an example of the EMF EMR_COMMENT_EMFPLUS record ([MS-EMF] section
 2.3.3.2).
@@ -21257,9 +21072,9 @@ EMR_COMMENT_EMFPLUS.
 
 The embedded EMF+ records are presented in the sections that follow.
 
-3.2.70.1
+##### 3.2.70.1 EmfPlusEndOfFile Example
 
-EmfPlusEndOfFile Example
+
 
 This section provides an example of the EmfPlusEndOfFile record (section 2.3.3.1).
 
@@ -21270,7 +21085,8 @@ Release: April 23, 2024
 
 249 / 262
 
- 00000A30:                                     02 40 00 00
+
+ 00000A30:                                     02 40 00 00
  00000A40: 0C 00 00 00 00 00 00 00
 
 0  1  2  3  4  5  6  7  8  9
@@ -21300,7 +21116,7 @@ Size (4 bytes): 0x0000000C specifies the 32-bit-aligned size of this record in b
 
 DataSize (4 bytes): 0x00000000 specifies that no bytes of data follow.
 
-3.2.71 EMR_EOF Example
+#### 3.2.71 EMR_EOF Example
 
 This section provides an example of the EMF EMR_EOF record ([MS-EMF] section 2.3.4.1).
 
@@ -21345,13 +21161,14 @@ Release: April 23, 2024
 
 250 / 262
 
-PaletteEntries (4 bytes): 0x00000010 is ignored, as no palette entries are defined.
+
+PaletteEntries (4 bytes): 0x00000010 is ignored, as no palette entries are defined.
 
 SizeLast (4 bytes): 0x00000014 specifies a value that is the same as Size, and is the last field of
 
 the metafile.
 
-3.3  EMF+ String Drawing Example
+### 3.3 EMF+ String Drawing Example
 
 This section provides an example of EMF+ string drawing as generated by GDI+ functions.
 
@@ -21411,7 +21228,8 @@ Release: April 23, 2024
 
 251 / 262
 
-<!-- Extracted images from page 252 -->
+
+<!-- Extracted images from page 252 -->
 ![Extracted image 1 from page 252]([MS-EMFPLUS].images/page252-img01.png)
 <!-- /Extracted images from page 252 -->
 
@@ -21424,7 +21242,8 @@ Release: April 23, 2024
 
 252 / 262
 
-4  Security
+
+## 4 Security
 
 This file format enables third parties to send payloads, such as PostScript, to pass through as
 executable code.
@@ -21436,7 +21255,8 @@ Release: April 23, 2024
 
 253 / 262
 
-5  Appendix A: Product Behavior
+
+## 5 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -21519,7 +21339,8 @@ Release: April 23, 2024
 
 254 / 262
 
-Metafile
+
+Metafile
 type
 
 EMF+
@@ -21634,7 +21455,8 @@ Enhanced Metafile Format Plus Extensions
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<17> Section 2.2.3: Image Effects Objects (section 2.2.3) are only supported by GDI+ 1.1.
+
+<17> Section 2.2.3: Image Effects Objects (section 2.2.3) are only supported by GDI+ 1.1.
 
 <18> Section 2.2.3.6: The client treats this value as 1.0.
 
@@ -21679,7 +21501,8 @@ Release: April 23, 2024
 
 256 / 262
 
-6  Change Tracking
+
+## 6 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -21730,7 +21553,8 @@ Release: April 23, 2024
 
 257 / 262
 
-7  Index
+
+## 7 Index
 A
 
 Applicability 22
@@ -21862,7 +21686,8 @@ EmfPlusDrawClosedCurve packet 128
 
 258 / 262
 
-EmfPlusDrawClosedCurve Record 128
+
+EmfPlusDrawClosedCurve Record 128
 EmfPlusDrawCurve packet 130
 EmfPlusDrawCurve Record 130
 EmfPlusDrawDriverString packet 132
@@ -22005,7 +21830,8 @@ EmfPlusSave packet 172
 
 259 / 262
 
-EmfPlusSave Record 172
+
+EmfPlusSave Record 172
 EmfPlusScaleWorldTransform packet 180
 EmfPlusScaleWorldTransform Record 180
 EmfPlusSerializableObject packet 160
@@ -22185,7 +22011,8 @@ Examples 185
 
 260 / 262
 
-   EmfPlusHeader example 192
+
+   EmfPlusHeader example 192
    EmfPlusMultiplyWorldTransform example (section
 
    EMR_SETPOLYFILLMODE example (section 3.2.17
@@ -22367,7 +22194,8 @@ Release: April 23, 2024
 
 261 / 262
 
-Normative references 18
+
+Normative references 18
 
 O
 

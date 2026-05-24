@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 161
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -312,7 +313,8 @@ Release: April 23, 2024
 
 2 / 161
 
-Date
+
+Date
 
 Revision
 History
@@ -538,7 +540,8 @@ Release: April 23, 2024
 
 3 / 161
 
-Date
+
+Date
 
 Revision
 History
@@ -612,365 +615,125 @@ Release: April 23, 2024
 
 4 / 161
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 EventLog Remoting Protocol Version 6.0](#132-eventlog-remoting-protocol-version-60)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+    - [1.8.1 Channel Names](#181-channel-names)
+    - [1.8.2 Publisher Names](#182-publisher-names)
+    - [1.8.3 Event Descriptor](#183-event-descriptor)
+    - [1.8.4 Error Codes](#184-error-codes)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+    - [2.1.1 Server](#211-server)
+    - [2.1.2 Client](#212-client)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 RpcInfo](#221-rpcinfo)
+    - [2.2.2 BooleanArray](#222-booleanarray)
+    - [2.2.3 UInt32Array](#223-uint32array)
+    - [2.2.4 UInt64Array](#224-uint64array)
+    - [2.2.5 StringArray](#225-stringarray)
+    - [2.2.6 GuidArray](#226-guidarray)
+    - [2.2.7 EvtRpcVariant](#227-evtrpcvariant)
+    - [2.2.8 EvtRpcVariantType](#228-evtrpcvarianttype)
+    - [2.2.9 EvtRpcVariantList](#229-evtrpcvariantlist)
+    - [2.2.10 EvtRpcAssertConfigFlags Enumeration](#2210-evtrpcassertconfigflags-enumeration)
+    - [2.2.11 EvtRpcQueryChannelInfo](#2211-evtrpcquerychannelinfo)
+    - [2.2.12 BinXml](#2212-binxml)
+      - [2.2.12.1 Emitting Instruction for the Element Rule](#22121-emitting-instruction-for-the-element-rule)
+      - [2.2.12.2 Emitting Instruction for the Attribute Rule](#22122-emitting-instruction-for-the-attribute-rule)
+      - [2.2.12.3 Emitting Instruction for the Substitution Rule](#22123-emitting-instruction-for-the-substitution-rule)
+      - [2.2.12.4 Emitting Instruction for the CharRef Rule](#22124-emitting-instruction-for-the-charref-rule)
+      - [2.2.12.5 Emitting Instruction for the EntityRef Rule](#22125-emitting-instruction-for-the-entityref-rule)
+      - [2.2.12.6 Emitting Instruction for the CDATA Section Rule](#22126-emitting-instruction-for-the-cdata-section-rule)
+      - [2.2.12.7 Emitting Instruction for the PITarget Rule](#22127-emitting-instruction-for-the-pitarget-rule)
+      - [2.2.12.8 Emitting Instruction for the PIData Rule](#22128-emitting-instruction-for-the-pidata-rule)
+      - [2.2.12.9 Emitting Instruction for the CloseStartElement Token Rule](#22129-emitting-instruction-for-the-closestartelement-token-rule)
+      - [2.2.12.10 Emitting Instruction for the CloseEmptyElement Token Rule](#221210-emitting-instruction-for-the-closeemptyelement-token-rule)
+      - [2.2.12.11 Emitting Instruction for the EndElement Token Rule](#221211-emitting-instruction-for-the-endelement-token-rule)
+      - [2.2.12.12 Emitting Instruction for the TemplateInstanceData Rule](#221212-emitting-instruction-for-the-templateinstancedata-rule)
+    - [2.2.13 Event](#2213-event)
+    - [2.2.14 Bookmark](#2214-bookmark)
+    - [2.2.15 Filter](#2215-filter)
+      - [2.2.15.1 Filter XPath 1.0 Subset](#22151-filter-xpath-10-subset)
+      - [2.2.15.2 Filter XPath 1.0 Extensions](#22152-filter-xpath-10-extensions)
+    - [2.2.16 Query](#2216-query)
+    - [2.2.17 Result Set](#2217-result-set)
+    - [2.2.18 BinXmlVariant Structure](#2218-binxmlvariant-structure)
+    - [2.2.19 error_status_t](#2219-errorstatust)
+    - [2.2.20 Handles](#2220-handles)
+    - [2.2.21 Binding Handle](#2221-binding-handle)
+  - [2.3 Message Syntax](#23-message-syntax)
+    - [2.3.1 Common Values](#231-common-values)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Server Details](#31-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Events](#3111-events)
+      - [3.1.1.2 Publishers](#3112-publishers)
+      - [3.1.1.3 Publisher Tables](#3113-publisher-tables)
+      - [3.1.1.4 Channels](#3114-channels)
+      - [3.1.4.22 BufferSize](#31422-buffersize)
+      - [3.1.4.23 EvtRpcGetPublisherList(Opnum 22)](#31423-evtrpcgetpublisherlistopnum-22)
+      - [3.1.4.24 EvtRpcGetPublisherListForChannel (Opnum 23)](#31424-evtrpcgetpublisherlistforchannel-opnum-23)
+      - [3.1.4.25 EvtRpcGetPublisherMetadata (Opnum 24)](#31425-evtrpcgetpublishermetadata-opnum-24)
+      - [3.1.4.26 EvtRpcGetPublisherResourceMetadata (Opnum 25)](#31426-evtrpcgetpublisherresourcemetadata-opnum-25)
+      - [3.1.4.27 EvtRpcGetEventMetadataEnum (Opnum 26)](#31427-evtrpcgeteventmetadataenum-opnum-26)
+      - [3.1.4.28 EvtRpcGetNextEventMetadata (Opnum 27)](#31428-evtrpcgetnexteventmetadata-opnum-27)
+      - [3.1.4.29 EvtRpcAssertConfig (Opnum 15)](#31429-evtrpcassertconfig-opnum-15)
+      - [3.1.4.30 EvtRpcRetractConfig (Opnum 16)](#31430-evtrpcretractconfig-opnum-16)
+      - [3.1.4.31 EvtRpcMessageRender (Opnum 9)](#31431-evtrpcmessagerender-opnum-9)
+      - [3.1.4.32 EvtRpcMessageRenderDefault (Opnum 10)](#31432-evtrpcmessagerenderdefault-opnum-10)
+      - [3.1.4.33 EvtRpcClose (Opnum 13)](#31433-evtrpcclose-opnum-13)
+      - [3.1.4.34 EvtRpcCancel (Opnum 14)](#31434-evtrpccancel-opnum-14)
+      - [3.1.4.35 EvtRpcRegisterControllableOperation (Opnum 4)](#31435-evtrpcregistercontrollableoperation-opnum-4)
+      - [3.1.4.36 EvtRpcGetClassicLogDisplayName (Opnum 28)](#31436-evtrpcgetclassiclogdisplayname-opnum-28)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 Client Details](#32-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+    - [3.2.7 Changing Publisher Configuration Data](#327-changing-publisher-configuration-data)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Query Example](#41-query-example)
+  - [4.2 Get Log Information Example](#42-get-log-information-example)
+  - [4.3 Bookmark Example](#43-bookmark-example)
+  - [4.4 Simple BinXml Example](#44-simple-binxml-example)
+  - [4.5 Structured Query Example](#45-structured-query-example)
+  - [4.6 Push Subscription Example](#46-push-subscription-example)
+  - [4.7 Pull Subscription Example](#47-pull-subscription-example)
+  - [4.8 BinXml Example Using Templates](#48-binxml-example-using-templates)
+  - [4.9 Render Localized Event Message Example](#49-render-localized-event-message-example)
+  - [4.10 Get Publisher List Example](#410-get-publisher-list-example)
+  - [4.11 Get Channel List Example](#411-get-channel-list-example)
+  - [4.12 Get Event Metadata Example](#412-get-event-metadata-example)
+  - [4.13 Publisher Table and Channel Table Example](#413-publisher-table-and-channel-table-example)
+  - [4.14 Backup and Archive the Event Log Example](#414-backup-and-archive-the-event-log-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.3.1
-1.3.2
-
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 8
-Glossary ........................................................................................................... 8
-References ...................................................................................................... 10
-Normative References ................................................................................. 10
-Informative References ............................................................................... 11
-Overview ........................................................................................................ 12
-Background ............................................................................................... 12
-EventLog Remoting Protocol Version 6.0 ........................................................ 13
-Relationship to Other Protocols .......................................................................... 13
-Prerequisites/Preconditions ............................................................................... 14
-Applicability Statement ..................................................................................... 14
-Versioning and Capability Negotiation ................................................................. 14
-Vendor-Extensible Fields ................................................................................... 15
-Channel Names .......................................................................................... 15
-Publisher Names ......................................................................................... 15
-Event Descriptor ......................................................................................... 15
-Error Codes................................................................................................ 15
-Standards Assignments ..................................................................................... 15
-
-1.8.1
-1.8.2
-1.8.3
-1.8.4
-
-1.4
-1.5
-1.6
-1.7
-1.8
-
-1.9
-
-2.2
-
-2.1
-
-2.1.1
-2.1.2
-
-2.2.1
-2.2.2
-2.2.3
-2.2.4
-2.2.5
-2.2.6
-2.2.7
-2.2.8
-2.2.9
-2.2.10
-2.2.11
-2.2.12
-
-2  Messages ............................................................................................................... 16
-Transport ........................................................................................................ 16
-Server ....................................................................................................... 16
-Client ........................................................................................................ 16
-Common Data Types ........................................................................................ 16
-RpcInfo ..................................................................................................... 16
-BooleanArray ............................................................................................. 17
-UInt32Array ............................................................................................... 17
-UInt64Array ............................................................................................... 17
-StringArray ................................................................................................ 17
-GuidArray .................................................................................................. 18
-EvtRpcVariant ............................................................................................ 18
-EvtRpcVariantType ...................................................................................... 19
-EvtRpcVariantList ....................................................................................... 19
-EvtRpcAssertConfigFlags Enumeration ........................................................... 20
-EvtRpcQueryChannelInfo ............................................................................. 20
-BinXml ...................................................................................................... 20
-Emitting Instruction for the Element Rule ................................................. 25
-2.2.12.1
-Emitting Instruction for the Attribute Rule ................................................ 25
-2.2.12.2
-Emitting Instruction for the Substitution Rule ........................................... 26
-2.2.12.3
-Emitting Instruction for the CharRef Rule ................................................. 27
-2.2.12.4
-Emitting Instruction for the EntityRef Rule ............................................... 27
-2.2.12.5
-Emitting Instruction for the CDATA Section Rule ....................................... 27
-2.2.12.6
-Emitting Instruction for the PITarget Rule ................................................ 27
-2.2.12.7
-Emitting Instruction for the PIData Rule ................................................... 27
-2.2.12.8
-Emitting Instruction for the CloseStartElement Token Rule ......................... 27
-2.2.12.9
-2.2.12.10  Emitting Instruction for the CloseEmptyElement Token Rule ....................... 27
-2.2.12.11  Emitting Instruction for the EndElement Token Rule .................................. 27
-2.2.12.12  Emitting Instruction for the TemplateInstanceData Rule ............................. 27
-Event ........................................................................................................ 28
-Bookmark .................................................................................................. 31
-Filter ......................................................................................................... 32
-Filter XPath 1.0 Subset .......................................................................... 32
-Filter XPath 1.0 Extensions ..................................................................... 34
-2.2.16  Query........................................................................................................ 35
-Result Set .................................................................................................. 37
-2.2.17
-
-2.2.13
-2.2.14
-2.2.15
-
-2.2.15.1
-2.2.15.2
-
-[MS-EVEN6] - v20240423
-EventLog Remoting Protocol Version 6.0
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 161
-
-BinXmlVariant Structure .............................................................................. 39
-2.2.18
-2.2.19
-error_status_t ............................................................................................ 39
-2.2.20  Handles ..................................................................................................... 40
-Binding Handle ........................................................................................... 40
-2.2.21
-Message Syntax ............................................................................................... 40
-Common Values ......................................................................................... 40
-
-2.3.1
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.2
-3.1.3
-3.1.4
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-
-3  Protocol Details ..................................................................................................... 42
-Server Details .................................................................................................. 42
-Abstract Data Model .................................................................................... 42
-Events ................................................................................................. 42
-3.1.1.1
-Publishers ............................................................................................ 42
-3.1.1.2
-Publisher Tables .................................................................................... 43
-3.1.1.3
-Channels .............................................................................................. 44
-3.1.1.4
-Channel Table ...................................................................................... 46
-3.1.1.5
-Logs .................................................................................................... 46
-3.1.1.6
-Localized Logs ...................................................................................... 47
-3.1.1.7
-Queries ................................................................................................ 49
-3.1.1.8
-Subscriptions ........................................................................................ 49
-3.1.1.9
-Control Object ...................................................................................... 49
-3.1.1.10
-3.1.1.11
-Context Handles ................................................................................... 49
-3.1.1.12  Handle Table ........................................................................................ 52
-Localized String Table ............................................................................ 53
-3.1.1.13
-Publisher Resource, Message, and Parameter Files .................................... 53
-3.1.1.14
-Timers ...................................................................................................... 55
-Initialization ............................................................................................... 55
-Message Processing Events and Sequencing Rules .......................................... 55
-Subscription Sequencing ........................................................................ 57
-Query Sequencing ................................................................................. 58
-Log Information Sequencing ................................................................... 58
-Publisher Metadata Sequencing ............................................................... 58
-Event Metadata Enumerator Sequencing .................................................. 58
-Cancellation Sequencing ........................................................................ 59
-Canceling Subscriptions .................................................................... 59
-Canceling Queries ............................................................................ 59
-Canceling Clear or Export Methods .................................................... 59
-BinXml................................................................................................. 59
-BinXml Templates ............................................................................ 60
-Optional Substitutions ...................................................................... 61
-Type System ................................................................................... 62
-BinXml Type ................................................................................... 63
-Array Types .................................................................................... 64
-Prescriptive Details .......................................................................... 65
-EvtRpcRegisterRemoteSubscription (Opnum 0) ......................................... 65
-EvtRpcRemoteSubscriptionNextAsync (Opnum 1) ...................................... 69
-EvtRpcRemoteSubscriptionNext (Opnum 2) .............................................. 70
-EvtRpcRemoteSubscriptionWaitAsync (Opnum 3) ...................................... 72
-EvtRpcRegisterLogQuery (Opnum 5) ....................................................... 73
-EvtRpcQueryNext (Opnum 11) ................................................................ 76
-EvtRpcQuerySeek (Opnum 12) ............................................................... 78
-EvtRpcGetLogFileInfo (Opnum 18) .......................................................... 80
-EvtRpcClearLog (Opnum 6) .................................................................... 82
-EvtRpcExportLog (Opnum 7) .................................................................. 83
-EvtRpcLocalizeExportLog (Opnum 8) ....................................................... 86
-EvtRpcOpenLogHandle (Opnum 17) ......................................................... 88
-EvtRpcGetChannelList (Opnum 19) ......................................................... 89
-EvtRpcGetChannelConfig (Opnum 20)...................................................... 90
-EvtRpcPutChannelConfig (Opnum 21) ...................................................... 94
-
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-
-3.1.4.7.1
-3.1.4.7.2
-3.1.4.7.3
-3.1.4.7.4
-3.1.4.7.5
-3.1.4.7.6
-
-3.1.4.6.1
-3.1.4.6.2
-3.1.4.6.3
-
-3.1.4.7
-
-[MS-EVEN6] - v20240423
-EventLog Remoting Protocol Version 6.0
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 161
-
-3.1.4.23
-3.1.4.24
-3.1.4.25
-3.1.4.26
-3.1.4.27
-3.1.4.28
-3.1.4.29
-3.1.4.30
-3.1.4.31
-3.1.4.32
-3.1.4.33
-3.1.4.34
-3.1.4.35
-3.1.4.36
-
-EvtRpcGetPublisherList(Opnum 22) ......................................................... 99
-EvtRpcGetPublisherListForChannel (Opnum 23) ....................................... 100
-EvtRpcGetPublisherMetadata (Opnum 24) ............................................... 101
-EvtRpcGetPublisherResourceMetadata (Opnum 25) .................................. 103
-EvtRpcGetEventMetadataEnum (Opnum 26) ............................................ 105
-EvtRpcGetNextEventMetadata (Opnum 27) ............................................. 106
-EvtRpcAssertConfig (Opnum 15) ............................................................ 108
-EvtRpcRetractConfig (Opnum 16) ........................................................... 110
-EvtRpcMessageRender (Opnum 9) ......................................................... 111
-EvtRpcMessageRenderDefault (Opnum 10) .............................................. 115
-EvtRpcClose (Opnum 13) ...................................................................... 116
-EvtRpcCancel (Opnum 14) .................................................................... 117
-EvtRpcRegisterControllableOperation (Opnum 4) ..................................... 117
-EvtRpcGetClassicLogDisplayName (Opnum 28) ........................................ 118
-Timer Events ............................................................................................. 120
-Other Local Events ..................................................................................... 120
-Client Details .................................................................................................. 120
-Abstract Data Model ................................................................................... 120
-Timers ..................................................................................................... 120
-Initialization .............................................................................................. 120
-Message Processing Events and Sequencing Rules ......................................... 120
-Timer Events ............................................................................................. 120
-Other Local Events ..................................................................................... 120
-Changing Publisher Configuration Data ......................................................... 120
-
-3.1.5
-3.1.6
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-3.2
-
-4  Protocol Examples ............................................................................................... 121
-Query Example ............................................................................................... 121
-4.1
-Get Log Information Example ........................................................................... 122
-4.2
-Bookmark Example ......................................................................................... 123
-4.3
-Simple BinXml Example ................................................................................... 124
-4.4
-Structured Query Example ............................................................................... 125
-4.5
-Push Subscription Example ............................................................................... 126
-4.6
-Pull Subscription Example ................................................................................ 127
-4.7
-BinXml Example Using Templates ...................................................................... 128
-4.8
-Render Localized Event Message Example .......................................................... 133
-4.9
-4.10  Get Publisher List Example ............................................................................... 135
-4.11  Get Channel List Example................................................................................. 135
-4.12  Get Event Metadata Example ............................................................................ 136
-Publisher Table and Channel Table Example ....................................................... 140
-4.13
-Backup and Archive the Event Log Example ........................................................ 141
-4.14
-
-5  Security ............................................................................................................... 143
-Security Considerations for Implementers .......................................................... 143
-Index of Security Parameters ........................................................................... 143
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 144
-
-7  Appendix B: Product Behavior ............................................................................. 150
-
-8  Change Tracking .................................................................................................. 157
-
-9  Index ................................................................................................................... 158
-
-[MS-EVEN6] - v20240423
-EventLog Remoting Protocol Version 6.0
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-7 / 161
-
-1  Introduction
+## 1 Introduction
 
 The EventLog Remoting Protocol Version 6.0, originally available in the Windows Vista operating
 system, is a remote procedure call (RPC)–based protocol that exposes RPC methods for reading
@@ -982,7 +745,7 @@ event logs.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -1039,7 +802,8 @@ Release: April 23, 2024
 
 8 / 161
 
-opnum: An operation number or numeric identifier that is used to identify a specific remote
+
+opnum: An operation number or numeric identifier that is used to identify a specific remote
 
 procedure call (RPC) method or a method in an interface. For more information, see [C706]
 section 12.5.2.12 or [MS-RPCE].
@@ -1114,14 +878,15 @@ Release: April 23, 2024
 
 9 / 161
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1179,7 +944,8 @@ Release: April 23, 2024
 
 10 / 161
 
-[RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
+
+[RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
 [UNICODE] The Unicode Consortium, "The Unicode Consortium Home Page", http://www.unicode.org/
@@ -1193,7 +959,7 @@ W3C Recommendation, October 2004, https://www.w3.org/TR/2004/REC-xmlschema-2-200
 [XPATH] Clark, J. and DeRose, S., "XML Path Language (XPath), Version 1.0", W3C Recommendation,
 November 1999, http://www.w3.org/TR/1999/REC-xpath-19991116/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MSDN-BNDHNDLS] Microsoft Corporation, "Binding Handles", http://msdn.microsoft.com/en-
 us/library/aa373566.aspx
@@ -1244,7 +1010,8 @@ Release: April 23, 2024
 
 11 / 161
 
-[MSDN-FMT] Microsoft Corporation, "FormatMessage function", http://msdn.microsoft.com/en-
+
+[MSDN-FMT] Microsoft Corporation, "FormatMessage function", http://msdn.microsoft.com/en-
 us/library/ms679351.aspx
 
 [MSDN-GETTHDPREUILANG] Microsoft Corporation, "GetThreadPreferredUILanguages function",
@@ -1283,9 +1050,9 @@ Specification", May2006,
 https://github.com/tpn/pdfs/blob/master/Microsoft%20Portable%20Executable%20and%20Common
 %20Object%20File%20Format%20Specification%20-%201999%20(pecoff).pdf
 
-1.3  Overview
+### 1.3 Overview
 
-1.3.1  Background
+#### 1.3.1 Background
 
 Event logs allow applications or the operating system to store historical information that is of interest
 to administrators. The information is organized in separate, discrete pieces of information, which are
@@ -1307,7 +1074,8 @@ Release: April 23, 2024
 
 12 / 161
 
-Applications or components that write to event logs are known as publishers. A single event log
+
+Applications or components that write to event logs are known as publishers. A single event log
 might contain events from many publishers. A single publisher can write to multiple logs. Publishers
 play the role played by event sources in the EventLog Remoting Protocol [MS-EVEN].
 
@@ -1328,7 +1096,7 @@ Publishers write to channels, and each channel has a live event log as its physi
 Events can be read from either a backup event log or a channel corresponding to a live event log. A
 backup event log cannot be associated with a channel.
 
-1.3.2  EventLog Remoting Protocol Version 6.0
+#### 1.3.2 EventLog Remoting Protocol Version 6.0
 
 The EventLog Remoting Protocol Version 6.0 provides a way to access event logs on remote
 computers.
@@ -1357,7 +1125,7 @@ suppressor specifies records to exclude. Suppressors override selectors.
 
 For more information and an overview of methods used, see section 3.1.4.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The EventLog Remoting Protocol Version 6.0 is dependent on RPC (as specified in [MS-RPCE]) for
 message transport.
@@ -1374,7 +1142,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The EventLog Remoting Protocol Version 6.0 allows access to all the event logs accessible by the
+
+The EventLog Remoting Protocol Version 6.0 allows access to all the event logs accessible by the
 EventLog Remoting Protocol, plus some additional event logs not accessible via the EventLog
 Remoting Protocol.
 
@@ -1384,12 +1153,12 @@ on the Access Check algorithm pseudocode (as specified in Windows Data Types [MS
 2.5.3.2), which in turn depends on state in the Local Security Authority (Domain Policy) Remote
 Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The EventLog Remoting Protocol Version 6.0 has the prerequisites, as specified in [MS-RPCE], that are
 common to protocols depending on RPC.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The EventLog Remoting Protocol Version 6.0 is well-suited for reading event logs.Event logs can be
 used for many purposes; for example, recording local security events and application start/stop
@@ -1402,7 +1171,7 @@ The EventLog Remoting Protocol Version 6.0 is typically preferred over the origi
 Protocol whenever both parties support it because it offers numerous improvements, such as
 subscriptions and improved configurability, as specified in section 3.1.4.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This document covers versioning issues in the following areas:
 
@@ -1440,9 +1209,10 @@ Release: April 23, 2024
 
 14 / 161
 
-1.8  Vendor-Extensible Fields
 
-1.8.1  Channel Names
+### 1.8 Vendor-Extensible Fields
+
+#### 1.8.1 Channel Names
 
 Each channel has a name that is a [UNICODE] string. This name MUST be unique across all channels
 on the same server. The set of channel names also includes all names of live event logs, as specified
@@ -1455,7 +1225,7 @@ are included in a channel name. However, channel names SHOULD<1> be prefixed wit
 value (such as the name of the entity that created the channel) so that the channels are easily
 identifiable and readable.
 
-1.8.2  Publisher Names
+#### 1.8.2 Publisher Names
 
 Each publisher has a name that is a [UNICODE] string. This name MUST be unique across all
 publishers on the same server. Publisher names MUST be treated in a case-insensitive manner, MUST
@@ -1465,20 +1235,20 @@ restrictions, there are no character restrictions on publisher names. However, p
 SHOULD<2> be prefixed with a unique value (such as the name of the entity that created the
 publisher) so that the publishers are easily identifiable and readable.
 
-1.8.3  Event Descriptor
+#### 1.8.3 Event Descriptor
 
 Each publisher uses event descriptors to identify the different types of events that it writes. Publishers
 do not need to be concerned with using the same event descriptors as other publishers do, because
 the meaning of a particular event descriptor's value is determined on a per-publisher basis.
 
-1.8.4  Error Codes
+#### 1.8.4 Error Codes
 
 The EventLog Remoting Protocol Version 6.0 uses Win32 error codes, specifically, the subset
 designated as "NTSTATUS". These values are taken from the Windows error number space, as
 specified in [MS-ERREF] section 2.3. Vendors SHOULD reuse those values with their indicated
 meanings.<3> Choosing any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 The EventLog Remoting Protocol Version 6.0 has no standards assignments, only private assignments
 made by Microsoft by using allocation procedures, as specified in other protocols.
@@ -1504,13 +1274,14 @@ Release: April 23, 2024
 
 15 / 161
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses RPC as the transport protocol.
 
-2.1.1  Server
+#### 2.1.1 Server
 
 The server interface is identified by UUID F6BEAFF7-1E19-4FBB-9F8F-B89E2018337C version 1.0,
 using the RPC dynamic endpoint EventLog. The server MUST specify RPC over TCP/IP (that is,
@@ -1527,7 +1298,7 @@ The server MAY require the client connection to specify an authentication level 
 authentication (0x4), as specified in [MS-RPCE] section 2.2.1.1.8. The server SHOULD require the
 connection to use the packet-privacy authentication level (0x6). <4>
 
-2.1.2  Client
+#### 2.1.2 Client
 
 The client MUST use RPC over TCP/IP (that is, ncacn_ip_tcp), as specified in [MS-RPCE], as the RPC
 protocol sequence to communicate with the server. The higher-level protocol or client application
@@ -1537,12 +1308,12 @@ RPCE], and the protocol client MUST pass this choice unmodified to the RPC layer
 specify packet-level integrity authentication (0x5) or higher, as specified in [MS-RPCE] section
 2.2.1.1.8. <5>
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 In addition to RPC base types, the following sections use the definitions of FILETIME, DWORD, and
 GUID, as specified in [MS-DTYP] Appendix A.
 
-2.2.1  RpcInfo
+#### 2.2.1 RpcInfo
 
 The RpcInfo structure is used for certain methods that return additional information about errors.
 
@@ -1567,11 +1338,12 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-m_subErrParam:   MUST be zero unless specified otherwise in the method using this structure.
+
+m_subErrParam:   MUST be zero unless specified otherwise in the method using this structure.
 
 Unless noted otherwise, all nonzero values MUST be treated equally.
 
-2.2.2  BooleanArray
+#### 2.2.2 BooleanArray
 
 The BooleanArray structure is defined as follows.
 
@@ -1585,7 +1357,7 @@ count:  A 32-bit unsigned integer that contains the number of BOOLEAN values poi
 
 ptr:  A pointer to an array of BOOLEAN values.
 
-2.2.3  UInt32Array
+#### 2.2.3 UInt32Array
 
 The UInt32Array structure is defined as follows.
 
@@ -1601,7 +1373,7 @@ ptr.
 
 ptr:  A pointer to an array of unsigned 32-bit integers.
 
-2.2.4  UInt64Array
+#### 2.2.4 UInt64Array
 
 The UInt64Array structure is defined as follows.
 
@@ -1615,7 +1387,7 @@ count:  A 32-bit unsigned integer that contains the number of 64-bit integers po
 
 ptr:  A pointer to an array of unsigned 64-bit integers.
 
-2.2.5  StringArray
+#### 2.2.5 StringArray
 
 The StringArray structure is defined as follows.
 
@@ -1632,11 +1404,12 @@ Release: April 23, 2024
 
 17 / 161
 
-count:  A 32-bit unsigned integer that contains the number of strings pointed to by ptr.
+
+count:  A 32-bit unsigned integer that contains the number of strings pointed to by ptr.
 
 ptr:  A pointer to an array of null-terminated Unicode (as specified in [UNICODE]) strings.
 
-2.2.6  GuidArray
+#### 2.2.6 GuidArray
 
 The GuidArray structure is defined as follows.
 
@@ -1650,7 +1423,7 @@ count:  A 32-bit unsigned integer that contains the number of GUIDs pointed to b
 
 ptr:   A pointer to an array of GUIDs.
 
-2.2.7  EvtRpcVariant
+#### 2.2.7 EvtRpcVariant
 
 The EvtRpcVariant structure is defined as follows.
 
@@ -1700,7 +1473,8 @@ Release: April 23, 2024
 
 18 / 161
 
-Value  Meaning
+
+Value  Meaning
 
 0x0000  A flag indicating that no instance of an EvtRpcVariant structure was changed by the client.
 
@@ -1730,7 +1504,7 @@ stringArray:  An array of strings that are stored as a StringArray.
 
 guidArray:  An array of GUIDs that are stored as a GuidArray.
 
-2.2.8  EvtRpcVariantType
+#### 2.2.8 EvtRpcVariantType
 
 The EvtRpcVariantType enumeration is used by the EvtRpcVariant (section 2.2.7) type.
 
@@ -1749,7 +1523,7 @@ The EvtRpcVariantType enumeration is used by the EvtRpcVariant (section 2.2.7) t
    EvtRpcVarTypeGuidArray
  } EvtRpcVariantType;
 
-2.2.9  EvtRpcVariantList
+#### 2.2.9 EvtRpcVariantList
 
 The EvtRpcVariantList data type is a wrapper for multiple EvtRpcVariant (section 2.2.7) data types.
 
@@ -1768,9 +1542,10 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-props:  Pointer to an array of EvtRpcVariant values.
 
-2.2.10 EvtRpcAssertConfigFlags Enumeration
+props:  Pointer to an array of EvtRpcVariant values.
+
+#### 2.2.10 EvtRpcAssertConfigFlags Enumeration
 
 The EvtRpcAssertConfigFlags Enumeration members specify how the path and channelPath parameters
 (used by a number of the methods in 3.1.4) are to be interpreted.
@@ -1785,7 +1560,7 @@ EvtRpcChannelPath:  The associated parameter string contains a path to a channel
 
 EvtRpcPublisherName:  The associated parameter string contains a publisher name.
 
-2.2.11 EvtRpcQueryChannelInfo
+#### 2.2.11 EvtRpcQueryChannelInfo
 
 The format of the EvtRpcQueryChannelInfo data type is as follows.
 
@@ -1800,7 +1575,7 @@ status:   A Win32 error code that indicates the channel status. A value of 0x000
 success; any other value indicates failure. Unless otherwise noted, all failure values MUST be
 treated equally.
 
-2.2.12 BinXml
+#### 2.2.12 BinXml
 
 BinXml is a token representation of text XML 1.0, which is specified in [XML10]. Here, BinXml encodes
 an XML document so that the original XML text can be correctly reproduced from the encoding. For
@@ -1832,7 +1607,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Document = 0*1Prolog Fragment 0*1Misc EOFToken
+
+ Document = 0*1Prolog Fragment 0*1Misc EOFToken
  Prolog = PI
  Misc = PI
  Fragment = 0*FragmentHeader ( Element / TemplateInstance )
@@ -1909,7 +1685,8 @@ Release: April 23, 2024
 
 21 / 161
 
- OptionalSubstitutionToken = %x0E
+
+ OptionalSubstitutionToken = %x0E
  FragmentHeaderToken = %x0F
 
  ;
@@ -1986,7 +1763,8 @@ Release: April 23, 2024
 
 22 / 161
 
- Int16ArrayType = %x85
+
+ Int16ArrayType = %x85
  UInt16ArrayType = %x86
  Int32ArrayType = %x87
  UInt32ArrayType = %x88
@@ -2063,7 +1841,8 @@ Release: April 23, 2024
 
 23 / 161
 
- GuidArrayValue = *GuidValue
+
+ GuidArrayValue = *GuidValue
  SizeTArrayValue = *SizeTValue
  FileTimeArrayValue = *FileTimeValue
  SysTimeArrayValue = *SysTimeValue
@@ -2157,7 +1936,8 @@ Release: April 23, 2024
 
 24 / 161
 
-Entity
+
+Entity
 
 Description
 
@@ -2230,9 +2010,9 @@ The number of wide characters in LengthPrefixedUnicodeString. The Length MUST
 include the null terminator if one is present in the string; however, length-prefixed
 strings are not required to have a null terminator.
 
-2.2.12.1
+##### 2.2.12.1 Emitting Instruction for the Element Rule
 
-Emitting Instruction for the Element Rule
+
 
 Before emitting anything, the tool SHOULD determine whether there is an optional substitution that is
 NULL. If there is such a substitution, the tool MUST NOT emit anything for this element. The
@@ -2242,9 +2022,9 @@ Name rule (as specified in 2.2.12), as defined in the StartElement rule (also sp
 element contains array data (for more information, see section 3.1.4.7.5), the tool MUST emit multiple
 instances of the element, with one instance for each element of the array.
 
-2.2.12.2
+##### 2.2.12.2 Emitting Instruction for the Attribute Rule
 
-Emitting Instruction for the Attribute Rule
+
 
 Before emitting anything, the tool SHOULD verify that the attribute data, as specified by the
 AttributeCharData rule in 2.2.12, is not empty. If the attribute data is empty, the tool SHOULD NOT
@@ -2257,12 +2037,13 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-specified by the Name rule in 2.2.12, the character "=", the character "'", the text, as specified by the
+
+specified by the Name rule in 2.2.12, the character "=", the character "'", the text, as specified by the
 AttributeCharData rule in 2.2.12, and, finally, the character "'".
 
-2.2.12.3
+##### 2.2.12.3 Emitting Instruction for the Substitution Rule
 
-Emitting Instruction for the Substitution Rule
+
 
 BinXml uses templates, as specified in section 3.1.4.7.1. Substitutions are done only inside a template
 instance definition. Any data needed for substitutions is in the template instance data, which comes
@@ -2362,7 +2143,8 @@ Release: April 23, 2024
 
 26 / 161
 
-Type
+
+Type
 
 Output format
 
@@ -2390,59 +2172,59 @@ HexInt64Type
 Hexadecimal integer. The number portion is preceded by the characters "0x". For example, the
 number 18 is displayed as 0x12.
 
-2.2.12.4
+##### 2.2.12.4 Emitting Instruction for the CharRef Rule
 
-Emitting Instruction for the CharRef Rule
+
 
 Emit the characters "&" and "#" and the decimal string representation of the value.
 
-2.2.12.5
+##### 2.2.12.5 Emitting Instruction for the EntityRef Rule
 
-Emitting Instruction for the EntityRef Rule
+
 
 Emit the character "&" and the text, as specified by the Name rule in 2.2.12.
 
-2.2.12.6
+##### 2.2.12.6 Emitting Instruction for the CDATA Section Rule
 
-Emitting Instruction for the CDATA Section Rule
+
 
 Emit the text "<[CDATA[" followed by the text (as specified by the NullTerminatedUnicodeString rule
 in 2.2.12), and then the string "]]".
 
-2.2.12.7
+##### 2.2.12.7 Emitting Instruction for the PITarget Rule
 
-Emitting Instruction for the PITarget Rule
+
 
 Emit the text "<?", the text (as specified by the Name rule in 2.2.12), and then the space character "
 ".
 
-2.2.12.8
+##### 2.2.12.8 Emitting Instruction for the PIData Rule
 
-Emitting Instruction for the PIData Rule
+
 
 Emit the text (as specified by the NullTerminatedUnicodeString rule in 2.2.12), and then the text "?>".
 
-2.2.12.9
+##### 2.2.12.9 Emitting Instruction for the CloseStartElement Token Rule
 
-Emitting Instruction for the CloseStartElement Token Rule
+
 
 Emit the character ">".
 
-2.2.12.10
+##### 2.2.12.10 Emitting Instruction for the CloseEmptyElement Token Rule
 
-Emitting Instruction for the CloseEmptyElement Token Rule
+
 
 Emit the text "/>".
 
-2.2.12.11
+##### 2.2.12.11 Emitting Instruction for the EndElement Token Rule
 
-Emitting Instruction for the EndElement Token Rule
+
 
 Emit the character "<" followed by the text for the element name, and then the text "/>".
 
-2.2.12.12
+##### 2.2.12.12 Emitting Instruction for the TemplateInstanceData Rule
 
-Emitting Instruction for the TemplateInstanceData Rule
+
 
 Emitting is suppressed by this rule or any rules invoked recursively.
 
@@ -2453,7 +2235,8 @@ Release: April 23, 2024
 
 27 / 161
 
-2.2.13 Event
+
+#### 2.2.13 Event
 
 The Event type is specified to be well-formed XML fragments, as specified in [XML10]. The Event type
 MUST also conform to the following XML schema, as specified in [XMLSCHEMA2/2].
@@ -2528,7 +2311,8 @@ Release: April 23, 2024
 
 28 / 161
 
-       </xs:element>
+
+       </xs:element>
        <xs:element name="EventID">
          <xs:complexType>
            <xs:simpleContent>
@@ -2605,7 +2389,8 @@ Release: April 23, 2024
 
 29 / 161
 
- maxOccurs="unbounded"/>
+
+ maxOccurs="unbounded"/>
      </xs:sequence>
      <xs:anyAttribute namespace="##other"/>
    </xs:complexType>
@@ -2682,7 +2467,8 @@ Release: April 23, 2024
 
 30 / 161
 
-       </xs:element>
+
+       </xs:element>
        <xs:any namespace="##other" minOccurs="0"
  maxOccurs="unbounded"/>
      </xs:sequence>
@@ -2740,7 +2526,7 @@ Release: April 23, 2024
    <xs:element name="Event" type="evt:EventType"/>
  </xs:schema>
 
-2.2.14 Bookmark
+#### 2.2.14 Bookmark
 
 The bookmark type specifies the cursor position in the event query or subscription result set. Note
 that bookmarks are passed from the client to the server by using the XML representation that is
@@ -2754,7 +2540,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The bookmark type is specified to be well-formed XML fragments as specified in [XML10] and that
+
+The bookmark type is specified to be well-formed XML fragments as specified in [XML10] and that
 conforms to the following XML schema as specified in [XMLSCHEMA2/2].
 
  <?xml version="1.0" encoding="UTF-8"?>
@@ -2806,14 +2593,14 @@ A subscription or query can apply to several channels. In this case, there is a 
 each channel. However, only one channel can be the one with the last event, and its IsCurrent
 attribute MUST be set to true.
 
-2.2.15 Filter
+#### 2.2.15 Filter
 
 The filter type is an XPath filter used to select events in the event logs, and is specified to be a
 subset of XPath 1.0, as specified in [XPATH].
 
-2.2.15.1
+##### 2.2.15.1 Filter XPath 1.0 Subset
 
-Filter XPath 1.0 Subset
+
 
 The filter type supports the following XPath 1.0 subset:
 
@@ -2826,7 +2613,8 @@ Release: April 23, 2024
 
 32 / 161
 
-  Axis
+
+  Axis
 
   Child
 
@@ -2911,9 +2699,10 @@ Release: April 23, 2024
 
 33 / 161
 
-2.2.15.2
 
-Filter XPath 1.0 Extensions
+##### 2.2.15.2 Filter XPath 1.0 Extensions
+
+
 
 This protocol's filter type defines the following functions that are not part of the set defined by the
 XPath 1.0 specification, but are specific to this protocol.
@@ -2990,7 +2779,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The GUID type is converted to and from a string, as specified in [RFC4122]. The SID type is converted
+
+The GUID type is converted to and from a string, as specified in [RFC4122]. The SID type is converted
 as specified in [MS-DTYP].
 
 The ABNF for the remaining types is as follows, where DIGIT and HEXDIGIT are as specified in
@@ -3054,7 +2844,7 @@ double.
 If L2 is of numeric type, including bitfield, and L1 is of an unsigned integral type, L2 MUST be
 converted to an unsigned type.
 
-2.2.16 Query
+#### 2.2.16 Query
 
 The query type specifies an XML document used to select events in the event log by using well-
 formed XML (as specified in [XML10]) and is defined by the following XSD (as specified in
@@ -3069,7 +2859,8 @@ Release: April 23, 2024
 
 35 / 161
 
- <xs:schema targetNamespace=
+
+ <xs:schema targetNamespace=
    "http://schemas.microsoft.com/win/2004/08/events/eventquery"
  elementFormDefault="qualified"
  xmlns="http://schemas.microsoft.com/win/2004/08/events/eventquery"
@@ -3153,7 +2944,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Attributes  Description
+
+Attributes  Description
 
 If the target is “Container”, then the subquery will match only events from Microsoft Windows
 containers running on the machine that have been configured to forward their events to the
@@ -3166,7 +2958,7 @@ containers.
 
 If not specified or if the target is an unrecognized value, the target will be “Host”.
 
-2.2.17 Result Set
+#### 2.2.17 Result Set
 
 An event query or subscription returns multiple events in the result set. The result set is a buffer
 containing one or more variable length EVENT_DESCRIPTOR structures, as specified in [MS-DTYP]
@@ -3224,7 +3016,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-eventOffset (4 bytes): This MUST always be set to 0x00000010.
+
+eventOffset (4 bytes): This MUST always be set to 0x00000010.
 
 bookmarkOffset (4 bytes): A 32-bit unsigned integer that contains the byte offset from the start of
 
@@ -3301,7 +3094,8 @@ Release: April 23, 2024
 
 38 / 161
 
-readDirection (4 bytes): A 32-bit unsigned integer that contains the read direction. 0x00000000
+
+readDirection (4 bytes): A 32-bit unsigned integer that contains the read direction. 0x00000000
 
 indicates chronological order based on time written, and 0x00000001 indicates reverse order.
 
@@ -3314,7 +3108,7 @@ numbers for each of the channels or backup event logs. The order of the record n
 MUST match the order of the channels or backup event logs in the query (for example, the
 first channel in the query corresponds to the first member of the array).
 
-2.2.18 BinXmlVariant Structure
+#### 2.2.18 BinXmlVariant Structure
 
 Some of the methods use the following structures for returning data. In particular, the BinXmlVariant
 structure is used for returning information about a channel or backup event log. This structure is
@@ -3378,7 +3172,7 @@ The union field contains a FILETIME, as specified in [MS-DTYP] Appendix A.
 
 0x00000011
 
-2.2.19 error_status_t
+#### 2.2.19 error_status_t
 
 The error_status_t return type is used for all methods. This is a Win32 error code.
 
@@ -3389,11 +3183,12 @@ Release: April 23, 2024
 
 39 / 161
 
-This type is declared as follows:
+
+This type is declared as follows:
 
  typedef unsigned long error_status_t;
 
-2.2.20 Handles
+#### 2.2.20 Handles
 
 The following handles are used when a client connects to the server.
 
@@ -3406,7 +3201,7 @@ The following handles are used when a client connects to the server.
 
 For information on handle security, see section 5.1.
 
-2.2.21 Binding Handle
+#### 2.2.21 Binding Handle
 
 This protocol reuses the RPC binding handle as the logical connection between the client and server.
 Numerous methods described in section 3.1.4 take the binding handle as the first parameter.
@@ -3419,9 +3214,9 @@ This data type declares a binding handle containing information that the RPC run
 access binding information. For more information about the RPC binding handle, see [MSDN-
 BNDHNDLS].
 
-2.3  Message Syntax
+### 2.3 Message Syntax
 
-2.3.1  Common Values
+#### 2.3.1 Common Values
 
 The following common values are used throughout this specification.
 
@@ -3472,7 +3267,8 @@ Release: April 23, 2024
 
 40 / 161
 
- Name
+
+ Name
 
  Value
 
@@ -3543,15 +3339,16 @@ Release: April 23, 2024
 
 41 / 161
 
-3  Protocol Details
 
-3.1  Server Details
+## 3 Protocol Details
+
+### 3.1 Server Details
 
 The server handles client requests for any of the messages specified in section 2, and operates on the
 logs and configuration on the server. For each of those messages, the behavior of the server is
 specified in section 3.1.4.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -3559,7 +3356,7 @@ explanation of how the protocol behaves. This specification does not mandate tha
 adhere to this model as long as their external behavior is consistent with that described in this
 specification.
 
-3.1.1.1  Events
+##### 3.1.1.1 Events
 
 An event is an entity that describes some occurrence in the system. All events in the system can be
 represented as XML (though in the protocol they only appear as BinXml, as specified in section
@@ -3571,7 +3368,7 @@ also contain event specific data. See [MSDN-EVENTRECORD], [MSDN-EVENT_HEADER], a
 EVENT_DESCRIPTOR], for a description of the layout of event data structures which contains this
 information.
 
-3.1.1.2  Publishers
+##### 3.1.1.2 Publishers
 
 Events are raised to the system by a publisher (though this is not through the EventLog Remoting
 Protocol Version 6.0). For more information on how to provide events, see [MSDN-ProvEvts].
@@ -3607,7 +3404,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Channel B: Channel B reference ID, Channel B reference flag, Channel B start index
+
+  Channel B: Channel B reference ID, Channel B reference flag, Channel B start index
 
 In this example, Publisher1 indicates that it will provide events to two channels, Channel A and
 Channel B. Publisher2 indicates that it will provide events to Channel C and Channel B. So in this case,
@@ -3643,7 +3441,7 @@ EventLog Remoting Protocol, if it is also supported. That is, all event sources 
 original EventLog Remoting Protocol can be enumerated via this protocol (the EventLog Remoting
 Protocol Version 6.0), but not vice versa.
 
-3.1.1.3  Publisher Tables
+##### 3.1.1.3 Publisher Tables
 
 A publisher table is an array of registered publishers on the server. Each publisher in the table
 SHOULD contain the publisher name, the publisher identifier, and the channels to which the publisher
@@ -3673,7 +3471,8 @@ Release: April 23, 2024
 
 43 / 161
 
-The server reads the table from disk at start up and loads it into memory for fast processing and
+
+The server reads the table from disk at start up and loads it into memory for fast processing and
 lookup. The client MAY be able to change some information in the memory but cannot touch the
 information saved on disk. A changed memory snapshot can only be applied toward the copy on disk
 through the EvtRpcAssertConfig method (as specified in section 3.1.4.29) or EvtRpcRetractConfig
@@ -3685,7 +3484,7 @@ publishers in the table. For example, the server can set the publisher 1's infor
 only by administrators. If a non-administrator client wants to get the information for publisher 1, the
 server can deny access with an error.
 
-3.1.1.4  Channels
+##### 3.1.1.4 Channels
 
 A channel is a named stream of events. It serves as a logical pathway for transporting events from the
 event publisher to a log file and possibly a subscriber. It is a sink that collects events.
@@ -3757,7 +3556,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 Meaning
 
@@ -3802,9 +3602,9 @@ Events with a keyword bit contained in the Keywords bitmask set are logged to th
 ControlGuid
 
 A GUID value. For more information on the server behavior for this property, see section
-3.1.4.22
+##### 3.1.4.22 BufferSize
 
-BufferSize
+
 
 MinBuffers
 
@@ -3859,7 +3659,8 @@ Release: April 23, 2024
 
 45 / 161
 
-Name
+
+Name
 
 Meaning
 
@@ -3935,7 +3736,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-BOOL isLogFull: This flag indicates the log is full.
+
+BOOL isLogFull: This flag indicates the log is full.
 
 unsigned__int64 oldestRecordNumber: The oldest event log record ID in the log file.
 
@@ -4003,7 +3805,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-        <n> <Level value n> <MessageID of level n> <Localized string for Level n>
+
+        <n> <Level value n> <MessageID of level n> <Localized string for Level n>
 
     [Tasks Section]
 
@@ -4074,7 +3877,8 @@ Release: April 23, 2024
 
 48 / 161
 
-    <Event Record Id 0> <Localized event description string for event 0>
+
+    <Event Record Id 0> <Localized event description string for event 0>
 
     …
 
@@ -4147,7 +3951,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-clients and that handle maps the state information in the server. Such handles are called context
+
+clients and that handle maps the state information in the server. Such handles are called context
 handles. When clients pass back the context handle, the server knows this handle and knows the state
 information so that it can serve the subsequent method calls from clients.
 
@@ -4223,7 +4028,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-the EvtRpcQuerySeek (as specified in section 3.1.4.14) or EvtRpcQueryNext (as specified
+
+the EvtRpcQuerySeek (as specified in section 3.1.4.14) or EvtRpcQueryNext (as specified
 in section 3.1.4.13).
 
 The log query object is created by the server and cast into the PCONTEXT_HANDLE_LOG_QUERY
@@ -4298,7 +4104,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-template is the event metadata. When clients want to enumerate the metadata of an event from
+
+template is the event metadata. When clients want to enumerate the metadata of an event from
 a publisher, they MUST get the PCONTEXT_HANDLE_EVENT_METADATA_ENUM context handle.
 The server MUST maintain the client enumeration status and the publisher identity to complete
 this task. To maintain that state, the server maintains an event metadata object. The event
@@ -4371,7 +4178,8 @@ Release: April 23, 2024
 
 52 / 161
 
-3.1.1.13
+
+3.1.1.13
 
 Localized String Table
 
@@ -4442,7 +4250,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<Keyword Value of Event 1><Keyword Name of Event 1><MessageId for keyword description string>
+
+<Keyword Value of Event 1><Keyword Name of Event 1><MessageId for keyword description string>
 
 <event 1 definition template>
 
@@ -4512,7 +4321,8 @@ Release: April 23, 2024
 
 54 / 161
 
-The strings in the publisher parameter file cannot be localized. It is used for parameter substitution.
+
+The strings in the publisher parameter file cannot be localized. It is used for parameter substitution.
 For example, if a publisher defines the description string of an event as "The system has found %%2",
 when the server tries to expand the string with the EvtRpcMessageRender method (section
 3.1.4.31), it sees %%2 and knows that this part is replaced with a real string from the publisher's
@@ -4596,7 +4406,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Method
+
+Method
 
 Description
 
@@ -4715,7 +4526,8 @@ Release: April 23, 2024
 
 56 / 161
 
-Method
+
+Method
 
 Description
 
@@ -4800,7 +4612,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-completes the EvtRpcRemoteSubscriptionWaitAsync (section 3.1.4.11) method call when new events
+
+completes the EvtRpcRemoteSubscriptionWaitAsync (section 3.1.4.11) method call when new events
 are ready.
 
 In the push model, the client loops by using the
@@ -4865,7 +4678,8 @@ Release: April 23, 2024
 
 58 / 161
 
-Finally, the application closes the handle by using the EvtRpcClose (section 3.1.4.33) method.
+
+Finally, the application closes the handle by using the EvtRpcClose (section 3.1.4.33) method.
 
 3.1.4.6  Cancellation Sequencing
 
@@ -4929,7 +4743,8 @@ Release: April 23, 2024
 
 59 / 161
 
-Note that this translation is not required by either the client or the server in this protocol.
+
+Note that this translation is not required by either the client or the server in this protocol.
 
 What follows is a greatly simplified example of a fragment of text XML encoding in binary XML.
 
@@ -5020,7 +4835,8 @@ Release: April 23, 2024
 
 60 / 161
 
-Text
+
+Text
 
 Binary
 
@@ -5099,7 +4915,8 @@ Release: April 23, 2024
 
 61 / 161
 
-Text
+
+Text
 
 Binary
 
@@ -5184,7 +5001,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- BinXml type
+
+ BinXml type
 
  Meaning
 
@@ -5337,7 +5155,8 @@ Release: April 23, 2024
 
 63 / 161
 
-This type MUST only be used when substituting into element content. For example, given the following
+
+This type MUST only be used when substituting into element content. For example, given the following
 template instance.
 
 Text
@@ -5416,7 +5235,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-The binary representation of the array MUST be the serialized representation of each element of the
+
+The binary representation of the array MUST be the serialized representation of each element of the
 array.
 
 The byte length MUST be used to derive the number of elements in the array. This is trivial for fixed
@@ -5487,7 +5307,8 @@ Release: April 23, 2024
 
 65 / 161
 
-A client can use bookmarks to ensure a reliable subscription even if the client is not continuously
+
+A client can use bookmarks to ensure a reliable subscription even if the client is not continuously
 connected. A client can create a bookmark locally based on the contents of an event that the client
 has processed. If the client disconnects and later reconnects, it can use the bookmark to pick up
 where it left off. For information on bookmarks, see section 2.2.14.
@@ -5575,7 +5396,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -5659,7 +5481,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-method with the error ERROR_EVT_INVALID_QUERY (0x00003A99) if the events position
+
+method with the error ERROR_EVT_INVALID_QUERY (0x00003A99) if the events position
 specified by the bookmark is missing in the event channel.
 
 If the 0x00001000 bit (EvtSubscribeTolerateQueryErrors) is set, the function SHOULD NOT
@@ -5731,7 +5554,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-that object. The server SHOULD also set the canceled field in the control object initially to false. If the
+
+that object. The server SHOULD also set the canceled field in the control object initially to false. If the
 client waits too long for the subscription, it can use the EvtRpcCancel method (as specified in section
 3.1.4.34) to cancel the subscription. Since the operation control object contains the subscription
 pointer, it can request the subscription to stop on the server side.
@@ -5806,7 +5630,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EvtRpcRegisterRemoteSubscription method (as specified in section 3.1.4.8) in its handle table (as
+
+EvtRpcRegisterRemoteSubscription method (as specified in section 3.1.4.8) in its handle table (as
 specified in section 3.1.1.12) and compare it with the handle passed here to perform the check.<14>
 The server MUST return ERROR_INVALID_PARAMETER (0x00000057) if the handle is invalid.
 
@@ -5876,7 +5701,8 @@ Release: April 23, 2024
 
 70 / 161
 
-     BYTE** resultBuffer
+
+     BYTE** resultBuffer
  );
 
 handle: A handle to a subscription. This parameter is an RPC context handle, as specified in [C706]
@@ -5956,7 +5782,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -6037,7 +5864,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-asynchronous method is used to provide a way for the caller to not have to block or continuously poll
+
+asynchronous method is used to provide a way for the caller to not have to block or continuously poll
 the server.
 
  error_status_t EvtRpcRemoteSubscriptionWaitAsync(
@@ -6106,7 +5934,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in] DWORD flags,
+
+   [in] DWORD flags,
    [out, context_handle] PCONTEXT_HANDLE_LOG_QUERY* handle,
    [out, context_handle] PCONTEXT_HANDLE_OPERATION_CONTROL* opControl,
    [out] DWORD* queryChannelInfoSize,
@@ -6189,7 +6018,8 @@ Release: April 23, 2024
 
 74 / 161
 
-error: A pointer to an RpcInfo (section 2.2.1) structure in which to place error information in the case
+
+error: A pointer to an RpcInfo (section 2.2.1) structure in which to place error information in the case
 of a failure. The RpcInfo (section 2.2.1) structure fields MUST be set to nonzero values if the error
 is related to parsing the query; in addition, the server MAY set the structure fields to nonzero
 values for errors unrelated to query parsing (for example, for an invalid channel name). All
@@ -6257,7 +6087,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-determine the identity of the caller. Information determining the identity of the caller for the purpose
+
+determine the identity of the caller. Information determining the identity of the caller for the purpose
 of performing an access check is specified in [MS-RPCE] section 3.2.3.4.2. Then, if the client specifies
 a channel, the server SHOULD read the channel's access property (as specified in section 3.1.4.21) as
 the security descriptor string. Next, the server SHOULD be able to perform the read access check
@@ -6331,7 +6162,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-numActualRecords: A pointer to a 32-bit unsigned integer that contains the value that, on success,
+
+numActualRecords: A pointer to a 32-bit unsigned integer that contains the value that, on success,
 
 MUST be set to the number of events that are retrieved. This is useful when the method times out
 without receiving the full number of events specified in numRequestedRecords. If the method fails,
@@ -6403,7 +6235,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-array, each array element is a 32-bit value which is the start position of each event in the resultBuffer.
+
+array, each array element is a 32-bit value which is the start position of each event in the resultBuffer.
 For the eventDataSizes array, each element is a 32-bit value which is the size of every event.
 
 The server MUST return a value indicating success or failure for this operation.
@@ -6496,7 +6329,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -6581,7 +6415,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-filter (the XPath expression). If the event matches the filter requirement, the server decreases the
+
+filter (the XPath expression). If the event matches the filter requirement, the server decreases the
 pos value by 1. If the event does not match, the pos value is kept the same. Then the server
 reads the next record, and repeats the process until the pos value becomes 0. Then the server
 returns to the client indicating the seek operation is finished.
@@ -6662,7 +6497,8 @@ Release: April 23, 2024
 
 80 / 161
 
-Value
+
+Value
 
 Meaning
 
@@ -6757,7 +6593,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Note  This information is tracked by the file system automatically and the server does not need to
+
+Note  This information is tracked by the file system automatically and the server does not need to
 touch any files for any operation, such as exporting events from the channel or clearing events in a
 channel.
 
@@ -6830,7 +6667,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ERROR_INVALID_PARAMETER (0x00000057). If the path specifies a file which exists on the server,
+
+ERROR_INVALID_PARAMETER (0x00000057). If the path specifies a file which exists on the server,
 the server SHOULD return the error ERROR_FILE_EXISTS (0x00000050).
 
 Next, the server MUST verify if the client has write and clear access to the channel and write access to
@@ -6898,7 +6736,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- error_status_t EvtRpcExportLog(
+
+ error_status_t EvtRpcExportLog(
    [in, context_handle] PCONTEXT_HANDLE_OPERATION_CONTROL control,
    [in, unique, range(0, MAX_RPC_CHANNEL_NAME_LENGTH), string]
      LPCWSTR channelPath,
@@ -6983,7 +6822,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-channel name. If the server can't find the entry, the specified channel name is invalid and the server
+
+channel name. If the server can't find the entry, the specified channel name is invalid and the server
 SHOULD return ERROR_EVT_CHANNEL_NOT_FOUND (0x00003A9F). If the flags parameter contains
 the value 0x00000002 (flags & 0x00000002 != 0), the server MUST interpret channel as an existing
 backup event log file name. The server SHOULD then check if the specified file exists on the server. If
@@ -7050,7 +6890,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-created backup file SHOULD be the value of LogOldestRecordNumber. The LogNumberOfRecords
+
+created backup file SHOULD be the value of LogOldestRecordNumber. The LogNumberOfRecords
 property SHOULD be set to the number of total events the server writes to the backup file. The server
 SHOULD set the isLogFull property to be FALSE and SHOULD set the curPhysicalRecordNumber
 property to the value of (LogNumberOfRecords - 1).
@@ -7119,7 +6960,8 @@ Release: April 23, 2024
 
 86 / 161
 
-Return Values: The method MUST return ERROR_SUCCESS (0x00000000) on success; otherwise, it
+
+Return Values: The method MUST return ERROR_SUCCESS (0x00000000) on success; otherwise, it
 MUST return an error value as specified in the processing rules in this section.<33> Callers SHOULD
 treat all return values other than ERROR_SUCCESS equally and not alter their behavior based on any
 specific error values.
@@ -7188,7 +7030,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-During the preceding process, the server SHOULD check the Canceled field of the operation control
+
+During the preceding process, the server SHOULD check the Canceled field of the operation control
 object in the control parameter periodically, for example, once every 100 milliseconds. If the
 Canceled field becomes TRUE and the whole operation has not been finished, the server SHOULD
 abandon the current operation and return to the client immediately with the error code
@@ -7259,7 +7102,8 @@ Release: April 23, 2024
 
 88 / 161
 
-In response to this request from the client, the server MUST first validate the channel parameter. The
+
+In response to this request from the client, the server MUST first validate the channel parameter. The
 server SHOULD search for the given channel name in its channel table. If the server doesn't find the
 name, the specified channel name is not valid. If the specified channel name is invalid, the server
 SHOULD return the error code ERROR_EVT_CHANNEL_NOT_FOUND (0x00003A9F). If the flags
@@ -7325,7 +7169,8 @@ Release: April 23, 2024
 
 89 / 161
 
-flags: A 32-bit unsigned integer that MUST be set to zero when sent and MAY be ignored on
+
+flags: A 32-bit unsigned integer that MUST be set to zero when sent and MAY be ignored on
 
 receipt.<37>
 
@@ -7397,7 +7242,8 @@ Release: April 23, 2024
 
 90 / 161
 
-Index  Type
+
+Index  Type
 
 Meaning
 
@@ -7524,7 +7370,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Index  Type
+
+Index  Type
 
 Meaning
 
@@ -7644,7 +7491,8 @@ Release: April 23, 2024
 
 92 / 161
 
-Index  Type
+
+Index  Type
 
 Meaning
 
@@ -7754,7 +7602,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Index  Type
+
+Index  Type
 
 Meaning
 
@@ -7824,7 +7673,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-channelPath: A pointer to a string that contains a channel name (this is not a file path as the
+
+channelPath: A pointer to a string that contains a channel name (this is not a file path as the
 
 parameter name might suggest).
 
@@ -7937,7 +7787,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Index  Type
+
+Index  Type
 
 Meaning
 
@@ -8062,7 +7913,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Index  Type
+
+Index  Type
 
 Meaning
 
@@ -8162,7 +8014,8 @@ Release: April 23, 2024
 
 97 / 161
 
-Property
+
+Property
 
 Default Value
 
@@ -8273,7 +8126,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If the previous checks succeed, the server MUST attempt to update the channel's properties using the
+
+If the previous checks succeed, the server MUST attempt to update the channel's properties using the
 value specified in the props parameter. The server SHOULD proceed in the following manner to update
 the data for each channel property:
 
@@ -8326,9 +8180,9 @@ checks are passed.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.23
+##### 3.1.4.23 EvtRpcGetPublisherList(Opnum 22)
 
-EvtRpcGetPublisherList(Opnum 22)
+
 
 The EvtRpcGetPublisherList (Opnum 22) method is used by a client to get the list of publishers.
 
@@ -8353,7 +8207,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-numPublisherIds: A pointer to a 32-bit unsigned integer that contains the number of publisher
+
+numPublisherIds: A pointer to a 32-bit unsigned integer that contains the number of publisher
 
 names.
 
@@ -8381,9 +8236,9 @@ case, the server SHOULD return ERROR_OUTOFMEMORY (0x0000000E).
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.24
+##### 3.1.4.24 EvtRpcGetPublisherListForChannel (Opnum 23)
 
-EvtRpcGetPublisherListForChannel (Opnum 23)
+
 
 The EvtRpcGetPublisherListForChannel (Opnum 23) method is used by a client to get the list of
 publishers that write events to a particular channel.
@@ -8426,7 +8281,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-invalid with the error ERROR_INVALID_PARAMETER (0x00000057). The server checks if a channel
+
+invalid with the error ERROR_INVALID_PARAMETER (0x00000057). The server checks if a channel
 name is valid by searching the given name in its channel table.
 
 Next, the server MUST verify that the caller has read access to the channel and MUST fail the method
@@ -8449,9 +8305,9 @@ ERROR_OUTOFMEMORY (0x0000000E). The server MUST NOT update its state.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.25
+##### 3.1.4.25 EvtRpcGetPublisherMetadata (Opnum 24)
 
-EvtRpcGetPublisherMetadata (Opnum 24)
+
 
 The EvtRpcGetPublisherMetadata (Opnum 24) method is used by a client to open a handle to
 publisher metadata. It also gets some initial information from the metadata.
@@ -8497,7 +8353,8 @@ Release: April 23, 2024
 
 101 / 161
 
-Return Values: The method MUST return ERROR_SUCCESS (0x00000000) on success; otherwise, it
+
+Return Values: The method MUST return ERROR_SUCCESS (0x00000000) on success; otherwise, it
 MUST return an implementation-specific nonzero value as specified in [MS-ERREF].
 
 In response to this request from the client, the server MUST verify that the publisherID parameter
@@ -8598,7 +8455,8 @@ Release: April 23, 2024
 
 102 / 161
 
-As specified earlier in this section, the server SHOULD find the publisher entry in its publisher table
+
+As specified earlier in this section, the server SHOULD find the publisher entry in its publisher table
 based on the specified publisherId parameter from the client. Once the server locates the publisher
 entry, the server SHOULD get the publisherGUID, ResourceFilePath, ParameterFilePath,
 MessageFilePath, ChannelReferenceIndex, ChannelReferenceID and ChannelReferenceFlags directly
@@ -8619,9 +8477,9 @@ set the entry to EvtRpcVarTypeNULL to indicate some of the values are not retrie
 proceed with the other eleven data fields without returning any error. Even if all of the eleven fields
 are all not found, the server SHOULD still return ERROR_SUCCESS (0x00000000).
 
-3.1.4.26
+##### 3.1.4.26 EvtRpcGetPublisherResourceMetadata (Opnum 25)
 
-EvtRpcGetPublisherResourceMetadata (Opnum 25)
+
 
 The EvtRpcGetPublisherResourceMetadata (Opnum 25) method obtains information from the publisher
 metadata.
@@ -8671,7 +8529,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values: The method MUST return ERROR_SUCCESS (0x00000000) on success; otherwise, it
+
+Return Values: The method MUST return ERROR_SUCCESS (0x00000000) on success; otherwise, it
 MUST return an implementation-specific nonzero value as specified in [MS-ERREF].
 
 In response to this request from the client, the server MUST first validate the handle. The server
@@ -8753,7 +8612,8 @@ Release: April 23, 2024
 
 104 / 161
 
-Index  Type
+
+Index  Type
 
 Description
 
@@ -8838,9 +8698,9 @@ The server MUST NOT update its state.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.27
+##### 3.1.4.27 EvtRpcGetEventMetadataEnum (Opnum 26)
 
-EvtRpcGetEventMetadataEnum (Opnum 26)
+
 
 The EvtRpcGetEventMetadataEnum (Opnum 26) method obtains a handle for enumerating a
 publisher's event metadata.
@@ -8858,7 +8718,8 @@ Release: April 23, 2024
 
 105 / 161
 
-   [out, context_handle] PCONTEXT_HANDLE_EVENT_METADATA_ENUM* eventMetaDataEnum
+
+   [out, context_handle] PCONTEXT_HANDLE_EVENT_METADATA_ENUM* eventMetaDataEnum
  );
 
 pubMetadata: This parameter is an RPC context handle, as specified in [C706], Context Handles. For
@@ -8900,9 +8761,9 @@ EventsMetaData field and then set the Enumerator field to 0.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.28
+##### 3.1.4.28 EvtRpcGetNextEventMetadata (Opnum 27)
 
-EvtRpcGetNextEventMetadata (Opnum 27)
+
 
 The EvtRpcGetNextEventMetadata (Opnum 27) method gets details about a possible event and also
 returns the next event metadata in the enumeration. It is used to enumerate through the event
@@ -8929,7 +8790,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-authentication considerations, see sections 2.2.20 and 5.1. This is the value which comes from the
+
+authentication considerations, see sections 2.2.20 and 5.1. This is the value which comes from the
 return parameter eventMetaDataEnum of function EvtRpcGetEventMetadataEnum (as specified
 in 3.1.4.27).
 
@@ -9016,7 +8878,8 @@ Release: April 23, 2024
 
 107 / 161
 
-Index  Type
+
+Index  Type
 
 Description
 
@@ -9040,9 +8903,9 @@ create the array, the server MUST NOT update anything.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.29
+##### 3.1.4.29 EvtRpcAssertConfig (Opnum 15)
 
-EvtRpcAssertConfig (Opnum 15)
+
 
 The EvtRpcAssertConfig (Opnum 15) method indicates to the server that the publisher or channel
 configuration has been updated.
@@ -9100,7 +8963,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-is specified in [MS-RPCE] section 3.2.3.4.2. Then, if the client specifies a channel, the server SHOULD
+
+is specified in [MS-RPCE] section 3.2.3.4.2. Then, if the client specifies a channel, the server SHOULD
 read the channel's access property (as specified in section 3.1.4.21) as the security descriptor string.
 Next, the server SHOULD be able to perform the write and clear access check using the Access Check
 algorithm (as specified in [MS-DTYP] section 2.5.3.2). If the access property is not present for the
@@ -9171,7 +9035,8 @@ Release: April 23, 2024
 
 109 / 161
 
-
+
+
 
 Enabled/disabled state or any other implementation-dependent configurable settings
 
@@ -9179,9 +9044,9 @@ The server MUST NOT change those states until this method is called.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.30
+##### 3.1.4.30 EvtRpcRetractConfig (Opnum 16)
 
-EvtRpcRetractConfig (Opnum 16)
+
 
 The EvtRpcRetractConfig (Opnum 16) method indicates to the server that the publisher or channel is
 to be removed.
@@ -9247,7 +9112,8 @@ Release: April 23, 2024
 
 110 / 161
 
-If the above checks succeed, the server MUST delete the publisher entry from its publisher table or
+
+If the above checks succeed, the server MUST delete the publisher entry from its publisher table or
 delete the channel from the channel table. Operations like deleting entries from the table SHOULD
 always be successful.
 
@@ -9256,9 +9122,9 @@ called.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.31
+##### 3.1.4.31 EvtRpcMessageRender (Opnum 9)
 
-EvtRpcMessageRender (Opnum 9)
+
 
 The EvtRpcMessageRender (Opnum 9) method is used by a client to get localized descriptive strings
 for an event.
@@ -9323,7 +9189,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00000001
 
@@ -9421,7 +9288,8 @@ Release: April 23, 2024
 
 112 / 161
 
-The server MUST ignore the eventId parameter if EvtFormatMessageId is specified as the flags
+
+The server MUST ignore the eventId parameter if EvtFormatMessageId is specified as the flags
 parameter. If EvtFormatMessageId is not specified in the flags parameter, the server MUST use
 eventId parameter and ignore the messageId parameter.
 
@@ -9495,7 +9363,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -9573,9 +9442,10 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.4.32
 
-EvtRpcMessageRenderDefault (Opnum 10)
+##### 3.1.4.32 EvtRpcMessageRenderDefault (Opnum 10)
+
+
 
 The EvtRpcMessageRenderDefault (Opnum 10) method is used by a client to get localized strings for
 common values of opcodes, tasks, or keywords, as specified in section 3.1.4.31.
@@ -9670,7 +9540,8 @@ Release: April 23, 2024
 
 115 / 161
 
-maxSizeString: A 32-bit unsigned integer that contains the maximum size in bytes allowed for the
+
+maxSizeString: A 32-bit unsigned integer that contains the maximum size in bytes allowed for the
 
 string field.
 
@@ -9712,9 +9583,9 @@ task, opcode, and keyword values that fall in certain ranges. Therefore it takes
 flags. The server MUST fail the method with ERROR_INVALID_PARAMETER (0x00000057) for any
 other flags than the 6 values given in the flags table.
 
-3.1.4.33
+##### 3.1.4.33 EvtRpcClose (Opnum 13)
 
-EvtRpcClose (Opnum 13)
+
 
 The EvtRpcClose (Opnum 13) method is used by a client to close context handles that are opened by
 other methods in this protocol.
@@ -9740,7 +9611,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-handle table. For more information on handle security and authentication considerations, see sections
+
+handle table. For more information on handle security and authentication considerations, see sections
 2.2.20 and 5.1.
 
 If the above check succeeds, the server MUST remove the handle from its handle table. The server
@@ -9748,9 +9620,9 @@ SHOULD NOT fail the operation of removing the handle.
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.34
+##### 3.1.4.34 EvtRpcCancel (Opnum 14)
 
-EvtRpcCancel (Opnum 14)
+
 
 The EvtRpcCancel (Opnum 14) method is used by a client to cancel another method. This can be used
 to terminate long-running methods gracefully. Methods that can be canceled include the subscription
@@ -9793,9 +9665,9 @@ already been canceled, the server SHOULD return ERROR_SUCCESS (0x00000000).
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.35
+##### 3.1.4.35 EvtRpcRegisterControllableOperation (Opnum 4)
 
-EvtRpcRegisterControllableOperation (Opnum 4)
+
 
 The EvtRpcRegisterControllableOperation (Opnum 4) method obtains a
 CONTEXT_HANDLE_OPERATION_CONTROL handle that can be used to cancel other operations.
@@ -9810,7 +9682,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- );
+
+ );
 
 handle: A context handle for a control object. This parameter MUST be an RPC context handle, as
 specified in [C706], Context Handles. For information on handle security and authentication
@@ -9846,9 +9719,9 @@ operational pointer data field for the control object. For more information, see
 
 The server MUST return a value indicating success or failure for this operation.
 
-3.1.4.36
+##### 3.1.4.36 EvtRpcGetClassicLogDisplayName (Opnum 28)
 
-EvtRpcGetClassicLogDisplayName (Opnum 28)
+
 
 The EvtRpcGetClassicLogDisplayName (Opnum 28) method obtains a descriptive name for a channel.
 
@@ -9876,7 +9749,8 @@ Release: April 23, 2024
 
 118 / 161
 
-Value  Meaning
+
+Value  Meaning
 
 0x0
 
@@ -9950,45 +9824,46 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5  Timer Events
+
+#### 3.1.5 Timer Events
 
 None.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 None.
 
-3.2  Client Details
+### 3.2 Client Details
 
 The client side of this protocol is simply a pass-through.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The client does not maintain state as part of this protocol.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 Calls made by the higher-layer protocol or application MUST be passed directly to the transport. All
 return values from method invocations MUST be returned uninterpreted to the higher-layer protocol or
 application.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
-3.2.7  Changing Publisher Configuration Data
+#### 3.2.7 Changing Publisher Configuration Data
 
 The configuration property for a publisher contains only the publisher resource file location. For the
 client to change a publisher configuration property, the client and the server MUST be on the same
@@ -10006,9 +9881,10 @@ Release: April 23, 2024
 
 120 / 161
 
-4  Protocol Examples
 
-4.1  Query Example
+## 4 Protocol Examples
+
+### 4.1 Query Example
 
 In this example, the client wants to obtain events from a channel log file and render the resultant
 events as XML text.
@@ -10077,7 +9953,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-    [in] DWORD timeOutEnd = 3000,
+
+    [in] DWORD timeOutEnd = 3000,
     [in] DWORD flags = 0,
     [out] DWORD* numActualRecords,
     [out, size_is(,*numActualRecords),
@@ -10130,7 +10007,7 @@ EvtRpcClose. In this call, the server frees all resources related to the query r
       = {operation control handle}
  );
 
-4.2  Get Log Information Example
+### 4.2 Get Log Information Example
 
 In this example, the client wants to get information about a channel or log file.
 
@@ -10143,7 +10020,8 @@ Release: April 23, 2024
 
 122 / 161
 
-1.  The client registers with RPC to obtain an RPC binding handle to the service based on the endpoint
+
+1.  The client registers with RPC to obtain an RPC binding handle to the service based on the endpoint
 information specified in section 2.1. For information on how to get the RPC binding handle, see
 [MSDN-BNDHNDLS].
 
@@ -10192,7 +10070,7 @@ packed in the following data format:
  0x0001                       -------- There is only one result in the returned data
  0x000A                       -------- The data type is BinXmlVarUInt64.
 
-4.3  Bookmark Example
+### 4.3 Bookmark Example
 
 The following is an example of Bookmark use.
 
@@ -10211,7 +10089,8 @@ Release: April 23, 2024
 
 123 / 161
 
-4.4  Simple BinXml Example
+
+### 4.4 Simple BinXml Example
 
 The following is an example of a simple BinXml fragment (without use of templates):
 
@@ -10330,7 +10209,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Token
+
+ Token
 offset
 
  Token type
@@ -10435,7 +10315,7 @@ End </Event>.
 
 End of fragment / document.
 
-4.5  Structured Query Example
+### 4.5 Structured Query Example
 
 The following is an example of a structured XML query. It contains two subqueries with the IDs of
 1 and 2.
@@ -10461,7 +10341,8 @@ Release: April 23, 2024
 
 125 / 161
 
-4.6  Push Subscription Example
+
+### 4.6 Push Subscription Example
 
 In this example, the client asks to get all future events from the "Application" and "Microsoft-
 Windows-Backup/Operational" channel through push mode. This involves the following steps:
@@ -10529,7 +10410,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- error_status_t EvtRpcRemoteSubscriptionNextAsync(
+
+ error_status_t EvtRpcRemoteSubscriptionNextAsync(
    [in, context_handle] PCONTEXT_HANDLE_REMOTE_SUBSCRIPTION handle = {handle from step 2},
    [in] DWORD numRequestedRecords = 5,
    [in] DWORD flags = 0,
@@ -10564,7 +10446,7 @@ there are no events that match the criteria of the client's subscriber requireme
 can perform its own tasks while the server is waiting for the new events, and get notified when the
 server has new events ready.
 
-4.7  Pull Subscription Example
+### 4.7 Pull Subscription Example
 
 In this example, the client asks to get all the events from the "Application" channel after its supplied
 bookmark comes through pull mode. This involves the following steps:
@@ -10599,7 +10481,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [out] RpcInfo* error
+
+   [out] RpcInfo* error
  );
 
 The bookmark XML for the example could be as follows:
@@ -10649,7 +10532,7 @@ exceeding 5 because the client only demands 5 events), and then completes the ca
 
 4.1.
 
-4.8  BinXml Example Using Templates
+### 4.8 BinXml Example Using Templates
 
 This example demonstrates the use of BinXml templates. There is one outer template <Event> and
 one inner template <MyEvent>. The outer template has substitutions (shown in bold) under the
@@ -10664,7 +10547,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-(although it could have been a normal fragment). The MyEvent template substitutions are also shown
+
+(although it could have been a normal fragment). The MyEvent template substitutions are also shown
 in bold.
 
 Also, the outer template substitutions are all optional, and some values of that template are NULL;
@@ -10737,7 +10621,8 @@ Release: April 23, 2024
 
 129 / 161
 
- 1B0: 49 00 44 00 00 00 1f 00-00 00 06 29 da 0a 00 51
+
+ 1B0: 49 00 44 00 00 00 1f 00-00 00 06 29 da 0a 00 51
  1C0: 00 75 00 61 00 6c 00 69-00 66 00 69 00 65 00 72
  1D0: 00 73 00 00 00 0e 04 00-06 02 0e 03 00 06 04 01 </EventID>
  1E0: 0b 00 1a 00 00 00 18 09-07 00 56 00 65 00 72 00
@@ -10808,7 +10693,8 @@ Release: April 23, 2024
 
 130 / 161
 
-Start of <Event> TemplateInstanceData Values ...
+
+Start of <Event> TemplateInstanceData Values ...
 
                                              01 01 64
  560: 00 64 00 00 00 e0 00 00-00 00 40 9c f4 d6 36 fb
@@ -10885,7 +10771,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Token
+
+ Token
 offset
 
  Token type
@@ -11029,7 +10916,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Token
+
+ Token
 offset
 
 0x5A4
@@ -11070,7 +10958,7 @@ EOF for the inner TemplateInstance.
 
 EOF for the outer TemplateInstance.
 
-4.9  Render Localized Event Message Example
+### 4.9 Render Localized Event Message Example
 
 In this example, the client asks to get the event description from a known publisher. This involves the
 following steps:
@@ -11114,7 +11002,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- EvtCarTypeGuid   {836e133c-493c-4885-a780-4f0c61430fb9}
+
+ EvtCarTypeGuid   {836e133c-493c-4885-a780-4f0c61430fb9}
  EvtVarTypeString  c:\windows\system32\TestProvider.dll
  EvtVarTypeString  c:\windows\system32\TestProvider.dll
  EvtVarTypeString  c:\windows\system32\Testrovider.dll
@@ -11182,7 +11071,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-resource file. Suppose the raw event description is "The system has been restarted after applying
+
+resource file. Suppose the raw event description is "The system has been restarted after applying
 the updates of %1". The server then reads the data from the values provided by the client
 (assume it is "Adobe Flash") and replaces the %1 with the value it reads out. Thus, the returned
 string is:
@@ -11209,7 +11099,7 @@ resource file.
     [in, out, context_handle] void** handle = {publisher metadata handle}
  );
 
-4.10  Get Publisher List Example
+### 4.10 Get Publisher List Example
 
 In this example, the client obtains a list of registered publishers on the server. This involves the
 following steps.
@@ -11239,7 +11129,7 @@ sample result for publisherIds looks as follows:
 
 The numPublisherIds is set to 4.
 
-4.11  Get Channel List Example
+### 4.11 Get Channel List Example
 
 In this example, the client tries to obtain a list of registered channels on the server.
 
@@ -11252,7 +11142,8 @@ Release: April 23, 2024
 
 135 / 161
 
-1.  The client registers with RPC to obtain an RPC binding handle to the service based on the
+
+1.  The client registers with RPC to obtain an RPC binding handle to the service based on the
 
 endpoint information specified in section 2.1. For information on how to get the RPC binding
 handle, see [MSDN-BNDHNDLS].
@@ -11277,7 +11168,7 @@ NTFS/operational""Setup".
 
 In this case, the numChannelPaths value is 5.
 
-4.12  Get Event Metadata Example
+### 4.12 Get Event Metadata Example
 
 In this example, the client retrieves the event metadata information from a known publisher on the
 server.
@@ -11318,7 +11209,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ResourceFile: %SystemDrive%\windows\SamplePublisher.dll.
+
+ResourceFile: %SystemDrive%\windows\SamplePublisher.dll.
 
 MessageFile: %SystemDrive%\windows\SamplePublisher.dll.
 
@@ -11392,7 +11284,8 @@ Release: April 23, 2024
 
 137 / 161
 
- 0 ---- ChannelreferenceID
+
+ 0 ---- ChannelreferenceID
  8  ---- EvtVarTypeUint32
  1 ---- ChannelreferenceID
  8  ---- EvtVarTypeUint32
@@ -11466,7 +11359,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-EventsMetaData: 0x001ABEC8. A pointer to the event metadata section.
+
+EventsMetaData: 0x001ABEC8. A pointer to the event metadata section.
 
 Enumerator: 0
 
@@ -11539,7 +11433,8 @@ Release: April 23, 2024
 
 139 / 161
 
-10. The client can call the EvtRpcGetNextEventMetadata method repeatedly to obtain metadata for
+
+10. The client can call the EvtRpcGetNextEventMetadata method repeatedly to obtain metadata for
 
 additional events.
 
@@ -11554,7 +11449,7 @@ event metadata enumeration context handle and the publisher metadata context han
    [in, out, context_handle] void** handle = pubMetaData
  );
 
-4.13  Publisher Table and Channel Table Example
+### 4.13 Publisher Table and Channel Table Example
 
 A publisher table is a list of publishers. The following example shows a publisher table with two
 entries.
@@ -11609,7 +11504,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Autobackup: 0
+
+ Autobackup: 0
  MaxSize: 0x01400000
  FilePath: "%SystemRoot%\system32\winevt\logs\forwardedevents.evtx"
  Level:    0x0000FFFF
@@ -11626,7 +11522,7 @@ Release: April 23, 2024
 Note  The list of the publishers is not in the channel table entry because the channel table entry is
 built at runtime using the publisher table and the channel name.
 
-4.14  Backup and Archive the Event Log Example
+### 4.14 Backup and Archive the Event Log Example
 
 In this example, the client wants to export all the events in the application channel into a backup
 event log file and then bring the backup file to another computer to view the events with no publisher
@@ -11678,7 +11574,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   [in] LCID locale = 1033,
+
+   [in] LCID locale = 1033,
    [in] DWORD flags = 0,
    [out] RpcInfo* error
  );
@@ -11694,9 +11591,10 @@ Release: April 23, 2024
 
 142 / 161
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 Implementers are required to enforce the read/write permissions, as specified in section 3.1.4.21, to
 prevent unauthorized access to event logs.
@@ -11705,7 +11603,7 @@ Servers authenticate the caller and verify that the caller has proper access bef
 When the handle is subsequently used, the server verifies that the client created the handle, that it
 was created by a method of this interface, and that the handle is appropriate for the operation.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  Security parameter
 
@@ -11720,7 +11618,8 @@ Release: April 23, 2024
 
 143 / 161
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided as follows, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] Appendix A. Please note that the binding handle is commented out for each method with
@@ -11791,7 +11690,8 @@ Release: April 23, 2024
 
 144 / 161
 
-     {
+
+     {
          [range(0, MAX_RPC_UINT32_ARRAY_COUNT)] DWORD count;
          [size_is(count)] DWORD* ptr;
      } UInt32Array;
@@ -11867,7 +11767,8 @@ Release: April 23, 2024
 
 145 / 161
 
-     } EvtRpcVariant;
+
+     } EvtRpcVariant;
 
      typedef struct tag_EvtRpcVariantList
      {
@@ -11944,7 +11845,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         [out, size_is(,*queryChannelInfoSize),
+
+         [out, size_is(,*queryChannelInfoSize),
                range(0, MAX_RPC_QUERY_CHANNEL_SIZE)]
                    EvtRpcQueryChannelInfo** queryChannelInfo,
          [out] RpcInfo *error );
@@ -12020,7 +11922,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-     error_status_t EvtRpcQuerySeek(
+
+     error_status_t EvtRpcQuerySeek(
          [in, context_handle] PCONTEXT_HANDLE_LOG_QUERY logQuery,
          [in] __int64 pos,
          [in, unique, range(0, MAX_RPC_BOOKMARK_LENGTH),string] LPCWSTR bookmarkXml,
@@ -12097,7 +12000,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-         [in] DWORD flags,
+
+         [in] DWORD flags,
          [out] DWORD* numPublisherIds,
          [out, size_is(,*numPublisherIds), range(0, MAX_RPC_PUBLISHER_COUNT),string]
              LPWSTR** publisherIds );
@@ -12146,7 +12050,8 @@ Release: April 23, 2024
 
 149 / 161
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -12280,7 +12185,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
+
+Unless otherwise specified, any statement of optional behavior in this specification that is prescribed
 using the terms "SHOULD" or "SHOULD NOT" implies product behavior in accordance with the
 SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
@@ -12347,7 +12253,8 @@ Release: April 23, 2024
 
 151 / 161
 
-<16> Section 3.1.4.11: In Windows, the server does not do a thorough validation of the handle. It
+
+<16> Section 3.1.4.11: In Windows, the server does not do a thorough validation of the handle. It
 verifies that the handle can be transformed into a pointer in the proper address space, and that the
 pointer points to a buffer that states a correct context handle type, and fails with
 ERROR_INVALID_PARAMETER (0x00000057) if the handle type does not match. As such, it is possible
@@ -12415,7 +12322,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<27> Section 3.1.4.16: In applicable Windows Server releases, the server uses the CreateFile
+
+<27> Section 3.1.4.16: In applicable Windows Server releases, the server uses the CreateFile
 function [MSDN-CreateFile] to create the backup file and return any error code the CreateFile function
 can possibly set to the last error code when it fails.
 
@@ -12484,7 +12392,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MinBuffers value plus 22. The initial Latency value is 1 second. The initial clocktype value is 0 and the
+
+MinBuffers value plus 22. The initial Latency value is 1 second. The initial clocktype value is 0 and the
 initial value for SIDType is 1.
 
 <45> Section 3.1.4.23: Windows Vista and Windows Server 2008 ignore this flags field.
@@ -12550,7 +12459,8 @@ Release: April 23, 2024
 
 154 / 161
 
-<60> Section 3.1.4.30: In Windows, the server only validates that the path parameter is syntactically
+
+<60> Section 3.1.4.30: In Windows, the server only validates that the path parameter is syntactically
 correct; it does not validate that the channel exists. The server returns ERROR_SUCCESS
 (0x00000000) if it is passed a channel name which is syntactically correct but nonexistent.
 
@@ -12617,7 +12527,8 @@ EventLog Remoting Protocol Version 6.0
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-can be opened, applicable Windows Server releases accept the change and save it. Otherwise, the
+
+can be opened, applicable Windows Server releases accept the change and save it. Otherwise, the
 registry change is reverted and the client's change is discarded.
 
 [MS-EVEN6] - v20240423
@@ -12627,7 +12538,8 @@ Release: April 23, 2024
 
 156 / 161
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 No table of changes is available. The document is either new or has had no changes since its last
 release.
@@ -12639,7 +12551,8 @@ Release: April 23, 2024
 
 157 / 161
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -12786,7 +12699,8 @@ EvtRpcLocalizeExportLog method 86
 
 158 / 161
 
-EvtRpcMessageRender (Opnum 9) method 111
+
+EvtRpcMessageRender (Opnum 9) method 111
 EvtRpcMessageRender method 111
 EvtRpcMessageRenderDefault (Opnum 10) method
 
@@ -12938,7 +12852,8 @@ Methods
 
 159 / 161
 
-   EvtRpcGetPublisherResourceMetadata (Opnum 25)
+
+   EvtRpcGetPublisherResourceMetadata (Opnum 25)
 
 103
 
@@ -13113,7 +13028,8 @@ method 72
 
 160 / 161
 
-   local events 120
+
+   local events 120
    Log Information Sequencing method 58
    message processing 55
    overview 42

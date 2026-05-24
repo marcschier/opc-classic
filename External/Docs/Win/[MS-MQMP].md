@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 134
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -308,7 +309,8 @@ Release: April 23, 2024
 
 2 / 134
 
-Date
+
+Date
 
 Revision
 History
@@ -525,300 +527,131 @@ Release: April 23, 2024
 
 3 / 134
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Data Types](#221-data-types)
+      - [2.2.1.1 Handle Data Types](#2211-handle-data-types)
+        - [2.2.1.1.1 RPC_INT_XACT_HANDLE](#22111-rpcintxacthandle)
+        - [2.2.1.1.2 RPC_QUEUE_HANDLE](#22112-rpcqueuehandle)
+        - [2.2.1.1.3 PCTX_OPENREMOTE_HANDLE_TYPE](#22113-pctxopenremotehandletype)
+    - [2.2.2 Enumerations](#222-enumerations)
+      - [2.2.2.1 TRANSFER_TYPE](#2221-transfertype)
+    - [2.2.3 Structures](#223-structures)
+      - [2.2.3.1 XACTUOW](#2231-xactuow)
+      - [2.2.3.2 CACTransferBufferV1](#2232-cactransferbufferv1)
+      - [2.2.3.3 CACTransferBufferV2](#2233-cactransferbufferv2)
+      - [2.2.3.4 CACCreateRemoteCursor](#2234-caccreateremotecursor)
+      - [2.2.3.5 OBJECT_FORMAT](#2235-objectformat)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 qmcomm and qmcomm2 Server Details](#31-qmcomm-and-qmcomm2-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Shared Data Elements](#3111-shared-data-elements)
+      - [3.1.1.2 LocalQueueContextHandleTable](#3112-localqueuecontexthandletable)
+      - [3.1.1.3 LocalQueueContextHandle](#3113-localqueuecontexthandle)
+      - [3.1.1.4 RemoteQueueProxyHandleTable](#3114-remotequeueproxyhandletable)
+      - [3.1.1.5 RemoteQueueProxyHandle](#3115-remotequeueproxyhandle)
+      - [3.1.1.6 CursorProxy](#3116-cursorproxy)
+      - [3.1.1.7 RemoteQueueOpenContextHandleTable](#3117-remotequeueopencontexthandletable)
+      - [3.1.1.8 RemoteQueueOpenContextHandle](#3118-remotequeueopencontexthandle)
+      - [3.1.1.9 TransactionHandleTable](#3119-transactionhandletable)
+      - [3.1.1.10 TransactionHandle](#31110-transactionhandle)
+      - [3.1.1.11 Message to CACTransferBufferV2 Translation](#31111-message-to-cactransferbufferv2-translation)
+      - [3.1.1.12 Queue PROPID to Abstract Queue Property Translation](#31112-queue-propid-to-abstract-queue-property-translation)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules for qmcomm](#314-message-processing-events-and-sequencing-rules-for-qmcomm)
+      - [3.1.4.1 R_QMGetRemoteQueueName (Opnum 1)](#3141-rqmgetremotequeuename-opnum-1)
+      - [3.1.4.2 R_QMOpenRemoteQueue (Opnum 2)](#3142-rqmopenremotequeue-opnum-2)
+      - [3.1.4.3 R_QMCloseRemoteQueueContext (Opnum 3)](#3143-rqmcloseremotequeuecontext-opnum-3)
+      - [3.1.4.4 R_QMCreateRemoteCursor (Opnum 4)](#3144-rqmcreateremotecursor-opnum-4)
+      - [3.1.4.5 R_QMCreateObjectInternal (Opnum 6)](#3145-rqmcreateobjectinternal-opnum-6)
+      - [3.1.4.6 R_QMSetObjectSecurityInternal (Opnum 7)](#3146-rqmsetobjectsecurityinternal-opnum-7)
+      - [3.1.4.7 R_QMGetObjectSecurityInternal (Opnum 8)](#3147-rqmgetobjectsecurityinternal-opnum-8)
+      - [3.1.4.8 R_QMDeleteObject (Opnum 9)](#3148-rqmdeleteobject-opnum-9)
+      - [3.1.4.9 R_QMGetObjectProperties (Opnum 10)](#3149-rqmgetobjectproperties-opnum-10)
+      - [3.1.4.10 R_QMSetObjectProperties (Opnum 11)](#31410-rqmsetobjectproperties-opnum-11)
+      - [3.1.4.11 R_QMObjectPathToObjectFormat (Opnum 12)](#31411-rqmobjectpathtoobjectformat-opnum-12)
+      - [3.1.4.12 R_QMGetTmWhereabouts (Opnum 14)](#31412-rqmgettmwhereabouts-opnum-14)
+      - [3.1.4.13 R_QMEnlistTransaction (Opnum 15)](#31413-rqmenlisttransaction-opnum-15)
+      - [3.1.4.14 R_QMEnlistInternalTransaction (Opnum 16)](#31414-rqmenlistinternaltransaction-opnum-16)
+      - [3.1.4.15 R_QMCommitTransaction (Opnum 17)](#31415-rqmcommittransaction-opnum-17)
+      - [3.1.4.16 R_QMAbortTransaction (Opnum 18)](#31416-rqmaborttransaction-opnum-18)
+      - [3.1.4.17 rpc_QMOpenQueueInternal (Opnum 19)](#31417-rpcqmopenqueueinternal-opnum-19)
+      - [3.1.4.18 rpc_ACCloseHandle (Opnum 20)](#31418-rpcacclosehandle-opnum-20)
+      - [3.1.4.19 rpc_ACCloseCursor (Opnum 22)](#31419-rpcacclosecursor-opnum-22)
+      - [3.1.4.20 rpc_ACSetCursorProperties (Opnum 23)](#31420-rpcacsetcursorproperties-opnum-23)
+      - [3.1.4.21 rpc_ACHandleToFormatName (Opnum 26)](#31421-rpcachandletoformatname-opnum-26)
+      - [3.1.4.22 rpc_ACPurgeQueue (Opnum 27)](#31422-rpcacpurgequeue-opnum-27)
+      - [3.1.4.23 R_QMQueryQMRegistryInternal (Opnum 28)](#31423-rqmqueryqmregistryinternal-opnum-28)
+      - [3.1.4.24 R_QMGetRTQMServerPort (Opnum 31)](#31424-rqmgetrtqmserverport-opnum-31)
+    - [3.1.5 Message Processing Events and Sequencing Rules for qmcomm2](#315-message-processing-events-and-sequencing-rules-for-qmcomm2)
+      - [3.1.5.1 QMSendMessageInternalEx (Opnum 0)](#3151-qmsendmessageinternalex-opnum-0)
+      - [3.1.5.2 rpc_ACSendMessageEx (Opnum 1)](#3152-rpcacsendmessageex-opnum-1)
+      - [3.1.5.3 rpc_ACReceiveMessageEx (Opnum 2)](#3153-rpcacreceivemessageex-opnum-2)
+      - [3.1.5.4 rpc_ACCreateCursorEx (Opnum 3)](#3154-rpcaccreatecursorex-opnum-3)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 RPC_QUEUE_HANDLE Context Handle Rundown Routine](#3171-rpcqueuehandle-context-handle-rundown-routine)
+      - [3.1.7.2 PCTX_OPENREMOTE_HANDLE_TYPE Context Handle Rundown Routine](#3172-pctxopenremotehandletype-context-handle-rundown-routine)
+      - [3.1.7.3 RPC_INT_XACT_HANDLE Context Handle Rundown Routine](#3173-rpcintxacthandle-context-handle-rundown-routine)
+  - [3.2 qmcomm and qmcomm2 Client Details](#32-qmcomm-and-qmcomm2-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 LicenceGuid](#3211-licenceguid)
+      - [3.2.1.2 OpenQueueContext](#3212-openqueuecontext)
+      - [3.2.1.3 CursorIdentifier](#3213-cursoridentifier)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+      - [3.2.4.1 Creating a Local Private Queue](#3241-creating-a-local-private-queue)
+      - [3.2.4.2 Deleting a Local Private Queue](#3242-deleting-a-local-private-queue)
+      - [3.2.4.3 Updating Local Private Queue Security](#3243-updating-local-private-queue-security)
+      - [3.2.4.4 Retrieving Local Private Queue Security](#3244-retrieving-local-private-queue-security)
+      - [3.2.4.5 Updating Local Private Queue Properties](#3245-updating-local-private-queue-properties)
+      - [3.2.4.6 Retrieving Local Private Queue Properties](#3246-retrieving-local-private-queue-properties)
+      - [3.2.4.7 Opening a Queue](#3247-opening-a-queue)
+      - [3.2.4.8 Creating a Cursor](#3248-creating-a-cursor)
+      - [3.2.4.9 Purging a Queue](#3249-purging-a-queue)
+      - [3.2.4.10 Sending a Message](#32410-sending-a-message)
+      - [3.2.4.11 Peeking a Message](#32411-peeking-a-message)
+      - [3.2.4.12 Receiving a Message](#32412-receiving-a-message)
+      - [3.2.4.13 Retrieving a Format Name for a Queue Path Name](#32413-retrieving-a-format-name-for-a-queue-path-name)
+      - [3.2.4.14 Retrieving a Format Name for a Queue Context Handle](#32414-retrieving-a-format-name-for-a-queue-context-handle)
+      - [3.2.4.15 Closing a Queue](#32415-closing-a-queue)
+      - [3.2.4.16 Closing a Cursor](#32416-closing-a-cursor)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Application Opening and Closing a Local Queue Example](#41-application-opening-and-closing-a-local-queue-example)
+  - [4.2 Application Opening and Closing a Remote Queue Example](#42-application-opening-and-closing-a-remote-queue-example)
+  - [4.3 Application Creating and Closing a Local Cursor Example](#43-application-creating-and-closing-a-local-cursor-example)
+  - [4.4 Application Creating and Closing a Remote Cursor Example](#44-application-creating-and-closing-a-remote-cursor-example)
+  - [4.5 Application Internal Transaction Example](#45-application-internal-transaction-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 11
-Normative References ................................................................................. 11
-Informative References ............................................................................... 12
-Overview ........................................................................................................ 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 13
-Applicability Statement ..................................................................................... 13
-Versioning and Capability Negotiation ................................................................. 13
-Vendor-Extensible Fields ................................................................................... 14
-Standards Assignments ..................................................................................... 14
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-
-2.2.1.1.1
-2.2.1.1.2
-2.2.1.1.3
-
-2  Messages ............................................................................................................... 15
-Transport ........................................................................................................ 15
-Common Data Types ........................................................................................ 15
-Data Types ................................................................................................ 16
-Handle Data Types ................................................................................ 16
-RPC_INT_XACT_HANDLE .................................................................. 16
-RPC_QUEUE_HANDLE ...................................................................... 16
-PCTX_OPENREMOTE_HANDLE_TYPE .................................................. 16
-Enumerations ............................................................................................. 16
-TRANSFER_TYPE ................................................................................... 17
-Structures ................................................................................................. 17
-XACTUOW ............................................................................................ 17
-CACTransferBufferV1 ............................................................................. 17
-CACTransferBufferV2 ............................................................................. 29
-CACCreateRemoteCursor ....................................................................... 29
-OBJECT_FORMAT .................................................................................. 29
-Directory Service Schema Elements ................................................................... 30
-
-2.2.3.1
-2.2.3.2
-2.2.3.3
-2.2.3.4
-2.2.3.5
-
-2.2.2.1
-
-2.2.2
-
-2.2.3
-
-2.3
-
-3.1
-
-3.1.1
-
-3  Protocol Details ..................................................................................................... 31
-qmcomm and qmcomm2 Server Details .............................................................. 31
-Abstract Data Model .................................................................................... 31
-Shared Data Elements ........................................................................... 31
-3.1.1.1
-LocalQueueContextHandleTable .............................................................. 32
-3.1.1.2
-LocalQueueContextHandle ...................................................................... 32
-3.1.1.3
-RemoteQueueProxyHandleTable .............................................................. 32
-3.1.1.4
-RemoteQueueProxyHandle ..................................................................... 32
-3.1.1.5
-CursorProxy ......................................................................................... 33
-3.1.1.6
-RemoteQueueOpenContextHandleTable ................................................... 33
-3.1.1.7
-RemoteQueueOpenContextHandle ........................................................... 33
-3.1.1.8
-TransactionHandleTable ......................................................................... 34
-3.1.1.9
-3.1.1.10
-TransactionHandle ................................................................................ 34
-3.1.1.11  Message to CACTransferBufferV2 Translation ............................................ 34
-3.1.1.12  Queue PROPID to Abstract Queue Property Translation .............................. 37
-Timers ...................................................................................................... 37
-Initialization ............................................................................................... 37
-Message Processing Events and Sequencing Rules for qmcomm ....................... 37
-R_QMGetRemoteQueueName (Opnum 1) ................................................. 40
-R_QMOpenRemoteQueue (Opnum 2) ....................................................... 41
-R_QMCloseRemoteQueueContext (Opnum 3) ............................................ 44
-R_QMCreateRemoteCursor (Opnum 4) ..................................................... 45
-R_QMCreateObjectInternal (Opnum 6) .................................................... 46
-R_QMSetObjectSecurityInternal (Opnum 7) ............................................. 47
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-
-3.1.2
-3.1.3
-3.1.4
-
-[MS-MQMP] - v20240423
-Message Queuing (MSMQ): Queue Manager Client Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 134
-
-3.1.5
-
-3.1.5.1
-3.1.5.2
-3.1.5.3
-3.1.5.4
-
-3.1.6
-3.1.7
-
-3.1.7.1
-3.1.7.2
-3.1.7.3
-
-3.2
-
-3.2.1
-
-3.2.1.1
-3.2.1.2
-3.2.1.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.1.4.7
-3.1.4.8
-3.1.4.9
-3.1.4.10
-3.1.4.11
-3.1.4.12
-3.1.4.13
-3.1.4.14
-3.1.4.15
-3.1.4.16
-3.1.4.17
-3.1.4.18
-3.1.4.19
-3.1.4.20
-3.1.4.21
-3.1.4.22
-3.1.4.23
-3.1.4.24
-
-R_QMGetObjectSecurityInternal (Opnum 8) ............................................. 48
-R_QMDeleteObject (Opnum 9) ................................................................ 50
-R_QMGetObjectProperties (Opnum 10) .................................................... 51
-R_QMSetObjectProperties (Opnum 11) .................................................... 52
-R_QMObjectPathToObjectFormat (Opnum 12) .......................................... 53
-R_QMGetTmWhereabouts (Opnum 14) .................................................... 54
-R_QMEnlistTransaction (Opnum 15) ........................................................ 55
-R_QMEnlistInternalTransaction (Opnum 16) ............................................. 56
-R_QMCommitTransaction (Opnum 17) ..................................................... 57
-R_QMAbortTransaction (Opnum 18) ........................................................ 58
-rpc_QMOpenQueueInternal (Opnum 19) .................................................. 58
-rpc_ACCloseHandle (Opnum 20) ............................................................. 63
-rpc_ACCloseCursor (Opnum 22) ............................................................. 64
-rpc_ACSetCursorProperties (Opnum 23) .................................................. 66
-rpc_ACHandleToFormatName (Opnum 26) ............................................... 67
-rpc_ACPurgeQueue (Opnum 27) ............................................................. 69
-R_QMQueryQMRegistryInternal (Opnum 28) ............................................ 70
-R_QMGetRTQMServerPort (Opnum 31) .................................................... 71
-Message Processing Events and Sequencing Rules for qmcomm2 ...................... 72
-QMSendMessageInternalEx (Opnum 0) .................................................... 73
-rpc_ACSendMessageEx (Opnum 1) .......................................................... 74
-rpc_ACReceiveMessageEx (Opnum 2) ...................................................... 78
-rpc_ACCreateCursorEx (Opnum 3) .......................................................... 86
-Timer Events .............................................................................................. 87
-Other Local Events ...................................................................................... 87
-RPC_QUEUE_HANDLE Context Handle Rundown Routine ............................ 87
-PCTX_OPENREMOTE_HANDLE_TYPE Context Handle Rundown Routine ........ 88
-RPC_INT_XACT_HANDLE Context Handle Rundown Routine ........................ 88
-qmcomm and qmcomm2 Client Details ............................................................... 89
-Abstract Data Model .................................................................................... 89
-LicenceGuid .......................................................................................... 89
-OpenQueueContext ............................................................................... 89
-CursorIdentifier .................................................................................... 89
-Timers ...................................................................................................... 89
-Initialization ............................................................................................... 89
-Message Processing Events and Sequencing Rules .......................................... 90
-Creating a Local Private Queue ............................................................... 90
-Deleting a Local Private Queue ............................................................... 91
-Updating Local Private Queue Security ..................................................... 91
-Retrieving Local Private Queue Security ................................................... 91
-Updating Local Private Queue Properties .................................................. 92
-Retrieving Local Private Queue Properties ................................................ 92
-Opening a Queue .................................................................................. 93
-Creating a Cursor .................................................................................. 95
-Purging a Queue ................................................................................... 96
-Sending a Message ............................................................................... 96
-Peeking a Message ................................................................................ 97
-Receiving a Message ............................................................................. 97
-Retrieving a Format Name for a Queue Path Name .................................... 98
-Retrieving a Format Name for a Queue Context Handle .............................. 98
-Closing a Queue .................................................................................... 98
-Closing a Cursor ................................................................................... 98
-Timer Events .............................................................................................. 99
-Other Local Events ...................................................................................... 99
-
-3.2.4.1
-3.2.4.2
-3.2.4.3
-3.2.4.4
-3.2.4.5
-3.2.4.6
-3.2.4.7
-3.2.4.8
-3.2.4.9
-3.2.4.10
-3.2.4.11
-3.2.4.12
-3.2.4.13
-3.2.4.14
-3.2.4.15
-3.2.4.16
-
-3.2.5
-3.2.6
-
-4  Protocol Examples ............................................................................................... 100
-Application Opening and Closing a Local Queue Example ...................................... 100
-Application Opening and Closing a Remote Queue Example .................................. 101
-
-4.1
-4.2
-
-5 / 134
-
-[MS-MQMP] - v20240423
-Message Queuing (MSMQ): Queue Manager Client Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4.3
-4.4
-4.5
-
-Application Creating and Closing a Local Cursor Example ..................................... 102
-Application Creating and Closing a Remote Cursor Example .................................. 103
-Application Internal Transaction Example ........................................................... 105
-
-5  Security ............................................................................................................... 107
-Security Considerations for Implementers .......................................................... 107
-Index of Security Parameters ........................................................................... 107
-
-5.1
-5.2
-
-6  Appendix A: Full IDL ............................................................................................ 108
-
-7  Appendix B: Product Behavior ............................................................................. 115
-
-8  Change Tracking .................................................................................................. 130
-
-9  Index ................................................................................................................... 131
-
-[MS-MQMP] - v20240423
-Message Queuing (MSMQ): Queue Manager Client Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 134
-
-1  Introduction
+## 1 Introduction
 
 The Message Queuing (MSMQ): Queue Manager Client Protocol is an RPC-based protocol, which
 enables communication between an application and an MSMQ supporting server or a remote
@@ -849,7 +682,7 @@ Purging queues.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -895,7 +728,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pointer can be accessed through a nondestructive read (Peek) operation or a destructive read
+
+pointer can be accessed through a nondestructive read (Peek) operation or a destructive read
 (Receive) operation.
 
 dead-letter queue: A queue that contains messages that were sent from a host with a request
@@ -971,7 +805,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-persistence of the messages, which enables the sending and receiving client applications to
+
+persistence of the messages, which enables the sending and receiving client applications to
 operate asynchronously from each other.
 
 Microsoft Message Queuing (MSMQ): A communications service that provides asynchronous
@@ -1045,7 +880,8 @@ Release: April 23, 2024
 
 9 / 134
 
-queue: An object that holds messages passed between applications or messages passed
+
+queue: An object that holds messages passed between applications or messages passed
 
 between Message Queuing and applications. In general, applications can send messages to
 queues and read messages from queues.
@@ -1124,7 +960,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
+
+not imply or require a specific algorithm or mechanism to generate the UUID. Specifically, the
 use of this term does not imply or require that the algorithms described in [RFC4122] or [C706]
 has to be used for generating the UUID.
 
@@ -1133,14 +970,14 @@ XML digital signature: A digital signature that is designed for use in XML opera
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1190,7 +1027,8 @@ Release: April 23, 2024
 
 11 / 134
 
-[RFC1319] Kaliski, B., "The MD2 Message-Digest Algorithm", RFC 1319, April 1992, https://www.rfc-
+
+[RFC1319] Kaliski, B., "The MD2 Message-Digest Algorithm", RFC 1319, April 1992, https://www.rfc-
 editor.org/info/rfc1319
 
 [RFC1320] Rivest, R., "The MD4 Message-Digest Algorithm", RFC 1320, April 1992, https://www.rfc-
@@ -1208,7 +1046,7 @@ https://www.rfc-editor.org/info/rfc2268
 [RFC3174] Eastlake III, D., and Jones, P., "US Secure Hash Algorithm 1 (SHA1)", RFC 3174,
 September 2001, https://www.rfc-editor.org/info/rfc3174
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQDSSM] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Schema
 Mapping".
@@ -1218,7 +1056,7 @@ Mapping".
 [MSDN-MQEIC] Microsoft Corporation, "Message Queuing Error and Information Codes",
 http://msdn.microsoft.com/en-us/library/ms700106.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 This protocol provides a means for applications to communicate with a supporting server. An
 MSMQ application uses this protocol to perform basic message queuing operations on a supporting
@@ -1226,7 +1064,7 @@ server, such as creating queues, altering queue properties, sending messages, an
 messages. An MSMQ application also uses this protocol to communicate with a remote MSMQ queue
 manager to open and close remote queues.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol is dependent upon RPC for its transport. This protocol uses RPC, as specified in section
 2.1.
@@ -1245,7 +1083,8 @@ Release: April 23, 2024
 
 12 / 134
 
-<!-- Extracted images from page 13 -->
+
+<!-- Extracted images from page 13 -->
 ![Extracted image 1 from page 13]([MS-MQMP].images/page013-img01.png)
 <!-- /Extracted images from page 13 -->
 
@@ -1256,7 +1095,7 @@ applications to orchestrate external transaction scenarios for this protocol.
 
 This protocol uses shared state and processing rules defined in [MS-MQDMPR].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Message Queuing (MSMQ): Queue Manager Client Protocol is an RPC interface and, as a result,
 has the prerequisites specified in [MS-RPCE] as being common to RPC interfaces.
@@ -1267,7 +1106,7 @@ Protocol before this protocol is invoked. This specification does not address ho
 acquired. In the context of a remote read operation, this protocol provides the name of a remote
 server, as described in sections 3.1.4.1 and 3.1.4.17.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 This protocol provides functionality for message queuing applications to perform operations on a
 remote supporting server.
@@ -1282,7 +1121,7 @@ interoperability with existing legacy servers and clients.<1> Implementers of ne
 applications are encouraged to invoke the MSMQ COM API remotely via DCOM in preference to the
 capabilities specified by the Message Queuing (MSMQ): Queue Manager Client Protocol.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 This protocol supports a mechanism for explicitly negotiating the RPC endpoint to be used. For more
 information, see section 3.1.4.24.
@@ -1294,13 +1133,14 @@ Release: April 23, 2024
 
 13 / 134
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1.1. Vendors can define their
 own HRESULT values, provided that they set the C bit (0x20000000) for each vendor-defined value,
 indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the standard interfaces that are listed in the following table.
 
@@ -1349,9 +1189,10 @@ Release: April 23, 2024
 
 14 / 134
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol SHOULD use the following RPC protocol sequence: RPC over TCP/IP (ncacn_ip_tcp),
 as specified in [MS-RPCE].<2> This protocol MAY use the RPC over SPX (ncacn_spx) protocol
@@ -1365,7 +1206,7 @@ server uses the underlying RPC protocol to retrieve the identity of the invoking
 the second bullet point of [MS-RPCE] section 3.3.3.4.3. The server SHOULD use this identity to
 perform method-specific access checks, as specified in section 3.1.4.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 All structures are defined in the IDL syntax and are marshaled as specified in [C706] part 3. The IDL
 is specified in section 6.
@@ -1428,7 +1269,8 @@ Release: April 23, 2024
 
 15 / 134
 
-Data type name
+
+Data type name
 
 Description
 
@@ -1442,11 +1284,11 @@ XACTUOW
 
 Identifies the unit of work for a transactional operation.
 
-2.2.1  Data Types
+#### 2.2.1 Data Types
 
-2.2.1.1  Handle Data Types
+##### 2.2.1.1 Handle Data Types
 
-2.2.1.1.1 RPC_INT_XACT_HANDLE
+###### 2.2.1.1.1 RPC_INT_XACT_HANDLE
 
 The RPC_INT_XACT_HANDLE handle is a remote procedure call (RPC) context handle representing
 an internal transaction, as specified in [C706] section 14.2.16.6. A client MUST call
@@ -1458,7 +1300,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* RPC_INT_XACT_HANDLE;
 
-2.2.1.1.2 RPC_QUEUE_HANDLE
+###### 2.2.1.1.2 RPC_QUEUE_HANDLE
 
 The RPC_QUEUE_HANDLE handle is an RPC context handle representing a queue object, as specified
 in [C706] section 14.2.16.6. A client MUST call rpc_QMOpenQueueInternal (section 3.1.4.17) to
@@ -1469,7 +1311,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* RPC_QUEUE_HANDLE;
 
-2.2.1.1.3 PCTX_OPENREMOTE_HANDLE_TYPE
+###### 2.2.1.1.3 PCTX_OPENREMOTE_HANDLE_TYPE
 
 The PCTX_OPENREMOTE_HANDLE_TYPE handle is an RPC context handle representing a queue
 object at a queue manager other than the supporting server, as specified in [C706] section
@@ -1481,7 +1323,7 @@ This type is declared as follows:
 
  typedef [context_handle] void* PCTX_OPENREMOTE_HANDLE_TYPE;
 
-2.2.2  Enumerations
+#### 2.2.2 Enumerations
 
 The following enumerated type is defined in the following section:
 
@@ -1496,7 +1338,8 @@ Release: April 23, 2024
 
 16 / 134
 
-2.2.2.1  TRANSFER_TYPE
+
+##### 2.2.2.1 TRANSFER_TYPE
 
 The TRANSFER_TYPE enumeration specifies the valid cases for the unnamed union defined in the
 CACTransferBufferV1 structure (section 2.2.3.2).
@@ -1517,16 +1360,16 @@ performed.
 
 CACTB_CREATECURSOR:  A cursor creation is to be performed.
 
-2.2.3  Structures
+#### 2.2.3 Structures
 
-2.2.3.1  XACTUOW
+##### 2.2.3.1 XACTUOW
 
 The XACTUOW structure ([MS-MQMQ] section 2.2.18.1.8) uniquely identifies the unit of work
 (UOW) for a transactional operation. For an external transaction, this value MUST be acquired from
 the transaction coordinator. For an internal transaction, a client MUST create a unique random
 value for each transaction.<3>
 
-2.2.3.2  CACTransferBufferV1
+##### 2.2.3.2 CACTransferBufferV1
 
 The CACTransferBufferV1 structure is used to send and receive messages via MSMQ.
 
@@ -1567,7 +1410,8 @@ Release: April 23, 2024
 
 17 / 134
 
-       [range(0,1024)] DWORD ulOrderingFormatNameLen;
+
+       [range(0,1024)] DWORD ulOrderingFormatNameLen;
        [size_is(,ulOrderingFormatNameLen)]
          WCHAR** ppOrderingFormatName;
        DWORD* pulOrderingFormatNameLenProp;
@@ -1642,7 +1486,8 @@ Release: April 23, 2024
 
 18 / 134
 
-uTransferType:  The uTransferType member specifies which of the Send, Receive, or
+
+uTransferType:  The uTransferType member specifies which of the Send, Receive, or
 
 CreateCursor union members is present in the CACTransferBufferV1 structure. The
 uTransferType member MUST be assigned a value from the TRANSFER_TYPE (section 2.2.2.1)
@@ -1721,7 +1566,8 @@ Release: April 23, 2024
 
 19 / 134
 
-pulResponseFormatNameLenProp:  The pulResponseFormatNameLenProp member specifies
+
+pulResponseFormatNameLenProp:  The pulResponseFormatNameLenProp member specifies
 
 the size (in count of Unicode characters) of the string contained in the ppResponseFormatName
 member.
@@ -1804,7 +1650,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -1927,7 +1774,8 @@ Release: April 23, 2024
 
 21 / 134
 
-Message Class Value
+
+Message Class Value
 
 Message Class Type
 
@@ -2026,7 +1874,8 @@ Release: April 23, 2024
 
 22 / 134
 
-pAcknowledge:  The pAcknowledge member is a single byte. The pAcknowledge member value
+
+pAcknowledge:  The pAcknowledge member is a single byte. The pAcknowledge member value
 specifies the types of acknowledgment messages that are to be generated for this message.
 Acknowledgment messages are returned in the administration queue. The pAcknowledge
 member value MUST be assigned from the following list:
@@ -2136,7 +1985,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2230,7 +2080,8 @@ Release: April 23, 2024
 
 24 / 134
 
-pulTitleBufferSizeInWCHARs:  The pulTitleBufferSizeInWCHARs member specifies the actual
+
+pulTitleBufferSizeInWCHARs:  The pulTitleBufferSizeInWCHARs member specifies the actual
 
 size (in count of Unicode characters) of the string, if present, in the ppTitle member Unicode
 string.
@@ -2325,7 +2176,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2442,7 +2294,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 0x00008002
 
@@ -2548,7 +2401,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-not the default name and all other values MUST be interpreted as specifying that the
+
+not the default name and all other values MUST be interpreted as specifying that the
 ppwcsProvName is the default name.
 
 ppSymmKeys:  The ppSymmKeys member is an array of bytes. The ppSymmKeys member, if
@@ -2629,7 +2483,8 @@ Release: April 23, 2024
 
 28 / 134
 
-2.2.3.3  CACTransferBufferV2
+
+##### 2.2.3.3 CACTransferBufferV2
 
 The CACTransferBufferV2 structure is used to send and receive messages via MSMQ.
 
@@ -2661,7 +2516,7 @@ ppXactID:   The ppXactID member, if present, MUST be an OBJECTID structure, as s
 
 MQMQ] section 2.2.8.
 
-2.2.3.4  CACCreateRemoteCursor
+##### 2.2.3.4 CACCreateRemoteCursor
 
 The CACCreateRemoteCursor structure contains the elements necessary for creating a cursor on a
 queue.
@@ -2686,7 +2541,7 @@ cli_pQMQueue:  The value for this field returned from rpc_ACCreateCursorEx is pa
 pQueue parameter of R_QMGetRemoteQueueName (section 3.1.4.1) when invoked as part of a
 remote cursor creation call sequence.
 
-2.2.3.5  OBJECT_FORMAT
+##### 2.2.3.5 OBJECT_FORMAT
 
 An OBJECT_FORMAT structure wraps a pointer to a QUEUE_FORMAT structure ([MS-MQMQ] section
 2.2.7).
@@ -2698,7 +2553,8 @@ Release: April 23, 2024
 
 29 / 134
 
- typedef struct OBJECT_FORMAT {
+
+ typedef struct OBJECT_FORMAT {
    [range(1,2)] DWORD ObjType;
    [switch_is(ObjType)] union {
      [case(1)]
@@ -2712,7 +2568,7 @@ MUST NOT appear on the wire.
 
 pQueueFormat:  This MUST point to a QUEUE_FORMAT structure.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol uses ADM elements specified in section 3.1.1. A subset of these elements can be
 published in a directory. This protocol SHOULD<7> access the directory using the algorithm specified
@@ -2726,16 +2582,17 @@ Release: April 23, 2024
 
 30 / 134
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The client side of this protocol is simply a pass-through. That is, there are no additional timers or
 other states required on the client side of this protocol. Calls made by the higher-layer protocol or
 application are passed directly to the transport, and the results returned by the transport are passed
 directly back to the higher-layer protocol or application.
 
-3.1  qmcomm and qmcomm2 Server Details
+### 3.1 qmcomm and qmcomm2 Server Details
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -2788,7 +2645,7 @@ TransactionHandle (section 3.1.1.10)
 
   Queue PROPID to Abstract Queue Property Translations (section 3.1.1.12)
 
-3.1.1.1  Shared Data Elements
+##### 3.1.1.1 Shared Data Elements
 
 This protocol manipulates instances of the following abstract data model elements from the shared
 abstract data model defined in [MS-MQDMPR] section 3.1.1.
@@ -2800,7 +2657,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  QueueManager: [MS-MQDMPR] section 3.1.1.1.
+
+  QueueManager: [MS-MQDMPR] section 3.1.1.1.
 
   OpenQueueDescriptor: [MS-MQDMPR] section 3.1.1.16.
 
@@ -2812,7 +2670,7 @@ Release: April 23, 2024
 
   Transaction: [MS-MQDMPR] section 3.1.1.14.
 
-3.1.1.2  LocalQueueContextHandleTable
+##### 3.1.1.2 LocalQueueContextHandleTable
 
 The LocalQueueContextHandleTable ADM element contains a table of
 LocalQueueContextHandle (section 3.1.1.3) ADM element instances, keyed by the Handle attribute of
@@ -2820,7 +2678,7 @@ the LocalQueueContextHandle ADM element. The server maintains a single
 LocalQueueContextHandleTable ADM element instance, which is referred to as
 iLocalQueueContextHandleTable.
 
-3.1.1.3  LocalQueueContextHandle
+##### 3.1.1.3 LocalQueueContextHandle
 
  The LocalQueueContextHandle ADM element associates an
 RPC_QUEUE_HANDLE (section 2.2.1.1.2) context handle with an OpenQueueDescriptor ([MS-
@@ -2836,7 +2694,7 @@ OpenQueueDescriptorReference: A reference to an OpenQueueDescriptor ADM element
 
 instance.
 
-3.1.1.4  RemoteQueueProxyHandleTable
+##### 3.1.1.4 RemoteQueueProxyHandleTable
 
  The RemoteQueueProxyHandleTable ADM element contains a table of
 RemoteQueueProxyHandle (section 3.1.1.5) ADM element instances, keyed by the Handle attribute of
@@ -2844,7 +2702,7 @@ the RemoteQueueProxyHandle ADM element. The server maintains a single
 RemoteQueueProxyHandleTable ADM element instance, which is referred to as
 iRemoteQueueProxyHandleTable.
 
-3.1.1.5  RemoteQueueProxyHandle
+##### 3.1.1.5 RemoteQueueProxyHandle
 
 The RemoteQueueProxyHandle ADM element associates an
 RPC_QUEUE_HANDLE (section 2.2.1.1.2) context handle with information pertaining to an
@@ -2868,7 +2726,8 @@ Release: April 23, 2024
 
 32 / 134
 
-RemoteHandle: A PCTX_RRSESSION_HANDLE_TYPE ([MS-MQQP] section 2.2.1.1) context
+
+RemoteHandle: A PCTX_RRSESSION_HANDLE_TYPE ([MS-MQQP] section 2.2.1.1) context
 
 handle obtained from a remote QueueManager ADM element instance other than the server.
 
@@ -2891,7 +2750,7 @@ created.
 
 CursorProxyCollection: A collection of CursorProxy (section 3.1.1.6) ADM element instances.
 
-3.1.1.6  CursorProxy
+##### 3.1.1.6 CursorProxy
 
 The CursorProxy ADM element associates an identifier DWORD that is unique to the server with the
 Handle attribute value of a Cursor ([MS-MQDMPR] section 3.2) ADM element instance for a remote
@@ -2909,7 +2768,7 @@ IsRemoteCursorHandleInitialized: A Boolean value that indicates whether the
 
 RemoteCursorHandle attribute has been initialized.
 
-3.1.1.7  RemoteQueueOpenContextHandleTable
+##### 3.1.1.7 RemoteQueueOpenContextHandleTable
 
  The RemoteQueueOpenContextHandleTable ADM element contains a table of
 RemoteQueueOpenContextHandle (section 3.1.1.8) ADM element instances keyed by the Handle
@@ -2917,7 +2776,7 @@ attribute of the RemoteQueueOpenContextHandle ADM element. The server maintains 
 RemoteQueueOpenContextHandleTable ADM element instance, which is referenced as
 iRemoteQueueOpenContextHandleTable.
 
-3.1.1.8  RemoteQueueOpenContextHandle
+##### 3.1.1.8 RemoteQueueOpenContextHandle
 
 The RemoteQueueOpenContextHandle ADM element associates a
 PCTX_OPENREMOTE_HANDLE_TYPE (section 2.2.1.1.3) context handle with a reference to an
@@ -2940,16 +2799,17 @@ Release: April 23, 2024
 
 33 / 134
 
-3.1.1.9  TransactionHandleTable
+
+##### 3.1.1.9 TransactionHandleTable
 
  The TransactionHandleTable ADM element contains a table of TransactionHandle (section 3.1.1.10)
 ADM element instances keyed by the Handle attribute of the TransactionHandle ADM element. The
 server maintains a single TransactionHandleTable ADM element instance, which is referenced as
 iTransactionHandleTable.
 
-3.1.1.10
+##### 3.1.1.10 TransactionHandle
 
-TransactionHandle
+
 
 The TransactionHandle ADM element represents a handle that contains a reference to a
 Transaction ([MS-MQDMPR] section 3.1.1.14) ADM element instance. This ADM element MUST
@@ -2961,9 +2821,9 @@ TransactionHandleEntry within the TransactionHandleTable (section 3.1.1.9) ADM e
 
 TransactionReference: A reference to a Transaction ADM element instance.
 
-3.1.1.11
+##### 3.1.1.11 Message to CACTransferBufferV2 Translation
 
-Message to CACTransferBufferV2 Translation
+
 
 A Message ([MS-MQDMPR] section 3.1.1.12) ADM element instance is placed in the
 CACTransferBufferV2 (section 2.2.3.3) structure when conveyed via this protocol. The following table
@@ -3045,7 +2905,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CACTransferBufferV2 Member
+
+CACTransferBufferV2 Member
 
 Corresponding Message ADM element attribute(s)
 
@@ -3174,7 +3035,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-CACTransferBufferV2 Member
+
+CACTransferBufferV2 Member
 
 Corresponding Message ADM element attribute(s)
 
@@ -3300,9 +3162,10 @@ Release: April 23, 2024
 
 36 / 134
 
-3.1.1.12
 
-Queue PROPID to Abstract Queue Property Translation
+##### 3.1.1.12 Queue PROPID to Abstract Queue Property Translation
+
+
 
 The methods R_QMCreateObjectInternal (section 3.1.4.5), R_QMGetObjectProperties (section 3.1.4.9)
 and R_QMSetObjectProperties (section 3.1.4.10) reference properties of the Queue ([MS-MQDMPR]
@@ -3409,15 +3272,15 @@ Get
 The protocol MUST NOT send property identifiers that are not applicable to the method to be invoked,
 as defined in the preceding table.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST listen on the RPC protocols, as specified in section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules for qmcomm
+#### 3.1.4 Message Processing Events and Sequencing Rules for qmcomm
 
 This protocol SHOULD indicate to the RPC run time that it is to perform a strict NDR data consistency
 check at target level 6.0, as specified in [MS-RPCE] section 3.<9>
@@ -3431,7 +3294,8 @@ Release: April 23, 2024
 
 37 / 134
 
-Method
+
+Method
 
 Description
 
@@ -3551,7 +3415,8 @@ Release: April 23, 2024
 
 38 / 134
 
-Method
+
+Method
 
 Description
 
@@ -3670,7 +3535,8 @@ Release: April 23, 2024
 
 39 / 134
 
-Opnum  Name
+
+Opnum  Name
 
 1
 
@@ -3752,7 +3618,7 @@ rpc_ACPurgeQueue
 
 R_QMQueryQMRegistryInternal
 
-3.1.4.1  R_QMGetRemoteQueueName (Opnum 1)
+##### 3.1.4.1 R_QMGetRemoteQueueName (Opnum 1)
 
 During the process of creating a remote cursor, a client calls the R_QMGetRemoteQueueName
 method to retrieve the name of the remote queue associated with a queue handle. This method is
@@ -3779,7 +3645,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-lplpRemoteQueueName:  A pointer to a buffer to receive the null-terminated name of the remote
+
+lplpRemoteQueueName:  A pointer to a buffer to receive the null-terminated name of the remote
 
 queue associated with pQueue. On input, this value MUST be NULL.
 
@@ -3818,7 +3685,7 @@ RemoteQueueProxyHandle ADM element instance.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.2  R_QMOpenRemoteQueue (Opnum 2)
+##### 3.1.4.2 R_QMOpenRemoteQueue (Opnum 2)
 
 A client calls R_QMOpenRemoteQueue to obtain a valid queue handle on a remote queue as part of
 the sequence of events involved in opening a remote queue as described in section 4.2.
@@ -3855,7 +3722,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pQueueFormat: A QUEUE_FORMAT ([MS-MQMQ] section 2.2.7) structure that identifies the queue
+
+pQueueFormat: A QUEUE_FORMAT ([MS-MQMQ] section 2.2.7) structure that identifies the queue
 to be opened. It MUST NOT be NULL and MUST conform to the format name syntax rules defined
 in [MS-MQMQ]. It MUST NOT be a distribution list or multicast format name. For direct format
 names, the protocol MUST NOT be HTTP.
@@ -3956,7 +3824,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Return Values:  On success, this method MUST return MQ_OK (0x00000000); otherwise, the server
+
+Return Values:  On success, this method MUST return MQ_OK (0x00000000); otherwise, the server
 MUST return a failure HRESULT <26>, and the client MUST treat all failure HRESULTs identically.
 Additionally, if a failure HRESULT is returned, the client MUST disregard all out-parameter values.
 
@@ -4044,7 +3913,8 @@ Release: April 23, 2024
 
 43 / 134
 
-
+
+
 
 
 
@@ -4072,7 +3942,7 @@ dwpQueue := rOpenQueueDescriptor.Handle
 
   Return MQ_OK (0x00000000).
 
-3.1.4.3  R_QMCloseRemoteQueueContext (Opnum 3)
+##### 3.1.4.3 R_QMCloseRemoteQueueContext (Opnum 3)
 
 The R_QMCloseRemoteQueueContext method closes a remote queue handle originally obtained from
 R_QMOpenRemoteQueue (section 3.1.4.2).
@@ -4132,13 +4002,14 @@ Release: April 23, 2024
 
 44 / 134
 
-  Delete the iLocatedRemoteQueueOpenContextHandle from
+
+  Delete the iLocatedRemoteQueueOpenContextHandle from
 
 iRemoteQueueOpenContextHandleTable.
 
   Set the pphContext parameter to NULL.
 
-3.1.4.4  R_QMCreateRemoteCursor (Opnum 4)
+##### 3.1.4.4 R_QMCreateRemoteCursor (Opnum 4)
 
 The R_QMCreateRemoteCursor method creates a cursor at the server for use during remote read.
 
@@ -4210,9 +4081,10 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Return MQ_OK (0x00000000).
 
-3.1.4.5  R_QMCreateObjectInternal (Opnum 6)
+  Return MQ_OK (0x00000000).
+
+##### 3.1.4.5 R_QMCreateObjectInternal (Opnum 6)
 
 A client calls the R_QMCreateObjectInternal method to create a new private queue located on the
 supporting server.
@@ -4282,7 +4154,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-This method is invoked at the dynamically assigned endpoint returned by the
+
+This method is invoked at the dynamically assigned endpoint returned by the
 R_QMGetRTQMServerPort method when IP_HANDSHAKE (0x00000000) or IPX_HANDSHAKE
 (0x00000002) is the interface specified by the fIP parameter.
 
@@ -4336,7 +4209,7 @@ iQueue := newQueue
 
   Return the rStatus of the Create Queue event.
 
-3.1.4.6  R_QMSetObjectSecurityInternal (Opnum 7)
+##### 3.1.4.6 R_QMSetObjectSecurityInternal (Opnum 7)
 
 A client calls the R_QMSetObjectSecurityInternal method to update the security configuration of a
 private queue located on the supporting server.
@@ -4363,7 +4236,8 @@ Release: April 23, 2024
 
 47 / 134
 
-SecurityInformation:  MUST contain a value from the SECURITY_INFORMATION enumeration which
+
+SecurityInformation:  MUST contain a value from the SECURITY_INFORMATION enumeration which
 indicates the portions of the provided SECURITY_DESCRIPTOR to be applied to the queue
 identified by pObjectFormat. The SECURITY_INFORMATION enumeration is defined in [MS-MQMQ]
 section 2.2.3.
@@ -4411,7 +4285,7 @@ information provided by SecurityInformation, SDSize, and pSecurityDescriptor.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.7  R_QMGetObjectSecurityInternal (Opnum 8)
+##### 3.1.4.7 R_QMGetObjectSecurityInternal (Opnum 8)
 
 A client calls the R_QMGetObjectSecurityInternal method to retrieve the security configuration of a
 private queue located on the supporting server.
@@ -4440,7 +4314,8 @@ Release: April 23, 2024
 
 48 / 134
 
-RequestedInformation:  MUST contain a value from the SECURITY_INFORMATION enumeration
+
+RequestedInformation:  MUST contain a value from the SECURITY_INFORMATION enumeration
 
 which indicates the portions of the SECURITY_DESCRIPTOR ([MS-DTYP] section 2.4.6) to be
 retrieved from the queue identified by pObjectFormat. The SECURITY_INFORMATION
@@ -4527,7 +4402,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Else If the GROUP_SECURITY_INFORMATION bit is set in RequestedInformation:
 
@@ -4564,7 +4440,7 @@ Else copy ReturnedDescriptor into the pSecurityDescriptor buffer.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.8  R_QMDeleteObject (Opnum 9)
+##### 3.1.4.8 R_QMDeleteObject (Opnum 9)
 
 A client calls R_QMDeleteObject to delete a private queue located on the supporting server.
 
@@ -4611,13 +4487,14 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Generate a Delete Queue ([MS-MQDMPR] section 3.1.7.1.4) event, specifying the Queue ADM
+
+  Generate a Delete Queue ([MS-MQDMPR] section 3.1.7.1.4) event, specifying the Queue ADM
 
 element instance located preceding for the iQueue argument.
 
   Return the rStatus of the Delete Queue event.
 
-3.1.4.9  R_QMGetObjectProperties (Opnum 10)
+##### 3.1.4.9 R_QMGetObjectProperties (Opnum 10)
 
 A client calls R_QMGetObjectProperties to retrieve properties from a private queue located on a
 supporting server.
@@ -4686,15 +4563,16 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Copy the values of the Queue ADM element instance attributes indicated by aProp into apVar.
+
+  Copy the values of the Queue ADM element instance attributes indicated by aProp into apVar.
 Queue property identifiers and their associated Queue ADM element attributes are specified in
 section 3.1.1.12.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.10
+##### 3.1.4.10 R_QMSetObjectProperties (Opnum 11)
 
-R_QMSetObjectProperties (Opnum 11)
+
 
 The R_QMSetObjectProperties method is called by a client to update properties of a local private
 queue.
@@ -4758,7 +4636,8 @@ Release: April 23, 2024
 
 52 / 134
 
-
+
+
 
 If no entry is resolved, return a failure HRESULT.
 
@@ -4768,9 +4647,9 @@ specified in section 3.1.1.12.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.11
+##### 3.1.4.11 R_QMObjectPathToObjectFormat (Opnum 12)
 
-R_QMObjectPathToObjectFormat (Opnum 12)
+
 
 A client calls R_QMObjectPathToObjectFormat to determine a format name for a queue identified by
 a given path name.
@@ -4834,11 +4713,12 @@ Release: April 23, 2024
 
 53 / 134
 
-  Return MQ_OK (0x00000000).
 
-3.1.4.12
+  Return MQ_OK (0x00000000).
 
-R_QMGetTmWhereabouts (Opnum 14)
+##### 3.1.4.12 R_QMGetTmWhereabouts (Opnum 14)
+
+
 
 A client calls R_QMGetTmWhereabouts to obtain transaction manager whereabouts, as specified in
 [MS-DTCO], from the supporting server. The whereabouts enable callers to generate exported
@@ -4914,7 +4794,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The server MUST return MQ_ERROR_USER_BUFFER_TOO_SMALL (0xc00e0028). This return
 value indicates to the caller that a larger buffer is required for this function to succeed.
@@ -4931,9 +4812,9 @@ structure in the pcbWhereabouts parameter.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.13
+##### 3.1.4.13 R_QMEnlistTransaction (Opnum 15)
 
-R_QMEnlistTransaction (Opnum 15)
+
 
 A client calls the R_QMEnlistTransaction method to enlist the supporting server's resource
 manager (RM) in an external transaction.
@@ -5000,7 +4881,8 @@ Release: April 23, 2024
 
 55 / 134
 
-  Raise the Enlisting on a Specific Transaction event as specified in [MS-DTCO] section 3.5.4.3.
+
+  Raise the Enlisting on a Specific Transaction event as specified in [MS-DTCO] section 3.5.4.3.
 
 Provide the transaction object that was created while importing the transaction in the previous
 step as the transaction object argument to this event.
@@ -5015,9 +4897,9 @@ iTransactionIdentifier := pUow
 
   Return MQ_OK (0x00000000).
 
-3.1.4.14
+##### 3.1.4.14 R_QMEnlistInternalTransaction (Opnum 16)
 
-R_QMEnlistInternalTransaction (Opnum 16)
+
 
 A client calls the R_QMEnlistInternalTransaction method to enlist the supporting server's resource
 manager (RM) in an internal transaction. The server returns a transaction handle associated
@@ -5084,7 +4966,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Generate a Create Transaction ([MS-MQDMPR] section 3.1.7.1.8) event with the following
+
+  Generate a Create Transaction ([MS-MQDMPR] section 3.1.7.1.8) event with the following
 
 argument value:
 
@@ -5111,9 +4994,9 @@ instance and set its attributes to the following values:
 
   Return MQ_OK (0x00000000).
 
-3.1.4.15
+##### 3.1.4.15 R_QMCommitTransaction (Opnum 17)
 
-R_QMCommitTransaction (Opnum 17)
+
 
 A client calls the R_QMCommitTransaction method to commit an internal transaction.
 
@@ -5166,7 +5049,8 @@ Release: April 23, 2024
 
 57 / 134
 
-
+
+
 
 iTransactionIdentifier := iLocatedTransactionHandle.TransactionReference.Identifier
 
@@ -5176,9 +5060,9 @@ iTransactionIdentifier := iLocatedTransactionHandle.TransactionReference.Identif
 
   Return MQ_OK (0x00000000).
 
-3.1.4.16
+##### 3.1.4.16 R_QMAbortTransaction (Opnum 18)
 
-R_QMAbortTransaction (Opnum 18)
+
 
 A client calls the R_QMAbortTransaction method to abort an internal transaction.
 
@@ -5233,9 +5117,9 @@ iTransactionIdentifier := iLocatedTransactionHandle.TransactionReference.Identif
 
   Return MQ_OK (0x00000000).
 
-3.1.4.17
+##### 3.1.4.17 rpc_QMOpenQueueInternal (Opnum 19)
 
-rpc_QMOpenQueueInternal (Opnum 19)
+
 
 A client calls rpc_QMOpenQueueInternal to obtain a local queue context handle, to determine if a
 queue is located at a remote queue manager (section 4.2), or to obtain a local context handle for an
@@ -5248,7 +5132,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-result MUST be returned to the client, and the remote open queue sequence is discontinued. In the
+
+result MUST be returned to the client, and the remote open queue sequence is discontinued. In the
 case of failure, any state changes need to be rolled back.
 
  HRESULT rpc_QMOpenQueueInternal(
@@ -5339,7 +5224,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If pQueueFormat contains an HTTP or multicast format name,
+
+If pQueueFormat contains an HTTP or multicast format name,
 R_QMOpenRemoteQueue (section 3.1.4.2) MUST be MQ_SEND_ACCESS (0x00000002).
 
 If pQueueFormat identifies a sub-queue, dwDesiredAccess MUST NOT be MQ_SEND_ACCESS
@@ -5422,7 +5308,8 @@ Release: April 23, 2024
 
 60 / 134
 
-that is returned by this parameter. On return, the client MUST ignore pdwQMContext if the value
+
+that is returned by this parameter. On return, the client MUST ignore pdwQMContext if the value
 returned via lplpRemoteQueueName is non-NULL.
 
 phQueue:  A pointer to a variable to receive a new RPC_QUEUE_HANDLE (section 2.2.1.1.2) context
@@ -5502,7 +5389,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  QueueHandle set to hRemoteQueue
+
+  QueueHandle set to hRemoteQueue
 
   QueueDescriptor set to dwpQueue
 
@@ -5586,7 +5474,8 @@ Release: April 23, 2024
 
 62 / 134
 
-  Add a new LocalQueueContextHandle (section 3.1.1.3) ADM element instance to the
+
+  Add a new LocalQueueContextHandle (section 3.1.1.3) ADM element instance to the
 server's iLocalQueueContextHandleTable (section 3.1.1.2) with the following values:
 
   Handle := New RPC_QUEUE_HANDLE context handle.
@@ -5640,9 +5529,9 @@ Else:
 
   Return rStatus.
 
-3.1.4.18
+##### 3.1.4.18 rpc_ACCloseHandle (Opnum 20)
 
-rpc_ACCloseHandle (Opnum 20)
+
 
 A client calls the rpc_ACCloseHandle method to close context handles acquired from
 rpc_QMOpenQueueInternal (section 3.1.4.17).
@@ -5673,7 +5562,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When processing this call, the server MUST:
+
+When processing this call, the server MUST:
 
 
 
@@ -5752,9 +5642,9 @@ resources in the [MS-MQQP] server.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.19
+##### 3.1.4.19 rpc_ACCloseCursor (Opnum 22)
 
-rpc_ACCloseCursor (Opnum 22)
+
 
 A client calls the rpc_ACCloseCursor method to close a cursor acquired from the
 rpc_ACCreateCursorEx (section 3.1.5.4) method of the qmcomm2 RPC interface.
@@ -5766,7 +5656,8 @@ Release: April 23, 2024
 
 64 / 134
 
- HRESULT rpc_ACCloseCursor(
+
+ HRESULT rpc_ACCloseCursor(
    [in] RPC_QUEUE_HANDLE hQueue,
    [in] DWORD hCursor
  );
@@ -5856,7 +5747,8 @@ Release: April 23, 2024
 
 65 / 134
 
-
+
+
 
 
 
@@ -5889,9 +5781,9 @@ hCursor := iLocatedCursorProxy.RemoteCursorHandle
 
   Return the result from RemoteQMCloseCursor and take no further action.
 
-3.1.4.20
+##### 3.1.4.20 rpc_ACSetCursorProperties (Opnum 23)
 
-rpc_ACSetCursorProperties (Opnum 23)
+
 
 A client calls the rpc_ACSetCursorProperties method to associate a remote cursor created via
 R_QMCreateRemoteCursor (section 3.1.4.4) with a local CursorProxy (section 3.1.1.6) created using
@@ -5938,7 +5830,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-R_QMGetRemoteQueueName (section 3.1.4.1) to determine the remote queue manager name and
+
+R_QMGetRemoteQueueName (section 3.1.4.1) to determine the remote queue manager name and
 MUST then invoke R_QMCreateRemoteCursor at the remote queue manager. Next, the client MUST
 call this method to associate the Cursor.Handle obtained from R_QMCreateRemoteCursor with the
 original CursorProxy.Handle obtained from rpc_ACCreateCursorEx.
@@ -5975,9 +5868,9 @@ CursorProxy.Handle equals hCursor.
 
   Return MQ_OK (0x00000000).
 
-3.1.4.21
+##### 3.1.4.21 rpc_ACHandleToFormatName (Opnum 26)
 
-rpc_ACHandleToFormatName (Opnum 26)
+
 
 A client calls the rpc_ACHandleToFormatName method to retrieve a format name for a queue
 handle.
@@ -6018,7 +5911,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-complete length of the format name string for the queue identified by hQueue, without regard for
+
+complete length of the format name string for the queue identified by hQueue, without regard for
 the size of the provided buffer.
 
 Return Values:  If the provided buffer is long enough to contain the null-terminated format name for
@@ -6103,7 +5997,8 @@ Release: April 23, 2024
 
 68 / 134
 
-
+
+
 
 If no such RemoteQueueProxyHandle ADM element instance exists, take no further action
 and return a failure HRESULT.
@@ -6117,9 +6012,9 @@ RemoteQueueProxyHandle ADM element instance.
 The format name to be returned to the client is
 iLocatedRemoteQueueProxyHandle.FormatName.
 
-3.1.4.22
+##### 3.1.4.22 rpc_ACPurgeQueue (Opnum 27)
 
-rpc_ACPurgeQueue (Opnum 27)
+
 
 The rpc_ACPurgeQueue method is called by a client to purge an opened queue.
 
@@ -6194,7 +6089,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Declare iLocatedRemoteQueueProxyHandle and set it to a reference to the located
+
+  Declare iLocatedRemoteQueueProxyHandle and set it to a reference to the located
 
 RemoteQueueProxyHandle ADM element instance.
 
@@ -6210,9 +6106,9 @@ hQueue := iLocatedRemoteQueueProxyHandle.RemoteContext
 
   Return the return code produced by RemoteQMPurgeQueue.
 
-3.1.4.23
+##### 3.1.4.23 R_QMQueryQMRegistryInternal (Opnum 28)
 
-R_QMQueryQMRegistryInternal (Opnum 28)
+
 
 A client calls the R_QMQueryQMRegistryInternal method to retrieve various string values from the
 supporting server.
@@ -6272,7 +6168,8 @@ Release: April 23, 2024
 
 70 / 134
 
-The GUID string for the MSMQ forest (0x00000002) uses the "braceless" format depicted in the
+
+The GUID string for the MSMQ forest (0x00000002) uses the "braceless" format depicted in the
 following augmented BNF:
 
  braceless-guid = dword-part "-" word-part "-" word-part "-"
@@ -6319,9 +6216,9 @@ This method is invoked at the dynamically assigned endpoint returned by the
 R_QMGetRTQMServerPort method when IP_HANDSHAKE (0x00000000) or IPX_HANDSHAKE
 (0x00000002) is the interface specified by the fIP parameter.
 
-3.1.4.24
+##### 3.1.4.24 R_QMGetRTQMServerPort (Opnum 31)
 
-R_QMGetRTQMServerPort (Opnum 31)
+
 
 The R_QMGetRTQMServerPort method returns an RPC port number, as specified in [MS-RPCE], for the
 requested combination of interface and protocol. The returned RPC port number can be used for all
@@ -6336,7 +6233,8 @@ Release: April 23, 2024
 
 71 / 134
 
-   [in] handle_t hBind,
+
+   [in] handle_t hBind,
    [in] DWORD fIP
  );
 
@@ -6393,7 +6291,7 @@ SHOULD increment the port number by 11 until an unused port is found.
  Security consideration: Servers MUST NOT enforce security limitations for this method, since clients
 can call this method before configuring RPC binding security. See section 5.1 for details.
 
-3.1.5  Message Processing Events and Sequencing Rules for qmcomm2
+#### 3.1.5 Message Processing Events and Sequencing Rules for qmcomm2
 
 The following methods comprise the Message Queuing (MSMQ): Queue Manager Client Protocol
 version 2 (qmcomm2) interface. If LocalQueueManager.SupportingServer is False, the server
@@ -6428,7 +6326,8 @@ Release: April 23, 2024
 
 72 / 134
 
-Method
+
+Method
 
 Description
 
@@ -6438,7 +6337,7 @@ Creates a cursor for accessing the specified queue.
 
 Opnum: 3
 
-3.1.5.1  QMSendMessageInternalEx (Opnum 0)
+##### 3.1.5.1 QMSendMessageInternalEx (Opnum 0)
 
 A client invokes QMSendMessageInternalEx if the server returns STATUS_RETRY (0xc000022d) from
 a prior call to rpc_ACSendMessageEx. Implementations of this protocol SHOULD NOT return
@@ -6506,7 +6405,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Invoke rpc_ACCloseHandle to dispose the handle obtained above. Return the result of
 rpc_ACSendMessageEx.
@@ -6519,7 +6419,7 @@ Else:
 
  Return a failure HRESULT.
 
-3.1.5.2  rpc_ACSendMessageEx (Opnum 1)
+##### 3.1.5.2 rpc_ACSendMessageEx (Opnum 1)
 
 A client calls the rpc_ACSendMessageEx method to place a message into a message queue for
 delivery.
@@ -6581,7 +6481,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ptb.old.pDelivery can be NULL, in which case the server MUST substitute the default value of
+
+ptb.old.pDelivery can be NULL, in which case the server MUST substitute the default value of
 0x00. However, if ptb.old.pUow contains a nonzero value, the server MUST substitute the value
 0x01 for ptb.old.pDelivery, since transactional messages are by definition stored as recoverable.
 
@@ -6646,7 +6547,8 @@ Release: April 23, 2024
 
 75 / 134
 
-ptb.old.pSenderID can be NULL if ptb.old.uSenderIDLen is zero and ptb.old.pulSenderIDType is
+
+ptb.old.pSenderID can be NULL if ptb.old.uSenderIDLen is zero and ptb.old.pulSenderIDType is
 MQMSG_SENDERID_TYPE_NONE (0x00000000), in which case a SID is not associated with the
 message.
 
@@ -6746,7 +6648,8 @@ Release: April 23, 2024
 
 76 / 134
 
-
+
+
 
 
 
@@ -6847,7 +6750,8 @@ Release: April 23, 2024
 
 77 / 134
 
-  Declare iLocatedLocalQueueContextHandle and set it to a reference to the located
+
+  Declare iLocatedLocalQueueContextHandle and set it to a reference to the located
 
 LocalQueueContextHandle ADM element instance.
 
@@ -6898,7 +6802,7 @@ ptb.old.pUow is NULL, this optional argument is not specified.
 If the rStatus result of the  Enqueue Message To An Open Queue event is zero, return MQ_OK
 (0x00000000); otherwise, return a failure HRESULT.
 
-3.1.5.3  rpc_ACReceiveMessageEx (Opnum 2)
+##### 3.1.5.3 rpc_ACReceiveMessageEx (Opnum 2)
 
 A client calls rpc_ACReceiveMessageEx to peek or receive a message from a message queue.
 
@@ -6931,7 +6835,8 @@ Release: April 23, 2024
 
 78 / 134
 
-ptb.old.Receive.Action MUST contain one of the following values: 0x00000000
+
+ptb.old.Receive.Action MUST contain one of the following values: 0x00000000
 (MQ_ACTION_RECEIVE), 0x80000000 (MQ_ACTION_PEEK_CURRENT) or 0x80000001
 (MQ_ACTION_PEEK_NEXT).
 
@@ -6999,7 +6904,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-pulOrderingFormatNameLenProp and 1024 bytes. If ptb.old.Receive.ppOrderingFormatName is
+
+pulOrderingFormatNameLenProp and 1024 bytes. If ptb.old.Receive.ppOrderingFormatName is
 NULL, this value MUST be 0x00000000. On output, the server MUST set this value to the minimum
 of ulOrderingFormatNameLen and pulOrderingFormatNameLenProp.
 
@@ -7066,7 +6972,8 @@ Release: April 23, 2024
 
 80 / 134
 
-been enlisted by a prior call to R_QMEnlistTransaction or R_QMEnlistInternalTransaction. On
+
+been enlisted by a prior call to R_QMEnlistTransaction or R_QMEnlistInternalTransaction. On
 output, the value of ptb.old.pUow MUST be the same as it was on input.
 
 On input, ptb.old.ppSenderID can be NULL, in which case it MUST be NULL on output. Otherwise,
@@ -7133,7 +7040,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -7266,7 +7174,8 @@ Release: April 23, 2024
 
 82 / 134
 
-
+
+
 
 
 
@@ -7364,7 +7273,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -7468,7 +7378,8 @@ Release: April 23, 2024
 
 84 / 134
 
-
+
+
 
 If the iLocalQueueContextHandle.OpenQueueDescriptorReference.AccessMode value is
 PeekAccess, confirm that ptb.old.Receive.Action is not MQ_ACTION_RECEIVE (0x00000000);
@@ -7582,7 +7493,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Generate a Peek Next Message ([MS-MQDMPR] section 3.1.7.1.14) event with the
+
+  Generate a Peek Next Message ([MS-MQDMPR] section 3.1.7.1.14) event with the
 
 following argument values:
 
@@ -7608,7 +7520,7 @@ If the rStatus return value from the Peek Next Message event is not MQ_OK
 
 ptb structure using the defined translation rules.
 
-3.1.5.4  rpc_ACCreateCursorEx (Opnum 3)
+##### 3.1.5.4 rpc_ACCreateCursorEx (Opnum 3)
 
 A client calls rpc_ACCreateCursorEx to create a cursor for use when peeking and receiving from a
 message queue.
@@ -7664,7 +7576,8 @@ Release: April 23, 2024
 
 86 / 134
 
-  Generate an Open Cursor ([MS-MQDMPR] section 3.1.7.1.1) event with the following
+
+  Generate an Open Cursor ([MS-MQDMPR] section 3.1.7.1.1) event with the following
 
 argument value:
 
@@ -7739,13 +7652,13 @@ IsRemoteCursorHandleInitialized := True.
 
   Return MQ_OK (0x00000000).
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
-3.1.7.1  RPC_QUEUE_HANDLE Context Handle Rundown Routine
+##### 3.1.7.1 RPC_QUEUE_HANDLE Context Handle Rundown Routine
 
 This event occurs on rundown of a context handle of type RPC_QUEUE_HANDLE (section 2.2.1.1.2), as
 specified in [C706] section 5.1.6.
@@ -7757,7 +7670,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- When processing this event, the server MUST:
+
+ When processing this event, the server MUST:
 
 
 
@@ -7821,7 +7735,7 @@ iLocatedRemoteQueueProxyHandle.RemoteBindingHandle as appropriate.
 
   Delete iLocatedRemoteQueueProxyHandle from iRemoteQueueProxyHandleTable.
 
-3.1.7.2  PCTX_OPENREMOTE_HANDLE_TYPE Context Handle Rundown Routine
+##### 3.1.7.2 PCTX_OPENREMOTE_HANDLE_TYPE Context Handle Rundown Routine
 
  This event occurs on rundown of a context handle of type PCTX_OPENREMOTE_HANDLE_TYPE, as
 specified in [C706] section 5.1.6.
@@ -7832,7 +7746,7 @@ specified in [C706] section 5.1.6.
 
 Execute the steps defined for the method R_QMCloseRemoteQueueContext.
 
-3.1.7.3  RPC_INT_XACT_HANDLE Context Handle Rundown Routine
+##### 3.1.7.3 RPC_INT_XACT_HANDLE Context Handle Rundown Routine
 
  This event occurs on rundown of a context handle of type RPC_INT_XACT_HANDLE, as specified in
 [C706] section 5.1.6.
@@ -7850,9 +7764,10 @@ Release: April 23, 2024
 
 88 / 134
 
-3.2  qmcomm and qmcomm2 Client Details
 
-3.2.1  Abstract Data Model
+### 3.2 qmcomm and qmcomm2 Client Details
+
+#### 3.2.1 Abstract Data Model
 
 The client MUST maintain instances of the following ADM elements:
 
@@ -7864,14 +7779,14 @@ LicenceGuid (section 3.2.1.1)
 
   CursorIdentifier (section 3.2.1.3)
 
-3.2.1.1  LicenceGuid
+##### 3.2.1.1 LicenceGuid
 
 A GUID that serves as an identifier for the client's computer for the purpose of enabling the server
 to uniquely identify the client's computer. This value MUST be generated on first access and MUST
 remain unchanged thereafter. The ADM element instance generated on first access is referred to as
 iLicenceGuid.
 
-3.2.1.2  OpenQueueContext
+##### 3.2.1.2 OpenQueueContext
 
 The attributes of this ADM element represent a queue that has been opened for message operations
 by the client.
@@ -7893,18 +7808,18 @@ element provides this association.
 The client maintains an instance of the OpenQueueContext ADM element associating the queue
 opened for message operations, which is referred to as iOpenQueueContext.
 
-3.2.1.3  CursorIdentifier
+##### 3.2.1.3 CursorIdentifier
 
  A DWORD value representing an opened cursor. This ADM element instance is obtained by
 successfully invoking the rpc_ACCreateCursorEx (section 3.1.5.4) method with the hQueue parameter
 set to iOpenQueueContext.Handle.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 No protocol timers are required beyond those used internally by RPC to implement resiliency to
 network outages. For more information, see [MS-RPCE].
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The client MUST create an RPC connection to the remote computer, using the details specified in
 section 2.1.
@@ -7916,7 +7831,8 @@ Release: April 23, 2024
 
 89 / 134
 
-3.2.4  Message Processing Events and Sequencing Rules
+
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The operation of the protocol is initiated and subsequently driven by the following higher-layer
 triggered events:
@@ -7970,7 +7886,7 @@ The client MUST call the R_QMQueryQMRegistryInternal method to retrieve various 
 the supporting server as specified in section 3.1.4.23. The strings returned by this call are required
 as input to other methods.
 
-3.2.4.1  Creating a Local Private Queue
+##### 3.2.4.1 Creating a Local Private Queue
 
 The MSMQ application MUST supply a queue name and can supply a SECURITY_DESCRIPTOR and
 queue properties for the new queue. Creating a new local private queue consists of the following
@@ -7987,7 +7903,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8015,7 +7932,7 @@ as specified in section 3.2.4.7. Opening a queue requires a format name, which i
 constructed by the MSMQ application or acquired from the server, as specified in section
 3.2.4.13.
 
-3.2.4.2  Deleting a Local Private Queue
+##### 3.2.4.2 Deleting a Local Private Queue
 
 The MSMQ application MUST supply a format name for the local private queue to be deleted.
 
@@ -8032,7 +7949,7 @@ The client MUST call R_QMDeleteObject, supplying the following parameter value:
 
 deleted, as specified in section 3.1.4.8.
 
-3.2.4.3  Updating Local Private Queue Security
+##### 3.2.4.3 Updating Local Private Queue Security
 
 The MSMQ application MUST supply a format name for a local private queue for which the security
 configuration is to be updated, a new SECURITY_DESCRIPTOR for the queue, and a
@@ -8062,7 +7979,7 @@ specified in section 3.1.4.6.
 The SecurityInformation, SDSize, and pSecurityDescriptor parameters MUST be supplied as
 specified in section 3.1.4.6.
 
-3.2.4.4  Retrieving Local Private Queue Security
+##### 3.2.4.4 Retrieving Local Private Queue Security
 
 The MSMQ application MUST supply a format name for a local private queue and a
 SECURITY_INFORMATION value indicating which portions of the security configuration to retrieve. The
@@ -8075,7 +7992,8 @@ Release: April 23, 2024
 
 91 / 134
 
-SECURITY_DESCRIPTOR is specified in [MS-DTYP] section 2.4.6 and SECURITY_INFORMATION as
+
+SECURITY_DESCRIPTOR is specified in [MS-DTYP] section 2.4.6 and SECURITY_INFORMATION as
 specified in [MS-MQMQ] section 2.1.
 
 
@@ -8115,7 +8033,7 @@ lpnLengthNeeded points to a DWORD containing the byte length required to contain
 SECURITY_DESCRIPTOR. A subsequent call to R_QMGetObjectSecurityInternal using a buffer of
 the byte length indicated by lpnLengthNeeded can succeed.
 
-3.2.4.5  Updating Local Private Queue Properties
+##### 3.2.4.5 Updating Local Private Queue Properties
 
 The MSMQ application MUST supply a format name for a local private queue for which property
 values are to be updated and one or more new queue property values for the indicated queue.
@@ -8139,7 +8057,7 @@ specified in section 3.1.4.10.
 parameters as described in section 3.1.4.10. The property identifiers in aProp MUST be in the
 table in section 3.1.1.12 and MUST be marked as applicable for a Set operation.
 
-3.2.4.6  Retrieving Local Private Queue Properties
+##### 3.2.4.6 Retrieving Local Private Queue Properties
 
 The MSMQ application MUST supply a format name for a local private queue from which to retrieve
 property values and a set of property identifiers for which values are to be retrieved. Additionally, the
@@ -8163,7 +8081,8 @@ Release: April 23, 2024
 
 92 / 134
 
-  A pointer to an OBJECT_FORMAT structure containing the format name of the queue, as
+
+  A pointer to an OBJECT_FORMAT structure containing the format name of the queue, as
 
 specified in section 3.1.4.9.
 
@@ -8182,7 +8101,7 @@ section 3.1.1.12 and MUST be marked as applicable for a Get operation.
 apVar MUST contain an array of  PROPVARIANT structures to be populated by the server.
 The array MUST contain cp elements.
 
-3.2.4.7  Opening a Queue
+##### 3.2.4.7 Opening a Queue
 
  To open a queue, the client application is expected to provide the following inputs:
 
@@ -8273,7 +8192,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8395,7 +8315,8 @@ Release: April 23, 2024
 
 94 / 134
 
-
+
+
 
 
 
@@ -8442,7 +8363,7 @@ Else, or if any of the preceding method invocations failed:
 
 The queue could not be opened.
 
-3.2.4.8  Creating a Cursor
+##### 3.2.4.8 Creating a Cursor
 
 The client MUST execute the following steps:
 
@@ -8505,7 +8426,8 @@ Release: April 23, 2024
 
 95 / 134
 
-  Out: Retrieve this value from the server.
+
+  Out: Retrieve this value from the server.
 
   Using the RPC binding procedure as specified in section 3.2.4, bind to the remote server
 
@@ -8575,7 +8497,7 @@ subsequent operations on the cursor.
 
 The cursor was created successfully.
 
-3.2.4.9  Purging a Queue
+##### 3.2.4.9 Purging a Queue
 
 The client MUST execute the following steps:
 
@@ -8587,9 +8509,9 @@ Invoke the rpc_ACPurgeQueue method with the following parameter value:
 
 hQueue := iOpenQueueContext.Handle
 
-3.2.4.10
+##### 3.2.4.10 Sending a Message
 
-Sending a Message
+
 
 To perform the send operation in the context of a transaction, the client first MUST call
 R_QMGetTmWhereabouts to obtain transaction manager whereabouts and then enlist the transaction
@@ -8609,7 +8531,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8634,9 +8557,9 @@ in section 3.1.5.2.
 
 pMessageID := A 20-byte buffer to receive the message identifier, or NULL.
 
-3.2.4.11
+##### 3.2.4.11 Peeking a Message
 
-Peeking a Message
+
 
 The client MUST execute the following steps:
 
@@ -8668,9 +8591,9 @@ behavior for these values is described in section 3.1.5.3.
 The remainder of the fields MUST be populated according to the limitations and definitions
 in section 3.1.5.3.
 
-3.2.4.12
+##### 3.2.4.12 Receiving a Message
 
-Receiving a Message
+
 
 To perform the receive operation in the context of a transaction, the client first MUST call the
 R_QMGetTmWhereabouts method to obtain transaction manager whereabouts and then enlist the
@@ -8715,9 +8638,10 @@ Release: April 23, 2024
 
 97 / 134
 
-3.2.4.13
 
-Retrieving a Format Name for a Queue Path Name
+##### 3.2.4.13 Retrieving a Format Name for a Queue Path Name
+
+
 
 The MSMQ application MUST supply a queue path for which a format name is to be retrieved by the
 server.
@@ -8736,9 +8660,9 @@ lpwcsPathName MUST contain a path name.
 pObjectFormat MUST point to a QUEUE_FORMAT ([MS-MQMQ] section 2.2.7) structure to be
 populated by the server.
 
-3.2.4.14
+##### 3.2.4.14 Retrieving a Format Name for a Queue Context Handle
 
-Retrieving a Format Name for a Queue Context Handle
+
 
 The client application is required to provide a buffer into which the format name string is to be
 placed.
@@ -8786,16 +8710,16 @@ null character, in Unicode characters. Repeat the call to the rpc_ACHandleToForm
 method with a sufficiently large lpwcsFormatName buffer to retrieve the entire format name
 result.
 
-3.2.4.15
+##### 3.2.4.15 Closing a Queue
 
-Closing a Queue
+
 
 Close a queue by invoking the rpc_ACCloseHandle method with the phQueue parameter set to
 iOpenQueueContext.Handle.
 
-3.2.4.16
+##### 3.2.4.16 Closing a Cursor
 
-Closing a Cursor
+
 
 Close a cursor by invoking the rpc_ACCloseCursor method specifying the following parameter values:
 
@@ -8814,11 +8738,12 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.2.5  Timer Events
+
+#### 3.2.5 Timer Events
 
 None.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -8829,16 +8754,17 @@ Release: April 23, 2024
 
 99 / 134
 
-<!-- Extracted images from page 100 -->
+
+<!-- Extracted images from page 100 -->
 ![Extracted image 1 from page 100]([MS-MQMP].images/page100-img01.png)
 <!-- /Extracted images from page 100 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following sections describe several operations as used in common scenarios to illustrate the
 function of the Message Queuing (MSMQ): Queue Manager Client Protocol.
 
-4.1  Application Opening and Closing a Local Queue Example
+### 4.1 Application Opening and Closing a Local Queue Example
 
 The following sequence diagram illustrates an application interacting with a supporting server to
 open a queue handle for a queue located at the supporting server.
@@ -8864,7 +8790,8 @@ Release: April 23, 2024
 
 100 / 134
 
-<!-- Extracted images from page 101 -->
+
+<!-- Extracted images from page 101 -->
 ![Extracted image 1 from page 101]([MS-MQMP].images/page101-img01.png)
 <!-- /Extracted images from page 101 -->
 
@@ -8874,7 +8801,7 @@ or purge.
 
 5.  The application closes the local queue handle when it is no longer required.
 
-4.2  Application Opening and Closing a Remote Queue Example
+### 4.2 Application Opening and Closing a Remote Queue Example
 
 The following sequence diagram illustrates an application interacting with a supporting server to
 create a queue handle for a queue located at a remote queue manager.
@@ -8888,7 +8815,8 @@ Release: April 23, 2024
 
 101 / 134
 
-1.  The application invokes the rpc_QMOpenQueueInternal method, providing a format name for a
+
+1.  The application invokes the rpc_QMOpenQueueInternal method, providing a format name for a
 
 queue to open. NULL is specified for hRemoteQueue.
 
@@ -8952,7 +8880,7 @@ specified in [MS-MQQP]) that was associated with the local queue handle passed b
 at step 13. Note that the supporting server invokes the qm2qm protocol in parallel and does not
 block the rpc_ACCloseHandle method invocation while the session handle is being closed.
 
-4.3  Application Creating and Closing a Local Cursor Example
+### 4.3 Application Creating and Closing a Local Cursor Example
 
 The following sequence diagram illustrates an application interacting with a supporting server to
 create and close a cursor for a queue located at the supporting server.
@@ -8964,7 +8892,8 @@ Release: April 23, 2024
 
 102 / 134
 
-<!-- Extracted images from page 103 -->
+
+<!-- Extracted images from page 103 -->
 ![Extracted image 1 from page 103]([MS-MQMP].images/page103-img01.png)
 <!-- /Extracted images from page 103 -->
 
@@ -8976,7 +8905,7 @@ Figure 4: Creating and closing a local cursor
 
 3.  The application closes the cursor via the rpc_ACCloseCursor method.
 
-4.4  Application Creating and Closing a Remote Cursor Example
+### 4.4 Application Creating and Closing a Remote Cursor Example
 
 The following sequence diagram illustrates an application interacting with a supporting server to
 create a cursor for a queue located at a remote queue manager.<77>
@@ -8988,7 +8917,8 @@ Release: April 23, 2024
 
 103 / 134
 
-<!-- Extracted images from page 104 -->
+
+<!-- Extracted images from page 104 -->
 ![Extracted image 1 from page 104]([MS-MQMP].images/page104-img01.png)
 <!-- /Extracted images from page 104 -->
 
@@ -9016,7 +8946,8 @@ Release: April 23, 2024
 
 104 / 134
 
-3.  The application detects the special return code MQ_INFORMATION_REMOTE_OPERATION
+
+3.  The application detects the special return code MQ_INFORMATION_REMOTE_OPERATION
 
 (0x400e03e8), which indicates that the remote queue manager has to create the cursor. In order
 to bind to the remote queue manager, the application determines the computer name of the
@@ -9052,7 +8983,7 @@ qm2qm interface, as specified in [MS-MQQP].
 specified in [MS-MQQP]. Note that this step is performed in parallel and need not block the return
 from the rpc_ACCloseCursor (section 3.1.4.19) method invocation.
 
-4.5  Application Internal Transaction Example
+### 4.5 Application Internal Transaction Example
 
 The following sequence diagram illustrates an application interacting with a supporting server to
 enlist the supporting server's resource manager (RM) in an internal transaction, perform
@@ -9065,7 +8996,8 @@ Release: April 23, 2024
 
 105 / 134
 
-<!-- Extracted images from page 106 -->
+
+<!-- Extracted images from page 106 -->
 ![Extracted image 1 from page 106]([MS-MQMP].images/page106-img01.png)
 <!-- /Extracted images from page 106 -->
 
@@ -9094,12 +9026,13 @@ Release: April 23, 2024
 
 106 / 134
 
-5  Security
+
+## 5 Security
 
 The following sections describe security considerations for implementers of the Message Queuing
 (MSMQ): Queue Manager Client Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 Clients can invoke methods of this interface at the "none" authentication level as defined by [MS-
 RPCE]. Server implementations have to be designed with careful consideration given to the security
@@ -9111,7 +9044,7 @@ The R_QMGetRTQMServerPort method is an exception to the above consideration sinc
 invoke R_QMGetRTQMServerPort prior to configuring security for the RPC binding. For this reason,
 server implementations do not restrict access to the R_QMGetRTQMServerPort method.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -9122,7 +9055,8 @@ Release: April 23, 2024
 
 107 / 134
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" is the IDL found in
 [MS-DTYP] Appendix A (section 5), "ms-mqrr.idl" is the IDL found in [MS-MQRR] Appendix
@@ -9196,7 +9130,8 @@ Release: April 23, 2024
 
 108 / 134
 
-         WCHAR** ppAdminFormatName;
+
+         WCHAR** ppAdminFormatName;
        DWORD* pulAdminFormatNameLenProp;
        [range(0,1024)] DWORD ulDestFormatNameLen;
        [size_is(,ulDestFormatNameLen)]
@@ -9273,7 +9208,8 @@ Release: April 23, 2024
 
 109 / 134
 
-   GUID** ppConnectorType;
+
+   GUID** ppConnectorType;
    DWORD* pulBodyType;
    DWORD* pulVersion;
  } CACTransferBufferV1;
@@ -9350,7 +9286,8 @@ Release: April 23, 2024
 
 110 / 134
 
- void
+
+ void
  Opnum5NotUsedOnWire (void);
 
  // opnum 6
@@ -9425,7 +9362,8 @@ Release: April 23, 2024
 
 111 / 134
 
- R_QMObjectPathToObjectFormat(
+
+ R_QMObjectPathToObjectFormat(
      [in] handle_t hBind,
      [in, string] const WCHAR* lpwcsPathName,
      [in, out] struct OBJECT_FORMAT *pObjectFormat
@@ -9502,7 +9440,8 @@ Release: April 23, 2024
 
 112 / 134
 
- rpc_ACCloseHandle(
+
+ rpc_ACCloseHandle(
      [in, out] RPC_QUEUE_HANDLE* phQueue
      );
 
@@ -9576,7 +9515,8 @@ Release: April 23, 2024
 
 113 / 134
 
- R_QMGetRTQMServerPort(
+
+ R_QMGetRTQMServerPort(
        [in] handle_t hBind,
        [in] DWORD fIP
  );
@@ -9645,7 +9585,8 @@ Release: April 23, 2024
 
 114 / 134
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -9715,7 +9656,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
+
+SHOULD or SHOULD NOT prescription. Unless otherwise specified, the term "MAY" implies that the
 product does not follow the prescription.
 
 <1> Section 1.6: Only Windows NT operating system, Windows 2000 operating system, Windows XP
@@ -9801,7 +9743,8 @@ Release: April 23, 2024
 
 116 / 134
 
-Opnum  Description
+
+Opnum  Description
 
 33
 
@@ -9870,7 +9813,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<16> Section 3.1.4.2: Clients identify themselves to the server using a GUID generated at install
+
+<16> Section 3.1.4.2: Clients identify themselves to the server using a GUID generated at install
 time, and never subsequently modified.
 
 <17> Section 3.1.4.2: These parameters are used to implement client access licensing restrictions.
@@ -9960,7 +9904,8 @@ Release: April 23, 2024
 
 118 / 134
 
-<27> Section 3.1.4.2: Windows NT and Windows 2000 support these R_QMOpenRemoteQueue out-
+
+<27> Section 3.1.4.2: Windows NT and Windows 2000 support these R_QMOpenRemoteQueue out-
 parameter assignments.
 
 <28> Section 3.1.4.2: These R_QMOpenRemoteQueue out-parameter assignments are supported on
@@ -10058,7 +10003,8 @@ Release: April 23, 2024
 
 119 / 134
 
-<32> Section 3.1.4.6: Windows applications typically invoke R_QMSetObjectSecurityInternal indirectly
+
+<32> Section 3.1.4.6: Windows applications typically invoke R_QMSetObjectSecurityInternal indirectly
 via the Windows API function MQSetQueueSecurity. The Windows API documentation for
 MQSetQueueSecurity includes the following error codes. For descriptions of the following error codes,
 see [MS-MQMQ] section 2.4. For error codes not described in [MS-MQMQ], refer to [MSDN-MQEIC].
@@ -10160,7 +10106,8 @@ Release: April 23, 2024
 
 120 / 134
 
-Name
+
+Name
 
 Value
 
@@ -10250,7 +10197,8 @@ Release: April 23, 2024
 
 121 / 134
 
-Name
+
+Name
 
 Value
 
@@ -10346,7 +10294,8 @@ Release: April 23, 2024
 
 122 / 134
 
-<42> Section 3.1.4.11: Windows components that invoke R_QMObjectPathToObjectFormat indirectly
+
+<42> Section 3.1.4.11: Windows components that invoke R_QMObjectPathToObjectFormat indirectly
 via the Windows API function MQPathNameToFormatName test for the following return value. For a
 description of the following error code, see [MS-MQMQ] section 2.4.
 
@@ -10420,7 +10369,8 @@ Release: April 23, 2024
 
 123 / 134
 
-Name
+
+Name
 
 MQ_ERROR_QUEUE_NOT_FOUND
 
@@ -10496,7 +10446,8 @@ Release: April 23, 2024
 
 124 / 134
 
-Server 2008, Windows Server 2008 R2, and Windows Server 2012 returns RPC_S_ACCESS_DENIED
+
+Server 2008, Windows Server 2008 R2, and Windows Server 2012 returns RPC_S_ACCESS_DENIED
 (0x00000005).
 
 <57> Section 3.1.4.21: Windows applications typically invoke rpc_ACHandleToFormatName indirectly
@@ -10569,7 +10520,8 @@ Release: April 23, 2024
 
 125 / 134
 
-<67> Section 3.1.5.1: Windows applications typically invoke QMSendMessageInternalEx indirectly via
+
+<67> Section 3.1.5.1: Windows applications typically invoke QMSendMessageInternalEx indirectly via
 the Windows API function MQSendMessage. The Windows API documentation for MQSendMessage
 includes the following error codes. For descriptions of the following error codes, see [MS-MQMQ]
 section 2.4. For error codes not described in [MS-MQMQ], refer to [MSDN-MQEIC].
@@ -10682,7 +10634,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<70> Section 3.1.5.2: Clients on supported Windows platforms use MQMSG_CALG_RC2
+
+<70> Section 3.1.5.2: Clients on supported Windows platforms use MQMSG_CALG_RC2
 (0x00006602) as the default encryption algorithm value.
 
 <71> Section 3.1.5.2: The ptb.old.pulAuthProvNameLenProp field is ignored on input to send
@@ -10795,7 +10748,8 @@ Message Queuing (MSMQ): Queue Manager Client Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Name
+
+Name
 
 MQ_ERROR_ACCESS_DENIED
 
@@ -10909,7 +10863,8 @@ Release: April 23, 2024
 
 128 / 134
 
-includes the following error codes. For descriptions of the following error codes, see [MS-MQMQ]
+
+includes the following error codes. For descriptions of the following error codes, see [MS-MQMQ]
 section 2.4. For error codes not described in [MS-MQMQ], refer to [MSDN-MQEIC].
 
 Name
@@ -10962,7 +10917,8 @@ Release: April 23, 2024
 
 129 / 134
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -11006,7 +10962,8 @@ Release: April 23, 2024
 
 130 / 134
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -11162,7 +11119,8 @@ Initialization
 
 131 / 134
 
-   server 37
+
+   server 37
 Internal transaction example 105
 Introduction 7
 
@@ -11305,7 +11263,8 @@ R_QMCreateRemoteCursor (Opnum 4) method 45
 
 132 / 134
 
-R_QMCreateRemoteCursor method 45
+
+R_QMCreateRemoteCursor method 45
 R_QMDeleteObject (Opnum 9) method 50
 R_QMDeleteObject method 50
 R_QMEnlistInternalTransaction (Opnum 16) method
@@ -11482,7 +11441,8 @@ Standards assignments 14
 
 133 / 134
 
-structure (section 2.2.3.2 17, section 2.2.3.5 29)
+
+structure (section 2.2.3.2 17, section 2.2.3.5 29)
 Structures 17
 
 T

@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 30
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -316,7 +317,8 @@ Release: April 23, 2024
 
 2 / 30
 
-Date
+
+Date
 
 Revision
 History
@@ -540,144 +542,62 @@ Release: April 23, 2024
 
 3 / 30
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 Background](#131-background)
+    - [1.3.2 Scripts Extension Encoding Overview](#132-scripts-extension-encoding-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Common Message Requirements](#221-common-message-requirements)
+    - [2.2.2 Scripts.ini Syntax](#222-scriptsini-syntax)
+    - [2.2.3 Psscripts.ini Syntax](#223-psscriptsini-syntax)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Administrative Tool Plug-in Details](#31-administrative-tool-plug-in-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Scripts.ini](#3111-scriptsini)
+      - [3.1.1.2 PSScripts.ini](#3112-psscriptsini)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+    - [3.1.5 Message Processing Events and Sequencing Rules](#315-message-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Client Plug-in Details](#32-client-plug-in-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 Command Execution Subsystem](#3211-command-execution-subsystem)
+        - [3.2.1.1.1 Abstract Interface of Command Execution Subsystem](#32111-abstract-interface-of-command-execution-subsystem)
+        - [3.2.1.1.2 Abstract Interface of Executable Group](#32112-abstract-interface-of-executable-group)
+        - [3.2.1.1.3 Abstract Interface of Executable List](#32113-abstract-interface-of-executable-list)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Process Group Policy](#3241-process-group-policy)
+    - [3.2.5 Message Processing Events and Sequencing Rules](#325-message-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 7
-Overview .......................................................................................................... 7
-Background ................................................................................................. 8
-Scripts Extension Encoding Overview .............................................................. 8
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 11
-Versioning and Capability Negotiation ................................................................. 11
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-1.3.2
-
-2.1
-2.2
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Message Syntax ............................................................................................... 13
-Common Message Requirements .................................................................. 13
-Scripts.ini Syntax ....................................................................................... 13
-Psscripts.ini Syntax ..................................................................................... 14
-
-2.2.1
-2.2.2
-2.2.3
-
-3.2
-
-3.1
-
-3.1.1
-
-3.1.1.1
-3.1.1.2
-
-3.1.2
-3.1.3
-3.1.4
-3.1.5
-3.1.6
-3.1.7
-
-3  Protocol Details ..................................................................................................... 16
-Administrative Tool Plug-in Details ..................................................................... 16
-Abstract Data Model .................................................................................... 16
-Scripts.ini ............................................................................................ 16
-PSScripts.ini ......................................................................................... 16
-Timers ...................................................................................................... 16
-Initialization ............................................................................................... 16
-Higher-Layer Triggered Events ..................................................................... 16
-Message Processing Events and Sequencing Rules .......................................... 16
-Timer Events .............................................................................................. 18
-Other Local Events ...................................................................................... 18
-Client Plug-in Details ........................................................................................ 18
-Abstract Data Model .................................................................................... 18
-Command Execution Subsystem ............................................................. 18
-Abstract Interface of Command Execution Subsystem .......................... 19
-Abstract Interface of Executable Group .............................................. 20
-Abstract Interface of Executable List .................................................. 20
-Timers ...................................................................................................... 21
-Initialization ............................................................................................... 21
-Higher-Layer Triggered Events ..................................................................... 21
-Process Group Policy ............................................................................. 21
-Message Processing Events and Sequencing Rules .......................................... 21
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-
-3.2.1.1.1
-3.2.1.1.2
-3.2.1.1.3
-
-3.2.2
-3.2.3
-3.2.4
-
-3.2.5
-3.2.6
-3.2.7
-
-3.2.4.1
-
-3.2.1.1
-
-3.2.1
-
-4  Protocol Examples ................................................................................................. 24
-
-5  Security ................................................................................................................. 25
-Security Considerations for Implementers ........................................................... 25
-Index of Security Parameters ............................................................................ 25
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 26
-
-7  Change Tracking .................................................................................................... 28
-
-4 / 30
-
-[MS-GPSCR] - v20240423
-Group Policy: Scripts Extension Encoding
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-8  Index ..................................................................................................................... 29
-
-[MS-GPSCR] - v20240423
-Group Policy: Scripts Extension Encoding
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 30
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Group Policy: Scripts Extension Encoding protocol, which provides a
 mechanism to communicate script information from a Group Policy server to a Group Policy client.
@@ -687,7 +607,7 @@ available to execute at specific events such as Logon and Logoff.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -747,7 +667,8 @@ Release: April 23, 2024
 
 6 / 30
 
-tool extension GUID or administrative plug-in GUID: A GUID defined separately for each of
+
+tool extension GUID or administrative plug-in GUID: A GUID defined separately for each of
 the user policy settings and computer policy settings that associates a specific administrative
 tool plug-in with a set of policy settings that can be stored in a Group Policy Object (GPO).
 
@@ -768,14 +689,14 @@ authenticated domain user account, interactively logged on to a client.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -794,7 +715,7 @@ December 1997, https://www.rfc-editor.org/info/rfc2251
 [RFC4234] Crocker, D., Ed., and Overell, P., "Augmented BNF for Syntax Specifications: ABNF", RFC
 4234, October 2005, https://www.rfc-editor.org/info/rfc4234
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-FASOD] Microsoft Corporation, "File Access Services Protocols Overview".
 
@@ -804,7 +725,7 @@ December 1997, https://www.rfc-editor.org/info/rfc2251
 http://technet2.microsoft.com/windowsserver/en/library/e9028566-1be7-45f8-a219-
 6b09dce34f8d1033.mspx?mfr=true
 
-1.3  Overview
+### 1.3 Overview
 
 Group Policy: Scripts Extension Encoding provides a mechanism for an administrator to instruct an
 arbitrarily large group of clients to execute administrator-specified code at computer start, computer
@@ -816,7 +737,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-shut-down, user log-on, and user log-off. The code executed by clients is in the form of a command-
+
+shut-down, user log-on, and user log-off. The code executed by clients is in the form of a command-
 line tool or batch-processing script that is present either on the client's local file system or at a
 network file system location.
 
@@ -834,7 +756,7 @@ user-object scripts [MSFT-PROFSCR].
 An overview of the timeline when user and computer policies are applied to a client is described in
 [MS-GPOD] section 3.1.
 
-1.3.1  Background
+#### 1.3.1 Background
 
 The Group Policy: Core Protocol (as specified in [MS-GPOL]) enables clients to discover and retrieve
 policy settings created by administrators of a domain. These settings are persisted within group
@@ -858,7 +780,7 @@ A client plug-in uses the contents of the GPO to retrieve relevant settings in a
 plug-in. After its settings are retrieved, the client plug-in uses those settings to perform plug-in-
 specific processing.
 
-1.3.2  Scripts Extension Encoding Overview
+#### 1.3.2 Scripts Extension Encoding Overview
 
 The following diagram depicts the entities that participate in Group Policy: Scripts Extension Encoding:
 
@@ -869,7 +791,8 @@ Release: April 23, 2024
 
 8 / 30
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-GPSCR].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -906,7 +829,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-a command when the client computer starts. The directive can be any action that can be run
+
+a command when the client computer starts. The directive can be any action that can be run
 locally on the client computer.
 
 2.  A client computer affected by that GPO is started (or is connected to the network, if this
@@ -951,7 +875,7 @@ process of logging on while the protocol is executing, the command execution sub
 invokes the command as needed by the administrator. When the user later logs off, any logoff
 commands are then executed.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol depends on the Group Policy: Core Protocol specified in [MS-GPOL] to provide a list of
 applicable GPOs. It also transmits Group Policy settings and instructions between the client and the
@@ -966,13 +890,14 @@ Release: April 23, 2024
 
 10 / 30
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-GPSCR].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
 Figure 2: Group Policy: Scripts Extension Encoding protocol relationship diagram
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The prerequisites for this protocol are the same as those for the Group Policy: Core Protocol (as
 specified in [MS-GPOL] section 1.5).
@@ -981,7 +906,7 @@ In addition, a client is required to have a system/subsystem capable of executin
 startup and shutdown times if computer policy mode is used, and at user logon and logoff times if
 user policy mode is used.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 Group Policy: Scripts Extension Encoding is applicable only within the Group Policy: Core Protocol
 framework specified in [MS-GPOL]. Group Policy: Scripts Extension Encoding is used to run short-lived
@@ -991,15 +916,15 @@ to remotely execute interactive applications or long-lived background tasks.
 This protocol is appropriate for use only when the same executable commands are relevant to all
 clients.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 None.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol defines CSE GUID and tool extension GUID standards assignments, as specified in
 [MS-GPOL] section 1.8. The following table shows the assignments.
@@ -1019,7 +944,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- Parameter
+
+ Parameter
 
  Value
 
@@ -1036,9 +962,10 @@ Release: April 23, 2024
 
 12 / 30
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 The Group Policy: Scripts Extension Encoding transports messages by reading and writing remote
 files.
@@ -1054,9 +981,9 @@ can cause the client to execute arbitrary code using high privileges on the clie
 validate the Group Policy server is the reason mutual authentication is required for this protocol's use
 of remote file access against the Group Policy server.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
-2.2.1  Common Message Requirements
+#### 2.2.1 Common Message Requirements
 
 Messages exchanged in this protocol allow the client to discover settings in the GPOs that instruct
 clients to execute arbitrary commands. After interpreting the settings, the client attempts to execute
@@ -1076,7 +1003,7 @@ User-scoped GPO path: A scoped GPO path that ends in "\User".
 as "<gpo path>\scripts\scripts.ini" or "<gpo path>\scripts\psscripts.ini", where <gpo path> is a
 scoped GPO path.
 
-2.2.2  Scripts.ini Syntax
+#### 2.2.2 Scripts.ini Syntax
 
 Scripts.ini is a text file encoded in UTF-16LE with Byte Order Mark (0xFFFE) that conforms to the
 following Augmented Backus-Naur Form (ABNF) [RFC4234].
@@ -1102,7 +1029,8 @@ Release: April 23, 2024
 
 13 / 30
 
- TokKey =          WhiteSpace 1*(ALPHA / DIGIT)
+
+ TokKey =          WhiteSpace 1*(ALPHA / DIGIT)
  TokIs =           WhiteSpace "="
  TokValue =        WhiteSpace 1*(ALPHA / "_" / DIGIT )   SpaceDelimiter
 
@@ -1136,7 +1064,7 @@ Each path MUST be the path of an executable program that can be invoked by clien
 values of "<integer>Parameters" keys can be any string (this is the string that is passed as
 command-line parameters to the executable program as part of its invocation by the client).<1>
 
-2.2.3  Psscripts.ini Syntax
+#### 2.2.3 Psscripts.ini Syntax
 
  Psscripts.ini is a text file encoded in UTF-16LE with Byte Order Mark (0xFFFE) that conforms to the
 following Augmented Backus-Naur Form (ABNF) [RFC4234].
@@ -1170,7 +1098,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- TokScriptsConfig = WhiteSpace "ScriptsConfig"            WhiteSpace
+
+ TokScriptsConfig = WhiteSpace "ScriptsConfig"            WhiteSpace
 
 The specific format of psscripts.ini MUST be the same as described above for scripts.ini with the
 following additional Sections, Keys and TokValue elements:
@@ -1203,16 +1132,17 @@ Release: April 23, 2024
 
 15 / 30
 
-3  Protocol Details
 
-3.1  Administrative Tool Plug-in Details
+## 3 Protocol Details
 
-3.1.1  Abstract Data Model
+### 3.1 Administrative Tool Plug-in Details
+
+#### 3.1.1 Abstract Data Model
 
  The administrative tool has a user interface that allows an administrator to author scripts.ini and
 psscripts.ini files.
 
-3.1.1.1  Scripts.ini
+##### 3.1.1.1 Scripts.ini
 
 The scripts.ini file (as specified in section 2.2.2) contains the settings for the Scripts Executable group
 defined in the client abstract data model (section 3.2.1). These settings are:
@@ -1225,7 +1155,7 @@ Startup, Logon, Shutdown, or Logoff.
 
 Executable Item is the command line and its parameters.
 
-3.1.1.2  PSScripts.ini
+##### 3.1.1.2 PSScripts.ini
 
 The psscripts.ini file (as specified in section 2.2.3) contains the settings for the PSScripts Executable
 group defined in the client abstract data model (section 3.2.1). These settings are:
@@ -1242,21 +1172,21 @@ Executable Item is the command line and its parameters.
 
 Scripts.ini.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 When the administrative-side plug-in starts, it gets a scoped GPO path from the Group Policy: Core
 Protocol, as specified in [MS-GPOL] section 2.2.4. The plug-in then processes the GPO path as
 specified in Message Processing Events and Sequencing Rules (section 3.1.5).
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.5  Message Processing Events and Sequencing Rules
+#### 3.1.5 Message Processing Events and Sequencing Rules
 
 The administrative-side plug-in MUST attempt to use remote file access to retrieve any existing
 scripts.ini file from "<gpo path>\scripts\scripts.ini", where <gpo path> is the scoped GPO path. The
@@ -1270,7 +1200,8 @@ Release: April 23, 2024
 
 16 / 30
 
-The processing for reading and writing the settings from the GPO for administrative purposes is as
+
+The processing for reading and writing the settings from the GPO for administrative purposes is as
 follows:
 
 To create the Group Policy: Scripts Extension Encoding settings, the administrative tool plug-in MUST
@@ -1345,7 +1276,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-When an administrator specifies a command to be executed under a given condition using the
+
+When an administrator specifies a command to be executed under a given condition using the
 administrative tool, the Group Policy: Scripts Extension Encoding plug-in MUST put the commands into
 a scripts.ini or psscripts.ini file, as specified in section 2.2, and copy it to "<gpo
 path>\scripts\scripts.ini" or "<gpo path>\scripts\psscripts.ini", specified as follows, where <gpo
@@ -1374,21 +1306,21 @@ encountered.
 The two files, scripts.ini and psscripts.ini, correspond to the two separate groups of scripts supported.
 Depending on the group of script, the administrative tool updates either scripts.ini or psscripts.ini.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
-3.2  Client Plug-in Details
+### 3.2 Client Plug-in Details
 
 During policy application, the protocol is invoked after the Group Policy: Core Protocol, as specified
 in [MS-GPOL] section 3.2.1.4, has computed a list of GPOs for which Group Policy: Scripts Extension
 Encoding is to be invoked.
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1398,7 +1330,7 @@ document.
 
 The Group Policy: Scripts Extension Encoding plug-in itself maintains no state.
 
-3.2.1.1  Command Execution Subsystem
+##### 3.2.1.1 Command Execution Subsystem
 
 The command execution subsystem of the client computer maintains the following state:
 
@@ -1413,7 +1345,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Executable Group Order.
+
+  Executable Group Order.
 
   Default Executable Group Order.
 
@@ -1480,7 +1413,7 @@ otherwise specified.<5>
 There are three abstract interfaces for this component, which are defined in the subsections that
 follow.
 
-3.2.1.1.1 Abstract Interface of Command Execution Subsystem
+###### 3.2.1.1.1 Abstract Interface of Command Execution Subsystem
 
 The command execution subsystem abstract interface provides the following methods and
 parameters.
@@ -1498,7 +1431,8 @@ Group Policy: Scripts Extension Encoding
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Executable Group Name: Name of the Executable Group (Scripts Executable Group or
+
+Executable Group Name: Name of the Executable Group (Scripts Executable Group or
 
 PSScripts Executable Group).
 
@@ -1523,7 +1457,7 @@ Default Executable Group Order: Output data structure representing Default Execu
 
 Group Order.
 
-3.2.1.1.2 Abstract Interface of Executable Group
+###### 3.2.1.1.2 Abstract Interface of Executable Group
 
 The Executable Group abstract interface provides the following method and parameters that are
 operations on an Executable Group.
@@ -1534,7 +1468,7 @@ Execution Context: The context to which this Executable List belongs.
 
 Executable List: Output data structure representing Executable List.
 
-3.2.1.1.3 Abstract Interface of Executable List
+###### 3.2.1.1.3 Abstract Interface of Executable List
 
 The Executable List abstract interface provides the following methods and parameters that are
 operations on an Executable List.
@@ -1574,7 +1508,8 @@ Release: April 23, 2024
 
 20 / 30
 
-list item: Output data structure that is comprised of the components Executable Path and
+
+list item: Output data structure that is comprised of the components Executable Path and
 
 Executable Parameters.
 
@@ -1584,23 +1519,23 @@ Empty Executable List: This function empties the entire list.
 
 Retrieve Size Of Executable List: This function returns the number of items in the list.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
-3.2.4.1  Process Group Policy
+##### 3.2.4.1 Process Group Policy
 
 This extension is launched by the Group Policy: Core Protocol, which invokes this Process Group Policy
 event, whose abstract interface is specified in [MS-GPOL] section 3.2.4.1, to apply policies handled by
 this extension.
 
-3.2.5  Message Processing Events and Sequencing Rules
+#### 3.2.5 Message Processing Events and Sequencing Rules
 
 For each GPO in the New or Changed GPO list, one file with the format specified in section 2.2 is read
 from the Group Policy server, as specified later in this section. If any file fails to be read, the plug-in
@@ -1640,7 +1575,8 @@ Release: April 23, 2024
 
 21 / 30
 
-Note  The <integer> specified under Keys in section 2.2.2 specifies an order; lower integers
+
+Note  The <integer> specified under Keys in section 2.2.2 specifies an order; lower integers
 indicate that executable paths specified in the same section are to be invoked before those with
 higher values. The value of <integer>Cmdline becomes the executable path of the executable
 program, with <integer>Parameters becoming the parameters passed to the executable
@@ -1710,7 +1646,8 @@ Release: April 23, 2024
 
 22 / 30
 
-1.  If the <gpo-path> is a Computer-scoped GPO path, process the Start up and Shut down
+
+1.  If the <gpo-path> is a Computer-scoped GPO path, process the Start up and Shut down
 
 scripts in the Scripts and the PSScripts Executable Groups following the Computer Executable
 Group order.
@@ -1724,11 +1661,11 @@ those with higher values. The value of <integer>Cmdline becomes the executable p
 executable program with <integer>Parameters becoming the parameters passed to the
 executable program.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1739,7 +1676,8 @@ Release: April 23, 2024
 
 23 / 30
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 In the following example, when specific users log out, the following two commands are run:
 
@@ -1803,9 +1741,10 @@ Release: April 23, 2024
 
 24 / 30
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The key security issues are as follows:
 
@@ -1837,7 +1776,7 @@ becoming administrators of the client computer.
 implementer searches for the executable file in trusted locations. An example, using Defrag.exe, is
 presented in section 4.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1848,7 +1787,8 @@ Release: April 23, 2024
 
 25 / 30
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1916,7 +1856,8 @@ Release: April 23, 2024
 
 26 / 30
 
-  Windows XP
+
+  Windows XP
 
   Windows Server 2003
 
@@ -1981,7 +1922,8 @@ Release: April 23, 2024
 
 27 / 30
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2025,7 +1967,8 @@ Release: April 23, 2024
 
 28 / 30
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2155,7 +2098,8 @@ Psscripts.ini Syntax message 14
 
 29 / 30
 
-R
+
+R
 
 References 7
    informative 7

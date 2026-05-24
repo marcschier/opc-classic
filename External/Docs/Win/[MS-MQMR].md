@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -314,7 +315,8 @@ Release: April 23, 2024
 
 2 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -527,154 +529,66 @@ Release: April 23, 2024
 
 3 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 Structures](#221-structures)
+      - [2.2.1.1 DL_ID](#2211-dlid)
+      - [2.2.1.2 MGMT_OBJECT](#2212-mgmtobject)
+      - [2.2.1.3 MULTICAST_ID](#2213-multicastid)
+      - [2.2.1.4 OBJECTID](#2214-objectid)
+      - [2.2.1.5 QUEUE_FORMAT](#2215-queueformat)
+    - [2.2.2 Enumerators](#222-enumerators)
+      - [2.2.2.1 MgmtObjectType](#2221-mgmtobjecttype)
+      - [2.2.2.2 QUEUE_FORMAT_TYPE](#2222-queueformattype)
+    - [2.2.3 Property Identifiers](#223-property-identifiers)
+      - [2.2.3.1 Management Machine Property Identifiers](#2231-management-machine-property-identifiers)
+      - [2.2.3.2 Management Queue Property Identifiers](#2232-management-queue-property-identifiers)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 qmmgmt Server Details](#31-qmmgmt-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 Shared Data Elements](#3111-shared-data-elements)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 R_QMMgmtGetInfo (Opnum 0)](#3141-rqmmgmtgetinfo-opnum-0)
+      - [3.1.4.2 R_QMMgmtAction (Opnum 1)](#3142-rqmmgmtaction-opnum-1)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 qmmgmt Client Details](#32-qmmgmt-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 QM Management Action and Retrieving QM Info Example](#41-qm-management-action-and-retrieving-qm-info-example)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 9
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 11
-Prerequisites/Preconditions ............................................................................... 11
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 12
-Standards Assignments ..................................................................................... 12
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-2.2.1.4
-2.2.1.5
-
-2  Messages ............................................................................................................... 13
-Transport ........................................................................................................ 13
-Common Data Types ........................................................................................ 13
-Structures ................................................................................................. 14
-DL_ID.................................................................................................. 14
-MGMT_OBJECT ..................................................................................... 14
-MULTICAST_ID ..................................................................................... 14
-OBJECTID ............................................................................................ 14
-QUEUE_FORMAT ................................................................................... 14
-Enumerators .............................................................................................. 14
-MgmtObjectType ................................................................................... 14
-QUEUE_FORMAT_TYPE .......................................................................... 15
-Property Identifiers ..................................................................................... 15
-Management Machine Property Identifiers ................................................ 15
-Management Queue Property Identifiers .................................................. 15
-Directory Service Schema Elements ................................................................... 17
-
-2.2.3.1
-2.2.3.2
-
-2.2.2.1
-2.2.2.2
-
-2.2.2
-
-2.2.3
-
-2.3
-
-3.1
-
-3.1.1
-
-3.1.1.1
-
-3.1.4.1
-3.1.4.2
-
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 18
-qmmgmt Server Details .................................................................................... 18
-Abstract Data Model .................................................................................... 18
-Shared Data Elements ........................................................................... 18
-Timers ...................................................................................................... 19
-Initialization ............................................................................................... 19
-Message Processing Events and Sequencing Rules .......................................... 19
-R_QMMgmtGetInfo (Opnum 0) ............................................................... 19
-R_QMMgmtAction (Opnum 1) ................................................................. 25
-Timer Events .............................................................................................. 27
-Other Local Events ...................................................................................... 27
-qmmgmt Client Details ..................................................................................... 27
-Abstract Data Model .................................................................................... 27
-Timers ...................................................................................................... 27
-Initialization ............................................................................................... 28
-Message Processing Events and Sequencing Rules .......................................... 28
-Timer Events .............................................................................................. 28
-Other Local Events ...................................................................................... 28
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.1.5
-3.1.6
-
-3.2
-
-4  Protocol Examples ................................................................................................. 29
-QM Management Action and Retrieving QM Info Example ...................................... 29
-
-4.1
-
-5  Security ................................................................................................................. 31
-Security Considerations for Implementers ........................................................... 31
-Index of Security Parameters ............................................................................ 31
-
-5.1
-5.2
-
-[MS-MQMR] - v20240423
-Message Queuing (MSMQ): Queue Manager Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 37
-
-6  Appendix A: Full IDL .............................................................................................. 32
-
-7  Appendix B: Product Behavior ............................................................................... 33
-
-8  Change Tracking .................................................................................................... 35
-
-9  Index ..................................................................................................................... 36
-
-[MS-MQMR] - v20240423
-Message Queuing (MSMQ): Queue Manager Management Protocol
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 37
-
-1  Introduction
+## 1 Introduction
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol is a remote procedure call
 (RPC)-based protocol used for management operations on the MSMQ server, including monitoring
@@ -695,7 +609,7 @@ Performing actions on a queue.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -753,7 +667,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-message: A data structure representing a unit of data transfer between distributed applications. A
+
+message: A data structure representing a unit of data transfer between distributed applications. A
 message has message properties, which can include message header properties, a message
 body property, and message trailer properties.
 
@@ -828,7 +743,8 @@ Release: April 23, 2024
 
 7 / 37
 
-RPC transport: The underlying network services used by the remote procedure call (RPC) runtime
+
+RPC transport: The underlying network services used by the remote procedure call (RPC) runtime
 
 for communications between network nodes. For more information, see [C706] section 2.
 
@@ -858,14 +774,14 @@ has to be used for generating the UUID.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -898,12 +814,13 @@ Release: April 23, 2024
 
 8 / 37
 
-[MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
+
+[MS-RPCE] Microsoft Corporation, "Remote Procedure Call Protocol Extensions".
 
 [RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-MQDSSM] Microsoft Corporation, "Message Queuing (MSMQ): Directory Service Schema
 Mapping".
@@ -913,7 +830,7 @@ Mapping".
 [MSDN-MQEIC] Microsoft Corporation, "Message Queuing Error and Information Codes",
 http://msdn.microsoft.com/en-us/library/ms700106.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol allows an MSMQ client
 application to perform management operations on an MSMQ server.
@@ -993,7 +910,8 @@ Release: April 23, 2024
 
 9 / 37
 
-
+
+
 
 
 
@@ -1098,7 +1016,8 @@ Release: April 23, 2024
 
 10 / 37
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-MQMR].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -1118,7 +1037,7 @@ This is a simple request-response protocol. For each received method request, th
 requested method and returns a completion status to the client. This is a stateless protocol; each
 method call is independent of any previous method calls.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol is dependent on RPC over
 TCP/IP for its transport. This protocol uses RPC, as specified in section 2.1.
@@ -1131,7 +1050,7 @@ Figure 1: Protocol relationships
 No other protocol currently depends on the Message Queuing (MSMQ): Queue Manager Management
 Protocol.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol is an RPC interface and, as a
 result, has the prerequisites specified in [MS-RPCE] as being common to RPC interfaces.
@@ -1152,24 +1071,25 @@ Release: April 23, 2024
 
 11 / 37
 
-1.6  Applicability Statement
+
+### 1.6 Applicability Statement
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol is used for administration of
 queues. The operations exposed allow IT administrators to locally or remotely perform management
 operations as well as to retrieve properties that describe how an MSMQ system is operating. This
 allows operations staff to monitor the health and activity load flowing through an MSMQ system.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are no versioning issues for this protocol.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol uses HRESULTs, as specified in
 [MS-ERREF] section 2.1. Vendors can define their own HRESULT values provided that the C bit
 (0x20000000) is set for each vendor-defined value, indicating that the value is a customer code.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 This protocol uses the standard interfaces that are listed in the following table.
 
@@ -1196,12 +1116,13 @@ Release: April 23, 2024
 
 12 / 37
 
-2  Messages
+
+## 2 Messages
 
 The following sections specify how Message Queuing (MSMQ): Queue Manager Management Protocol
 messages are transported and the common data types for this protocol.
 
-2.1  Transport
+### 2.1 Transport
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol uses the following remote
 procedure call (RPC) protocol sequence: RPC over TCP/IP (ncacn_ip_tcp), as specified in [MS-
@@ -1214,7 +1135,7 @@ This protocol MUST use the universally unique identifier (UUID), as specified in
 All structures are defined in the IDL syntax and are marshaled as specified in [C706] sections 4, 5,
 and 6. The IDL is specified in section 6.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol MUST indicate to the RPC
 runtime that it is to support the Network Data Representation (NDR) transfer syntax only, as specified
@@ -1272,13 +1193,14 @@ Release: April 23, 2024
 
 13 / 37
 
-2.2.1  Structures
 
-2.2.1.1  DL_ID
+#### 2.2.1 Structures
+
+##### 2.2.1.1 DL_ID
 
 This specification uses the DL_ID ([MS-MQMQ] section 2.2.9) type.
 
-2.2.1.2  MGMT_OBJECT
+##### 2.2.1.2 MGMT_OBJECT
 
 The MGMT_OBJECT structure defines information on a queue, a computer, or a session. The structure
 includes an embedded discriminated union.
@@ -1307,23 +1229,23 @@ Reserved1:  A 32-bit unsigned integer.<5>
 
 Reserved2:  A 32-bit unsigned integer.<6>
 
-2.2.1.3  MULTICAST_ID
+##### 2.2.1.3 MULTICAST_ID
 
 This specification uses the MULTICAST_ID ([MS-MQMQ] section 2.2.10) type.<7>
 
-2.2.1.4  OBJECTID
+##### 2.2.1.4 OBJECTID
 
 The OBJECTID ([MS-MQMQ] section 2.2.8) structure uniquely distinguishes a repository object from
 all other repository objects represented in a repository database.
 
-2.2.1.5  QUEUE_FORMAT
+##### 2.2.1.5 QUEUE_FORMAT
 
 The QUEUE_FORMAT structure (as specified in [MS-MQMQ] section 2.2.7) describes the type of queue
 being managed and provides the appropriate connection address information.
 
-2.2.2  Enumerators
+#### 2.2.2 Enumerators
 
-2.2.2.1  MgmtObjectType
+##### 2.2.2.1 MgmtObjectType
 
 The MgmtObjectType enumeration identifies the type of management object (as specified in section
 2.2.1.2) being used.
@@ -1338,7 +1260,8 @@ Release: April 23, 2024
 
 14 / 37
 
-     MGMT_QUEUE = 2,
+
+     MGMT_QUEUE = 2,
      MGMT_SESSION = 3,
  } MgmtObjectType;
 
@@ -1348,18 +1271,18 @@ MGMT_QUEUE:  A queue management object.
 
 MGMT_SESSION:   A session management object.
 
-2.2.2.2  QUEUE_FORMAT_TYPE
+##### 2.2.2.2 QUEUE_FORMAT_TYPE
 
 The QUEUE_FORMAT_TYPE ([MS-MQMQ] section 2.2.6) enumeration identifies the type of name
 format being used. The QUEUE_FORMAT ([MS-MQMQ] section 2.2.7) structure uses the values for
 the m_qft discriminated union member.
 
-2.2.3  Property Identifiers
+#### 2.2.3 Property Identifiers
 
 The R_QMMgmtGetInfo method uses property identifiers and corresponding property values. Property
 identifiers and properties are specified in [MS-MQMQ].
 
-2.2.3.1  Management Machine Property Identifiers
+##### 2.2.3.1 Management Machine Property Identifiers
 
 This protocol specifies the following properties for monitoring the queue manager on a computer.
 
@@ -1408,7 +1331,7 @@ PROPID_MGMT_MSMQ_BYTES_IN_ALL_QUEUES
 Retrieves the number of message bytes stored in all the
 queues on the computer.
 
-2.2.3.2  Management Queue Property Identifiers
+##### 2.2.3.2 Management Queue Property Identifiers
 
 This protocol specifies the following properties for monitoring the active queues on a computer.
 
@@ -1429,7 +1352,8 @@ Release: April 23, 2024
 
 15 / 37
 
-Value
+
+Value
 
 Meaning
 
@@ -1567,7 +1491,8 @@ Release: April 23, 2024
 
 16 / 37
 
-Value
+
+Value
 
 Meaning
 
@@ -1630,7 +1555,7 @@ Retrieves a list of subqueues for a given queue.<11>
 
 (0x0000001B)
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 This protocol uses ADM elements specified in section 3.1.1. A subset of these elements can be
 published in a directory. This protocol SHOULD<12> access the directory using the algorithm
@@ -1644,7 +1569,8 @@ Release: April 23, 2024
 
 17 / 37
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol is used for performing
 management operations on the MSMQ installation and a queue.
@@ -1674,7 +1600,7 @@ protocol, respectively, rather than to client or server versions of an operating
 end of the protocol—the server side—behaves the same regardless of whether the server side is
 running on a client or server.
 
-3.1  qmmgmt Server Details
+### 3.1 qmmgmt Server Details
 
 This section describes a conceptual model of possible data organization that an implementation
 maintains to participate in this protocol. The described organization is provided to facilitate the
@@ -1682,14 +1608,14 @@ explanation of how the protocol behaves. This document does not mandate that imp
 adhere to this model provided that their external behavior is consistent with what is described in this
 document.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The abstract data model for this protocol comprises elements that are shared between multiple MSMQ
 protocols that are co-located at a common MSMQ queue manager. The shared abstract data model is
 specified in [MS-MQDMPR] section 3.1.1 and the relationship between this protocol and other
 protocols that share a common MSMQ queue manager is specified in [MS-MQOD].
 
-3.1.1.1  Shared Data Elements
+##### 3.1.1.1 Shared Data Elements
 
 This protocol manipulates the following abstract data model elements from the shared abstract data
 model defined in [MS-MQDMPR] section 3.1.1:
@@ -1709,21 +1635,22 @@ Release: April 23, 2024
 
 18 / 37
 
-IncomingTransactionalTransferInfo: Defined in [MS-MQDMPR] section 3.1.1.5.
+
+IncomingTransactionalTransferInfo: Defined in [MS-MQDMPR] section 3.1.1.5.
 
 OpenQueueDescriptor: Defined in [MS-MQDMPR] section 3.1.1.16.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol layer uses no timers. RPC
 does, however, use timers internally, as specified in [MS-RPCE].
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 Software that utilizes qmmgmt MUST establish an RPC connection to the client prior to utilizing this
 protocol, as specified in [MS-RPCE] and section 2.1.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol MUST indicate to the RPC
 runtime that it is to perform a strict NDR data consistency check at target level 6.0, as specified in
@@ -1759,7 +1686,7 @@ Opnum: 1
 
 All methods MUST NOT throw exceptions.
 
-3.1.4.1  R_QMMgmtGetInfo (Opnum 0)
+##### 3.1.4.1 R_QMMgmtGetInfo (Opnum 0)
 
 The R_QMMgmtGetInfo method requests information on an MSMQ installation on a server or on a
 specific queue.
@@ -1781,7 +1708,8 @@ Release: April 23, 2024
 
 19 / 37
 
-pObjectFormat: A pointer to an MGMT_OBJECT structure that defines the queue or computer on
+
+pObjectFormat: A pointer to an MGMT_OBJECT structure that defines the queue or computer on
 
 which to return information.
 
@@ -1860,7 +1788,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- If the pObjectFormat parameter specifies an MgmtObjectType of MGMT_MACHINE, the server MUST
+
+ If the pObjectFormat parameter specifies an MgmtObjectType of MGMT_MACHINE, the server MUST
 use attributes of the QueueManager and Queue data elements.
 
 For each property identifier in the aProp array, populate the corresponding position in the apVar array
@@ -1979,7 +1908,8 @@ Release: April 23, 2024
 
 21 / 37
 
-Property Identifier
+
+Property Identifier
 
 Value
 
@@ -2096,7 +2026,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Property Identifier
+
+Property Identifier
 
 Value
 
@@ -2214,7 +2145,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Property Identifier
+
+Property Identifier
 
 Value
 
@@ -2350,7 +2282,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Property Identifier
+
+Property Identifier
 
 Value
 
@@ -2416,7 +2349,7 @@ VT_VARIANT
 
 VT_VECTOR
 
-3.1.4.2  R_QMMgmtAction (Opnum 1)
+##### 3.1.4.2 R_QMMgmtAction (Opnum 1)
 
 The R_QMMgmtAction method requests the server to perform a management function on a specific
 queue or MSMQ installation.
@@ -2462,7 +2395,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Value
+
+Value
 
 Meaning
 
@@ -2551,7 +2485,8 @@ Release: April 23, 2024
 
 26 / 37
 
-<!-- Extracted images from page 27 -->
+
+<!-- Extracted images from page 27 -->
 ![Extracted image 1 from page 27]([MS-MQMR].images/page027-img01.png)
 <!-- /Extracted images from page 27 -->
 
@@ -2580,19 +2515,19 @@ with following inputs:
 
 IQueue : = reference to a Queue specified by pQueueFormat from pObjectFormat.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 No protocol timer events are required on the server beyond the timers required in the underlying RPC
 transport.
 
-3.1.6  Other Local Events
+#### 3.1.6 Other Local Events
 
 There are no local events used on the server beyond the events maintained in the underlying RPC
 transport.
 
-3.2  qmmgmt Client Details
+### 3.2 qmmgmt Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The client maintains an RPC binding handle that it passes to each of the following methods:
 
@@ -2604,7 +2539,7 @@ The procedure for acquiring a binding handle is specified in [C706].
 
 Figure 2: RPC binding and method calls
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 The Message Queuing (MSMQ): Queue Manager Management Protocol layer uses no timers. RPC
 does, however, use timers internally (as specified in [MS-RPCE]).
@@ -2616,12 +2551,13 @@ Release: April 23, 2024
 
 27 / 37
 
-3.2.3  Initialization
+
+#### 3.2.3 Initialization
 
 Software that utilizes qmmgmt MUST establish an RPC connection to the server prior to utilizing this
 protocol, as specified in [MS-RPCE] and section 2.1.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The client side of the Message Queuing (MSMQ): Queue Manager Management Protocol requires no
 special processing or interpretation of data or error messages beyond those required by the underlying
@@ -2640,11 +2576,11 @@ check at target level 6.0, as specified in [MS-RPCE] section 3.
 This protocol MUST indicate to the RPC runtime that it is to reject a NULL unique or full pointer with
 nonzero conformant value, as specified in [MS-RPCE] section 3.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 There are no timer events.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 There are no local events.
 
@@ -2655,11 +2591,12 @@ Release: April 23, 2024
 
 28 / 37
 
-<!-- Extracted images from page 29 -->
+
+<!-- Extracted images from page 29 -->
 ![Extracted image 1 from page 29]([MS-MQMR].images/page029-img01.png)
 <!-- /Extracted images from page 29 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
 The following example pseudocode demonstrates how to pause a public queue by using the
 R_QMMgmtAction method.
@@ -2679,7 +2616,7 @@ R_QMMgmtAction method.
       and action const "PAUSE"
  /////////////////////////////////////////////////////////////////////
 
-4.1  QM Management Action and Retrieving QM Info Example
+### 4.1 QM Management Action and Retrieving QM Info Example
 
 In the following example, an administrator needs to send messages to a remote queue on a server.
 First, the administrator queries to see what private queues are available. Next, the administrator
@@ -2697,7 +2634,8 @@ Release: April 23, 2024
 
 29 / 37
 
-1.  This protocol can be used to determine the available private queues on a remote machine to which
+
+1.  This protocol can be used to determine the available private queues on a remote machine to which
 the client can send messages. The client retrieves a list of private queue path names by invoking
 the R_QMMgmtGetInfo (section 3.1.4.1) method with a pObjectFormat parameter type member
 set to the MGMT_MACHINE enumerated value, as defined in MgmtObjectType (section 2.2.2.1).
@@ -2724,19 +2662,20 @@ Release: April 23, 2024
 
 30 / 37
 
-5  Security
+
+## 5 Security
 
 The following sections specify security considerations for implementers of the Message Queuing
 (MSMQ): Queue Manager Management Protocol.
 
-5.1  Security Considerations for Implementers
+### 5.1 Security Considerations for Implementers
 
 As specified in section 3, this protocol allows a client with administrator privileges to connect to the
 server. Security is dependent on the server performing security checks for each invocation of the
 server interface methods specified in this document. Any security bug in the server implementation of
 this protocol could be exploitable.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 No security parameters are specified for this protocol.
 
@@ -2747,7 +2686,8 @@ Release: April 23, 2024
 
 31 / 37
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For ease of implementation, the full IDL is provided below, where "ms-dtyp.idl" refers to the IDL
 found in [MS-DTYP] Appendix A (section 5), and "ms-mqmq.idl" refers to the IDL found in [MS-MQMQ]
@@ -2810,7 +2750,8 @@ Release: April 23, 2024
 
 32 / 37
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2879,7 +2820,8 @@ Release: April 23, 2024
 
 33 / 37
 
-<4> Section 1.3: Not implemented in Windows NT, Windows 2000, and Windows XP.
+
+<4> Section 1.3: Not implemented in Windows NT, Windows 2000, and Windows XP.
 
 <5> Section 2.2.1.2:  The value of this member is ignored by Windows.
 
@@ -2924,7 +2866,8 @@ Release: April 23, 2024
 
 34 / 37
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2968,7 +2911,8 @@ Release: April 23, 2024
 
 35 / 37
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -3103,7 +3047,8 @@ Message Queuing (MSMQ): Queue Manager Management Protocol
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-R_QMMgmtAction method 25
+
+R_QMMgmtAction method 25
 R_QMMgmtGetInfo (Opnum 0) method 19
 R_QMMgmtGetInfo method 19
 References 8

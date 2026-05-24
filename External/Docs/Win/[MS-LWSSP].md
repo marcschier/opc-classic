@@ -63,7 +63,8 @@ Release: April 23, 2024
 
 1 / 37
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -293,7 +294,8 @@ Release: April 23, 2024
 
 2 / 37
 
-Date
+
+Date
 
 Revision
 History
@@ -441,228 +443,92 @@ Release: April 23, 2024
 
 3 / 37
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+    - [2.2.1 Security Element](#221-security-element)
+      - [2.2.1.1 SecurityTokenReference Element](#2211-securitytokenreference-element)
+      - [2.2.1.2 Timestamp Element](#2212-timestamp-element)
+      - [2.2.1.3 BinarySecurityToken Element](#2213-binarysecuritytoken-element)
+        - [2.2.1.3.1 Kerberos BinarySecurityToken Element](#22131-kerberos-binarysecuritytoken-element)
+      - [2.2.1.7 MUST be present in the same <Security> element. The <KeyInfo> element of that signature](#2217-must-be-present-in-the-same-element-the-element-of-that-signature)
+        - [2.2.1.7.1 SignedInfo Element](#22171-signedinfo-element)
+          - [2.2.1.7.1.1 Supported Algorithms](#221711-supported-algorithms)
+        - [2.2.1.7.2 KeyInfo Element](#22172-keyinfo-element)
+    - [2.2.2 RST and RSTR Messages](#222-rst-and-rstr-messages)
+      - [2.2.2.1 Binding Extensions](#2221-binding-extensions)
+        - [2.2.2.1.1 Issuance Binding](#22211-issuance-binding)
+        - [2.2.2.1.2 Context Establishment Binding](#22212-context-establishment-binding)
+        - [2.2.2.1.3 Context Renewal Binding](#22213-context-renewal-binding)
+        - [2.2.2.1.4 Context Cancellation Binding](#22214-context-cancellation-binding)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Client Details](#31-client-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Error Handling](#3141-error-handling)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+      - [3.1.5.1 RST Message](#3151-rst-message)
+      - [3.1.5.2 RSTR Message](#3152-rstr-message)
+        - [3.1.5.2.1 Issuance Binding](#31521-issuance-binding)
+        - [3.1.5.2.2 Context Establishment Binding](#31522-context-establishment-binding)
+        - [3.1.5.2.3 Context Renewal Binding](#31523-context-renewal-binding)
+        - [3.1.5.2.4 Context Cancellation Binding](#31524-context-cancellation-binding)
+    - [3.1.6 Timer Events](#316-timer-events)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+  - [3.2 Server Details](#32-server-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+      - [3.2.4.1 Error Handling](#3241-error-handling)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+      - [3.2.5.1 RST Message](#3251-rst-message)
+        - [3.2.5.1.1 Issuance Binding](#32511-issuance-binding)
+        - [3.2.5.1.2 Context Establishment Binding](#32512-context-establishment-binding)
+        - [3.2.5.1.3 Context Renewal Binding](#32513-context-renewal-binding)
+        - [3.2.5.1.4 Context Cancellation Binding](#32514-context-cancellation-binding)
+      - [3.2.5.2 RSTR Message](#3252-rstr-message)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 UsernameToken Element in a SOAP Request Message](#41-usernametoken-element-in-a-soap-request-message)
+  - [4.2 BinarySecurityToken Element in a SOAP Request Message](#42-binarysecuritytoken-element-in-a-soap-request-message)
+  - [4.3 SecurityContextToken Element in a SOAP Request Message](#43-securitycontexttoken-element-in-a-soap-request-message)
+  - [4.4 Assertion Element in a SOAP Request Message](#44-assertion-element-in-a-soap-request-message)
+  - [4.5 Timestamp Element in a SOAP Response Message](#45-timestamp-element-in-a-soap-response-message)
+  - [4.6 Issuance Binding Request Message](#46-issuance-binding-request-message)
+  - [4.7 Issuance Binding Response Message](#47-issuance-binding-response-message)
+  - [4.8 Context Establishment Request Message](#48-context-establishment-request-message)
+  - [4.9 Context Establishment Response Message](#49-context-establishment-response-message)
+  - [4.10 Context Renewal Request Message](#410-context-renewal-request-message)
+  - [4.11 Context Renewal Response Message](#411-context-renewal-response-message)
+  - [4.12 Context Cancellation Request Message](#412-context-cancellation-request-message)
+  - [4.13 Context Cancellation Response Message](#413-context-cancellation-response-message)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 7
-Normative References ................................................................................... 7
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 9
-Relationship to Other Protocols .......................................................................... 10
-Prerequisites/Preconditions ............................................................................... 10
-Applicability Statement ..................................................................................... 10
-Versioning and Capability Negotiation ................................................................. 10
-Vendor-Extensible Fields ................................................................................... 11
-Standards Assignments ..................................................................................... 11
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2.2.1
-
-2.1
-2.2
-
-2.2.1.3.1
-
-2.2.1.1
-2.2.1.2
-2.2.1.3
-
-2.2.1.4
-2.2.1.5
-2.2.1.6
-
-2  Messages ............................................................................................................... 12
-Transport ........................................................................................................ 12
-Message Syntax ............................................................................................... 12
-Security Element ........................................................................................ 12
-SecurityTokenReference Element ............................................................ 13
-Timestamp Element .............................................................................. 13
-BinarySecurityToken Element ................................................................. 13
-Kerberos BinarySecurityToken Element .............................................. 13
-UsernameToken Element ....................................................................... 13
-SecurityContextToken Element ............................................................... 13
-Assertion Element ................................................................................. 14
-SubjectConfirmation Element ............................................................ 14
-Signature Element ................................................................................ 15
-SignedInfo Element ......................................................................... 15
-Supported Algorithms ................................................................. 15
-KeyInfo Element .............................................................................. 16
-RST and RSTR Messages ............................................................................. 17
-Binding Extensions ................................................................................ 18
-Issuance Binding ............................................................................. 18
-Context Establishment Binding .......................................................... 18
-Context Renewal Binding .................................................................. 18
-Context Cancellation Binding ............................................................. 19
-
-2.2.2.1.1
-2.2.2.1.2
-2.2.2.1.3
-2.2.2.1.4
-
-2.2.1.7.1.1
-
-2.2.1.6.1
-
-2.2.1.7.1
-
-2.2.1.7.2
-
-2.2.1.7
-
-2.2.2.1
-
-2.2.2
-
-3.1
-
-3.1.5
-
-3.1.4.1
-
-3.1.5.1
-3.1.5.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 20
-Client Details ................................................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Higher-Layer Triggered Events ..................................................................... 20
-Error Handling ...................................................................................... 20
-Processing Events and Sequencing Rules ....................................................... 20
-RST Message ........................................................................................ 20
-RSTR Message ...................................................................................... 21
-Issuance Binding ............................................................................. 21
-Context Establishment Binding .......................................................... 21
-Context Renewal Binding .................................................................. 21
-Context Cancellation Binding ............................................................. 21
-Timer Events .............................................................................................. 21
-Other Local Events ...................................................................................... 21
-Server Details .................................................................................................. 22
-Abstract Data Model .................................................................................... 22
-Timers ...................................................................................................... 22
-
-3.1.5.2.1
-3.1.5.2.2
-3.1.5.2.3
-3.1.5.2.4
-
-3.2.1
-3.2.2
-
-3.1.6
-3.1.7
-
-3.2
-
-[MS-LWSSP] - v20240423
-Lightweight Web Services Security Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 37
-
-3.2.3
-3.2.4
-
-3.2.5
-
-3.2.4.1
-
-3.2.5.1
-
-3.2.5.1.1
-3.2.5.1.2
-3.2.5.1.3
-3.2.5.1.4
-
-3.2.5.2
-
-3.2.6
-3.2.7
-
-Initialization ............................................................................................... 22
-Higher-Layer Triggered Events ..................................................................... 22
-Error Handling ...................................................................................... 22
-Processing Events and Sequencing Rules ....................................................... 22
-RST Message ........................................................................................ 22
-Issuance Binding ............................................................................. 22
-Context Establishment Binding .......................................................... 23
-Context Renewal Binding .................................................................. 23
-Context Cancellation Binding ............................................................. 23
-RSTR Message ...................................................................................... 23
-Timer Events .............................................................................................. 23
-Other Local Events ...................................................................................... 23
-
-4  Protocol Examples ................................................................................................. 24
-UsernameToken Element in a SOAP Request Message........................................... 24
-BinarySecurityToken Element in a SOAP Request Message .................................... 24
-SecurityContextToken Element in a SOAP Request Message .................................. 25
-Assertion Element in a SOAP Request Message .................................................... 25
-Timestamp Element in a SOAP Response Message ................................................ 27
-Issuance Binding Request Message .................................................................... 27
-Issuance Binding Response Message .................................................................. 27
-Context Establishment Request Message ............................................................. 29
-Context Establishment Response Message ........................................................... 29
-Context Renewal Request Message ..................................................................... 30
-Context Renewal Response Message ................................................................... 30
-Context Cancellation Request Message ............................................................... 31
-Context Cancellation Response Message ............................................................. 31
-
-4.1
-4.2
-4.3
-4.4
-4.5
-4.6
-4.7
-4.8
-4.9
-4.10
-4.11
-4.12
-4.13
-
-5  Security ................................................................................................................. 32
-Security Considerations for Implementers ........................................................... 32
-Index of Security Parameters ............................................................................ 32
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................... 33
-
-7  Change Tracking .................................................................................................... 35
-
-8  Index ..................................................................................................................... 36
-
-[MS-LWSSP] - v20240423
-Lightweight Web Services Security Profile
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 37
-
-1  Introduction
+## 1 Introduction
 
 The Lightweight Web Services Security Profile [MS-LWSSP] specifies restrictions on a set of Web
 services specifications and provides clarifications that promote interoperability when building secure
@@ -672,7 +538,7 @@ servers to implement client authentication.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -734,7 +600,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-security token service (STS): A web service that issues security tokens as described in
+
+security token service (STS): A web service that issues security tokens as described in
 
 [WSTrust]. That is, it makes assertions based on evidence that it trusts to whoever trusts it (or
 to specific recipients). To communicate trust, a service requires proof, such as a signature to
@@ -778,14 +645,14 @@ XML: The Extensible Markup Language, as described in [XML1.0].
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -801,7 +668,8 @@ Release: April 23, 2024
 
 7 / 37
 
-[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
+
+[RFC2119] Bradner, S., "Key words for use in RFCs to Indicate Requirement Levels", BCP 14, RFC
 2119, March 1997, https://www.rfc-editor.org/info/rfc2119
 
 [SAMLCore] Maler, E., Mishra, P., Philpott, R., et al., "Assertions and Protocol for the OASIS Security
@@ -850,7 +718,7 @@ Edition)", June 2008, http://www.w3.org/TR/2008/REC-xmldsig-core-20080610/
 [XMLENC] Imamura, T., Dillaway, B., and Simon, E., "XML Encryption Syntax and Processing", W3C
 Recommendation, December 2002, http://www.w3.org/TR/2002/REC-xmlenc-core-20021210/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [SOAP1.1] Box, D., Ehnebuske, D., Kakivaya, G., et al., "Simple Object Access Protocol (SOAP) 1.1",
 W3C Note, May 2000, https://www.w3.org/TR/2000/NOTE-SOAP-20000508/
@@ -866,14 +734,15 @@ Release: April 23, 2024
 
 8 / 37
 
-[WS-Addr-Core] World Wide Web Consortium, "Web Services Addressing 1.0 - Core", W3C
+
+[WS-Addr-Core] World Wide Web Consortium, "Web Services Addressing 1.0 - Core", W3C
 Recommendation, May 2006, http://www.w3.org/TR/ws-addr-core/
 
 [XML] World Wide Web Consortium, "Extensible Markup Language (XML) 1.0 (Fourth Edition)", W3C
 Recommendation 16 August 2006, edited in place 29 September 2006,
 http://www.w3.org/TR/2006/REC-xml-20060816/
 
-1.3  Overview
+### 1.3 Overview
 
 The following documents specify a standard set of SOAP extensions that provide client/server
 authentication and content integrity and confidentiality for SOAP messages when building secure
@@ -936,7 +805,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-LWSSP].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -948,7 +818,7 @@ The parts of the above documents that specify server authentication, message int
 protection are not specified by this document and are assumed to be provided by underlying transport
 protocol.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This specification is a profile of the protocols listed in section 1.3. In addition, it relies on a number of
 underlying protocols. The exchanged messages are based on SOAP [SOAP1.1] [SOAP1.2-1/2007]
@@ -958,12 +828,12 @@ support for it itself.
 
 Figure 1: Protocol relationships
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 There are no prerequisites/preconditions beyond those specified in the XML Extension, Core Security,
 Security Profile, and Token Exchange protocols.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Lightweight Web Services Security Profile is applicable when interoperability with Web services
 implementations using the XML Extension, Core Security, Security Profile, and Token Exchange
@@ -971,7 +841,7 @@ protocols to provide client authentication is desired. When those same protocols
 server authentication, message integrity or confidentiality features, or if they are not used at all, the
 Lightweight Web Services Security Profile might not be applicable.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 There are no versioning or capability negotiations beyond those specified in the XML Extension, Core
 Security, Security Profile, and Token Exchange protocols.
@@ -983,12 +853,13 @@ Release: April 23, 2024
 
 10 / 37
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 There are no vendor extensible fields beyond those specified in the XML Extension, Core Security,
 Security Profile, and Token Exchange protocols.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 There are no standards assignments beyond those specified in the XML Extension, Core Security,
 Security Profile, and Token Exchange protocols.
@@ -1000,15 +871,16 @@ Release: April 23, 2024
 
 11 / 37
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This specification defines only serialization rules for SOAP extensions specified in the XML Extension,
 Core Security, Security Profile, and Token Exchange protocols. This specification does not define how
 SOAP messages are transmitted on the network. As such, it does not have a transport.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 This section specifies restrictions to SOAP extensions specified in the XML Extension, Core Security,
 Security Profile, and Token Exchange protocols.
@@ -1025,7 +897,7 @@ This section is split into two subsections. Section 2.2.1 specifies restrictions
 (RST) and request security token response (RSTR) messages specified in [WSTrust],
 [WSTrust1.3], [WSSC], and [WSSC1.3].
 
-2.2.1  Security Element
+#### 2.2.1 Security Element
 
 The <Security> element is specified in [WSS1] section 5, [WSS] section 5, and [BSP] section 5. It is a
 container element for binding a user's credentials (in the form of tokens and signatures) to a SOAP
@@ -1063,7 +935,8 @@ Release: April 23, 2024
 
 12 / 37
 
-2.2.1.1  SecurityTokenReference Element
+
+##### 2.2.1.1 SecurityTokenReference Element
 
 The <SecurityTokenReference> element is specified in [WSS1] section 7.1, [WSS] section 7.1, and
 [BSP] section 7.1. The <SecurityTokenReference> element MUST contain exactly one of the following
@@ -1077,17 +950,17 @@ elements as a child element:
 
 section 7.4. This document refers to this element as a key identifier reference.
 
-2.2.1.2  Timestamp Element
+##### 2.2.1.2 Timestamp Element
 
 The <Timestamp> element is specified in [WSS1] section 10, [WSS] section 10, and [BSP] section 6.
 
-2.2.1.3  BinarySecurityToken Element
+##### 2.2.1.3 BinarySecurityToken Element
 
 The <BinarySecurityToken> element is specified in [WSS1] section 6.3, [WSS] section 6.3, and [BSP]
 section 10. A <BinarySecurityToken> element MUST implement the Kerberos Token that MUST
 conform to the definition specified in section 2.2.1.3.1.
 
-2.2.1.3.1 Kerberos BinarySecurityToken Element
+###### 2.2.1.3.1 Kerberos BinarySecurityToken Element
 
 The Kerberos <BinarySecurityToken> element is specified in [BSP] section 14 and [WSSKTP1.1]
 section 3 (excluding subsections 3.5 and 3.6). This document overrides the following specifications:
@@ -1103,7 +976,7 @@ If a Kerberos token is referenced as specified in [WSSKTP1.1] section 3.3 and [B
 reference conforming to section 2.2.1.1 MUST be used.
 
 If a Kerberos token is present in a <Security> element, a <Signature> element conforming to section
-2.2.1.7 MUST be present in the same <Security> element. The <KeyInfo> element of that signature
+##### 2.2.1.7 MUST be present in the same <Security> element. The <KeyInfo> element of that signature
 MUST reference the Kerberos token.
 
 2.2.1.4  UsernameToken Element
@@ -1138,7 +1011,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-If a security context token is present in a <Security> element, a <Signature> element conforming to
+
+If a security context token is present in a <Security> element, a <Signature> element conforming to
 section 2.2.1.7 MUST be present in the same <Security> element. The <KeyInfo> child element of
 that <Signature> element MUST reference the security context token.
 
@@ -1215,7 +1089,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[SAMLToken1.1] section 3.5: Only the "urn:oasis:names:tc:SAML:1.0:cm:holder-of-key" subject
+
+[SAMLToken1.1] section 3.5: Only the "urn:oasis:names:tc:SAML:1.0:cm:holder-of-key" subject
 confirmation method MUST be used.
 
 The "<element name='OAEPparams' minOccurs='0' type='base64Binary'/>" element specified in
@@ -1269,7 +1144,7 @@ If the <Signature> element is a child element of the <Assertion> element, as spe
 
 Other elements MUST NOT be signed.
 
-2.2.1.7.1 SignedInfo Element
+###### 2.2.1.7.1 SignedInfo Element
 
 The <SignedInfo> element is specified in [XMLDSig/2008] section 4.3. This document overrides the
 following text:
@@ -1279,7 +1154,7 @@ type="ds:HMACOutputlengthType"/>."
 
 This element MUST NOT be present as specified in [BSP] section 8.7.2.
 
-2.2.1.7.1.1  Supported Algorithms
+###### 2.2.1.7.1.1 Supported Algorithms
 
 This document supports the algorithms specified in [BSP] sections 8.3, 8.4, 8.6, and 8.7. The following
 passages are overridden:
@@ -1291,7 +1166,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[BSP] section 8.2.5: "R3002 Any SIG_REFERENCE to an element that does not have an ID attribute
+
+[BSP] section 8.2.5: "R3002 Any SIG_REFERENCE to an element that does not have an ID attribute
 MUST contain a TRANSFORM with an Algorithm attribute value of
 "http://www.w3.org/2002/06/xmldsig-filter2."
 
@@ -1377,7 +1253,7 @@ http://www.w3.org/2001/04/xmldsig-more#rsa-sha384
 
 http://www.w3.org/2001/04/xmldsig-more#rsa-sha512
 
-2.2.1.7.2 KeyInfo Element
+###### 2.2.1.7.2 KeyInfo Element
 
 The <KeyInfo> element is specified in [XMLDSig/2008] section 4.4 (excluding subsections). A
 <KeyInfo> element MUST contain exactly one <SecurityTokenReference> element as a child element,
@@ -1391,7 +1267,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-2.2.2  RST and RSTR Messages
+
+#### 2.2.2 RST and RSTR Messages
 
 [WSTrust] and [WSTrust1.3] specify a framework for requesting and returning security tokens using
 RST and RSTR messages. RST messages provide the means for requesting a security token from an
@@ -1485,7 +1362,8 @@ Release: April 23, 2024
 
 17 / 37
 
-2.2.2.1  Binding Extensions
+
+##### 2.2.2.1 Binding Extensions
 
 The <RequestSecurityToken> and <RequestSecurityTokenResponse> elements form the basis of trust
 message exchange bindings, which extend these elements for specific usages. The following bindings
@@ -1501,12 +1379,12 @@ Issuance Binding
 
   Context Cancellation Binding
 
-2.2.2.1.1 Issuance Binding
+###### 2.2.2.1.1 Issuance Binding
 
 The issuance binding is specified in [WSTrust] section 6 "Issuance Binding" (excluding subsections
 6.2.5, 6.3, and 6.4) and [WSTrust1.3] section 4 (excluding subsections 4.2.1, 4.4.5, 4.4.10, and 4.5).
 
-2.2.2.1.2 Context Establishment Binding
+###### 2.2.2.1.2 Context Establishment Binding
 
 The context establishment binding is specified in [WSSC] section 4 (excluding subsections 4.3) and
 [WSSC1.3] section 3 (excluding subsections 3.3 and 3.4). This document overrides the following
@@ -1548,7 +1426,7 @@ RECOMMENDED." For more information about the basic challenge-response definition
 
   Challenge-response MUST NOT be used.
 
-2.2.2.1.3 Context Renewal Binding
+###### 2.2.2.1.3 Context Renewal Binding
 
 The context renewal binding is specified in [WSSC] section 6 and [WSSC1.3] section 5. This document
 overrides the following specification:
@@ -1567,12 +1445,13 @@ Release: April 23, 2024
 
 18 / 37
 
-Proof of possession MUST be established by including a security context token conforming to
+
+Proof of possession MUST be established by including a security context token conforming to
 section 2.2.1.5 and a corresponding signature conforming to section 2.2.1.7 in the security element
 conforming to section 2.2.1. The elements that MUST be signed are specified in section 2.2.1.7.
 Signatures MUST NOT be signed to prove possession.
 
-2.2.2.1.4 Context Cancellation Binding
+###### 2.2.2.1.4 Context Cancellation Binding
 
 The context cancellation binding is specified in [WSSC] section 7 and [WSSC1.3] section 6. This
 document overrides the following specification:
@@ -1596,9 +1475,10 @@ Release: April 23, 2024
 
 19 / 37
 
-3  Protocol Details
 
-3.1  Client Details
+## 3 Protocol Details
+
+### 3.1 Client Details
 
 The client protocol details for the messages defined in section 2.2.1 are specified in [WSS1], [WSS],
 [WSSKTP1.1], [SAMLCore], [SAMLToken1.1], [BSP], [WSSUTP], [WSSUTP1.1], [WSSC], and
@@ -1610,30 +1490,30 @@ The client protocol details for the messages defined in section 2.2.2 are specif
 Beyond what is specified in the listed specifications, no protocol details are defined. Higher-layer
 application protocols might<2> specify additional protocols.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 None.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 None.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
 None.
 
-3.1.4.1  Error Handling
+##### 3.1.4.1 Error Handling
 
 When a higher-layer application protocol submits a message to be sent, the implementation MAY<3>
 check whether the message conforms to the syntax specified in section 2.2, and if it does not, return
 an error and abort further processing. Otherwise, the implementation MUST send the message to the
 server.
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 When a message is received, the implementation MUST verify that the message conforms to the
 syntax specified in section 2.2.
@@ -1650,7 +1530,7 @@ The implementation MUST abort further processing.
 The implementation MAY<4> return an error to the higher-layer application protocol. Otherwise, it
 MUST fail silently.
 
-3.1.5.1  RST Message
+##### 3.1.5.1 RST Message
 
 When an RST message conforming to the syntax specified in section 2.2.2 is received, it MUST be
 rejected.
@@ -1662,13 +1542,14 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.5.2  RSTR Message
+
+##### 3.1.5.2 RSTR Message
 
 In addition to the steps specified in section 3.1.5, when an RSTR message conforming to the syntax
 specified in section 2.2.2 is received, processing is performed as described in sections 3.1.5.2.1,
 3.1.5.2.2, 3.1.5.2.3, and 3.1.5.2.4.
 
-3.1.5.2.1 Issuance Binding
+###### 3.1.5.2.1 Issuance Binding
 
 The client MAY<5> reject a received message that specifies the action:
 
@@ -1693,7 +1574,7 @@ section 2.2.2.1.1.
 Exactly one message MUST be processed as part of the issuance binding. Additional messages MUST
 be rejected.
 
-3.1.5.2.2 Context Establishment Binding
+###### 3.1.5.2.2 Context Establishment Binding
 
 The client MUST process a received message that conforms to the syntax specified in section
 2.2.2.1.2.
@@ -1701,7 +1582,7 @@ The client MUST process a received message that conforms to the syntax specified
 Exactly one message MUST be processed as part of the context establishment binding. Additional
 messages MUST be rejected.
 
-3.1.5.2.3 Context Renewal Binding
+###### 3.1.5.2.3 Context Renewal Binding
 
 The client MUST process a received message that conforms to the syntax specified in section
 2.2.2.1.3.
@@ -1709,7 +1590,7 @@ The client MUST process a received message that conforms to the syntax specified
 Exactly one message MUST be processed as part of the context renewal binding. Additional messages
 MUST be rejected.
 
-3.1.5.2.4 Context Cancellation Binding
+###### 3.1.5.2.4 Context Cancellation Binding
 
 The contents of a received message that conforms to the syntax specified in section 2.2.2.1.4
 MAY<7> be ignored by the client. Otherwise, the client MUST process a received message conforming
@@ -1718,11 +1599,11 @@ to the syntax specified in section 2.2.2.1.4.
 Exactly one message MUST be processed as part of the context cancellation binding. Additional
 messages MUST be rejected.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
 None.
 
-3.1.7  Other Local Events
+#### 3.1.7 Other Local Events
 
 None.
 
@@ -1733,7 +1614,8 @@ Release: April 23, 2024
 
 21 / 37
 
-3.2  Server Details
+
+### 3.2 Server Details
 
 The server protocol details for the messages defined in section 2.2.1 are specified in [WSS1], [WSS],
 [WSSKTP1.1], [SAMLCore], [SAMLToken1.1], [BSP], [WSSUTP], [WSSUTP1.1], [WSSC], and
@@ -1745,30 +1627,30 @@ The server protocol details for the messages defined in section 2.2.2 are specif
 Beyond what is specified in the listed specifications, no protocol details are defined. Higher-layer
 application protocols might specify additional protocols.<8>
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 None.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.4.1  Error Handling
+##### 3.2.4.1 Error Handling
 
 When a higher-layer application protocol submits a message to be sent, the implementation MAY<9>
 check whether the message conforms to the syntax specified in section 2.2, and if it does not, return
 an error and abort further processing. Otherwise, the implementation MUST send the message to the
 server.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 When a message is received, the implementation MUST verify that the message conforms to the
 syntax specified in section 2.2.
@@ -1785,13 +1667,13 @@ The implementation MUST abort further processing.
 The implementation MAY<10> return an error to the higher-layer application protocol. Otherwise,
 it MUST fail silently.
 
-3.2.5.1  RST Message
+##### 3.2.5.1 RST Message
 
 In addition to the steps specified in section 3.2.5, when an RST message conforming to the syntax
 specified in section 2.2.2 is received, processing is performed as described in sections 3.2.5.1.1,
 3.2.5.1.2, 3.2.5.1.3, and 3.2.5.1.4.
 
-3.2.5.1.1 Issuance Binding
+###### 3.2.5.1.1 Issuance Binding
 
 [MS-LWSSP] - v20240423
 Lightweight Web Services Security Profile
@@ -1800,11 +1682,12 @@ Release: April 23, 2024
 
 22 / 37
 
-This binding represents an exchange between a client and a Security Token Server, not a general
+
+This binding represents an exchange between a client and a Security Token Server, not a general
 "server" as the term is used throughout the rest of this document. Security Token Server-side support
 for this binding is not included in this profile document.
 
-3.2.5.1.2 Context Establishment Binding
+###### 3.2.5.1.2 Context Establishment Binding
 
 The server MUST process a received message that conforms to the syntax specified in section
 2.2.2.1.2.
@@ -1812,7 +1695,7 @@ The server MUST process a received message that conforms to the syntax specified
 Exactly one message MUST be processed as part of the context establishment binding. Additional
 messages MUST be rejected.
 
-3.2.5.1.3 Context Renewal Binding
+###### 3.2.5.1.3 Context Renewal Binding
 
 The server MUST process a received message that conforms to the syntax specified in section
 2.2.2.1.3.
@@ -1820,7 +1703,7 @@ The server MUST process a received message that conforms to the syntax specified
 Exactly one message MUST be processed as part of the context renewal binding. Additional messages
 MUST be rejected.
 
-3.2.5.1.4 Context Cancellation Binding
+###### 3.2.5.1.4 Context Cancellation Binding
 
 The server MUST process a received message that conforms to the syntax specified in section
 2.2.2.1.4.
@@ -1828,16 +1711,16 @@ The server MUST process a received message that conforms to the syntax specified
 Exactly one message MUST be processed as part of the context cancellation binding. Additional
 messages MUST be rejected.
 
-3.2.5.2  RSTR Message
+##### 3.2.5.2 RSTR Message
 
 When an RSTR message conforming to the syntax specified in section 2.2.2 is received, it MUST be
 rejected.
 
-3.2.6  Timer Events
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
 None.
 
@@ -1848,12 +1731,13 @@ Release: April 23, 2024
 
 23 / 37
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 This section includes samples of messages for each supported message type. "..." in the following
 examples is used to denote arbitrary XML values to improve readability.
 
-4.1  UsernameToken Element in a SOAP Request Message
+### 4.1 UsernameToken Element in a SOAP Request Message
 
 The following is an example of a <Security> element with a username token and a timestamp.
 
@@ -1871,7 +1755,7 @@ profile-1.0#PasswordText">...</o:Password>
    </o:UsernameToken>
  </o:Security>
 
-4.2  BinarySecurityToken Element in a SOAP Request Message
+### 4.2 BinarySecurityToken Element in a SOAP Request Message
 
 The following is an example of a <Security> element with a Kerberos token, its associated
 signature, and a timestamp.
@@ -1918,9 +1802,10 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </o:Security>
 
-4.3  SecurityContextToken Element in a SOAP Request Message
+ </o:Security>
+
+### 4.3 SecurityContextToken Element in a SOAP Request Message
 
 The following is an example of a <Security> element with a security context token, its associated
 signature, and a timestamp.
@@ -1958,7 +1843,7 @@ wssecurity-secext-1.0.xsd">
    </Signature>
  </o:Security>
 
-4.4  Assertion Element in a SOAP Request Message
+### 4.4 Assertion Element in a SOAP Request Message
 
 The following is an example of a <Security> element with a SAML token, its associated signature,
 and a timestamp.
@@ -1989,7 +1874,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-           <saml:ConfirmationMethod>urn:oasis:names:tc:SAML:1.0:cm:holder-of-
+
+           <saml:ConfirmationMethod>urn:oasis:names:tc:SAML:1.0:cm:holder-of-
 key</saml:ConfirmationMethod>
            <KeyInfo xmlns="http://www.w3.org/2000/09/xmldsig#">
              <e:EncryptedKey xmlns:e="http://www.w3.org/2001/04/xmlenc#">
@@ -2066,12 +1952,13 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-       </o:SecurityTokenReference>
+
+       </o:SecurityTokenReference>
      </KeyInfo>
    </Signature>
  </o:Security>
 
-4.5  Timestamp Element in a SOAP Response Message
+### 4.5 Timestamp Element in a SOAP Response Message
 
 The following is an example of a <Security> element with a timestamp.
 
@@ -2084,7 +1971,7 @@ utility-1.0.xsd">
    </Timestamp>
  </o:Security>
 
-4.6  Issuance Binding Request Message
+### 4.6 Issuance Binding Request Message
 
 The following is an example of a <RequestSecurityToken> element used with the issuance binding
 based on [WSTrust1.3] requesting a SAML token.
@@ -2096,7 +1983,7 @@ xmlns="http://docs.oasis-open.org/ws-sx/ws-trust/200512">
    <RequestType>http://docs.oasis-open.org/ws-sx/ws-trust/200512/Issue</RequestType>
  </RequestSecurityToken>
 
-4.7  Issuance Binding Response Message
+### 4.7 Issuance Binding Response Message
 
 The following is an example of a <RequestSecurityTokenResponseCollection> element used with the
 issuance binding based on [WSTrust1.3] returning a SAML token.
@@ -2134,7 +2021,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-                   <KeyInfo>
+
+                   <KeyInfo>
                      <o:SecurityTokenReference xmlns:o="http://docs.oasis-
 open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
                        <o:KeyIdentifier ValueType="http://docs.oasis-open.org/wss/oasis-wss-
@@ -2210,14 +2098,15 @@ Release: April 23, 2024
 
 28 / 37
 
-       <wsu:Expires xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
+
+       <wsu:Expires xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-
 wssecurity-utility-1.0.xsd">2108-12-01T03:08:59.000Z</wsu:Expires>
      </wst:Lifetime>
      <wst:KeySize>256</wst:KeySize>
    </wst:RequestSecurityTokenResponse>
  </wst:RequestSecurityTokenResponseCollection>
 
-4.8  Context Establishment Request Message
+### 4.8 Context Establishment Request Message
 
 The following is an example of a <RequestSecurityToken> element used with the context
 establishment binding based on [WSSC].
@@ -2232,7 +2121,7 @@ xmlns="http://schemas.xmlsoap.org/ws/2005/02/trust">
    <KeySize>256</KeySize>
  </RequestSecurityToken>
 
-4.9  Context Establishment Response Message
+### 4.9 Context Establishment Response Message
 
 The following is an example of a <RequestSecurityTokenResponse> element used with the context
 establishment binding based on [WSSC].
@@ -2280,9 +2169,10 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
- </RequestSecurityTokenResponse>
 
-4.10  Context Renewal Request Message
+ </RequestSecurityTokenResponse>
+
+### 4.10 Context Renewal Request Message
 
 The following is an example of a <RequestSecurityToken> element used with the context renewal
 binding based on [WSSC].
@@ -2306,7 +2196,7 @@ xmlns:a="http://schemas.xmlsoap.org/ws/2005/02/sc"/>
    </RenewTarget>
  </RequestSecurityToken>
 
-4.11  Context Renewal Response Message
+### 4.11 Context Renewal Response Message
 
 The following is an example of a <RequestSecurityTokenResponse> element used with the context
 renewal binding based on [WSSC].
@@ -2351,7 +2241,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-   <Lifetime>
+
+   <Lifetime>
      <Created xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-
 utility-1.0.xsd">2008-08-15T02:08:22.9136637Z</Created>
      <Expires xmlns="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-
@@ -2360,7 +2251,7 @@ utility-1.0.xsd">2008-08-15T17:08:22.9136637Z</Expires>
    <KeySize>256</KeySize>
  </RequestSecurityTokenResponse>
 
-4.12  Context Cancellation Request Message
+### 4.12 Context Cancellation Request Message
 
 The following is an example of a <RequestSecurityToken> element used with the context cancellation
 binding based on [WSSC].
@@ -2377,7 +2268,7 @@ ValueType="http://schemas.xmlsoap.org/ws/2005/02/sc/sct"/>
    </CancelTarget>
  </RequestSecurityToken>
 
-4.13  Context Cancellation Response Message
+### 4.13 Context Cancellation Response Message
 
 The following is an example of a <RequestSecurityTokenResponse> element used with the context
 cancellation binding based on [WSSC].
@@ -2394,9 +2285,10 @@ Release: April 23, 2024
 
 31 / 37
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 The following security consideration specifications apply to this profile document:
 
@@ -2465,7 +2357,7 @@ Security contexts that are established according to section 2.2.2.1.2 require th
 state on behalf of the client to cache the established context. If the state is unbound, a malicious
 client can potentially exhaust server resources.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -2476,7 +2368,8 @@ Release: April 23, 2024
 
 32 / 37
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -2547,7 +2440,8 @@ Lightweight Web Services Security Profile
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -2602,7 +2496,8 @@ Release: April 23, 2024
 
 34 / 37
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -2646,7 +2541,8 @@ Release: April 23, 2024
 
 35 / 37
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model
@@ -2790,7 +2686,8 @@ Parameters - security index 32
 
 36 / 37
 
-Preconditions 10
+
+Preconditions 10
 Prerequisites 10
 Product behavior 33
 

@@ -63,7 +63,8 @@ Release: October 26, 2021
 
 1 / 77
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -214,181 +215,77 @@ Release: October 26, 2021
 
 2 / 77
 
-Table of Contents
 
-1  Introduction ............................................................................................................ 5
-Glossary ........................................................................................................... 5
-References ........................................................................................................ 7
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+- [2 Functional Architecture](#2-functional-architecture)
+  - [2.1 Overview](#21-overview)
+    - [2.1.1 System Purposes](#211-system-purposes)
+    - [2.1.2 Relationship with External Components](#212-relationship-with-external-components)
+    - [2.1.3 System Capabilities](#213-system-capabilities)
+    - [2.1.4 Abstract Components of the File Services Management System](#214-abstract-components-of-the-file-services-management-system)
+    - [2.1.5 Protocol Relationship](#215-protocol-relationship)
+  - [2.2 Protocol Summary](#22-protocol-summary)
+  - [2.3 Environment](#23-environment)
+    - [2.3.1 Dependencies on This System](#231-dependencies-on-this-system)
+    - [2.3.2 Dependencies on Other Systems/Components](#232-dependencies-on-other-systemscomponents)
+  - [2.4 Assumptions and Preconditions](#24-assumptions-and-preconditions)
+  - [2.5 Use Cases](#25-use-cases)
+    - [2.5.1 Share Management Use Cases](#251-share-management-use-cases)
+      - [2.5.1.1 Create Share SMB](#2511-create-share-smb)
+      - [2.5.1.2 List SMB Shares](#2512-list-smb-shares)
+      - [2.5.1.3 Getting and Setting the Properties for an Existing SMB Share](#2513-getting-and-setting-the-properties-for-an-existing-smb-share)
+      - [2.5.1.4 Delete an SMB Share](#2514-delete-an-smb-share)
+    - [2.5.2 DFS Use Cases](#252-dfs-use-cases)
+      - [2.5.2.1 Create DFS Standalone Namespace](#2521-create-dfs-standalone-namespace)
+      - [2.5.2.2 Create DFS Domain Namespace](#2522-create-dfs-domain-namespace)
+      - [2.5.2.3 Create DFS Link](#2523-create-dfs-link)
+      - [2.5.2.4 Add a Root Target to a Domain-Based Namespace](#2524-add-a-root-target-to-a-domain-based-namespace)
+    - [2.5.3 DFS-R Configuration and Monitoring Use Cases](#253-dfs-r-configuration-and-monitoring-use-cases)
+      - [2.5.3.1 Get Health Information for a DFS Replication](#2531-get-health-information-for-a-dfs-replication)
+      - [2.5.3.2 Create a Directory Object for a DFS Replication Group Using Server Credentials](#2532-create-a-directory-object-for-a-dfs-replication-group-using-server-credentials)
+    - [2.5.4 Resource Management Use Cases](#254-resource-management-use-cases)
+      - [2.5.4.1 Create and Configure a File Management Job](#2541-create-and-configure-a-file-management-job)
+      - [2.5.4.2 Create a Report Job](#2542-create-a-report-job)
+      - [2.5.4.3 Configure File Screens and Directory Quotas](#2543-configure-file-screens-and-directory-quotas)
+    - [2.5.5 Server Management Use Cases](#255-server-management-use-cases)
+      - [2.5.5.1 Attach an Alias Name to an Existing Server](#2551-attach-an-alias-name-to-an-existing-server)
+      - [2.5.5.2 Detach an Alias Name from a Server](#2552-detach-an-alias-name-from-a-server)
+      - [2.5.5.3 Retrieve Alias Names](#2553-retrieve-alias-names)
+      - [2.5.5.4 Binding or Unbinding an SMB Server Transport Protocol](#2554-binding-or-unbinding-an-smb-server-transport-protocol)
+      - [2.5.5.5 Getting or Setting the Configuration Information for a Server](#2555-getting-or-setting-the-configuration-information-for-a-server)
+    - [2.5.6 SMB Redirector Use Cases](#256-smb-redirector-use-cases)
+      - [2.5.6.1 Enable a Transport Protocol on an SMB Network Redirector](#2561-enable-a-transport-protocol-on-an-smb-network-redirector)
+      - [2.5.6.2 Disable a Transport Protocol on an SMB Network Redirector](#2562-disable-a-transport-protocol-on-an-smb-network-redirector)
+      - [2.5.6.3 Get Statistics about an SMB Network Redirector](#2563-get-statistics-about-an-smb-network-redirector)
+      - [2.5.6.4 Get Transport Protocols Enabled on an SMB Network Redirector](#2564-get-transport-protocols-enabled-on-an-smb-network-redirector)
+  - [2.6 Versioning, Capability Negotiation, and Extensibility](#26-versioning-capability-negotiation-and-extensibility)
+    - [2.6.1 Remote Administration Protocol](#261-remote-administration-protocol)
+    - [2.6.2 File Replication Service](#262-file-replication-service)
+  - [2.7 Error Handling](#27-error-handling)
+    - [2.7.1 Connection Disconnected](#271-connection-disconnected)
+    - [2.7.2 Internal Failures](#272-internal-failures)
+  - [2.8 Coherency Requirements](#28-coherency-requirements)
+  - [2.9 Security](#29-security)
+  - [2.10 Additional Considerations](#210-additional-considerations)
+- [3 Examples](#3-examples)
+  - [3.1 Example 1: Creating an SMB Share](#31-example-1-creating-an-smb-share)
+  - [3.2 Example 2: Deleting an SMB Share](#32-example-2-deleting-an-smb-share)
+  - [3.3 Example 3: Creating and Managing a DFS Domain Namespace](#33-example-3-creating-and-managing-a-dfs-domain-namespace)
+  - [3.4 Example 4: Creating an FSRM File Screen](#34-example-4-creating-an-fsrm-file-screen)
+  - [3.5 Example 5: Creating an FSRM Quota](#35-example-5-creating-an-fsrm-quota)
+  - [3.6 Example 6: Creating and Configuring a File Management Job](#36-example-6-creating-and-configuring-a-file-management-job)
+  - [3.7 Example 7: Creating a Scheduled Report Job](#37-example-7-creating-a-scheduled-report-job)
+  - [3.8 Example 8: Client Cannot Connect to a DFS Service](#38-example-8-client-cannot-connect-to-a-dfs-service)
+- [4 Microsoft Implementations](#4-microsoft-implementations)
+  - [4.1 Product Behavior](#41-product-behavior)
+- [5 Change Tracking](#5-change-tracking)
+- [6 Index](#6-index)
 
-2.1
-
-2.5.3
-
-2.5.1
-
-2.5.2
-
-2.4
-2.5
-
-2.2
-2.3
-
-2.3.1
-2.3.2
-
-2.5.3.1
-2.5.3.2
-
-2.1.1
-2.1.2
-2.1.3
-2.1.4
-2.1.5
-
-2.5.2.1
-2.5.2.2
-2.5.2.3
-2.5.2.4
-
-2.5.1.1
-2.5.1.2
-2.5.1.3
-2.5.1.4
-
-2  Functional Architecture ........................................................................................... 9
-Overview .......................................................................................................... 9
-System Purposes .......................................................................................... 9
-Relationship with External Components ........................................................... 9
-System Capabilities ..................................................................................... 10
-Abstract Components of the File Services Management System ........................ 12
-Protocol Relationship ................................................................................... 14
-Protocol Summary ............................................................................................ 15
-Environment .................................................................................................... 17
-Dependencies on This System ...................................................................... 17
-Dependencies on Other Systems/Components ................................................ 17
-Assumptions and Preconditions .......................................................................... 17
-Use Cases ....................................................................................................... 18
-Share Management Use Cases...................................................................... 18
-Create Share SMB ................................................................................. 19
-List SMB Shares .................................................................................... 20
-Getting and Setting the Properties for an Existing SMB Share ..................... 21
-Delete an SMB Share ............................................................................. 23
-DFS Use Cases ........................................................................................... 24
-Create DFS Standalone Namespace ......................................................... 25
-Create DFS Domain Namespace .............................................................. 27
-Create DFS Link .................................................................................... 28
-Add a Root Target to a Domain-Based Namespace .................................... 30
-DFS-R Configuration and Monitoring Use Cases .............................................. 31
-Get Health Information for a DFS Replication ............................................ 33
-Create a Directory Object for a DFS Replication Group Using Server Credentials
- .......................................................................................................... 34
-Resource Management Use Cases ................................................................. 36
-Create and Configure a File Management Job ........................................... 36
-Create a Report Job............................................................................... 38
-Configure File Screens and Directory Quotas ............................................ 39
-Server Management Use Cases .................................................................... 40
-Attach an Alias Name to an Existing Server .............................................. 41
-Detach an Alias Name from a Server ....................................................... 43
-Retrieve Alias Names ............................................................................. 44
-Binding or Unbinding an SMB Server Transport Protocol ............................. 45
-Getting or Setting the Configuration Information for a Server ..................... 47
-SMB Redirector Use Cases ........................................................................... 48
-Enable a Transport Protocol on an SMB Network Redirector ........................ 49
-Disable a Transport Protocol on an SMB Network Redirector ....................... 50
-Get Statistics about an SMB Network Redirector ....................................... 52
-Get Transport Protocols Enabled on an SMB Network Redirector ................. 53
-Versioning, Capability Negotiation, and Extensibility ............................................. 54
-Remote Administration Protocol .................................................................... 54
-File Replication Service ................................................................................ 54
-Error Handling ................................................................................................. 54
-Connection Disconnected ............................................................................. 54
-Internal Failures ......................................................................................... 55
-Coherency Requirements .................................................................................. 55
-Security .......................................................................................................... 55
-Additional Considerations .................................................................................. 55
-
-2.5.5.1
-2.5.5.2
-2.5.5.3
-2.5.5.4
-2.5.5.5
-
-2.5.6.1
-2.5.6.2
-2.5.6.3
-2.5.6.4
-
-2.5.4.1
-2.5.4.2
-2.5.4.3
-
-2.8
-2.9
-2.10
-
-2.7.1
-2.7.2
-
-2.6.1
-2.6.2
-
-2.5.6
-
-2.5.4
-
-2.5.5
-
-2.6
-
-2.7
-
-[MS-FSMOD] - v20211026
-File Services Management Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-3 / 77
-
-3  Examples ............................................................................................................... 57
-Example 1: Creating an SMB Share .................................................................... 57
-Example 2: Deleting an SMB Share .................................................................... 58
-Example 3: Creating and Managing a DFS Domain Namespace .............................. 60
-Example 4: Creating an FSRM File Screen ........................................................... 64
-Example 5: Creating an FSRM Quota .................................................................. 66
-Example 6: Creating and Configuring a File Management Job................................. 67
-Example 7: Creating a Scheduled Report Job ....................................................... 69
-Example 8: Client Cannot Connect to a DFS Service ............................................. 71
-
-3.1
-3.2
-3.3
-3.4
-3.5
-3.6
-3.7
-3.8
-
-4  Microsoft Implementations ................................................................................... 73
-Product Behavior .............................................................................................. 74
-
-4.1
-
-5  Change Tracking .................................................................................................... 75
-
-6  Index ..................................................................................................................... 76
-
-[MS-FSMOD] - v20211026
-File Services Management Protocols Overview
-Copyright © 2021 Microsoft Corporation
-Release: October 26, 2021
-
-4 / 77
-
-1  Introduction
+## 1 Introduction
 
 This File System Management Overview describes the purpose and use of the protocols that are
 required for remote administration and management of file servers in an organization.
@@ -401,7 +298,7 @@ the type of content that can be stored, and other policies. Users and applicatio
 through file clients. File client and file access protocols are described in the File Access Services
 Protocol Overview ([MS-FASOD]).
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -459,7 +356,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Distributed File System (DFS) namespace: A virtual view of shares on different servers as
+
+Distributed File System (DFS) namespace: A virtual view of shares on different servers as
 
 provided by DFS. Each file in the namespace has a logical name and a corresponding address
 (path). A DFS namespace consists of a root and many links and targets. The namespace starts
@@ -532,7 +430,8 @@ Release: October 26, 2021
 
 6 / 77
 
-file system: A system that enables applications to store and retrieve files on storage devices.
+
+file system: A system that enables applications to store and retrieve files on storage devices.
 
 Files are placed in a hierarchical structure. The file system specifies naming conventions for files
 and the format for specifying the path to a file in the tree structure. Each file system consists of
@@ -588,7 +487,7 @@ Universal Naming Convention (UNC): A string format that specifies the location o
 
 For more information, see [MS-DTYP] section 2.2.57.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
@@ -608,7 +507,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-[MS-DFSC] Microsoft Corporation, "Distributed File System (DFS): Referral Protocol".
+
+[MS-DFSC] Microsoft Corporation, "Distributed File System (DFS): Referral Protocol".
 
 [MS-DFSNM] Microsoft Corporation, "Distributed File System (DFS): Namespace Management
 Protocol".
@@ -644,12 +544,13 @@ Release: October 26, 2021
 
 8 / 77
 
-2  Functional Architecture
+
+## 2 Functional Architecture
 
 This section describes the basic structure of the system and the interrelationships among its parts,
 consumers, and dependencies.
 
-2.1  Overview
+### 2.1 Overview
 
 A goal of information technology (IT) groups is to manage file server resources efficiently while
 keeping them available and secure for users. As networks expand to include more users and
@@ -682,12 +583,12 @@ the DFS Service and the File Services. The admin client is also used to configur
 apply to the object store on a file server, such as quotas to limit user disk space use, screening to
 restrict the type of content that is allowed to be stored), and other policies.
 
-2.1.1  System Purposes
+#### 2.1.1 System Purposes
 
 The purpose of the File Services Management system is to allow an administrator to configure and
 monitor file services remotely.
 
-2.1.2  Relationship with External Components
+#### 2.1.2 Relationship with External Components
 
 The File Services Management system interacts with several other Windows components. The
 following diagram shows the key interactions.
@@ -699,7 +600,8 @@ Release: October 26, 2021
 
 9 / 77
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-FSMOD].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -730,7 +632,7 @@ Admin tool: A tool that provides management functionality to the administrator. 
 the File Services Management system to configure and retrieve configuration information for the file
 servers. It is also used to configure and query the state of the file services.
 
-2.1.3  System Capabilities
+#### 2.1.3 System Capabilities
 
 The following are the administrative operations that can be performed by using the File Services
 Management Protocols:
@@ -745,7 +647,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-and files in it appear to reside on a single share. Users can navigate the namespace without previous
+
+and files in it appear to reside on a single share. Users can navigate the namespace without previous
 knowledge of the server names or the shares hosting the data. By using the admin tools, an
 administrator selects which shared folders to present in the namespace, designs the hierarchy in
 which those folders appear, and determines the names that the shared folders show in the
@@ -814,7 +717,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 12 -->
+
+<!-- Extracted images from page 12 -->
 ![Extracted image 1 from page 12]([MS-FSMOD].images/page012-img01.png)
 <!-- /Extracted images from page 12 -->
 
@@ -858,7 +762,7 @@ specific type in a domain. The administrator can also configure aliases for a se
 multiple distinct names that present the same resources. The protocol that is used to manage an SMB
 server is described in [MS-SRVS].
 
-2.1.4  Abstract Components of the File Services Management System
+#### 2.1.4 Abstract Components of the File Services Management System
 
 The following diagram shows the abstract components of the File Services Management system.
 
@@ -871,7 +775,8 @@ Release: October 26, 2021
 
 12 / 77
 
-Admin tool: The admin tool is a program that offers management functionality to the administrator
+
+Admin tool: The admin tool is a program that offers management functionality to the administrator
 by means of the admin client. Typical admin tools are command-line tools and graphical shells,
 management utilities, and graphical management programs. The admin tool is external to the File
 Services Management system and uses the admin client to accomplish its work.
@@ -938,11 +843,12 @@ Release: October 26, 2021
 
 13 / 77
 
-<!-- Extracted images from page 14 -->
+
+<!-- Extracted images from page 14 -->
 ![Extracted image 1 from page 14]([MS-FSMOD].images/page014-img01.png)
 <!-- /Extracted images from page 14 -->
 
-2.1.5  Protocol Relationship
+#### 2.1.5 Protocol Relationship
 
 The following diagram shows the protocol layering relationships for the File Services Management
 system member protocols that use remote procedure call (RPC) as a transport.
@@ -965,7 +871,8 @@ Release: October 26, 2021
 
 14 / 77
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-FSMOD].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -983,7 +890,7 @@ and server administration methods, such as SMB file share enumeration, but this 
 been superseded by the Workstation Service Remote Protocol [MS-WKST] and the Server Service
 Remote Protocol [MS-SRVS].
 
-2.2  Protocol Summary
+### 2.2 Protocol Summary
 
 The following table provides a comprehensive list of the member protocols of the File Services
 Management system.
@@ -995,7 +902,8 @@ Release: October 26, 2021
 
 15 / 77
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1126,7 +1034,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Protocol name
+
+Protocol name
 
 Description
 
@@ -1147,18 +1056,18 @@ name
 [MS-
 RDC]
 
-2.3  Environment
+### 2.3 Environment
 
 The following sections identify the context in which the system exists. This includes the systems that
 use the interfaces that are provided by this system of protocols, other systems that depend on this
 system, and, as appropriate, the communication between components of the systems.
 
-2.3.1  Dependencies on This System
+#### 2.3.1 Dependencies on This System
 
 File Access Services depends on the File Services Management system for share and namespace
 management.
 
-2.3.2  Dependencies on Other Systems/Components
+#### 2.3.2 Dependencies on Other Systems/Components
 
 The File Management Services system depends on the following external systems and components:
 
@@ -1174,7 +1083,7 @@ Services.
 Authentication services are described in the Authentication Services Protocols Overview [MS-
 AUTHSOD].
 
-2.4  Assumptions and Preconditions
+### 2.4 Assumptions and Preconditions
 
 The following assumptions and preconditions for the File Services Management system to operate
 successfully:
@@ -1202,7 +1111,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 18 -->
+
+<!-- Extracted images from page 18 -->
 ![Extracted image 1 from page 18]([MS-FSMOD].images/page018-img01.png)
 <!-- /Extracted images from page 18 -->
 
@@ -1210,9 +1120,9 @@ Domain functionality: For system functionality that requires a domain and direct
 described in [MS-ADOD], at least one domain controller is configured and accessible. Some
 functionality could require an Active Directory domain as noted in individual technical documents.
 
-2.5  Use Cases
+### 2.5 Use Cases
 
-2.5.1  Share Management Use Cases
+#### 2.5.1 Share Management Use Cases
 
 Share Management use cases describe the management activities that the administrator performs to
 control a shared resource by using the admin tool. The share management activity includes the
@@ -1233,7 +1143,7 @@ following sections.
 
 Figure 5: Share Management use cases
 
-2.5.1.1  Create Share SMB
+##### 2.5.1.1 Create Share SMB
 
 Goal
 
@@ -1246,7 +1156,8 @@ Release: October 26, 2021
 
 18 / 77
 
-Context of Use
+
+Context of Use
 
 The administrator is setting up a file server or is adding a share to an existing file server.
 
@@ -1319,7 +1230,8 @@ Release: October 26, 2021
 
 19 / 77
 
-6.  The SMB File Service creates the requested share that stores configuration information in an
+
+6.  The SMB File Service creates the requested share that stores configuration information in an
 
 implementation-specific manner.
 
@@ -1350,7 +1262,7 @@ If share creation fails:
 
 The use case ends with failure.
 
-2.5.1.2  List SMB Shares
+##### 2.5.1.2 List SMB Shares
 
 Goal
 
@@ -1395,7 +1307,8 @@ Release: October 26, 2021
 
 20 / 77
 
-  Administrator
+
+  Administrator
 
 The administrator is the person who administers the file server. The administrator has
 administrative rights and uses the File Services Management system to provide the SMB File
@@ -1452,7 +1365,7 @@ If user authorization or authentication fails:
 
 The use case ends with failure.
 
-2.5.1.3  Getting and Setting the Properties for an Existing SMB Share
+##### 2.5.1.3 Getting and Setting the Properties for an Existing SMB Share
 
 Goal
 
@@ -1472,7 +1385,8 @@ Release: October 26, 2021
 
 21 / 77
 
-Actors
+
+Actors
 
   Admin tool
 
@@ -1544,7 +1458,8 @@ Release: October 26, 2021
 
 22 / 77
 
-6.  The admin tool contacts the SMB File Service by using the NetrShareSetInfo method ([MS-
+
+6.  The admin tool contacts the SMB File Service by using the NetrShareSetInfo method ([MS-
 
 SRVS] section 3.1.4.11) to create the share on the file server.
 
@@ -1575,7 +1490,7 @@ If user authorization or authentication fails:
 
 The use case ends with failure.
 
-2.5.1.4  Delete an SMB Share
+##### 2.5.1.4 Delete an SMB Share
 
 Goal
 
@@ -1619,7 +1534,8 @@ Release: October 26, 2021
 
 23 / 77
 
-  Administrator
+
+  Administrator
 
 The administrator is the person who administers the file server. The administrator has
 administrative rights and uses the File Services Management system to provide SMB File
@@ -1674,7 +1590,7 @@ If user authorization or authentication fails:
 
 The use case ends with failure.
 
-2.5.2  DFS Use Cases
+#### 2.5.2 DFS Use Cases
 
 The Distributed File System (DFS) functions provide the ability to logically group shares on multiple
 servers and to transparently link shares into a single, hierarchical namespace. DFS organizes shared
@@ -1690,13 +1606,14 @@ Release: October 26, 2021
 
 24 / 77
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-FSMOD].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
 Figure 6: DFS use cases
 
-2.5.2.1  Create DFS Standalone Namespace
+##### 2.5.2.1 Create DFS Standalone Namespace
 
 Goal
 
@@ -1726,7 +1643,8 @@ Release: October 26, 2021
 
 25 / 77
 
-The DFS Service is a supporting actor that provides the technology that helps administrators
+
+The DFS Service is a supporting actor that provides the technology that helps administrators
 group shared folders that are located on different servers and present them to users as a virtual
 tree of folders that is known as a namespace.
 
@@ -1801,13 +1719,14 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-If user authorization or authentication fails:
+
+If user authorization or authentication fails:
 
 
 
 The use case ends with failure.
 
-2.5.2.2  Create DFS Domain Namespace
+##### 2.5.2.2 Create DFS Domain Namespace
 
 Goal
 
@@ -1872,7 +1791,8 @@ Release: October 26, 2021
 
 27 / 77
 
-1.  Trigger: The admin tool receives a request from the administrator to create a DFS namespace on
+
+1.  Trigger: The admin tool receives a request from the administrator to create a DFS namespace on
 
 the SMB File Service.
 
@@ -1918,7 +1838,7 @@ If user authorization or authentication fails:
 
 The use case ends with failure.
 
-2.5.2.3  Create DFS Link
+##### 2.5.2.3 Create DFS Link
 
 Goal
 
@@ -1948,7 +1868,8 @@ Release: October 26, 2021
 
 28 / 77
 
-The DFS Service is a supporting actor that provides the technology that helps administrators
+
+The DFS Service is a supporting actor that provides the technology that helps administrators
 group shared folders that are located on different servers and present them to users as a virtual
 tree of folders that is known as a namespace.
 
@@ -2022,7 +1943,8 @@ Release: October 26, 2021
 
 29 / 77
 
-If the communication channel for the DFS namespace, as described in [MS-DFSNM], cannot be
+
+If the communication channel for the DFS namespace, as described in [MS-DFSNM], cannot be
 established, or it becomes disconnected:
 
 
@@ -2044,7 +1966,7 @@ In the case of a domain DFS namespace:
 The DFS Service additionally interacts with the Active Directory system, as described in [MS-
 ADOD] to store metadata changes that are related to the DFS link, as described in [MS-DFSNM].
 
-2.5.2.4  Add a Root Target to a Domain-Based Namespace
+##### 2.5.2.4 Add a Root Target to a Domain-Based Namespace
 
 Goal
 
@@ -2097,7 +2019,8 @@ Release: October 26, 2021
 
 30 / 77
 
-The administrator is the person who sets up and manages the DFS root target servers and the
+
+The administrator is the person who sets up and manages the DFS root target servers and the
 DFS namespaces.
 
 Preconditions
@@ -2153,7 +2076,7 @@ If user authorization or authentication fails:
 
 The use case ends with failure.
 
-2.5.3  DFS-R Configuration and Monitoring Use Cases
+#### 2.5.3 DFS-R Configuration and Monitoring Use Cases
 
 This section describes the configuration and monitoring activity of Distributed File System-Replication
 (DFS-R) on a server that includes the configuration of the DFS-R objects for the high availability of
@@ -2169,7 +2092,8 @@ Release: October 26, 2021
 
 31 / 77
 
-<!-- Extracted images from page 32 -->
+
+<!-- Extracted images from page 32 -->
 ![Extracted image 1 from page 32]([MS-FSMOD].images/page032-img01.png)
 <!-- /Extracted images from page 32 -->
 
@@ -2213,7 +2137,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Stakeholders
+
+Stakeholders
 
   Administrator
 
@@ -2257,7 +2182,7 @@ The admin tool can attempt to establish connection multiple times; ultimately, t
 with failure. Depending on when the connection failed, the namespace could or could not have
 been created.
 
-2.5.3.1  Get Health Information for a DFS Replication
+##### 2.5.3.1 Get Health Information for a DFS Replication
 
 Goal
 
@@ -2286,7 +2211,8 @@ Release: October 26, 2021
 
 33 / 77
 
-The DFS-R Service is a supporting actor that provides the interfaces to create, modify, and
+
+The DFS-R Service is a supporting actor that provides the interfaces to create, modify, and
 delete configuration objects in Active Directory by using the server's machine account. It also
 provides the interface to monitor DFS-R on the computer and to collect statistics about the DFS-
 R operation.
@@ -2340,7 +2266,7 @@ The admin tool can attempt to establish connection multiple times; ultimately, t
 with failure. Depending on when the connection failed, the namespace could or could not have
 been created.
 
-2.5.3.2  Create a Directory Object for a DFS Replication Group Using Server Credentials
+##### 2.5.3.2 Create a Directory Object for a DFS Replication Group Using Server Credentials
 
 Goal
 
@@ -2360,7 +2286,8 @@ Release: October 26, 2021
 
 34 / 77
 
-  Admin tool
+
+  Admin tool
 
 The admin tool is the primary actor that triggers this use case. The admin tool is a program that
 offers management functionality to the administrator through the admin client. Typical admin
@@ -2435,7 +2362,8 @@ Release: October 26, 2021
 
 35 / 77
 
-<!-- Extracted images from page 36 -->
+
+<!-- Extracted images from page 36 -->
 ![Extracted image 1 from page 36]([MS-FSMOD].images/page036-img01.png)
 <!-- /Extracted images from page 36 -->
 
@@ -2452,7 +2380,7 @@ The admin tool can attempt to establish connection multiple times; ultimately, t
 with failure. Depending on when the connection failed, the namespace could or could not have
 been created.
 
-2.5.4  Resource Management Use Cases
+#### 2.5.4 Resource Management Use Cases
 
 The File Server Resource Manager (FSRM) enables system administrators to understand how storage
 is used and to manage the use of their storage by generating storage reports, by applying quotas to
@@ -2463,7 +2391,7 @@ following sections.
 
 Figure 8: Resource Management use cases
 
-2.5.4.1  Create and Configure a File Management Job
+##### 2.5.4.1 Create and Configure a File Management Job
 
 Goal
 
@@ -2483,7 +2411,8 @@ Release: October 26, 2021
 
 36 / 77
 
-  Admin tool
+
+  Admin tool
 
 The admin tool is the primary actor that triggers this use case. The admin tool is a program that
 offers management functionality to the administrator through the admin client. Typical admin
@@ -2556,7 +2485,8 @@ Release: October 26, 2021
 
 37 / 77
 
-2.5.4.2  Create a Report Job
+
+##### 2.5.4.2 Create a Report Job
 
 Goal
 
@@ -2629,7 +2559,8 @@ Release: October 26, 2021
 
 38 / 77
 
-The requested file management task is created and configured.
+
+The requested file management task is created and configured.
 
 Extensions
 
@@ -2639,7 +2570,7 @@ established, or it becomes disconnected:
 The admin tool can attempt to establish connection multiple times; ultimately, the use case ends with
 failure. Depending on when the connection failed, the report job could or could not have been created.
 
-2.5.4.3  Configure File Screens and Directory Quotas
+##### 2.5.4.3 Configure File Screens and Directory Quotas
 
 Goal
 
@@ -2703,7 +2634,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-IFsrmQuotaBase::QuotaLimit(put) method ([MS-FSRM] section 3.2.4.2.14.3) with a valid
+
+IFsrmQuotaBase::QuotaLimit(put) method ([MS-FSRM] section 3.2.4.2.14.3) with a valid
 quota limit.
 
 4.  Alternatively, the admin tool creates a file screen on the file server by using the
@@ -2727,7 +2659,7 @@ The admin tool might attempt to establish connection multiple times; ultimately,
 ends with failure. Depending on when the connection failed, the file quota and file screen might or
 might not have been created.
 
-2.5.5  Server Management Use Cases
+#### 2.5.5 Server Management Use Cases
 
 This section describes the operations that are performed by administrator to manage an SMB share
 which includes the following operations: attaching and detaching the alias names, getting or setting
@@ -2743,13 +2675,14 @@ Release: October 26, 2021
 
 40 / 77
 
-<!-- Extracted images from page 41 -->
+
+<!-- Extracted images from page 41 -->
 ![Extracted image 1 from page 41]([MS-FSMOD].images/page041-img01.png)
 <!-- /Extracted images from page 41 -->
 
 Figure 9: Server Management use cases
 
-2.5.5.1  Attach an Alias Name to an Existing Server
+##### 2.5.5.1 Attach an Alias Name to an Existing Server
 
 Goal
 
@@ -2778,7 +2711,8 @@ Release: October 26, 2021
 
 41 / 77
 
-The admin client is a supporting actor that implements client-side protocol components and
+
+The admin client is a supporting actor that implements client-side protocol components and
 consumes the file server administration services that are offered by the file server. The admin
 client is internal to the File Services Management system.
 
@@ -2856,7 +2790,8 @@ Release: October 26, 2021
 
 42 / 77
 
-2.5.5.2  Detach an Alias Name from a Server
+
+##### 2.5.5.2 Detach an Alias Name from a Server
 
 Goal
 
@@ -2927,7 +2862,8 @@ Release: October 26, 2021
 
 43 / 77
 
-4.  The admin tool contacts the SMB File Service by using the NetrServerAliasDel method, as
+
+4.  The admin tool contacts the SMB File Service by using the NetrServerAliasDel method, as
 
 described in the Server Service Remote Protocol [MS-SRVS] section 3.1.4.46, to delete an alias
 from the file server.
@@ -2959,7 +2895,7 @@ If user authentication or authorization fails:
 
 The use case ends with failure.
 
-2.5.5.3  Retrieve Alias Names
+##### 2.5.5.3 Retrieve Alias Names
 
 Goal
 
@@ -3002,7 +2938,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Stakeholders
+
+Stakeholders
 
   Administrator
 
@@ -3059,7 +2996,7 @@ If user authentication or authorization fails:
 
 The use case ends with failure.
 
-2.5.5.4  Binding or Unbinding an SMB Server Transport Protocol
+##### 2.5.5.4 Binding or Unbinding an SMB Server Transport Protocol
 
 Goal
 
@@ -3079,7 +3016,8 @@ Release: October 26, 2021
 
 45 / 77
 
-  Admin tool
+
+  Admin tool
 
 The admin tool is the primary actor that triggers this use case. The admin tool is a program that
 offers management functionality to the administrator through the admin client. Typical admin
@@ -3153,7 +3091,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Extensions
+
+Extensions
 
 The following results occur if the communication channel for the Server Service Remote Protocol [MS-
 SRVS] cannot be established, or it becomes disconnected:
@@ -3170,7 +3109,7 @@ If user authentication or authorization fails:
 
 The use case ends with failure.
 
-2.5.5.5  Getting or Setting the Configuration Information for a Server
+##### 2.5.5.5 Getting or Setting the Configuration Information for a Server
 
 Goal
 
@@ -3225,7 +3164,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-Main Success Scenario
+
+Main Success Scenario
 
 1.  Trigger: The admin tool receives a request from the administrator to get or set the operating
 
@@ -3280,7 +3220,7 @@ If the user authentication fails:
 
 The use case ends with failure.
 
-2.5.6  SMB Redirector Use Cases
+#### 2.5.6 SMB Redirector Use Cases
 
 This section describes the operations performed by administrator to manage an SMB Network
 Redirector.
@@ -3295,13 +3235,14 @@ Release: October 26, 2021
 
 48 / 77
 
-<!-- Extracted images from page 49 -->
+
+<!-- Extracted images from page 49 -->
 ![Extracted image 1 from page 49]([MS-FSMOD].images/page049-img01.png)
 <!-- /Extracted images from page 49 -->
 
 Figure 10: Configure SMB Network Redirector use cases
 
-2.5.6.1  Enable a Transport Protocol on an SMB Network Redirector
+##### 2.5.6.1 Enable a Transport Protocol on an SMB Network Redirector
 
 Goal
 
@@ -3337,7 +3278,8 @@ Release: October 26, 2021
 
 49 / 77
 
-The SMB Network Redirector is a supporting actor that handles requests for remote files and
+
+The SMB Network Redirector is a supporting actor that handles requests for remote files and
 printer operations and uses the Server Message Block (SMB) protocol as access protocol. The
 SMB Network Redirector also implements server-side protocol components that are used to
 configure it and that are consumed by the admin client.
@@ -3382,7 +3324,7 @@ Postcondition
 
 The SMB Network Redirector can use the provided transport protocol.
 
-2.5.6.2  Disable a Transport Protocol on an SMB Network Redirector
+##### 2.5.6.2 Disable a Transport Protocol on an SMB Network Redirector
 
 Goal
 
@@ -3408,7 +3350,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-The purpose of the admin tool is to correctly interpret, execute, and display the results of the
+
+The purpose of the admin tool is to correctly interpret, execute, and display the results of the
 commands that are issued by the administrator.
 
   Admin client
@@ -3481,7 +3424,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.5.6.3  Get Statistics about an SMB Network Redirector
+
+##### 2.5.6.3 Get Statistics about an SMB Network Redirector
 
 Goal
 
@@ -3553,13 +3497,14 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.  The Workstation Service returns the corresponding statistics about the SMB Network Redirector.
+
+4.  The Workstation Service returns the corresponding statistics about the SMB Network Redirector.
 
 Postcondition
 
 None.
 
-2.5.6.4  Get Transport Protocols Enabled on an SMB Network Redirector
+##### 2.5.6.4 Get Transport Protocols Enabled on an SMB Network Redirector
 
 Goal
 
@@ -3623,7 +3568,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-2.  The admin tool establishes a communication channel to the Workstation Service, as described in
+
+2.  The admin tool establishes a communication channel to the Workstation Service, as described in
 
 [MS-WKST] section 2.1.
 
@@ -3639,9 +3585,9 @@ Postcondition
 
 None.
 
-2.6  Versioning, Capability Negotiation, and Extensibility
+### 2.6 Versioning, Capability Negotiation, and Extensibility
 
-2.6.1  Remote Administration Protocol
+#### 2.6.1 Remote Administration Protocol
 
 The current File Services Management system evolved from earlier systems for remote file access,
 including the Microsoft LAN Manager. These early systems did not have a general RPC transport
@@ -3660,7 +3606,7 @@ RPC platforms that include the Microsoft Windows 95 operating system.
 In the Windows 7 operating system, the Remote Administration Protocol is deprecated. It can only be
 used to enumerate file shares.
 
-2.6.2  File Replication Service
+#### 2.6.2 File Replication Service
 
 The File Replication Service (FRS), as described in [MS-FRS1], is a technology that was originally
 introduced in the Microsoft Windows 2000 Server operating system to replicate Distributed File System
@@ -3676,9 +3622,9 @@ Server 2008 R2 operating system, FRS can be used only to replicate the SYSVOL fo
 controllers in domains that use the Windows Server 2003 operating system or the Windows 2000
 Server domain functional levels.
 
-2.7  Error Handling
+### 2.7 Error Handling
 
-2.7.1  Connection Disconnected
+#### 2.7.1 Connection Disconnected
 
 A common failure scenario is an unexpected breakdown of the connection between the system and
 external entities. A disconnection can be caused when the network is not available or when one of the
@@ -3690,7 +3636,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-communicating participants has become unavailable. In the case where the network is not available,
+
+communicating participants has become unavailable. In the case where the network is not available,
 both participants remain active and expect the other party to continue the communication pattern of
 the protocol in use at the time of the failure. Similarly, in the case where one of the participants is not
 available, the active participant expects the communication to proceed as specified by the protocol in
@@ -3711,25 +3658,25 @@ maintain the system state.
 Details about how each protocol detects a connection disconnected event and how it behaves under
 this scenario are provided in the specifications of the member protocols.
 
-2.7.2  Internal Failures
+#### 2.7.2 Internal Failures
 
 The File Service Management system does not defend against internal failures of its state, other than
 those that are described in the specifications of the member protocols. The components that comprise
 the system mutually determine that each is authoritative at all times.
 
-2.8  Coherency Requirements
+### 2.8 Coherency Requirements
 
 Each File Services Management protocol provides its own coherency mechanisms. There are no
 coherence mechanisms among dissimilar protocols. Because coherency mechanisms among similar
 protocols are specified in the individual protocol documents, there are no system-level coherency
 requirements.
 
-2.9  Security
+### 2.9 Security
 
 Versioning of security is handled by the underlying RPC transport. For more information, see Remote
 Procedure Call Protocol Extensions ([MS-RPCE] section 3.3.3).
 
-2.10  Additional Considerations
+### 2.10 Additional Considerations
 
 The following table specifies the RPC transport that is used by each member protocol.
 
@@ -3772,7 +3719,8 @@ Release: October 26, 2021
 
 55 / 77
 
-Protocol name
+
+Protocol name
 
  [MS-SRVS]
 
@@ -3799,9 +3747,10 @@ Release: October 26, 2021
 
 56 / 77
 
-3  Examples
 
-3.1  Example 1: Creating an SMB Share
+## 3 Examples
+
+### 3.1 Example 1: Creating an SMB Share
 
 This example demonstrates the use cases that are described in section 2.5.1.1.
 
@@ -3842,7 +3791,8 @@ Release: October 26, 2021
 
 57 / 77
 
-<!-- Extracted images from page 58 -->
+
+<!-- Extracted images from page 58 -->
 ![Extracted image 1 from page 58]([MS-FSMOD].images/page058-img01.png)
 <!-- /Extracted images from page 58 -->
 
@@ -3876,7 +3826,7 @@ the share name and the access permissions.
 
 8.  The SMB File Service returns a success code.
 
-3.2  Example 2: Deleting an SMB Share
+### 3.2 Example 2: Deleting an SMB Share
 
 This example demonstrates the use cases described in section 2.5.1.4.
 
@@ -3887,7 +3837,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-<!-- Extracted images from page 59 -->
+
+<!-- Extracted images from page 59 -->
 ![Extracted image 1 from page 59]([MS-FSMOD].images/page059-img01.png)
 <!-- /Extracted images from page 59 -->
 
@@ -3942,12 +3893,13 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-In Windows-based implementations, the Shared Folders snap-in is used as the admin tool to
+
+In Windows-based implementations, the Shared Folders snap-in is used as the admin tool to
 centrally manage file shares on a computer. The Shared Folders snap-in calls the
 NetrShareEnum method ([MS-SRVS] section 3.1.4.8) to enumerate the share entries in the
 ShareList.
 
-3.3  Example 3: Creating and Managing a DFS Domain Namespace
+### 3.3 Example 3: Creating and Managing a DFS Domain Namespace
 
 This example demonstrates the use cases described in section 2.5.2.2, section 2.5.2.3, and section
 2.5.2.4.
@@ -4000,7 +3952,8 @@ Release: October 26, 2021
 
 60 / 77
 
-<!-- Extracted images from page 61 -->
+
+<!-- Extracted images from page 61 -->
 ![Extracted image 1 from page 61]([MS-FSMOD].images/page061-img01.png)
 <!-- /Extracted images from page 61 -->
 
@@ -4043,7 +3996,8 @@ Release: October 26, 2021
 
 61 / 77
 
-<!-- Extracted images from page 62 -->
+
+<!-- Extracted images from page 62 -->
 ![Extracted image 1 from page 62]([MS-FSMOD].images/page062-img01.png)
 <!-- /Extracted images from page 62 -->
 
@@ -4094,7 +4048,8 @@ Release: October 26, 2021
 
 62 / 77
 
-<!-- Extracted images from page 63 -->
+
+<!-- Extracted images from page 63 -->
 ![Extracted image 1 from page 63]([MS-FSMOD].images/page063-img01.png)
 ![Extracted image 2 from page 63]([MS-FSMOD].images/page063-img02.png)
 <!-- /Extracted images from page 63 -->
@@ -4143,7 +4098,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-described in [MS-DFSRH] section 3.1.5.2.1, or by using the IADProxy2::CreateObject method
+
+described in [MS-DFSRH] section 3.1.5.2.1, or by using the IADProxy2::CreateObject method
 ([MS-DFSRH] section 3.1.5.3.1).
 
 11. The DFS-R Service uses LDAP messages to create the replication object on the domain controller
@@ -4154,7 +4110,7 @@ Release: October 26, 2021
 
 code to the admin client.
 
-3.4  Example 4: Creating an FSRM File Screen
+### 3.4 Example 4: Creating an FSRM File Screen
 
 This example demonstrates the use cases described in section 2.5.4.3.
 
@@ -4182,7 +4138,8 @@ Release: October 26, 2021
 
 64 / 77
 
-<!-- Extracted images from page 65 -->
+
+<!-- Extracted images from page 65 -->
 ![Extracted image 1 from page 65]([MS-FSMOD].images/page065-img01.png)
 <!-- /Extracted images from page 65 -->
 
@@ -4223,7 +4180,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-IFsrmFileScreenBase::BlockedFileGroups(get) method ([MS-FSRM] section 3.2.4.2.26.1).
+
+IFsrmFileScreenBase::BlockedFileGroups(get) method ([MS-FSRM] section 3.2.4.2.26.1).
 The FSRM Service returns the IFsrmMutableCollection object and a status code.
 
 6.  The admin client, by using the acquired collection object, adds the requested file group to the
@@ -4245,7 +4203,7 @@ Final System State
 The FSRM Service successfully executes the requested operations, and the specified file screen policy
 is created on the server.
 
-3.5  Example 5: Creating an FSRM Quota
+### 3.5 Example 5: Creating an FSRM Quota
 
 This example demonstrates the use cases described in section 2.5.4.3.
 
@@ -4282,7 +4240,8 @@ Release: October 26, 2021
 
 66 / 77
 
-<!-- Extracted images from page 67 -->
+
+<!-- Extracted images from page 67 -->
 ![Extracted image 1 from page 67]([MS-FSMOD].images/page067-img01.png)
 <!-- /Extracted images from page 67 -->
 
@@ -4309,7 +4268,7 @@ FSRM Service returns a success code.
 quota by using the IFsrmQuotaObject::Commit method ([MS-FSRM] section 3.2.4.2.15.1). The
 FSRM Service returns a success code.
 
-3.6  Example 6: Creating and Configuring a File Management Job
+### 3.6 Example 6: Creating and Configuring a File Management Job
 
 This example demonstrates the use cases described in section 2.5.4.1.
 
@@ -4340,7 +4299,8 @@ Release: October 26, 2021
 
 67 / 77
 
-<!-- Extracted images from page 68 -->
+
+<!-- Extracted images from page 68 -->
 ![Extracted image 1 from page 68]([MS-FSMOD].images/page068-img01.png)
 <!-- /Extracted images from page 68 -->
 
@@ -4370,7 +4330,8 @@ Release: October 26, 2021
 
 68 / 77
 
-3.  The admin client sets the NamespaceRoot property of the newly created file management job by
+
+3.  The admin client sets the NamespaceRoot property of the newly created file management job by
 calling the IFsrmFileManagementJob::NamespaceRoot(put) method ([MS-FSRM] section
 3.2.4.2.48.5). The FSRM Service returns a success code.
 
@@ -4412,7 +4373,7 @@ IFsrmReportScheduler::CreateScheduleTask method ([MS-FSRM] section 3.2.4.2.36.2)
 pass in the name as it was used in step 9, namespaces, and serialized text of the task. The FSRM
 Service returns a success code.
 
-3.7  Example 7: Creating a Scheduled Report Job
+### 3.7 Example 7: Creating a Scheduled Report Job
 
 This example demonstrates the use cases described in section 2.5.4.2.
 
@@ -4447,7 +4408,8 @@ Release: October 26, 2021
 
 69 / 77
 
-<!-- Extracted images from page 70 -->
+
+<!-- Extracted images from page 70 -->
 ![Extracted image 1 from page 70]([MS-FSMOD].images/page070-img01.png)
 <!-- /Extracted images from page 70 -->
 
@@ -4477,7 +4439,8 @@ Release: October 26, 2021
 
 70 / 77
 
-4.  The admin client sets the filter of the created report objects by calling the
+
+4.  The admin client sets the filter of the created report objects by calling the
 
 IFsrmReport::SetFilter method for each report object to set the filter ([MS-FSRM] section
 3.2.4.2.35.8). The FSRM Service returns a success code.
@@ -4513,7 +4476,7 @@ task is finished ([MS-FSRM] section 3.2.4.2.34.17). The FSRM Service returns a s
 section 3.2.4.2.36.2) that passes in the name, namespaces as used in step 8, and serialized text
 for the task. The FSRM Service returns a success code.
 
-3.8  Example 8: Client Cannot Connect to a DFS Service
+### 3.8 Example 8: Client Cannot Connect to a DFS Service
 
 This example demonstrates extension 1 of the use case described in section 2.5.2.1.
 
@@ -4541,7 +4504,8 @@ Release: October 26, 2021
 
 71 / 77
 
-<!-- Extracted images from page 72 -->
+
+<!-- Extracted images from page 72 -->
 ![Extracted image 1 from page 72]([MS-FSMOD].images/page072-img01.png)
 <!-- /Extracted images from page 72 -->
 
@@ -4567,7 +4531,8 @@ Release: October 26, 2021
 
 72 / 77
 
-4  Microsoft Implementations
+
+## 4 Microsoft Implementations
 
 There are no variations in the behavior of the File Access Services System in different versions of
 Windows beyond those described in the specifications of the protocols supported by the system, as
@@ -4636,7 +4601,8 @@ File Services Management Protocols Overview
 Copyright © 2021 Microsoft Corporation
 Release: October 26, 2021
 
-4.1  Product Behavior
+
+### 4.1 Product Behavior
 
 <1> Section 3.3: The NetrDfsAddRootTarget method is not supported on the following: Windows
 NT, Windows NT Server 4.0, Windows 2000 Server, Windows Server 2003, and Windows Server 2003
@@ -4656,7 +4622,8 @@ Release: October 26, 2021
 
 74 / 77
 
-5  Change Tracking
+
+## 5 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -4693,7 +4660,8 @@ Release: October 26, 2021
 
 75 / 77
 
-6  Index
+
+## 6 Index
 A
 
 Additional considerations 55
@@ -4828,7 +4796,8 @@ Smb redirector use cases
 
 76 / 77
 
-   overview 48
+
+   overview 48
 System architecture 9
 System dependencies 17
    with other systems 17

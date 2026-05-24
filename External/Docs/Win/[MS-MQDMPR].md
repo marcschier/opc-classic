@@ -64,7 +64,8 @@ Release: April 23, 2024
 
 1 / 138
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -315,7 +316,8 @@ Release: April 23, 2024
 
 2 / 138
 
-Date
+
+Date
 
 Revision
 History
@@ -453,330 +455,155 @@ Release: April 23, 2024
 
 3 / 138
 
-Table of Contents
 
-1.1
-1.2
+## Table of Contents
 
-1.2.1
-1.2.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Message Syntax](#22-message-syntax)
+  - [2.3 Directory Service Schema Elements](#23-directory-service-schema-elements)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 Common Details](#31-common-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+      - [3.1.1.1 QueueManager](#3111-queuemanager)
+      - [3.1.1.2 Queue](#3112-queue)
+      - [3.1.1.3 OutgoingQueue](#3113-outgoingqueue)
+      - [3.1.1.4 OutgoingTransferInfo](#3114-outgoingtransferinfo)
+      - [3.1.1.5 IncomingTransactionalTransferInfo](#3115-incomingtransactionaltransferinfo)
+      - [3.1.1.6 Enterprise](#3116-enterprise)
+      - [3.1.1.7 Site](#3117-site)
+      - [3.1.1.8 RoutingLink](#3118-routinglink)
+      - [3.1.1.9 ConnectedNetwork](#3119-connectednetwork)
+      - [3.1.1.10 WaitingMessageReadOperation](#31110-waitingmessagereadoperation)
+      - [3.1.1.11 MessagePosition](#31111-messageposition)
+      - [3.1.1.12 Message](#31112-message)
+      - [3.1.1.13 TransactionalOperation](#31113-transactionaloperation)
+      - [3.1.1.14 Transaction](#31114-transaction)
+      - [3.1.1.15 User](#31115-user)
+      - [3.1.1.16 OpenQueueDescriptor](#31116-openqueuedescriptor)
+      - [3.1.1.17 Enumerations](#31117-enumerations)
+      - [3.1.1.18 DispatchEntry](#31118-dispatchentry)
+      - [3.1.1.19 InternalCertificate](#31119-internalcertificate)
+    - [3.1.2 Timers](#312-timers)
+      - [3.1.2.1 Directory Sites Update Timer](#3121-directory-sites-update-timer)
+      - [3.1.2.2 Directory Site Gates Update Timer](#3122-directory-site-gates-update-timer)
+      - [3.1.2.3 Waiting Message Read Timer](#3123-waiting-message-read-timer)
+      - [3.1.2.4 Time To Be Received Timer](#3124-time-to-be-received-timer)
+      - [3.1.2.5 Directory Online Timer](#3125-directory-online-timer)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Higher-Layer Triggered Events](#314-higher-layer-triggered-events)
+      - [3.1.4.1 Queue Manager Started](#3141-queue-manager-started)
+      - [3.1.4.2 Queue Manager Stopped](#3142-queue-manager-stopped)
+      - [3.1.4.3 Transaction Prepare](#3143-transaction-prepare)
+      - [3.1.4.4 Transaction Commit](#3144-transaction-commit)
+      - [3.1.4.5 Transaction Abort](#3145-transaction-abort)
+      - [3.1.4.6 DTC Transaction Prepare](#3146-dtc-transaction-prepare)
+      - [3.1.4.7 DTC Transaction Commit](#3147-dtc-transaction-commit)
+      - [3.1.4.8 DTC Transaction Abort](#3148-dtc-transaction-abort)
+      - [3.1.4.9 DTC Reenlistment Commit](#3149-dtc-reenlistment-commit)
+      - [3.1.4.10 DTC Reenlistment Abort](#31410-dtc-reenlistment-abort)
+      - [3.1.4.11 DTC Reenlistment Timeout](#31411-dtc-reenlistment-timeout)
+      - [3.1.4.12 Take Offline](#31412-take-offline)
+      - [3.1.4.13 Bring Online](#31413-bring-online)
+      - [3.1.4.14 Pause Queue](#31414-pause-queue)
+      - [3.1.4.15 Resume Queue](#31415-resume-queue)
+    - [3.1.5 Processing Events and Sequencing Rules](#315-processing-events-and-sequencing-rules)
+    - [3.1.6 Timer Events](#316-timer-events)
+      - [3.1.6.1 Directory Sites Update](#3161-directory-sites-update)
+      - [3.1.6.2 Directory Site Gates Update](#3162-directory-site-gates-update)
+      - [3.1.6.3 Waiting Message Read Timer Expired](#3163-waiting-message-read-timer-expired)
+    - [3.1.7 Other Local Events](#317-other-local-events)
+      - [3.1.7.1 Events Raised By Related Protocols](#3171-events-raised-by-related-protocols)
+        - [3.1.7.1.1 Open Cursor](#31711-open-cursor)
+        - [3.1.7.1.2 Close Cursor](#31712-close-cursor)
+        - [3.1.7.1.3 Create Queue](#31713-create-queue)
+          - [3.1.7.1.3.1 Create Default Queue Security Descriptor](#317131-create-default-queue-security-descriptor)
+        - [3.1.7.1.4 Delete Queue](#31714-delete-queue)
+        - [3.1.7.1.5 Open Queue](#31715-open-queue)
+        - [3.1.7.1.6 Close Queue](#31716-close-queue)
+        - [3.1.7.1.7 Purge Queue](#31717-purge-queue)
+        - [3.1.7.1.8 Create Transaction](#31718-create-transaction)
+        - [3.1.7.1.9 Enqueue Message](#31719-enqueue-message)
+        - [3.1.7.1.10 Dequeue Message](#317110-dequeue-message)
+        - [3.1.7.1.11 Dequeue Message Begin](#317111-dequeue-message-begin)
+        - [3.1.7.1.12 Dequeue Message End](#317112-dequeue-message-end)
+        - [3.1.7.1.13 Read Message By Lookup Identifier](#317113-read-message-by-lookup-identifier)
+        - [3.1.7.1.14 Peek Next Message](#317114-peek-next-message)
+        - [3.1.7.1.15 Peek Message](#317115-peek-message)
+        - [3.1.7.1.16 Move Message](#317116-move-message)
+        - [3.1.7.1.17 Cancel Waiting Message Read Request](#317117-cancel-waiting-message-read-request)
+        - [3.1.7.1.18 Create Directory Object](#317118-create-directory-object)
+        - [3.1.7.1.19 Delete Directory Object](#317119-delete-directory-object)
+        - [3.1.7.1.20 Read Directory](#317120-read-directory)
+        - [3.1.7.1.21 Read Directory Begin](#317121-read-directory-begin)
+        - [3.1.7.1.22 Read Directory Next](#317122-read-directory-next)
+        - [3.1.7.1.23 Read Directory End](#317123-read-directory-end)
+        - [3.1.7.1.24 Write Directory](#317124-write-directory)
+        - [3.1.7.1.25 Check Directory Online](#317125-check-directory-online)
+        - [3.1.7.1.26 Get Queue Path](#317126-get-queue-path)
+        - [3.1.7.1.27 Enqueue Message To An Open Queue](#317127-enqueue-message-to-an-open-queue)
+        - [3.1.7.1.28 Add Message To Dispatch Collection](#317128-add-message-to-dispatch-collection)
+        - [3.1.7.1.29 Remove Message From Dispatch Collection](#317129-remove-message-from-dispatch-collection)
+        - [3.1.7.1.30 Construct a UserMessage Packet](#317130-construct-a-usermessage-packet)
+        - [3.1.7.1.31 Deserialize Message From Buffer](#317131-deserialize-message-from-buffer)
+        - [3.1.7.1.32 Serialize Message to Buffer](#317132-serialize-message-to-buffer)
+        - [3.1.7.1.33 Set Queue Defaults](#317133-set-queue-defaults)
+        - [3.1.7.1.34 Remove Messages From Dispatch Collection By Queue](#317134-remove-messages-from-dispatch-collection-by-queue)
+      - [3.1.7.2 Events Consumed By Related Protocols](#3172-events-consumed-by-related-protocols)
+        - [3.1.7.2.1 Message Position Deleted](#31721-message-position-deleted)
+        - [3.1.7.2.2 Message Position Available](#31722-message-position-available)
+        - [3.1.7.2.3 Pause Queue](#31723-pause-queue)
+        - [3.1.7.2.4 Resume Queue](#31724-resume-queue)
+        - [3.1.7.2.5 Begin Flow Control](#31725-begin-flow-control)
+        - [3.1.7.2.6 End Flow Control](#31726-end-flow-control)
+        - [3.1.7.2.7 Time To Be Received Timer Expired](#31727-time-to-be-received-timer-expired)
+      - [3.1.7.3 Internal Events](#3173-internal-events)
+        - [3.1.7.3.1 Wait For New Message](#31731-wait-for-new-message)
+        - [3.1.7.3.2 Seek Available Message Position](#31732-seek-available-message-position)
+        - [3.1.7.3.3 Seek Available Message Position With Id](#31733-seek-available-message-position-with-id)
+        - [3.1.7.3.4 Waiting Message Read Timer Start](#31734-waiting-message-read-timer-start)
+        - [3.1.7.3.5 Waiting Message Read Timer Stop](#31735-waiting-message-read-timer-stop)
+        - [3.1.7.3.6 Waiting Message Read Satisfied](#31736-waiting-message-read-satisfied)
+        - [3.1.7.3.7 Release Next Reader](#31737-release-next-reader)
+        - [3.1.7.3.8 Expand Format Name](#31738-expand-format-name)
+        - [3.1.7.3.9 Dispatch Send Message](#31739-dispatch-send-message)
+  - [3.2 Cursor](#32-cursor)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+      - [3.2.1.1 State Diagram](#3211-state-diagram)
+      - [3.2.1.2 State Definition](#3212-state-definition)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Higher-Layer Triggered Events](#324-higher-layer-triggered-events)
+    - [3.2.5 Processing Events and Sequencing Rules](#325-processing-events-and-sequencing-rules)
+    - [3.2.6 Timer Events](#326-timer-events)
+    - [3.2.7 Other Local Events](#327-other-local-events)
+      - [3.2.7.1 Initialize](#3271-initialize)
+      - [3.2.7.2 Get Message For Peek](#3272-get-message-for-peek)
+      - [3.2.7.3 Get Next Message For Peek](#3273-get-next-message-for-peek)
+      - [3.2.7.4 Get Next Message For Dequeue](#3274-get-next-message-for-dequeue)
+      - [3.2.7.5 Message Available](#3275-message-available)
+      - [3.2.7.6 Wait Time Expired](#3276-wait-time-expired)
+- [4 Protocol Examples](#4-protocol-examples)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Product Behavior](#6-appendix-a-product-behavior)
+- [7 Change Tracking](#7-change-tracking)
+- [8 Index](#8-index)
 
-1  Introduction ............................................................................................................ 7
-Glossary ........................................................................................................... 7
-References ...................................................................................................... 12
-Normative References ................................................................................. 12
-Informative References ............................................................................... 14
-Overview ........................................................................................................ 14
-Relationship to Other Protocols .......................................................................... 14
-Prerequisites/Preconditions ............................................................................... 15
-Applicability Statement ..................................................................................... 15
-Versioning and Capability Negotiation ................................................................. 15
-Vendor-Extensible Fields ................................................................................... 16
-Standards Assignments ..................................................................................... 16
-
-1.3
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-2  Messages ............................................................................................................... 17
-Transport ........................................................................................................ 17
-Message Syntax ............................................................................................... 17
-Directory Service Schema Elements ................................................................... 17
-
-2.1
-2.2
-2.3
-
-3.1
-
-3.1.1
-
-3  Protocol Details ..................................................................................................... 18
-Common Details .............................................................................................. 18
-Abstract Data Model .................................................................................... 18
-QueueManager ..................................................................................... 21
-3.1.1.1
-Queue ................................................................................................. 25
-3.1.1.2
-OutgoingQueue ..................................................................................... 28
-3.1.1.3
-OutgoingTransferInfo ............................................................................ 29
-3.1.1.4
-IncomingTransactionalTransferInfo ......................................................... 30
-3.1.1.5
-Enterprise ............................................................................................ 31
-3.1.1.6
-Site ..................................................................................................... 31
-3.1.1.7
-RoutingLink .......................................................................................... 32
-3.1.1.8
-3.1.1.9
-ConnectedNetwork ................................................................................ 33
-3.1.1.10  WaitingMessageReadOperation ............................................................... 33
-3.1.1.11  MessagePosition ................................................................................... 33
-3.1.1.12  Message .............................................................................................. 34
-TransactionalOperation .......................................................................... 44
-3.1.1.13
-3.1.1.14
-Transaction .......................................................................................... 44
-3.1.1.15  User .................................................................................................... 44
-3.1.1.16  OpenQueueDescriptor ............................................................................ 45
-3.1.1.17
-Enumerations ....................................................................................... 46
-3.1.1.18  DispatchEntry ....................................................................................... 47
-InternalCertificate ................................................................................. 47
-3.1.1.19
-Timers ...................................................................................................... 47
-Directory Sites Update Timer .................................................................. 47
-Directory Site Gates Update Timer .......................................................... 47
-Waiting Message Read Timer .................................................................. 47
-Time To Be Received Timer .................................................................... 48
-Directory Online Timer ........................................................................... 48
-Initialization ............................................................................................... 48
-Higher-Layer Triggered Events ..................................................................... 52
-Queue Manager Started ......................................................................... 52
-Queue Manager Stopped ........................................................................ 52
-Transaction Prepare .............................................................................. 53
-Transaction Commit .............................................................................. 53
-Transaction Abort.................................................................................. 54
-DTC Transaction Prepare ........................................................................ 56
-DTC Transaction Commit ....................................................................... 56
-
-3.1.4.1
-3.1.4.2
-3.1.4.3
-3.1.4.4
-3.1.4.5
-3.1.4.6
-3.1.4.7
-
-3.1.2.1
-3.1.2.2
-3.1.2.3
-3.1.2.4
-3.1.2.5
-
-3.1.3
-3.1.4
-
-3.1.2
-
-[MS-MQDMPR] - v20240423
-Message Queuing (MSMQ): Common Data Model and Processing Rules
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-4 / 138
-
-3.1.5
-3.1.6
-
-3.1.7
-
-3.1.7.1
-
-3.1.7.1.3.1
-
-3.1.6.1
-3.1.6.2
-3.1.6.3
-
-3.1.7.1.1
-3.1.7.1.2
-3.1.7.1.3
-
-DTC Transaction Abort ........................................................................... 57
-3.1.4.8
-3.1.4.9
-DTC Reenlistment Commit ..................................................................... 57
-3.1.4.10  DTC Reenlistment Abort ......................................................................... 57
-3.1.4.11  DTC Reenlistment Timeout ..................................................................... 58
-Take Offline .......................................................................................... 58
-3.1.4.12
-Bring Online ......................................................................................... 58
-3.1.4.13
-Pause Queue ........................................................................................ 58
-3.1.4.14
-Resume Queue ..................................................................................... 59
-3.1.4.15
-Processing Events and Sequencing Rules ....................................................... 59
-Timer Events .............................................................................................. 59
-Directory Sites Update ........................................................................... 59
-Directory Site Gates Update ................................................................... 60
-Waiting Message Read Timer Expired ...................................................... 60
-Other Local Events ...................................................................................... 61
-Events Raised By Related Protocols ......................................................... 61
-Open Cursor ................................................................................... 61
-Close Cursor ................................................................................... 61
-Create Queue .................................................................................. 62
-Create Default Queue Security Descriptor ..................................... 64
-Delete Queue .................................................................................. 65
-3.1.7.1.4
-Open Queue ................................................................................... 66
-3.1.7.1.5
-Close Queue ................................................................................... 71
-3.1.7.1.6
-Purge Queue ................................................................................... 72
-3.1.7.1.7
-Create Transaction .......................................................................... 72
-3.1.7.1.8
-3.1.7.1.9
-Enqueue Message ............................................................................ 73
-3.1.7.1.10  Dequeue Message ........................................................................... 74
-3.1.7.1.11  Dequeue Message Begin ................................................................... 77
-3.1.7.1.12  Dequeue Message End ..................................................................... 78
-Read Message By Lookup Identifier .................................................... 79
-3.1.7.1.13
-Peek Next Message .......................................................................... 81
-3.1.7.1.14
-3.1.7.1.15
-Peek Message ................................................................................. 83
-3.1.7.1.16  Move Message ................................................................................ 85
-Cancel Waiting Message Read Request ............................................... 86
-3.1.7.1.17
-3.1.7.1.18
-Create Directory Object .................................................................... 87
-3.1.7.1.19  Delete Directory Object .................................................................... 87
-Read Directory ................................................................................ 88
-3.1.7.1.20
-Read Directory Begin ....................................................................... 90
-3.1.7.1.21
-Read Directory Next......................................................................... 91
-3.1.7.1.22
-Read Directory End .......................................................................... 91
-3.1.7.1.23
-3.1.7.1.24  Write Directory................................................................................ 91
-3.1.7.1.25
-Check Directory Online ..................................................................... 92
-3.1.7.1.26  Get Queue Path ............................................................................... 93
-Enqueue Message To An Open Queue ................................................ 95
-3.1.7.1.27
-Add Message To Dispatch Collection................................................... 96
-3.1.7.1.28
-Remove Message From Dispatch Collection ......................................... 96
-3.1.7.1.29
-3.1.7.1.30
-Construct a UserMessage Packet ....................................................... 97
-3.1.7.1.31  Deserialize Message From Buffer ....................................................... 97
-Serialize Message to Buffer .............................................................. 102
-3.1.7.1.32
-Set Queue Defaults ......................................................................... 107
-3.1.7.1.33
-Remove Messages From Dispatch Collection By Queue ........................ 108
-3.1.7.1.34
-Events Consumed By Related Protocols ................................................... 108
-Message Position Deleted ................................................................ 108
-Message Position Available .............................................................. 109
-Pause Queue .................................................................................. 110
-Resume Queue ............................................................................... 110
-Begin Flow Control .......................................................................... 110
-End Flow Control ............................................................................ 110
-Time To Be Received Timer Expired .................................................. 111
-
-3.1.7.2.1
-3.1.7.2.2
-3.1.7.2.3
-3.1.7.2.4
-3.1.7.2.5
-3.1.7.2.6
-3.1.7.2.7
-
-3.1.7.2
-
-[MS-MQDMPR] - v20240423
-Message Queuing (MSMQ): Common Data Model and Processing Rules
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-5 / 138
-
-3.2
-
-3.2.1
-
-3.1.7.3
-
-3.2.1.1
-3.2.1.2
-
-3.1.7.3.1
-3.1.7.3.2
-3.1.7.3.3
-3.1.7.3.4
-3.1.7.3.5
-3.1.7.3.6
-3.1.7.3.7
-3.1.7.3.8
-3.1.7.3.9
-
-Internal Events .................................................................................... 111
-Wait For New Message .................................................................... 111
-Seek Available Message Position ....................................................... 113
-Seek Available Message Position With Id ........................................... 114
-Waiting Message Read Timer Start ................................................... 116
-Waiting Message Read Timer Stop .................................................... 117
-Waiting Message Read Satisfied ....................................................... 117
-Release Next Reader ....................................................................... 117
-Expand Format Name ..................................................................... 117
-Dispatch Send Message ................................................................... 118
-Cursor ........................................................................................................... 119
-Abstract Data Model ................................................................................... 120
-State Diagram ..................................................................................... 120
-State Definition .................................................................................... 121
-Timers ..................................................................................................... 121
-Initialization .............................................................................................. 121
-Higher-Layer Triggered Events .................................................................... 121
-Processing Events and Sequencing Rules ...................................................... 121
-Timer Events ............................................................................................. 122
-Other Local Events ..................................................................................... 122
-Initialize ............................................................................................. 122
-Get Message For Peek .......................................................................... 122
-Get Next Message For Peek ................................................................... 123
-Get Next Message For Dequeue ............................................................. 125
-Message Available ................................................................................ 126
-Wait Time Expired ................................................................................ 126
-
-3.2.7.1
-3.2.7.2
-3.2.7.3
-3.2.7.4
-3.2.7.5
-3.2.7.6
-
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-3.2.7
-
-4  Protocol Examples ............................................................................................... 128
-
-5  Security ............................................................................................................... 129
-Security Considerations for Implementers .......................................................... 129
-Index of Security Parameters ........................................................................... 129
-
-5.1
-5.2
-
-6  Appendix A: Product Behavior ............................................................................. 130
-
-7  Change Tracking .................................................................................................. 137
-
-8  Index ................................................................................................................... 138
-
-[MS-MQDMPR] - v20240423
-Message Queuing (MSMQ): Common Data Model and Processing Rules
-Copyright © 2024 Microsoft Corporation
-Release: April 23, 2024
-
-6 / 138
-
-1  Introduction
+## 1 Introduction
 
 This document specifies the Message Queuing (MSMQ): Common Data Model and Processing Rules.
 The abstract data model and events defined in this document are shared by multiple Message Queuing
@@ -785,7 +612,7 @@ The abstract data model and events defined in this document are shared by multip
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -850,7 +677,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-Coordinated Universal Time (UTC): A high-precision atomic time standard that approximately
+
+Coordinated Universal Time (UTC): A high-precision atomic time standard that approximately
 tracks Universal Time (UT). It is the basis for legal, civil time all over the Earth. Time zones
 around the world are expressed as positive and negative offsets from UTC. In this role, it is also
 referred to as Zulu time (Z) and Greenwich Mean Time (GMT). In these specifications, all
@@ -924,7 +752,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-foreign site: A site that contains messaging applications that are not based on MSMQ.
+
+foreign site: A site that contains messaging applications that are not based on MSMQ.
 
 format name: A name that is used to reference a queue when making calls to API functions.
 
@@ -999,7 +828,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-MSMQ routing link: A communication link between two sites. A routing link is represented by a
+
+MSMQ routing link: A communication link between two sites. A routing link is represented by a
 
 routing link object in the directory service. Routing links can have associated link costs. Routing
 links with their associated costs can be used to compute lowest-cost routing paths for store-and-
@@ -1072,7 +902,8 @@ Release: April 23, 2024
 
 10 / 138
 
-public key: One of a pair of keys used in public-key cryptography. The public key is distributed
+
+public key: One of a pair of keys used in public-key cryptography. The public key is distributed
 freely and published as part of a digital certificate. For an introduction to this concept, see
 [CRYPTO] section 1.8 and [IEEE1363] section 3.1.
 
@@ -1146,7 +977,8 @@ Release: April 23, 2024
 
 11 / 138
 
-symmetric key: A secret key used with a cryptographic symmetric algorithm. The key needs to be
+
+symmetric key: A secret key used with a cryptographic symmetric algorithm. The key needs to be
 known to all communicating parties. For an introduction to this concept, see [CRYPTO] section
 1.5.
 
@@ -1192,14 +1024,14 @@ Server 2003 operating system.
 MAY, SHOULD, MUST, SHOULD NOT, MUST NOT: These terms (in all caps) are used as defined
 in [RFC2119]. All statements of optional behavior use either MAY, SHOULD, or SHOULD NOT.
 
-1.2  References
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -1215,7 +1047,8 @@ Release: April 23, 2024
 
 12 / 138
 
-[FIPS186] FIPS PUBS, "Digital Signature Standard (DSS)", FIPS PUB 186-3, June 2009,
+
+[FIPS186] FIPS PUBS, "Digital Signature Standard (DSS)", FIPS PUB 186-3, June 2009,
 https://csrc.nist.gov/csrc/media/publications/fips/186/3/archive/2009-06-25/documents/fips_186-
 3.pdf
 
@@ -1283,7 +1116,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-[RFC3280] Housley, R., Polk, W., Ford, W., and Solo, D., "Internet X.509 Public Key Infrastructure
+
+[RFC3280] Housley, R., Polk, W., Ford, W., and Solo, D., "Internet X.509 Public Key Infrastructure
 Certificate and Certificate Revocation List (CRL) Profile", RFC 3280, April 2002, http://www.rfc-
 editor.org/info/rfc3280
 
@@ -1299,7 +1133,7 @@ Journal of Cryptography, Springer New York, https://link.springer.com/content/pd
 
 [UML] Object Management Group, "Unified Modeling Language", http://www.omg.org/spec/UML/
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [CRYPTO] Menezes, A., Vanstone, S., and Oorschot, P., "Handbook of Applied Cryptography", 1997,
 https://cacr.uwaterloo.ca/hac/
@@ -1313,7 +1147,7 @@ ut_doc_title
 
 Note There is a charge to download the specification.
 
-1.3  Overview
+### 1.3 Overview
 
 The Message Queuing (MSMQ): Common Data Model and Processing Rules describes the shared data
 models and state for a queue manager that can be accessed by all MSMQ protocol implementations
@@ -1323,7 +1157,7 @@ This protocol specification also describes common processing rules for accessing
 (ADM) elements in the shared abstract data model that need to be followed by an alternate message
 queuing system.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 All MSMQ protocol implementations that are co-located on a queue manager have access to the
 shared state defined by the abstract data model in this specification.
@@ -1335,7 +1169,8 @@ Release: April 23, 2024
 
 14 / 138
 
-<!-- Extracted images from page 15 -->
+
+<!-- Extracted images from page 15 -->
 ![Extracted image 1 from page 15]([MS-MQDMPR].images/page015-img01.png)
 <!-- /Extracted images from page 15 -->
 
@@ -1346,16 +1181,16 @@ In addition, these protocol implementations can generate the internal events spe
 3.1.7. This protocol defines the actions that the queue manager performs on the shared state to
 process these internal events.
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 None.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 The Message Queuing (MSMQ): Common Data Model and Processing Rules specification is applicable
 when an MSMQ protocol implementation requires access to the shared queue manager state.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 None.
 
@@ -1366,7 +1201,8 @@ Release: April 23, 2024
 
 15 / 138
 
-1.8  Vendor-Extensible Fields
+
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses HRESULT values as defined in [MS-ERREF] section 2.1. Vendors can define their
 own HRESULT values, provided that they set the C bit (0x20000000) for each vendor-defined value,
@@ -1376,7 +1212,7 @@ This protocol uses Win32 error codes as defined in [MS-ERREF] section 2.2. Vendo
 those values with their indicated meanings. Choosing any other value runs the risk of a collision in the
 future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
 None.
 
@@ -1387,7 +1223,8 @@ Release: April 23, 2024
 
 16 / 138
 
-2  Messages
+
+## 2 Messages
 
 This document references commonly used data types as defined in [MS-DTYP].
 
@@ -1395,15 +1232,15 @@ Unless otherwise qualified, instances of GUID in sections 2 and 3 refer to [MS-D
 
 Unless otherwise qualified, instances of SID in sections 2 and 3 refer to [MS-DTYP] section 2.4.2.
 
-2.1  Transport
+### 2.1 Transport
 
 None.
 
-2.2  Message Syntax
+### 2.2 Message Syntax
 
 None.
 
-2.3  Directory Service Schema Elements
+### 2.3 Directory Service Schema Elements
 
 MSMQ protocols access a directory via events as  specified in section 3.1.7.1. The Directory Service
 schema elements for objects accessed via these events are defined in [MS-MQDSSM] section 2.4. <1>
@@ -1415,9 +1252,10 @@ Release: April 23, 2024
 
 17 / 138
 
-3  Protocol Details
 
-3.1  Common Details
+## 3 Protocol Details
+
+### 3.1 Common Details
 
 Multiple MSMQ protocol implementations that are co-located on the same queue manager can share
 state variables and interact with common state machines. They can communicate with each other
@@ -1431,7 +1269,7 @@ with each other.
 Any protocol-specific ADM elements are represented as extensions of this common data model in their
 respective protocol documents.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 This section describes a conceptual model of possible data organization that a queue manager
 implementation maintains to participate in the MSMQ protocols. The described organization is
@@ -1449,7 +1287,8 @@ Release: April 23, 2024
 
 18 / 138
 
-<!-- Extracted images from page 19 -->
+
+<!-- Extracted images from page 19 -->
 ![Extracted image 1 from page 19]([MS-MQDMPR].images/page019-img01.png)
 <!-- /Extracted images from page 19 -->
 
@@ -1484,7 +1323,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  RoutingLink: A relationship between two MSMQ sites.
+
+  RoutingLink: A relationship between two MSMQ sites.
 
   ConnectedNetwork: Represents the attributes and relationships of a connected network in an
 
@@ -1563,7 +1403,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.1.1  QueueManager
+
+##### 3.1.1.1 QueueManager
 
 The QueueManager ADM element describes the attributes and relationships of an MSMQ queue
 manager.
@@ -1640,7 +1481,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ConnectedNetworkIdentifierList: <4>A list that contains the Identifier ADM attribute values of
+
+ConnectedNetworkIdentifierList: <4>A list that contains the Identifier ADM attribute values of
 
 all ConnectedNetwork (section 3.1.1.9) ADM element instances representing all connected
 networks to which the queue manager belongs. The default value SHOULD be an empty
@@ -1719,7 +1561,8 @@ Release: April 23, 2024
 
 22 / 138
 
-PublicEncryptionKeyList: An MQDSPUBLICKEYS ([MS-MQMQ] section 2.2.2) structure that
+
+PublicEncryptionKeyList: An MQDSPUBLICKEYS ([MS-MQMQ] section 2.2.2) structure that
 
 contains the public keys used for encryption by the queue manager. When a queue manager is
 provisioned, the list is empty.
@@ -1798,7 +1641,8 @@ Release: April 23, 2024
 
 23 / 138
 
-Throttled: A Boolean value that indicates whether the queue manager is running in a throttled
+
+Throttled: A Boolean value that indicates whether the queue manager is running in a throttled
 
 state:
 
@@ -1882,7 +1726,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-OutRoutingServerCollection: A collection of references to instances of QueueManager ADM
+
+OutRoutingServerCollection: A collection of references to instances of QueueManager ADM
 
 elements that are to be used as intermediaries for outgoing messages from this queue manager.
 For each QueueManager ADM element instance in this collection, the value of its Identifier
@@ -1916,7 +1761,7 @@ instances. Each User (section 3.1.1.15) ADM element instance referenced by the U
 attribute of a member InternalCertificate ADM element instance has at most one certificate
 in the InternalCertificateCollection ADM attribute.
 
-3.1.1.2  Queue
+##### 3.1.1.2 Queue
 
 The Queue ADM element describes the attributes of a queue that is hosted by a queue manager.
 This ADM element extends the DirectoryObject ADM element.
@@ -1957,7 +1802,8 @@ Release: April 23, 2024
 
 25 / 138
 
-PrivateQueueNumber: An integer value that uniquely identifies a private queue hosted by a
+
+PrivateQueueNumber: An integer value that uniquely identifies a private queue hosted by a
 
 queue manager. This ADM attribute is valid only when the QueueType ADM attribute value is
 Private.
@@ -2036,7 +1882,8 @@ Release: April 23, 2024
 
 26 / 138
 
-The following attributes cannot be published in the directory:
+
+The following attributes cannot be published in the directory:
 
 Active: A Boolean that specifies whether the queue is currently active. This is a computed attribute
 
@@ -2114,7 +1961,8 @@ Release: April 23, 2024
 
 27 / 138
 
-3.1.1.3  OutgoingQueue
+
+##### 3.1.1.3 OutgoingQueue
 
 The OutgoingQueue ADM element describes the attributes of an outgoing queue and extends the
 Queue (section 3.1.1.2) ADM element.
@@ -2198,7 +2046,8 @@ Release: April 23, 2024
 
 28 / 138
 
-  Established: A connection has been successfully established and is ready to send a
+
+  Established: A connection has been successfully established and is ready to send a
 
 message.
 
@@ -2245,7 +2094,7 @@ attribute was recorded, represented as the number of seconds elapsed since midni
 
 queue in the next hop.
 
-3.1.1.4  OutgoingTransferInfo
+##### 3.1.1.4 OutgoingTransferInfo
 
 The OutgoingTransferInfo ADM element contains information about message transfer from an
 outgoing queue on a local queue manager and the destination queue on a remote queue
@@ -2272,7 +2121,8 @@ Release: April 23, 2024
 
 29 / 138
 
-EodLastAckCount: A numeric value that contains the number of times that the last order
+
+EodLastAckCount: A numeric value that contains the number of times that the last order
 
 acknowledgment has been received from the destination queue manager.
 
@@ -2309,7 +2159,7 @@ EodResendTime: A datetime value that contains the date and time when the local q
 
 will attempt to send a message to the destination queue manager again.
 
-3.1.1.5  IncomingTransactionalTransferInfo
+##### 3.1.1.5 IncomingTransactionalTransferInfo
 
 The IncomingTransactionalTransferInfo ADM element contains information about transactional
 message transfer from a remote queue manager to a destination queue that is hosted on the local
@@ -2352,7 +2202,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.1.6  Enterprise
+
+##### 3.1.1.6 Enterprise
 
 The Enterprise ADM element describes the attributes of an enterprise.
 
@@ -2400,7 +2251,7 @@ Security: Contains the security descriptor of the enterprise. The ACEs ([MS-DTYP
 for this security descriptor MUST use the ACCESS_MASK ([MS-DTYP] section 2.4.3) values
 listed in the MQENTACCESSMASK ([MS-MQMQ] section 2.2.26) enumeration.
 
-3.1.1.7  Site
+##### 3.1.1.7 Site
 
 The Site ADM element describes the attributes of an MSMQ site.
 
@@ -2430,7 +2281,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ForeignSite: A Boolean indicating whether the site is a foreign site.
+
+ForeignSite: A Boolean indicating whether the site is a foreign site.
 
   True: Indicates that the site is a foreign site.
 
@@ -2458,7 +2310,7 @@ SiteGateCollection: A collection of QueueManager (section 3.1.1.1) ADM element i
 
 act as MSMQ site gates for this site.
 
-3.1.1.8  RoutingLink
+##### 3.1.1.8 RoutingLink
 
 The RoutingLink ADM element describes the attributes of an MSMQ routing link.
 
@@ -2506,12 +2358,13 @@ Release: April 23, 2024
 
 32 / 138
 
-SiteGateCollection: A collection of QueueManager ADM element instances that act as MSMQ site
+
+SiteGateCollection: A collection of QueueManager ADM element instances that act as MSMQ site
 gates for the sites linked by this routing link. For each QueueManager ADM element instance in
 this collection, the value of the Identifier ADM attribute MUST exist in the
 SiteGateIdentifierList ADM attribute.
 
-3.1.1.9  ConnectedNetwork
+##### 3.1.1.9 ConnectedNetwork
 
 The ConnectedNetwork ADM element describes the attributes of a connected network.
 
@@ -2524,9 +2377,9 @@ Security: Contains the security descriptor of the connected network. The ACEs ([
 2.4.4) for this security descriptor MUST use the ACCESS_MASK ([MS-DTYP] section 2.4.3)
 values listed in the MQCNACCESSMASK ([MS-MQMQ] section 2.2.27) enumeration.
 
-3.1.1.10
+##### 3.1.1.10 WaitingMessageReadOperation
 
-WaitingMessageReadOperation
+
 
 The WaitingMessageReadOperation ADM element contains information about a subscriber to the
 Waiting Message Read Satisfied (section 3.1.7.3.6) event. This ADM element MUST contain the
@@ -2550,9 +2403,9 @@ CursorReference: A reference to the Cursor (section 3.2) ADM element instance th
 with the read operation. This ADM attribute MUST be NULL if no cursor is associated with the
 read operation.
 
-3.1.1.11
+##### 3.1.1.11 MessagePosition
 
-MessagePosition
+
 
 A MessagePosition ADM element represents a slot in a queue where a message can be stored. This
 ADM element MUST contain the following ADM attributes:
@@ -2582,7 +2435,8 @@ Release: April 23, 2024
 
 33 / 138
 
-MessageReference: A reference to a Message ADM element instance.
+
+MessageReference: A reference to a Message ADM element instance.
 
 If the DeliveryGuarantee ADM attribute of the Message ADM element instance that is
 referenced by the MessageReference ADM attribute is set to Recoverable, the preceding ADM
@@ -2611,9 +2465,9 @@ MessagePositionReference ADM attribute of a Message ADM element instance or of a
 TransactionalOperation ADM element instance referencing the MessagePosition ADM element
 instance and no pending processing against the MessagePosition ADM element instance.
 
-3.1.1.12
+##### 3.1.1.12 Message
 
-Message
+
 
 The Message ADM element describes the attributes of a message. This ADM element MUST contain
 the following ADM attributes:
@@ -2657,7 +2511,8 @@ Release: April 23, 2024
 
 34 / 138
 
-ArrivalTime: The UTC date/time when this Message ADM element instance was added to the
+
+ArrivalTime: The UTC date/time when this Message ADM element instance was added to the
 
 MessagePositionList ADM attribute of the Queue ADM element instance.
 
@@ -2738,7 +2593,8 @@ Release: April 23, 2024
 
 35 / 138
 
-  NackNotTransactionalMessage: The message was generated to indicate that a message
+
+  NackNotTransactionalMessage: The message was generated to indicate that a message
 
 was not inserted into the destination queue, because the message was not sent as part of a
 transaction, but the Transactional ADM attribute of the Queue ADM element instance
@@ -2820,7 +2676,8 @@ Release: April 23, 2024
 
 36 / 138
 
-  Sig30: The message MUST be digitally signed for the message transfer process using the
+
+  Sig30: The message MUST be digitally signed for the message transfer process using the
 
 MSMQ 3.0 digital signature.
 
@@ -2899,7 +2756,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-ResponseMultiQueueFormatName: A collection of queue names ([MS-MQMQ] section 2.1) that
+
+ResponseMultiQueueFormatName: A collection of queue names ([MS-MQMQ] section 2.1) that
 specify multiple response queues for the message. The default value of this ADM attribute is
 empty.
 
@@ -2971,7 +2829,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-receives the message. The server MUST NOT interpret or modify this ADM attribute. The default
+
+receives the message. The server MUST NOT interpret or modify this ADM attribute. The default
 value of CorrelationIdentifier.Lineage is GUID_NULL; the default value of
 CorrelationIdentifier.Uniquifier is 0x00000000.
 
@@ -3042,7 +2901,8 @@ Release: April 23, 2024
 
 39 / 138
 
-HashAlgorithm: An enumeration that indicates the algorithm used to generate the hash for
+
+HashAlgorithm: An enumeration that indicates the algorithm used to generate the hash for
 signing the message. This enumeration MUST have one of the following values.<13>  The
 default value of this ADM attribute SHOULD<14> be SHA1.
 
@@ -3116,7 +2976,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  PrivateQueueOnSource: The administration queue is private and is located on the source
+
+  PrivateQueueOnSource: The administration queue is private and is located on the source
 
 queue manager.
 
@@ -3195,7 +3056,8 @@ Release: April 23, 2024
 
 41 / 138
 
-  Sid: The SenderIdentifier ADM attribute contains the security identifier (SID) for the
+
+  Sid: The SenderIdentifier ADM attribute contains the security identifier (SID) for the
 
 sending user.
 
@@ -3270,7 +3132,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-These values are typically assigned by the queue manager during the message transfer process,
+
+These values are typically assigned by the queue manager during the message transfer process,
 although they MAY be assigned by a connector application.
 
 TransactionSequenceNumber: A numeric value that specifies the sequence number for this
@@ -3347,9 +3210,10 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.1.13
 
-TransactionalOperation
+##### 3.1.1.13 TransactionalOperation
+
+
 
 A TransactionalOperation ADM element associates a transactional Enqueue, Dequeue or Move
 operation with a reference to the MessagePosition (section 3.1.1.11) ADM element instance to be
@@ -3376,9 +3240,9 @@ DequeueReason: One of the enumerated values for the Class ADM attribute of the
 Message (section 3.1.1.12) ADM element. This attribute MUST be supplied if the
 OperationType ADM attribute value is Dequeue; otherwise, it is undefined.
 
-3.1.1.14
+##### 3.1.1.14 Transaction
 
-Transaction
+
 
 The Transaction ADM element describes the unit of work for queuing operations that send, receive,
 or move messages to Queue (section 3.1.1.2) ADM element instances. It contains the following
@@ -3396,9 +3260,9 @@ SinglePhase: A Boolean value indicating whether the transaction is a non-DTC tra
 
   False: The transaction is a DTC transaction.
 
-3.1.1.15
+##### 3.1.1.15 User
 
-User
+
 
 The User ADM element describes the attributes of a user of the message queuing system.
 
@@ -3423,9 +3287,10 @@ Release: April 23, 2024
 
 44 / 138
 
-3.1.1.16
 
-OpenQueueDescriptor
+##### 3.1.1.16 OpenQueueDescriptor
+
+
 
 The OpenQueueDescriptor ADM element contains information about a local queue that has been
 opened for message operations by one of the MSMQ protocols. This instance can be shared between
@@ -3512,9 +3377,10 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-3.1.1.17
 
-Enumerations
+##### 3.1.1.17 Enumerations
+
+
 
 DirectoryOperationResult: This enumeration specifies the result of a directory operation. It
 
@@ -3593,9 +3459,10 @@ Release: April 23, 2024
 
 46 / 138
 
-3.1.1.18
 
-DispatchEntry
+##### 3.1.1.18 DispatchEntry
+
+
 
 The DispatchEntry ADM element contains information about an entry that is enqueued into the
 DispatchCollection ADM attribute of a QueueManager (section 3.1.1.1) ADM element instance. A
@@ -3615,9 +3482,9 @@ SendInProgress: A Boolean that indicates whether the message that is associated 
 
 DispatchEntry ADM element instance is in the process of being sent.
 
-3.1.1.19
+##### 3.1.1.19 InternalCertificate
 
-InternalCertificate
+
 
 InternalCertificate: The InternalCertificate ADM element represents an X.509-encoded
 
@@ -3629,9 +3496,9 @@ attributes:
 
   User: A reference to the associated User ADM element instance.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
-3.1.2.1  Directory Sites Update Timer
+##### 3.1.2.1 Directory Sites Update Timer
 
 This timer regulates the amount of time that the queue manager waits before generating the
 Directory Sites Update (section 3.1.6.1) event.
@@ -3639,7 +3506,7 @@ Directory Sites Update (section 3.1.6.1) event.
 The default expiration of this timer SHOULD be 12 hours. The expiration time MAY be configured
 through an implementation-specific mechanism.
 
-3.1.2.2  Directory Site Gates Update Timer
+##### 3.1.2.2 Directory Site Gates Update Timer
 
 This timer regulates the amount of time that the queue manager waits before generating the
 Directory Site Gates Update (section 3.1.6.2) event.
@@ -3647,7 +3514,7 @@ Directory Site Gates Update (section 3.1.6.2) event.
 The default expiration of this timer SHOULD be 1 hour. The expiration time MAY be configured through
 an implementation-specific mechanism.
 
-3.1.2.3  Waiting Message Read Timer
+##### 3.1.2.3 Waiting Message Read Timer
 
 This timer regulates the amount of time that the queue manager waits before generating a Waiting
 Message Read Timer Stop (section 3.1.7.3.5) event.
@@ -3666,7 +3533,8 @@ Release: April 23, 2024
 
 47 / 138
 
-On expiration, the queue manager generates a Waiting Message Read Timer Expired (section 3.1.6.3)
+
+On expiration, the queue manager generates a Waiting Message Read Timer Expired (section 3.1.6.3)
 event with the following arguments:
 
 
@@ -3674,7 +3542,7 @@ event with the following arguments:
 iReader := the WaitingMessageReadOperation ADM element instance that was provided at
 initialization.
 
-3.1.2.4  Time To Be Received Timer
+##### 3.1.2.4 Time To Be Received Timer
 
 This timer regulates the amount of time before attempting to remove messages from a public
 queue or a private queue that have not been received by an application. The expiration time is
@@ -3689,7 +3557,7 @@ Received Timer Expired (section 3.1.7.2.7) event with the following argument:
 
 iMessage := the Message ADM element instance that was provided at initialization.
 
-3.1.2.5  Directory Online Timer
+##### 3.1.2.5 Directory Online Timer
 
 This timer regulates the amount of time that the queue manager waits before generating a Check
 Directory Online (section 3.1.7.1.25) event.
@@ -3697,7 +3565,7 @@ Directory Online (section 3.1.7.1.25) event.
 This timer MUST expire in one minute. On expiration, the queue manager generates a Check Directory
 Online event.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The initialization MUST be triggered with the following argument:
 
@@ -3750,7 +3618,8 @@ Release: April 23, 2024
 
 48 / 138
 
-  Other parameters, as specified in [MS-LSAD] section 3.1.4.4.3
+
+  Other parameters, as specified in [MS-LSAD] section 3.1.4.4.3
 
 
 
@@ -3848,7 +3717,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Microsoft Enhanced RSA and AES Cryptographic Provider
+
+  Microsoft Enhanced RSA and AES Cryptographic Provider
 
 
 
@@ -3942,7 +3812,8 @@ Release: April 23, 2024
 
 50 / 138
 
-  Generate a Read Directory event with the following arguments:
+
+  Generate a Read Directory event with the following arguments:
 
 
 
@@ -4037,7 +3908,8 @@ Release: April 23, 2024
 
 51 / 138
 
-
+
+
 
 For each Queue ADM element instance, referred to as iQueue, in the QueueCollection ADM
 attribute of the LocalQueueManager ADM element, if iQueue is an
@@ -4089,9 +3961,9 @@ iTransactionIdentifier := iTransaction.Identifier.
 If any error occurs and is not handled as specified in the preceding processing rules, the queue
 manager MUST raise the error so that it can be handled by the caller.
 
-3.1.4  Higher-Layer Triggered Events
+#### 3.1.4 Higher-Layer Triggered Events
 
-3.1.4.1  Queue Manager Started
+##### 3.1.4.1 Queue Manager Started
 
 This event MUST be generated with the following argument:
 
@@ -4107,7 +3979,7 @@ The queue manager MUST perform the following action to process this event:
 
 Perform the initialization actions specified in [MS-MQSO] section 6.6.2.
 
-3.1.4.2  Queue Manager Stopped
+##### 3.1.4.2 Queue Manager Stopped
 
 This event MUST be generated with the following argument:
 
@@ -4120,14 +3992,15 @@ Release: April 23, 2024
 
 52 / 138
 
-Return Value:
+
+Return Value:
 
   None.
 
 There are no further processing steps for this event in this protocol. Other protocols that subscribe to
 this event can perform further operations when this event is triggered.
 
-3.1.4.3  Transaction Prepare
+##### 3.1.4.3 Transaction Prepare
 
 This event MUST be generated with the following arguments:
 
@@ -4178,7 +4051,7 @@ MessagePositionReference.MessageReference.LastInTransaction ADM attribute to Tru
 
   Set rStatus to MQ_OK.
 
-3.1.4.4  Transaction Commit
+##### 3.1.4.4 Transaction Commit
 
 This event MUST be generated with the following argument:
 
@@ -4205,7 +4078,8 @@ Release: April 23, 2024
 
 53 / 138
 
-  Retrieve the Transaction (section 3.1.1.14) ADM element instance, referred to as transObj, from
+
+  Retrieve the Transaction (section 3.1.1.14) ADM element instance, referred to as transObj, from
 the LocalQueueManager.TransactionCollection for which the transObj.Identifier ADM
 attribute value matches the iTransactionIdentifier argument.
 
@@ -4290,7 +4164,7 @@ LocalQueueManager.TransactionCollection.
 
   Set rStatus to MQ_OK.
 
-3.1.4.5  Transaction Abort
+##### 3.1.4.5 Transaction Abort
 
 This event MUST be generated with the following argument:
 
@@ -4303,7 +4177,8 @@ Release: April 23, 2024
 
 54 / 138
 
-Return Value:
+
+Return Value:
 
 
 
@@ -4396,7 +4271,8 @@ Release: April 23, 2024
 
 55 / 138
 
-3.1.4.6  DTC Transaction Prepare
+
+##### 3.1.4.6 DTC Transaction Prepare
 
 The queue manager is notified by this event when the DTC transaction is prepared. This occurs
 when the queue manager is acting as a Resource Manager ([MS-DTCO] section 3.5) and has
@@ -4449,7 +4325,7 @@ argument set to lTxMessage.
 
 to lTxMessage.
 
-3.1.4.7  DTC Transaction Commit
+##### 3.1.4.7 DTC Transaction Commit
 
 The queue manager is notified by this event when the DTC transaction is committed. This occurs
 when the queue manager is acting as a Resource Manager ([MS-DTCO] section 3.5) and has
@@ -4477,7 +4353,8 @@ Release: April 23, 2024
 
 56 / 138
 
-
+
+
 
 iTransactionIdentifier := Transaction Object.Identifier of the DTC-enlisted transaction
 corresponding to lTxMessage, from the  Resource Manager.Durable Log ADM element, as
@@ -4487,7 +4364,7 @@ specified in [MS-DTCO] section 3.5.1.
 
 2.2.10.2.2.4) to its local transaction manager.
 
-3.1.4.8  DTC Transaction Abort
+##### 3.1.4.8 DTC Transaction Abort
 
 The queue manager is notified by this event when the DTC transaction is aborted. This occurs
 when the queue manager is acting as a Resource Manager ([MS-DTCO] section 3.5) and has
@@ -4518,7 +4395,7 @@ specified in [MS-DTCO] section 3.5.1.
 
 2.2.10.2.2.2) to its local transaction manager.
 
-3.1.4.9  DTC Reenlistment Commit
+##### 3.1.4.9 DTC Reenlistment Commit
 
 The queue manager acts as a Resource Manager ([MS-DTCO] section 3.5) and is notified by this
 event when it processes the Receiving a TXUSER_REENLIST_MTAG_REENLIST_COMMITTED Message
@@ -4537,9 +4414,9 @@ The queue manager performs the following steps to process this event:
 iTransactionIdentifier := the Transaction Object.Identifier ([MS-DTCO] section 3.1.1) field
 of iTransactionObject.
 
-3.1.4.10
+##### 3.1.4.10 DTC Reenlistment Abort
 
-DTC Reenlistment Abort
+
 
 The queue manager acts as a Resource Manager ([MS-DTCO] section 3.5) and is notified by this
 event when it processes the Receiving a TXUSER_REENLIST_MTAG_REENLIST_ABORTED Message
@@ -4553,7 +4430,8 @@ Release: April 23, 2024
 
 57 / 138
 
-The Recover Transaction event is signaled with an associated transaction object, referred to here as
+
+The Recover Transaction event is signaled with an associated transaction object, referred to here as
 iTransactionObject.
 
 The queue manager performs the following steps to process this event:
@@ -4565,9 +4443,9 @@ The queue manager performs the following steps to process this event:
 iTransactionIdentifier := the Transaction Object.Identifier ([MS-DTCO] section 3.1.1) field
 of iTransactionObject.
 
-3.1.4.11
+##### 3.1.4.11 DTC Reenlistment Timeout
 
-DTC Reenlistment Timeout
+
 
 The queue manager acts as a Resource Manager ([MS-DTCO] section 3.5) and is notified by this
 event when it processes the Reenlistment Timeout ([MS-DTCO] section 3.5.7.5) event.
@@ -4578,9 +4456,9 @@ The queue manager performs the following steps to process this event:
 
   Stops the Initialization (section 3.1.3) processing steps.
 
-3.1.4.12
+##### 3.1.4.12 Take Offline
 
-Take Offline
+
 
 This event MUST be generated with the following argument:
 
@@ -4596,9 +4474,9 @@ The queue manager MUST perform the following actions to process this event:
 
 to False.
 
-3.1.4.13
+##### 3.1.4.13 Bring Online
 
-Bring Online
+
 
 This event MUST be generated with the following argument:
 
@@ -4614,9 +4492,9 @@ The queue manager MUST perform the following actions to process this event:
 
 to True.
 
-3.1.4.14
+##### 3.1.4.14 Pause Queue
 
-Pause Queue
+
 
 This event occurs when the administrator pauses an outgoing queue hosted by the queue
 manager. This event MUST be generated with the following argument:
@@ -4633,7 +4511,8 @@ Release: April 23, 2024
 
 58 / 138
 
-Return Value:
+
+Return Value:
 
   None.
 
@@ -4645,9 +4524,9 @@ The queue manager MUST perform the following actions to process this event:
 
 iQueue := iQueue
 
-3.1.4.15
+##### 3.1.4.15 Resume Queue
 
-Resume Queue
+
 
 This event occurs when the administrator resumes an outgoing queue hosted by the queue
 manager. This event MUST be generated with the following argument:
@@ -4669,13 +4548,13 @@ The queue manager MUST perform the following actions to process this event:
 
 iQueue := iQueue
 
-3.1.5  Processing Events and Sequencing Rules
+#### 3.1.5 Processing Events and Sequencing Rules
 
 None.
 
-3.1.6  Timer Events
+#### 3.1.6 Timer Events
 
-3.1.6.1  Directory Sites Update
+##### 3.1.6.1 Directory Sites Update
 
 This event MUST be generated with the following argument:
 
@@ -4717,7 +4596,8 @@ Release: April 23, 2024
 
 59 / 138
 
-
+
+
 
 If the Read Directory event returns an rStatus that is set to
 DirectoryOperationResult.Success:
@@ -4727,7 +4607,7 @@ DirectoryOperationResult.Success:
  Update the ADM attributes of the Site ADM element instance referenced by siteObj with
 the ADM attributes of the Site ADM element instance returned in rDirectoryObject.
 
-3.1.6.2  Directory Site Gates Update
+##### 3.1.6.2 Directory Site Gates Update
 
 This event MUST be generated with the following argument:
 
@@ -4776,7 +4656,7 @@ DirectoryOperationResult.Success:
 by queueManager with the ADM attributes of the QueueManager ADM element
 instance returned in rDirectoryObject.
 
-3.1.6.3  Waiting Message Read Timer Expired
+##### 3.1.6.3 Waiting Message Read Timer Expired
 
 This event MUST be generated with the following arguments:
 
@@ -4810,9 +4690,10 @@ Release: April 23, 2024
 
 60 / 138
 
-3.1.7  Other Local Events
 
-3.1.7.1  Events Raised By Related Protocols
+#### 3.1.7 Other Local Events
+
+##### 3.1.7.1 Events Raised By Related Protocols
 
 The events listed in this section are generated or subscribed by the protocol implementations co-
 located with the queue manager for accessing various common abstract data model (ADM)
@@ -4820,7 +4701,7 @@ elements.
 
 The queue manager MUST process the events listed in this section.
 
-3.1.7.1.1 Open Cursor
+###### 3.1.7.1.1 Open Cursor
 
 This event MUST be generated with the following argument:
 
@@ -4866,7 +4747,7 @@ iQueueDesc := iQueueDesc
 
   Set rCursor to the Cursor ADM element instance referenced by newCursor.
 
-3.1.7.1.2 Close Cursor
+###### 3.1.7.1.2 Close Cursor
 
 This event MUST be generated with the following argument:
 
@@ -4898,7 +4779,8 @@ Release: April 23, 2024
 
 61 / 138
 
-  Remove the WaitingMessageReadOperation ADM element instance referenced by
+
+  Remove the WaitingMessageReadOperation ADM element instance referenced by
 
 readOp from
 iCursor.OpenQueueDescriptorReference.WaitingMessageReadOperationCollection.
@@ -4907,7 +4789,7 @@ iCursor.OpenQueueDescriptorReference.WaitingMessageReadOperationCollection.
 
 iCursor.OpenQueueDescriptorReference.CursorCollection.
 
-3.1.7.1.3 Create Queue
+###### 3.1.7.1.3 Create Queue
 
 This event MUST be generated with the following arguments:
 
@@ -4983,7 +4865,8 @@ Release: April 23, 2024
 
 62 / 138
 
-ADM attribute
+
+ADM attribute
 
 Transactional
 
@@ -5089,7 +4972,8 @@ Release: April 23, 2024
 
 63 / 138
 
-
+
+
 
 If the Create Directory Object event returns an rStatus that indicates success:
 
@@ -5134,7 +5018,7 @@ LocalQueueManager.
 
 that indicates success.
 
-3.1.7.1.3.1  Create Default Queue Security Descriptor
+###### 3.1.7.1.3.1 Create Default Queue Security Descriptor
 
 1.  Let MachineSid be an SID ([MS-DTYP] section 2.4.2), initialized to zero.
 
@@ -5181,7 +5065,8 @@ Release: April 23, 2024
 
 64 / 138
 
-2.  If the SuppliedSecurity.Dacl field is populated, the value MUST be copied to the
+
+2.  If the SuppliedSecurity.Dacl field is populated, the value MUST be copied to the
 
 FinalSecurity.Dacl field.
 
@@ -5248,7 +5133,7 @@ FinalSecurity.Dacl field.
 
 format (see [MS-DTYP] section 2.4.6).
 
-3.1.7.1.4 Delete Queue
+###### 3.1.7.1.4 Delete Queue
 
 This event MUST be generated with the following arguments:
 
@@ -5259,7 +5144,8 @@ Release: April 23, 2024
 
 65 / 138
 
-
+
+
 
 
 
@@ -5328,7 +5214,7 @@ further action.
 
   Return an rStatus that indicates success.
 
-3.1.7.1.5 Open Queue
+###### 3.1.7.1.5 Open Queue
 
 This event MUST be generated with the following arguments:
 
@@ -5361,7 +5247,8 @@ Release: April 23, 2024
 
 66 / 138
 
-  MQ_ERROR_SHARING_VIOLATION (0xC00E0009)
+
+  MQ_ERROR_SHARING_VIOLATION (0xC00E0009)
 
   MQ_ERROR_UNSUPPORTED_FORMATNAME_OPERATION (0xC00E0020)
 
@@ -5457,7 +5344,8 @@ Release: April 23, 2024
 
 67 / 138
 
-
+
+
 
 If the rStatus returned is not MQ_OK:
 
@@ -5568,7 +5456,8 @@ Release: April 23, 2024
 
 68 / 138
 
-
+
+
 
 If Protocol is HTTP or HTTPS:
 
@@ -5682,7 +5571,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 newQueue.State := Inactive
 
@@ -5793,7 +5683,8 @@ Release: April 23, 2024
 
 70 / 138
 
-
+
+
 
 Else if queueObj.OpenQueueDescriptorCollection contains an OpenQueueDescriptor ADM
 element instance with the ShareMode attribute set to DenyNone and the AccessType attribute
@@ -5833,7 +5724,7 @@ this OpenQueueDescriptor ADM element instance.
 
   Set rOpenQueueDescriptor to the newDesc ADM element instance.
 
-3.1.7.1.6 Close Queue
+###### 3.1.7.1.6 Close Queue
 
 This event MUST be generated with the following argument:
 
@@ -5884,7 +5775,8 @@ Release: April 23, 2024
 
 71 / 138
 
-
+
+
 
 If readOp.Tag does not equal NULL, generate a Cancel Waiting Message Read
 Request (section 3.1.7.1.17) event with the following arguments:
@@ -5916,7 +5808,7 @@ iCursor := cursorObj
 
 iQueueDesc.QueueReference.OpenQueueDescriptorCollection.
 
-3.1.7.1.7 Purge Queue
+###### 3.1.7.1.7 Purge Queue
 
 This event MUST be generated with the following argument:
 
@@ -5961,7 +5853,7 @@ iPosition := iMessagePosition
 
 iReason := NackQueuePurged
 
-3.1.7.1.8 Create Transaction
+###### 3.1.7.1.8 Create Transaction
 
 This event MUST be generated with the following argument:
 
@@ -5984,7 +5876,8 @@ Release: April 23, 2024
 
 72 / 138
 
-  Create a new Transaction (section 3.1.1.14) ADM element instance, referred to as
+
+  Create a new Transaction (section 3.1.1.14) ADM element instance, referred to as
 
 newTransaction, and set newTransaction.Identifier to the iTransactionIdentifier argument.
 
@@ -5994,7 +5887,7 @@ LocalQueueManager.TransactionCollection.
 
   Set rTransaction to the Transaction ADM element instance referenced by newTransaction.
 
-3.1.7.1.9 Enqueue Message
+###### 3.1.7.1.9 Enqueue Message
 
 This event MUST be generated with the following arguments:
 
@@ -6078,7 +5971,8 @@ Release: April 23, 2024
 
 73 / 138
 
-
+
+
 
 If iMessage.TransactionalMessageSequenceIdentifier is not empty, set the high-order byte of
 iMessage.LookupIdentifier to 0x07–iMessage.Priority. Otherwise, set the high-order byte of
@@ -6129,7 +6023,7 @@ iQueue := iQueue
 
   Set rStatus to zero.
 
-3.1.7.1.10  Dequeue Message
+###### 3.1.7.1.10 Dequeue Message
 
 This event MUST be generated with the following arguments:
 
@@ -6174,7 +6068,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 rStatus: A status code that can be one of the following:
 
@@ -6279,7 +6174,8 @@ Release: April 23, 2024
 
 75 / 138
 
-
+
+
 
 
 
@@ -6391,7 +6287,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
  If the iTransaction argument is supplied:
 
@@ -6449,7 +6346,7 @@ iReason := AckReceive
 
   Set rStatus to MQ_OK.
 
-3.1.7.1.11  Dequeue Message Begin
+###### 3.1.7.1.11 Dequeue Message Begin
 
 This event MUST be generated with the following arguments:
 
@@ -6492,7 +6389,8 @@ Release: April 23, 2024
 
 77 / 138
 
-  MQ_ERROR_IO_TIMEOUT (0xC00E001B)
+
+  MQ_ERROR_IO_TIMEOUT (0xC00E001B)
 
   MQ_ERROR_MESSAGE_NOT_FOUND (0xC00E0088)
 
@@ -6551,7 +6449,7 @@ iTwoPhaseRead := True
 
   Set rStatus to the rStatus returned from the Dequeue Message event.
 
-3.1.7.1.12  Dequeue Message End
+###### 3.1.7.1.12 Dequeue Message End
 
 This event MUST be generated with the following arguments:
 
@@ -6591,7 +6489,8 @@ Release: April 23, 2024
 
 78 / 138
 
-  MQ_ERROR_TRANSACTION_SEQUENCE (0xC00E0051)
+
+  MQ_ERROR_TRANSACTION_SEQUENCE (0xC00E0051)
 
   MQ_ERROR_QUEUE_NOT_AVAILABLE (0xC00E004B)
 
@@ -6663,7 +6562,7 @@ iPosition := iMessage.MessagePositionReference
 
   Set rStatus to MQ_OK (0x00000000).
 
-3.1.7.1.13  Read Message By Lookup Identifier
+###### 3.1.7.1.13 Read Message By Lookup Identifier
 
 This event MUST be generated with the following arguments:
 
@@ -6693,7 +6592,8 @@ Release: April 23, 2024
 
 79 / 138
 
-
+
+
 
 
 
@@ -6796,7 +6696,8 @@ Release: April 23, 2024
 
 80 / 138
 
-  Create a new TransactionalOperation (section 3.1.1.13) ADM element instance with
+
+  Create a new TransactionalOperation (section 3.1.1.13) ADM element instance with
 
 the following attribute values:
 
@@ -6844,9 +6745,9 @@ iReason := AckReceive
 
   Set rStatus to MQ_OK.
 
-3.1.7.1.14
+###### 3.1.7.1.14 Peek Next Message
 
-Peek Next Message
+
 
 This event MUST be generated with the following arguments:
 
@@ -6892,7 +6793,8 @@ Release: April 23, 2024
 
 81 / 138
 
-
+
+
 
 If iQueueDesc.QueueReference is NULL:
 
@@ -7000,15 +6902,16 @@ Release: April 23, 2024
 
 82 / 138
 
-  Set rStatus to the rStatus returned from the Wait For New Message event.
+
+  Set rStatus to the rStatus returned from the Wait For New Message event.
 
 
 
 Take no further action.
 
-3.1.7.1.15
+###### 3.1.7.1.15 Peek Message
 
-Peek Message
+
 
 This event MUST be generated with the following arguments:
 
@@ -7101,7 +7004,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Else, if the returned rStatus is set to Waiting:
 
@@ -7214,7 +7118,8 @@ Release: April 23, 2024
 
 84 / 138
 
-
+
+
 
 
 
@@ -7264,7 +7169,7 @@ Available Message Position event.
 
 Take no further action.
 
-3.1.7.1.16  Move Message
+###### 3.1.7.1.16 Move Message
 
 This event MUST be generated with the following arguments:
 
@@ -7313,7 +7218,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-iMessagePos.MessageReference, newMessagePos.State to Available, and
+
+iMessagePos.MessageReference, newMessagePos.State to Available, and
 newMessagePos.QueueReference to iTargetQueue. The queue manager MUST create this
 new MessagePosition ADM element instance in iTargetQueue, according to the rules
 specified for the MessagePositionList ADM attribute of the Queue ADM element.
@@ -7352,9 +7258,9 @@ following attribute values:
 
 iTransaction.TransactionalOperationCollection.
 
-3.1.7.1.17
+###### 3.1.7.1.17 Cancel Waiting Message Read Request
 
-Cancel Waiting Message Read Request
+
 
 This event MUST be generated with the following arguments:
 
@@ -7408,7 +7314,8 @@ Release: April 23, 2024
 
 86 / 138
 
-  Generate the Waiting Message Read Timer Stop (section 3.1.7.3.5) event with the
+
+  Generate the Waiting Message Read Timer Stop (section 3.1.7.3.5) event with the
 
 following arguments:
 
@@ -7424,9 +7331,9 @@ iStatus := iStatus
 
   Set rStatus to STATUS_NOT_FOUND (0xC0000225).
 
-3.1.7.1.18
+###### 3.1.7.1.18 Create Directory Object
 
-Create Directory Object
+
 
 This event MUST be generated with the following arguments:
 
@@ -7495,7 +7402,7 @@ Else:
 
   Set rObjectGuid to the rObjectGuid returned from the invoked event.
 
-3.1.7.1.19  Delete Directory Object
+###### 3.1.7.1.19 Delete Directory Object
 
 [MS-MQDMPR] - v20240423
 Message Queuing (MSMQ): Common Data Model and Processing Rules
@@ -7504,7 +7411,8 @@ Release: April 23, 2024
 
 87 / 138
 
-This event MUST be generated with the following argument:
+
+This event MUST be generated with the following argument:
 
 
 
@@ -7556,7 +7464,7 @@ Else:
 
   Set rStatus to the rStatus returned from the invoked event.
 
-3.1.7.1.20  Read Directory
+###### 3.1.7.1.20 Read Directory
 
 This event MUST be generated with the following arguments:
 
@@ -7597,7 +7505,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 The name of a directory attribute associated with a DirectoryObject ADM element instance of
 type iDirectoryObjectType. The value of this attribute forms the left side of the comparison.
@@ -7698,7 +7607,8 @@ Release: April 23, 2024
 
 89 / 138
 
-
+
+
 
 If iDirectoryObjectType is set to "QueueManager" and the ADM attributes specified in iFilter
 match the ADM attributes of the local QueueManager ADM element instance:
@@ -7744,7 +7654,7 @@ Else:
 
   Set rDirectoryObject to the rDirectoryObject returned from the invoked event.
 
-3.1.7.1.21  Read Directory Begin
+###### 3.1.7.1.21 Read Directory Begin
 
 This event MUST be generated with the following arguments:
 
@@ -7789,7 +7699,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-given higher precedence when sorting the result set. A value of zero indicates that the
+
+given higher precedence when sorting the result set. A value of zero indicates that the
 corresponding ADM attribute is not used when sorting the results.
 
   SortAscending: A Boolean value that indicates whether the corresponding ADM attribute is
@@ -7811,7 +7722,7 @@ DirectoryOperationResult.Success.
 The queue manager MUST delegate the processing of this event to the Read Directory Begin ([MS-
 MQDSSM] section 3.1.6.4) event.<26>
 
-3.1.7.1.22  Read Directory Next
+###### 3.1.7.1.22 Read Directory Next
 
 This event MUST be generated with the following argument:
 
@@ -7840,7 +7751,7 @@ DirectoryOperationResult.Success.
 The queue manager MUST delegate the processing of this event to the Read Directory Next event as
 defined in [MS-MQDSSM] section 3.1.6.5.<27>
 
-3.1.7.1.23  Read Directory End
+###### 3.1.7.1.23 Read Directory End
 
 This event MUST be generated with the following argument:
 
@@ -7856,7 +7767,7 @@ rStatus: A DirectoryOperationResult that indicates the result of this directory 
 The queue manager MUST delegate the processing of this event to the Read Directory End event as
 defined in [MS-MQDSSM] section 3.1.6.6.<28>
 
-3.1.7.1.24  Write Directory
+###### 3.1.7.1.24 Write Directory
 
 This event MUST be generated with the following arguments:
 
@@ -7871,7 +7782,8 @@ Release: April 23, 2024
 
 91 / 138
 
-
+
+
 
 iAttributeList (Optional): An array of strings containing the names of the directory attributes
 associated with iDirectoryObject to be updated to the directory. If this argument is not supplied,
@@ -7944,9 +7856,9 @@ iOperation := QueueManagerUpdate
 
 iDirectoryObject := iDirectoryObject
 
-3.1.7.1.25
+###### 3.1.7.1.25 Check Directory Online
 
-Check Directory Online
+
 
 This event MUST be generated with the following argument:
 
@@ -7967,7 +7879,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -8036,7 +7949,7 @@ DirectoryOperationResult.Success:
 
   Start the Directory Online Timer (section 3.1.2.5).
 
-3.1.7.1.26  Get Queue Path
+###### 3.1.7.1.26 Get Queue Path
 
 The Get Queue Path event resolves a queue format name to the corresponding queue path name
 ([MS-MQMQ] section 2.1.1) and the name or address of the machine to which the queue belongs. It
@@ -8073,7 +7986,8 @@ Release: April 23, 2024
 
 93 / 138
 
-The server MUST perform the following actions to process this event:
+
+The server MUST perform the following actions to process this event:
 
   Set rPathName and rMachineName to empty.
 
@@ -8183,7 +8097,8 @@ Release: April 23, 2024
 
 94 / 138
 
-  Set rStatus to MQ_ERROR_ILLEGAL_FORMATNAME (0xC00E001E) and take no further
+
+  Set rStatus to MQ_ERROR_ILLEGAL_FORMATNAME (0xC00E001E) and take no further
 
 action.
 
@@ -8210,9 +8125,9 @@ instance.
 
   Set rStatus to MQ_OK (0x00000000).
 
-3.1.7.1.27
+###### 3.1.7.1.27 Enqueue Message To An Open Queue
 
-Enqueue Message To An Open Queue
+
 
 This event MUST be generated with the following arguments:
 
@@ -8286,7 +8201,8 @@ Release: April 23, 2024
 
 95 / 138
 
-  Set iMessage.DestinationMultiQueueFormatName to iOpenQueueDescriptor.FormatName.
+
+  Set iMessage.DestinationMultiQueueFormatName to iOpenQueueDescriptor.FormatName.
 
 
 
@@ -8320,7 +8236,7 @@ rStatus to the returned value, and take no further action.
 
   Set rStatus to zero.
 
-3.1.7.1.28  Add Message To Dispatch Collection
+###### 3.1.7.1.28 Add Message To Dispatch Collection
 
 This event MUST be generated with the following arguments:
 
@@ -8357,7 +8273,7 @@ referenced by iPosition.MessageReference.
 
   Raise a Dispatch Send Message (section 3.1.7.3.9) event.
 
-3.1.7.1.29  Remove Message From Dispatch Collection
+###### 3.1.7.1.29 Remove Message From Dispatch Collection
 
 This event MUST be generated with the following argument:
 
@@ -8376,7 +8292,8 @@ Release: April 23, 2024
 
 96 / 138
 
-The queue manager MUST perform the following actions to process this event:
+
+The queue manager MUST perform the following actions to process this event:
 
   Atomically find and remove the DispatchEntry (section 3.1.1.18) ADM element instance from
 
@@ -8385,9 +8302,9 @@ DispatchEntry.MessagePositionReference equals iPosition.
 
   Raise a Dispatch Send Message (section 3.1.7.3.9) event.
 
-3.1.7.1.30
+###### 3.1.7.1.30 Construct a UserMessage Packet
 
-Construct a UserMessage Packet
+
 
 This event MUST be generated with the following argument:
 
@@ -8449,7 +8366,7 @@ MultiQueueFormatHeader
 iMessage.DestinationMultiQueueFormatName is specified;
 rUserMessage.UserHeader.Flags.MQ MUST be set.
 
-3.1.7.1.31  Deserialize Message From Buffer
+###### 3.1.7.1.31 Deserialize Message From Buffer
 
 The Deserialize Message From Buffer event MUST be generated with the following input argument:
 
@@ -8473,7 +8390,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Set rMessage to a newly created instance of the Message ADM element.
+
+  Set rMessage to a newly created instance of the Message ADM element.
 
   Set the attributes of rMessage according to the following table and rule set. If a header does not
 exist in iBuffer, as determined by the Flags fields in the BaseHeader ([MS-MQMQ] section
@@ -8601,7 +8519,8 @@ Release: April 23, 2024
 
 98 / 138
 
-rMessage attribute
+
+rMessage attribute
 
 iBuffer (UserMessage Packet)
 
@@ -8718,7 +8637,8 @@ Release: April 23, 2024
 
 99 / 138
 
-MessagePropertiesHeader.MessageClass
+
+MessagePropertiesHeader.MessageClass
 
 rMessage.Class
 
@@ -8874,7 +8794,8 @@ Release: April 23, 2024
 
 100 / 138
 
-UserHeader.Flags.JN
+
+UserHeader.Flags.JN
 
 rMessage.NegativeJournalingRequested
 
@@ -8989,7 +8910,8 @@ Release: April 23, 2024
 
 101 / 138
 
-QueueFormatType
+
+QueueFormatType
 
 rMessage.ResponseQueueType
 
@@ -9039,9 +8961,9 @@ Sid
 
 QueueManagerIdentifier
 
-3.1.7.1.32
+###### 3.1.7.1.32 Serialize Message to Buffer
 
-Serialize Message to Buffer
+
 
 The Serialize Message to Buffer event MUST be generated with the following input arguments:
 
@@ -9088,7 +9010,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-UserMessage Packet field
+
+UserMessage Packet field
 
 Message ADM element attribute
 
@@ -9213,7 +9136,8 @@ Release: April 23, 2024
 
 103 / 138
 
-UserMessage Packet field
+
+UserMessage Packet field
 
 Message ADM element attribute
 
@@ -9347,7 +9271,8 @@ Release: April 23, 2024
 
 104 / 138
 
-UserMessage Packet field
+
+UserMessage Packet field
 
 Message ADM element attribute
 
@@ -9501,7 +9426,8 @@ Release: April 23, 2024
 
 105 / 138
 
-MessagePropertiesHeader.PrivacyLevel  Message.PrivacyLevel
+
+MessagePropertiesHeader.PrivacyLevel  Message.PrivacyLevel
 
 0x00000005
 
@@ -9596,7 +9522,8 @@ Release: April 23, 2024
 
 106 / 138
 
-QueueFormatType  Message.AdministrationQueueType
+
+QueueFormatType  Message.AdministrationQueueType
 
 0x0
 
@@ -9670,9 +9597,9 @@ Sid
 
 QueueManagerIdentifier
 
-3.1.7.1.33
+###### 3.1.7.1.33 Set Queue Defaults
 
-Set Queue Defaults
+
 
 This event is called to initialize a Queue (section 3.1.1.2) ADM element instance with default values for
 certain attributes. The caller uses this event to set default attribute values on a Queue ADM element
@@ -9694,7 +9621,8 @@ Release: April 23, 2024
 
 107 / 138
 
-  None.
+
+  None.
 
 The queue manager MUST perform the following actions to process this event:
 
@@ -9749,7 +9677,7 @@ BasePriority
 
 zero
 
-3.1.7.1.34  Remove Messages From Dispatch Collection By Queue
+###### 3.1.7.1.34 Remove Messages From Dispatch Collection By Queue
 
 This event MUST be generated with the following argument:
 
@@ -9768,14 +9696,14 @@ The queue manager MUST perform the following actions to process this event:
 LocalQueueManager.DispatchCollection, where
 DispatchEntry.MessagePositionReference.Queue equals iOutgoingQueue.
 
-3.1.7.2  Events Consumed By Related Protocols
+##### 3.1.7.2 Events Consumed By Related Protocols
 
 The following events MUST be processed by the core queue manager.
 
 Protocol implementations that are co-located with the queue manager can also consume these events
 and do additional processing.
 
-3.1.7.2.1 Message Position Deleted
+###### 3.1.7.2.1 Message Position Deleted
 
 This event MUST be generated with the following arguments:
 
@@ -9786,7 +9714,8 @@ Release: April 23, 2024
 
 108 / 138
 
-
+
+
 
 
 
@@ -9817,7 +9746,7 @@ iPosition.MessageReference.
 
 MessagePositionList ADM attribute of the Queue ADM element.
 
-3.1.7.2.2 Message Position Available
+###### 3.1.7.2.2 Message Position Available
 
 This event MUST be generated with the following arguments:
 
@@ -9880,7 +9809,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 Else
 
@@ -9888,7 +9818,7 @@ Else
 
 argument is equal to the iQueue argument.
 
-3.1.7.2.3 Pause Queue
+###### 3.1.7.2.3 Pause Queue
 
 This event MUST be generated with the following argument:
 
@@ -9905,7 +9835,7 @@ The queue manager MUST perform the following actions to process this event:
 
   Set iQueue.State = OnHold.
 
-3.1.7.2.4 Resume Queue
+###### 3.1.7.2.4 Resume Queue
 
 This event MUST be generated with the following argument:
 
@@ -9922,7 +9852,7 @@ The queue manager MUST perform the following actions to process this event:
 
   Set iQueue.State = Inactive.
 
-3.1.7.2.5 Begin Flow Control
+###### 3.1.7.2.5 Begin Flow Control
 
 This event MUST be generated with the following argument:
 
@@ -9936,7 +9866,7 @@ The queue manager MUST perform the following actions to process this event:
 
   Change the Throttled ADM attribute of the LocalQueueManager ADM element instance to True.
 
-3.1.7.2.6 End Flow Control
+###### 3.1.7.2.6 End Flow Control
 
 This event MUST be generated with the following argument:
 
@@ -9955,11 +9885,12 @@ Release: April 23, 2024
 
 110 / 138
 
-  Change the Throttled ADM attribute of the LocalQueueManager ADM element instance to
+
+  Change the Throttled ADM attribute of the LocalQueueManager ADM element instance to
 
 False.
 
-3.1.7.2.7 Time To Be Received Timer Expired
+###### 3.1.7.2.7 Time To Be Received Timer Expired
 
 This event MUST be generated with the following argument:
 
@@ -10017,12 +9948,12 @@ iPosition := iMessage.MessagePositionReference
 
 iReason := NackReceiveTimeout
 
-3.1.7.3  Internal Events
+##### 3.1.7.3 Internal Events
 
 The following local events are used internally by the queue manager. Protocol implementations
 MUST NOT raise these events.
 
-3.1.7.3.1 Wait For New Message
+###### 3.1.7.3.1 Wait For New Message
 
 This event MUST be generated with the following arguments:
 
@@ -10047,7 +9978,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 
 
@@ -10143,7 +10075,8 @@ Release: April 23, 2024
 
 112 / 138
 
-  Waiting Message Read Satisfied (section 3.1.7.3.6) (where iReader is equivalent to the
+
+  Waiting Message Read Satisfied (section 3.1.7.3.6) (where iReader is equivalent to the
 
 readOp created preceding):
 
@@ -10157,7 +10090,7 @@ readOp created preceding):
 
 iQueueDesc.WaitingMessageReadOperationCollection.
 
-3.1.7.3.2 Seek Available Message Position
+###### 3.1.7.3.2 Seek Available Message Position
 
 This event MUST be generated with the following arguments:
 
@@ -10237,7 +10170,8 @@ Release: April 23, 2024
 
 113 / 138
 
-  Set iIterator to iIterator.Next.
+
+  Set iIterator to iIterator.Next.
 
 
 
@@ -10275,7 +10209,7 @@ Take no further action
 
   Set rMessagePosition to iIterator.
 
-3.1.7.3.3 Seek Available Message Position With Id
+###### 3.1.7.3.3 Seek Available Message Position With Id
 
 This event MUST be generated with the following arguments:
 
@@ -10330,7 +10264,8 @@ Release: April 23, 2024
 
 114 / 138
 
-
+
+
 
 Find the MessagePosition ADM element instance, referred to as iInitialPosition, in
 iQueue.MessagePositionList such that iInitialPosition.MessageReference.LookupIdentifier is
@@ -10437,7 +10372,8 @@ Release: April 23, 2024
 
 115 / 138
 
-
+
+
 
 If messagePos.MessageReference.AllowPeekWhileLocked is True:
 
@@ -10509,7 +10445,7 @@ iSeekDirection := Backward
 
 event.
 
-3.1.7.3.4 Waiting Message Read Timer Start
+###### 3.1.7.3.4 Waiting Message Read Timer Start
 
 This event MUST be generated with the following arguments:
 
@@ -10537,11 +10473,12 @@ Release: April 23, 2024
 
 116 / 138
 
-  Start a Waiting Message Read Timer (section 3.1.2.3). The iTimeout and iReader arguments MUST
+
+  Start a Waiting Message Read Timer (section 3.1.2.3). The iTimeout and iReader arguments MUST
 
 be provided to this timer at initialization.
 
-3.1.7.3.5 Waiting Message Read Timer Stop
+###### 3.1.7.3.5 Waiting Message Read Timer Stop
 
 This event MUST be generated with the following arguments:
 
@@ -10566,7 +10503,7 @@ The queue manager MUST perform the following actions to process this event:
 
 This event is consumed by the Wait For New Message (section 3.1.7.3.1) internal event.
 
-3.1.7.3.6 Waiting Message Read Satisfied
+###### 3.1.7.3.6 Waiting Message Read Satisfied
 
 This event MUST be generated with the following arguments:
 
@@ -10586,7 +10523,7 @@ Return Values:
 
 This event is consumed by the Wait For New Message (section 3.1.7.3.1) internal event.
 
-3.1.7.3.7 Release Next Reader
+###### 3.1.7.3.7 Release Next Reader
 
 This event MUST be generated with the following argument:
 
@@ -10600,7 +10537,7 @@ Return Values:
 
 This event is consumed by the Message Position Available (section 3.1.7.2.2) internal event.
 
-3.1.7.3.8 Expand Format Name
+###### 3.1.7.3.8 Expand Format Name
 
 This event MUST be generated with the following argument:
 
@@ -10622,7 +10559,8 @@ Release: April 23, 2024
 
 117 / 138
 
-
+
+
 
 rOutputFormatName: A format name as defined in [MS-MQMQ] sections 2.1.2, 2.1.3, 2.1.4, 2.1.6,
 and 2.1.7 in which all distribution format name elements have been resolved; if
@@ -10698,7 +10636,7 @@ format names in OutputElements, separated by commas (",").
 
   Set rStatus to TRUE.
 
-3.1.7.3.9 Dispatch Send Message
+###### 3.1.7.3.9 Dispatch Send Message
 
 This event MUST be generated with the following argument:
 
@@ -10717,7 +10655,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-
+
+
 
 If no DispatchEntry (section 3.1.1.18) ADM element instance in the
 LocalQueueManager.DispatchCollection has a SendInProgress ADM attribute with a value of
@@ -10758,7 +10697,7 @@ iPosition := NULL
 
 iMessagePosition := nextEntryToBeDispatched.MessagePositionReference
 
-3.2  Cursor
+### 3.2 Cursor
 
 This section describes the abstract data model, state machine, and processing rules for an iterator
 over a list of messages in a queue. A queue manager maintains a collection of instances of this
@@ -10772,13 +10711,14 @@ Release: April 23, 2024
 
 119 / 138
 
-<!-- Extracted images from page 120 -->
+
+<!-- Extracted images from page 120 -->
 ![Extracted image 1 from page 120]([MS-MQDMPR].images/page120-img01.png)
 <!-- /Extracted images from page 120 -->
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
-3.2.1.1  State Diagram
+##### 3.2.1.1 State Diagram
 
 Figure 3: Cursor state transition machine
 
@@ -10803,7 +10743,8 @@ Release: April 23, 2024
 
 120 / 138
 
-3.2.1.2  State Definition
+
+##### 3.2.1.2 State Definition
 
 The Cursor (section 3.2) ADM element describes the attributes of an iterator over the
 MessagePositionList ADM attribute of a Queue (section 3.1.1.2) ADM element instance. This ADM
@@ -10848,19 +10789,19 @@ state.
 
 has been retrieved using the Cursor ADM element instance.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 None.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 None.
 
-3.2.4  Higher-Layer Triggered Events
+#### 3.2.4 Higher-Layer Triggered Events
 
 None.
 
-3.2.5  Processing Events and Sequencing Rules
+#### 3.2.5 Processing Events and Sequencing Rules
 
 None.
 
@@ -10871,13 +10812,14 @@ Release: April 23, 2024
 
 121 / 138
 
-3.2.6  Timer Events
+
+#### 3.2.6 Timer Events
 
 None.
 
-3.2.7  Other Local Events
+#### 3.2.7 Other Local Events
 
-3.2.7.1  Initialize
+##### 3.2.7.1 Initialize
 
 This event MUST be generated with the following argument:
 
@@ -10914,7 +10856,7 @@ iQueueDesc.QueueReference.MessagePositionList.Start.
 
   Set the CursorState ADM attribute of the Cursor ADM element instance to Unread.
 
-3.2.7.2  Get Message For Peek
+##### 3.2.7.2 Get Message For Peek
 
 This event MUST be generated with the following arguments:
 
@@ -10952,7 +10894,8 @@ Release: April 23, 2024
 
 122 / 138
 
-  Select from the CursorState ADM attribute of the Cursor ADM element instance:
+
+  Select from the CursorState ADM attribute of the Cursor ADM element instance:
 
   Unread:
 
@@ -11039,7 +10982,7 @@ Else:
 
 Take no further action.
 
-3.2.7.3  Get Next Message For Peek
+##### 3.2.7.3 Get Next Message For Peek
 
 This event MUST be generated with the following arguments:
 
@@ -11050,7 +10993,8 @@ Release: April 23, 2024
 
 123 / 138
 
-  None.
+
+  None.
 
 Return Values:
 
@@ -11144,7 +11088,8 @@ Release: April 23, 2024
 
 124 / 138
 
-  Set rPosition to the MessagePositionReference ADM attribute of the Cursor ADM
+
+  Set rPosition to the MessagePositionReference ADM attribute of the Cursor ADM
 
 element instance.
 
@@ -11154,7 +11099,7 @@ element instance.
 
 Take no further action.
 
-3.2.7.4  Get Next Message For Dequeue
+##### 3.2.7.4 Get Next Message For Dequeue
 
 This event MUST be generated with the following argument:
 
@@ -11240,7 +11185,8 @@ Message Queuing (MSMQ): Common Data Model and Processing Rules
 Copyright © 2024 Microsoft Corporation
 Release: April 23, 2024
 
-  Set rStatus to Waiting.
+
+  Set rStatus to Waiting.
 
 
 
@@ -11285,7 +11231,7 @@ Else:
 
   Set rStatus to AlreadyReceived.
 
-3.2.7.5  Message Available
+##### 3.2.7.5 Message Available
 
 This event MUST be generated with the following argument:
 
@@ -11316,7 +11262,7 @@ Else if the CursorState ADM attribute of the Cursor ADM element instance is Wait
 
 iMessagePosition.
 
-3.2.7.6  Wait Time Expired
+##### 3.2.7.6 Wait Time Expired
 
 This event MUST be generated with the following arguments:
 
@@ -11327,7 +11273,8 @@ Release: April 23, 2024
 
 126 / 138
 
-  None.
+
+  None.
 
 Return Values:
 
@@ -11351,7 +11298,8 @@ Release: April 23, 2024
 
 127 / 138
 
-4  Protocol Examples
+
+## 4 Protocol Examples
 
 None.
 
@@ -11362,9 +11310,10 @@ Release: April 23, 2024
 
 128 / 138
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 To provide the highest available message security, an implementer can consider adding support for
 the SHA-512 hash algorithm [FIPS180-2] and the AES encryption algorithm [FIPS197] with 256-bit
@@ -11381,7 +11330,7 @@ generation described in [CRYPTO] Section 8.2.1. To ensure strong keys, implement
 generate RSA keys through secure processes such as the industry standards described in [X9.31]
 Section 4.1 and [FIPS186] Section 5.1.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
  None.
 
@@ -11392,7 +11341,8 @@ Release: April 23, 2024
 
 129 / 138
 
-6  Appendix A: Product Behavior
+
+## 6 Appendix A: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -11461,7 +11411,8 @@ Release: April 23, 2024
 
 130 / 138
 
- MachineType = "Windows " OSType " " UInt "." UInt
+
+ MachineType = "Windows " OSType " " UInt "." UInt
                " (Build " UInt ", " Platform ") - MSMQ "
                UInt "." UInt " (Build " UInt ")"
  OSType = "NT" | "95" | "NT Server/E" | "NT Server" | "NT Workstation"
@@ -11569,7 +11520,8 @@ Release: April 23, 2024
 
 131 / 138
 
-MSMQBuildNumLiteral  Corresponding Windows release
+
+MSMQBuildNumLiteral  Corresponding Windows release
 
 794
 
@@ -11664,7 +11616,8 @@ Release: April 23, 2024
 
 132 / 138
 
-the messages were sent to a nontransactional queue or in the transactional system dead-letter queue
+
+the messages were sent to a nontransactional queue or in the transactional system dead-letter queue
 if they were sent to a transactional queue.
 
 <12> Section 3.1.1.12:  The maximum allowed value of the TimeToReachQueue ADM attribute can be
@@ -11742,7 +11695,8 @@ Release: April 23, 2024
 
 133 / 138
 
-  Define iRemoteQueueManager as a reference to a QueueManager (section 3.1.1.1) ADM
+
+  Define iRemoteQueueManager as a reference to a QueueManager (section 3.1.1.1) ADM
 
 element instance, and set it to the returned rDirectoryObject argument.
 
@@ -11831,7 +11785,8 @@ Release: April 23, 2024
 
 134 / 138
 
-<27> Section 3.1.7.1.22: For Windows NT and Windows 2000, the queue manager uses the directory
+
+<27> Section 3.1.7.1.22: For Windows NT and Windows 2000, the queue manager uses the directory
 service protocol specified in [MS-MQDS].
 
 <28> Section 3.1.7.1.23: For Windows NT and Windows 2000, the queue manager uses the directory
@@ -11927,7 +11882,8 @@ Release: April 23, 2024
 
 135 / 138
 
-  Define iRemoteQueueManager as a reference to a QueueManager ADM element instance
+
+  Define iRemoteQueueManager as a reference to a QueueManager ADM element instance
 
 and set it to the returned rDirectoryObject.
 
@@ -11954,7 +11910,8 @@ Release: April 23, 2024
 
 136 / 138
 
-7  Change Tracking
+
+## 7 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -11998,7 +11955,8 @@ Release: April 23, 2024
 
 137 / 138
 
-8  Index
+
+## 8 Index
 A
 
 Abstract data model 18

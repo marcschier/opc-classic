@@ -63,7 +63,8 @@ Release: March 13, 2019
 
 1 / 32
 
-Revision Summary
+
+Revision Summary
 
 Date
 
@@ -307,7 +308,8 @@ Release: March 13, 2019
 
 2 / 32
 
-Date
+
+Date
 
 Revision
 History
@@ -499,145 +501,62 @@ Release: March 13, 2019
 
 3 / 32
 
-Table of Contents
 
-1.3
+## Table of Contents
 
-1.1
-1.2
+- [1 Introduction](#1-introduction)
+  - [1.1 Glossary](#11-glossary)
+  - [1.2 References](#12-references)
+    - [1.2.1 Normative References](#121-normative-references)
+    - [1.2.2 Informative References](#122-informative-references)
+  - [1.3 Overview](#13-overview)
+    - [1.3.1 IRemoteDispatch Interface and IServicedComponentInfo Interface](#131-iremotedispatch-interface-and-iservicedcomponentinfo-interface)
+  - [1.4 Relationship to Other Protocols](#14-relationship-to-other-protocols)
+  - [1.5 Prerequisites/Preconditions](#15-prerequisitespreconditions)
+  - [1.6 Applicability Statement](#16-applicability-statement)
+  - [1.7 Versioning and Capability Negotiation](#17-versioning-and-capability-negotiation)
+  - [1.8 Vendor-Extensible Fields](#18-vendor-extensible-fields)
+  - [1.9 Standards Assignments](#19-standards-assignments)
+- [2 Messages](#2-messages)
+  - [2.1 Transport](#21-transport)
+  - [2.2 Common Data Types](#22-common-data-types)
+    - [2.2.1 CCW_PTR](#221-ccwptr)
+- [3 Protocol Details](#3-protocol-details)
+  - [3.1 IManagedObject Server Details](#31-imanagedobject-server-details)
+    - [3.1.1 Abstract Data Model](#311-abstract-data-model)
+    - [3.1.2 Timers](#312-timers)
+    - [3.1.3 Initialization](#313-initialization)
+    - [3.1.4 Message Processing Events and Sequencing Rules](#314-message-processing-events-and-sequencing-rules)
+      - [3.1.4.1 IManagedObject](#3141-imanagedobject)
+        - [3.1.4.1.1 GetSerializedBuffer (Opnum 3)](#31411-getserializedbuffer-opnum-3)
+        - [3.1.4.1.2 IManagedObject::GetObjectIdentity (Opnum 4)](#31412-imanagedobjectgetobjectidentity-opnum-4)
+      - [3.1.4.2 IRemoteDispatch Interface](#3142-iremotedispatch-interface)
+        - [3.1.4.2.1 RemoteDispatchAutoDone (Opnum 7)](#31421-remotedispatchautodone-opnum-7)
+        - [3.1.4.2.2 RemoteDispatchNotAutoDone (Opnum 8)](#31422-remotedispatchnotautodone-opnum-8)
+      - [3.1.4.3 IServicedComponentInfo Interface](#3143-iservicedcomponentinfo-interface)
+        - [3.1.4.3.1 GetComponentInfo (Opnum 3)](#31431-getcomponentinfo-opnum-3)
+    - [3.1.5 Timer Events](#315-timer-events)
+    - [3.1.6 Other Local Events](#316-other-local-events)
+  - [3.2 IManagedObject Client Details](#32-imanagedobject-client-details)
+    - [3.2.1 Abstract Data Model](#321-abstract-data-model)
+    - [3.2.2 Timers](#322-timers)
+    - [3.2.3 Initialization](#323-initialization)
+    - [3.2.4 Message Processing Events and Sequencing Rules](#324-message-processing-events-and-sequencing-rules)
+    - [3.2.5 Timer Events](#325-timer-events)
+    - [3.2.6 Other Local Events](#326-other-local-events)
+- [4 Protocol Examples](#4-protocol-examples)
+  - [4.1 Using the IManagedObject Interface](#41-using-the-imanagedobject-interface)
+  - [4.2 Determining Server Object Identity](#42-determining-server-object-identity)
+  - [4.3 Dispatching a Call on the Server Using Deactivate](#43-dispatching-a-call-on-the-server-using-deactivate)
+- [5 Security](#5-security)
+  - [5.1 Security Considerations for Implementers](#51-security-considerations-for-implementers)
+  - [5.2 Index of Security Parameters](#52-index-of-security-parameters)
+- [6 Appendix A: Full IDL](#6-appendix-a-full-idl)
+- [7 Appendix B: Product Behavior](#7-appendix-b-product-behavior)
+- [8 Change Tracking](#8-change-tracking)
+- [9 Index](#9-index)
 
-1.2.1
-1.2.2
-
-1  Introduction ............................................................................................................ 6
-Glossary ........................................................................................................... 6
-References ........................................................................................................ 8
-Normative References ................................................................................... 8
-Informative References ................................................................................. 8
-Overview .......................................................................................................... 8
-IRemoteDispatch Interface and IServicedComponentInfo Interface ................... 12
-Relationship to Other Protocols .......................................................................... 12
-Prerequisites/Preconditions ............................................................................... 12
-Applicability Statement ..................................................................................... 12
-Versioning and Capability Negotiation ................................................................. 12
-Vendor-Extensible Fields ................................................................................... 13
-Standards Assignments ..................................................................................... 13
-
-1.4
-1.5
-1.6
-1.7
-1.8
-1.9
-
-1.3.1
-
-2  Messages ............................................................................................................... 14
-Transport ........................................................................................................ 14
-Common Data Types ........................................................................................ 14
-CCW_PTR .................................................................................................. 14
-
-2.1
-2.2
-
-2.2.1
-
-3.1
-
-3.1.4.2
-
-3.1.4.1
-
-3.1.4.1.1
-3.1.4.1.2
-
-3.1.1
-3.1.2
-3.1.3
-3.1.4
-
-3  Protocol Details ..................................................................................................... 15
-IManagedObject Server Details .......................................................................... 15
-Abstract Data Model .................................................................................... 15
-Timers ...................................................................................................... 15
-Initialization ............................................................................................... 15
-Message Processing Events and Sequencing Rules .......................................... 15
-IManagedObject.................................................................................... 15
-GetSerializedBuffer (Opnum 3) ......................................................... 16
-IManagedObject::GetObjectIdentity (Opnum 4) .................................. 16
-IRemoteDispatch Interface ..................................................................... 17
-RemoteDispatchAutoDone (Opnum 7) ................................................ 17
-RemoteDispatchNotAutoDone (Opnum 8) ........................................... 18
-IServicedComponentInfo Interface .......................................................... 18
-GetComponentInfo (Opnum 3) .......................................................... 19
-Timer Events .............................................................................................. 19
-Other Local Events ...................................................................................... 20
-IManagedObject Client Details ........................................................................... 20
-Abstract Data Model .................................................................................... 20
-Timers ...................................................................................................... 20
-Initialization ............................................................................................... 20
-Message Processing Events and Sequencing Rules .......................................... 20
-Timer Events .............................................................................................. 20
-Other Local Events ...................................................................................... 20
-
-3.2.1
-3.2.2
-3.2.3
-3.2.4
-3.2.5
-3.2.6
-
-3.1.4.2.1
-3.1.4.2.2
-
-3.1.5
-3.1.6
-
-3.1.4.3.1
-
-3.1.4.3
-
-3.2
-
-4  Protocol Examples ................................................................................................. 21
-Using the IManagedObject Interface ................................................................... 21
-Determining Server Object Identity .................................................................... 21
-Dispatching a Call on the Server Using Deactivate ................................................ 22
-
-4.1
-4.2
-4.3
-
-5  Security ................................................................................................................. 27
-Security Considerations for Implementers ........................................................... 27
-Index of Security Parameters ............................................................................ 27
-
-5.1
-5.2
-
-6  Appendix A: Full IDL .............................................................................................. 28
-
-7  Appendix B: Product Behavior ............................................................................... 29
-
-8  Change Tracking .................................................................................................... 30
-
-4 / 32
-
-[MS-IOI] - v20190313
-IManagedObject Interface Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-9  Index ..................................................................................................................... 31
-
-[MS-IOI] - v20190313
-IManagedObject Interface Protocol
-Copyright © 2019 Microsoft Corporation
-Release: March 13, 2019
-
-5 / 32
-
-1  Introduction
+## 1 Introduction
 
 The IManagedObject Interface Protocol provides interoperability support for the common language
 runtime (CLR). The common language runtime (CLR) is a virtual machine for the execution of
@@ -655,7 +574,7 @@ IManagedObject Interface Protocol mechanism is detailed in this specification.
 Sections 1.5, 1.8, 1.9, 2, and 3 of this specification are normative. All other sections and examples in
 this specification are informative.
 
-1.1  Glossary
+### 1.1 Glossary
 
 This document uses the following terms:
 
@@ -708,7 +627,8 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-removing these objects from a naming context (NC) replica. Garbage collection does not
+
+removing these objects from a naming context (NC) replica. Garbage collection does not
 generate replication traffic.
 
 globally unique identifier (GUID): A term used interchangeably with universally unique
@@ -781,14 +701,15 @@ Release: March 13, 2019
 
 7 / 32
 
-1.2  References
+
+### 1.2 References
 
 Links to a document in the Microsoft Open Specifications library point to the correct section in the
 most recently published version of the referenced document. However, because individual documents
 in the library are not updated at the same time, the section numbers in the documents may not
 match. You can confirm the correct section numbering by checking the Errata.
 
-1.2.1  Normative References
+#### 1.2.1 Normative References
 
 We conduct frequent surveys of the normative references to assure their continued availability. If you
 have any issue with finding a normative reference, please contact dochelp@microsoft.com. We will
@@ -819,7 +740,7 @@ Note Registration is required to download the document.
 [RFC3986] Berners-Lee, T., Fielding, R., and Masinter, L., "Uniform Resource Identifier (URI): Generic
 Syntax", STD 66, RFC 3986, January 2005, https://www.rfc-editor.org/info/rfc3986
 
-1.2.2  Informative References
+#### 1.2.2 Informative References
 
 [MS-NETOD] Microsoft Corporation, "Microsoft .NET Framework Protocols Overview".
 
@@ -835,7 +756,7 @@ us/library/8bwh56xe.aspx
 [MSFT-DCOMTECHOVW] Microsoft Corporation, "DCOM Technical Overview",
 http://technet.microsoft.com/en-us/library/cc722925.aspx
 
-1.3  Overview
+### 1.3 Overview
 
 The IManagedObject interface is a COM interface used by the common language runtime (CLR) to
 identify managed objects (objects created by the CLR) that are exported for interoperability with the
@@ -847,7 +768,8 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-<!-- Extracted images from page 9 -->
+
+<!-- Extracted images from page 9 -->
 ![Extracted image 1 from page 9]([MS-IOI].images/page009-img01.png)
 <!-- /Extracted images from page 9 -->
 
@@ -902,7 +824,8 @@ Release: March 13, 2019
 
 9 / 32
 
-<!-- Extracted images from page 10 -->
+
+<!-- Extracted images from page 10 -->
 ![Extracted image 1 from page 10]([MS-IOI].images/page010-img01.png)
 <!-- /Extracted images from page 10 -->
 
@@ -955,7 +878,8 @@ Release: March 13, 2019
 
 10 / 32
 
-<!-- Extracted images from page 11 -->
+
+<!-- Extracted images from page 11 -->
 ![Extracted image 1 from page 11]([MS-IOI].images/page011-img01.png)
 <!-- /Extracted images from page 11 -->
 
@@ -997,7 +921,8 @@ Release: March 13, 2019
 
 11 / 32
 
-1.3.1  IRemoteDispatch Interface and IServicedComponentInfo Interface
+
+#### 1.3.1 IRemoteDispatch Interface and IServicedComponentInfo Interface
 
 A server object instance can associate a unique identity with itself. This identity can be used by the
 client to track multiple instances of the server object. The server can use IServicedComponentInfo to
@@ -1007,7 +932,7 @@ The IRemoteDispatch interface can be used by the server to provide an alternativ
 method calls on its object instance. A client can further use this interface to perform deactivation of
 the server object instance.
 
-1.4  Relationship to Other Protocols
+### 1.4 Relationship to Other Protocols
 
 This protocol uses the OLE Automation Protocol [MS-OAUT], making use of the BSTR and VARIANT
 types from the IDispatch interface.
@@ -1020,7 +945,7 @@ over the wire and to authenticate all requests issued against the infrastructure
 
 This protocol allows for encodings defined in [MS-NRTP] and [MS-NRBF].
 
-1.5  Prerequisites/Preconditions
+### 1.5 Prerequisites/Preconditions
 
 This protocol requires the Distributed Component Object Model (DCOM) Remote Protocol [MS-DCOM]
 and the OLE Automation Protocol [MS-OAUT]. This protocol requires the CLR to be installed on the
@@ -1033,7 +958,7 @@ This protocol assumes that the client has relied on QueryInterface to determine 
 supports the IManagedObject interface or the IRemoteDispatch interface. The protocol also assumes
 that the client has the server object Microsoft .NET Framework type information prior to initialization.
 
-1.6  Applicability Statement
+### 1.6 Applicability Statement
 
 IManagedObject is useful as part of the infrastructure for allowing the CLR to interoperate with COM.
 
@@ -1054,7 +979,7 @@ The IRemoteDispatch interface is used for method call dispatch and deactivation.
 
 The IServicedComponentInfo interface is used for determining server object instance identity.
 
-1.7  Versioning and Capability Negotiation
+### 1.7 Versioning and Capability Negotiation
 
 Supported Transports: This protocol uses the DCOM Remote Protocol as its transport, as described in
 [MS-DCOM].
@@ -1066,7 +991,8 @@ Release: March 13, 2019
 
 12 / 32
 
-Protocol Version: The IManagedObject protocol consists of one DCOM interface, IManagedObject
+
+Protocol Version: The IManagedObject protocol consists of one DCOM interface, IManagedObject
 version 0.0. The interfaces defined in this specification have no versioning or capability negotiation
 beyond those of the underlying transport.
 
@@ -1076,7 +1002,7 @@ as type information of server objects) prior to initialization.
 The client relies on QueryInterface to determine if the server supports IManagedObject or
 IRemoteDispatch.
 
-1.8  Vendor-Extensible Fields
+### 1.8 Vendor-Extensible Fields
 
 This protocol uses universally unique identifiers (UUIDs). Vendors can create their own UUIDs, as
 described in [MS-DTYP] section 2.3.4.
@@ -1089,7 +1015,7 @@ This protocol uses Win32 error codes. These values are taken from the Windows er
 as specified in [MS-ERREF] section 2.2. It is recommended that vendors reuse those values with their
 indicated meaning. Choosing any other value runs the risk of a collision in the future.
 
-1.9  Standards Assignments
+### 1.9 Standards Assignments
 
  Constant/value
 
@@ -1123,9 +1049,10 @@ Release: March 13, 2019
 
 13 / 32
 
-2  Messages
 
-2.1  Transport
+## 2 Messages
+
+### 2.1 Transport
 
 This protocol uses RPC dynamic endpoints as specified in [C706] Part 4 and [MS-DCOM].
 
@@ -1134,7 +1061,7 @@ UUID endpoint on the server, as specified in section 1.9.
 
 The RPC version number for all interfaces MUST be 0.0.
 
-2.2  Common Data Types
+### 2.2 Common Data Types
 
 This protocol MUST indicate to the RPC runtime that it is to support the NDR transfer syntax only, as
 specified in [C706] part 4.
@@ -1142,7 +1069,7 @@ specified in [C706] part 4.
 In addition to RPC base types and definitions specified in [C706] and [MS-DTYP], additional data types
 are defined in the following subsection.
 
-2.2.1  CCW_PTR
+#### 2.2.1 CCW_PTR
 
 CCW_PTR is an opaque pointer that is up to the implementation to interpret.
 
@@ -1179,7 +1106,8 @@ Release: March 13, 2019
 
 14 / 32
 
-3  Protocol Details
+
+## 3 Protocol Details
 
 The following sections specify details of the IManagedObject Interface Protocol, including abstract data
 model, interface method syntax, and message processing rules.
@@ -1191,7 +1119,7 @@ uses activation to get the interface pointer to the remote protocol object, it w
 by making calls on the remote protocol interface supported by the object. After it has finished making
 calls, the client application does a release on the interface pointer.
 
-3.1  IManagedObject Server Details
+### 3.1 IManagedObject Server Details
 
 A CLR-managed object that has been exposed to COM will expose the COM interface
 IManagedObject. This interface is used to determine whether COM objects that enter the CLR are
@@ -1199,7 +1127,7 @@ actually CLR-managed objects and can be mapped directly to the managed object. T
 managed objects to roundtrip from managed to COM and back to managed while maintaining their
 original identity.
 
-3.1.1  Abstract Data Model
+#### 3.1.1 Abstract Data Model
 
 The CLR implementation that exposes objects to COM MUST maintain a unique UUID to differentiate
 its objects from those of other CLR instances and implementations. If the CLR supports per-process
@@ -1216,18 +1144,18 @@ Server Object Identity: The remote server object instance MUST have a unique Uni
 Identifier (URI), as specified in [RFC3986]. This URI represents the unique identity of the server
 object instance. The client uses this identity to track multiple instances of the server object.
 
-3.1.2  Timers
+#### 3.1.2 Timers
 
 None.
 
-3.1.3  Initialization
+#### 3.1.3 Initialization
 
 The server MUST create a unique UUID to identify this CLR instance upon startup. Upon the startup
 of each process division, a unique identifier also needs to be generated.
 
-3.1.4  Message Processing Events and Sequencing Rules
+#### 3.1.4 Message Processing Events and Sequencing Rules
 
-3.1.4.1  IManagedObject
+##### 3.1.4.1 IManagedObject
 
 The IManagedObject interface includes the following methods.
 
@@ -1242,7 +1170,8 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Method
+
+Method
 
 Description
 
@@ -1259,7 +1188,7 @@ and process subdivision.
 
 Opnum: 4
 
-3.1.4.1.1 GetSerializedBuffer (Opnum 3)
+###### 3.1.4.1.1 GetSerializedBuffer (Opnum 3)
 
 The GetSerializedBuffer method converts the given managed object to a binary-formatted string
 representation that can be used to create a managed object.
@@ -1292,7 +1221,7 @@ Exceptions Thrown: No exceptions are thrown from this method beyond those thrown
 
 underlying RPC protocol.
 
-3.1.4.1.2 IManagedObject::GetObjectIdentity (Opnum 4)
+###### 3.1.4.1.2 IManagedObject::GetObjectIdentity (Opnum 4)
 
 The IManagedObject::GetObjectIdentity method is used by a CLR instance to determine whether a
 COM object entering the system is really a managed object that originated in this CLR instance and
@@ -1320,7 +1249,8 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-pCCW: Optional field. Implementation-specific, opaque value that helps identify the managed object.
+
+pCCW: Optional field. Implementation-specific, opaque value that helps identify the managed object.
 
 If present, this field MUST map back to the implementation's internal representation of a managed
 object.
@@ -1344,7 +1274,7 @@ Exceptions Thrown: No exceptions are thrown from this method beyond those thrown
 
 underlying RPC protocol.
 
-3.1.4.2  IRemoteDispatch Interface
+##### 3.1.4.2 IRemoteDispatch Interface
 
 The IRemoteDispatch interface provides methods to dispatch calls on the server object. A client can
 optionally use this interface to deactivate the server object instance after the method call completes.
@@ -1378,7 +1308,7 @@ completes.
 
 Opnum: 8
 
-3.1.4.2.1 RemoteDispatchAutoDone (Opnum 7)
+###### 3.1.4.2.1 RemoteDispatchAutoDone (Opnum 7)
 
 The RemoteDispatchAutoDone method is called by the client to invoke a method on the server.
 
@@ -1400,7 +1330,8 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-pRetVal: The pRetVal parameter contains the binary data representing the output parameters of the
+
+pRetVal: The pRetVal parameter contains the binary data representing the output parameters of the
 method called on the server. The binary data MUST be marshaled as specified in [MS-NRTP]
 section 3.1.5.1.1. The data is specified as is in the BSTR, such that the length of the BSTR is the
 size of the data divided by 2 (rounded up if necessary).
@@ -1416,7 +1347,7 @@ the call. After the server object instance completes the method call, the server
 output parameters as specified in [MS-NRTP] section 3.1.5.1.1, and return the encoded reply through
 the pRetVal argument. It MUST then deactivate the instance of the server object that services the call.
 
-3.1.4.2.2 RemoteDispatchNotAutoDone (Opnum 8)
+###### 3.1.4.2.2 RemoteDispatchNotAutoDone (Opnum 8)
 
 The RemoteDispatchNotAutoDone method is called by the client to invoke a method on the server.
 
@@ -1447,7 +1378,7 @@ the call. After the server object instance completes the method call, the server
 output parameters as specified in [MS-NRTP] section 3.1.5.1.1 and return the encoded reply through
 the pRetVal argument.
 
-3.1.4.3  IServicedComponentInfo Interface
+##### 3.1.4.3 IServicedComponentInfo Interface
 
 This interface is used to get the object identity of the server object instance that supports this
 interface. Because this is an [MS-DCOM] interface, opnum 0 to opnum 2 are IUnknown methods, as
@@ -1468,7 +1399,8 @@ IManagedObject Interface Protocol
 Copyright © 2019 Microsoft Corporation
 Release: March 13, 2019
 
-Method
+
+Method
 
 Description
 
@@ -1476,7 +1408,7 @@ GetComponentInfo  Gets the server object identity associated with the server obj
 
 Opnum: 3
 
-3.1.4.3.1 GetComponentInfo (Opnum 3)
+###### 3.1.4.3.1 GetComponentInfo (Opnum 3)
 
 The GetComponentInfo method is used to determine the environment of the server object.
 
@@ -1530,7 +1462,7 @@ The serviced component's remote URI [RFC3986]
 The type of each element MUST be a BSTR ([MS-OAUT] section 2.2.23.2).  The server then MUST
 return success.
 
-3.1.5  Timer Events
+#### 3.1.5 Timer Events
 
 None.
 
@@ -1541,13 +1473,14 @@ Release: March 13, 2019
 
 19 / 32
 
-3.1.6  Other Local Events
+
+#### 3.1.6 Other Local Events
 
 There are no protocol-specific local events.
 
-3.2  IManagedObject Client Details
+### 3.2 IManagedObject Client Details
 
-3.2.1  Abstract Data Model
+#### 3.2.1 Abstract Data Model
 
 The client is essentially the same as the server. The IManagedObject interface is used to identify CLR-
 mapped COM objects after they are exported to COM and returned as COM objects. Implementation
@@ -1557,15 +1490,15 @@ and process subdivision. These methods will otherwise return a CLR-managed objec
 COM object. The deserialized opaque object reference is returned to the caller on the client CLR for
 interpretation.
 
-3.2.2  Timers
+#### 3.2.2 Timers
 
 There are no protocol-specific timers.
 
-3.2.3  Initialization
+#### 3.2.3 Initialization
 
 The initialization is the same as for server. See section 3.1.3.
 
-3.2.4  Message Processing Events and Sequencing Rules
+#### 3.2.4 Message Processing Events and Sequencing Rules
 
 The client determines if it is the server by matching values returned from the
 IManagedObject::GetObjectIdentity method. The client matches the value of pBSTRGUID against the
@@ -1595,11 +1528,11 @@ and there are no further managed references to it.
 In the event that the application domain that hosts the object is torn down, the CCW that
 implements IManagedObject is kept alive by the CLR, but calls to it will return failure HRESULT.
 
-3.2.5  Timer Events
+#### 3.2.5 Timer Events
 
 There are no protocol-specific timers.
 
-3.2.6  Other Local Events
+#### 3.2.6 Other Local Events
 
 None.
 
@@ -1610,13 +1543,14 @@ Release: March 13, 2019
 
 20 / 32
 
-<!-- Extracted images from page 21 -->
+
+<!-- Extracted images from page 21 -->
 ![Extracted image 1 from page 21]([MS-IOI].images/page021-img01.png)
 <!-- /Extracted images from page 21 -->
 
-4  Protocol Examples
+## 4 Protocol Examples
 
-4.1  Using the IManagedObject Interface
+### 4.1 Using the IManagedObject Interface
 
 A CLR instance uses the IManagedObject interface in the following manner.
 
@@ -1639,7 +1573,7 @@ client CLR is then able to interpret the deserialized opaque object reference. F
 about how to create the binary-formatted string representation of an object, see [MS-NRBF]
 section 2.3.
 
-4.2  Determining Server Object Identity
+### 4.2 Determining Server Object Identity
 
 This example assumes that the client already has an interface pointer to an instance of an object
 that implements IServicedComponentInfo. The example also assumes that the server already has a
@@ -1663,7 +1597,8 @@ Release: March 13, 2019
 
 21 / 32
 
-<!-- Extracted images from page 22 -->
+
+<!-- Extracted images from page 22 -->
 ![Extracted image 1 from page 22]([MS-IOI].images/page022-img01.png)
 <!-- /Extracted images from page 22 -->
 
@@ -1681,7 +1616,7 @@ into the infoArray that contains the URI for the server object instance.
 
 different server object instances.
 
-4.3  Dispatching a Call on the Server Using Deactivate
+### 4.3 Dispatching a Call on the Server Using Deactivate
 
 This example assumes that the client already has an interface pointer to an instance of an object
 that implements IRemoteDispatch. The following diagram helps to illustrate this example. The
@@ -1702,7 +1637,8 @@ Release: March 13, 2019
 
 22 / 32
 
-<!-- Extracted images from page 23 -->
+
+<!-- Extracted images from page 23 -->
 ![Extracted image 1 from page 23]([MS-IOI].images/page023-img01.png)
 <!-- /Extracted images from page 23 -->
 
@@ -1743,7 +1679,8 @@ Release: March 13, 2019
 
 23 / 32
 
-<!-- Extracted images from page 24 -->
+
+<!-- Extracted images from page 24 -->
 ![Extracted image 1 from page 24]([MS-IOI].images/page024-img01.png)
 <!-- /Extracted images from page 24 -->
 
@@ -1764,7 +1701,8 @@ Release: March 13, 2019
 
 24 / 32
 
-<!-- Extracted images from page 25 -->
+
+<!-- Extracted images from page 25 -->
 ![Extracted image 1 from page 25]([MS-IOI].images/page025-img01.png)
 <!-- /Extracted images from page 25 -->
 
@@ -1799,7 +1737,8 @@ Release: March 13, 2019
 
 25 / 32
 
-<!-- Extracted images from page 26 -->
+
+<!-- Extracted images from page 26 -->
 ![Extracted image 1 from page 26]([MS-IOI].images/page026-img01.png)
 <!-- /Extracted images from page 26 -->
 
@@ -1812,13 +1751,14 @@ Release: March 13, 2019
 
 26 / 32
 
-5  Security
 
-5.1  Security Considerations for Implementers
+## 5 Security
+
+### 5.1 Security Considerations for Implementers
 
 None.
 
-5.2  Index of Security Parameters
+### 5.2 Index of Security Parameters
 
 None.
 
@@ -1829,7 +1769,8 @@ Release: March 13, 2019
 
 27 / 32
 
-6  Appendix A: Full IDL
+
+## 6 Appendix A: Full IDL
 
 For convenience, the full IDL is provided with this specification.
 
@@ -1894,7 +1835,8 @@ Release: March 13, 2019
 
 28 / 32
 
-7  Appendix B: Product Behavior
+
+## 7 Appendix B: Product Behavior
 
 The information in this specification is applicable to the following Microsoft products or supplemental
 software. References to product versions include updates to those products.
@@ -1949,7 +1891,8 @@ Release: March 13, 2019
 
 29 / 32
 
-8  Change Tracking
+
+## 8 Change Tracking
 
 This section identifies changes that were made to this document since the last release. Changes are
 classified as Major, Minor, or None.
@@ -1986,7 +1929,8 @@ Release: March 13, 2019
 
 30 / 32
 
-9  Index
+
+## 9 Index
 A
 
 Abstract data model
@@ -2120,7 +2064,8 @@ References 8
 
 31 / 32
 
-   normative 8
+
+   normative 8
 Relationship to other protocols 12
 RemoteDispatchAutoDone method 17
 RemoteDispatchNotAutoDone method 18
