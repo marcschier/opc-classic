@@ -7,7 +7,71 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.5.0-alpha.1] - 2026-05-23
+## [0.6.0-alpha.1] - 2026-05-24 (M10 — AOT cleanliness)
+
+Opc.Classic.Dcom is now fully AOT-compatible and free of legacy SharpInterop / Vikram Roopchand attribution. Net **1281 transitional warnings → 0** across the solution.
+
+### Changed (M10 — AOT + warning cleanup)
+
+- **`Opc.Classic.Dcom` now inherits all strict properties from `src/Directory.Build.props`** (commit `f822beb`). The transitional `<IsAotCompatible>false</IsAotCompatible>` + `<IsTrimmable>false</IsTrimmable>` + `<EnableTrimAnalyzer>false</EnableTrimAnalyzer>` + `<EnableAotAnalyzer>false</EnableAotAnalyzer>` + `<TreatWarningsAsErrors>false</TreatWarningsAsErrors>` overrides are GONE. `Nullable=annotations` remains as a post-1.0 migration item (full `=enable` rewrite is separate).
+- **`.editorconfig`**: IDL-spec naming patterns suppressed at directory scope (CA1707/CA1712/CA1715/CA1716/CA1720/CA1725/CA1711/CA1051/MA0026) — these are wire-protocol identifiers that intentionally retain underscores per OPC/MS-DCOM convention.
+- **`dotnet format` applied** across 231 files for IDE0065 (using outside namespace) + IDE0161 (file-scoped namespaces).
+- **Disambiguated `Thread`** references (3 sites in `ComOxidRuntimeHelper.cs`) to fully-qualified `SharpCifs.Util.Sharpen.Thread`.
+- **Real code fixes for 565 errors across 30+ categories** (commits `160fa66`, `a73bfd3`, `769a2c1`, `41fda05`):
+  - `MA0011` IFormatProvider added (`CultureInfo.InvariantCulture`)
+  - `MA0048` file/type name mismatch fixed
+  - `MA0015` `nameof(paramName)` added to ArgumentException
+  - `MA0051` long methods extracted or pragma-suppressed
+  - `CA1852` internal types sealed
+  - `MA0002` `StringComparer.Ordinal` added
+  - `CA1848` LoggerMessage delegates or pragma
+  - `CA1865` `array.AsSpan().Contains`
+  - `MA0099` explicit enum values
+  - `MA0064` async double-assignment refactored
+  - `CA2201` specific exception types
+  - `CA1825 / MA0005` `Array.Empty<T>()`
+  - `CA1805` unnecessary initializers removed
+  - `CA2254` static logger templates
+  - `CA1859` concrete return types
+  - `CA2200` `throw;` not `throw ex;`
+  - `MA0158` `System.Threading.Lock` (.NET 9+)
+  - `CA1001` IDisposable for owners of disposable fields
+  - `CA1510` `ArgumentNullException.ThrowIfNull` helper
+  - `CA5351` spec-mandated MD5/SHA1 (NTLM) pragma-suppressed
+- **Real AOT fixes for `IL3000` + `IL3050`** (commit `952b16e`):
+  - `Common/Interop.cs`: `Assembly.Location` → `AppContext.BaseDirectory`
+  - `Core/Variant.cs`, `Core/VariantBody.cs`, `Core/ComArray.cs`: `Array.CreateInstance(Type, N)` replaced with closed VT_*-tagged switches that emit `new T[N]` per known runtime type
+- **`<NeutralLanguage>en-US</NeutralLanguage>`** added (CA1824).
+
+### Changed (SharpInterop / Vikram cleanup — single atomic refactor commit `8927583`)
+
+Per user direction: the source originated as a Java→C# port whose upstream attribution did NOT correspond to the substantively rewritten Opc.Classic codebase. All references and copyright headers tied to that lineage have been removed.
+
+- **301 .cs / .csproj files**: `namespace SharpInterop.* → Opc.Classic.Dcom.*` (matching namespace + using directives + RootNamespace in csproj). Tests + samples + docs all updated.
+- **227 .cs files**: stripped `Copyright (c) 2013 Vikram Roopchand` headers + EPL-1.0 license blocks. `SPDX-License-Identifier: MIT` added where missing.
+- **4 test files**: sanitized inline test-data usernames (`Vikram` / `VikramShilpa` → `testuser`).
+- **4 src files**: stripped personal-name inline annotation comments.
+- **2 src files**: stripped duplicate license headers from Phase-2H modernized files.
+- **10 docs/config files** updated: `.editorconfig`, `.github/copilot-instructions.md`, `.github/workflows/build.yml`, `CHANGELOG.md`, `coverlet.runsettings`, `docs/ADOPTION.md`, `docs/ARCHITECTURE.md`, `docs/diagrams/07-discovery-flow.md`, `docs/diagrams/10-aot-trimming-shape.md`, `THIRD-PARTY-NOTICES.md`.
+- **`Security` class disambiguated**: ComOxidRuntime.cs + AuthenticationVerifier.cs now use fully-qualified `Opc.Classic.Dcom.Rpc.Security` to avoid collision with the sibling `Opc.Classic.Security` sub-spec namespace.
+
+### Verification
+
+- **Build**: 0 errors / **0 warnings** in the full solution (was 1281 transitional warnings at session start).
+- **Tests**: 1253 passed / 24 skipped / 0 failed.
+- **Audit**: 0 `SharpInterop` refs / 0 `Vikram` refs / 0 `Roopchand` refs / 0 `epl-v10` refs anywhere in the repo.
+- **AOT**: `Opc.Classic.Dcom` now inherits `IsAotCompatible=true` from `src/Directory.Build.props` with no NoWarn entries for IL2xxx/IL3xxx analyzers. Trimming + single-file publishing should work end-to-end.
+
+### Remaining toward 1.0.0
+
+- `rw-d1-xml-doc-audit` — audit XML doc completeness on public surface
+- `rw-d2-docfx-pages` — publish DocFX site to GitHub Pages
+- `rw-e1-ntlmv2-realserver` — NTLMv2 wire test vs real Windows Server (needs infra)
+- `rw-e4-ntlm-audit` — third-party NTLMSSP security audit (external)
+- `release-rc1-tag` — tag 1.0.0-rc.1 after d1/d2
+- `release-100-tag` — tag 1.0.0 after Phase 14D compat matrix GREEN + OPC CTT pass
+
+
 
 This release closes 9 of 11 critical findings from the protocol gap analysis (`gap-analysis.md`), implementing the M5–M9 milestones from the 1.0.0 roadmap. The wire protocol is now spec-correct on every dimension that was identified as MEDIUM or higher severity.
 
