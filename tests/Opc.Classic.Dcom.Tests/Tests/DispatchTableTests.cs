@@ -4,7 +4,7 @@
 //
 
 using System;
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
@@ -53,7 +53,7 @@ public sealed class DispatchTableTests
     private static object CreateDispatchTable(Guid iid, int opnum, Func<object[], object?> dispatcher)
     {
         var tableType = typeof(LocalCoClass).Assembly.GetType(
-            "SharpInterop.Core.DelegateDispatchTable", throwOnError: true)!;
+            "Opc.Classic.Dcom.Core.DelegateDispatchTable", throwOnError: true)!;
         var registrationType = typeof(ValueTuple<Guid, int, Func<object[], object?>>);
         var registrations = Array.CreateInstance(registrationType, 1);
         registrations.SetValue((iid, opnum, dispatcher), 0);

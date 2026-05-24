@@ -4,7 +4,7 @@
 using Opc.Classic.Dcom.Internal;
 using TUnit.Core;
 
-namespace SharpInterop.Test;
+namespace Opc.Classic.Dcom.Test;
 
 public sealed class PropertyBagTests
 {

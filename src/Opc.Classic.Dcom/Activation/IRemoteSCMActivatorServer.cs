@@ -6,7 +6,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Server-side contract for IRemoteSCMActivator activation handling.</summary>
 public interface IRemoteSCMActivatorServer : IRemoteSCMActivator {

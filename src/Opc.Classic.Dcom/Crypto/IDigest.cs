@@ -3,7 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>BouncyCastle <c>IDigest</c>-shaped hash interface (transitional).</summary>
 public interface IDigest {

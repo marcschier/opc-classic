@@ -1,16 +1,9 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
-using SharpInterop.Core;
-using SharpInterop.Resources;
+using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Resources;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,7 +11,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Reflection;
 
-namespace SharpInterop.Common; 
+namespace Opc.Classic.Dcom.Common; 
 /// <summary>
 /// Class implemented for defining system wide changes.
 /// <para><b>Note</b>: Methods starting with <i>internal_</i>
@@ -59,9 +52,9 @@ public static class Interop {
     /// </summary>
     /// <remarks>
     /// Default is 5.4 — which selects the modern <c>IRemoteSCMActivator</c>
-    /// (a.k.a. DCOM v5.6) activation path in <see cref="SharpInterop.Core.ComServer"/>
+    /// (a.k.a. DCOM v5.6) activation path in <see cref="Opc.Classic.Dcom.Core.ComServer"/>
     /// rather than the legacy <c>IRemoteActivation</c> (v5.4) path.
-    /// <see cref="SharpInterop.Core.ComServer"/> selects the SCM activator
+    /// <see cref="Opc.Classic.Dcom.Core.ComServer"/> selects the SCM activator
     /// whenever <c>MinorVersion &gt; 1</c>, which is true for the default.
     /// Set this to <c>new ComVersion(5, 1)</c> to opt back into the legacy
     /// v5.4 activation surface for Windows 2000 / XP pre-SP2 targets.

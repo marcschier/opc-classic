@@ -5,7 +5,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>MD4Digest backed by the in-tree hand-rolled <see cref="Md4"/> implementation.</summary>
 [SuppressMessage("Naming", "CA1709", Justification = "Legacy NTLM API shape preserves BC casing")]

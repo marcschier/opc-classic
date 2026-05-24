@@ -1,17 +1,10 @@
-//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
 using SharpCifs.Smb;
-using SharpInterop.Rpc;
-using SharpInterop.Common;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Common;
 using System.Text;
 using System.Net;
 using System.Linq;
@@ -19,7 +12,7 @@ using System.IO;
 using System;
 using System.Web;
 
-namespace SharpInterop.Registry.Smb; 
+namespace Opc.Classic.Dcom.Registry.Smb; 
 /// <summary>
 /// Registry strub
 /// </summary>
@@ -42,7 +35,7 @@ public class RegistryStub : Stub, IRegistry {
                 Interop.GetLocalizedMessage(ErrorCode.INTEROP_AUTH_NOT_SUPPLIED),
                 nameof(authInfo));
         }
-        TransportFactory = new SharpInterop.Rpc.Ncacn_Np.TransportFactory();
+        TransportFactory = new Opc.Classic.Dcom.Rpc.Ncacn_Np.TransportFactory();
         Properties = new PropertyBag();
         Properties.SetProperty("rpc.ncacn_np.username", authInfo.UserName);
         var password = HttpUtility.UrlEncode(authInfo.Password, Encoding.UTF8);
@@ -76,7 +69,7 @@ public class RegistryStub : Stub, IRegistry {
     /// <param name="serverName"></param>
     /// <exception cref="UnknownHostException"></exception>
     public RegistryStub(string serverName) {
-        TransportFactory = new SharpInterop.Rpc.Ncacn_Np.TransportFactory();
+        TransportFactory = new Opc.Classic.Dcom.Rpc.Ncacn_Np.TransportFactory();
         Properties = new PropertyBag();
         Properties.SetProperty("rpc.ntlm.sso", "true");
         serverName = serverName.Trim();

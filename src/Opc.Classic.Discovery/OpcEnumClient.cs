@@ -14,7 +14,7 @@ using Opc.Classic;
 using Opc.Classic.Dcom;
 using Opc.Classic.Discovery.Dcom;
 using Opc.Classic.Ndr;
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 
 namespace Opc.Classic.Discovery;
 

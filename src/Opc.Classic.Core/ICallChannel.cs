@@ -21,7 +21,7 @@ namespace Opc.Classic;
 /// the request body and NDR-decode the response.
 /// <para>
 /// Production implementation is provided by Opc.Classic.Dcom's CallBuilder
-/// wrapped in <c>SharpInteropCallChannel</c> (Phase 4B). A managed
+/// wrapped in <c>DcomCallChannel</c> (Phase 4B). A managed
 /// <c>InMemoryCallChannel</c> exists for unit tests and managed loopback
 /// integration tests (Phase 13).
 /// </para>

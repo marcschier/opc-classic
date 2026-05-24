@@ -6,7 +6,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 internal sealed class DesEcbNoPaddingCipher : IBufferedCipher {
 #pragma warning disable CA5351, SYSLIB0021 // DES required for NTLMv1 LM hash compat.

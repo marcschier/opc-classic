@@ -6,7 +6,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>RC4Engine backed by the in-tree hand-rolled <see cref="Rc4"/> implementation.</summary>
 [SuppressMessage("Naming", "CA1709", Justification = "Legacy NTLM API shape preserves BC casing")]

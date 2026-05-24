@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Opc.Classic.Testing;
 using Opc.Classic.Transport;
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
@@ -102,7 +102,7 @@ public sealed class LocalCoClassModernizationTests
         int workerCount)
     {
         var serviceType = typeof(LocalCoClass).Assembly.GetType(
-            "SharpInterop.Core.ComOxidRuntimeAcceptService", throwOnError: true)!;
+            "Opc.Classic.Dcom.Core.ComOxidRuntimeAcceptService", throwOnError: true)!;
         return (IHostedService)Activator.CreateInstance(serviceType, endpoint, processor, workerCount)!;
     }
 

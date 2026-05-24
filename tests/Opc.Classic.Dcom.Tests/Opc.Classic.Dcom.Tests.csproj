@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    TRANSITIONAL: this is COM.Net/SharpInterop.Test, a collection of manual
+    TRANSITIONAL: this is COM.Net/Opc.Classic.Dcom.Test, a collection of manual
     integration drivers (most "test" files are `public static void RunTest(string[] args)`
     entry points that require a live DCOM endpoint + credentials). Driver.cs is
     explicitly excluded from compilation in the original.
@@ -12,8 +12,8 @@
   -->
 
   <PropertyGroup>
-    <Description>(Transitional) Legacy SharpInterop integration-driver samples — pending Phase 11 rewrite.</Description>
-    <RootNamespace>SharpInterop.Test</RootNamespace>
+    <Description>(Transitional) Legacy Opc.Classic.Dcom integration-driver samples — pending Phase 11 rewrite.</Description>
+    <RootNamespace>Opc.Classic.Dcom.Test</RootNamespace>
     <AssemblyName>Opc.Classic.Dcom.LegacyTests</AssemblyName>
 
     <!-- Opt in to TUnit/MTP for focused unit coverage while retaining legacy drivers. -->

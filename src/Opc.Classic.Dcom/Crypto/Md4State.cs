@@ -11,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>
 /// Incremental MD4 state. Reusable after <see cref="GetHashAndReset"/>.

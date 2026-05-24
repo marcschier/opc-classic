@@ -19,7 +19,7 @@ using System.Security.Cryptography.X509Certificates;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
 using Opc.Classic.Security;
-using SharpInterop.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
@@ -166,8 +166,8 @@ public sealed class ChannelBindingTlsTests
         properties.SetProperty("rpc.ntlm.allowV1", "false");
         properties.SetProperty("rpc.ntlm.sso", "false");
         properties.SetProperty("rpc.ntlm.domain", "DOMAIN");
-        properties.SetProperty(SharpInterop.Rpc.Security.USERNAME, "User");
-        properties.SetProperty(SharpInterop.Rpc.Security.PASSWORD, "Password");
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, "User");
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, "Password");
         if (channelBindingsHash is not null)
         {
             properties.SetProperty("rpc.ntlm.channelBindingsHash", channelBindingsHash);

@@ -4,7 +4,7 @@ This diagram shows how OPC Classic server discovery is represented in the reposi
 
 The OPCEnum path targets the standard `OPC.ServerList.1` DCOM server and the `IOPCServerList` / `IOPCServerList2` projection interfaces. In the current source, `OpcEnumClient` is a scaffold that will use those generated shims once the remaining server-list method bodies are available.
 
-The remote-registry path enumerates OPC category registrations from a target machine's registry. `RemoteRegistryEnum` is also a scaffold today, and the legacy SharpInterop registry client shows the underlying Windows Remote Registry over `ncacn_np` and `\\PIPE\\winreg` transport shape.
+The remote-registry path enumerates OPC category registrations from a target machine's registry. `RemoteRegistryEnum` is also a scaffold today, and the legacy registry client shows the underlying Windows Remote Registry over `ncacn_np` and `\\PIPE\\winreg` transport shape.
 
 ```mermaid
 sequenceDiagram

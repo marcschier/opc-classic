@@ -1,14 +1,7 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Common;
-using SharpInterop.Rpc;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
 using System;
@@ -22,7 +15,7 @@ using System.Globalization;
 
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Thread for Oxid Resolver. Creates and accepts socket
 /// connections for resolving oxids. Gets started once for each instance
@@ -68,8 +61,8 @@ internal sealed class ComOxidRuntime : IDisposable {
         _defaults2.SetProperty("rpc.ntlm.sign", "false");
         _defaults2.SetProperty("rpc.ntlm.seal", "false");
         _defaults2.SetProperty("rpc.ntlm.keyExchange", "false");
-        _defaults2.SetProperty("rpc.connectionContext", "SharpInterop.Transport.ComRuntimeNTLMConnectionContext");
-        _defaults.SetProperty("rpc.connectionContext", "SharpInterop.Transport.ComRuntimeConnectionContext");
+        _defaults2.SetProperty("rpc.connectionContext", "Opc.Classic.Dcom.Transport.ComRuntimeNTLMConnectionContext");
+        _defaults.SetProperty("rpc.connectionContext", "Opc.Classic.Dcom.Transport.ComRuntimeConnectionContext");
     }
 
     internal static ProtectionLevel ConfigureActivationProtection(
@@ -90,8 +83,8 @@ internal sealed class ComOxidRuntime : IDisposable {
             properties.SetProperty("rpc.ntlm.keyExchange", "true");
             properties.SetProperty("rpc.ntlm.keyLength", "128");
             properties.SetProperty("rpc.ntlm.ntlm2", "true");
-            properties.SetProperty(Security.USERNAME, username);
-            properties.SetProperty(Security.PASSWORD, password);
+            properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, username);
+            properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, password);
             properties.SetProperty("rpc.ntlm.ntlm2", "true");
         }
 

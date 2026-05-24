@@ -6,8 +6,8 @@
 using System.Reflection;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using SharpInterop.Rpc;
-using SharpInterop.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;
@@ -49,7 +49,7 @@ public sealed class ProtectionLevelDefaultsTests
     private static ProtectionLevel ConfigureActivationProtection(PropertyBag properties, bool sessionSecurityEnabled)
     {
         var runtimeType = typeof(ProtectionLevel).Assembly.GetType(
-            "SharpInterop.Core.ComOxidRuntime", throwOnError: true)!;
+            "Opc.Classic.Dcom.Core.ComOxidRuntime", throwOnError: true)!;
         var method = runtimeType.GetMethod(
             "ConfigureActivationProtection", BindingFlags.Static | BindingFlags.NonPublic)!;
 

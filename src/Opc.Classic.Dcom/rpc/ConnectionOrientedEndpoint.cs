@@ -1,23 +1,16 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Rpc.Core;
-using SharpInterop.Rpc.pdu;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
-using SharpInterop.Rpc.Auth.ntlm;
-using SharpInterop.Transport;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Transport;
 using System;
 using System.IO;
 
-namespace SharpInterop.Rpc; 
+namespace Opc.Classic.Dcom.Rpc; 
 /// <summary>
 /// Connection oriented endpoint
 /// </summary>
@@ -275,10 +268,10 @@ public class ConnectionOrientedEndpoint : IEndpoint {
             return new BasicConnectionContext();
         }
         return context switch {
-            "SharpInterop.Rpc.BasicConnectionContext" => new BasicConnectionContext(),
-            "rpc.security.ntlm.NtlmConnectionContext" or "SharpInterop.Rpc.Auth.ntlm.NtlmConnectionContext" => new NtlmConnectionContext(),
-            "SharpInterop.Transport.ComRuntimeConnectionContext" => new ComRuntimeConnectionContext(),
-            "SharpInterop.Transport.ComRuntimeNTLMConnectionContext" or "SharpInterop.Transport.ComRuntimeNtlmConnectionContext" => new ComRuntimeNtlmConnectionContext(),
+            "Opc.Classic.Dcom.Rpc.BasicConnectionContext" => new BasicConnectionContext(),
+            "rpc.security.ntlm.NtlmConnectionContext" or "Opc.Classic.Dcom.Rpc.Auth.ntlm.NtlmConnectionContext" => new NtlmConnectionContext(),
+            "Opc.Classic.Dcom.Transport.ComRuntimeConnectionContext" => new ComRuntimeConnectionContext(),
+            "Opc.Classic.Dcom.Transport.ComRuntimeNTLMConnectionContext" or "Opc.Classic.Dcom.Transport.ComRuntimeNtlmConnectionContext" => new ComRuntimeNtlmConnectionContext(),
             _ => throw new ProviderException("Unsupported RPC connection context: " + context),
         };
     }

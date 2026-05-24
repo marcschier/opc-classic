@@ -1,18 +1,11 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Rpc;
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
 using System;
 
-namespace SharpInterop.Core; 
+namespace Opc.Classic.Dcom.Core; 
 /// <summary>
 /// Stores the oxid details in memory.
 /// </summary>
@@ -86,8 +79,8 @@ internal sealed class ComOxidDetails {
     /// Protection level
     /// </summary>
     // Phase 3B: default INTEGRITY per Microsoft DCOM hardening (KB5004442).
-    internal SharpInterop.Rpc.ProtectionLevel AuthHint { get; } =
-        SharpInterop.Rpc.ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
+    internal Opc.Classic.Dcom.Rpc.ProtectionLevel AuthHint { get; } =
+        Opc.Classic.Dcom.Rpc.ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
 
     /// <summary>
     /// Set thread group

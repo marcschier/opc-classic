@@ -14,7 +14,7 @@ opc-classic/
 │                                  Activator.CreateInstance(Type), [ComImport],
 │                                  Marshal.GetObjectForNativeVariant/ReleaseComObject, ...)
 │   └── Opc.Classic.Dcom/          cross-platform pure-managed MSRPC/DCOM stack
-│                                  (ex-SharpInterop; legacy j-Interop port being modernized).
+│                                  (managed DCOM stack (legacy code is being modernized)).
 │                                  Currently TRANSITIONAL — see csproj header for relaxations.
 │       └── Crypto/               hand-rolled MD4 + RC4 + BC-API-shaped compat shim
 ├── tests/
@@ -24,7 +24,7 @@ opc-classic/
 │   ├── Directory.Packages.props  TUnit 0.13.x, CsCheck, Verify.TUnit, MS Logging.Testing
 │   ├── Opc.Classic.Dcom.Crypto.Tests/   ← first real TUnit project (Phase 11A complete)
 │   │                                     RFC 1320 MD4 + RFC 6229 RC4 vectors, all passing
-│   └── Opc.Classic.Dcom.Tests/    legacy SharpInterop integration drivers (Phase 11 rewrites)
+│   └── Opc.Classic.Dcom.Tests/    legacy DCOM integration drivers (Phase 11 rewrites)
 │                                  opt out of TUnit via <IsTestProject>false</IsTestProject>.
 ├── samples/                      sample apps and the AOT canary (Phase 16D)
 ├── docs/                         DocFX site + cookbook (Phase 15)
@@ -88,7 +88,7 @@ When you need code that *looks* like one of those patterns — e.g., "given a ty
 
 **Tests and samples are NOT AOT-strict** (per the `libs_only` decision) — they may use Verify, CsCheck, etc. without breaking the rule.
 
-The `src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj` is **TRANSITIONAL**: it currently overrides the strict properties to `false` because the legacy SharpInterop code under it is Java-converter style and is being modernized phase by phase. The csproj header documents which NoWarn entries are temporary and which Phase removes them. **Do not relax the rules for fresh code** — any new file should compile clean under the parent `src/Directory.Build.props` defaults.
+The `src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj` is **TRANSITIONAL**: it currently overrides the strict properties to `false` because the legacy Dcom code under it is Java-converter style and is being modernized phase by phase. The csproj header documents which NoWarn entries are temporary and which Phase removes them. **Do not relax the rules for fresh code** — any new file should compile clean under the parent `src/Directory.Build.props` defaults.
 
 ## Conventions
 

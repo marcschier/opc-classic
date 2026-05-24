@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Opaque activation property preserving an unrecognized property payload.</summary>
 public sealed class ActivationProperty {

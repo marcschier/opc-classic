@@ -1,18 +1,11 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-namespace SharpInterop.Test {
-    using SharpInterop.Core;
-    using SharpInterop.Common;
-    using SharpInterop.Automation;
+namespace Opc.Classic.Dcom.Test {
+    using Opc.Classic.Dcom.Core;
+    using Opc.Classic.Dcom.Common;
+    using Opc.Classic.Dcom.Automation;
     using System;
-    using SharpInterop;
+    using Opc.Classic.Dcom;
 
     public class FirstContact_Stub : FirstContact {
 
@@ -31,8 +24,8 @@ namespace SharpInterop.Test {
             Interop.UseAutoRegistration = true;
 
             // Config.setProperty("SharpCifs.smb.client.domain","ITLINFOSYS");
-            _session = Session.CreateSession("FDGNT", "roopchand", "QweQwe007");
-            // session = Session.createSession("10.74.85.56","itl-hw-38602a\\Vikram","Infosys@123");
+            _session = Session.CreateSession("FDGNT", "testuser", "QweQwe007");
+            // session = Session.createSession("10.74.85.56","itl-hw-38602a\\testuser","Infosys@123");
             // session = Session.createSession("federation","administrator","enterprise");
             // stub = new ComServer(Clsid.ValueOf("8B21775E-717D-11CE-AB5B-D41203C10000"),address,session);
             // stub = new ComServer(ProgId.ValueOf(session,"TestCOM123.TestServer2"),address,session);
@@ -54,7 +47,7 @@ namespace SharpInterop.Test {
 
         public void ObtainReference() {
             try {
-                //            System.setOut(new PrintStream(new FileOutputStream("c:/temp/vikram.txt")));
+                //            System.setOut(new PrintStream(new FileOutputStream("c:/temp/testuser.txt")));
                 //        } catch (FileNotFoundException e) {
                 //            // TODO Auto-generated catch block
                 //            e.printStackTrace();
@@ -348,7 +341,7 @@ namespace SharpInterop.Test {
 
                 //            obj.reInit();
                 //            obj.setOpnum(93);
-                //            obj.addInParamAsString("VikramShilpa",Flags.FLAG_REPRESENTATION_STRING_LPCTSTR);
+                //            obj.addInParamAsString("testuser",Flags.FLAG_REPRESENTATION_STRING_LPCTSTR);
                 //            obj.addInParamAsString("ShilpaAkshat",Flags.FLAG_REPRESENTATION_STRING_LPWSTR);
                 //
                 //            // obj.setUpParams(new Object[]{new Variant(new Object[]{new Character('S'),new Integer(12),handle,dispatch,new Double(12.23),new Float(101),new Float(101),new Double(12.23)})}, null,Flags.FLAG_NULL,Flags.FLAG_NULL);
@@ -543,7 +536,7 @@ namespace SharpInterop.Test {
 
                 //            obj.reInit();
                 //            obj.setOpnum(95);
-                //            obj.addInParamAsPointer(new ComPointer(new ComString("VikramShilpa",Flags.FLAG_REPRESENTATION_STRING_LPCTSTR)), Flags.FLAG_NULL);
+                //            obj.addInParamAsPointer(new ComPointer(new ComString("testuser",Flags.FLAG_REPRESENTATION_STRING_LPCTSTR)), Flags.FLAG_NULL);
                 //            obj.addInParamAsPointer(new ComPointer(new ComString("AkshatShilpa",Flags.FLAG_REPRESENTATION_STRING_LPCTSTR)), Flags.FLAG_NULL);
                 //            // obj.setUpParams(new Object[]{new Variant(new Object[]{new Character('S'),new Integer(12),handle,dispatch,new Double(12.23),new Float(101),new Float(101),new Double(12.23)})}, null,Flags.FLAG_NULL,Flags.FLAG_NULL);
                 //            result = handle.call(obj);

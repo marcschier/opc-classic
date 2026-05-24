@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -17,9 +17,9 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Orpc;
 using Opc.Classic.Ndr;
 using SharpCifs.Util.Sharpen;
-using SharpInterop.Rpc;
-using SharpInterop.Rpc.Core;
-using SharpInterop.Rpc.pdu;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
 
 namespace Opc.Classic.Dcom.Transport;
 
@@ -271,7 +271,7 @@ public sealed class DcomCallChannel : ICallChannel, IAsyncDisposable {
         body.Span.CopyTo(protectedPdu.AsSpan(verifierStart + AuthenticationVerifierHeaderLength));
 
         Span<byte> verifier = protectedPdu.AsSpan(verifierStart, AuthenticationVerifierHeaderLength);
-        verifier[0] = (byte)SharpInterop.Rpc.Security.AUTHENTICATION_SERVICE_NONE;
+        verifier[0] = (byte)Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE;
         verifier[1] = (byte)ToRpcProtectionLevel(_authContext.ProtectionLevel);
         verifier[2] = (byte)padding;
         verifier[3] = 0;

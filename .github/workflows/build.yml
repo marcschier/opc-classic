@@ -93,7 +93,7 @@ jobs:
             -reports:./coverage-results/**/coverage.cobertura.xml `
             -targetdir:./coverage-report `
             -reporttypes:"Cobertura;TextSummary;MarkdownSummaryGithub" `
-            -assemblyfilters:"+*;-Opc.Classic.Dcom*;-SharpInterop*;-Opc.Classic.Generators*;-*Tests*" `
+            -assemblyfilters:"+*;-Opc.Classic.Dcom*;-Opc.Classic.Generators*;-*Tests*" `
             -classfilters:"+*;-*.Generated.*;-*Tests*" `
             -filefilters:"-**/obj/**;-**/bin/**;-**/*.g.cs"
 

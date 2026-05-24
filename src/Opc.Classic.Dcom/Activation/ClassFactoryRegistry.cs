@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// Thread-safe registry mapping CLSIDs to managed class factories used by the
@@ -82,7 +82,7 @@ public sealed class ClassFactoryRegistry {
     }
 
     internal static LocalInterfaceDefinition CreateDefaultInterfaceDefinition(Guid requestedIid) {
-        Guid iid = requestedIid == Guid.Empty ? Guid.Parse(SharpInterop.Interfaces.IID_IUnknown) : requestedIid;
+        Guid iid = requestedIid == Guid.Empty ? Guid.Parse(Opc.Classic.Dcom.Interfaces.IID_IUnknown) : requestedIid;
         return new LocalInterfaceDefinition(iid.ToString(), isDispInterface: false);
     }
 }

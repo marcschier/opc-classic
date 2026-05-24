@@ -88,7 +88,7 @@ This release closes 9 of 11 critical findings from the protocol gap analysis (`g
 ### Changed
 
 - **BREAKING**: Project renamed from `OpcClassic.*` to `Opc.Classic.*` (dotted form). Every namespace, NuGet package ID, folder, and project file follows the new convention. Pre-1.0 alpha; no packages published under the old name.
-- **License changed from EPL-1.0 to MIT.** The OpcClassic .NET 10 codebase has been substantively rewritten since the early SharpInterop-derived phases (no SharpInterop attribution remains in src/); the relicense makes the library more adoptable.
+- **License changed from EPL-1.0 to MIT.** The OpcClassic .NET 10 codebase has been substantively rewritten since the early DCOM port phases (no third-party DCOM attribution remains in src/); the relicense makes the library more adoptable.
 - Generator-emitted proxy class names lose the underscore: `<Interface>_ClientProxy` → `<Interface>ClientProxy`.
 - Loopback integration test classes modernized to PascalCase (e.g. `F1_DA_RoundTrip` → `F1DaRoundTrip`).
 - IDL-spec identifiers (e.g. `IOPCHDA_Server`, `OPCHDA_ANNOTATION`) RETAIN underscores per OPC convention.

@@ -13,7 +13,7 @@
 
 using System;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>
 /// Pure-managed MD4 (RFC 1320). Hash size = 16 bytes; block size = 64 bytes.

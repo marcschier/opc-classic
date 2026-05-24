@@ -11,9 +11,9 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Testing;
 using Opc.Classic.Transport;
-using SharpInterop.Rpc;
-using SharpInterop.Rpc.Core;
-using SharpInterop.Rpc.pdu;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests;

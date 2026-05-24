@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Opc.Classic.Ndr;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// NDR codec for the managed IRemoteSCMActivator v5.6 activation property array.

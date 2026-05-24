@@ -1,11 +1,11 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
 using System;
 
-namespace SharpInterop.Common;
+namespace Opc.Classic.Dcom.Common;
 
 /// <summary>
 /// DCOM OXID ping timing defaults and runtime overrides.

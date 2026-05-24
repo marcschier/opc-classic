@@ -1,17 +1,10 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using System;
 
-namespace SharpInterop.Automation; 
+namespace Opc.Classic.Dcom.Automation; 
 /// <summary>
 /// Implements the <i>VARDESC</i> structure of COM Automation
 /// </summary>

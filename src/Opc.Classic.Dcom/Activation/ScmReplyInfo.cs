@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>SCM activation reply data with the returned OBJREF.</summary>
 public sealed record ScmReplyInfo(int Hresult, Guid Oxid, Guid Oid, Guid Ipid, byte[] ObjRef) {

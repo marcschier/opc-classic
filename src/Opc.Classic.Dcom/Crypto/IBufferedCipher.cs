@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>BouncyCastle <c>IBufferedCipher</c>-shaped buffered cipher (transitional).</summary>
 public interface IBufferedCipher : IDisposable {

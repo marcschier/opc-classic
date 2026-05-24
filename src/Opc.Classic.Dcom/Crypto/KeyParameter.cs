@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>BouncyCastle <c>KeyParameter</c>: wraps a key byte[].</summary>
 public sealed class KeyParameter : ICipherParameters {

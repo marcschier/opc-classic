@@ -6,8 +6,8 @@
 using System;
 using System.Reflection;
 using Opc.Classic.Dcom.Internal;
-using SharpInterop.Rpc;
-using SharpInterop.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
@@ -58,7 +58,7 @@ public sealed class NtlmDefaultsTests
     private static ProtectionLevel ConfigureActivationProtection(PropertyBag properties, bool sessionSecurityEnabled)
     {
         var runtimeType = typeof(ProtectionLevel).Assembly.GetType(
-            "SharpInterop.Core.ComOxidRuntime", throwOnError: true)!;
+            "Opc.Classic.Dcom.Core.ComOxidRuntime", throwOnError: true)!;
         var method = runtimeType.GetMethod(
             "ConfigureActivationProtection", BindingFlags.Static | BindingFlags.NonPublic)!;
 

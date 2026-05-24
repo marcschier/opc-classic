@@ -1,12 +1,12 @@
-﻿// Extracted from http://davenport.sourceforge.net/ntlm.html
+// Extracted from http://davenport.sourceforge.net/ntlm.html
 // Copyright � 2003, 2006 Eric Glass (eric.glass@gmail.com)
 
-using SharpInterop.Crypto;
+using Opc.Classic.Dcom.Crypto;
 using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace SharpInterop.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
 /// <summary>
 /// Calculates the various Type 3 responses.
 /// </summary>

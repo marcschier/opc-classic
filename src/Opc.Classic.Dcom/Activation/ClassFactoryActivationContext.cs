@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Activation context supplied to registered class factories.</summary>
 public sealed record ClassFactoryActivationContext(

@@ -1,11 +1,4 @@
-//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic;
 using Opc.Classic.Dcom.Internal;
@@ -23,7 +16,7 @@ using System.Net;
 using System.Security;
 using System.Security.Cryptography;
 
-namespace SharpInterop.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
 /// <summary>
 /// Ntlm auth
 /// </summary>
@@ -67,8 +60,8 @@ public class NtlmAuthentication {
             _useSSO = Convert.ToBoolean(properties.GetProperty("rpc.ntlm.sso"));
             _channelBindingsHash = CloneChannelBindingsHash(properties.GetProperty("rpc.ntlm.channelBindingsHash"));
             domain = (string)properties.GetProperty("rpc.ntlm.domain");
-            user = (string)properties.GetProperty(SharpInterop.Rpc.Security.USERNAME);
-            password = (string)properties.GetProperty(SharpInterop.Rpc.Security.PASSWORD);
+            user = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME);
+            password = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD);
         }
 
         if (!_useNtlmV2 && !_allowNtlmV1) {
@@ -153,8 +146,8 @@ public class NtlmAuthentication {
         if (connectData.ChannelBindings is not null) {
             properties.SetProperty("rpc.ntlm.channelBindingsHash", ChannelBindingsHash.Compute(connectData.ChannelBindings));
         }
-        properties.SetProperty(SharpInterop.Rpc.Security.USERNAME, credentials.UserName);
-        properties.SetProperty(SharpInterop.Rpc.Security.PASSWORD, credentials.Password);
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, credentials.UserName);
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, credentials.Password);
         return properties;
     }
 

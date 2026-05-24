@@ -8,7 +8,7 @@
 
 using System;
 using System.Text;
-using SharpInterop.Crypto;
+using Opc.Classic.Dcom.Crypto;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Crypto.Tests;

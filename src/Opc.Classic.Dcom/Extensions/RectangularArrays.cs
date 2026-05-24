@@ -5,7 +5,7 @@
 //    This class provides the logic to simulate Java rectangular arrays, which are jagged
 //    arrays with inner arrays of the same length. A size of -1 indicates unknown length.
 // ----------------------------------------------------------------------------------------
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 
 namespace System;
 

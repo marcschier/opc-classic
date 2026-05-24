@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Server-side IRemoteSCMActivator::RemoteCreateInstance response.</summary>
 public sealed record RemoteCreateInstanceResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef) {

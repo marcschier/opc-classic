@@ -1,18 +1,11 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpInterop.Core; 
+namespace Opc.Classic.Dcom.Core; 
 /// <summary>
 /// Class representing a Marshalled Interface Pointer. You will never
 /// use the members of this class directly, but always as an implementation

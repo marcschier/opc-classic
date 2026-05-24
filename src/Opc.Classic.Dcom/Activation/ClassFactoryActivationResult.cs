@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Result produced by a class factory for DCOM export.</summary>
 public sealed class ClassFactoryActivationResult {

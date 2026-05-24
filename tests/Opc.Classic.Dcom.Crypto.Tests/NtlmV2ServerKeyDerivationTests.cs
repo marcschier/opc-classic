@@ -13,8 +13,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using SharpInterop.Crypto;
-using SharpInterop.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Crypto;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
@@ -134,8 +134,8 @@ public sealed class NtlmV2ServerKeyDerivationTests
         properties.SetProperty("rpc.ntlm.ntlm2", "true");
         properties.SetProperty("rpc.ntlm.ntlmv2", "true");
         properties.SetProperty("rpc.ntlm.domain", Domain);
-        properties.SetProperty(SharpInterop.Rpc.Security.USERNAME, User);
-        properties.SetProperty(SharpInterop.Rpc.Security.PASSWORD, password);
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, User);
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, password);
         return new NtlmAuthentication(properties);
     }
 

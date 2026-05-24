@@ -67,7 +67,7 @@
     <CollectCoverage>true</CollectCoverage>
     <CoverletOutputFormat>cobertura</CoverletOutputFormat>
     <CoverletOutput Condition="'$(CoverletOutput)' == '' and '$(VSTestResultsDirectory)' != ''">$(VSTestResultsDirectory)\</CoverletOutput>
-    <Exclude>[*]Opc.Classic.Dcom.*,[*]SharpInterop.*,[Opc.Classic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
+    <Exclude>[*]Opc.Classic.Dcom.*,[Opc.Classic.Generators]*,[*Tests]*,[*]*.Generated.*</Exclude>
     <ExcludeByAttribute>Obsolete,GeneratedCodeAttribute,CompilerGeneratedAttribute</ExcludeByAttribute>
     <ExcludeByFile>**/obj/**,**/bin/**,**/*.g.cs</ExcludeByFile>
     <IncludeTestAssembly>false</IncludeTestAssembly>

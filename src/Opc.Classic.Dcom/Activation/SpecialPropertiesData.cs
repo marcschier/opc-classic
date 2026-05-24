@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Managed shadow of SPECIAL_PROPERTIES_DATA.</summary>
 public sealed record SpecialPropertiesData(

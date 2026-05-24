@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -13,7 +13,7 @@
 
 using System;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 /// <summary>
 /// Pure-managed RC4 stream cipher (KSA + PRGA).
 /// Each instance carries its own keystream state — create one per direction

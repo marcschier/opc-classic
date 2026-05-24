@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// Managed representation of the versioned activation property array exchanged by

@@ -1,5 +1,5 @@
 # EditorConfig — root of opc-classic
-# Promoted and extended from COM.Net/.editorconfig (the legacy SharpInterop one).
+# Promoted and extended from COM.Net/.editorconfig (the original COM.Net one).
 # AOT/trim analyzer severities defined here are the source of truth and
 # match the BannedSymbols.txt + Directory.Build.props enforcement under src/.
 
@@ -139,7 +139,7 @@ dotnet_diagnostic.IL3050.severity = silent
 dotnet_diagnostic.CA1062.severity = silent
 dotnet_diagnostic.CA1031.severity = silent
 
-# Opc.Classic.Dcom — legacy SharpInterop-derived runtime + IDL-spec wire types
+# Opc.Classic.Dcom — legacy runtime + IDL-spec wire types
 # These types intentionally retain wire-protocol identifier conventions:
 #   - Underscored names (IOPCHDA_Server, OPCHDA_ANNOTATION, ORPC_THIS, etc.) per OPC/MS-DCOM IDL
 #   - Public fields for inline NDR-serialized struct layout (NDR encoding mirrors C struct field order)

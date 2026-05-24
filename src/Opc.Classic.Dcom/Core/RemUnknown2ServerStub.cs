@@ -1,21 +1,14 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 using Opc.Classic.Dcom.Internal;
-using SharpInterop.Common;
-using SharpInterop.Transport;
-using SharpInterop.Rpc;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Transport;
+using Opc.Classic.Dcom.Rpc;
 using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
 using System.Globalization;
 
-namespace SharpInterop.Core; 
+namespace Opc.Classic.Dcom.Core; 
 /// <summary>
 /// Represents unknown server
 /// </summary>
@@ -127,7 +120,7 @@ internal sealed class RemUnknown2ServerStub : Stub {
                 if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID,
                     StringComparison.CurrentCultureIgnoreCase)) {
                     // first send an AlterContext to the IID of the interface
-                    Endpoint.Syntax.Uuid = new SharpInterop.Rpc.Core.UUID(targetIID);
+                    Endpoint.Syntax.Uuid = new Opc.Classic.Dcom.Rpc.Core.UUID(targetIID);
                     Endpoint.Syntax.Version = 0;
                     ((ComEndpoint)Endpoint).RebindEndPoint();
                 }

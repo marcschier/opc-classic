@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
-using SharpInterop.Common;
+using Opc.Classic.Dcom.Common;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// Server-side IRemoteSCMActivator v5.6 implementation for RemoteCreateInstance
@@ -23,7 +23,7 @@ public sealed class RemoteSCMActivatorServer : IRemoteSCMActivatorServer {
     internal const int CO_E_CLASSSTRING = unchecked((int)0x800401F3u);
     internal const int CLASS_E_CLASSNOTAVAILABLE = unchecked((int)0x80040111u);
 
-    private static readonly Guid IidIUnknown = Guid.Parse(SharpInterop.Interfaces.IID_IUnknown);
+    private static readonly Guid IidIUnknown = Guid.Parse(Opc.Classic.Dcom.Interfaces.IID_IUnknown);
     private static readonly Guid IidIClassFactory = Guid.Parse("00000001-0000-0000-C000-000000000046");
     private readonly IClsidRegistry? _metadataRegistry;
     private readonly ClassFactoryRegistry _classFactories;

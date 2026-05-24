@@ -5,7 +5,7 @@
 
 using System.Runtime.InteropServices;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>DCOM COMVERSION value.</summary>
 [StructLayout(LayoutKind.Sequential)]

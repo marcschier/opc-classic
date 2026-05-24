@@ -1,31 +1,24 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Rpc;
+using Opc.Classic.Dcom.Rpc;
 using Opc.Classic.Dcom.Internal;
 using SharpCifs.Util.Sharpen;
-using SharpInterop.Automation;
-using SharpInterop.Common;
-using SharpInterop.Registry;
-using SharpInterop.Transport;
+using Opc.Classic.Dcom.Automation;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Registry;
+using Opc.Classic.Dcom.Transport;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using SharpInterop.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.Core;
 using System.Globalization;
 using System.Threading;
 
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Startup class representing a COM Server.
 /// Sample Usage :
@@ -194,7 +187,7 @@ public sealed class ComServer : Stub {
             _syntax = "99fcfec4-5260-101b-bbcb-00aa0021347a:0.0";
             Attach();
             // first send an AlterContext to the IID of the IOxidResolver
-            Endpoint.Syntax.Uuid = new SharpInterop.Rpc.Core.UUID(Interfaces.IID_IObjectExporter);
+            Endpoint.Syntax.Uuid = new Opc.Classic.Dcom.Rpc.Core.UUID(Interfaces.IID_IObjectExporter);
             Endpoint.Syntax.Version = 0;
             ((ComEndpoint)Endpoint).RebindEndPoint();
 
@@ -527,7 +520,7 @@ public sealed class ComServer : Stub {
             // socket to COM server is established
             attachcomplete = true;
             // first send an AlterContext to the IID of the IOxidResolver
-            Endpoint.Syntax.Uuid = new SharpInterop.Rpc.Core.UUID(Interfaces.IID_IObjectExporter);
+            Endpoint.Syntax.Uuid = new Opc.Classic.Dcom.Rpc.Core.UUID(Interfaces.IID_IObjectExporter);
             Endpoint.Syntax.Version = 0;
             ((ComEndpoint)Endpoint).RebindEndPoint();
 
@@ -850,7 +843,7 @@ public sealed class ComServer : Stub {
                 Attach();
                 if (!Endpoint.Syntax.Uuid.ToString().Equals(targetIID, StringComparison.CurrentCultureIgnoreCase)) {
                     // first send an AlterContext to the IID of the interface
-                    Endpoint.Syntax.Uuid = new SharpInterop.Rpc.Core.UUID(targetIID);
+                    Endpoint.Syntax.Uuid = new Opc.Classic.Dcom.Rpc.Core.UUID(targetIID);
                     Endpoint.Syntax.Version = 0;
                     ((ComEndpoint)Endpoint).RebindEndPoint();
                 }

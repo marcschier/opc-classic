@@ -8,7 +8,7 @@ using System.Buffers.Binary;
 using System.Threading.Tasks;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using Opc.Classic.SnapshotTests.Support;
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using TUnit.Core;
 
 namespace Opc.Classic.SnapshotTests.Pipeline;

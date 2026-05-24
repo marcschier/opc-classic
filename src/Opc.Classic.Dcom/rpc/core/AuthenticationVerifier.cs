@@ -1,17 +1,10 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System;
 using System.Linq;
 
-namespace SharpInterop.Rpc.Core; 
+namespace Opc.Classic.Dcom.Rpc.Core; 
 /// <summary>
 /// Verifier
 /// </summary>
@@ -41,7 +34,7 @@ public class AuthenticationVerifier : NdrOp {
     /// Create verifier
     /// </summary>
     public AuthenticationVerifier() :
-        this(Security.AUTHENTICATION_SERVICE_NONE,
+        this(Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE,
             ProtectionLevel.PROTECTION_LEVEL_NONE, 0, null) {
     }
 
@@ -50,7 +43,7 @@ public class AuthenticationVerifier : NdrOp {
     /// </summary>
     /// <param name="authenticatorLength"></param>
     public AuthenticationVerifier(int authenticatorLength) :
-        this(Security.AUTHENTICATION_SERVICE_NONE,
+        this(Opc.Classic.Dcom.Rpc.Security.AUTHENTICATION_SERVICE_NONE,
             ProtectionLevel.PROTECTION_LEVEL_NONE, 0, authenticatorLength) {
     }
 

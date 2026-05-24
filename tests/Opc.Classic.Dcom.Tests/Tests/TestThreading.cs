@@ -1,26 +1,19 @@
-//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-namespace SharpInterop.Test {
+namespace Opc.Classic.Dcom.Test {
     using Opc.Classic.Dcom.Internal;
     using SharpCifs.Util.Sharpen;
     using System;
-    using SharpInterop.Automation;
-    using SharpInterop.Common;
-    using SharpInterop.Core;
+    using Opc.Classic.Dcom.Automation;
+    using Opc.Classic.Dcom.Common;
+    using Opc.Classic.Dcom.Core;
 
     public class TestThreading {
 
         internal const string Domain = "fdgnt";
-        internal const string User = "roopchand";
+        internal const string User = "testuser";
         internal const string Password = "QweQwe007";
-        internal const string Host = "estroopchandnb";
+        internal const string Host = "esttestusernb";
 
         internal const string ComServerName = "WbemScripting.SWbemLocator";
         internal const string ComObjectId = "76A6415B-CB41-11d1-8B02-00600806D9B6";

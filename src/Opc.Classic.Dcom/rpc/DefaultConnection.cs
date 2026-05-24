@@ -1,21 +1,14 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Rpc.Core;
-using SharpInterop.Rpc.pdu;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
 
-namespace SharpInterop.Rpc; 
+namespace Opc.Classic.Dcom.Rpc; 
 /// <summary>
 /// Default connection object
 /// </summary>
@@ -149,10 +142,10 @@ public class DefaultConnection : IConnection {
         var read = true;
 
         if (_bytesRemainingInRecieveBuffer) {
-            // Vikram - 26th Feb 2013.
+            
             // receiver buffer always falls on the boundary of a new Fragment.
             //
-            // Vikram - 26th Feb 2013, commenting belwo as we were getting packets which are 2 bytes in length causing this logic to fail
+            // Earlier code commented out: 2-byte packets caused this logic to fail
             // and thus read was set to true (since the receiveBuffer.length was less than or equal to ConnectionOrientedPdu.TYPE_OFFSET)
             // so we read a fresh packet and whatever bytes were there in recieverBuffer already were lost !
             {
@@ -195,7 +188,7 @@ public class DefaultConnection : IConnection {
         // frag length logic
         if (_receiveBuffer.Length <= 0) {
             // socket has been closed.
-            throw new IOException("Socket Closed"); // Vikram
+            throw new IOException("Socket Closed");
         }
 
         _receiveBuffer.Index = ConnectionOrientedPdu.FRAG_LENGTH_OFFSET;

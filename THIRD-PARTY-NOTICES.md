@@ -111,10 +111,6 @@ Opc.Classic .NET is licensed under MIT. See [LICENSE](LICENSE).
 - Formerly used in: Opc.Classic.Dcom
 - Last version: 0.2.13
 
-### SharpInterop / j-Interop lineage
-- Status: Historical reference only; current `src/` code was substantively rewritten and no SharpInterop attribution remains in `src/`.
-- Formerly used for: early DCOM implementation experiments before the N7.6 self-contained rewrite.
-
 ### DotNet/ (OPC Foundation .NET Framework 4.6.2 API — design reference)
 - Source: OPC Foundation
 - License: OPC Foundation sample license

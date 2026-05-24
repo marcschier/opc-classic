@@ -4,7 +4,7 @@ This diagram shows what the trimmer and NativeAOT compiler see in the portable `
 
 `src/Directory.Build.props` enables AOT and trimming analyzers for source projects, and `src/BannedSymbols.txt` blocks the dynamic patterns that would hide code from the trimmer. The Roslyn generator assembly itself is build-time only, so it opts out of AOT properties while keeping its emitted output AOT-safe.
 
-The DCOM assembly is explicitly marked transitional while legacy SharpInterop code is modernized. The diagram calls that out separately from fresh portable code so readers can distinguish the current compatibility island from the intended steady-state shape.
+The DCOM assembly is explicitly marked transitional while legacy Dcom code is modernized. The diagram calls that out separately from fresh portable code so readers can distinguish the current compatibility island from the intended steady-state shape.
 
 ```mermaid
 flowchart TD

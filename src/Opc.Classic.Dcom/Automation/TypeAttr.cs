@@ -1,16 +1,9 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using System;
 
-namespace SharpInterop.Automation; 
+namespace Opc.Classic.Dcom.Automation; 
 /// <summary>
 /// Implements the <i>TYPEATTR</i> structure of COM Automation and
 /// contains attributes of an ITypeInfo.
@@ -105,7 +98,7 @@ public sealed class TypeAttr {
             return;
         }
 
-        guid = ((SharpInterop.Rpc.Core.UUID)filledStruct.GetMember(0)).ToString();
+        guid = ((Opc.Classic.Dcom.Rpc.Core.UUID)filledStruct.GetMember(0)).ToString();
         lcid = (int)filledStruct.GetMember(1);
         dwReserved = (int)filledStruct.GetMember(2);
         memidConstructor = (int)filledStruct.GetMember(3);

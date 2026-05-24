@@ -1,16 +1,9 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Common;
-using SharpInterop.Transport;
-using SharpInterop.Rpc;
-using SharpInterop.Rpc.Core;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Transport;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Smb;
@@ -25,7 +18,7 @@ using System.Linq;
 
 #pragma warning disable MA0051 // Legacy DCOM protocol methods are intentionally kept intact during analyzer cleanup.
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 /// <summary>
 /// Used to manipulate Oxid details. one instance is created per binding
 /// call to the oxid resolver.
@@ -436,7 +429,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
                 Buffer = ndrBuffer
             };
 
-            // Vikram June 19th 2013: Forcing the LocalCoClass's server to 5.4.
+            // Forcing the LocalCoClass's server to 5.4.
             // This is so that we stay at 5.4 DCOM until we upgrade the
             // local server to 5.7 as well.
             MarshalUnMarshalHelper.Serialize(ndr2, typeof(short), (short)5);
@@ -526,7 +519,7 @@ internal sealed class ComOxidRuntimeHelper : Stub {
             MarshalUnMarshalHelper.Serialize(
                 ndr2, typeof(int), authnHint);
 
-            // Vikram June 19th 2013: Forcing the LocalCoClass's server to 5.4.
+            // Forcing the LocalCoClass's server to 5.4.
             // This is so that we stay at 5.4 DCOM until we upgrade the
             // local server to 5.7 as well.
             MarshalUnMarshalHelper.Serialize(

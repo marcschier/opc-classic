@@ -1,4 +1,4 @@
-﻿namespace org.jinterop.dcom.test {
+namespace org.jinterop.dcom.test {
 
 
     using System;
@@ -334,7 +334,7 @@
                 //FirstContact_Stub test = new FirstContact_Stub("itl-hw-38602a");
                 //FirstContact_Stub test = new FirstContact_Stub("20.0.0.1");
                 
-                var test = new FirstContact_Stub("estroopchandxp");
+                var test = new FirstContact_Stub("esttestuserxp");
                 //FirstContact_Stub test = new FirstContact_Stub("ncacn_ip_tcp:10.74.2.87[135]");
                 //test.setAddress("ncacn_ip_tcp:127.0.0.1[135]");
                 //test.setObject("4d9f4ab8-7d1c-11cf-861e-0020af6e7c57");

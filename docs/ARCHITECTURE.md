@@ -57,7 +57,7 @@ Transport is deliberately below the OPC semantic surface. Spec assemblies expres
 
 ### DCOM over `ncacn_ip_tcp`
 
-`Opc.Classic.Dcom` contains the pure-managed MSRPC/DCOM path. It originated from SharpInterop-era code but has been heavily modernized: SharpCifs.Std was removed, NTLM/NDR boundary types were reimplemented or vendored behind internal namespaces, logging was moved to Microsoft.Extensions.Logging, and the new `DcomCallChannel` drives real bind, request, response, fragmentation, and authentication flows over `IAsyncTransport`.
+`Opc.Classic.Dcom` contains the pure-managed MSRPC/DCOM path. It originated from early DCOM port code but has been heavily modernized: SharpCifs.Std was removed, NTLM/NDR boundary types were reimplemented or vendored behind internal namespaces, logging was moved to Microsoft.Extensions.Logging, and the new `DcomCallChannel` drives real bind, request, response, fragmentation, and authentication flows over `IAsyncTransport`.
 
 The DCOM path uses `ncacn_ip_tcp` for cross-platform network transport. Activation, object exporting, LocalCoClass hosting, and OXID runtime support sit under this layer. Generated proxies do not know whether the channel is loopback, in-memory, or TCP-backed; they only call `ICallChannel`.
 

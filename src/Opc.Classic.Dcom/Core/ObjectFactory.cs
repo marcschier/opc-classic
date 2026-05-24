@@ -1,17 +1,10 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Common;
-using SharpInterop.Core;
-using SharpInterop.Automation;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Core;
+using Opc.Classic.Dcom.Automation;
 
-namespace SharpInterop; 
+namespace Opc.Classic.Dcom; 
 /// <summary>
 /// Factory class for creating COM objects.
 /// Sample Usage:

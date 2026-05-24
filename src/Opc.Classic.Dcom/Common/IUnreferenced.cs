@@ -1,15 +1,8 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 
-namespace SharpInterop.Common; 
+namespace Opc.Classic.Dcom.Common; 
 /// <summary>
 /// Implement this interface receive notifications for <code><see cref="IComObject"/></code>s when
 /// they get garbage collected. This also means that the actual interface reference on

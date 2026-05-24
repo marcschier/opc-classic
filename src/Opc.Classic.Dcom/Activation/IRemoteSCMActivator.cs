@@ -8,10 +8,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Generators;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Source-generated proxy/dispatcher surface for IRemoteSCMActivator.</summary>
-[OpcInterface(SharpInterop.Interfaces.IID_IRemoteSCMActivator)]
+[OpcInterface(Opc.Classic.Dcom.Interfaces.IID_IRemoteSCMActivator)]
 [GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IRemoteSCMActivator {

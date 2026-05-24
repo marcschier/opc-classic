@@ -3,7 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// Identifies one member of the DCOM activation property array carried by

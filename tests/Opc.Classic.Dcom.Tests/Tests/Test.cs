@@ -1,11 +1,4 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using SharpCifs;
 using SharpCifs.Smb;
@@ -13,7 +6,7 @@ using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
 
-namespace SharpInterop.Test {
+namespace Opc.Classic.Dcom.Test {
 
     public class Test {
 
@@ -27,7 +20,7 @@ namespace SharpInterop.Test {
                 // Socket socket = new Socket("10.24.10.65",139);
                 // socket.close();
                 //     UniAddress mydomaincontoller = UniAddress.getByName( "192.168.170.6" );
-                //     NtlmPasswordAuthentication mycreds = new NtlmPasswordAuthentication( "itlinfosys", "vikram_roopchand", "Dilbert007" );
+                //     NtlmPasswordAuthentication mycreds = new NtlmPasswordAuthentication( "itlinfosys", "testuser_testuser", "Dilbert007" );
                 //
                 //     SmbSession.logon( mydomaincontoller, mycreds );
                 //     Config.setProperty("SharpCifs.smb.client.laddr","10.24.10.65");

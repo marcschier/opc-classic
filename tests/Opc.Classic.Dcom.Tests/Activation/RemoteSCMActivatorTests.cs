@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Opc.Classic.Dcom;
 using Opc.Classic.Ndr;
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using TUnit.Core;
 
 namespace Opc.Classic.Dcom.Tests.Activation;

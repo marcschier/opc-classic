@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Decoded server-side IRemoteSCMActivator::RemoteGetClassObject request fields.</summary>
 public sealed record RemoteGetClassObjectRequest(

@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -12,7 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Transport;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// BackgroundService-backed accept loop for the modern DCOM server transport path.

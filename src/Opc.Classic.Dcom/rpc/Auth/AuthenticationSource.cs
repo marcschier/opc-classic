@@ -1,9 +1,4 @@
-﻿//
 // SPDX-License-Identifier: MIT
-// Copyright (c) 2013 Vikram Roopchand
-// Copyright (c) 2026 Opc.Classic .NET Contributors (Phase 2H modernization)
-//
-// Originally Eclipse Public License v1.0 (https://www.eclipse.org/legal/epl-v10.html).
 //
 // Phase 2H: replaced the original Java SPI / META-INF/services service-loader
 // (incompatible with NativeAOT because it uses runtime ClassLoader / Type.GetType
@@ -19,7 +14,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace SharpInterop.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
 /// <summary>
 /// Server-side NTLM authentication source. Consumer-pluggable: an
 /// implementation validates incoming NTLM credentials against the
@@ -28,8 +23,8 @@ namespace SharpInterop.Rpc.Auth.ntlm;
 /// </summary>
 /// <remarks>
 /// This contract is only exercised when the managed process is acting as
-/// an inbound DCOM server (the <see cref="SharpInterop.Core.LocalCoClass"/>
-/// + <see cref="SharpInterop.Core.ComOxidRuntime"/> path receiving callback
+/// an inbound DCOM server (the <see cref="Opc.Classic.Dcom.Core.LocalCoClass"/>
+/// + <see cref="Opc.Classic.Dcom.Core.ComOxidRuntime"/> path receiving callback
 /// PDUs). Pure client scenarios never construct an
 /// <see cref="AuthenticationSource"/>.
 /// <para>

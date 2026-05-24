@@ -1,21 +1,14 @@
-﻿//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
 using System;
 using System.Globalization;
 using System.IO;
-using SharpInterop.Rpc.Core;
-using SharpInterop.Rpc.pdu;
+using Opc.Classic.Dcom.Rpc.Core;
+using Opc.Classic.Dcom.Rpc.pdu;
 using SharpCifs.Util.Sharpen;
 
-namespace SharpInterop.Rpc.Auth.ntlm; 
+namespace Opc.Classic.Dcom.Rpc.Auth.ntlm; 
 /// <summary>
 /// Connection context
 /// </summary>
@@ -41,11 +34,11 @@ public class NtlmConnectionContext : IConnectionContext {
     public virtual ConnectionOrientedPdu Init2(PresentationContext context, PropertyBag properties) {
         Established = false;
         if (properties != null) {
-            var maxTransmit = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
+            var maxTransmit = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
             if (maxTransmit != null) {
                 _maxTransmitFragment = int.Parse(maxTransmit, CultureInfo.InvariantCulture);
             }
-            var maxReceive = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
+            var maxReceive = (string)properties.GetProperty(Opc.Classic.Dcom.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
             if (maxReceive != null) {
                 _maxReceiveFragment = int.Parse(maxReceive, CultureInfo.InvariantCulture);
             }
@@ -140,8 +133,8 @@ public class NtlmConnectionContext : IConnectionContext {
         }
     }
 
-    private int _maxTransmitFragment = SharpInterop.Rpc.Connection.DEFAULT_MAX_TRANSMIT_FRAGMENT;
-    private int _maxReceiveFragment = SharpInterop.Rpc.Connection.DEFAULT_MAX_RECEIVE_FRAGMENT;
+    private int _maxTransmitFragment = Opc.Classic.Dcom.Rpc.Connection.DEFAULT_MAX_TRANSMIT_FRAGMENT;
+    private int _maxReceiveFragment = Opc.Classic.Dcom.Rpc.Connection.DEFAULT_MAX_RECEIVE_FRAGMENT;
     private int _transmitLength;
     private int _receiveLength;
     private int _assocGroupId;

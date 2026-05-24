@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Server-side IRemoteSCMActivator::RemoteGetClassObject response.</summary>
 public sealed record RemoteGetClassObjectResponse(int Hresult, Guid Oxid, Guid Ipid, byte[] ObjRef) {

@@ -154,7 +154,7 @@ public sealed class CryptoProperties
     {
         Gen.Byte.Array[0, 1024].Sample(data =>
         {
-            var hash = SharpInterop.Crypto.Md4.HashData(data);
+            var hash = Opc.Classic.Dcom.Crypto.Md4.HashData(data);
             return hash.Length == 16;
         });
         return Task.CompletedTask;
@@ -165,8 +165,8 @@ public sealed class CryptoProperties
     {
         Gen.Byte.Array[0, 256].Sample(data =>
         {
-            var h1 = SharpInterop.Crypto.Md4.HashData(data);
-            var h2 = SharpInterop.Crypto.Md4.HashData(data);
+            var h1 = Opc.Classic.Dcom.Crypto.Md4.HashData(data);
+            var h2 = Opc.Classic.Dcom.Crypto.Md4.HashData(data);
             return Convert.ToHexString(h1) == Convert.ToHexString(h2);
         });
         return Task.CompletedTask;
@@ -180,8 +180,8 @@ public sealed class CryptoProperties
            {
                var key = t.Item1;
                var plaintext = t.Item2;
-               var ciphertext = new SharpInterop.Crypto.Rc4(key).Process(plaintext);
-               var decrypted = new SharpInterop.Crypto.Rc4(key).Process(ciphertext);
+               var ciphertext = new Opc.Classic.Dcom.Crypto.Rc4(key).Process(plaintext);
+               var decrypted = new Opc.Classic.Dcom.Crypto.Rc4(key).Process(ciphertext);
                return Convert.ToHexString(decrypted) == Convert.ToHexString(plaintext);
            });
         return Task.CompletedTask;
@@ -195,7 +195,7 @@ public sealed class CryptoProperties
            {
                var key = t.Item1;
                var data = t.Item2;
-               var output = new SharpInterop.Crypto.Rc4(key).Process(data);
+               var output = new Opc.Classic.Dcom.Crypto.Rc4(key).Process(data);
                return output.Length == data.Length;
            });
         return Task.CompletedTask;

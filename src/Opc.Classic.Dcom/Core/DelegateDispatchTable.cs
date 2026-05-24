@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 internal sealed class DelegateDispatchTable : IDispatchTable {
     private readonly Dictionary<(Guid Iid, int Opnum), Func<object[], object?>> _dispatchers = new();

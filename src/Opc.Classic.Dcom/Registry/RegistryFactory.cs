@@ -1,18 +1,11 @@
-//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
-using SharpInterop.Common;
-using SharpInterop.Registry.Smb;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Registry.Smb;
 using SharpCifs.Util.Sharpen;
 using System.Threading;
 
-namespace SharpInterop.Registry; 
+namespace Opc.Classic.Dcom.Registry; 
 /// <summary>
 /// Factory to get an implementation of <code>IRegistry</code>.
 /// This interface uses "Windows Remote Registry" and "Server"

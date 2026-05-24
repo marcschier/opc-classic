@@ -1,4 +1,4 @@
-﻿//
+//
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Hosting;
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>
 /// Decoded server-side IRemoteActivation::RemoteActivation request fields.

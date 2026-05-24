@@ -20,7 +20,7 @@
 //   - Unique pointers carry a 4-byte referent ID (non-zero) followed by the
 //     pointee payload; nullable as 0.
 //
-// This is the managed-side companion to the legacy SharpInterop NDR layer
+// This is the managed-side companion to the legacy Opc.Classic.Dcom NDR layer
 // in Opc.Classic.Dcom. The writer here is span-based, no-allocation, and
 // AOT-clean by construction. The opaque ref tracker is a simple monotonically
 // increasing uint.

@@ -3,7 +3,7 @@
 // Copyright (c) 2026 Opc.Classic .NET Contributors
 //
 
-namespace SharpInterop.Core;
+namespace Opc.Classic.Dcom.Core;
 
 /// <summary>Managed COM class factory used by <see cref="RemoteSCMActivatorServer" />.</summary>
 public interface IClassFactory {

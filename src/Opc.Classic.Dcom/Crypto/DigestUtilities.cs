@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>
 /// DigestUtilities shim — supports "MD4" and "MD5" (the two hashes the legacy

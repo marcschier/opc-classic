@@ -5,7 +5,7 @@
 
 using System;
 using System.Reflection;
-using SharpInterop.Common;
+using Opc.Classic.Dcom.Common;
 using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
@@ -105,7 +105,7 @@ public sealed class DcomTimingsTests
 
     private static object CreateObjectId()
     {
-        var objectIdType = typeof(DcomTimings).Assembly.GetType("SharpInterop.Core.ObjectId", throwOnError: true)!;
+        var objectIdType = typeof(DcomTimings).Assembly.GetType("Opc.Classic.Dcom.Core.ObjectId", throwOnError: true)!;
         var constructor = objectIdType.GetConstructor(
             BindingFlags.Instance | BindingFlags.NonPublic,
             binder: null,

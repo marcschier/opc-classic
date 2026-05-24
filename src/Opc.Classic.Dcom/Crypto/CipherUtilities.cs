@@ -5,7 +5,7 @@
 
 using System;
 
-namespace SharpInterop.Crypto;
+namespace Opc.Classic.Dcom.Crypto;
 
 /// <summary>
 /// CipherUtilities shim — supports only "DES/ECB/NoPadding" (the one algorithm

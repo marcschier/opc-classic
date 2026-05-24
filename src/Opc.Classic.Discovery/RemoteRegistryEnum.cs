@@ -16,8 +16,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Opc.Classic;
 using SharpCifs.Util.Sharpen;
-using SharpInterop.Common;
-using SharpInterop.Registry;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Registry;
 
 namespace Opc.Classic.Discovery;
 

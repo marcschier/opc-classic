@@ -45,7 +45,7 @@ using Opc.Classic;
 using Opc.Classic.Da.Dcom;
 using Opc.Classic.Dcom.Transport;
 using Opc.Classic.Transport;
-using SharpInterop.Rpc.Auth.ntlm; // temporary low-level NTLM auth factory
+using Opc.Classic.Dcom.Rpc.Auth.ntlm; // temporary low-level NTLM auth factory
 using System.Net;
 
 var url = OpcUrl.Parse("opcda://localhost/Opc.Classic.Samples.DaServer.1");

@@ -9,7 +9,7 @@ using System.Runtime.ExceptionServices;
 using System.Security;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.Ntlm;
-using SharpInterop.Rpc.Auth.ntlm;
+using Opc.Classic.Dcom.Rpc.Auth.ntlm;
 using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
@@ -128,8 +128,8 @@ public sealed class NtlmMicTests
         properties.SetProperty("rpc.ntlm.allowV1", "false");
         properties.SetProperty("rpc.ntlm.sso", "false");
         properties.SetProperty("rpc.ntlm.domain", Domain);
-        properties.SetProperty(SharpInterop.Rpc.Security.USERNAME, User);
-        properties.SetProperty(SharpInterop.Rpc.Security.PASSWORD, Password);
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.USERNAME, User);
+        properties.SetProperty(Opc.Classic.Dcom.Rpc.Security.PASSWORD, Password);
         return new NtlmAuthentication(properties);
     }
 

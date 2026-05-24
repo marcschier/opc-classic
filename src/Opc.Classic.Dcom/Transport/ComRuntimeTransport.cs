@@ -1,21 +1,14 @@
-//
-// Copyright (c) 2013 Vikram Roopchand
-//
-// All rights reserved. This program and the accompanying materials
-// are made available under the terms of the Eclipse Public License v1.0
-// which accompanies this distribution, and is available at
-// http://www.eclipse.org/legal/epl-v10.html
-//
+// SPDX-License-Identifier: MIT
 
 using Opc.Classic.Dcom.Internal;
-using SharpInterop.Common;
-using SharpInterop.Rpc;
-using SharpInterop.Rpc.Core;
+using Opc.Classic.Dcom.Common;
+using Opc.Classic.Dcom.Rpc;
+using Opc.Classic.Dcom.Rpc.Core;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using System.IO;
 using System.Net.Sockets;
 
-namespace SharpInterop.Transport; 
+namespace Opc.Classic.Dcom.Transport; 
 /// <summary>
 /// Transport
 /// </summary>

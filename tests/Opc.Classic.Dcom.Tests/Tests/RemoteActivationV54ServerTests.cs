@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using Opc.Classic.Hosting;
-using SharpInterop.Core;
+using Opc.Classic.Dcom.Core;
 using TUnit.Assertions.AssertConditions.Throws;
 using TUnit.Core;
 
