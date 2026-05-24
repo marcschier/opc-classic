@@ -9,6 +9,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic.Dcom;
+using Opc.Classic.Hosting;
 using Opc.Classic.Ndr;
 
 namespace Opc.Classic.Discovery.Dcom;
@@ -95,21 +96,44 @@ internal sealed class IOPCServerList2ClientProxy
     }
 }
 
-internal sealed class IOPCEnumGUIDClientProxy
+/// <summary>Managed proxy for OPC Common <c>IOPCEnumGUID</c> enumerators returned by OPCEnum.</summary>
+public sealed class IOPCEnumGUIDClientProxy
 {
-    private static readonly Guid InterfaceId = OpcGuids.IID_IOPCEnumGUID;
+    /// <summary>OPC Common <c>IOPCEnumGUID</c> interface identifier.</summary>
+    public static readonly Guid InterfaceId = OpcGuids.IID_IOPCEnumGUID;
+
     private readonly ICallChannel _channel;
 
+    /// <summary>Initializes a new instance of the <see cref="IOPCEnumGUIDClientProxy" /> class.</summary>
     public IOPCEnumGUIDClientProxy(ICallChannel channel) =>
         _channel = channel ?? throw new ArgumentNullException(nameof(channel));
 
+    /// <summary>OPC Common <c>IOPCEnumGUID</c> DCE/RPC operation numbers.</summary>
+    public static class Opnums
+    {
+        /// <summary><c>IOPCEnumGUID::Next</c> operation number.</summary>
+        public const int Next = 3;
+
+        /// <summary><c>IOPCEnumGUID::Skip</c> operation number.</summary>
+        public const int Skip = 4;
+
+        /// <summary><c>IOPCEnumGUID::Reset</c> operation number.</summary>
+        public const int Reset = 5;
+
+        /// <summary><c>IOPCEnumGUID::Clone</c> operation number.</summary>
+        public const int Clone = 6;
+    }
+
+    /// <summary>Fetches up to <paramref name="count" /> GUIDs from the enumerator.</summary>
     public async Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default)
     {
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+
         ReadOnlyMemory<byte> payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) => writer.WriteInt32(count));
         NdrCallResult result = await OpcEnumProxyCodec.InvokeAsync(
             _channel,
             InterfaceId,
-            opnum: 3,
+            Opnums.Next,
             payload,
             "IOPCEnumGUID::Next",
             cancellationToken).ConfigureAwait(false);
@@ -119,11 +143,139 @@ internal sealed class IOPCEnumGUIDClientProxy
         int fetched = reader.ReadInt32();
         return new OpcEnumGuidNextResult(classIds, fetched);
     }
+
+    /// <summary>Skips <paramref name="count" /> GUIDs in the enumerator.</summary>
+    public Task SkipAsync(int count, CancellationToken cancellationToken = default)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(count);
+
+        ReadOnlyMemory<byte> payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) => writer.WriteInt32(count));
+        return OpcEnumProxyCodec.InvokeAsync(
+            _channel,
+            InterfaceId,
+            Opnums.Skip,
+            payload,
+            "IOPCEnumGUID::Skip",
+            cancellationToken);
+    }
+
+    /// <summary>Resets the enumerator to its first GUID.</summary>
+    public Task ResetAsync(CancellationToken cancellationToken = default) =>
+        OpcEnumProxyCodec.InvokeAsync(
+            _channel,
+            InterfaceId,
+            Opnums.Reset,
+            ReadOnlyMemory<byte>.Empty,
+            "IOPCEnumGUID::Reset",
+            cancellationToken);
+
+    /// <summary>Clones the enumerator at its current position.</summary>
+    public Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default) =>
+        OpcEnumProxyCodec.InvokeInterfaceRefAsync(
+            _channel,
+            InterfaceId,
+            Opnums.Clone,
+            ReadOnlyMemory<byte>.Empty,
+            "IOPCEnumGUID::Clone",
+            cancellationToken);
+}
+
+/// <summary>Server implementation contract for OPC Common <c>IOPCEnumGUID</c>.</summary>
+public interface IOPCEnumGUIDServer
+{
+    /// <summary>Fetches up to <paramref name="count" /> GUIDs from the enumerator.</summary>
+    Task<OpcEnumGuidNextResult> NextAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary>Skips up to <paramref name="count" /> GUIDs and returns the number actually skipped.</summary>
+    Task<int> SkipAsync(int count, CancellationToken cancellationToken = default);
+
+    /// <summary>Resets the enumerator to its first GUID.</summary>
+    Task ResetAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>Clones the enumerator at its current position.</summary>
+    Task<IOpcInterfaceRef> CloneAsync(CancellationToken cancellationToken = default);
+}
+
+/// <summary>Server-side dispatcher for OPC Common <c>IOPCEnumGUID</c>.</summary>
+public sealed class IOPCEnumGUIDServerDispatcher : IOpcServerDispatcher
+{
+    private readonly IOPCEnumGUIDServer _server;
+
+    /// <summary>Initializes a new instance of the <see cref="IOPCEnumGUIDServerDispatcher" /> class.</summary>
+    public IOPCEnumGUIDServerDispatcher(IOPCEnumGUIDServer server) =>
+        _server = server ?? throw new ArgumentNullException(nameof(server));
+
+    /// <inheritdoc />
+    public async ValueTask<DispatchResult> DispatchAsync(
+        int opnum,
+        ReadOnlyMemory<byte> requestPayload,
+        CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            return opnum switch
+            {
+                IOPCEnumGUIDClientProxy.Opnums.Next => await DispatchNextAsync(requestPayload, cancellationToken).ConfigureAwait(false),
+                IOPCEnumGUIDClientProxy.Opnums.Skip => await DispatchSkipAsync(requestPayload, cancellationToken).ConfigureAwait(false),
+                IOPCEnumGUIDClientProxy.Opnums.Reset => await DispatchResetAsync(cancellationToken).ConfigureAwait(false),
+                IOPCEnumGUIDClientProxy.Opnums.Clone => await DispatchCloneAsync(cancellationToken).ConfigureAwait(false),
+                _ => DispatchResult.NotImplemented(opnum),
+            };
+        }
+        catch (OpcException exception)
+        {
+            return DispatchResult.Fault(exception.ResultId.Code);
+        }
+    }
+
+    private async ValueTask<DispatchResult> DispatchNextAsync(
+        ReadOnlyMemory<byte> requestPayload,
+        CancellationToken cancellationToken)
+    {
+        var reader = new NdrReader(requestPayload.Span);
+        int count = reader.ReadInt32();
+        OpcEnumGuidNextResult next = await _server.NextAsync(count, cancellationToken).ConfigureAwait(false);
+        byte[] payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) =>
+        {
+            writer.WriteConformantGuidArray(next.ClassIds);
+            writer.WriteInt32(next.Fetched);
+        });
+        int hresult = next.Fetched < count ? OpcResultId.False.Code : OpcResultId.Ok.Code;
+        return DispatchResult.Success(payload, hresult);
+    }
+
+    private async ValueTask<DispatchResult> DispatchSkipAsync(
+        ReadOnlyMemory<byte> requestPayload,
+        CancellationToken cancellationToken)
+    {
+        var reader = new NdrReader(requestPayload.Span);
+        int count = reader.ReadInt32();
+        int skipped = await _server.SkipAsync(count, cancellationToken).ConfigureAwait(false);
+        int hresult = skipped < count ? OpcResultId.False.Code : OpcResultId.Ok.Code;
+        return DispatchResult.Success(Array.Empty<byte>(), hresult);
+    }
+
+    private async ValueTask<DispatchResult> DispatchResetAsync(CancellationToken cancellationToken)
+    {
+        await _server.ResetAsync(cancellationToken).ConfigureAwait(false);
+        return DispatchResult.Success(Array.Empty<byte>());
+    }
+
+    private async ValueTask<DispatchResult> DispatchCloneAsync(CancellationToken cancellationToken)
+    {
+        IOpcInterfaceRef clone = await _server.CloneAsync(cancellationToken).ConfigureAwait(false);
+        byte[] payload = OpcEnumProxyCodec.WritePayload((ref NdrWriter writer) =>
+            OpcInterfaceRefCodec.Write(ref writer, clone));
+        return DispatchResult.Success(payload);
+    }
 }
 
 internal sealed record OpcServerListClassDetails(string? ProgId, string? UserType, string? VerIndProgId);
 
-internal sealed record OpcEnumGuidNextResult(Guid[] ClassIds, int Fetched);
+/// <summary>Result returned by <c>IOPCEnumGUID::Next</c>.</summary>
+/// <param name="ClassIds">The GUIDs returned by the enumerator.</param>
+/// <param name="Fetched">The number of valid entries returned in <paramref name="ClassIds" />.</param>
+public sealed record OpcEnumGuidNextResult(Guid[] ClassIds, int Fetched);
 
 internal static class OpcEnumProxyCodec
 {

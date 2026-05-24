@@ -61,4 +61,31 @@ public sealed class OpcResultIdTests
         await Assert.That(OpcResultId.UnsupportedRate.IsSuccess).IsTrue();
         await Assert.That(OpcResultId.Clamp.IsSuccess).IsTrue();
     }
+
+    [Test]
+    [Arguments(0x00000000, true, false)]
+    [Arguments(0x00000001, true, false)]
+    [Arguments(unchecked((int)0x80004005u), false, true)]
+    [Arguments(unchecked((int)0xC0040001u), false, true)]
+    public async Task SeverityBit_DeterminesSuccessAndFailure(int code, bool expectedSuccess, bool expectedFailure)
+    {
+        var resultId = new OpcResultId(code, null);
+
+        await Assert.That(resultId.IsSuccess).IsEqualTo(expectedSuccess);
+        await Assert.That(resultId.IsFailure).IsEqualTo(expectedFailure);
+    }
+
+    [Test]
+    public async Task InvalidHandle_ExtractsOpcFacilityAndCodePart()
+    {
+        await Assert.That(OpcResultId.InvalidHandle.Facility).IsEqualTo(OpcResultId.FacilityOpc);
+        await Assert.That(OpcResultId.InvalidHandle.CodePart).IsEqualTo(0x0001);
+    }
+
+    [Test]
+    public async Task InvalidArg_ExtractsWin32Facility()
+    {
+        await Assert.That(OpcResultId.InvalidArg.Facility).IsEqualTo(7);
+        await Assert.That(OpcResultId.InvalidArg.CodePart).IsEqualTo(0x0057);
+    }
 }

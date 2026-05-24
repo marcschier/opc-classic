@@ -54,4 +54,32 @@ public static class OpcInterfaceRefCodec
 
         return new OpcInterfaceRef(iid, flags, publicRefs, oxid, oid, ipid, securityOffset, resolverBindings);
     }
+
+    /// <summary>
+    /// Encodes an OBJREF_STANDARD payload (MEOW + STDOBJREF + DUALSTRINGARRAY).
+    /// </summary>
+    public static void Write(ref NdrWriter writer, IOpcInterfaceRef interfaceRef)
+    {
+        ArgumentNullException.ThrowIfNull(interfaceRef);
+
+        if (interfaceRef.ResolverBindings.Count > ushort.MaxValue)
+        {
+            throw new ArgumentException("DCOM DUALSTRINGARRAY entry count exceeds UInt16.MaxValue.", nameof(interfaceRef));
+        }
+
+        writer.WriteUInt32(ObjRefSignature);
+        writer.WriteUInt32(ObjRefStandard);
+        writer.WriteGuid(interfaceRef.Iid);
+        writer.WriteUInt32(interfaceRef.Flags);
+        writer.WriteUInt32(interfaceRef.PublicRefs);
+        writer.WriteUInt64(interfaceRef.Oxid);
+        writer.WriteUInt64(interfaceRef.Oid);
+        writer.WriteGuid(interfaceRef.Ipid);
+        writer.WriteUInt16((ushort)interfaceRef.ResolverBindings.Count);
+        writer.WriteUInt16(interfaceRef.SecurityOffset);
+        for (int i = 0; i < interfaceRef.ResolverBindings.Count; i++)
+        {
+            writer.WriteUInt16(interfaceRef.ResolverBindings[i]);
+        }
+    }
 }

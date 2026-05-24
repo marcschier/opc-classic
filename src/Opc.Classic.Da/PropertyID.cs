@@ -17,6 +17,11 @@ namespace Opc.Classic.Da;
 /// </summary>
 /// <remarks>
 /// <para>
+/// OPC Common defines cross-spec property-ID bands by convention: DA uses 1–99,
+/// AE uses 300–399, and HDA uses 400–499. This type documents DA property IDs
+/// and does not enforce those cross-spec ownership ranges at runtime.
+/// </para>
+/// <para>
 /// OPC DA categorizes property codes into:
 /// </para>
 /// <list type="bullet">
