@@ -28,12 +28,21 @@ namespace Opc.Classic.Da.V20.Dcom;
 public partial interface IOPCSyncIO
 {
     /// <summary>
+    /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
+    /// </summary>
+    [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
+    Task<OpcItemState[]> ReadAsync(
+        int dataSource,
+        int[] serverHandles,
+        out int[] errors,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// <c>IOPCSyncIO::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
     /// </summary>
     [OpcMethod(4)]
     Task<int[]> WriteAsync(int[] serverHandles, OpcVariant[] values, CancellationToken cancellationToken = default);
-
-    // Read returns OPCITEMSTATE[] plus HRESULT[] and needs a multi-out result record codec.
 }
 
 /// <summary>

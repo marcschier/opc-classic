@@ -24,6 +24,12 @@ public sealed class DcomInterfaceIdTests
     }
 
     [Test]
+    public async Task IOPCCommon_InterfaceId_MatchesOpcGuids()
+    {
+        await Assert.That(IOPCCommon.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCCommon);
+    }
+
+    [Test]
     public async Task IOPCBrowse_InterfaceId_MatchesOpcGuids()
     {
         await Assert.That(IOPCBrowse.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCBrowse);
@@ -81,6 +87,18 @@ public sealed class DcomInterfaceIdTests
     public async Task IOPCAsyncIO2_InterfaceId_MatchesOpcGuids()
     {
         await Assert.That(IOPCAsyncIO2.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCAsyncIO2);
+    }
+
+    [Test]
+    public async Task IOPCShutdown_InterfaceId_MatchesOpcGuids()
+    {
+        await Assert.That(IOPCShutdown.InterfaceId).IsEqualTo(OpcGuids.IID_IOPCShutdown);
+    }
+
+    [Test]
+    public async Task IConnectionPoint_InterfaceId_MatchesOpcGuids()
+    {
+        await Assert.That(IConnectionPoint.InterfaceId).IsEqualTo(OpcGuids.IID_IConnectionPoint);
     }
 
     [Test]

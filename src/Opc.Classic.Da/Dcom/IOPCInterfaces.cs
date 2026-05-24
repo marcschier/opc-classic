@@ -22,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Opc.Classic;
 using Opc.Classic.Da;
+using Opc.Classic.Dcom;
 using Opc.Classic.Generators;
 
 namespace Opc.Classic.Da.Dcom;
@@ -52,6 +53,43 @@ public partial interface IOPCServer
 
     // AddGroup, GetGroupByName, and CreateGroupEnumerator require out COM interface pointers
     // or multi-return shapes, so they are deferred until those codecs exist.
+}
+
+/// <summary><c>IOPCCommon</c> — common DA locale, error-text, and client-name interface (IID_IOPCCommon).</summary>
+[OpcInterface("F31DFDE2-07B6-11D2-B2D8-0060083BA1FB")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
+public partial interface IOPCCommon
+{
+    /// <summary>
+    /// <c>IOPCCommon::SetLocaleID</c> (opnum 3). Sets the locale used for localized server strings.
+    /// </summary>
+    [OpcMethod(3)]
+    Task SetLocaleIdAsync(int localeId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCCommon::GetLocaleID</c> (opnum 4). Returns the current locale identifier.
+    /// </summary>
+    [OpcMethod(4)]
+    Task<int> GetLocaleIdAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCCommon::QueryAvailableLocaleIDs</c> (opnum 5). Lists supported locale identifiers.
+    /// </summary>
+    [OpcMethod(5)]
+    Task<int[]> QueryAvailableLocaleIdsAsync(CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCCommon::GetErrorString</c> (opnum 6). Returns localized text for the given HRESULT.
+    /// </summary>
+    [OpcMethod(6)]
+    Task<string> GetErrorStringAsync(int errorCode, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IOPCCommon::SetClientName</c> (opnum 7). Supplies a client name for server logging and diagnostics.
+    /// </summary>
+    [OpcMethod(7)]
+    Task SetClientNameAsync(string name, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCBrowse</c> — DA 3.0 unified browse interface (IID_IOPCBrowse).</summary>
@@ -378,7 +416,6 @@ public partial interface IOPCGroupStateMgt2
 
 /// <summary><c>IOPCSyncIO</c> — DA 2.x synchronous read/write (IID_IOPCSyncIO).</summary>
 [OpcInterface("39C13A52-011E-11D0-9675-0020AFD8ADB3")]
-[GenerateOpcProxy]
 [OpcGenerateServerDispatch]
 public partial interface IOPCSyncIO
 {
@@ -386,15 +423,12 @@ public partial interface IOPCSyncIO
     /// <c>IOPCSyncIO::Read</c> (opnum 3). Reads item states and per-item HRESULTs.
     /// </summary>
     [OpcMethod(3)]
+    [OpcGenerateMultiOutRecord]
     Task<OpcItemState[]> ReadAsync(
         int dataSource,
         int[] serverHandles,
         out int[] errors,
-        CancellationToken cancellationToken = default)
-    {
-        errors = default!;
-        throw new NotSupportedException();
-    }
+        CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <c>IOPCSyncIO::Write</c> (opnum 4). Writes item values and returns one HRESULT per item.
@@ -555,8 +589,6 @@ public partial interface IConnectionPointContainer
 
 /// <summary><c>IConnectionPoint</c> — the subscription sink-binding interface (IID_IConnectionPoint).</summary>
 [OpcInterface("B196B286-BAB4-101A-B69C-00AA00341D07")]
-[GenerateOpcProxy]
-[OpcGenerateServerDispatch]
 public partial interface IConnectionPoint
 {
     /// <summary>
@@ -565,7 +597,32 @@ public partial interface IConnectionPoint
     [OpcMethod(3)]
     Task<Guid> GetConnectionInterfaceAsync(CancellationToken cancellationToken = default);
 
-    // GetConnectionPointContainer, Advise, and EnumConnections use interface pointers; Unadvise is deferred with the rest.
+    /// <summary>
+    /// <c>IConnectionPoint::Advise</c> (opnum 5). Registers a callback sink and returns its connection cookie.
+    /// </summary>
+    [OpcMethod(5)]
+    Task<int> AdviseAsync(IOpcInterfaceRef sink, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// <c>IConnectionPoint::Unadvise</c> (opnum 6). Unregisters a callback sink by connection cookie.
+    /// </summary>
+    [OpcMethod(6)]
+    Task UnadviseAsync(int cookie, CancellationToken cancellationToken = default);
+
+    // GetConnectionPointContainer and EnumConnections return interface pointers.
+}
+
+/// <summary><c>IOPCShutdown</c> — server -&gt; client shutdown notification sink (IID_IOPCShutdown).</summary>
+[OpcInterface("F31DFDE1-07B6-11D2-B2D8-0060083BA1FB")]
+[GenerateOpcProxy]
+[OpcGenerateServerDispatch]
+public partial interface IOPCShutdown
+{
+    /// <summary>
+    /// <c>IOPCShutdown::ShutdownRequest</c> (opnum 3). Notifies the client that the server is shutting down.
+    /// </summary>
+    [OpcMethod(3)]
+    Task ShutdownRequestAsync(string reason, CancellationToken cancellationToken = default);
 }
 
 /// <summary><c>IOPCDataCallback</c> — server -&gt; client OnDataChange/OnReadComplete/OnWriteComplete/OnCancelComplete (IID_IOPCDataCallback).</summary>
