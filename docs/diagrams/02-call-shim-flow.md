@@ -32,7 +32,7 @@ sequenceDiagram
     App->>Proxy: GetStatusAsync()
     Proxy->>Codecs: Resolve method opnum and response codec
     Proxy->>Ndr: Encode request payload
-    Proxy->>Channel: InvokeAsync(interfaceId, opnum 3, payload)
+    Proxy->>Channel: InvokeAsync(interfaceId, opnum 6, payload)
     Channel->>Dcom: Dispatch call to DCOM channel
     Dcom->>Dcom: Ensure presentation context
     Dcom->>Rpc: Send RequestCoPdu with NDR stub
@@ -47,9 +47,9 @@ sequenceDiagram
 
 ## Where to read more
 
-- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:29`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L29-L54) defines `IOPCServer::GetStatus` with `[OpcMethod(3)]`.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:473`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L473-L549) emits marshalled `InvokeAsync` bodies.
-- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:585`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L585-L747) emits codec writes and response reads from the generator codec table.
+- [`src\Opc.Classic.Da\Dcom\IOPCInterfaces.cs:29`](../../src/Opc.Classic.Da/Dcom/IOPCInterfaces.cs#L29-L45) defines `IOPCServer::GetStatus` with `[OpcMethod(6)]`.
+- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:543`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L543-L620) emits marshalled `InvokeAsync` bodies.
+- [`src\Opc.Classic.Generators\OpcProxyGenerator.cs:692`](../../src/Opc.Classic.Generators/OpcProxyGenerator.cs#L692-L760) emits codec writes and response reads from the generator codec table.
 - [`src\Opc.Classic.Core\ICallChannel.cs:45`](../../src/Opc.Classic.Core/ICallChannel.cs#L45-L49) is the generated-shim call seam.
 - [`src\Opc.Classic.Dcom\Transport\DcomCallChannel.cs:55`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs#L55-L94) sends the DCE/RPC request and maps response or fault PDUs into `NdrCallResult`.
 - See also [`docs\ARCHITECTURE.md:157`](../ARCHITECTURE.md#L157-L168) and [`docs\ADOPTION.md:39`](../ADOPTION.md#L39-L79).

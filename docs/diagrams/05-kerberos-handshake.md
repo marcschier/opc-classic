@@ -4,7 +4,7 @@ This diagram shows the Kerberos path used when DCOM authentication is backed by 
 
 `KerberosConnectionContext` owns the ticket acquisition and AP-REP processing state. `KerberosAuthContext` wraps that state behind `IAuthContext`, computes optional channel-binding hashes, wraps the AP-REQ in a SPNEGO initial token, and unwraps the server's response token from `NegTokenResp`.
 
-The final packet-protection stage is shown as GSS-API token wrapping and MIC verification. The code already exposes the `IAuthContext.SignAndSeal` and `VerifyAndUnseal` seam; the Kerberos-specific `gss_get_mic`, `gss_wrap`, `gss_verify_mic`, and `gss_unwrap` implementation is marked as the follow-up work item in the current source.
+The final packet-protection stage uses RFC 4121 GSS-API wrap and MIC tokens through `KerberosSession`. `KerberosAuthContext.SignAndSeal` and `VerifyAndUnseal` call that session for DCE/RPC packet integrity or privacy after AP-REQ/AP-REP establishes the key.
 
 ```mermaid
 sequenceDiagram
@@ -29,14 +29,15 @@ sequenceDiagram
     Spnego->>Krb: Process AP-REP response token
     Krb-->>App: Derived session key
     App->>Channel: Invoke protected DCOM calls
-    Channel->>Server: GSS MIC or wrap protected PDU
-    Server-->>Channel: GSS MIC or wrapped response
+    Channel->>Server: RFC 4121 MIC or Wrap token protected PDU
+    Server-->>Channel: RFC 4121 protected response
 ```
 
 ## Where to read more
 
-- [`src\Opc.Classic.Dcom.Kerberos\KerberosAuthContext.cs:13`](../../src/Opc.Classic.Dcom.Kerberos/KerberosAuthContext.cs#L13-L104) adapts Kerberos/SPNEGO to `IAuthContext` and documents the signing follow-up seam.
-- [`src\Opc.Classic.Dcom.Kerberos\KerberosConnectionContext.cs:39`](../../src/Opc.Classic.Dcom.Kerberos/KerberosConnectionContext.cs#L39-L108) acquires AP-REQ tokens, requests mutual authentication, and processes AP-REP tokens.
+- [`src\Opc.Classic.Dcom.Kerberos\KerberosAuthContext.cs:67`](../../src/Opc.Classic.Dcom.Kerberos/KerberosAuthContext.cs#L67-L99) adapts Kerberos/SPNEGO tokens to `IAuthContext`, and [`KerberosAuthContext.cs:142`](../../src/Opc.Classic.Dcom.Kerberos/KerberosAuthContext.cs#L142-L198) applies packet protection.
+- [`src\Opc.Classic.Dcom.Kerberos\KerberosConnectionContext.cs:61`](../../src/Opc.Classic.Dcom.Kerberos/KerberosConnectionContext.cs#L61-L104) acquires AP-REQ tokens, requests mutual authentication, and processes AP-REP tokens.
 - [`src\Opc.Classic.Dcom.Kerberos\IKerberosConnectionContext.cs:15`](../../src/Opc.Classic.Dcom.Kerberos/IKerberosConnectionContext.cs#L15-L37) defines the AP-REQ and AP-REP abstraction.
 - [`src\Opc.Classic.Dcom.Kerberos\Spnego\SpnegoTokenBuilder.cs:13`](../../src/Opc.Classic.Dcom.Kerberos/Spnego/SpnegoTokenBuilder.cs#L13-L28) wraps Kerberos AP-REQ tokens in SPNEGO.
+- [`src\Opc.Classic.Dcom.Kerberos\KerberosSession.cs:87`](../../src/Opc.Classic.Dcom.Kerberos/KerberosSession.cs#L87-L123) implements RFC 4121 wrap and unwrap tokens.
 - Protocol references: [MS-KILE](https://learn.microsoft.com/openspecs/windows_protocols/ms-kile/) and [`docs\cookbook\03-kerberos-in-active-directory.md:36`](../cookbook/03-kerberos-in-active-directory.md#L36-L52).

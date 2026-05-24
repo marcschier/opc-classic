@@ -4,7 +4,7 @@ This diagram shows what the trimmer and NativeAOT compiler see in the portable `
 
 `src/Directory.Build.props` enables AOT and trimming analyzers for source projects, and `src/BannedSymbols.txt` blocks the dynamic patterns that would hide code from the trimmer. The Roslyn generator assembly itself is build-time only, so it opts out of AOT properties while keeping its emitted output AOT-safe.
 
-The DCOM assembly is explicitly marked transitional while legacy Dcom code is modernized. The diagram calls that out separately from fresh portable code so readers can distinguish the current compatibility island from the intended steady-state shape.
+`Opc.Classic.Dcom` participates in the current AOT shape. Its channel-level DCOM transport, packet protection, source-generated shims and dispatchers, and explicit codecs keep the runtime path statically visible to analyzers and NativeAOT.
 
 ```mermaid
 flowchart TD
@@ -15,8 +15,8 @@ flowchart TD
     SourceGen["Roslyn source generators<br/>build time only"]
     Proxies["Generated proxies<br/>static InvokeAsync bodies"]
     Codecs["Explicit codec calls<br/>NdrWriter and NdrReader"]
-    Dispatch["Generated or table dispatch<br/>opnums are constants"]
-    Dcom["Opc.Classic.Dcom<br/>transitional compatibility island"]
+    Dispatch["Generated dispatchers<br/>opnums are constants"]
+    Dcom["Opc.Classic.Dcom<br/>AOT-compatible DCOM channel"]
     Canary["AOT canary sample<br/>publish smoke test"]
 
     App --> Props
@@ -37,6 +37,6 @@ flowchart TD
 - [`src\Directory.Build.props:27`](../../src/Directory.Build.props#L27-L34) sets `IsAotCompatible`, `IsTrimmable`, and analyzer properties for source assemblies.
 - [`src\BannedSymbols.txt:1`](../../src/BannedSymbols.txt#L1-L37) lists banned reflection, expression compilation, COM RCW, and native marshal patterns.
 - [`src\Opc.Classic.Generators\Opc.Classic.Generators.csproj:3`](../../src/Opc.Classic.Generators/Opc.Classic.Generators.csproj#L3-L42) explains why generators are build-time only and why their output must be AOT-safe.
-- [`src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj:3`](../../src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj#L3-L33) documents the transitional DCOM compatibility island.
+- [`src\Opc.Classic.Dcom\Opc.Classic.Dcom.csproj:3`](../../src/Opc.Classic.Dcom/Opc.Classic.Dcom.csproj#L3-L8) defines the pure-managed DCOM assembly identity, and [`DcomCallChannel.cs:240`](../../src/Opc.Classic.Dcom/Transport/DcomCallChannel.cs#L240-L255) shows channel-level packet protection.
 - [`samples\Opc.Classic.Samples.AotCanary\Opc.Classic.Samples.AotCanary.csproj:1`](../../samples/Opc.Classic.Samples.AotCanary/Opc.Classic.Samples.AotCanary.csproj#L1-L11) and [`Program.cs:21`](../../samples/Opc.Classic.Samples.AotCanary/Program.cs#L21-L30) show the AOT smoke sample.
 - See also [`docs\ARCHITECTURE.md:281`](../ARCHITECTURE.md#L281-L292) and [`docs\ADOPTION.md:302`](../ADOPTION.md#L302-L312).
