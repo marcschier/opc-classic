@@ -1,6 +1,6 @@
 # Historical data with OPC HDA
 
-Updated for Opc.Classic 0.4.0-alpha.1.
+Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
 
 OPC Historical Data Access is the query side of OPC Classic. Data Access answers "what is the value now?"; HDA answers "what happened over this time range?" A production historian client needs raw reads, processed aggregates, annotations, modified-value audit trails, continuation handling, and careful time semantics. This tutorial shows how to model those scenarios with `Opc.Classic.Hda` and how the sample client and server fit together.
 
@@ -203,7 +203,7 @@ foreach (HdaAnnotationResult result in annotations)
 }
 ```
 
-The loopback sample notes that the generated `IOPCHDA_SyncAnnotations` proxy currently exposes `QueryCapabilities`; it displays annotations through the managed DTO surface. Keep that distinction clear when writing docs or UIs: wire interface coverage and application DTOs may land at different times during the pre-1.0 period.
+Opc.Classic keeps HDA wire interfaces and application DTOs separate. Generated HDA proxies preserve protocol shapes such as `IOPCHDA_SyncAnnotations`, while the managed DTO surface presents annotations through `HdaAnnotation` and `HdaAnnotationResult`. Keep that distinction clear when writing docs or UIs so wire-level capability names do not leak into operator workflows.
 
 ## Modified values
 

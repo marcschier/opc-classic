@@ -1,27 +1,31 @@
-# OPC Compliance Test Tool (CTT) conformance — Phase 14E
+# OPC Compliance Test Tool (CTT) conformance
 
-The OPC Compliance Test Tool is the OPC Foundation's official conformance test suite. Running it against a managed server is the gold-standard acceptance test before claiming OPC DA / AE / HDA spec compliance.
+The OPC Compliance Test Tool is the OPC Foundation conformance suite for OPC Classic servers. For this repository, the CTT gate validates the managed OPC DA sample server before a release is promoted.
+
+## Scope
+
+- Target server: `samples\Opc.Classic.Samples.CttServer\`.
+- Target ProgID: `Opc.Classic.DaSample.1`.
+- Target CLSID: `{8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A}`.
+- CI workflow: `.github\workflows\opc-ctt.yml`.
+- Acceptance artifact: the CTT XML report uploaded as `opc-ctt-results`.
 
 ## Prerequisites
 
-1. **OPC Foundation membership** — required to download the CTT.
-   https://opcfoundation.org/membership/
+1. **OPC Foundation membership** to download the CTT installer.
+2. **Installer URL** supplied either through the `OPC_CTT_INSTALLER_URL` repository secret or the workflow dispatch input.
+3. **Windows runner** capable of installing CTT, building the sample server, and running the registered server process.
+4. **Release build** of `Opc.Classic.slnx` and the managed CTT sample server.
 
-2. **CTT installer URL** — added as the `OPC_CTT_INSTALLER_URL` secret on the repo. Workflow dispatch can also override with a one-shot URL.
+## Running in CI
 
-3. **CTT-compliant managed server** — `samples\Opc.Classic.Samples.CttServer\` exposes a managed `OpcDaServerHost`-hosted DA server. The renamed CttServer registers the ProgID `Opc.Classic.DaSample.1` and CLSID `{8F7C1B14-9A6E-4E4D-B5E6-5B7DCC1F2B3A}`.
+- Manual run: GitHub -> Actions -> "OPC CTT conformance" -> Run workflow.
+- Scheduled run: weekly on Sunday at 03:00 UTC.
+- The workflow resolves the installer URL, builds the solution, starts `Opc.Classic.Samples.CttServer`, and invokes CTT against `Opc.Classic.DaSample.1`.
+- If no installer URL is available, the workflow records a warning and skips the conformance run; a skipped run is not a passing CTT result.
 
-## Triggering
+## Results and release gate
 
-- **Manual**: GitHub → Actions → "OPC CTT conformance" → Run workflow
-- **Scheduled**: weekly on Sunday at 03:00 UTC (only runs if secret is set)
+CTT pass/fail is evaluated per OPC Foundation test in `ctt-results.xml`. A release candidate requires a completed CTT run with no failing conformance tests and no infrastructure failure. Keep the XML report with the release artifacts for auditability.
 
-## Results
-
-CTT produces an XML report; the workflow uploads it as the `opc-ctt-results` artifact. Pass/fail per-test is the per-OPC-spec acceptance criterion.
-
-## Status
-
-The workflow and managed sample-server scaffold are present, but the CTT gate is **externally blocked** today by OPC Foundation membership and the `OPC_CTT_INSTALLER_URL` secret. The current target ProgID for the CTT server is `Opc.Classic.DaSample.1`.
-
-When this turns green, it gates the 1.0.0 release: a fully CTT-passing managed server is the necessary (though not sufficient) condition for releasing.
+CTT is a required gate for `1.0.0-rc.1` and later stable releases.

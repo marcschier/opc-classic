@@ -1,24 +1,54 @@
-# XML-DA modernization status
+# XML-DA spec coverage
 
-Updated for Opc.Classic 0.4.0-alpha.1 naming. The XML-DA package/project is `Opc.Classic.Xml`; pre-rename XML-DA references should be treated as historical names.
+`Opc.Classic.Xml` provides an AOT- and trim-compatible OPC XML-DA 1.0 client surface. The package contains request/response DTOs, SOAP 1.1 serializers, response readers, and the `HttpXmlDaClient` transport that uses a caller-owned `HttpClient`.
 
-Phase 9F is complete for `src\Opc.Classic.Xml`. The XML-DA stack no longer contains a generated `OpcXml.Da10.Proxy.cs` or any dependency on `System.Web.Services`, `WebRequest`, `WebClient`, WCF SOAP proxies, or `System.ServiceModel.Http`. The project file references only `Opc.Classic.Core`; strict NativeAOT/trimming settings are inherited from `src\Directory.Build.props` without local relaxation.
+## Supported transport model
 
-The active transport is `HttpXmlDaClient`, an `IXmlDaClient` implementation that accepts caller-owned `HttpClient` and endpoint instances. Each request is encoded into a hand-written SOAP 1.1 envelope, sent as `text/xml; charset=utf-8`, and tagged with the per-operation `SOAPAction` header. Responses are streamed back through `SoapEnvelopeReader` and decoded by operation-specific serializers. This keeps XML-DA decoupled from the DCOM stack and avoids reflection-heavy XML serializer or legacy SOAP proxy generation.
+- SOAP 1.1 envelopes over HTTP with `text/xml; charset=utf-8` content.
+- Per-operation `SOAPAction` headers from the XML-DA namespace.
+- Caller-controlled endpoint URI, authentication, proxy, TLS, timeout, and retry policy through `HttpClient`.
+- Streaming XML read/write through `System.Xml.XmlReader` and `System.Xml.XmlWriter`.
+- DTD processing and external XML resolution disabled in the SOAP reader.
 
-The eight XML-DA operations are implemented and routed through the same HttpClient plumbing:
+## Supported XML-DA operations
 
-| Operation | Serializer |
-|---|---|
-| `GetStatus` | `GetStatusSerializer` |
-| `Read` | `ReadSerializer` |
-| `Write` | `WriteSerializer` |
-| `Browse` | `BrowseSerializer` |
-| `GetProperties` | `GetPropertiesSerializer` |
-| `Subscribe` | `SubscribeSerializer` |
-| `SubscriptionPolledRefresh` | `SubscriptionPolledRefreshSerializer` |
-| `SubscriptionCancel` | `SubscriptionCancelSerializer` |
+| Operation | Client API | Coverage |
+|---|---|---|
+| `GetStatus` | `GetStatusAsync` | Server state, vendor info, product/version info, supported locale IDs, status info, start time, current time, and last update time. |
+| `Read` | `ReadAsync` | Item names, client item handles, max age, per-item value, quality, timestamp, and result ID. |
+| `Write` | `WriteAsync` | Item values, client item handles, per-item result IDs, and optional error text. |
+| `Browse` | `BrowseAsync` | Root/branch browsing, branch/item/all filters, max elements, continuation point, element name filter, item path, item name, leaf flag, and child flag. |
+| `GetProperties` | `GetPropertiesAsync` | Item properties, selected or all property names, optional property values, descriptions, and per-item/per-property result IDs. |
+| `Subscribe` | `SubscribeAsync` | Server subscription handle, requested and revised sampling rate, ping rate, buffering flag, deadband, initial values, and per-item results. |
+| `SubscriptionPolledRefresh` | `SubscriptionPolledRefreshAsync` | One or more subscription handles, hold time, wait time, changed/all item mode, data-buffer overflow flag, invalid handles, and per-subscription item lists. |
+| `SubscriptionCancel` | `SubscriptionCancelAsync` | Cancellation by server subscription handle and echoed client request handle. |
 
-Envelope handling is AOT-safe and based on `System.Xml.XmlWriter` and `System.Xml.XmlReader`. `SoapEnvelopeReader` disables DTD processing and external XML resolution for XXE resistance. Serializer and HTTP behavior is covered by `tests\Opc.Classic.Xml.Tests`, including `HttpXmlDaClientTests` and per-operation serializer tests.
+## Value and quality coverage
 
-Audit result: Outcome A. No Phase 9F modernization work remains in `src\Opc.Classic.Xml`; the permanent deliverable from this audit is this status note.
+`XmlDaValue` supports the scalar XML Schema types used by common XML-DA servers: `string`, signed and unsigned integer widths, `float`, `double`, `boolean`, and `dateTime`. Unknown value types preserve raw text for diagnostics. `OpcQuality` maps the DA packed quality bits exposed by XML-DA item values.
+
+## Not supported
+
+- Hosting an XML-DA server endpoint.
+- SOAP 1.2 bindings.
+- XML-DA array values, BSTR variants, and vendor-specific value carriers beyond raw-text preservation.
+- Generated SOAP proxy types or reflection-based XML serialization.
+- Built-in WS-Security policy; use the supplied `HttpClient` for authentication and transport security.
+
+## Verification
+
+`tests\Opc.Classic.Xml.Tests` covers the HTTP client path and per-operation serializers. The project participates in the repository build and test gates, which currently complete with 0 build warnings and a green test suite.
+
+## Roadmap
+
+For `1.0.0-rc.1`:
+
+- complete XML-DA interop runs against representative third-party servers;
+- expand error-code and quality-code coverage examples;
+- add a compact client cookbook for read/write/subscribe flows.
+
+For `2.0.0`:
+
+- evaluate XML-DA server hosting;
+- add array and vendor-specific value carriers where interop demand justifies them;
+- consider optional SOAP security helpers layered on top of `HttpClient`.

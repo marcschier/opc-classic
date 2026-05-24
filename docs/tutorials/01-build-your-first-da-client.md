@@ -1,8 +1,8 @@
 # Build your first OPC DA client
 
-Updated for Opc.Classic 0.4.0-alpha.1.
+Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
 
-This tutorial builds a complete Data Access client as a .NET 10 worker. It uses the public `Opc.Classic.Da.IDaServer` and `IDaSubscription` contracts, so the application code is the same shape whether the server is an in-process loopback target, a lab server, or a production DCOM-backed adapter. The runnable path below uses a loopback implementation so you can paste the files into a project and run the sequence without a Windows COM server. When you later connect to a real OPC DA server, keep the worker and replace only the `IDaServer` registration.
+This tutorial builds a complete Data Access client as a .NET 10 worker. It uses the public `Opc.Classic.Da.IDaServer` and `IDaSubscription` contracts, so the application code is the same shape whether the server is an in-process loopback target, a lab server, or a production DCOM-backed adapter. The runnable path below uses a loopback implementation so you can paste the files into a project and run the sequence without a Windows COM server. To connect to a real OPC DA server, keep the worker and replace only the `IDaServer` registration.
 
 The sequence mirrors OPC DA 3.00: retrieve server status, browse the namespace, validate/add items to a group, read a snapshot, request a refresh, process `IOPCDataCallback::OnDataChange` batches, and remove the group on shutdown. For the shorter Linux recipe see [../cookbook/01-connect-to-matrikon-from-linux.md](../cookbook/01-connect-to-matrikon-from-linux.md); for the architectural call-channel view see [../ARCHITECTURE.md](../ARCHITECTURE.md).
 
@@ -59,7 +59,7 @@ Add `appsettings.json` so configuration has a place for real-server settings eve
 }
 ```
 
-`Mode=Loopback` keeps the sample self-contained. For a real server, keep this configuration shape and register the production DCOM-backed `IDaServer` adapter when it is available in your deployment. `OpcUrl.Parse`, `OpcConnectData.WithNtlmV2`, and `OpcProtectionLevel.Integrity` are already the stable connection primitives described in [../ADOPTION.md](../ADOPTION.md).
+`Mode=Loopback` keeps the sample self-contained. For a real server, keep this configuration shape and register the production DCOM-backed `IDaServer` adapter for your deployment. `OpcUrl.Parse`, `OpcConnectData.WithNtlmV2`, and `OpcProtectionLevel.Integrity` are stable connection primitives described in [../ADOPTION.md](../ADOPTION.md).
 
 ## Program.cs
 
@@ -519,7 +519,7 @@ Use `CancellationToken` on every call. Network DCOM calls can hang behind firewa
 
 ## From loopback to a real server
 
-The loopback implementation is useful because it proves your application workflow without network variables. The migration to a real server should be a dependency-injection change, not a rewrite of the worker. Keep the `DaClientWorker` exactly as it is and replace `LoopbackDaClient` with the adapter that creates a DCOM call channel, activates the configured ProgID/CLSID, and implements `IDaServer`. The connection settings already line up with the stable core types:
+The loopback implementation proves your application workflow without network variables. Connecting to a real server should be a dependency-injection change, not a rewrite of the worker. Keep the `DaClientWorker` exactly as it is and replace `LoopbackDaClient` with the adapter that creates a DCOM call channel, activates the configured ProgID/CLSID, and implements `IDaServer`. The connection settings line up with the stable core types:
 
 ```csharp
 using System.Net;

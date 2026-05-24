@@ -1,10 +1,10 @@
 # Migrating from the OPC Foundation .NET API
 
-Updated for Opc.Classic 0.4.0-alpha.1.
+Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
 
 Many OPC Classic applications still depend on the OPC Foundation .NET API for .NET Framework. Those applications usually run only on Windows, use synchronous calls, rely on COM registration, and carry types such as `Opc.Da.Server`, `Opc.Da.Subscription`, `Opc.Da.Item`, `Opc.Da.ItemValueResult`, and `Opc.ConnectData`. Opc.Classic keeps the OPC concepts but changes the platform assumptions: namespaces are `Opc.Classic.*`, APIs are async, cancellation is explicit, DCOM is pure managed on the portable path, and NativeAOT/trimming shape the design.
 
-This guide maps the old patterns to the new ones. It is not an automated migration yet. The planned `rw-d5-migration-tooling` work is in progress and is expected to provide scripts/analyzers that catch common namespace and synchronous-call changes. Until then, migrate feature by feature and keep behavior tests around every OPC operation.
+This guide maps OPC Foundation .NET API patterns to Opc.Classic equivalents. Treat migration as a feature-by-feature refactor: keep behavior tests around every OPC operation, move OPC calls behind application-owned interfaces, and apply mechanical namespace edits only after the boundary tests are in place.
 
 For the short version see [../cookbook/04-migrate-from-net-framework-opc-net-api.md](../cookbook/04-migrate-from-net-framework-opc-net-api.md). For architecture, read [../ARCHITECTURE.md](../ARCHITECTURE.md).
 
@@ -80,7 +80,7 @@ OpcConnectData connectData = OpcConnectData.WithNtlmV2(
     operationTimeout: TimeSpan.FromSeconds(30));
 ```
 
-`OpcConnectData` does not open the connection by itself. Your application should receive an `IDaServer`, `IAeServer`, or `IHdaServer` from dependency injection. That keeps the business logic testable and lets you swap loopback, in-memory, DCOM, or future adapters without changing reads and writes.
+`OpcConnectData` does not open the connection by itself. Your application should receive an `IDaServer`, `IAeServer`, or `IHdaServer` from dependency injection. That keeps the business logic testable and lets you swap loopback, in-memory, DCOM, or vendor-specific adapters without changing reads and writes.
 
 ## DA read mapping
 
@@ -287,9 +287,9 @@ Use `HdaTime.Relative` instead of hand-parsing `NOW` expressions. Keep all inter
 - Reflection-heavy configuration may break trimming. Prefer explicit options and source-generated code.
 - Namespace changes are simple; behavior changes are not. Test every browse/read/write/subscription path.
 
-## Migration scripts while rw-d5 tooling is in progress
+## Migration inventory scripts
 
-Until dedicated tooling exists, use conservative scripts that only report likely edits. For example, a PowerShell inventory:
+Use conservative scripts that only report likely edits. For example, a PowerShell inventory:
 
 ```powershell
 Get-ChildItem -Recurse -Filter *.cs |
@@ -316,19 +316,19 @@ Get-ChildItem -Recurse -Filter *.cs | ForEach-Object {
 }
 ```
 
-Do not run blind replacements on generated files, vendored code, or old samples. Let `rw-d5-migration-tooling` own mechanical rewrites once it lands.
+Do not run blind replacements on generated files, vendored code, or archived samples. Keep scripts in report-only mode until boundary tests prove each feature path.
 
 ## Refactoring patterns that reduce risk
 
 The safest migration introduces an anti-corruption layer. Define interfaces in your application language, not in OPC language. For example, `IPumpTelemetry.ReadAsync` can return `PumpSnapshot` while the implementation uses `IDaServer`. Once the rest of the app depends on `IPumpTelemetry`, you can swap legacy OPC Foundation code for Opc.Classic without touching UI, business rules, or database code.
 
-Keep behavior tests at that boundary. Use the old implementation to capture expected behavior for known fixtures: missing tag, bad quality, write denied, unsupported rate, callback keep-alive, and reconnect. Then run the same tests against the Opc.Classic implementation. Namespace changes are easy; subtle behavior differences are where migrations fail.
+Keep behavior tests at that boundary. Use the existing implementation to capture expected behavior for known fixtures: missing tag, bad quality, write denied, unsupported rate, callback keep-alive, and reconnect. Then run the same tests against the Opc.Classic implementation. Namespace changes are easy; subtle behavior differences are where migrations fail.
 
 ## Handling synchronous callers
 
 Many .NET Framework applications are synchronous. Do not wrap Opc.Classic async calls with `.Result` on UI threads. Instead, move OPC work into background services or async command handlers. If a synchronous boundary is unavoidable during transition, isolate it in one adapter and use `Task.Run` with a clear timeout, then remove it later. Treat that adapter as technical debt.
 
-For Windows Forms or WPF migrations, push OPC reads into an async service and marshal results back to the UI thread. The old API often hid blocking COM calls inside event handlers; the new API makes latency visible. Use that visibility to improve responsiveness.
+For Windows Forms or WPF migrations, push OPC reads into an async service and marshal results back to the UI thread. The OPC Foundation API often hides blocking COM calls inside event handlers; Opc.Classic makes latency visible. Use that visibility to improve responsiveness.
 
 ## Data type and quality differences
 

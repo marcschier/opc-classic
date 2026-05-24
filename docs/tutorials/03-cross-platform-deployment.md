@@ -1,6 +1,6 @@
 # Cross-platform deployment for OPC Classic clients and servers
 
-Updated for Opc.Classic 0.4.0-alpha.1.
+Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
 
 Opc.Classic is designed for .NET 10, NativeAOT-compatible libraries, and cross-platform operation. That does not make OPC Classic deployment magically simple. DCOM-era servers assume Windows naming, endpoint mapping, authentication levels, and service accounts. Linux and macOS clients bring container packaging, Kerberos files, DNS, time synchronization, and firewall rules into the picture. This tutorial turns the repository's architecture into a production deployment plan for clients and managed servers on Linux, macOS, containers, and Kubernetes.
 

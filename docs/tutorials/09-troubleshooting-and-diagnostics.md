@@ -1,6 +1,6 @@
 # Troubleshooting and diagnostics
 
-Updated for Opc.Classic 0.4.0-alpha.1.
+Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
 
 OPC Classic failures often look vague at the top of the stack: "cannot connect", "access denied", "bad quality", "decode failed", or `E_FAIL`. The root cause may be DNS, firewall, endpoint mapper, authentication level, SPN, channel binding, NDR shape, per-item HRESULT, or a server-specific behavior. This tutorial gives you a structured diagnostic workflow for Opc.Classic clients and managed servers.
 
@@ -136,7 +136,7 @@ builder.Logging.AddSimpleConsole(static options =>
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 ```
 
-The transitional DCOM layer has a process-wide logging bridge:
+The DCOM layer also exposes a process-wide logging bridge:
 
 ```csharp
 using Microsoft.Extensions.Logging;
