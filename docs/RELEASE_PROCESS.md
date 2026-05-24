@@ -33,12 +33,12 @@ Before tagging, verify:
 - Conformance gates required for the release line have completed or are explicitly waived by maintainers.
 - `CHANGELOG.md` has a dated section for the exact release version.
 
-## Prepare the release commit
+## Prepare the release change
 
 1. Move the relevant `CHANGELOG.md` entries from `Unreleased` into a section named for the release version.
 2. Confirm `src\Directory.Build.props` contains the intended default package version.
 3. Confirm the release workflow can derive the same version from the `v<version>` tag.
-4. Commit the release-prep change on the release branch.
+4. Create the release-prep Git change on the release branch.
 
 ## Tag and publish
 
