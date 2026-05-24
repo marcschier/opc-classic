@@ -25,7 +25,7 @@ public abstract class NtlmMessage {
 
     public abstract byte[] ToByteArray();
 
-    public bool GetFlag(NtlmFlags flag) => (Flags & flag) != 0;
+    public bool GetFlag(NtlmFlags flag) => (Flags & flag) != NtlmFlags.None;
 
     public bool GetFlag(int flag) => (((uint)Flags) & unchecked((uint)flag)) != 0;
 
@@ -100,5 +100,5 @@ public abstract class NtlmMessage {
     }
 
     protected static Encoding StringEncoding(NtlmFlags flags) =>
-        (flags & NtlmFlags.NtlmsspNegotiateUnicode) != 0 ? Encoding.Unicode : Encoding.ASCII;
+        (flags & NtlmFlags.NtlmsspNegotiateUnicode) != NtlmFlags.None ? Encoding.Unicode : Encoding.ASCII;
 }

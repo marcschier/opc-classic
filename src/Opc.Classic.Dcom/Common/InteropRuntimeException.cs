@@ -46,7 +46,7 @@ public sealed class InteropRuntimeException : Exception {
     /// <summary>
     /// Params
     /// </summary>
-    public object[] Parameters { get; } = null;
+    public object[] Parameters { get; }
 
     /// <summary>
     /// Get message

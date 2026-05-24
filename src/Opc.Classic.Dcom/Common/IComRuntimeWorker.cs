@@ -31,10 +31,12 @@ public interface IComRuntimeWorker {
     /// </summary>
     UUID CurrentObjectID { get; set; }
 
+#pragma warning disable MA0016 // Implementations in Core expose List<string>; keep interface shape stable for this wave.
     /// <summary>
     /// Query interface ids
     /// </summary>
     List<string> QIedIIDs { get; }
+#pragma warning restore MA0016
 
     /// <summary>
     /// Resolver

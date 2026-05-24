@@ -175,7 +175,7 @@ public sealed class Type3Message : NtlmMessage {
         var workstationBytes = string.IsNullOrEmpty(Workstation) ? Array.Empty<byte>() : encoding.GetBytes(Workstation);
         var sessionKey = EncryptedRandomSessionKey ?? Array.Empty<byte>();
         var includeMic = _mic is { Length: 16 };
-        var includeVersion = (Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 || includeMic;
+        var includeVersion = (Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None || includeMic;
         var headerSize = 64 + (includeVersion ? 8 : 0) + (includeMic ? 16 : 0);
 
         var buffer = new byte[headerSize + lmResponse.Length + ntResponse.Length + domainBytes.Length +
@@ -256,7 +256,7 @@ public sealed class Type3Message : NtlmMessage {
 
         var minimumPayloadOffset = MinimumPayloadOffset(
             lmFields, ntFields, domainFields, userFields, workstationFields, sessionKeyFields);
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 && span.Length >= 72 && minimumPayloadOffset >= 72) {
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None && span.Length >= 72 && minimumPayloadOffset >= 72) {
             _version = span.Slice(64, 8).ToArray();
         }
         if (span.Length >= MicOffset + MicLength && minimumPayloadOffset >= MicOffset + MicLength) {

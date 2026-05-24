@@ -57,9 +57,7 @@ public class NdrBuffer {
     public void SetLength(int length) => Length = length;
 
     public void Advance(int n) {
-        if (n < 0) {
-            throw new ArgumentOutOfRangeException(nameof(n));
-        }
+        ArgumentOutOfRangeException.ThrowIfNegative(n);
 
         EnsureWritable(n);
         Index += n;

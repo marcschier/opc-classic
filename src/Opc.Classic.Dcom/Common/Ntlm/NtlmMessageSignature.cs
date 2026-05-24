@@ -7,6 +7,8 @@ using System;
 using System.Buffers.Binary;
 using System.Security.Cryptography;
 
+#pragma warning disable CA5351 // NTLMSSP message signing is specified as HMAC-MD5.
+
 namespace Opc.Classic.Dcom.Internal.Ntlm;
 
 /// <summary>

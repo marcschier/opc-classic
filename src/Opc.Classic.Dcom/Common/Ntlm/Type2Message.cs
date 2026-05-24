@@ -112,7 +112,7 @@ public sealed class Type2Message : NtlmMessage {
             flags |= NtlmFlags.NtlmsspNegotiateTargetInfo;
         }
 
-        var includeVersion = (flags & NtlmFlags.NtlmsspNegotiateVersion) != 0;
+        var includeVersion = (flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None;
         var headerSize = includeVersion ? 56 : 48;
         var buffer = new byte[headerSize + targetBytes.Length + targetInformationBytes.Length];
         var span = buffer.AsSpan();
@@ -151,7 +151,7 @@ public sealed class Type2Message : NtlmMessage {
         Challenge = span.Slice(24, 8).ToArray();
         Context = span.Slice(32, 8).ToArray();
         var (targetInformationLength, targetInformationOffset) = ReadFields(span.Slice(40, 8));
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 && span.Length >= 56) {
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None && span.Length >= 56) {
             _version = span.Slice(48, 8).ToArray();
         }
 

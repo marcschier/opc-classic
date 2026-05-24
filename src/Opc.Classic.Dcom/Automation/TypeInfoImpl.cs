@@ -12,6 +12,8 @@ using SharpInterop.Core;
 using SharpInterop.Rpc.Core;
 using System;
 
+#pragma warning disable MA0051 // OLE Automation type marshaling mirrors the protocol layout.
+
 namespace SharpInterop.Automation; 
 /// <summary>
 /// Type info
@@ -195,7 +197,7 @@ internal sealed class TypeInfoImpl : ComObjectImplWrapper, ITypeInfo {
             invKind != (int)InvokeKind.INVOKE_PROPERTYGET &&
             invKind != (int)InvokeKind.INVOKE_PROPERTYPUTREF &&
             invKind != (int)InvokeKind.INVOKE_PROPERTYPUT) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.E_INVALIDARG));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.E_INVALIDARG), nameof(invKind));
         }
         var callObject = new CallBuilder(true);
         callObject.AddInParamAsInt(memberId);

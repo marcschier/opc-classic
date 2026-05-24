@@ -13,6 +13,7 @@ using SharpInterop.Core;
 using SharpInterop.Resources;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
 using System.Reflection;
@@ -36,7 +37,7 @@ public static class Interop {
     /// This API overrides the instance specific flags set on 
     /// <see cref="Clsid"/> or <see cref="ProgId"/>.
     /// </summary>
-    public static bool UseAutoRegistration { get; set; } = false;
+    public static bool UseAutoRegistration { get; set; }
 
     /// <summary>
     /// Sometimes the DCOM runtime of Windows will not send a ping on
@@ -77,7 +78,7 @@ public static class Interop {
 
         string message;
         try {
-            message = Resource.ResourceManager.GetString("0x" + key);
+            message = Resource.ResourceManager.GetString("0x" + key, CultureInfo.InvariantCulture);
             message = message + " [" + key + "]";
         }
         catch (MissingResourceException) {
@@ -98,7 +99,7 @@ public static class Interop {
             return null;
         }
         if (_pathToDB == null) {
-            lock (typeof(Interop)) {
+            lock (_syncRoot) {
                 if (_pathToDB == null) {
                     Internal_readProgIdsFromFile();
                 }
@@ -171,16 +172,16 @@ public static class Interop {
     /// <exception cref="ArgumentException"> if any parameter is
     /// <code>null</code> or of 0 length. </exception>
     public static void MapHostNametoIP(string hostname, string IP) {
-        lock (typeof(Interop)) {
+        lock (_syncRoot) {
             if (string.IsNullOrWhiteSpace(hostname)) {
-                throw new ArgumentException(nameof(hostname));
+                throw new ArgumentException("Hostname must not be null, empty, or whitespace.", nameof(hostname));
             }
             if (string.IsNullOrWhiteSpace(IP)) {
-                throw new ArgumentException(nameof(IP));
+                throw new ArgumentException("IP address must not be null, empty, or whitespace.", nameof(IP));
             }
             //just check the validity of IP
             // InetAddress.getByName(IP.Trim());
-            kMapOfHostnamesVsIPs[hostname.Trim().ToUpper()] = IP.Trim();
+            kMapOfHostnamesVsIPs[hostname.Trim().ToUpperInvariant()] = IP.Trim();
         }
     }
 
@@ -190,8 +191,8 @@ public static class Interop {
     /// <param name="hostname"> </param>
     /// <returns> <code>null</code> if a mapping could not be found. </returns>
     internal static string GetIPForHostName(string hostname) {
-        lock (typeof(Interop)) {
-            return kMapOfHostnamesVsIPs[hostname.Trim().ToUpper()];
+        lock (_syncRoot) {
+            return kMapOfHostnamesVsIPs[hostname.Trim().ToUpperInvariant()];
         }
     }
 
@@ -199,7 +200,7 @@ public static class Interop {
     /// Internal dump
     /// </summary>
     internal static void Internal_dumpMap() {
-        lock (typeof(Interop)) {
+        lock (_syncRoot) {
             Log.Logger.Information("{@mapOfHostnamesVsIPs}", kMapOfHostnamesVsIPs);
         }
     }
@@ -214,9 +215,10 @@ public static class Interop {
     /// </summary>
     public static void Internal_setSocket(Socket socket) => kSocketQueue.Add(socket);
 
+    private static readonly System.Threading.Lock _syncRoot = new();
     private static string _pathToDB;
     private static readonly PropertyBag kMapOfProgIdsVsClsids = new PropertyBag();
     private static readonly List<Socket> kSocketQueue = new List<Socket>();
     private static readonly Dictionary<string, string> kMapOfHostnamesVsIPs =
-        new Dictionary<string, string>();
+        new Dictionary<string, string>(StringComparer.Ordinal);
 }

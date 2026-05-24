@@ -26,7 +26,7 @@ public static class AutomationFactory {
     /// <returns></returns>
     public static IComObject NarrowObject(IComObject comObject) {
         var retval = comObject;
-        switch (comObject.InterfaceIdentifier.ToUpper()) {
+        switch (comObject.InterfaceIdentifier.ToUpperInvariant()) {
             case Interfaces.IID_IDispatch:
                 return new DispatchImpl(retval);
             case Interfaces.IID_ITypeInfo:

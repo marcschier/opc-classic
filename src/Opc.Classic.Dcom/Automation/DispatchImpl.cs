@@ -17,6 +17,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+#pragma warning disable MA0051 // OLE Automation marshaling methods intentionally mirror wire structures.
+
 namespace SharpInterop.Automation; 
 /// <summary>
 /// Dispatch implementation
@@ -52,7 +54,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     public int GetIDsOfNames(string apiName) {
         if (apiName == null || apiName.Trim().Equals("")) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES), nameof(apiName));
         }
 
         var innerMap = _cacheOfDispIds.GetOrDefault(apiName);
@@ -81,7 +83,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         }
 
         var dispid = (int)((object[])((ComArray)result[0]).ArrayInstance)[0];
-        innerMap = new Dictionary<string, int> {
+        innerMap = new Dictionary<string, int>(StringComparer.Ordinal) {
             [apiName] = dispid
         };
         _cacheOfDispIds.Add(apiName, innerMap);
@@ -95,7 +97,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     public int[] GetIDsOfNames(string[] apiName) {
         if (apiName == null || apiName.Length == 0) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES), nameof(apiName));
         }
 
         var sendForAll = false;
@@ -128,7 +130,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         for (var i = 0; i < apiName.Length; i++) {
             if (apiName[i] == null || apiName[i].Trim().Equals("")) {
                 throw new ArgumentException(Interop.GetLocalizedMessage(
-                    ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES));
+                    ErrorCode.INTEROP_DISP_INCORRECT_VALUE_FOR_GETIDNAMES), nameof(apiName));
             }
             pointers[i] = new ComPointer(
                 new ComString(apiName[i].Trim(), InteropFlags.FLAG_REPRESENTATION_STRING_LPWSTR));
@@ -153,15 +155,13 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         var arrayOfDispIds = (int[])arrayOfResults.ArrayInstance;
         var retVal = new int[apiName.Length];
 
-        innerMap = innerMap ?? new Dictionary<string, int>();
+        innerMap = innerMap ?? new Dictionary<string, int>(StringComparer.Ordinal);
         for (var i = 0; i < apiName.Length; i++) {
             retVal[i] = arrayOfDispIds[i];
             innerMap[apiName[i]] = arrayOfDispIds[i];
         }
 
-        if (!_cacheOfDispIds.ContainsKey(apiName[0])) {
-            _cacheOfDispIds.Add(apiName[0], innerMap);
-        }
+        _cacheOfDispIds.TryAdd(apiName[0], innerMap);
         return retVal;
     }
 
@@ -288,7 +288,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
                 };
                 throw automationException;
             }
-            throw e;
+            throw;
         }
 
         var array = (ComArray)result[3];
@@ -313,7 +313,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
             DispatchFlags.DISPATCH_PROPERTYPUTREF : DispatchFlags.DISPATCH_PROPERTYPUT;
         var objectParams = inparams;
         if (objectParams == null) {
-            objectParams = new object[0];
+            objectParams = Array.Empty<object>();
         }
 
         var variants = new Variant[objectParams.Length];
@@ -409,7 +409,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
     private Variant[] CallMethodA(int dispId, object[] inparams, int flag = InteropFlags.FLAG_NULL) {
         var objectParams = inparams;
         if (objectParams == null) {
-            objectParams = new object[0];
+            objectParams = Array.Empty<object>();
         }
 
         var variants = new Variant[objectParams.Length];
@@ -459,7 +459,8 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
         }
 
         if (dispIds == null || dispIds.Length != inparams.Length) {
-            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_DISP_INCORRECT_PARAM_LENGTH));
+            throw new ArgumentException(Interop.GetLocalizedMessage(ErrorCode.INTEROP_DISP_INCORRECT_PARAM_LENGTH),
+                nameof(dispIds));
         }
 
         var array = new int[inparams.Length];
@@ -506,7 +507,7 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
 
         if (paramNames == null || paramNames.Length != inparams.Length) {
             throw new ArgumentException(Interop.GetLocalizedMessage(
-                ErrorCode.INTEROP_DISP_INCORRECT_PARAM_LENGTH));
+                ErrorCode.INTEROP_DISP_INCORRECT_PARAM_LENGTH), nameof(paramNames));
         }
 
         var names = new string[paramNames.Length + 1];
@@ -568,5 +569,5 @@ internal sealed class DispatchImpl : ComObjectImplWrapper, IDispatch {
 
     private static readonly Struct kExcepInfo = new Struct();
     private readonly Dictionary<string, Dictionary<string, int>> _cacheOfDispIds =
-        new Dictionary<string, Dictionary<string, int>>();
+        new Dictionary<string, Dictionary<string, int>>(StringComparer.Ordinal);
 }

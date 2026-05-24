@@ -65,7 +65,7 @@ public sealed class Type1Message : NtlmMessage {
             flags |= NtlmFlags.NtlmsspNegotiateOemWorkstationSupplied;
         }
 
-        var includeVersion = (flags & NtlmFlags.NtlmsspNegotiateVersion) != 0;
+        var includeVersion = (flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None;
         var headerSize = includeVersion ? 40 : 32;
         var buffer = new byte[headerSize + domainBytes.Length + workstationBytes.Length];
         var span = buffer.AsSpan();
@@ -100,7 +100,7 @@ public sealed class Type1Message : NtlmMessage {
         Flags = (NtlmFlags)BinaryPrimitives.ReadUInt32LittleEndian(span.Slice(12, 4));
         var (domainLength, domainOffset) = ReadFields(span.Slice(16, 8));
         var (workstationLength, workstationOffset) = ReadFields(span.Slice(24, 8));
-        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != 0 && span.Length >= 40) {
+        if ((Flags & NtlmFlags.NtlmsspNegotiateVersion) != NtlmFlags.None && span.Length >= 40) {
             _version = span.Slice(32, 8).ToArray();
         }
 
