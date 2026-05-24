@@ -125,7 +125,7 @@ public class FaultCoPdu : ConnectionOrientedPdu, IFragmentable {
             var pdu = (FaultCoPdu)fragments.Next();
             var stub = pdu.Stub;
             if (stub == null) {
-                stub = new byte[0];
+                stub = Array.Empty<byte>();
             }
             while (fragments.HasNext()) {
                 var fragment = (FaultCoPdu)fragments.Next();
@@ -165,7 +165,7 @@ public class FaultCoPdu : ConnectionOrientedPdu, IFragmentable {
         }
     }
 
-    private class FragmentIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class FragmentIterator : Iterator<ConnectionOrientedPdu> {
 
         public FragmentIterator(FaultCoPdu outerInstance, int stubSize) {
             _outerInstance = outerInstance;

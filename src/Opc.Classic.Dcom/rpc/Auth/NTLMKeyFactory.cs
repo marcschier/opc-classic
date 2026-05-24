@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -16,7 +16,7 @@ namespace SharpInterop.Rpc.Auth.ntlm;
 /// <summary>
 /// Key factory for lan manager
 /// </summary>
-internal class NTLMKeyFactory {
+internal sealed class NTLMKeyFactory {
 
     /// <summary>
     /// Get user session key
@@ -68,8 +68,8 @@ internal class NTLMKeyFactory {
     /// <returns></returns>
     public IStreamCipher GetARCFOUR(byte[] key) {
         var attrib = new Hashtable();
-        IStreamCipher keystream = new RC4Engine();
-        ICipherParameters parameters = new KeyParameter(key);
+        var keystream = new RC4Engine();
+        var parameters = new KeyParameter(key);
         keystream.Init(true, parameters);
         return keystream;
     }
@@ -100,7 +100,7 @@ internal class NTLMKeyFactory {
         // the NTLMUserSessionKey and the LMv2UserSessionKey...we need more :(
         //         byte key[] = new byte[16];
         var ntlmHash = Responses.NtlmHash(password);
-        IDigest md4 = new MD4Digest();
+        var md4 = new MD4Digest();
         var ret = new byte[md4.GetDigestSize()];
         md4.BlockUpdate(ntlmHash, 0, ntlmHash.Length);
         md4.DoFinal(ret, 0);
@@ -137,7 +137,7 @@ internal class NTLMKeyFactory {
         Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
         Array.Copy(kClientSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
             kClientSigningMagicConstant.Length);
-        IDigest md5 = new MD5Digest();
+        var md5 = new MD5Digest();
         var ret = new byte[md5.GetDigestSize()];
         md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
         md5.DoFinal(ret, 0);
@@ -156,7 +156,7 @@ internal class NTLMKeyFactory {
         Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
         Array.Copy(kClientSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
             kClientSealingMagicConstant.Length);
-        IDigest md5 = new MD5Digest();
+        var md5 = new MD5Digest();
         var ret = new byte[md5.GetDigestSize()];
         md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
         md5.DoFinal(ret, 0);
@@ -175,7 +175,7 @@ internal class NTLMKeyFactory {
         Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
         Array.Copy(kServerSigningMagicConstant, 0, dataforhash, secondarySessionKey.Length,
             kServerSigningMagicConstant.Length);
-        IDigest md5 = new MD5Digest();
+        var md5 = new MD5Digest();
         var ret = new byte[md5.GetDigestSize()];
         md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
         md5.DoFinal(ret, 0);
@@ -194,7 +194,7 @@ internal class NTLMKeyFactory {
         Array.Copy(secondarySessionKey, 0, dataforhash, 0, secondarySessionKey.Length);
         Array.Copy(kServerSealingMagicConstant, 0, dataforhash, secondarySessionKey.Length,
             kServerSealingMagicConstant.Length);
-        IDigest md5 = new MD5Digest();
+        var md5 = new MD5Digest();
         var ret = new byte[md5.GetDigestSize()];
         md5.BlockUpdate(dataforhash, 0, dataforhash.Length);
         md5.DoFinal(ret, 0);

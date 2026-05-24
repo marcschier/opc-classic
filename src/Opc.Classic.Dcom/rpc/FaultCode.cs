@@ -7,13 +7,10 @@
 // http://www.eclipse.org/legal/epl-v10.html
 //
 
-using System;
-
 namespace SharpInterop.Rpc; 
 /// <summary>
 /// Fault codes
 /// </summary>
-[Flags]
 public enum FaultCode {
 
     /// <summary>

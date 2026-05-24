@@ -1,4 +1,4 @@
-﻿//
+//
 // Copyright (c) 2013 Vikram Roopchand
 //
 // All rights reserved. This program and the accompanying materials
@@ -17,6 +17,7 @@ using System;
 using System.Buffers.Binary;
 using SharpCifs;
 using SharpCifs.Util.Sharpen;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Security;
@@ -53,10 +54,10 @@ public class NtlmAuthentication {
             var keyLength = (string)properties.GetProperty("rpc.ntlm.keyLength");
             if (keyLength != null) {
                 try {
-                    _keyLength = int.Parse(keyLength);
+                    _keyLength = int.Parse(keyLength, CultureInfo.InvariantCulture);
                 }
                 catch (FormatException) {
-                    throw new ArgumentException("Invalid key length: " + keyLength);
+                    throw new ArgumentException("Invalid key length: " + keyLength, nameof(properties));
                 }
             }
 
@@ -293,6 +294,7 @@ public class NtlmAuthentication {
     /// <param name="type2"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
+#pragma warning disable MA0051 // Legacy NTLM type-3 negotiation flow; refactor would risk authentication behavior.
     public Type3Message CreateType3(Type2Message type2) {
         if (_useSSO) {
             // Unreachable — constructor already throws for _useSSO. Defensive guard.
@@ -301,7 +303,7 @@ public class NtlmAuthentication {
         }
         else {
             var flags = type2.GetFlags();
-            if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != 0) {
+            if ((flags & NtlmFlags.NtlmsspNegotiateDatagramStyle) != NtlmFlags.None) {
                 flags = AdjustFlags(flags);
                 flags &= ~NtlmFlags.NtlmsspTargetTypeServer;
             }
@@ -334,12 +336,12 @@ public class NtlmAuthentication {
                         target, _credentials.UserName, Type3Message.GetDefaultWorkstation());
                 }
                 catch (Exception e) {
-                    throw new Exception("Exception occured while forming NTLMv2 Type3Response", e);
+                    throw new InvalidOperationException("Exception occurred while forming NTLMv2 Type3Response", e);
                 }
 
             }
             else {
-                if ((flags & NtlmFlags.NtlmsspNegotiateNtlm2) != 0) // NTLM2 Session security response
+                if ((flags & NtlmFlags.NtlmsspNegotiateNtlm2) != NtlmFlags.None) // NTLM2 Session security response
                 {
                     flags = AdjustFlags(flags);
                     flags &= ~NtlmFlags.NtlmsspTargetTypeServer;
@@ -355,7 +357,7 @@ public class NtlmAuthentication {
                         ntResponse = Responses.GetNTLM2SessionResponse(_credentials.Password, challenge, clientNonce);
                     }
                     catch (Exception e) {
-                        throw new Exception("Exception occured while forming Session Security Type3Response", e);
+                        throw new InvalidOperationException("Exception occurred while forming Session Security Type3Response", e);
                     }
 
                     type3 = new Type3Message(flags, lmResponse, ntResponse, target,
@@ -368,14 +370,14 @@ public class NtlmAuthentication {
                     var ntResponse = Responses.GetNTLMResponse(_credentials.Password, challenge);
                     type3 = new Type3Message(flags, lmResponse, ntResponse, target,
                         _credentials.UserName, Type3Message.GetDefaultWorkstation());
-                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != 0) {
-                        throw new Exception("Key Exchange not supported by Library !");
+                    if ((flags & NtlmFlags.NtlmsspNegotiateKeyExch) != NtlmFlags.None) {
+                        throw new NotSupportedException("Key Exchange not supported by Library.");
                     }
                 }
             }
             // we have to now form lmv2 and ntlmv2 response with regards to the session security
             // the type3message also has to be altered
-            if (_useNtlm2sessionsecurity && (flags & NtlmFlags.NtlmsspNegotiateNtlm2) != 0) {
+            if (_useNtlm2sessionsecurity && (flags & NtlmFlags.NtlmsspNegotiateNtlm2) != NtlmFlags.None) {
                 var ntlmKeyFactory = new NTLMKeyFactory();
                 byte[] userSessionKey;
                 if (_useNtlmV2) {
@@ -384,7 +386,7 @@ public class NtlmAuthentication {
                             .GetNTLMv2UserSessionKey(target, _credentials.UserName, _credentials.Password, type2.GetChallenge(), blob);
                     }
                     catch (Exception e) {
-                        throw new Exception("Exception occured while forming NTLMv2 with NTLM2 Session Security for Type3Response", e);
+                        throw new InvalidOperationException("Exception occurred while forming NTLMv2 with NTLM2 Session Security for Type3Response", e);
                     }
                 }
                 else {
@@ -398,7 +400,7 @@ public class NtlmAuthentication {
                             .GetNTLM2SessionResponseUserSessionKey(_credentials.Password, servernonce);
                     }
                     catch (Exception e) {
-                        throw new Exception("Exception occured while forming Session Security for Type3Response", e);
+                        throw new InvalidOperationException("Exception occurred while forming Session Security for Type3Response", e);
                     }
 
                 }
@@ -412,7 +414,7 @@ public class NtlmAuthentication {
 #pragma warning restore CS0618
                 }
                 catch (Exception e) {
-                    throw new Exception("Exception occured while forming Session Security for Type3Response", e);
+                    throw new InvalidOperationException("Exception occurred while forming Session Security for Type3Response", e);
                 }
             }
 
@@ -420,6 +422,7 @@ public class NtlmAuthentication {
             return type3;
         }
     }
+#pragma warning restore MA0051
 
     //      /// <summary>
     //      /// Get authentication sources
@@ -474,7 +477,7 @@ public class NtlmAuthentication {
     }
 
     private NtlmFlags AdjustFlags(NtlmFlags flags) {
-        if (kUnicodeSupported && ((flags & NtlmFlags.NtlmsspNegotiateUnicode) != 0)) {
+        if (kUnicodeSupported && ((flags & NtlmFlags.NtlmsspNegotiateUnicode) != NtlmFlags.None)) {
             flags &= ~NtlmFlags.NtlmsspNegotiateOem;
             flags |= NtlmFlags.NtlmsspNegotiateUnicode;
         }
@@ -588,7 +591,7 @@ public class NtlmAuthentication {
                     .GetNTLM2SessionResponseUserSessionKey(_credentials.Password, servernonce);
             }
             catch (Exception e) {
-                throw new Exception("Exception occured while forming Session Security from Type3 AUTH", e);
+                throw new InvalidOperationException("Exception occurred while forming Session Security from Type3 AUTH", e);
             }
         }
 
@@ -605,7 +608,7 @@ public class NtlmAuthentication {
             throw;
         }
         catch (Exception e) {
-            throw new Exception("Exception occured while forming Session Security Type3Response", e);
+            throw new InvalidOperationException("Exception occurred while forming Session Security Type3Response", e);
         }
     }
 
@@ -731,13 +734,13 @@ public class NtlmAuthentication {
 
         if (value is byte[] bytes) {
             if (bytes.Length != 16) {
-                throw new ArgumentException("NTLM channel bindings hash must be exactly 16 bytes.");
+                throw new ArgumentException("NTLM channel bindings hash must be exactly 16 bytes.", nameof(value));
             }
 
             return (byte[])bytes.Clone();
         }
 
-        throw new ArgumentException("NTLM channel bindings hash must be a byte array.");
+        throw new ArgumentException("NTLM channel bindings hash must be a byte array.", nameof(value));
     }
 
     private static byte[] AddOrReplaceAvPair(byte[] targetInformation, ushort avId, byte[] value) {

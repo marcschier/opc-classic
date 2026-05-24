@@ -139,7 +139,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// <param name="dst"></param>
     public override void Encode(NdrCodec ndr, NdrBuffer dst) {
         ndr.Buffer = dst;
-        Format = Format;
+        ndr.Format = Format;
         WritePdu(ndr);
         var buffer = ndr.Buffer;
         var length = buffer.Length;
@@ -180,7 +180,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
         // read minor version
         MinorVersion = ndr.ReadUnsignedSmall();
         if (Type != ndr.ReadUnsignedSmall()) {
-            throw new ArgumentException("Incorrect PDU type.");
+            throw new ArgumentException("Incorrect PDU type.", nameof(ndr));
         }
         Flags = ndr.ReadUnsignedSmall();
         var format = ndr.ReadFormat(false);
@@ -204,7 +204,7 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
         // skip the fragment and auth lengths, since we don't have them yet.
         ndr.WriteUnsignedShort(0);
         ndr.WriteUnsignedShort(0);
-        ndr.WriteUnsignedLong(_useCallIdCounter ? s_callIdCounter++ : _callId);
+        ndr.WriteUnsignedLong(_useCallIdCounter ? AllocateCallId() : _callId);
     }
 
     /// <summary>
@@ -246,9 +246,17 @@ public abstract class ConnectionOrientedPdu : NdrOp, IProtocolDataUnit {
     /// <private/>
     public const int HEADER_LENGTH = 16;
 
-    /// <summary> Call id counter </summary>
-    protected internal static int s_callIdCounter;
-    private int _callId = s_callIdCounter;
+    /// <summary>Reset the call id counter.</summary>
+    protected internal static void ResetCallIdCounterValue() => s_callIdCounter = 0;
+
+    /// <summary>Allocate the next call id.</summary>
+    protected internal static int AllocateCallId() => s_callIdCounter++;
+
+    /// <summary>Current call id counter value.</summary>
+    protected internal static int CurrentCallId => s_callIdCounter;
+
+    private static int s_callIdCounter;
+    private int _callId = CurrentCallId;
     private bool _useCallIdCounter = true;
     private NdrFormat _format;
 }

@@ -66,7 +66,7 @@ public class DefaultConnection : IConnection {
     /// <summary>
     /// Iterator receiving fragments
     /// </summary>
-    private class FragmentReceiveIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class FragmentReceiveIterator : Iterator<ConnectionOrientedPdu> {
 
         /// <summary>
         /// Create iterator
@@ -89,30 +89,29 @@ public class DefaultConnection : IConnection {
             if (_currentFragment == null) {
                 throw new NoSuchElementException();
             }
-            try {
-                return _currentFragment;
+
+            var fragment = _currentFragment;
+            if (fragment.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
+                _currentFragment = null;
             }
-            finally {
-                if (_currentFragment.GetFlag(ConnectionOrientedPdu.PFC_LAST_FRAG)) {
-                    _currentFragment = null;
+            else {
+                try {
+                    Log.Logger.Verbose("[Fragmented Packet] [" + _packetIndex++ +
+                        "] recieved, fragment decomposition is below: ");
+                    _currentFragment = _outerInstance.ReceivePdu(_transport);
                 }
-                else {
-                    try {
-                        Log.Logger.Verbose("[Fragmented Packet] [" + _packetIndex++ +
-                            "] recieved, fragment decomposition is below: ");
-                        _currentFragment = _outerInstance.ReceivePdu(_transport);
-                    }
-                    catch (InvalidCastException e) {
-                        throw new IOException("invalid pdu received", e);
-                    }
-                    catch (IOException) {
-                        throw;
-                    }
-                    catch (Exception ex) {
-                        throw new InvalidOperationException("Unknown", ex);
-                    }
+                catch (InvalidCastException e) {
+                    throw new IOException("invalid pdu received", e);
+                }
+                catch (IOException) {
+                    throw;
+                }
+                catch (Exception ex) {
+                    throw new InvalidOperationException("Unknown", ex);
                 }
             }
+
+            return fragment;
         }
 
         /// <inheritdoc/>
@@ -145,6 +144,7 @@ public class DefaultConnection : IConnection {
     /// <param name="transport"></param>
     /// <exception cref="IOException"></exception>
     /// <returns></returns>
+#pragma warning disable MA0051 // Legacy fragment receive state machine; refactor would risk packet framing behavior.
     private ConnectionOrientedPdu ReceivePdu(ITransport transport) {
         var read = true;
 
@@ -321,6 +321,7 @@ public class DefaultConnection : IConnection {
         pdu.Decode(_ndr, bufferToBeUsed);
         return pdu;
     }
+#pragma warning restore MA0051
 
     /// <summary>
     /// Incoming rebind
@@ -343,6 +344,7 @@ public class DefaultConnection : IConnection {
     /// </summary>
     /// <exception cref="IOException"></exception>
     /// <param name="buffer"></param>
+#pragma warning disable MA0051 // Legacy RPC authentication PDU dispatch; preserving fall-through behavior.
     private void ProcessIncoming(NdrBuffer buffer) {
         buffer.Index = ConnectionOrientedPdu.TYPE_OFFSET;
         var logMsg = true;
@@ -425,11 +427,13 @@ public class DefaultConnection : IConnection {
                 throw new RpcException("Invalid incoming PDU type.");
         }
     }
+#pragma warning restore MA0051
 
     /// <summary>
     /// Process outgoing
     /// </summary>
     /// <exception cref="IOException"></exception>
+#pragma warning disable MA0051 // Legacy RPC authentication PDU dispatch; preserving fall-through behavior.
     private void ProcessOutgoing() {
         _ndr.Buffer.Index = ConnectionOrientedPdu.TYPE_OFFSET;
         var logMsg = true;
@@ -508,6 +512,7 @@ public class DefaultConnection : IConnection {
                 throw new RpcException("Invalid outgoing PDU type.");
         }
     }
+#pragma warning restore MA0051
 
     /// <summary>
     /// Add auth

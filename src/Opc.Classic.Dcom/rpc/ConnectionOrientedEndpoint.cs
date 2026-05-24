@@ -12,6 +12,8 @@ using SharpInterop.Rpc.pdu;
 using Opc.Classic.Dcom.Internal;
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
+using SharpInterop.Rpc.Auth.ntlm;
+using SharpInterop.Transport;
 using System;
 using System.IO;
 
@@ -68,7 +70,7 @@ public class ConnectionOrientedEndpoint : IEndpoint {
         request.AllocationHint = buffer.Length;
         request.Opnum = opnum;
         request.Object = objectId;
-        if ((semantics & Semantics.MAYBE) != 0) {
+        if ((semantics & Semantics.MAYBE) != Semantics.None) {
             request.SetFlag(ConnectionOrientedPdu.PFC_MAYBE, true);
         }
         Send(request);
@@ -115,6 +117,7 @@ public class ConnectionOrientedEndpoint : IEndpoint {
     /// Bind
     /// </summary>
     /// <exception cref="IOException"></exception>
+#pragma warning disable MA0051 // Legacy bind state machine; refactor would risk RPC handshake behavior.
     protected void Bind() {
         if (_bound) {
             return;
@@ -122,13 +125,13 @@ public class ConnectionOrientedEndpoint : IEndpoint {
         if (Context != null) {
             _bound = true;
             try {
-                if (!_uuidsVsContextIds.TryGetValue(Syntax.ToString().ToUpper(), out var cid)) {
+                if (!_uuidsVsContextIds.TryGetValue(Syntax.ToString().ToUpperInvariant(), out var cid)) {
                     cid = null;
                 }
                 var pdu = Context.Alter(new PresentationContext(cid == null ? ++_contextIdCounter : (int)cid, Syntax));
                 var sendAlter = false;
                 if (cid == null) {
-                    _uuidsVsContextIds[Syntax.ToString().ToUpper()] = _contextIdCounter;
+                    _uuidsVsContextIds[Syntax.ToString().ToUpperInvariant()] = _contextIdCounter;
                     _contextIdToUse = _contextIdCounter;
                     sendAlter = true;
                 }
@@ -169,19 +172,20 @@ public class ConnectionOrientedEndpoint : IEndpoint {
                     }
                 }
             }
-            catch (IOException ex) {
+            catch (IOException) {
                 _bound = false;
-                throw ex;
+                throw;
             }
-            catch (Exception ex) {
+            catch (Exception) {
                 _bound = false;
-                throw ex;
+                throw;
             }
         }
         else {
             Connect();
         }
     }
+#pragma warning restore MA0051
 
     /// <summary>
     /// Send
@@ -208,7 +212,7 @@ public class ConnectionOrientedEndpoint : IEndpoint {
         _contextIdCounter = 0;
         CurrentIID = null;
         try {
-            _uuidsVsContextIds[Syntax.ToString().ToUpper()] = _contextIdCounter;
+            _uuidsVsContextIds[Syntax.ToString().ToUpperInvariant()] = _contextIdCounter;
             Context = CreateContext();
             var pdu = Context.Init(new PresentationContext(_contextIdCounter, Syntax), Transport.Properties);
             _contextIdToUse = _contextIdCounter;
@@ -238,21 +242,21 @@ public class ConnectionOrientedEndpoint : IEndpoint {
                 }
             }
         }
-        catch (IOException ex) {
+        catch (IOException) {
             try {
                 Detach();
             }
             catch (IOException) {
             }
-            throw ex;
+            throw;
         }
-        catch (Exception ex) {
+        catch (Exception) {
             try {
                 Detach();
             }
             catch (IOException) {
             }
-            throw ex;
+            throw;
         }
     }
 
@@ -270,13 +274,13 @@ public class ConnectionOrientedEndpoint : IEndpoint {
         if (context == null) {
             return new BasicConnectionContext();
         }
-        try {
-            return (IConnectionContext)Type.GetType(context)
-                .GetConstructor(Type.EmptyTypes).Invoke(new object[0]);
-        }
-        catch (Exception ex) {
-            throw new ProviderException(ex.Message);
-        }
+        return context switch {
+            "SharpInterop.Rpc.BasicConnectionContext" => new BasicConnectionContext(),
+            "rpc.security.ntlm.NtlmConnectionContext" or "SharpInterop.Rpc.Auth.ntlm.NtlmConnectionContext" => new NtlmConnectionContext(),
+            "SharpInterop.Transport.ComRuntimeConnectionContext" => new ComRuntimeConnectionContext(),
+            "SharpInterop.Transport.ComRuntimeNTLMConnectionContext" or "SharpInterop.Transport.ComRuntimeNtlmConnectionContext" => new ComRuntimeNtlmConnectionContext(),
+            _ => throw new ProviderException("Unsupported RPC connection context: " + context),
+        };
     }
 
     private bool _bound;

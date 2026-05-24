@@ -100,7 +100,7 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
             var pdu = (ResponseCoPdu)fragments.Next();
             var stub = pdu.Stub;
             if (stub == null) {
-                stub = new byte[0];
+                stub = Array.Empty<byte>();
             }
             var i = 0;
             while (fragments.HasNext()) {
@@ -176,7 +176,7 @@ public class ResponseCoPdu : ConnectionOrientedPdu, IFragmentable {
         }
     }
 
-    private class FragmentIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class FragmentIterator : Iterator<ConnectionOrientedPdu> {
 
         public FragmentIterator(ResponseCoPdu outerInstance, int stubSize) {
             _outerInstance = outerInstance;

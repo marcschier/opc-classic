@@ -79,5 +79,5 @@ public class BindPdu : ConnectionOrientedPdu {
     /// <summary>
     /// Helper
     /// </summary>
-    public void ResetCallIdCounter() => s_callIdCounter = 0;
+    public void ResetCallIdCounter() => ResetCallIdCounterValue();
 }

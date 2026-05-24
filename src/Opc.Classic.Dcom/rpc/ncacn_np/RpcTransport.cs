@@ -21,7 +21,7 @@ namespace SharpInterop.Rpc.Ncacn_Np;
 /// <summary>
 /// Rpc transport
 /// </summary>
-public class RpcTransport : ITransport {
+public class RpcTransport : ITransport, IDisposable {
 
     /// <inheritdoc/>
     public string Protocol => "ncacn_np";
@@ -88,6 +88,22 @@ public class RpcTransport : ITransport {
     }
 
     /// <inheritdoc/>
+    public void Dispose() {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Releases resources held by this transport.
+    /// </summary>
+    /// <param name="disposing">Whether managed resources should be disposed.</param>
+    protected virtual void Dispose(bool disposing) {
+        if (disposing) {
+            Close();
+        }
+    }
+
+    /// <inheritdoc/>
     public void Send(NdrBuffer buffer) {
         if (!_attached) {
             throw new RpcException("Transport not attached.");
@@ -131,6 +147,7 @@ public class RpcTransport : ITransport {
     /// Parse
     /// </summary>
     /// <param name="address"></param>
+#pragma warning disable MA0051 // Legacy ncacn_np address parser; keeping structure avoids changing accepted address forms.
     protected internal void Parse(string address) {
         if (address == null) {
             throw new ProviderException("Null address.");
@@ -150,20 +167,20 @@ public class RpcTransport : ITransport {
             throw new ProviderException("Port specifier not terminated.");
         }
         address = address.Substring(0, index);
-        while (address.StartsWith("\\", StringComparison.Ordinal)) {
+        while (address.StartsWith('\\')) {
             address = address.Substring(1);
         }
         if (!address.RegionMatches(true, 0, "PIPE", 0, 4)) {
             throw new ProviderException("Not a named pipe address.");
         }
         address = address.Substring(4);
-        while (address.StartsWith("\\", StringComparison.Ordinal)) {
+        while (address.StartsWith('\\')) {
             address = address.Substring(1);
         }
         if ("".Equals(address)) {
             throw new ProviderException("Empty port.");
         }
-        while (server.StartsWith("\\", StringComparison.Ordinal)) {
+        while (server.StartsWith('\\')) {
             server = server.Substring(1);
         }
         if ("".Equals(server)) {
@@ -197,6 +214,7 @@ public class RpcTransport : ITransport {
         }
         _address = "smb://" + server + "/IPC$/" + address;
     }
+#pragma warning restore MA0051
 
     private static readonly string kLOCALHOST;
     private string _address;

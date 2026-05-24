@@ -62,7 +62,7 @@ public class Buffer {
     public byte[] Buf {
         get => _buffer;
         set {
-            _buffer = value ?? (new byte[0]);
+            _buffer = value ?? Array.Empty<byte>();
             _index = 0;
             _length = 0;
         }
@@ -209,7 +209,7 @@ public class Buffer {
     /// <param name="length"></param>
     private void Grow(int length) {
         if (CapacityIncrement <= 0) {
-            throw new IndexOutOfRangeException();
+            throw new InvalidOperationException("Buffer cannot grow when CapacityIncrement is not positive.");
         }
         var newLength = _buffer.Length;
         while (newLength < length) {

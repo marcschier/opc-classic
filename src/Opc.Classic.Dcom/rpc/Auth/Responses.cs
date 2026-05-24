@@ -141,7 +141,7 @@ public static class Responses {
     /// of the NTLM Response and the NTLMv2 and LMv2 Hashes. </returns>
     internal static byte[] NtlmHash(string password) {
         var unicodePassword = Encoding.Unicode.GetBytes(password);
-        IDigest md4 = new MD4Digest();
+        var md4 = new MD4Digest();
         var ret = new byte[md4.GetDigestSize()];
         md4.BlockUpdate(unicodePassword, 0, unicodePassword.Length);
         md4.DoFinal(ret, 0);
@@ -267,6 +267,7 @@ public static class Responses {
     /// </param>
     /// <exception cref="SharpCifs.Util.Sharpen.NoSuchAlgorithmException"> </exception>
     /// <returns> The HMAC-MD5 hash of the given data. </returns>
+#pragma warning disable CA5351 // NTLM requires HMAC-MD5 per [MS-NLMP].
     internal static byte[] HmacMD5(byte[] data, byte[] key) {
 
         using var hmac = new HMACMD5(key);
@@ -293,6 +294,7 @@ public static class Responses {
         //  Array.Copy(data, 0, content, 64, data.Length);
         //  return md5.digest(content);
     }
+#pragma warning restore CA5351
 
     /// <summary>
     /// Creates a DES encryption key from the given key material.
@@ -303,7 +305,7 @@ public static class Responses {
     /// </param>
     /// <returns> A DES encryption key created from the key material
     /// starting at the specified offset in the given byte array. </returns>
-    private static ICipherParameters CreateDESKey(byte[] bytes, int offset) {
+    private static KeyParameter CreateDESKey(byte[] bytes, int offset) {
         var keyBytes = new byte[7];
         Array.Copy(bytes, offset, keyBytes, 0, 7);
         var material = new byte[8];

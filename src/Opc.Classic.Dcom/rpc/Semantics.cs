@@ -17,6 +17,11 @@ namespace SharpInterop.Rpc;
 public enum Semantics {
 
     /// <summary>
+    /// No special call semantics.
+    /// </summary>
+    None = 0,
+
+    /// <summary>
     /// Maybe
     /// </summary>
     MAYBE = 0x01,

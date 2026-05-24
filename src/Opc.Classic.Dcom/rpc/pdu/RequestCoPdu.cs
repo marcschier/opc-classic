@@ -157,7 +157,7 @@ public class RequestCoPdu : ConnectionOrientedPdu, IFragmentable {
             var pdu = (RequestCoPdu)fragments.Next();
             var stub = pdu.Stub;
             if (stub == null) {
-                stub = new byte[0];
+                stub = Array.Empty<byte>();
             }
             while (fragments.HasNext()) {
                 var fragment_Renamed = (RequestCoPdu)fragments.Next();
@@ -197,7 +197,7 @@ public class RequestCoPdu : ConnectionOrientedPdu, IFragmentable {
         }
     }
 
-    private class FragmentIterator : Iterator<ConnectionOrientedPdu> {
+    private sealed class FragmentIterator : Iterator<ConnectionOrientedPdu> {
 
         public FragmentIterator(RequestCoPdu outerInstance, int stubSize) {
             _outerInstance = outerInstance;
@@ -242,7 +242,7 @@ public class RequestCoPdu : ConnectionOrientedPdu, IFragmentable {
         private readonly RequestCoPdu _outerInstance;
         private readonly int _stubSize;
         private int _index;
-        private readonly int _callId = s_callIdCounter++;
+        private readonly int _callId = AllocateCallId();
     }
 
     private UUID _object;

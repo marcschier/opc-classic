@@ -14,6 +14,7 @@ using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace SharpInterop.Rpc.Auth.ntlm; 
 /// <summary>
@@ -79,9 +80,7 @@ public class NtlmConnection : DefaultConnection {
         if (_ntlm == null) {
             // client sends negotiate to server
             //  setSecurity(null);
-            lock (typeof(NtlmConnection)) {
-                _contextId = ++_contextSerial;
-            }
+            _contextId = Interlocked.Increment(ref _contextSerial);
             _ntlm = _authentication.CreateType1();
         }
         else if (_ntlm is Type1Message) {

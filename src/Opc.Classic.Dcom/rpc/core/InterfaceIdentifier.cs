@@ -9,6 +9,7 @@
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
 using SharpCifs.Util.Sharpen;
+using System.Globalization;
 
 namespace SharpInterop.Rpc.Core; 
 /// <summary>
@@ -38,8 +39,8 @@ public class InterfaceIdentifier : NdrOp {
     public InterfaceIdentifier(string syntax) {
         var tokenizer = new StringTokenizer(syntax, ":.");
         Uuid.Parse(tokenizer.NextToken());
-        MajorVersion = int.Parse(tokenizer.NextToken());
-        MinorVersion = int.Parse(tokenizer.NextToken());
+        MajorVersion = int.Parse(tokenizer.NextToken(), CultureInfo.InvariantCulture);
+        MinorVersion = int.Parse(tokenizer.NextToken(), CultureInfo.InvariantCulture);
     }
 
     /// <summary>

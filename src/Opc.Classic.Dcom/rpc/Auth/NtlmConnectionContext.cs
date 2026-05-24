@@ -9,6 +9,7 @@
 
 using Opc.Classic.Dcom.Internal;
 using System;
+using System.Globalization;
 using System.IO;
 using SharpInterop.Rpc.Core;
 using SharpInterop.Rpc.pdu;
@@ -42,11 +43,11 @@ public class NtlmConnectionContext : IConnectionContext {
         if (properties != null) {
             var maxTransmit = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
             if (maxTransmit != null) {
-                _maxTransmitFragment = int.Parse(maxTransmit);
+                _maxTransmitFragment = int.Parse(maxTransmit, CultureInfo.InvariantCulture);
             }
             var maxReceive = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
             if (maxReceive != null) {
-                _maxReceiveFragment = int.Parse(maxReceive);
+                _maxReceiveFragment = int.Parse(maxReceive, CultureInfo.InvariantCulture);
             }
         }
         var pdu = new BindPdu {
@@ -123,12 +124,12 @@ public class NtlmConnectionContext : IConnectionContext {
                 Established = false;
                 // CHECK PRESENTATION CONTEXT
                 // CHALLENGE
-                throw new Exception();
+                throw new RpcException("Server-side NTLM bind challenge handling is not implemented.");
             case AlterContextPdu.ALTER_CONTEXT_TYPE:
                 Established = false;
                 // CHECK PRESENTATION CONTEXT
                 // CHALLENGE
-                throw new Exception();
+                throw new RpcException("Server-side NTLM alter-context challenge handling is not implemented.");
             case Auth3Pdu.AUTH3_TYPE:
                 // AUTHENTICATE
                 // TWEAK CONNECTION

@@ -49,7 +49,7 @@ public class Ntlm1 : ISecurity {
     /// <param name="isServer"></param>
     public Ntlm1(NtlmFlags flags, byte[] sessionKey, bool isServer) {
 
-        Protection = ((flags & NtlmFlags.NtlmsspNegotiateSeal) != 0) ?
+        Protection = ((flags & NtlmFlags.NtlmsspNegotiateSeal) != NtlmFlags.None) ?
             ProtectionLevel.PROTECTION_LEVEL_PRIVACY : ProtectionLevel.PROTECTION_LEVEL_INTEGRITY;
 
         _isServer = isServer;
@@ -127,7 +127,7 @@ public class Ntlm1 : ISecurity {
         }
         catch (IOException ex) {
             Log.Logger.Error(ex, "");
-            throw ex;
+            throw;
         }
         catch (Exception ex) {
             Log.Logger.Error(ex, "");

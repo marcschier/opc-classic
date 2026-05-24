@@ -8,7 +8,7 @@
 //
 
 using Opc.Classic.Dcom.Internal.LegacyNdr;
-using System.Collections.Generic;
+using System;
 
 namespace SharpInterop.Rpc.Core; 
 /// <summary>
@@ -59,7 +59,7 @@ public class Port : NdrOp {
             PortSpec.CopyTo(0, spec, 0, PortSpec.Length - 0);
         }
         else {
-            spec = new char[0];
+            spec = Array.Empty<char>();
         }
         ndr.WriteUnsignedShort(spec.Length);
         if (spec.Length > 0) {
@@ -72,10 +72,9 @@ public class Port : NdrOp {
         if (!(obj is Port other)) {
             return false;
         }
-        return (PortSpec != null) ?
-            PortSpec.Equals(other.PortSpec) : other.PortSpec == null;
+        return string.Equals(PortSpec, other.PortSpec, StringComparison.Ordinal);
     }
 
     /// <override/>
-    public override int GetHashCode() => EqualityComparer<string>.Default.GetHashCode(PortSpec);
+    public override int GetHashCode() => PortSpec is null ? 0 : StringComparer.Ordinal.GetHashCode(PortSpec);
 }

@@ -10,6 +10,7 @@
 using Opc.Classic.Dcom.Internal;
 using SharpInterop.Rpc.Core;
 using SharpInterop.Rpc.pdu;
+using System.Globalization;
 
 namespace SharpInterop.Rpc; 
 /// <summary>
@@ -30,11 +31,11 @@ public class BasicConnectionContext : IConnectionContext {
         if (properties != null) {
             var maxTransmit = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_TRANSMIT_FRAGMENT);
             if (maxTransmit != null) {
-                _maxTransmitFragment = int.Parse(maxTransmit);
+                _maxTransmitFragment = int.Parse(maxTransmit, CultureInfo.InvariantCulture);
             }
             var maxReceive = (string)properties.GetProperty(SharpInterop.Rpc.Connection.MAX_RECEIVE_FRAGMENT);
             if (maxReceive != null) {
-                _maxReceiveFragment = int.Parse(maxReceive);
+                _maxReceiveFragment = int.Parse(maxReceive, CultureInfo.InvariantCulture);
             }
         }
         var pdu = new BindPdu {
