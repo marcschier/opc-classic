@@ -1,6 +1,6 @@
 # Migrating from the OPC Foundation .NET API
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 Many OPC Classic applications still depend on the OPC Foundation .NET API for .NET Framework. Those applications usually run only on Windows, use synchronous calls, rely on COM registration, and carry types such as `Opc.Da.Server`, `Opc.Da.Subscription`, `Opc.Da.Item`, `Opc.Da.ItemValueResult`, and `Opc.ConnectData`. Opc.Classic keeps the OPC concepts but changes the platform assumptions: namespaces are `Opc.Classic.*`, APIs are async, cancellation is explicit, DCOM is pure managed on the portable path, and NativeAOT/trimming shape the design.
 

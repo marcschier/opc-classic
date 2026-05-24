@@ -1,6 +1,6 @@
 # AOT and trimming for Opc.Classic applications
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 Opc.Classic is designed for NativeAOT-compatible libraries. That matters for plant gateways, edge containers, and small service deployments where startup time, image size, and predictable dependencies are important. It also means application code must avoid patterns that only work when the full runtime and reflection metadata are available. This tutorial shows how to publish AOT-trimmed binaries, how to use root descriptors when you really need them, and what is safe or unsafe in the Opc.Classic stack.
 

@@ -1,6 +1,6 @@
 # Historical data with OPC HDA
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 OPC Historical Data Access is the query side of OPC Classic. Data Access answers "what is the value now?"; HDA answers "what happened over this time range?" A production historian client needs raw reads, processed aggregates, annotations, modified-value audit trails, continuation handling, and careful time semantics. This tutorial shows how to model those scenarios with `Opc.Classic.Hda` and how the sample client and server fit together.
 

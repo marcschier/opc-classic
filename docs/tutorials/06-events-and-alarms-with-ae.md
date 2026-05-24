@@ -1,6 +1,6 @@
 # Events and alarms with OPC AE
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 OPC Alarms & Events is the event stream for OPC Classic. DA tells you current values, HDA tells you historical values, and AE tells you what happened: a simple notification, an operator tracking event, or a condition event that may require acknowledgement. This tutorial walks through event categories, area browsing, filters, condition acknowledgements, refresh, and server-hosting patterns using `Opc.Classic.Ae`.
 
@@ -315,7 +315,7 @@ Also schedule periodic drills. Run the tutorial scenario in a staging environmen
 
 ## Final acceptance test
 
-Before release, replay the complete AE scenario: browse areas, query categories, subscribe with a condition filter, receive a simple event, receive a condition event, acknowledge it, refresh after reconnect, and disable the area. Save the log output as release evidence. This proves the tutorial's sequence and gives operators a concrete example of normal behavior.
+Before release, replay the complete AE scenario: browse areas, query categories, subscribe with a condition filter, receive a simple event, receive a condition event, acknowledge it, refresh after reconnect, and disable the area. Save the log output as release evidence. That replay proves the tutorial's sequence and gives operators a concrete example of normal behavior.
 
 ## Next steps
 

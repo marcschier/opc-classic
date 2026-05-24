@@ -1,6 +1,6 @@
 # Host an OPC DA server with Opc.Classic.Hosting
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 This tutorial walks through hosting a managed OPC Data Access server. The canonical repository example is `samples\Opc.Classic.Samples.DaServer\`, which registers `Opc.Classic.Samples.DaServer.1`, wires a `TagTree`, and exposes a small `IOpcDaServer` implementation through `Opc.Classic.Hosting`. Here we build the same production shape from scratch and explain the pieces you need to keep stable when a legacy Windows DA client connects through `IOPCServer`, `IOPCGroupStateMgt`, and subscription callbacks.
 
@@ -65,7 +65,7 @@ For package-based builds, replace the project references with `Opc.Classic.Core`
 
 ## Program.cs
 
-This program registers the host, the CLSID registry, a tag catalog, a group registry, a periodic signal generator, and the managed DA server implementation.
+The program registers the host, the CLSID registry, a tag catalog, a group registry, a periodic signal generator, and the managed DA server implementation.
 
 ```csharp
 using System.Collections.Concurrent;

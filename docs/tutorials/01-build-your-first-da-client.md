@@ -1,6 +1,6 @@
 # Build your first OPC DA client
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 This tutorial builds a complete Data Access client as a .NET 10 worker. It uses the public `Opc.Classic.Da.IDaServer` and `IDaSubscription` contracts, so the application code is the same shape whether the server is an in-process loopback target, a lab server, or a production DCOM-backed adapter. The runnable path below uses a loopback implementation so you can paste the files into a project and run the sequence without a Windows COM server. To connect to a real OPC DA server, keep the worker and replace only the `IDaServer` registration.
 

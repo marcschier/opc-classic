@@ -1,6 +1,6 @@
 # Performance tuning Opc.Classic applications
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 OPC Classic performance problems often appear in layers: tag batches that are too small, callbacks that allocate per item, historians returning too many samples, authentication signing overhead, and NDR codecs on hot paths. Opc.Classic gives you AOT-friendly primitives, generated proxies, span-based NDR readers/writers, and explicit DTOs. This tutorial shows how to use those primitives without fighting the runtime.
 

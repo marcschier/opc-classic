@@ -1,6 +1,6 @@
 # Security with Kerberos and channel binding
 
-Applies to Opc.Classic 0.6.0-alpha.1; the public API shape targets 1.0.0-rc.1.
+Applies to Opc.Classic 0.6.0-alpha.1 (targeting 1.0.0-rc.1).
 
 OPC Classic security is mostly DCOM security. Modern deployments must account for Microsoft DCOM hardening, NTLM relay risk, Kerberos service-principal identity, SPNEGO negotiation, channel binding, and operational realities such as keytab rotation. This tutorial shows how to move a production Opc.Classic client or managed server from the safe NTLMv2 baseline to Kerberos/SPNEGO with channel binding.
 
